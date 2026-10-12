@@ -59,6 +59,7 @@ export function Web2FASetupVerifyStep(props: Props) {
           Xác minh mã
         </h1>
         <p
+          id="setup-otp-instructions"
           style={{
             color: c.text2,
             fontSize: WEB_FONT.md,
@@ -72,7 +73,13 @@ export function Web2FASetupVerifyStep(props: Props) {
       </div>
 
       {/* OTP input boxes */}
-      <div className="flex justify-center" style={{ gap: 10, marginBottom: 16 }}>
+      <div
+        role="group"
+        aria-label="Mã xác thực gồm 6 chữ số"
+        aria-describedby="setup-otp-instructions"
+        className="flex justify-center"
+        style={{ gap: 'clamp(4px, 1.25vw, 10px)', marginBottom: 16 }}
+      >
         {otp.map((digit, i) => (
           <input
             key={i}
@@ -87,9 +94,13 @@ export function Web2FASetupVerifyStep(props: Props) {
             onKeyDown={(e) => handleOTPKeyDown(i, e)}
             onPaste={i === 0 ? handleOTPPaste : undefined}
             disabled={isLoading}
+            aria-label={`Mã xác thực 2FA, chữ số ${i + 1} trên 6`}
+            aria-invalid={Boolean(error)}
+            aria-describedby={error ? 'setup-otp-error' : 'setup-otp-instructions'}
             className="outline-none text-center"
             style={{
-              width: 52,
+              width: 'clamp(32px, 10.9vw, 52px)',
+              minWidth: 0,
               height: 60,
               borderRadius: 12,
               border: `2px solid ${error ? '#EF4444' : digit ? '#3B82F6' : c.borderSolid}`,
@@ -107,6 +118,8 @@ export function Web2FASetupVerifyStep(props: Props) {
       {/* Error */}
       {error && (
         <div
+          id="setup-otp-error"
+          role="alert"
           className="flex items-center gap-2"
           style={{
             padding: '10px 14px',

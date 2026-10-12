@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { CheckCircle, KeyRound, Lock, ShieldCheck } from 'lucide-react';
 import { passwordResetApi } from '../api/password-reset-api';
@@ -27,6 +27,21 @@ export function PasswordChangePage() {
   const [totpCode, setTotpCode] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const formRef = useRef<HTMLFormElement>(null);
+  const successHeadingRef = useRef<HTMLHeadingElement>(null);
+  const previousStepRef = useRef(step);
+
+  useEffect(() => {
+    if (previousStepRef.current !== step) {
+      if (step === 'success') {
+        successHeadingRef.current?.focus();
+      } else {
+        formRef.current?.querySelector<HTMLInputElement>('input')?.focus();
+      }
+    }
+
+    previousStepRef.current = step;
+  }, [step]);
 
   const passwordValid = PASSWORD_RULES.every((rule) => rule.test(newPassword));
   const canSubmit =
@@ -81,6 +96,7 @@ export function PasswordChangePage() {
 
         {step === 'verify' && (
           <form
+            ref={formRef}
             className="contents"
             onSubmit={(event) => {
               event.preventDefault();
@@ -108,6 +124,7 @@ export function PasswordChangePage() {
 
         {step === 'change' && (
           <form
+            ref={formRef}
             className="contents"
             onSubmit={(event) => {
               event.preventDefault();
@@ -131,11 +148,11 @@ export function PasswordChangePage() {
               prefix={<KeyRound size={17} color={colors.text3} />}
               required
             />
-            <ul style={{ color: colors.text3, fontSize: 12, margin: 0, paddingLeft: 20 }}>
+            <ul style={{ color: colors.text2, fontSize: 12, margin: 0, paddingLeft: 20 }}>
               {PASSWORD_RULES.map((rule) => (
                 <li
                   key={rule.id}
-                  style={{ color: rule.test(newPassword) ? colors.buy : undefined }}
+                  style={{ color: rule.test(newPassword) ? colors.successText : undefined }}
                 >
                   {rule.label}
                 </li>
@@ -184,7 +201,12 @@ export function PasswordChangePage() {
           <div className="flex flex-col items-center gap-4 py-8 text-center">
             <CheckCircle size={44} color={colors.buy} aria-hidden="true" />
             <div>
-              <h2 style={{ color: colors.text1, fontSize: 20, fontWeight: 700 }}>
+              <h2
+                ref={successHeadingRef}
+                tabIndex={-1}
+                className="focus-visible:rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
+                style={{ color: colors.text1, fontSize: 20, fontWeight: 700 }}
+              >
                 Mật khẩu đã được đổi thành công.
               </h2>
               <p style={{ color: colors.text2, fontSize: 13, marginTop: 8 }}>

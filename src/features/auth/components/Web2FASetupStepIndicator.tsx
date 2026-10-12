@@ -8,12 +8,23 @@ interface Props {
 export function Web2FASetupStepIndicator({ current, c }: Props) {
   const steps = ['Quét mã QR', 'Xác minh', 'Mã dự phòng'];
   return (
-    <div className="flex items-center" style={{ gap: 0, marginBottom: 32 }}>
+    <ol
+      aria-label="Tiến trình thiết lập 2FA"
+      className="flex items-center"
+      style={{ gap: 0, marginBottom: 32, padding: 0, listStyle: 'none' }}
+    >
       {steps.map((label, i) => (
-        <div key={label} className="flex items-center" style={{ gap: 0 }}>
+        <li
+          key={label}
+          aria-label={`Bước ${i + 1} trên ${steps.length}: ${label}`}
+          aria-current={i === current ? 'step' : undefined}
+          className="flex items-center"
+          style={{ gap: 0 }}
+        >
           <div className="flex items-center" style={{ gap: 8 }}>
             <div
               className="flex items-center justify-center"
+              aria-hidden="true"
               style={{
                 width: 28,
                 height: 28,
@@ -38,8 +49,9 @@ export function Web2FASetupStepIndicator({ current, c }: Props) {
               )}
             </div>
             <span
+              className={i === current ? undefined : 'sr-only sm:not-sr-only'}
               style={{
-                color: i <= current ? c.text1 : c.text3,
+                color: i <= current ? c.text1 : c.text2,
                 fontSize: WEB_FONT.xs,
                 fontWeight: i === current ? 600 : 400,
                 whiteSpace: 'nowrap',
@@ -60,8 +72,8 @@ export function Web2FASetupStepIndicator({ current, c }: Props) {
               }}
             />
           )}
-        </div>
+        </li>
       ))}
-    </div>
+    </ol>
   );
 }

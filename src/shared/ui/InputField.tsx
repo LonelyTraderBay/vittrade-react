@@ -15,6 +15,8 @@ export interface InputFieldProps extends Omit<
 > {
   /** Optional label above input */
   label?: string;
+  /** Optional instructions connected to the input for visual and assistive-technology users */
+  helper?: string;
   /** Error message (turns border red) */
   error?: string;
   /** Prefix element (icon, text) */
@@ -37,6 +39,8 @@ export function InputField({
   className = '',
   style,
   id,
+  helper,
+  'aria-describedby': ariaDescribedBy,
   onFocus,
   onBlur,
   ...inputProps
@@ -44,8 +48,17 @@ export function InputField({
   const c = useThemeColors();
   const [focused, setFocused] = useState(false);
   const borderColor = error ? '#EF4444' : focused ? c.primary : c.borderSolid;
-  const focusShadow = focused && !error ? '0 0 0 2px rgba(229, 138, 0, 0.25)' : 'none';
+  const focusShadow = focused ? `0 0 0 2px ${error ? c.text1 : 'rgba(229, 138, 0, 0.25)'}` : 'none';
   const inputId = id || (label ? `input-${label.replace(/\s+/g, '-').toLowerCase()}` : undefined);
+  const helperId = helper && inputId ? `${inputId}-helper` : undefined;
+  const errorId = error && inputId ? `${inputId}-error` : undefined;
+  const describedBy = [
+    ...new Set(
+      [ariaDescribedBy, helperId, errorId]
+        .filter((value): value is string => Boolean(value))
+        .flatMap((value) => value.split(/\s+/).filter(Boolean)),
+    ),
+  ].join(' ');
 
   return (
     <div className={containerClassName}>
@@ -89,7 +102,7 @@ export function InputField({
           }}
           {...inputProps}
           aria-invalid={!!error}
-          aria-describedby={error && inputId ? `${inputId}-error` : undefined}
+          aria-describedby={describedBy || undefined}
           onFocus={(e) => {
             setFocused(true);
             onFocus?.(e);
@@ -101,11 +114,19 @@ export function InputField({
         />
         {suffix}
       </div>
+      {helper && (
+        <p
+          id={helperId}
+          style={{ color: c.text2, fontSize: textRoleSize('caption'), marginTop: 4 }}
+        >
+          {helper}
+        </p>
+      )}
       {error && (
         <p
-          id={inputId ? `${inputId}-error` : undefined}
+          id={errorId}
           role="alert"
-          style={{ color: '#EF4444', fontSize: textRoleSize('caption'), marginTop: 4 }}
+          style={{ color: c.errorText, fontSize: textRoleSize('caption'), marginTop: 4 }}
         >
           {error}
         </p>
@@ -175,7 +196,9 @@ export function InputWrapper({
         {children}
       </div>
       {error && (
-        <p style={{ color: '#EF4444', fontSize: textRoleSize('caption'), marginTop: 4 }}>{error}</p>
+        <p style={{ color: c.errorText, fontSize: textRoleSize('caption'), marginTop: 4 }}>
+          {error}
+        </p>
       )}
     </div>
   );

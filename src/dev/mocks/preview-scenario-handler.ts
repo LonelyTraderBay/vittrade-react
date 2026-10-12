@@ -543,9 +543,10 @@ export const previewScenarioHandler = http.all('*', async ({ request }) => {
     }
 
     if (scenario.domain === 'auth') {
-      // Auth OpenAPI declares no 5xx. Model an unavailable login request without
-      // inventing an HTTP status; other Auth operations use their real handlers.
-      return request.method === 'POST' && pathname.endsWith('/auth/login')
+      // Auth OpenAPI declares no 5xx. Model unavailable login/registration
+      // responses at transport level; registration retries remain idempotent.
+      return request.method === 'POST' &&
+        (pathname.endsWith('/auth/login') || pathname.endsWith('/auth/register'))
         ? HttpResponse.error()
         : undefined;
     }

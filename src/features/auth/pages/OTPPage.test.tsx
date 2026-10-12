@@ -19,18 +19,28 @@ const challengeState = {
 };
 
 function renderOTP(state: unknown, overrides: Partial<AuthAdapter> = {}, pathname = '/auth/otp') {
+  const initialPath =
+    pathname === '/auth/otp' || pathname.endsWith('/auth/otp') ? pathname : `${pathname}/auth/otp`;
   return renderWithProviders(
     <>
       <Routes>
         <Route path="/auth/otp" element={<OTPPage />} />
+        <Route path="/t/auth/otp" element={<OTPPage />} />
+        <Route path="/r/auth/otp" element={<OTPPage />} />
         <Route path="/w/auth/otp" element={<OTPPage />} />
         <Route path="/auth/register" element={<p>register route</p>} />
+        <Route path="/t/auth/register" element={<p>register route</p>} />
+        <Route path="/r/auth/register" element={<p>register route</p>} />
         <Route path="/w/auth/account-locked" element={<p>account locked route</p>} />
+        <Route path="/auth/account-locked" element={<p>account locked route</p>} />
+        <Route path="/t/auth/account-locked" element={<p>account locked route</p>} />
+        <Route path="/r/auth/account-locked" element={<p>account locked route</p>} />
+        <Route path="*" element={<p>other route</p>} />
       </Routes>
       <CurrentPath />
     </>,
     {
-      routerProps: { initialEntries: [{ pathname, state }] },
+      routerProps: { initialEntries: [{ pathname: initialPath, state }] },
       authAdapter: { ...testAuthAdapter, initialSession: null, ...overrides },
     },
   );
@@ -97,6 +107,32 @@ describe('OTPPage login MFA challenge', () => {
       expect(screen.getByTestId('current-path')).toHaveTextContent('/auth/register'),
     );
     expect(verifyMfa).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    [400, 'Mã OTP không đúng. Vui lòng thử lại.'],
+    [503, 'Không thể xác minh lúc này. Vui lòng thử lại.'],
+  ])('keeps registration OTP retryable for HTTP %i', async (status, message) => {
+    const user = userEvent.setup();
+    const verifyMfa = vi.fn().mockRejectedValue(new ApiError('verification failed', { status }));
+    renderOTP(
+      {
+        purpose: 'register',
+        challengeId: 'registration-challenge-undocumented-status',
+        channel: 'email',
+        maskedDestination: 'n***@example.com',
+        expiresAt: '2099-01-01T00:05:00.000Z',
+      },
+      { verifyMfa },
+    );
+
+    const inputs = document.querySelectorAll<HTMLInputElement>('input[aria-label^="Ký tự OTP"]');
+    for (const input of inputs) await user.type(input, '1');
+
+    expect(await screen.findByText(message)).toBeInTheDocument();
+    expect(screen.getByTestId('current-path')).toHaveTextContent('/auth/otp');
+    expect(screen.queryByText(/Quá nhiều lần xác thực/)).not.toBeInTheDocument();
+    expect(verifyMfa).toHaveBeenCalledTimes(1);
   });
 
   it('verifies using only challenge ID and code, then navigates home', async () => {
@@ -256,10 +292,19 @@ describe('OTPPage login MFA challenge', () => {
     const verifyLoginMfa = vi.fn().mockRejectedValue(new ApiError('invalid code', { status: 400 }));
     renderOTP(challengeState, { verifyLoginMfa });
 
-    const inputs = document.querySelectorAll<HTMLInputElement>('input[aria-label^="Ký tự OTP"]');
+    const group = screen.getByRole('group', { name: 'Mã xác thực gồm 6 chữ số' });
+    expect(group).toHaveAttribute('aria-describedby', 'otp-instructions');
+    const inputs = Array.from({ length: 6 }, (_, index) =>
+      screen.getByRole('textbox', { name: `Ký tự OTP ${index + 1}` }),
+    );
     for (const input of inputs) await user.type(input, '1');
 
-    expect(await screen.findByText('Mã OTP không đúng. Vui lòng thử lại.')).toBeInTheDocument();
+    const error = await screen.findByRole('alert');
+    expect(error).toHaveTextContent('Mã OTP không đúng. Vui lòng thử lại.');
+    for (const input of inputs) {
+      expect(input).toHaveAttribute('aria-invalid', 'true');
+      expect(input).toHaveAttribute('aria-describedby', error.id);
+    }
     expect(screen.getByTestId('current-path')).toHaveTextContent('/auth/otp');
   });
 
@@ -405,18 +450,23 @@ describe('OTPPage login MFA challenge', () => {
     }
   });
 
-  it('returns a locked account to the account-locked route', async () => {
+  it.each([
+    ['', '/auth/account-locked'],
+    ['/t', '/t/auth/account-locked'],
+    ['/r', '/r/auth/account-locked'],
+  ])('routes a server-locked MFA account to its shell route (%s)', async (prefix, lockedPath) => {
     const user = userEvent.setup();
     const verifyLoginMfa = vi.fn().mockRejectedValue(new ApiError('locked', { status: 423 }));
-    renderOTP(challengeState, { verifyLoginMfa });
+    renderOTP(challengeState, { verifyLoginMfa }, prefix);
 
     const inputs = document.querySelectorAll<HTMLInputElement>('input[aria-label^="Ký tự OTP"]');
     for (const input of inputs) await user.type(input, '1');
 
+    await waitFor(() => expect(screen.getByTestId('current-path')).toHaveTextContent(lockedPath));
+    expect(verifyLoginMfa).toHaveBeenCalledTimes(1);
     expect(
-      await screen.findByText('Tài khoản đang bị khóa tạm thời. Vui lòng thử lại sau.'),
-    ).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Quay lại đăng nhập' })).toBeInTheDocument();
+      screen.queryByText('Tài khoản đang bị khóa tạm thời. Vui lòng thử lại sau.'),
+    ).not.toBeInTheDocument();
   });
 
   it('explains rate limits without labeling the code invalid', async () => {

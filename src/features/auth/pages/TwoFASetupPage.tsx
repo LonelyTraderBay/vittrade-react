@@ -1,7 +1,7 @@
 import { TOAST } from '@/shared/constants/toastMessages';
 import { PageLayout } from '@/shared/ui/layout/PageLayout';
 import { PageContent } from '@/shared/ui/layout/PageContent';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Shield, Copy, CheckCircle, Download, ChevronRight } from 'lucide-react';
 import { Header } from '@/shared/ui/layout/Header';
@@ -37,6 +37,7 @@ export function TwoFASetupPage() {
   const [setup, setSetup] = useState<MfaSetupChallenge | null>(null);
   const [setupAttempt, setSetupAttempt] = useState(0);
   const [setupError, setSetupError] = useState<string | null>(null);
+  const backupCodesHeadingRef = useRef<HTMLHeadingElement | null>(null);
   const navigate = useNavigate();
   const actionToast = useActionToast();
 
@@ -56,6 +57,10 @@ export function TwoFASetupPage() {
       active = false;
     };
   }, [beginMfaSetup, setupAttempt]);
+
+  useEffect(() => {
+    if (step === 3) backupCodesHeadingRef.current?.focus();
+  }, [step]);
 
   const handleCopyKey = async () => {
     if (!setup) return;
@@ -86,7 +91,7 @@ export function TwoFASetupPage() {
       await confirmMfaSetup({ code: otp });
       setStep(3);
     } catch {
-      actionToast.error('Mã xác thực không đúng hoặc đã hết hạn. Vui lòng thử lại.');
+      actionToast.error('Không thể xác minh lúc này. Vui lòng thử lại.');
     } finally {
       setIsLoading(false);
     }
@@ -102,7 +107,7 @@ export function TwoFASetupPage() {
               className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold"
               style={{
                 background: s <= step ? '#3B82F6' : c.surface2,
-                color: s <= step ? '#fff' : c.text3,
+                color: s <= step ? '#fff' : c.text2,
                 border: s === step ? '2px solid #3B82F6' : '2px solid transparent',
               }}
             >
@@ -163,7 +168,7 @@ export function TwoFASetupPage() {
               className="rounded-2xl p-4"
               style={{ background: c.surface2, border: `1px solid ${c.borderSolid}` }}
             >
-              <p style={{ color: c.text2, fontSize: 12, marginBottom: 8 }}>
+              <p style={{ color: c.text1, fontSize: 12, marginBottom: 8 }}>
                 Hoặc nhập thủ công khóa bí mật:
               </p>
               <div className="flex items-center justify-between gap-3">
@@ -184,7 +189,7 @@ export function TwoFASetupPage() {
                   className="flex items-center gap-1.5 rounded-xl px-3 py-2"
                   style={{
                     background: copied ? 'rgba(16,185,129,0.15)' : 'rgba(59,130,246,0.15)',
-                    color: copied ? '#10B981' : '#3B82F6',
+                    color: copied ? c.successText : c.link,
                     fontSize: 12,
                   }}
                 >
@@ -200,7 +205,7 @@ export function TwoFASetupPage() {
                 border: '1px solid rgba(245,158,11,0.3)',
               }}
             >
-              <p style={{ color: '#F59E0B', fontSize: 12 }}>⚠️ Giữ bí mật khóa này.</p>
+              <p style={{ color: c.text1, fontSize: 12 }}>⚠️ Giữ bí mật khóa này.</p>
             </div>
             <CTAButton onClick={handleConfirm} disabled={!setup} variant="primary">
               Tiếp theo <ChevronRight size={18} />
@@ -212,39 +217,46 @@ export function TwoFASetupPage() {
           <div className="contents">
             <div className="text-center">
               <h2 style={{ color: c.text1, fontSize: 20, fontWeight: 700 }}>Bước 2: Xác minh mã</h2>
-              <p style={{ color: c.text2, fontSize: 13, marginTop: 8 }}>
+              <p id="setup-otp-instructions" style={{ color: c.text2, fontSize: 13, marginTop: 8 }}>
                 Nhập mã 6 chữ số từ ứng dụng xác thực của bạn
               </p>
             </div>
             <div className="flex flex-col items-center gap-4">
-              <div className="flex gap-2">
-                {[0, 1, 2, 3, 4, 5].map((i) => (
-                  <div
-                    key={i}
-                    className="w-11 h-14 rounded-xl flex items-center justify-center"
-                    style={{
-                      background: c.surface2,
-                      border: `2px solid ${otp[i] ? '#3B82F6' : c.borderSolid}`,
-                    }}
-                  >
-                    <span style={{ color: c.text1, fontSize: 22, fontWeight: 700 }}>
-                      {otp[i] ?? ''}
-                    </span>
-                  </div>
-                ))}
+              <div
+                role="group"
+                aria-label="Mã xác thực gồm 6 chữ số"
+                className="relative flex gap-1 rounded-xl focus-within:outline focus-within:outline-2 focus-within:outline-blue-500 sm:gap-2"
+              >
+                <div aria-hidden="true" className="flex gap-2">
+                  {[0, 1, 2, 3, 4, 5].map((i) => (
+                    <div
+                      key={i}
+                      className="h-12 w-9 rounded-xl flex items-center justify-center sm:h-14 sm:w-11"
+                      style={{
+                        background: c.surface2,
+                        border: `2px solid ${otp[i] ? '#3B82F6' : c.borderSolid}`,
+                      }}
+                    >
+                      <span style={{ color: c.text1, fontSize: 22, fontWeight: 700 }}>
+                        {otp[i] ?? ''}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+                <input
+                  type="tel"
+                  inputMode="numeric"
+                  maxLength={6}
+                  autoComplete="one-time-code"
+                  aria-label="Mã xác thực 6 chữ số"
+                  aria-describedby="setup-otp-instructions"
+                  value={otp}
+                  onChange={(e) => setOtp(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                  className="absolute inset-0 h-full w-full opacity-0"
+                  autoFocus
+                />
               </div>
-              <input
-                type="tel"
-                inputMode="numeric"
-                maxLength={6}
-                autoComplete="one-time-code"
-                aria-label="Mã xác thực 6 chữ số"
-                value={otp}
-                onChange={(e) => setOtp(e.target.value.replace(/\D/g, '').slice(0, 6))}
-                className="opacity-0 absolute"
-                autoFocus
-              />
-              <p style={{ color: c.text3, fontSize: 12 }}>Chạm vào đây để nhập mã</p>
+              <p style={{ color: c.text2, fontSize: 12 }}>Chạm vào đây để nhập mã</p>
             </div>
             <CTAButton
               onClick={handleConfirm}
@@ -269,7 +281,14 @@ export function TwoFASetupPage() {
               >
                 <Download size={32} color="#10B981" />
               </div>
-              <h2 style={{ color: c.text1, fontSize: 20, fontWeight: 700 }}>Bước 3: Mã dự phòng</h2>
+              <h2
+                ref={backupCodesHeadingRef}
+                tabIndex={-1}
+                className="focus-visible:rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-500"
+                style={{ color: c.text1, fontSize: 20, fontWeight: 700 }}
+              >
+                Bước 3: Mã dự phòng
+              </h2>
               <p style={{ color: c.text2, fontSize: 13, marginTop: 8, lineHeight: 1.6 }}>
                 Lưu các mã này ở nơi an toàn. Dùng khi mất thiết bị xác thực.
               </p>
@@ -281,7 +300,7 @@ export function TwoFASetupPage() {
               {/* Step 3 follows only a Zod-validated setup challenge with required backup codes. */}
               {setup!.backupCodes.map((code, i) => (
                 <div key={code} className="flex items-center justify-between">
-                  <span style={{ color: c.text3, fontSize: 12, width: 20 }}>{i + 1}.</span>
+                  <span style={{ color: c.text1, fontSize: 12, width: 20 }}>{i + 1}.</span>
                   <span
                     style={{
                       color: c.text1,
@@ -304,7 +323,7 @@ export function TwoFASetupPage() {
                 border: '1px solid rgba(239,68,68,0.3)',
               }}
             >
-              <p style={{ color: '#EF4444', fontSize: 12, lineHeight: 1.6 }}>
+              <p style={{ color: c.text1, fontSize: 12, lineHeight: 1.6 }}>
                 ⚠️ Mỗi mã chỉ dùng được 1 lần.
               </p>
             </div>

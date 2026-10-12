@@ -350,7 +350,7 @@ describe('development preview scenario MSW handler', () => {
     expect(await orderResponse.json()).toMatchObject({ code: 'IDEMPOTENCY_KEY_REQUIRED' });
   });
 
-  it('uses a statusless transport failure for Auth login without inventing an undeclared 5xx', async () => {
+  it('uses statusless transport failures for Auth login and registration without inventing 5xx', async () => {
     setDevPreviewScenario({ domain: 'auth', state: 'error' });
 
     const loginRequest = fetch('http://localhost/api/auth/login', {
@@ -359,6 +359,23 @@ describe('development preview scenario MSW handler', () => {
       body: JSON.stringify({ email: 'developer@vittrade.local', password: 'Preview-123!' }),
     });
     await expect(loginRequest).rejects.toThrow('Failed to fetch');
+
+    const registrationRequest = fetch('http://localhost/api/auth/register', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'Idempotency-Key': 'auth-registration-transport-error',
+      },
+      body: JSON.stringify({
+        fullName: 'Preview User',
+        channel: 'email',
+        contact: 'preview@example.test',
+        password: 'Preview-123!',
+        acceptedTerms: true,
+      }),
+    });
+    await expect(registrationRequest).rejects.toThrow('Failed to fetch');
 
     const sessionResponse = await request('/auth/session');
     expect(sessionResponse.status).toBe(401);

@@ -105,9 +105,13 @@ export function OTPPage() {
           return;
         }
         if (verifyError.status === 429) {
-          setError('Quá nhiều lần xác thực. Hãy bắt đầu yêu cầu đăng ký mới sau một lúc.');
-          setReturnToLogin(true);
-        } else if (verifyError.status === 400) {
+          setError(
+            'Quá nhiều lần xác thực. Vui lòng chờ trước khi thử lại hoặc bắt đầu đăng ký lại.',
+          );
+          setIsLoading(false);
+          return;
+        }
+        if (verifyError.status === 400) {
           setError('Mã OTP không đúng. Vui lòng thử lại.');
           setOtp(['', '', '', '', '', '']);
           inputRefs.current[0]?.focus();
@@ -120,15 +124,12 @@ export function OTPPage() {
           setIsLoading(false);
           return;
         }
-        if (verifyError.status === 423 && prefix === '/w') {
+        if (verifyError.status === 423) {
           navigate(`${prefix}/auth/account-locked`, { replace: true });
           setIsLoading(false);
           return;
         }
-        if (verifyError.status === 423) {
-          setError('Tài khoản đang bị khóa tạm thời. Vui lòng thử lại sau.');
-          setReturnToLogin(true);
-        } else if (verifyError.status === 429) {
+        if (verifyError.status === 429) {
           setError('Quá nhiều lần xác thực. Vui lòng chờ trước khi thử lại hoặc đăng nhập lại.');
           setReturnToLogin(true);
         } else if (verifyError.status === 400) {
@@ -167,7 +168,7 @@ export function OTPPage() {
           <h2 style={{ color: c.text1, fontSize: 22, fontWeight: 700, marginBottom: 8 }}>
             Nhập mã xác minh
           </h2>
-          <p style={{ color: c.text2, fontSize: 13, lineHeight: 1.6 }}>
+          <p id="otp-instructions" style={{ color: c.text2, fontSize: 13, lineHeight: 1.6 }}>
             {loginChallenge?.method === 'totp'
               ? 'Mở ứng dụng xác thực và nhập mã hiện tại.'
               : 'Chúng tôi đã gửi mã 6 chữ số đến'}
@@ -176,7 +177,13 @@ export function OTPPage() {
           </p>
         </div>
 
-        <div className="flex gap-3" onPaste={handlePaste}>
+        <div
+          role="group"
+          aria-label="Mã xác thực gồm 6 chữ số"
+          aria-describedby="otp-instructions"
+          className="flex gap-1.5 sm:gap-3"
+          onPaste={handlePaste}
+        >
           {otp.map((digit, i) => (
             <input
               key={i}
@@ -189,10 +196,8 @@ export function OTPPage() {
               value={digit}
               onChange={(e) => handleChange(i, e.target.value)}
               onKeyDown={(e) => handleKeyDown(i, e)}
-              className="text-center rounded-2xl transition-all"
+              className="w-9 h-12 sm:w-12 sm:h-14 text-center rounded-2xl transition-all"
               style={{
-                width: 48,
-                height: 56,
                 background: digit ? 'rgba(59,130,246,0.1)' : c.surface2,
                 border: `2px solid ${error ? '#EF4444' : digit ? '#3B82F6' : c.borderSolid}`,
                 color: c.text1,
@@ -201,6 +206,8 @@ export function OTPPage() {
                 outline: 'none',
               }}
               aria-label={`Ký tự OTP ${i + 1}`}
+              aria-invalid={Boolean(error)}
+              aria-describedby={error ? 'otp-error' : 'otp-instructions'}
             />
           ))}
         </div>
@@ -220,7 +227,13 @@ export function OTPPage() {
             className="w-full rounded-xl px-4 py-3"
             style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)' }}
           >
-            <p style={{ color: '#EF4444', fontSize: 13, textAlign: 'center' }}>{error}</p>
+            <p
+              id="otp-error"
+              role="alert"
+              style={{ color: c.errorText, fontSize: 13, textAlign: 'center' }}
+            >
+              {error}
+            </p>
             {returnToLogin && (
               <button
                 onClick={() =>
@@ -229,7 +242,7 @@ export function OTPPage() {
                   })
                 }
                 className="mt-2 w-full text-center"
-                style={{ color: '#3B82F6', fontSize: 13, fontWeight: 600 }}
+                style={{ color: c.link, fontSize: 13, fontWeight: 600 }}
               >
                 {registrationFlow ? 'Quay lại đăng ký' : 'Quay lại đăng nhập'}
               </button>
@@ -261,7 +274,7 @@ export function OTPPage() {
           </div>
         )}
 
-        <p style={{ color: c.text3, fontSize: 12, textAlign: 'center' }}>
+        <p style={{ color: c.text2, fontSize: 12, textAlign: 'center' }}>
           Không nhận được? Kiểm tra thư mục Spam hoặc{'\n'}đảm bảo email / SĐT chính xác.
         </p>
       </PageContent>

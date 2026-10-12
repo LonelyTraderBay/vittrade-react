@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 import { Check, CheckCircle, Eye, EyeOff, KeyRound, Lock, Mail } from 'lucide-react';
 import { CTAButton } from '@/shared/ui/CTAButton';
@@ -21,6 +21,7 @@ export function ForgotPasswordContractPage() {
   const colors = useThemeColors();
   const prefix = useRoutePrefix();
   const [step, setStep] = useState<'input' | 'otp' | 'reset' | 'success'>('input');
+  const stepHeadingRef = useRef<HTMLHeadingElement>(null);
   const [email, setEmail] = useState('');
   const [otp, setOtp] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -29,6 +30,10 @@ export function ForgotPasswordContractPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    if (step === 'otp') stepHeadingRef.current?.focus();
+  }, [step]);
 
   const run = async (operation: () => Promise<void>, message: string) => {
     setIsLoading(true);
@@ -75,31 +80,47 @@ export function ForgotPasswordContractPage() {
         )}
 
         {step === 'input' && (
-          <div className="contents">
+          <form
+            className="contents"
+            onSubmit={(event) => {
+              event.preventDefault();
+              handleSendCode();
+            }}
+          >
             <ResetIntro colors={colors} />
             <InputField
               label="Email đăng ký"
               type="email"
+              autoComplete="email"
+              required
               placeholder="you@example.com"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
               prefix={<Mail size={18} color={colors.text3} />}
             />
-            <CTAButton
-              onClick={handleSendCode}
-              disabled={!email}
-              loading={isLoading}
-              variant="primary"
-            >
+            <CTAButton type="submit" disabled={!email} loading={isLoading} variant="primary">
               {isLoading ? 'Đang gửi...' : 'Gửi mã xác minh'}
             </CTAButton>
-          </div>
+          </form>
         )}
 
         {step === 'otp' && (
-          <div className="contents">
+          <form
+            className="contents"
+            onSubmit={(event) => {
+              event.preventDefault();
+              handleVerifyCode();
+            }}
+          >
             <div className="text-center">
-              <h2 style={{ color: colors.text1, fontSize: 20, fontWeight: 700 }}>Nhập mã OTP</h2>
+              <h2
+                ref={stepHeadingRef}
+                tabIndex={-1}
+                className="focus-visible:rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
+                style={{ color: colors.text1, fontSize: 20, fontWeight: 700 }}
+              >
+                Nhập mã OTP
+              </h2>
               <p style={{ color: colors.text2, fontSize: 13, marginTop: 8 }}>
                 Mã 6 số đã được gửi đến <span style={{ color: colors.text1 }}>{email}</span>
               </p>
@@ -110,9 +131,12 @@ export function ForgotPasswordContractPage() {
                 type="tel"
                 inputMode="numeric"
                 maxLength={6}
+                autoComplete="one-time-code"
+                pattern="[0-9]{6}"
+                required
                 value={otp}
                 onChange={(event) => setOtp(event.target.value.replace(/\D/g, '').slice(0, 6))}
-                className="mt-2 w-full rounded-2xl text-center"
+                className="mt-2 w-full rounded-2xl text-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
                 aria-label="Mã OTP"
                 style={{
                   background: colors.surface2,
@@ -120,26 +144,26 @@ export function ForgotPasswordContractPage() {
                   color: colors.text1,
                   fontSize: 24,
                   fontWeight: 700,
-                  outline: 'none',
                   letterSpacing: 8,
                   height: 52,
                 }}
               />
             </label>
             <CTAButton
-              onClick={handleVerifyCode}
+              type="submit"
               disabled={otp.length !== 6}
               loading={isLoading}
               variant="primary"
             >
               {isLoading ? 'Đang xác minh...' : 'Xác nhận'}
             </CTAButton>
-          </div>
+          </form>
         )}
 
         {step === 'reset' && (
           <PasswordForm
             colors={colors}
+            focusHeading
             newPassword={newPassword}
             confirmPassword={confirmPassword}
             showPassword={showPassword}
@@ -251,6 +275,7 @@ function ResetIntro({ colors }: { colors: ReturnType<typeof useThemeColors> }) {
 
 function PasswordForm({
   colors,
+  focusHeading = false,
   newPassword,
   confirmPassword,
   showPassword,
@@ -262,6 +287,7 @@ function PasswordForm({
   onSubmit,
 }: {
   colors: ReturnType<typeof useThemeColors>;
+  focusHeading?: boolean;
   newPassword: string;
   confirmPassword: string;
   showPassword: boolean;
@@ -272,12 +298,36 @@ function PasswordForm({
   onTogglePassword: () => void;
   onSubmit: () => void;
 }) {
+  const headingRef = useRef<HTMLHeadingElement>(null);
   const rulesPass = PASSWORD_RULES.every((rule) => rule.test(newPassword));
   const matches = Boolean(confirmPassword && newPassword === confirmPassword);
+
+  useEffect(() => {
+    if (focusHeading) headingRef.current?.focus();
+  }, [focusHeading]);
+
   return (
-    <div className="contents">
+    <form
+      className="contents"
+      noValidate
+      onSubmit={(event) => {
+        event.preventDefault();
+        onSubmit();
+      }}
+    >
       <div className="text-center">
-        <h2 style={{ color: colors.text1, fontSize: 20, fontWeight: 700 }}>Mật khẩu mới</h2>
+        <h2
+          ref={headingRef}
+          tabIndex={focusHeading ? -1 : undefined}
+          className={
+            focusHeading
+              ? 'focus-visible:rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500'
+              : undefined
+          }
+          style={{ color: colors.text1, fontSize: 20, fontWeight: 700 }}
+        >
+          Mật khẩu mới
+        </h2>
         <p style={{ color: colors.text2, fontSize: 13, marginTop: 8 }}>
           Tạo mật khẩu mạnh để bảo vệ tài khoản
         </p>
@@ -305,7 +355,7 @@ function PasswordForm({
           return (
             <div key={rule.id} className="flex items-center gap-2">
               <Check size={12} color={pass ? '#10B981' : colors.text3} />
-              <span style={{ color: pass ? '#10B981' : colors.text3, fontSize: 12 }}>
+              <span style={{ color: pass ? '#10B981' : colors.text2, fontSize: 12 }}>
                 {rule.label}
               </span>
             </div>
@@ -322,14 +372,14 @@ function PasswordForm({
         error={confirmPassword && !matches ? 'Mật khẩu không khớp' : undefined}
       />
       <CTAButton
-        onClick={onSubmit}
+        type="submit"
         disabled={disabled || !rulesPass || !matches}
         loading={isLoading}
         variant="primary"
       >
         {isLoading ? 'Đang đặt lại...' : 'Đặt lại mật khẩu'}
       </CTAButton>
-    </div>
+    </form>
   );
 }
 
@@ -340,6 +390,12 @@ function SuccessState({
   colors: ReturnType<typeof useThemeColors>;
   onLogin: () => void;
 }) {
+  const headingRef = useRef<HTMLHeadingElement>(null);
+
+  useEffect(() => {
+    headingRef.current?.focus();
+  }, []);
+
   return (
     <div className="flex flex-col items-center gap-6 py-8">
       <div
@@ -349,7 +405,14 @@ function SuccessState({
         <CheckCircle size={48} color="#10B981" />
       </div>
       <div className="text-center">
-        <h2 style={{ color: colors.text1, fontSize: 22, fontWeight: 700 }}>Thành công!</h2>
+        <h2
+          ref={headingRef}
+          tabIndex={-1}
+          className="focus-visible:rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
+          style={{ color: colors.text1, fontSize: 22, fontWeight: 700 }}
+        >
+          Thành công!
+        </h2>
         <p style={{ color: colors.text2, fontSize: 14, marginTop: 8, lineHeight: 1.6 }}>
           Mật khẩu đã được cập nhật. Vui lòng đăng nhập với mật khẩu mới.
         </p>

@@ -253,7 +253,7 @@ function WebOTPChallengePage({ challenge }: { challenge: WebOTPChallenge }) {
           className="flex items-center hover:underline"
           style={{
             gap: 6,
-            color: c.text2,
+            color: c.text1,
             fontSize: WEB_FONT.sm,
             marginBottom: 32,
             background: 'none',
@@ -299,6 +299,7 @@ function WebOTPChallengePage({ challenge }: { challenge: WebOTPChallenge }) {
                 {purposeTitle[purpose]}
               </h1>
               <p
+                id="otp-instructions"
                 style={{
                   color: c.text2,
                   fontSize: WEB_FONT.md,
@@ -337,7 +338,13 @@ function WebOTPChallengePage({ challenge }: { challenge: WebOTPChallenge }) {
             </div>
 
             {/* OTP input boxes */}
-            <div className="flex justify-center" style={{ gap: 10, marginBottom: 12 }}>
+            <div
+              role="group"
+              aria-label="Mã xác thực gồm 6 chữ số"
+              aria-describedby="otp-instructions"
+              className="flex justify-center gap-1.5 sm:gap-[10px]"
+              style={{ marginBottom: 12 }}
+            >
               {otp.map((digit, i) => (
                 <input
                   key={i}
@@ -352,10 +359,11 @@ function WebOTPChallengePage({ challenge }: { challenge: WebOTPChallenge }) {
                   onKeyDown={(e) => handleKeyDown(i, e)}
                   onPaste={i === 0 ? handlePaste : undefined}
                   disabled={isLoading}
-                  className="outline-none text-center"
+                  aria-label={`Mã xác thực, chữ số ${i + 1} trên 6`}
+                  aria-invalid={Boolean(error)}
+                  aria-describedby={error ? 'otp-error' : 'otp-instructions'}
+                  className="w-11 h-12 sm:w-[52px] sm:h-[60px] outline-none text-center focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
                   style={{
-                    width: 52,
-                    height: 60,
                     borderRadius: 12,
                     border: `2px solid ${error ? '#EF4444' : digit ? '#3B82F6' : c.borderSolid}`,
                     background: digit ? 'rgba(59,130,246,0.04)' : c.surface,
@@ -388,6 +396,8 @@ function WebOTPChallengePage({ challenge }: { challenge: WebOTPChallenge }) {
             {/* Error */}
             {error && (
               <div
+                id="otp-error"
+                role="alert"
                 className="flex items-center gap-2"
                 style={{
                   padding: '10px 14px',
@@ -398,13 +408,14 @@ function WebOTPChallengePage({ challenge }: { challenge: WebOTPChallenge }) {
                 }}
               >
                 <AlertCircle size={14} color="#EF4444" className="shrink-0" />
-                <span style={{ color: '#EF4444', fontSize: WEB_FONT.sm }}>{error}</span>
+                <span style={{ color: c.text1, fontSize: WEB_FONT.sm }}>{error}</span>
               </div>
             )}
 
             {/* Loading indicator */}
             {isLoading && (
               <div
+                role="status"
                 className="flex items-center justify-center"
                 style={{ marginBottom: 20, gap: 8 }}
               >
@@ -423,12 +434,12 @@ function WebOTPChallengePage({ challenge }: { challenge: WebOTPChallenge }) {
             )}
 
             <div className="flex flex-col items-center" style={{ gap: 8, marginBottom: 28 }}>
-              <span style={{ color: c.text3, fontSize: WEB_FONT.sm }}>Không nhận được mã?</span>
+              <span style={{ color: c.text2, fontSize: WEB_FONT.sm }}>Không nhận được mã?</span>
               <button
                 onClick={() => navigate(backRoute, { replace: true })}
                 className="hover:underline"
                 style={{
-                  color: '#3B82F6',
+                  color: c.link,
                   fontSize: WEB_FONT.sm,
                   fontWeight: 600,
                   background: 'none',
@@ -456,7 +467,7 @@ function WebOTPChallengePage({ challenge }: { challenge: WebOTPChallenge }) {
               </p>
               <ul
                 style={{
-                  color: c.text3,
+                  color: c.text2,
                   fontSize: WEB_FONT.xs,
                   lineHeight: 1.6,
                   paddingLeft: 16,
@@ -470,28 +481,15 @@ function WebOTPChallengePage({ challenge }: { challenge: WebOTPChallenge }) {
                     : `Đảm bảo ${contactType === 'email' ? 'email' : 'số điện thoại'} ${maskContact(contact)} chính xác.`}
                 </li>
                 <li>
-                  Liên hệ{' '}
-                  <button
-                    className="hover:underline"
-                    style={{
-                      color: '#3B82F6',
-                      background: 'none',
-                      border: 'none',
-                      cursor: 'pointer',
-                      fontWeight: 500,
-                      padding: 0,
-                    }}
-                  >
-                    hỗ trợ
-                  </button>{' '}
-                  nếu vẫn gặp vấn đề
+                  Liên hệ <span style={{ color: c.text2, fontWeight: 500 }}>hỗ trợ</span> nếu vẫn
+                  gặp vấn đề
                 </li>
               </ul>
             </div>
           </div>
         ) : (
           /* ─── Success state ─── */
-          <div className="flex flex-col items-center" style={{ paddingTop: 32 }}>
+          <div role="status" className="flex flex-col items-center" style={{ paddingTop: 32 }}>
             <div
               className="flex items-center justify-center"
               style={{
@@ -540,27 +538,15 @@ function WebOTPChallengePage({ challenge }: { challenge: WebOTPChallenge }) {
                   animation: 'spin 0.8s linear infinite',
                 }}
               />
-              <span style={{ color: c.text3, fontSize: WEB_FONT.sm }}>Đang chuyển hướng...</span>
+              <span style={{ color: c.text2, fontSize: WEB_FONT.sm }}>Đang chuyển hướng...</span>
             </div>
           </div>
         )}
 
         {/* Footer */}
         <div style={{ marginTop: 40, textAlign: 'center' }}>
-          <p style={{ color: c.text3, fontSize: WEB_FONT.xs, lineHeight: 1.5 }}>
-            Cần trợ giúp?{' '}
-            <button
-              className="hover:underline"
-              style={{
-                color: '#3B82F6',
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                fontWeight: 500,
-              }}
-            >
-              Liên hệ hỗ trợ
-            </button>
+          <p style={{ color: c.text2, fontSize: WEB_FONT.xs, lineHeight: 1.5 }}>
+            Cần trợ giúp? <span style={{ color: c.text2, fontWeight: 500 }}>Liên hệ hỗ trợ</span>
           </p>
         </div>
       </WebAuthFormShell>

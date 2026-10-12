@@ -28,6 +28,9 @@ const RegisterPage = isDevelopmentBuild
 const OTPPage = lazy(() =>
   import('@/features/auth/pages/OTPPage').then((m) => ({ default: m.OTPPage })),
 );
+const AccountLockedPage = lazy(() =>
+  import('@/features/auth/pages/AccountLockedPage').then((m) => ({ default: m.AccountLockedPage })),
+);
 const TwoFASetupPage = lazy(() =>
   import('@/features/auth/pages/TwoFASetupPage').then((m) => ({ default: m.TwoFASetupPage })),
 );
@@ -334,6 +337,7 @@ export const authRoutes: RouteObject[] = [
     twoFASetup: TwoFASetupPage,
     forgotPassword: ForgotPasswordPage,
     resetPassword: ResetPasswordPage,
+    accountLocked: AccountLockedPage,
   }),
 ];
 

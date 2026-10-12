@@ -30,7 +30,9 @@ describe('WebAccountLockedPage', () => {
   it('keeps the account locked regardless of client-supplied expiry and does not claim email was sent', () => {
     renderLockedPage({ attempts: 5, unlockTime: Date.now() - 60_000 });
 
-    expect(screen.getByRole('heading', { name: 'Tài khoản tạm khóa' })).toBeVisible();
+    const heading = screen.getByRole('heading', { name: 'Tài khoản tạm khóa' });
+    expect(heading).toBeVisible();
+    expect(heading).toHaveFocus();
     expect(
       screen.getByText(/Hãy quay lại đăng nhập để kiểm tra trạng thái mới nhất/),
     ).toBeVisible();

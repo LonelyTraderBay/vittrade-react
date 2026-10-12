@@ -7,10 +7,12 @@ interface Props {
   setup: MfaSetupChallenge | null;
   isLoading: boolean;
   savedCodes: boolean;
+  copyError: string;
   setSavedCodes: React.Dispatch<React.SetStateAction<boolean>>;
   copiedCodes: boolean;
   handleCopyBackupCodes: (backupCodes: string[]) => void;
   handleComplete: () => void;
+  headingRef: React.MutableRefObject<HTMLHeadingElement | null>;
 }
 
 export function Web2FASetupBackupStep(props: Props) {
@@ -19,10 +21,12 @@ export function Web2FASetupBackupStep(props: Props) {
     setup,
     isLoading,
     savedCodes,
+    copyError,
     setSavedCodes,
     copiedCodes,
     handleCopyBackupCodes,
     handleComplete,
+    headingRef,
   } = props;
   return (
     <div>
@@ -41,6 +45,9 @@ export function Web2FASetupBackupStep(props: Props) {
           <Download size={28} color="#10B981" />
         </div>
         <h1
+          ref={headingRef}
+          tabIndex={-1}
+          className="focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
           style={{
             color: c.text1,
             fontSize: WEB_FONT['2xl'],
@@ -77,7 +84,7 @@ export function Web2FASetupBackupStep(props: Props) {
       >
         <CheckCircle size={18} color="#10B981" className="shrink-0" />
         <p style={{ color: c.text2, fontSize: WEB_FONT.sm, lineHeight: 1.4 }}>
-          <span style={{ fontWeight: 600, color: '#10B981' }}>2FA đã được kích hoạt!</span> Bây giờ
+          <span style={{ fontWeight: 600, color: c.text1 }}>2FA đã được kích hoạt!</span> Bây giờ
           hãy lưu lại các mã dự phòng bên dưới.
         </p>
       </div>
@@ -103,7 +110,7 @@ export function Web2FASetupBackupStep(props: Props) {
             <div key={code} className="flex items-center" style={{ gap: 8 }}>
               <span
                 style={{
-                  color: c.text3,
+                  color: c.text2,
                   fontSize: WEB_FONT.xs,
                   width: 18,
                   textAlign: 'right',
@@ -140,7 +147,7 @@ export function Web2FASetupBackupStep(props: Props) {
           borderRadius: 10,
           width: '100%',
           background: copiedCodes ? 'rgba(16,185,129,0.08)' : c.surface,
-          color: copiedCodes ? '#10B981' : c.text1,
+          color: c.text1,
           fontSize: WEB_FONT.sm,
           fontWeight: 500,
           cursor: 'pointer',
@@ -152,6 +159,21 @@ export function Web2FASetupBackupStep(props: Props) {
         {copiedCodes ? <CheckCircle size={14} /> : <Copy size={14} />}
         {copiedCodes ? 'Đã sao chép tất cả mã' : 'Sao chép tất cả mã'}
       </button>
+
+      {copyError && (
+        <p
+          role="alert"
+          style={{
+            color: c.text1,
+            fontSize: WEB_FONT.sm,
+            lineHeight: 1.5,
+            marginTop: -8,
+            marginBottom: 16,
+          }}
+        >
+          {copyError}
+        </p>
+      )}
 
       {/* Warning */}
       <div
@@ -166,13 +188,15 @@ export function Web2FASetupBackupStep(props: Props) {
       >
         <AlertCircle size={16} color="#EF4444" className="shrink-0" style={{ marginTop: 1 }} />
         <p style={{ color: c.text2, fontSize: WEB_FONT.sm, lineHeight: 1.5 }}>
-          Mỗi mã chỉ dùng được <span style={{ fontWeight: 600, color: '#EF4444' }}>1 lần</span>.
+          Mỗi mã chỉ dùng được <span style={{ fontWeight: 600, color: c.errorText }}>1 lần</span>.
           Không chia sẻ mã với bất kỳ ai. Lưu ở nơi an toàn ngoại tuyến.
         </p>
       </div>
 
       {/* Confirm checkbox */}
       <button
+        type="button"
+        aria-pressed={savedCodes}
         onClick={() => setSavedCodes(!savedCodes)}
         className="flex items-center"
         style={{

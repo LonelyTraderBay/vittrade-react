@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import { AlertTriangle, ArrowLeft, Lock, ShieldAlert } from 'lucide-react';
 import { useNavigate } from 'react-router';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
@@ -8,6 +9,11 @@ import { WebAuthBrandPanel, WebAuthFormShell } from '@/shared/ui/auth/WebAuthBra
 export function WebAccountLockedPage() {
   const navigate = useNavigate();
   const c = useThemeColors();
+  const headingRef = useRef<HTMLHeadingElement>(null);
+
+  useEffect(() => {
+    headingRef.current?.focus();
+  }, []);
 
   return (
     <div className="flex" style={{ minHeight: '100vh', background: c.bg }}>
@@ -48,6 +54,9 @@ export function WebAccountLockedPage() {
               <Lock size={32} color="#EF4444" />
             </div>
             <h1
+              ref={headingRef}
+              tabIndex={-1}
+              className="focus:outline-solid focus:outline-2 focus:outline-offset-2 focus:outline-blue-500"
               style={{
                 color: c.text1,
                 fontSize: WEB_FONT['2xl'],
@@ -99,6 +108,7 @@ export function WebAccountLockedPage() {
               width: '100%',
               background: c.surface,
               color: c.text1,
+              transition: 'transform var(--tr-duration-fast) var(--tr-ease-standard)',
               fontSize: WEB_FONT.md,
               fontWeight: 500,
               cursor: 'pointer',
@@ -118,12 +128,19 @@ export function WebAccountLockedPage() {
               border: '1px solid rgba(245,158,11,0.12)',
             }}
           >
-            <p style={{ color: c.text1, fontSize: WEB_FONT.sm, fontWeight: 600, marginBottom: 8 }}>
+            <p
+              style={{
+                color: c.text1,
+                fontSize: WEB_FONT.sm,
+                fontWeight: 600,
+                marginBottom: 8,
+              }}
+            >
               Gợi ý bảo mật
             </p>
             <ul
               style={{
-                color: c.text3,
+                color: c.text1,
                 fontSize: WEB_FONT.xs,
                 lineHeight: 1.7,
                 paddingLeft: 16,

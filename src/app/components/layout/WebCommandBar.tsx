@@ -143,11 +143,11 @@ export function WebCommandBar() {
       <div className="flex items-center gap-2 min-w-0 shrink-0">
         {crumbs.map((crumb, i) => (
           <span key={crumb.path} className="flex items-center gap-2 shrink-0">
-            {i > 0 && <ChevronRight size={13} color={c.text3} className="shrink-0" />}
+            {i > 0 && <ChevronRight size={13} color={c.text2} className="shrink-0" />}
             <button
               onClick={() => (i < crumbs.length - 1 ? navigate(crumb.path) : undefined)}
               style={{
-                color: i === crumbs.length - 1 ? c.text1 : c.text3,
+                color: i === crumbs.length - 1 ? c.text1 : c.text2,
                 fontSize: 14,
                 fontWeight: i === crumbs.length - 1 ? 600 : 400,
                 cursor: i < crumbs.length - 1 ? 'pointer' : 'default',
@@ -236,7 +236,7 @@ export function WebCommandBar() {
         {/* Clock */}
         <span
           style={{
-            color: c.text3,
+            color: c.text2,
             fontSize: 13,
             fontWeight: 500,
             fontVariantNumeric: 'tabular-nums',

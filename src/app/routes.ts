@@ -356,7 +356,10 @@ export const router = createBrowserRouter([
           ...developmentRoutes,
           {
             Component: ProtectedRoute,
-            children: createProtectedRoutes(phoneOverrides),
+            children: [
+              { path: 'profile/security/change-password', Component: PasswordChangePage },
+              ...createProtectedRoutes(phoneOverrides),
+            ],
           },
         ],
       },
@@ -373,7 +376,10 @@ export const router = createBrowserRouter([
           ...createPublicRoutes(tabletOverrides),
           {
             Component: ProtectedRoute,
-            children: createProtectedRoutes(tabletOverrides),
+            children: [
+              { path: 'profile/security/change-password', Component: PasswordChangePage },
+              ...createProtectedRoutes(tabletOverrides),
+            ],
           },
         ],
       },
@@ -489,7 +495,10 @@ export const router = createBrowserRouter([
           { path: 'shell', Component: ShellTemplatePage },
           {
             Component: ProtectedRoute,
-            children: createProtectedRoutes(responsiveOverrides),
+            children: [
+              { path: 'profile/security/change-password', Component: PasswordChangePage },
+              ...createProtectedRoutes(responsiveOverrides),
+            ],
           },
         ],
       },

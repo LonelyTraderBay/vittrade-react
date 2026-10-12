@@ -28,9 +28,11 @@ export function Web2FASetupFlow() {
   const [otp, setOtp] = useState<string[]>(['', '', '', '', '', '']);
   const [copied, setCopied] = useState(false);
   const [copiedCodes, setCopiedCodes] = useState(false);
+  const [copyError, setCopyError] = useState('');
   const [savedCodes, setSavedCodes] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [setup, setSetup] = useState<MfaSetupChallenge | null>(null);
+  const backupHeadingRef = useRef<HTMLHeadingElement | null>(null);
   const [setupAttempt, setSetupAttempt] = useState(0);
   const [error, setError] = useState('');
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
@@ -49,27 +51,40 @@ export function Web2FASetupFlow() {
     };
   }, [beginMfaSetup, setupAttempt]);
 
+  useEffect(() => {
+    if (step === 2) backupHeadingRef.current?.focus();
+  }, [step]);
+
   /* ─── Copy secret key ─── */
   const handleCopyKey = async () => {
     if (!setup) return;
+    setCopyError('');
     try {
       await navigator.clipboard.writeText(setup.secret);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      // Keep the manual-copy action available without claiming the secret was copied.
+      setCopyError(
+        'Không thể sao chép khóa thiết lập. Hãy chọn và sao chép khóa hiển thị thủ công.',
+      );
     }
   };
 
   /* ─── Copy all backup codes ─── */
   const handleCopyBackupCodes = async (backupCodes: string[]) => {
+    setCopyError('');
     try {
       await navigator.clipboard.writeText(backupCodes.join('\n'));
       setCopiedCodes(true);
       setTimeout(() => setCopiedCodes(false), 2000);
     } catch {
-      // Keep the backup codes visible without claiming they were copied.
+      setCopyError('Không thể sao chép mã dự phòng. Hãy chọn và lưu các mã hiển thị thủ công.');
     }
+  };
+
+  const setStepAndClearCopyError: React.Dispatch<React.SetStateAction<number>> = (nextStep) => {
+    setCopyError('');
+    setStep(nextStep);
   };
 
   /* ─── OTP input handlers ─── */
@@ -107,9 +122,9 @@ export function Web2FASetupFlow() {
     setIsLoading(true);
     try {
       await confirmMfaSetup({ code });
-      setStep(2);
+      setStepAndClearCopyError(2);
     } catch {
-      setError('Mã xác thực không đúng hoặc đã hết hạn. Vui lòng thử lại.');
+      setError('Không thể xác minh lúc này. Vui lòng thử lại.');
     } finally {
       setIsLoading(false);
     }
@@ -119,7 +134,7 @@ export function Web2FASetupFlow() {
   const handleComplete = () => {
     navigate('/w/auth/success', {
       replace: true,
-      state: { purpose: 'register', from: '2fa-setup' },
+      state: { purpose: '2fa-setup', from: '2fa-setup' },
     });
   };
 
@@ -178,9 +193,11 @@ export function Web2FASetupFlow() {
             <Web2FASetupQrStep
               c={c}
               setup={setup}
+              isLoading={!setup && !error}
               copied={copied}
+              copyError={copyError}
               handleCopyKey={handleCopyKey}
-              setStep={setStep}
+              setStep={setStepAndClearCopyError}
               inputRefs={inputRefs}
             />
           </>
@@ -195,7 +212,7 @@ export function Web2FASetupFlow() {
             handleOTPPaste={handleOTPPaste}
             isLoading={isLoading}
             error={error}
-            setStep={setStep}
+            setStep={setStepAndClearCopyError}
             setOtp={setOtp}
             setError={setError}
             handleVerifyOTP={handleVerifyOTP}
@@ -207,30 +224,14 @@ export function Web2FASetupFlow() {
             setup={setup}
             isLoading={isLoading}
             savedCodes={savedCodes}
+            headingRef={backupHeadingRef}
+            copyError={copyError}
             setSavedCodes={setSavedCodes}
             copiedCodes={copiedCodes}
             handleCopyBackupCodes={handleCopyBackupCodes}
             handleComplete={handleComplete}
           />
         )}
-        {/* Footer */}
-        <div style={{ marginTop: 40, textAlign: 'center' }}>
-          <p style={{ color: c.text3, fontSize: WEB_FONT.xs, lineHeight: 1.5 }}>
-            Cần trợ giúp?{' '}
-            <button
-              className="hover:underline"
-              style={{
-                color: '#3B82F6',
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                fontWeight: 500,
-              }}
-            >
-              Hướng dẫn thiết lập 2FA
-            </button>
-          </p>
-        </div>
       </WebAuthFormShell>
     </div>
   );

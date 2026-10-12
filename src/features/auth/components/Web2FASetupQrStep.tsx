@@ -5,26 +5,29 @@ import type { MfaSetupChallenge } from '@/features/auth/api/auth-api';
 interface Props {
   c: ThemeColors;
   setup: MfaSetupChallenge | null;
+  isLoading: boolean;
   copied: boolean;
-  handleCopyKey: () => void;
+  copyError: string;
+  handleCopyKey: () => Promise<void>;
   setStep: React.Dispatch<React.SetStateAction<number>>;
   inputRefs: React.MutableRefObject<(HTMLInputElement | null)[]>;
 }
-function QRCodeSVG({ src }: { src?: string }) {
+function QRCodeSVG({ src, isLoading }: { src?: string; isLoading: boolean }) {
   return src ? (
     <img src={src} width="180" height="180" alt="Mã QR thiết lập xác thực hai bước" />
   ) : (
     <div
       style={{ width: 180, height: 180, display: 'grid', placeItems: 'center', color: '#6B7280' }}
-      aria-label="Đang tải mã QR"
+      role={isLoading ? 'status' : undefined}
+      aria-live={isLoading ? 'polite' : undefined}
     >
-      Đang tải...
+      {isLoading ? 'Đang tải mã QR thiết lập 2FA...' : 'Chưa có mã QR'}
     </div>
   );
 }
 
 export function Web2FASetupQrStep(props: Props) {
-  const { c, setup, copied, handleCopyKey, setStep, inputRefs } = props;
+  const { c, setup, isLoading, copied, copyError, handleCopyKey, setStep, inputRefs } = props;
   return (
     <div>
       {/* Header */}
@@ -77,7 +80,7 @@ export function Web2FASetupQrStep(props: Props) {
             border: `1px solid ${c.borderSolid}`,
           }}
         >
-          <QRCodeSVG src={setup?.qrCodeUrl} />
+          <QRCodeSVG src={setup?.qrCodeUrl} isLoading={isLoading} />
         </div>
       </div>
 
@@ -91,7 +94,7 @@ export function Web2FASetupQrStep(props: Props) {
           marginBottom: 16,
         }}
       >
-        <p style={{ color: c.text3, fontSize: WEB_FONT.xs, marginBottom: 8 }}>
+        <p style={{ color: c.text2, fontSize: WEB_FONT.xs, marginBottom: 8 }}>
           Hoặc nhập thủ công khóa bí mật:
         </p>
         <div className="flex items-center justify-between" style={{ gap: 12 }}>
@@ -102,9 +105,14 @@ export function Web2FASetupQrStep(props: Props) {
               fontFamily: 'monospace',
               fontWeight: 600,
               letterSpacing: 2,
+              flex: '1 1 auto',
+              maxWidth: '100%',
+              minWidth: 0,
+              overflowWrap: 'anywhere',
             }}
           >
-            {setup?.secret ?? 'Đang tải khóa bảo mật...'}
+            {setup?.secret ??
+              (isLoading ? 'Đang tải khóa bảo mật...' : 'Khóa bảo mật chưa khả dụng')}
           </span>
           <button
             onClick={handleCopyKey}
@@ -114,7 +122,7 @@ export function Web2FASetupQrStep(props: Props) {
               padding: '6px 12px',
               borderRadius: 8,
               background: copied ? 'rgba(16,185,129,0.1)' : 'rgba(59,130,246,0.08)',
-              color: copied ? '#10B981' : '#3B82F6',
+              color: copied ? c.text1 : c.link,
               fontSize: WEB_FONT.xs,
               fontWeight: 500,
               border: 'none',
@@ -126,6 +134,14 @@ export function Web2FASetupQrStep(props: Props) {
             {copied ? 'Đã sao chép' : 'Sao chép'}
           </button>
         </div>
+        {copyError && (
+          <p
+            role="alert"
+            style={{ color: c.text1, fontSize: WEB_FONT.xs, lineHeight: 1.5, marginTop: 8 }}
+          >
+            {copyError}
+          </p>
+        )}
       </div>
 
       {/* Warning */}

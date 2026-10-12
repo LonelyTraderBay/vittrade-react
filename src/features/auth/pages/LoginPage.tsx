@@ -9,6 +9,8 @@ import { useAuth } from '@/shared/session/useAuth';
 import { env, isProductionBuild } from '@/shared/config/env';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { useRoutePrefix } from '@/shared/navigation/useRoutePrefix';
+import { isApiError } from '@/shared/api/api-error';
+import { isEmail } from '@/shared/lib/string';
 
 /** Trang đăng nhập theo contract; adapter chịu trách nhiệm tạo session và chuẩn hóa lỗi. */
 export function LoginPage() {
@@ -43,7 +45,11 @@ export function LoginPage() {
         return;
       }
       navigate(`${prefix}/home`, { replace: true });
-    } catch {
+    } catch (loginError) {
+      if (isApiError(loginError) && loginError.status === 423) {
+        navigate(`${prefix}/auth/account-locked`, { replace: true });
+        return;
+      }
       setError('Đăng nhập thất bại. Vui lòng kiểm tra thông tin và thử lại.');
     } finally {
       setIsLoading(false);
@@ -52,7 +58,11 @@ export function LoginPage() {
 
   const handleLogin = () => {
     if (!email) {
-      setError('Vui lòng nhập email hoặc số điện thoại.');
+      setError('Vui lòng nhập email.');
+      return;
+    }
+    if (!isEmail(email)) {
+      setError('Định dạng email không hợp lệ');
       return;
     }
     if (!password) {
@@ -65,6 +75,9 @@ export function LoginPage() {
   const handleDemoLogin = () => {
     void submit({ email: 'demo@vittrade.vn', password: 'demo' });
   };
+
+  const emailFieldError = error && (!email || !isEmail(email)) ? error : undefined;
+  const passwordFieldError = error && email && isEmail(email) && !password ? error : undefined;
 
   return (
     <PageLayout>
@@ -100,29 +113,43 @@ export function LoginPage() {
           </p>
         </div>
 
-        <div className="flex flex-col gap-4">
+        <form
+          noValidate
+          onSubmit={(event) => {
+            event.preventDefault();
+            handleLogin();
+          }}
+          className="flex flex-col gap-4"
+        >
           <InputField
-            label="Email / Số điện thoại"
+            label="Email"
             data-testid="auth-email"
             type="email"
+            required
             placeholder="you@example.com"
             value={email}
-            onChange={(event) => setEmail(event.target.value)}
+            onChange={(event) => {
+              setEmail(event.target.value);
+              setError('');
+            }}
             autoComplete="email"
             prefix={<Mail size={18} color={colors.text3} />}
-            error={error && !email ? ' ' : undefined}
-            containerStyle={error && !email ? { borderColor: '#EF4444' } : undefined}
+            error={emailFieldError}
+            containerStyle={emailFieldError ? { borderColor: '#EF4444' } : undefined}
           />
 
           <InputField
             label="Mật khẩu"
             data-testid="auth-password"
             type={showPassword ? 'text' : 'password'}
+            required
             placeholder="••••••••"
             value={password}
-            onChange={(event) => setPassword(event.target.value)}
+            onChange={(event) => {
+              setPassword(event.target.value);
+              setError('');
+            }}
             autoComplete="current-password"
-            onKeyDown={(event) => event.key === 'Enter' && handleLogin()}
             prefix={<Lock size={18} color={colors.text3} />}
             suffix={
               <button
@@ -137,18 +164,18 @@ export function LoginPage() {
                 )}
               </button>
             }
-            error={error && !password ? ' ' : undefined}
-            containerStyle={error && !password ? { borderColor: '#EF4444' } : undefined}
+            error={passwordFieldError}
+            containerStyle={passwordFieldError ? { borderColor: '#EF4444' } : undefined}
           />
 
-          {error && (
+          {error && !emailFieldError && !passwordFieldError && (
             <div
               className="flex items-center gap-2 rounded-xl px-3 py-2"
               style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)' }}
               role="alert"
             >
-              <AlertCircle size={14} color="#EF4444" />
-              <span style={{ color: '#EF4444', fontSize: 13 }}>{error}</span>
+              <AlertCircle size={14} color={colors.errorText} />
+              <span style={{ color: colors.errorText, fontSize: 13 }}>{error}</span>
             </div>
           )}
 
@@ -161,12 +188,7 @@ export function LoginPage() {
             Quên mật khẩu?
           </button>
 
-          <CTAButton
-            data-testid="auth-submit"
-            onClick={handleLogin}
-            loading={isLoading}
-            variant="primary"
-          >
+          <CTAButton type="submit" data-testid="auth-submit" loading={isLoading} variant="primary">
             Đăng nhập
           </CTAButton>
 
@@ -178,6 +200,7 @@ export function LoginPage() {
 
           {isAuthFixtureMode && (
             <CTAButton
+              type="button"
               onClick={handleDemoLogin}
               variant="ghost"
               bg={colors.surface2}
@@ -203,7 +226,7 @@ export function LoginPage() {
               Đăng ký ngay
             </button>
           </div>
-        </div>
+        </form>
 
         <div className="mt-auto pt-8 text-center">
           <p style={{ color: colors.text2, fontSize: 11 }}>

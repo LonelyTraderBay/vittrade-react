@@ -13,6 +13,28 @@ describe('InputField', () => {
     expect(screen.getByRole('alert')).toHaveTextContent('Enter a valid email');
   });
 
+  it('keeps supplied descriptions, helper text, and validation errors connected', () => {
+    render(
+      <InputField
+        id="account-email"
+        label="Email address"
+        helper="Use the address for this account."
+        error="Enter a valid email"
+        aria-describedby="account-policy"
+      />,
+    );
+
+    const input = screen.getByRole('textbox', { name: 'Email address' });
+    expect(input).toHaveAttribute(
+      'aria-describedby',
+      'account-policy account-email-helper account-email-error',
+    );
+    expect(document.getElementById('account-email-helper')).toHaveTextContent(
+      'Use the address for this account.',
+    );
+    expect(document.getElementById('account-email-error')).toHaveAttribute('role', 'alert');
+  });
+
   it('updates focus styling and forwards native focus callbacks', () => {
     const onFocus = vi.fn();
     const onBlur = vi.fn();

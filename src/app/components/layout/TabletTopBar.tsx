@@ -80,12 +80,12 @@ export function TabletTopBar() {
       <div className="flex items-center gap-1.5 min-w-0">
         {crumbs.map((crumb, i) => (
           <span key={crumb.path} className="flex items-center gap-1.5 shrink-0">
-            {i > 0 && <ChevronRight size={14} color={c.text3} className="shrink-0" />}
+            {i > 0 && <ChevronRight size={14} color={c.text2} className="shrink-0" />}
             <button
               onClick={() => (i < crumbs.length - 1 ? navigate(crumb.path) : undefined)}
               className="shrink-0"
               style={{
-                color: i === crumbs.length - 1 ? c.text1 : c.text3,
+                color: i === crumbs.length - 1 ? c.text1 : c.text2,
                 fontSize: 14,
                 fontWeight: i === crumbs.length - 1 ? 600 : 400,
                 cursor: i < crumbs.length - 1 ? 'pointer' : 'default',
@@ -106,20 +106,22 @@ export function TabletTopBar() {
         <button
           onClick={() => navigate('/t/search')}
           className="flex items-center gap-2 rounded-xl px-4"
+          aria-label="Tìm kiếm..."
           style={{
             height: 40,
             background: c.searchBg,
             border: `1px solid ${c.border}`,
           }}
         >
-          <Search size={16} color={c.text3} />
-          <span style={{ color: c.text3, fontSize: 13 }}>Tìm kiếm...</span>
+          <Search size={16} color={c.text3} aria-hidden="true" />
+          <span style={{ color: c.text1, fontSize: 13 }}>Tìm kiếm...</span>
         </button>
 
         {/* Notifications */}
         <button
           onClick={() => navigate('/t/notifications')}
           className="relative flex items-center justify-center rounded-xl"
+          aria-label={unreadCount > 0 ? `Thông báo (${unreadCount} chưa đọc)` : 'Thông báo'}
           style={{
             width: 40,
             height: 40,
@@ -150,6 +152,7 @@ export function TabletTopBar() {
         <button
           onClick={() => navigate('/t/profile')}
           className="flex items-center justify-center rounded-xl"
+          aria-label="Hồ sơ"
           style={{
             width: 40,
             height: 40,

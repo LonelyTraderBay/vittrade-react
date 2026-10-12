@@ -12,7 +12,7 @@ function LocationProbe() {
   return <span data-testid="location">{location.pathname}</span>;
 }
 
-function renderSuccess(purpose: string) {
+function renderSuccess(purpose?: string) {
   return renderWithProviders(
     <>
       <WebAuthSuccessPage />
@@ -20,13 +20,17 @@ function renderSuccess(purpose: string) {
     </>,
     {
       routerProps: {
-        initialEntries: [{ pathname: '/w/auth/success', state: { purpose, from: '/w/profile' } }],
+        initialEntries: [
+          purpose === undefined
+            ? { pathname: '/w/auth/success' }
+            : { pathname: '/w/auth/success', state: { purpose, from: '/w/profile' } },
+        ],
       },
     },
   );
 }
 
-function renderSuccessWithRoutes(purpose: string) {
+function renderSuccessWithRoutes(purpose?: string) {
   return renderWithProviders(
     <>
       <Routes>
@@ -38,14 +42,24 @@ function renderSuccessWithRoutes(purpose: string) {
     </>,
     {
       routerProps: {
-        initialEntries: [{ pathname: '/w/auth/success', state: { purpose, from: '/w/profile' } }],
+        initialEntries: [
+          purpose === undefined
+            ? { pathname: '/w/auth/success' }
+            : { pathname: '/w/auth/success', state: { purpose, from: '/w/profile' } },
+        ],
       },
     },
   );
 }
 
 describe('Web auth success page', () => {
-  it('shows registration next steps and pauses the redirect after choosing an action', async () => {
+  it('moves focus to the confirmed outcome when the route opens', () => {
+    renderSuccessWithRoutes('2fa-setup');
+
+    expect(screen.getByRole('heading', { name: 'Bảo mật đã được nâng cấp!' })).toHaveFocus();
+  });
+
+  it('shows registration next steps and routes the deposit action', async () => {
     const user = userEvent.setup();
     renderSuccess('register');
 
@@ -62,7 +76,6 @@ describe('Web auth success page', () => {
     await user.click(depositAction);
 
     expect(screen.getByTestId('location')).toHaveTextContent('/w/wallet/deposit');
-    expect(screen.getByText('Đã tạm dừng chuyển hướng tự động')).toBeInTheDocument();
   });
 
   it('routes identity verification to the existing profile KYC page', async () => {
@@ -74,6 +87,24 @@ describe('Web auth success page', () => {
     expect(screen.getByTestId('location')).toHaveTextContent('/w/profile/kyc');
   });
 
+  it('routes the registration prediction suggestion to Web markets', async () => {
+    const user = userEvent.setup();
+    renderSuccess('register');
+
+    await user.click(screen.getByRole('button', { name: /Khám phá Prediction Markets/ }));
+
+    expect(screen.getByTestId('location')).toHaveTextContent('/w/markets/predictions');
+  });
+
+  it('routes the registration trading suggestion to Web trading', async () => {
+    const user = userEvent.setup();
+    renderSuccess('register');
+
+    await user.click(screen.getByRole('button', { name: /Giao dịch đầu tiên/ }));
+
+    expect(screen.getByTestId('location')).toHaveTextContent('/w/trade');
+  });
+
   it('shows the two-factor completion state and keeps its suggested routes', async () => {
     const user = userEvent.setup();
     renderSuccess('2fa-setup');
@@ -83,7 +114,6 @@ describe('Web auth success page', () => {
     await user.click(screen.getByRole('button', { name: /Bắt đầu giao dịch/ }));
 
     expect(screen.getByTestId('location')).toHaveTextContent('/w/trade');
-    expect(screen.getByText('Đã tạm dừng chuyển hướng tự động')).toBeInTheDocument();
   });
 
   it('routes the security shortcut to the existing profile security page', async () => {
@@ -93,6 +123,24 @@ describe('Web auth success page', () => {
     await user.click(screen.getByRole('button', { name: /Trung tâm bảo mật/ }));
 
     expect(screen.getByTestId('location')).toHaveTextContent('/w/profile/security');
+  });
+
+  it('routes contact support to the existing Web support page', async () => {
+    const user = userEvent.setup();
+    renderSuccess('2fa-setup');
+
+    await user.click(screen.getByRole('button', { name: 'Liên hệ hỗ trợ' }));
+
+    expect(screen.getByTestId('location')).toHaveTextContent('/w/support');
+  });
+
+  it('routes the help center action to the existing Web help page', async () => {
+    const user = userEvent.setup();
+    renderSuccess('2fa-setup');
+
+    await user.click(screen.getByRole('button', { name: 'Trung tâm trợ giúp' }));
+
+    expect(screen.getByTestId('location')).toHaveTextContent('/w/support/help');
   });
 
   it('routes a completed password reset to login', async () => {
@@ -126,11 +174,33 @@ describe('Web auth success page', () => {
     expect(screen.getByText('Đã tạm dừng chuyển hướng tự động')).toBeInTheDocument();
   });
 
-  it('uses the generic success state for an unknown purpose', () => {
-    renderSuccess('unknown-purpose');
+  it.each([
+    ['missing route state', undefined],
+    ['unknown purpose', 'unknown-purpose'],
+  ])('shows neutral recovery for %s', (_caseName, purpose) => {
+    renderSuccess(purpose);
+
+    expect(
+      screen.getByRole('heading', { name: 'Không có thông tin xác nhận' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        'Không tìm thấy trạng thái xác nhận cho yêu cầu này. Hãy đăng nhập để tiếp tục.',
+      ),
+    ).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Về trang đăng nhập' })).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Dừng' })).not.toBeInTheDocument();
+    expect(screen.queryByText('Thao tác thành công!')).not.toBeInTheDocument();
+    expect(screen.queryByText('Bước tiếp theo')).not.toBeInTheDocument();
+  });
+
+  it('keeps the generic success presentation for an explicit generic purpose', async () => {
+    const user = userEvent.setup();
+    renderSuccessWithRoutes('generic');
 
     expect(screen.getByRole('heading', { name: 'Thao tác thành công!' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Về trang chủ' })).toBeInTheDocument();
-    expect(screen.queryByText('Bước tiếp theo')).not.toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Về trang chủ' }));
+    expect(screen.getByText('Home destination')).toBeInTheDocument();
   });
 });

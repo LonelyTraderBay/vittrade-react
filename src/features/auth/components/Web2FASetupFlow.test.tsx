@@ -1,4 +1,4 @@
-import type { ComponentProps } from 'react';
+import { useRef, type ComponentProps } from 'react';
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import type { AuthAdapter } from '@/shared/session/auth-context-types';
@@ -27,15 +27,18 @@ function LoadingBackupStepWithoutSetup({
   handleCopyBackupCodes,
 }: Pick<BackupStepProps, 'handleCopyBackupCodes'>) {
   const colors = useThemeColors();
+  const headingRef = useRef<HTMLHeadingElement | null>(null);
   const props: BackupStepProps = {
     c: colors,
     setup: null,
     isLoading: true,
     savedCodes: true,
+    copyError: '',
     setSavedCodes: () => undefined,
     copiedCodes: false,
     handleCopyBackupCodes,
     handleComplete: () => undefined,
+    headingRef,
   };
 
   return <Web2FASetupBackupStep {...props} />;
@@ -92,6 +95,7 @@ describe('Web2FASetupFlow', () => {
     expect(verifyButton).toBeEnabled();
     fireEvent.click(verifyButton);
     await screen.findByText('Lưu mã dự phòng');
+    expect(screen.getByRole('heading', { name: 'Lưu mã dự phòng' })).toHaveFocus();
 
     expect(confirmMfaSetup).toHaveBeenCalledWith({ code: '123456' });
     expect(screen.getByText('TEST-001')).toBeInTheDocument();
@@ -102,26 +106,39 @@ describe('Web2FASetupFlow', () => {
     expect(completeButton).toBeEnabled();
     fireEvent.click(completeButton);
 
-    await waitFor(() => expect(screen.getByTestId('success-state')).toHaveTextContent('2fa-setup'));
+    await waitFor(() =>
+      expect(screen.getByTestId('success-state')).toHaveTextContent(
+        JSON.stringify({ purpose: '2fa-setup', from: '2fa-setup' }),
+      ),
+    );
   });
 
-  it('keeps the verify step open and shows the server error when the code is rejected', async () => {
+  it('keeps the verify step open with neutral guidance after a confirmation transport failure', async () => {
     const confirmMfaSetup = vi
       .fn(testAuthAdapter.confirmMfaSetup)
-      .mockRejectedValueOnce(new Error('invalid setup code'));
+      .mockRejectedValueOnce(new TypeError('Failed to fetch'));
     renderSetup({ ...testAuthAdapter, confirmMfaSetup });
 
     await screen.findByText('TEST-SECRET');
     fireEvent.click(screen.getByRole('button', { name: 'Tiếp theo — Xác minh mã' }));
-    const otpInputs = document.querySelectorAll<HTMLInputElement>('input[inputmode="numeric"]');
+    const otpGroup = screen.getByRole('group', { name: 'Mã xác thực gồm 6 chữ số' });
+    expect(otpGroup).toHaveAttribute('aria-describedby', 'setup-otp-instructions');
+    const otpInputs = Array.from({ length: 6 }, (_, index) =>
+      screen.getByRole('textbox', {
+        name: `Mã xác thực 2FA, chữ số ${index + 1} trên 6`,
+      }),
+    );
     for (const [index, digit] of [...'123456'].entries()) {
       fireEvent.change(otpInputs[index], { target: { value: digit } });
     }
     fireEvent.click(screen.getByRole('button', { name: 'Xác minh' }));
 
-    expect(
-      await screen.findByText('Mã xác thực không đúng hoặc đã hết hạn. Vui lòng thử lại.'),
-    ).toBeVisible();
+    const error = await screen.findByRole('alert');
+    expect(error).toHaveTextContent('Không thể xác minh lúc này. Vui lòng thử lại.');
+    for (const input of otpInputs) {
+      expect(input).toHaveAttribute('aria-invalid', 'true');
+      expect(input).toHaveAttribute('aria-describedby', error.id);
+    }
     expect(screen.getByText('Xác minh mã')).toBeInTheDocument();
     expect(screen.queryByText('Lưu mã dự phòng')).not.toBeInTheDocument();
   });
@@ -138,6 +155,8 @@ describe('Web2FASetupFlow', () => {
     expect(await screen.findByRole('alert')).toHaveTextContent(
       'Không thể khởi tạo thiết lập 2FA. Vui lòng thử lại.',
     );
+    expect(screen.queryByRole('status')).not.toBeInTheDocument();
+    expect(screen.getByText('Khóa bảo mật chưa khả dụng')).toBeInTheDocument();
     const nextButton = screen.getByRole('button', { name: 'Tiếp theo — Xác minh mã' });
     expect(nextButton).toBeDisabled();
 
@@ -257,6 +276,30 @@ describe('Web2FASetupFlow', () => {
     expect(screen.getByRole('button', { name: 'Xác minh' })).toBeDisabled();
   });
 
+  it('does not submit an empty or incomplete setup code', async () => {
+    const confirmMfaSetup = vi.fn(testAuthAdapter.confirmMfaSetup);
+    renderSetup({ ...testAuthAdapter, confirmMfaSetup });
+
+    await screen.findByText('TEST-SECRET');
+    fireEvent.click(screen.getByRole('button', { name: 'Tiếp theo — Xác minh mã' }));
+
+    const inputs = Array.from({ length: 6 }, (_, index) =>
+      screen.getByRole('textbox', {
+        name: `Mã xác thực 2FA, chữ số ${index + 1} trên 6`,
+      }),
+    );
+    const verifyButton = screen.getByRole('button', { name: 'Xác minh' });
+
+    expect(verifyButton).toBeDisabled();
+    fireEvent.click(verifyButton);
+    expect(confirmMfaSetup).not.toHaveBeenCalled();
+
+    fireEvent.change(inputs[0], { target: { value: '1' } });
+    expect(verifyButton).toBeDisabled();
+    fireEvent.click(verifyButton);
+    expect(confirmMfaSetup).not.toHaveBeenCalled();
+  });
+
   it('moves focus between OTP fields for keyboard navigation and strips non-digits', async () => {
     renderSetup(testAuthAdapter);
 
@@ -292,7 +335,7 @@ describe('Web2FASetupFlow', () => {
         await Promise.resolve();
       });
       expect(writeText).toHaveBeenLastCalledWith('TEST-SECRET');
-      expect(screen.getByRole('button', { name: 'Đã sao chép' })).toBeInTheDocument();
+      expect(await screen.findByRole('button', { name: 'Đã sao chép' })).toBeInTheDocument();
 
       fireEvent.click(screen.getByRole('button', { name: 'Tiếp theo — Xác minh mã' }));
       const inputs = [...document.querySelectorAll<HTMLInputElement>('input[inputmode="numeric"]')];

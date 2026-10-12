@@ -122,11 +122,6 @@ export function PlatformSwitcher({
     };
   }, [location.pathname, navigate]);
 
-  // Skip rendering on auth/onboarding routes
-  if (location.pathname.startsWith('/auth') || location.pathname.startsWith('/onboarding')) {
-    return null;
-  }
-
   const config = PLATFORM_CONFIG[currentPlatform];
   const Icon = config.icon;
 
@@ -144,7 +139,9 @@ export function PlatformSwitcher({
       }}
     >
       <Icon size={13} color={config.color} strokeWidth={2} />
-      <span style={{ color: config.color, fontSize: 10, fontWeight: 600, letterSpacing: 0.3 }}>
+      <span
+        style={{ color: 'var(--tr-text-1)', fontSize: 10, fontWeight: 600, letterSpacing: 0.3 }}
+      >
         {config.label}
       </span>
       <div

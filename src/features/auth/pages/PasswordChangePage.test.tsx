@@ -17,6 +17,51 @@ afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
 describe('password change contract flow', () => {
+  it('keeps keyboard focus on the active password-change step', async () => {
+    server.use(
+      http.post(
+        'http://localhost:3000/api/auth/password/verify-current',
+        () => new HttpResponse(null, { status: 204 }),
+      ),
+      http.post(
+        'http://localhost:3000/api/auth/password/change',
+        () => new HttpResponse(null, { status: 204 }),
+      ),
+    );
+
+    const user = userEvent.setup();
+    renderWithProviders(<PasswordChangePage />, {
+      routerProps: { initialEntries: ['/w/profile/security/change-password'] },
+    });
+
+    const currentPassword = screen.getByLabelText('Mật khẩu hiện tại');
+    await user.type(currentPassword, 'current-password{Enter}');
+    const newPassword = await screen.findByLabelText('Mật khẩu mới');
+    const focusAfterVerify = document.activeElement === newPassword;
+
+    await user.click(screen.getByRole('button', { name: 'Quay lại xác minh' }));
+    const currentPasswordAgain = await screen.findByLabelText('Mật khẩu hiện tại');
+    const focusAfterBack = document.activeElement === currentPasswordAgain;
+
+    await user.click(screen.getByRole('button', { name: 'Xác minh mật khẩu hiện tại' }));
+    await screen.findByLabelText('Mật khẩu mới');
+    await user.type(screen.getByLabelText('Mật khẩu mới'), 'SecurePassword123');
+    await user.type(screen.getByLabelText('Nhập lại mật khẩu mới'), 'SecurePassword123');
+    const totpCode = screen.getByLabelText('Mã xác thực TOTP');
+    await user.type(totpCode, '654321{Enter}');
+
+    const successHeading = await screen.findByRole('heading', {
+      name: 'Mật khẩu đã được đổi thành công.',
+    });
+    const focusAfterSuccess = document.activeElement === successHeading;
+
+    expect({ focusAfterVerify, focusAfterBack, focusAfterSuccess }).toEqual({
+      focusAfterVerify: true,
+      focusAfterBack: true,
+      focusAfterSuccess: true,
+    });
+  });
+
   it('verifies the current password and changes it with a TOTP code and idempotency key', async () => {
     let verifyRequest: unknown;
     let changeRequest: unknown;

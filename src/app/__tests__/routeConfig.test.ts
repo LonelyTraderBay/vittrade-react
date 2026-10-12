@@ -27,6 +27,7 @@ describe('route configuration', () => {
       '2fa-setup',
       'forgot-password',
       'reset-password',
+      'account-locked',
     ]);
   });
 

@@ -45,6 +45,23 @@ function readLocation() {
 }
 
 describe('WebSessionExpiredPage', () => {
+  it('does not expose unavailable help destinations as inert controls', () => {
+    renderExpiredPage();
+
+    expect(screen.getByText('Liên hệ hỗ trợ', { exact: true })).toBeInTheDocument();
+    expect(screen.getByText('Trung tâm trợ giúp', { exact: true })).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Liên hệ hỗ trợ' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Trung tâm trợ giúp' })).not.toBeInTheDocument();
+  });
+
+  it('moves focus to the recovery heading when the route opens', () => {
+    renderExpiredPage();
+
+    expect(
+      screen.getByRole('heading', { name: 'Phiên đăng nhập cần được xác thực lại' }),
+    ).toHaveFocus();
+  });
+
   it('masks the account email and preserves login return state', async () => {
     renderExpiredPage({ email: 'alice@example.com', reason: 'timeout', returnTo: '/w/trade' });
 
@@ -52,7 +69,7 @@ describe('WebSessionExpiredPage', () => {
     expect(screen.getByText('al•••@example.com')).toBeInTheDocument();
     expect(screen.queryByText('alice@example.com')).not.toBeInTheDocument();
     expect(
-      screen.getByText('Bạn sẽ được chuyển về trang trước đó sau khi đăng nhập thành công.'),
+      screen.getByText('Vui lòng đăng nhập lại để tiếp tục sử dụng VitTrade.'),
     ).toBeInTheDocument();
 
     await userEvent.setup().click(screen.getByRole('button', { name: /Đăng nhập lại/ }));
@@ -61,6 +78,38 @@ describe('WebSessionExpiredPage', () => {
       pathname: '/w/auth/login',
       state: { email: 'alice@example.com', returnTo: '/w/trade' },
     });
+  });
+
+  it('does not promise a session timeout setting that the product does not provide', async () => {
+    const user = userEvent.setup();
+    renderExpiredPage({ reason: 'timeout' });
+
+    const guidanceToggle = screen.getByRole('button', { name: /Vì sao phiên hết hạn/ });
+    expect(guidanceToggle).toHaveAttribute('aria-expanded', 'false');
+    await user.click(guidanceToggle);
+    expect(guidanceToggle).toHaveAttribute('aria-expanded', 'true');
+
+    expect(
+      screen.getByText(
+        'Nếu bạn cho rằng phiên kết thúc ngoài dự kiến, hãy liên hệ bộ phận hỗ trợ.',
+      ),
+    ).toBeInTheDocument();
+    expect(screen.queryByText(/điều chỉnh thời gian phiên/i)).not.toBeInTheDocument();
+  });
+
+  it('uses neutral recovery copy when the route has no recognized expiration reason', async () => {
+    const user = userEvent.setup();
+    renderExpiredPage({ reason: 'unrecognized-server-reason' });
+
+    expect(
+      screen.getByRole('heading', { name: 'Phiên đăng nhập cần được xác thực lại' }),
+    ).toBeInTheDocument();
+    expect(screen.queryByText(/không hoạt động trong thời gian dài/i)).not.toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: /Cần trợ giúp/ }));
+    expect(
+      screen.getByText('Nếu bạn gặp sự cố khi đăng nhập lại, hãy liên hệ bộ phận hỗ trợ.'),
+    ).toBeInTheDocument();
   });
 
   it('shows recovery guidance for security and concurrent-session reasons', async () => {

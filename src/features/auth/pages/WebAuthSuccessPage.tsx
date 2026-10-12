@@ -1,6 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router';
-import { CheckCircle, ArrowRight, Shield, TrendingUp, Wallet, Globe, Sparkles } from 'lucide-react';
+import {
+  CheckCircle,
+  CircleHelp,
+  ArrowRight,
+  Shield,
+  TrendingUp,
+  Wallet,
+  Globe,
+  Sparkles,
+} from 'lucide-react';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { WEB_FONT, WEB_BUTTON } from '@/shared/theme/webTokens';
 import { WebAuthBrandPanel, WebAuthFormShell } from '@/shared/ui/auth/WebAuthBrandPanel';
@@ -24,6 +33,15 @@ import { WebAuthBrandPanel, WebAuthFormShell } from '@/shared/ui/auth/WebAuthBra
  */
 
 type Purpose = 'register' | '2fa-setup' | 'reset' | 'generic';
+type SuccessConfig = {
+  title: string;
+  subtitle: string;
+  redirectRoute: string;
+  redirectLabel: string;
+  countdown: number;
+  accentColor: string;
+  brandTagline: string;
+};
 
 interface QuickAction {
   icon: React.ElementType;
@@ -33,18 +51,7 @@ interface QuickAction {
   color: string;
 }
 
-const PURPOSE_CONFIG: Record<
-  Purpose,
-  {
-    title: string;
-    subtitle: string;
-    redirectRoute: string;
-    redirectLabel: string;
-    countdown: number;
-    accentColor: string;
-    brandTagline: string;
-  }
-> = {
+const PURPOSE_CONFIG: Record<Purpose, SuccessConfig> = {
   register: {
     title: 'Chào mừng bạn đến VitTrade!',
     subtitle: 'Tài khoản đã được tạo thành công. Hãy bắt đầu khám phá nền tảng.',
@@ -85,6 +92,20 @@ const PURPOSE_CONFIG: Record<
       'Nền tảng giao dịch thông minh — kết nối Spot, P2P, Prediction Markets và Open Arena.',
   },
 };
+
+const MISSING_PURPOSE_CONFIG: SuccessConfig = {
+  title: 'Không có thông tin xác nhận',
+  subtitle: 'Không tìm thấy trạng thái xác nhận cho yêu cầu này. Hãy đăng nhập để tiếp tục.',
+  redirectRoute: '/w/auth/login',
+  redirectLabel: 'Về trang đăng nhập',
+  countdown: 0,
+  accentColor: '#64748B',
+  brandTagline: 'Đăng nhập để tiếp tục sử dụng nền tảng.',
+};
+
+function isPurpose(value: unknown): value is Purpose {
+  return typeof value === 'string' && Object.hasOwn(PURPOSE_CONFIG, value);
+}
 
 const QUICK_ACTIONS_REGISTER: QuickAction[] = [
   {
@@ -138,24 +159,29 @@ export function WebAuthSuccessPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const c = useThemeColors();
+  const headingRef = useRef<HTMLHeadingElement>(null);
 
-  const state = location.state as { purpose?: string; from?: string } | null;
-  const purpose = (state?.purpose || 'generic') as Purpose;
-  const config = PURPOSE_CONFIG[purpose] || PURPOSE_CONFIG.generic;
+  useEffect(() => {
+    headingRef.current?.focus();
+  }, []);
+
+  const state = location.state as { purpose?: unknown; from?: string } | null;
+  const purpose = isPurpose(state?.purpose) ? state.purpose : null;
+  const config = purpose ? PURPOSE_CONFIG[purpose] : MISSING_PURPOSE_CONFIG;
 
   const [countdown, setCountdown] = useState(config.countdown);
   const [paused, setPaused] = useState(false);
 
   /* ─── Auto-redirect countdown ─── */
   useEffect(() => {
-    if (paused) return;
+    if (!purpose || paused) return;
     if (countdown <= 0) {
       navigate(config.redirectRoute, { replace: true });
       return;
     }
     const id = setInterval(() => setCountdown((prev) => prev - 1), 1000);
     return () => clearInterval(id);
-  }, [countdown, paused, navigate, config.redirectRoute]);
+  }, [countdown, paused, purpose, navigate, config.redirectRoute]);
 
   const quickActions =
     purpose === 'register'
@@ -195,18 +221,26 @@ export function WebAuthSuccessPage() {
                   background: `${config.accentColor}12`,
                 }}
               >
-                <CheckCircle size={36} color={config.accentColor} strokeWidth={2} />
+                {purpose ? (
+                  <CheckCircle size={36} color={config.accentColor} strokeWidth={2} />
+                ) : (
+                  <CircleHelp size={36} color={config.accentColor} strokeWidth={2} />
+                )}
               </div>
             </div>
             {/* Decorative sparkle */}
-            <Sparkles
-              size={18}
-              color={config.accentColor}
-              style={{ position: 'absolute', top: -4, right: -4, opacity: 0.7 }}
-            />
+            {purpose && (
+              <Sparkles
+                size={18}
+                color={config.accentColor}
+                style={{ position: 'absolute', top: -4, right: -4, opacity: 0.7 }}
+              />
+            )}
           </div>
 
           <h1
+            ref={headingRef}
+            tabIndex={-1}
             style={{
               color: c.text1,
               fontSize: WEB_FONT['2xl'],
@@ -249,7 +283,7 @@ export function WebAuthSuccessPage() {
               >
                 {purpose === '2fa-setup' ? '2FA đã kích hoạt' : 'Tài khoản đã bảo mật'}
               </p>
-              <p style={{ color: c.text3, fontSize: WEB_FONT.xs, lineHeight: 1.4 }}>
+              <p style={{ color: c.text2, fontSize: WEB_FONT.xs, lineHeight: 1.4 }}>
                 {purpose === '2fa-setup'
                   ? 'Mỗi lần đăng nhập sẽ yêu cầu mã từ ứng dụng xác thực.'
                   : 'Khuyến nghị bật 2FA và hoàn tất KYC để nâng cao bảo mật.'}
@@ -321,7 +355,7 @@ export function WebAuthSuccessPage() {
                     >
                       {action.label}
                     </p>
-                    <p style={{ color: c.text3, fontSize: WEB_FONT.xs, lineHeight: 1.3 }}>
+                    <p style={{ color: c.text2, fontSize: WEB_FONT.xs, lineHeight: 1.3 }}>
                       {action.desc}
                     </p>
                   </div>
@@ -355,57 +389,61 @@ export function WebAuthSuccessPage() {
         </button>
 
         {/* ─── Auto-redirect countdown ─── */}
-        <div className="flex items-center justify-center" style={{ marginTop: 16, gap: 8 }}>
-          {!paused ? (
-            <div className="flex items-center" style={{ gap: 6 }}>
-              <div
-                style={{
-                  width: 14,
-                  height: 14,
-                  borderRadius: '50%',
-                  border: `2px solid ${config.accentColor}30`,
-                  borderTopColor: config.accentColor,
-                  animation: 'spin 1s linear infinite',
-                }}
-              />
-              <span style={{ color: c.text3, fontSize: WEB_FONT.xs }}>
-                Tự động chuyển hướng sau{' '}
-                <span
-                  style={{ color: c.text1, fontWeight: 600, fontVariantNumeric: 'tabular-nums' }}
-                >
-                  {countdown}s
+        {purpose && (
+          <div className="flex items-center justify-center" style={{ marginTop: 16, gap: 8 }}>
+            {!paused ? (
+              <div className="flex items-center" style={{ gap: 6 }}>
+                <div
+                  style={{
+                    width: 14,
+                    height: 14,
+                    borderRadius: '50%',
+                    border: `2px solid ${config.accentColor}30`,
+                    borderTopColor: config.accentColor,
+                    animation: 'spin 1s linear infinite',
+                  }}
+                />
+                <span style={{ color: c.text2, fontSize: WEB_FONT.xs }}>
+                  Tự động chuyển hướng sau{' '}
+                  <span
+                    style={{ color: c.text1, fontWeight: 600, fontVariantNumeric: 'tabular-nums' }}
+                  >
+                    {countdown}s
+                  </span>
                 </span>
+                <button
+                  onClick={() => setPaused(true)}
+                  className="hover:underline"
+                  style={{
+                    color: c.text2,
+                    fontSize: WEB_FONT.xs,
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    marginLeft: 4,
+                  }}
+                >
+                  Dừng
+                </button>
+              </div>
+            ) : (
+              <span style={{ color: c.text2, fontSize: WEB_FONT.xs }}>
+                Đã tạm dừng chuyển hướng tự động
               </span>
-              <button
-                onClick={() => setPaused(true)}
-                className="hover:underline"
-                style={{
-                  color: c.text3,
-                  fontSize: WEB_FONT.xs,
-                  background: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
-                  marginLeft: 4,
-                }}
-              >
-                Dừng
-              </button>
-            </div>
-          ) : (
-            <span style={{ color: c.text3, fontSize: WEB_FONT.xs }}>
-              Đã tạm dừng chuyển hướng tự động
-            </span>
-          )}
-        </div>
+            )}
+          </div>
+        )}
 
         {/* Footer */}
         <div style={{ marginTop: 40, textAlign: 'center' }}>
-          <p style={{ color: c.text3, fontSize: WEB_FONT.xs, lineHeight: 1.5 }}>
+          <p style={{ color: c.text2, fontSize: WEB_FONT.xs, lineHeight: 1.5 }}>
             Cần trợ giúp?{' '}
             <button
+              type="button"
+              onClick={() => navigate('/w/support')}
               className="hover:underline"
               style={{
-                color: '#3B82F6',
+                color: c.link,
                 background: 'none',
                 border: 'none',
                 cursor: 'pointer',
@@ -416,9 +454,11 @@ export function WebAuthSuccessPage() {
             </button>{' '}
             ·{' '}
             <button
+              type="button"
+              onClick={() => navigate('/w/support/help')}
               className="hover:underline"
               style={{
-                color: '#3B82F6',
+                color: c.link,
                 background: 'none',
                 border: 'none',
                 cursor: 'pointer',

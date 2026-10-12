@@ -46,7 +46,8 @@ function PasswordStrength({ password }: { password: string }) {
   ];
   const strength = checks.filter((check) => check.valid).length;
   return (
-    <div className="mt-2" aria-live="polite">
+    <div className="mt-2" role="status" aria-live="polite" aria-atomic="true">
+      <span className="sr-only">Mức độ mật khẩu: {strength} trên 4.</span>
       <div className="flex gap-1">
         {checks.map((check, index) => (
           <span
@@ -56,9 +57,6 @@ function PasswordStrength({ password }: { password: string }) {
           />
         ))}
       </div>
-      <p className="mt-1" style={{ color: colors.text3, fontSize: 11 }}>
-        Mật khẩu cần ít nhất 8 ký tự. Các dấu hiệu còn lại là gợi ý.
-      </p>
     </div>
   );
 }
@@ -117,10 +115,13 @@ export function RegistrationForm() {
         state: { ...challenge, purpose: 'register' },
       });
     } catch (error) {
+      const status = isApiError(error) ? error.status : null;
       setRequestError(
-        isApiError(error) && error.status === 429
+        status === 429
           ? 'Bạn đã gửi quá nhiều yêu cầu. Hãy chờ một lúc rồi thử lại.'
-          : 'Chưa thể bắt đầu xác minh. Kiểm tra kết nối rồi thử lại.',
+          : status === 400
+            ? 'Thông tin đăng ký chưa được chấp nhận. Vui lòng kiểm tra và thử lại.'
+            : 'Chưa thể bắt đầu xác minh. Kiểm tra kết nối rồi thử lại.',
       );
     } finally {
       submitInFlight.current = false;
@@ -144,7 +145,7 @@ export function RegistrationForm() {
             className="min-h-11 rounded-xl text-sm font-semibold"
             style={{
               background: draft.channel === channel ? colors.chipActiveBg : colors.surface2,
-              color: draft.channel === channel ? colors.chipActiveText : colors.text2,
+              color: colors.text1,
             }}
           >
             {channel === 'email' ? 'Email' : 'Điện thoại'}
@@ -154,6 +155,8 @@ export function RegistrationForm() {
 
       <InputField
         label="Họ và tên"
+        placeholder="Nhập họ và tên"
+        helper="Nhập tên đầy đủ để đăng ký."
         autoComplete="name"
         value={draft.fullName}
         disabled={isSubmitting}
@@ -164,6 +167,12 @@ export function RegistrationForm() {
       <InputField
         label={draft.channel === 'email' ? 'Email' : 'Số điện thoại'}
         type={draft.channel === 'email' ? 'email' : 'tel'}
+        placeholder={draft.channel === 'email' ? 'you@example.com' : 'Nhập số điện thoại'}
+        helper={
+          draft.channel === 'email'
+            ? 'Email dùng cho yêu cầu đăng ký.'
+            : 'Số điện thoại dùng cho yêu cầu đăng ký.'
+        }
         autoComplete={draft.channel === 'email' ? 'email' : 'tel'}
         value={draft.contact}
         disabled={isSubmitting}
@@ -181,6 +190,8 @@ export function RegistrationForm() {
         <InputField
           label="Mật khẩu"
           type={showPassword ? 'text' : 'password'}
+          placeholder="Tối thiểu 8 ký tự"
+          helper="Mật khẩu cần ít nhất 8 ký tự. Các dấu hiệu còn lại là gợi ý."
           autoComplete="new-password"
           value={draft.password}
           disabled={isSubmitting}
@@ -206,6 +217,8 @@ export function RegistrationForm() {
       <InputField
         label="Xác nhận mật khẩu"
         type={showPassword ? 'text' : 'password'}
+        placeholder="Nhập lại mật khẩu"
+        helper="Nhập lại chính xác mật khẩu ở trên."
         autoComplete="new-password"
         value={draft.confirmation}
         disabled={isSubmitting}
@@ -215,6 +228,8 @@ export function RegistrationForm() {
       />
       <InputField
         label="Mã giới thiệu (tuỳ chọn)"
+        placeholder="Nhập mã giới thiệu"
+        helper="Không bắt buộc."
         value={draft.referralCode}
         disabled={isSubmitting}
         onChange={(event) => updateDraft('referralCode', event.target.value.toUpperCase())}
@@ -227,17 +242,22 @@ export function RegistrationForm() {
           disabled={isSubmitting}
           onChange={(event) => updateDraft('acceptedTerms', event.target.checked)}
           aria-invalid={Boolean(errors.acceptedTerms)}
+          aria-describedby={errors.acceptedTerms ? 'registration-terms-error' : undefined}
           className="mt-1 h-4 w-4 accent-blue-500"
         />
         <span>Tôi đã đọc và đồng ý với Điều khoản dịch vụ và Chính sách bảo mật của VitTrade.</span>
       </label>
       {errors.acceptedTerms && (
-        <p role="alert" style={{ color: '#EF4444', fontSize: 12 }}>
+        <p
+          id="registration-terms-error"
+          role="alert"
+          style={{ color: colors.errorText, fontSize: 12 }}
+        >
           {errors.acceptedTerms}
         </p>
       )}
       {requestError && (
-        <p role="alert" style={{ color: '#EF4444', fontSize: 13 }}>
+        <p role="alert" style={{ color: colors.errorText, fontSize: 13 }}>
           {requestError}
         </p>
       )}

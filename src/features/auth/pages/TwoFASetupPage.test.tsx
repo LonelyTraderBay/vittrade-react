@@ -22,13 +22,13 @@ function renderSetup(overrides: Partial<AuthAdapter> = {}) {
   return renderWithProviders(
     <>
       <Routes>
-        <Route path="/t/security/2fa-setup" element={<TwoFASetupPage />} />
+        <Route path="/t/auth/2fa-setup" element={<TwoFASetupPage />} />
         <Route path="/t/home" element={<p>Trang chủ</p>} />
       </Routes>
       <CurrentPath />
     </>,
     {
-      routerProps: { initialEntries: ['/t/security/2fa-setup'] },
+      routerProps: { initialEntries: ['/t/auth/2fa-setup'] },
       authAdapter: { ...testAuthAdapter, ...overrides },
     },
   );
@@ -209,7 +209,11 @@ describe('TwoFASetupPage', () => {
     fireEvent.click(screen.getByRole('button', { name: /Tiếp theo/ }));
     expect(screen.getByRole('heading', { name: 'Bước 2: Xác minh mã' })).toBeVisible();
 
+    const otpGroup = screen.getByRole('group', { name: 'Mã xác thực gồm 6 chữ số' });
+    expect(otpGroup).toHaveClass('focus-within:outline');
     const otpInput = screen.getByRole('textbox', { name: 'Mã xác thực 6 chữ số' });
+    expect(otpInput).toHaveFocus();
+    expect(otpInput).toHaveAttribute('aria-describedby', 'setup-otp-instructions');
     const verifyButton = screen.getByRole('button', { name: 'Xác nhận' });
     await invokeDisabledButtonHandler(verifyButton);
     expect(confirmMfaSetup).not.toHaveBeenCalled();
@@ -236,7 +240,7 @@ describe('TwoFASetupPage', () => {
     const finishButton = screen.getByRole('button', { name: /Hoàn tất thiết lập 2FA/ });
     expect(finishButton).toBeDisabled();
     await invokeDisabledButtonHandler(finishButton);
-    expect(screen.getByTestId('current-path')).toHaveTextContent('/t/security/2fa-setup');
+    expect(screen.getByTestId('current-path')).toHaveTextContent('/t/auth/2fa-setup');
 
     fireEvent.click(screen.getByRole('button', { name: 'Tôi đã lưu các mã dự phòng' }));
     expect(finishButton).toBeEnabled();

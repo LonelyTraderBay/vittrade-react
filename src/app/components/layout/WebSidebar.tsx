@@ -184,7 +184,7 @@ export function WebSidebar() {
           <span style={{ color: c.text1, fontSize: 16, fontWeight: 700, letterSpacing: -0.3 }}>
             VitTrade
           </span>
-          <span style={{ color: c.text3, fontSize: 11, fontWeight: 500 }}>Enterprise Web</span>
+          <span style={{ color: c.text2, fontSize: 11, fontWeight: 500 }}>Enterprise Web</span>
         </div>
       </div>
 
@@ -195,7 +195,7 @@ export function WebSidebar() {
             <div className="px-5 pt-5 pb-2">
               <span
                 style={{
-                  color: c.text3,
+                  color: c.text2,
                   fontSize: 11,
                   fontWeight: 700,
                   letterSpacing: 1.2,
@@ -235,7 +235,7 @@ export function WebSidebar() {
                       />
                       <span
                         style={{
-                          color: active ? '#3B82F6' : c.text1,
+                          color: c.text1,
                           fontSize: 14,
                           fontWeight: active ? 600 : 400,
                           flex: 1,
@@ -320,7 +320,7 @@ export function WebSidebar() {
               <Icon size={16} strokeWidth={active ? 2 : 1.5} color={active ? '#3B82F6' : c.text3} />
               <span
                 style={{
-                  color: active ? '#3B82F6' : c.text2,
+                  color: active ? c.text1 : c.text2,
                   fontSize: 13,
                   flex: 1,
                   textAlign: 'left',

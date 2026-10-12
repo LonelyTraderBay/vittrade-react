@@ -38,8 +38,93 @@ describe('auth LoginPage', () => {
 
     await user.click(screen.getByRole('button', { name: 'Đăng nhập' }));
 
-    expect(screen.getByText('Vui lòng nhập email hoặc số điện thoại.')).toBeInTheDocument();
+    expect(screen.getByText('Vui lòng nhập email.')).toBeInTheDocument();
     expect(login).not.toHaveBeenCalled();
+  });
+
+  it.each(['/auth/login', '/t/auth/login', '/r/auth/login'])(
+    'validates email and password with Enter before sending a request at %s',
+    async (path) => {
+      const user = userEvent.setup();
+      const login = vi.fn(async () => ({
+        status: 'authenticated' as const,
+        session: testAuthSession,
+      }));
+      renderWithProviders(<LoginPage />, {
+        routerProps: { initialEntries: [path] },
+        authAdapter: createAuthAdapter(login),
+      });
+      const email = screen.getByTestId('auth-email');
+
+      await user.click(email);
+      await user.keyboard('{Enter}');
+      expect(screen.getByText('Vui lòng nhập email.')).toBeInTheDocument();
+
+      await user.type(email, 'user@example.com');
+      await user.keyboard('{Enter}');
+      expect(screen.getByText('Vui lòng nhập mật khẩu.')).toBeInTheDocument();
+      expect(login).not.toHaveBeenCalled();
+    },
+  );
+
+  it('associates malformed email feedback with the email field and does not call the adapter', async () => {
+    const user = userEvent.setup();
+    const login = vi.fn(async () => ({
+      status: 'authenticated' as const,
+      session: testAuthSession,
+    }));
+    renderWithProviders(<LoginPage />, { authAdapter: createAuthAdapter(login) });
+    const email = screen.getByTestId('auth-email');
+
+    await user.type(email, 'invalid-email');
+    await user.keyboard('{Enter}');
+
+    expect(screen.getByText('Định dạng email không hợp lệ')).toBeInTheDocument();
+    expect(email).toHaveAttribute('aria-invalid', 'true');
+    expect(email).toHaveAttribute('aria-describedby', 'input-email-error');
+    expect(login).not.toHaveBeenCalled();
+
+    await user.clear(email);
+    await user.type(email, 'user@example.com');
+    expect(screen.queryByText('Định dạng email không hợp lệ')).not.toBeInTheDocument();
+  });
+
+  it.each([
+    ['/auth/login', '/home'],
+    ['/t/auth/login', '/t/home'],
+    ['/r/auth/login', '/r/home'],
+  ])('submits once with Enter from Email at %s', async (path, destination) => {
+    const user = userEvent.setup();
+    const login = vi.fn(async () => ({
+      status: 'authenticated' as const,
+      session: testAuthSession,
+    }));
+    renderWithProviders(
+      <>
+        <LoginPage />
+        <CurrentPath />
+      </>,
+      {
+        routerProps: { initialEntries: [path] },
+        authAdapter: createAuthAdapter(login),
+      },
+    );
+    const email = screen.getByTestId('auth-email');
+
+    await user.type(email, 'user@example.com');
+    await user.type(screen.getByTestId('auth-password'), 'correct-password');
+    await user.click(email);
+    await user.keyboard('{Enter}');
+
+    await waitFor(() => expect(screen.getByTestId('current-path')).toHaveTextContent(destination));
+    expect(login).toHaveBeenCalledTimes(1);
+    expect(login).toHaveBeenCalledWith({ email: 'user@example.com', password: 'correct-password' });
+  });
+
+  it('exposes the identity field with the email-only contract name', () => {
+    renderWithProviders(<LoginPage />);
+
+    expect(screen.getByTestId('auth-email')).toHaveAccessibleName('Email');
   });
 
   it('requires a password after an email has been entered', async () => {

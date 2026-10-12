@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { CSSProperties } from 'react';
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import { isApiError } from '@/shared/api/api-error';
 import { queryClient } from '@/shared/api/query-client';
 import { env, isDevelopmentBuild } from '@/shared/config/env';
@@ -144,6 +144,7 @@ const actionStyle: CSSProperties = {
 };
 
 export function PreviewControls() {
+  const location = useLocation();
   const storedScenario = getDevPreviewScenario();
   const { user, signIn, signOut } = useAuth();
   const navigate = useNavigate();
@@ -165,6 +166,9 @@ export function PreviewControls() {
   });
   const [activeScenario, setActiveScenario] = useState(() => storedScenario);
   const [notice, setNotice] = useState('');
+
+  const isAuthOrSecurityRoute =
+    /^(?:\/(?:t|w|r))?\/(?:auth(?:\/|$)|profile\/security(?:\/|$))/.test(location.pathname);
 
   if (!isDevelopmentBuild || !env.isDev || env.dataSource !== 'mock') return null;
 
@@ -264,7 +268,15 @@ export function PreviewControls() {
     <aside
       aria-label="Điều khiển xem trước mock"
       data-testid="dev-preview-controls"
-      style={shellStyle}
+      style={
+        isAuthOrSecurityRoute
+          ? {
+              ...shellStyle,
+              position: 'static',
+              margin: '24px 16px 16px auto',
+            }
+          : shellStyle
+      }
     >
       <div
         role="status"

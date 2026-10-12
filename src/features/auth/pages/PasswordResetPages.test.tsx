@@ -82,6 +82,46 @@ describe('password reset contract flow', () => {
           ? HttpResponse.json({ message: 'Invalid request' }, { status: 400 })
           : new HttpResponse(null, { status: 204 });
       }),
+      http.post('*/auth/password-reset/verify', () =>
+        HttpResponse.json({ resetToken: 'reset-token-1' }),
+      ),
+      http.post('*/auth/password-reset/confirm', () => new HttpResponse(null, { status: 204 })),
+    );
+
+    const user = userEvent.setup();
+    renderWithProviders(<ForgotPasswordContractPage />, {
+      routerProps: { initialEntries: ['/auth/forgot-password'] },
+    });
+
+    const email = screen.getByLabelText('Email đăng ký');
+    await user.type(email, 'user@example.com');
+    await user.keyboard('{Enter}');
+    expect(await screen.findByRole('alert')).toHaveTextContent('Không thể gửi mã xác minh.');
+    await user.click(screen.getByRole('button', { name: 'Gửi mã xác minh' }));
+    expect(await screen.findByRole('heading', { name: 'Nhập mã OTP' })).toBeInTheDocument();
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+
+    const otp = screen.getByLabelText('Mã OTP');
+    await user.type(otp, '123456');
+    await user.keyboard('{Enter}');
+    expect(await screen.findByRole('heading', { name: 'Mật khẩu mới' })).toBeInTheDocument();
+
+    const password = screen.getByLabelText('Mật khẩu mới');
+    await user.type(password, 'strong-password-123');
+    await user.type(screen.getByLabelText('Nhập lại mật khẩu'), 'strong-password-123');
+    await user.keyboard('{Enter}');
+
+    expect(await screen.findByText('Thành công!')).toBeInTheDocument();
+    expect(requests).toBe(2);
+  });
+
+  it('reports a request-code failure without advancing the flow', async () => {
+    let requests = 0;
+    server.use(
+      http.post('*/auth/password-reset/request', () => {
+        requests += 1;
+        return requests === 1 ? HttpResponse.error() : new HttpResponse(null, { status: 204 });
+      }),
     );
     const user = userEvent.setup();
     renderWithProviders(<ForgotPasswordContractPage />);
@@ -98,6 +138,27 @@ describe('password reset contract flow', () => {
     expect(await screen.findByRole('heading', { name: 'Nhập mã OTP' })).toBeInTheDocument();
     expect(screen.queryByRole('alert')).not.toBeInTheDocument();
     expect(requests).toBe(2);
+  });
+
+  it('blocks malformed email before sending a reset request', async () => {
+    let requestCount = 0;
+    server.use(
+      http.post('*/auth/password-reset/request', () => {
+        requestCount += 1;
+        return new HttpResponse(null, { status: 204 });
+      }),
+    );
+
+    const user = userEvent.setup();
+    renderWithProviders(<ForgotPasswordContractPage />);
+
+    const email = screen.getByLabelText('Email đăng ký');
+    await user.type(email, 'not-an-email');
+    expect(email).toBeInvalid();
+    await user.click(screen.getByRole('button', { name: 'Gửi mã xác minh' }));
+
+    expect(requestCount).toBe(0);
+    expect(screen.getByRole('heading', { name: 'Đặt lại mật khẩu' })).toBeInTheDocument();
   });
 
   it('filters OTP input to six digits and reports a rejected code', async () => {

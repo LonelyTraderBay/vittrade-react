@@ -89,9 +89,7 @@ export function LeftRail() {
                 >
                   <Icon size={20} color="#fff" strokeWidth={2.5} />
                 </div>
-                <span style={{ fontSize: 9, color: isActive ? '#3B82F6' : c.text3 }}>
-                  {item.label}
-                </span>
+                <span style={{ fontSize: 9, color: c.text1 }}>{item.label}</span>
               </button>
             );
           }
@@ -114,7 +112,7 @@ export function LeftRail() {
               <span
                 style={{
                   fontSize: 9,
-                  color: isActive ? '#3B82F6' : c.navInactive,
+                  color: isActive ? c.text1 : c.navInactive,
                   fontWeight: isActive ? 600 : 400,
                 }}
               >

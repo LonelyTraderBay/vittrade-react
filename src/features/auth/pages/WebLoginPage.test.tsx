@@ -91,13 +91,19 @@ describe('WebLoginPage', () => {
   it('validates fields on submit and blur, and reveals or hides the password', async () => {
     const user = userEvent.setup();
     const login = vi.fn(testAuthAdapter.login);
-    renderWithProviders(<WebLoginPage />, {
-      routerProps: { initialEntries: ['/w/auth/login'] },
-      authAdapter: { ...testAuthAdapter, initialSession: null, login },
-    });
+    renderWithProviders(
+      <>
+        <WebLoginPage />
+        <CurrentRoute />
+      </>,
+      {
+        routerProps: { initialEntries: ['/w/auth/login'] },
+        authAdapter: { ...testAuthAdapter, initialSession: null, login },
+      },
+    );
 
     await user.click(screen.getByTestId('auth-submit'));
-    expect(screen.getByText('Vui lòng nhập email hoặc số điện thoại.')).toBeInTheDocument();
+    expect(screen.getByText('Vui lòng nhập email.')).toBeInTheDocument();
     expect(login).not.toHaveBeenCalled();
 
     const email = screen.getByTestId('auth-email');
@@ -119,6 +125,61 @@ describe('WebLoginPage', () => {
     expect(password).toHaveAttribute('type', 'text');
     await user.click(screen.getByRole('button', { name: 'Ẩn mật khẩu' }));
     expect(password).toHaveAttribute('type', 'password');
+  });
+
+  it('exposes accessible names and links email validation to its field', async () => {
+    const user = userEvent.setup();
+    renderWithProviders(<WebLoginPage />, {
+      routerProps: { initialEntries: ['/w/auth/login'] },
+      authAdapter: { ...testAuthAdapter, initialSession: null },
+    });
+
+    const email = screen.getByRole('textbox', { name: 'Email' });
+    const password = screen.getByLabelText('Mật khẩu');
+    expect(email).toHaveAttribute('type', 'email');
+    expect(password).toHaveAttribute('type', 'password');
+
+    await user.type(email, 'invalid-email');
+    await user.tab();
+
+    expect(email).toHaveAttribute('aria-invalid', 'true');
+    expect(email).toHaveAccessibleDescription('Định dạng email không hợp lệ');
+  });
+
+  it('submits from the email field and password field with Enter', async () => {
+    const user = userEvent.setup();
+    const login = vi.fn(async () => ({
+      status: 'authenticated' as const,
+      session: testAuthAdapter.initialSession!,
+    }));
+    renderWithProviders(
+      <>
+        <WebLoginPage />
+        <CurrentRoute />
+      </>,
+      {
+        routerProps: { initialEntries: ['/w/auth/login'] },
+        authAdapter: { ...testAuthAdapter, initialSession: null, login },
+      },
+    );
+
+    const email = screen.getByRole('textbox', { name: 'Email' });
+    const password = screen.getByLabelText('Mật khẩu');
+    await user.type(email, 'keyboard@example.com');
+    await user.keyboard('{Enter}');
+
+    expect(await screen.findByText('Vui lòng nhập mật khẩu.')).toBeInTheDocument();
+    expect(login).not.toHaveBeenCalled();
+
+    await user.type(password, 'correct-password');
+    await user.keyboard('{Enter}');
+
+    await waitFor(() => expect(screen.getByTestId('current-path')).toHaveTextContent('/w/home'));
+    expect(login).toHaveBeenCalledTimes(1);
+    expect(login).toHaveBeenCalledWith({
+      email: 'keyboard@example.com',
+      password: 'correct-password',
+    });
   });
 
   it('navigates to password recovery', async () => {
@@ -237,6 +298,33 @@ describe('WebLoginPage', () => {
       await screen.findByText('Không thể đăng nhập lúc này. Vui lòng thử lại.'),
     ).toBeInTheDocument();
     expect(screen.getByTestId('current-path')).toHaveTextContent('/w/auth/login');
+  });
+
+  it('describes contract HTTP 401 as failed authentication, not a temporary login failure', async () => {
+    const user = userEvent.setup();
+    const login = vi.fn().mockRejectedValue(new ApiError('unauthorized', { status: 401 }));
+    renderWithProviders(
+      <>
+        <WebLoginPage />
+        <CurrentRoute />
+      </>,
+      {
+        routerProps: { initialEntries: ['/w/auth/login'] },
+        authAdapter: { ...testAuthAdapter, initialSession: null, login },
+      },
+    );
+
+    await user.type(screen.getByTestId('auth-email'), 'user@example.com');
+    await user.type(screen.getByTestId('auth-password'), 'incorrect-password');
+    await user.click(screen.getByTestId('auth-submit'));
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'Đăng nhập thất bại. Vui lòng kiểm tra thông tin và thử lại.',
+    );
+    expect(screen.getByTestId('current-path')).toHaveTextContent('/w/auth/login');
+    expect(screen.getByTestId('auth-email')).toHaveValue('user@example.com');
+    expect(screen.getByTestId('auth-password')).toHaveValue('incorrect-password');
+    expect(login).toHaveBeenCalledTimes(1);
   });
 
   it('completes the demo login only through its development control', async () => {

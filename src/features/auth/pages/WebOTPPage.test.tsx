@@ -40,6 +40,39 @@ function pasteCode(input: HTMLInputElement, code: string) {
 }
 
 describe('WebOTPPage login MFA challenge', () => {
+  it('does not expose unavailable pre-auth help destinations as inert controls', () => {
+    renderWebOTP(challengeState);
+
+    expect(screen.getByText('hỗ trợ', { exact: true })).toBeInTheDocument();
+    expect(screen.getByText('Liên hệ hỗ trợ', { exact: true })).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'hỗ trợ' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Liên hệ hỗ trợ' })).not.toBeInTheDocument();
+  });
+
+  it('labels each OTP digit and associates validation errors with the fields', async () => {
+    const user = userEvent.setup();
+    const verifyLoginMfa = vi.fn().mockRejectedValue(new ApiError('invalid code', { status: 400 }));
+    renderWebOTP(challengeState, { verifyLoginMfa });
+
+    const group = screen.getByRole('group', { name: 'Mã xác thực gồm 6 chữ số' });
+    expect(group).toHaveAttribute('aria-describedby', 'otp-instructions');
+    const inputs = Array.from({ length: 6 }, (_, index) =>
+      screen.getByRole('textbox', {
+        name: `Mã xác thực, chữ số ${index + 1} trên 6`,
+      }),
+    );
+
+    await user.click(inputs[0]);
+    await user.paste('111111');
+
+    const error = await screen.findByRole('alert');
+    expect(error).toHaveTextContent('Mã xác thực không đúng. Vui lòng kiểm tra lại.');
+    for (const input of inputs) {
+      expect(input).toHaveAttribute('aria-invalid', 'true');
+      expect(input).toHaveAttribute('aria-describedby', error.id);
+    }
+  });
+
   it('advances focus, supports keyboard navigation and verifies six entered digits', async () => {
     const user = userEvent.setup();
     const verifyLoginMfa = vi.fn(async () => testAuthAdapter.initialSession!);
@@ -59,6 +92,7 @@ describe('WebOTPPage login MFA challenge', () => {
     await user.type(inputs[2], '3');
     await user.type(inputs[3], '4');
     await user.type(inputs[4], '5');
+    expect(verifyLoginMfa).not.toHaveBeenCalled();
     await user.type(inputs[5], '6');
 
     await waitFor(() =>
@@ -462,6 +496,44 @@ describe('WebOTPPage login MFA challenge', () => {
     await waitFor(() =>
       expect(screen.getByTestId('current-path')).toHaveTextContent('/w/auth/account-locked'),
     );
+  });
+
+  it('keeps registration verification recoverable after an unauthorized response', async () => {
+    const user = userEvent.setup();
+    const verifyMfa = vi
+      .fn()
+      .mockRejectedValue(new ApiError('pending session missing', { status: 401 }));
+    renderWebOTP(
+      {
+        challengeId: 'registration-challenge-unauthorized',
+        channel: 'email',
+        maskedDestination: 'n***@example.com',
+        expiresAt: '2099-01-01T00:05:00.000Z',
+        purpose: 'register',
+      },
+      { verifyMfa },
+    );
+
+    const inputs = document.querySelectorAll<HTMLInputElement>('input[maxlength="1"]');
+    await user.click(inputs[0]);
+    await user.paste('111111');
+
+    expect(
+      await screen.findByText('Không thể xác minh lúc này. Vui lòng thử lại.'),
+    ).toBeInTheDocument();
+    expect(verifyMfa).toHaveBeenCalledWith({
+      challengeId: 'registration-challenge-unauthorized',
+      code: '111111',
+      purpose: 'register',
+    });
+    expect(screen.getByTestId('current-path')).toHaveTextContent('/w/auth/otp');
+    expect(
+      screen.queryByText('Mã xác thực không đúng. Vui lòng kiểm tra lại.'),
+    ).not.toBeInTheDocument();
+    expect(screen.queryByText('Xác thực thành công!')).not.toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: 'Quay lại đăng ký để thử lại' }));
+    expect(screen.getByTestId('current-path')).toHaveTextContent('/w/auth/register');
   });
 
   it('explains rate limits without labeling the code invalid', async () => {

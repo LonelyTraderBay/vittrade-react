@@ -187,6 +187,7 @@ export function TabletSidebar() {
                     key={item.path}
                     onClick={() => navigate(item.path)}
                     className="relative flex items-center gap-3 rounded-xl transition-colors"
+                    aria-label={item.label}
                     style={{
                       height: 48,
                       paddingLeft: expanded ? 14 : 0,
@@ -269,6 +270,7 @@ export function TabletSidebar() {
               key={item.path}
               onClick={() => navigate(item.path)}
               className="flex items-center gap-3 rounded-xl transition-colors"
+              aria-label={item.label}
               style={{
                 height: 42,
                 paddingLeft: expanded ? 14 : 0,

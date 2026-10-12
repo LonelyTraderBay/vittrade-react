@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import { Outlet } from 'react-router';
+import { Outlet, useLocation } from 'react-router';
 import { ResponsiveBottomNav } from './ResponsiveBottomNav';
 import { LeftRail } from './LeftRail';
 import { StatusBar } from './StatusBar';
@@ -37,6 +37,8 @@ interface ResponsiveShellProps {
 }
 
 export function ResponsiveAppLayout({ desktopMode = 'adaptive' }: ResponsiveShellProps) {
+  const location = useLocation();
+  const isAuthRoute = /^\/r\/auth(?:\/|$)/.test(location.pathname);
   const { isTablet, isDesktop } = useBreakpoint();
   const { isOffline } = useUI();
   const c = useThemeColors();
@@ -67,7 +69,7 @@ export function ResponsiveAppLayout({ desktopMode = 'adaptive' }: ResponsiveShel
                   Offline
                 </span>
               )}
-              <span style={{ color: c.text3, fontSize: 12 }}>v2.4.1</span>
+              <span style={{ color: c.text1, fontSize: 12 }}>v2.4.1</span>
             </div>
           </div>
 
@@ -108,7 +110,7 @@ export function ResponsiveAppLayout({ desktopMode = 'adaptive' }: ResponsiveShel
           }}
         >
           <div className="flex flex-col h-full">
-            <StatusBar />
+            {!isAuthRoute && <StatusBar />}
             {isOffline && (
               <div
                 className="flex items-center justify-center gap-2 py-1.5 text-xs font-medium"
@@ -138,7 +140,7 @@ export function ResponsiveAppLayout({ desktopMode = 'adaptive' }: ResponsiveShel
         className="relative flex flex-col h-screen overflow-hidden"
         style={{ background: c.bg, overscrollBehavior: 'none' }}
       >
-        <StatusBar />
+        {!isAuthRoute && <StatusBar />}
         {isOffline && (
           <div
             className="flex items-center justify-center gap-2 py-1.5 text-xs font-medium"
@@ -174,7 +176,7 @@ export function ResponsiveAppLayout({ desktopMode = 'adaptive' }: ResponsiveShel
       className="relative flex flex-col overflow-hidden"
       style={{ width: '100%', height: '100dvh', overscrollBehavior: 'none', background: c.bg }}
     >
-      <StatusBar />
+      {!isAuthRoute && <StatusBar />}
       {isOffline && (
         <div
           className="flex items-center justify-center gap-2 py-1.5 text-xs font-medium"

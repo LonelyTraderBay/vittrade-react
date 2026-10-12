@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router';
 import { Timer, ArrowRight, Shield, Info, LogIn, RefreshCw } from 'lucide-react';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
@@ -44,8 +44,7 @@ const REASON_CONFIG: Record<
     icon: Timer,
     iconColor: '#F59E0B',
     tipTitle: 'Vì sao phiên hết hạn?',
-    tipBody:
-      'Để bảo vệ tài khoản, hệ thống tự động đăng xuất sau một khoảng thời gian không hoạt động. Bạn có thể điều chỉnh thời gian phiên trong cài đặt bảo mật.',
+    tipBody: 'Nếu bạn cho rằng phiên kết thúc ngoài dự kiến, hãy liên hệ bộ phận hỗ trợ.',
   },
   token: {
     title: 'Phiên đăng nhập đã hết hạn',
@@ -78,10 +77,24 @@ const REASON_CONFIG: Record<
   },
 };
 
+const FALLBACK_CONFIG: (typeof REASON_CONFIG)[ExpiredReason] = {
+  title: 'Phiên đăng nhập cần được xác thực lại',
+  description: 'Vui lòng đăng nhập lại để tiếp tục. Nếu bạn gặp sự cố, hãy liên hệ bộ phận hỗ trợ.',
+  icon: Shield,
+  iconColor: '#3B82F6',
+  tipTitle: 'Cần trợ giúp?',
+  tipBody: 'Nếu bạn gặp sự cố khi đăng nhập lại, hãy liên hệ bộ phận hỗ trợ.',
+};
+
 export function WebSessionExpiredPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const c = useThemeColors();
+  const headingRef = useRef<HTMLHeadingElement>(null);
+
+  useEffect(() => {
+    headingRef.current?.focus();
+  }, []);
 
   const state = location.state as {
     email?: string;
@@ -90,9 +103,12 @@ export function WebSessionExpiredPage() {
   } | null;
 
   const email = state?.email || '';
-  const reason = (state?.reason || 'timeout') as ExpiredReason;
+  const reason = state?.reason;
   const returnTo = state?.returnTo || '/w/home';
-  const config = REASON_CONFIG[reason] || REASON_CONFIG.timeout;
+  const config =
+    reason && Object.prototype.hasOwnProperty.call(REASON_CONFIG, reason)
+      ? REASON_CONFIG[reason as ExpiredReason]
+      : FALLBACK_CONFIG;
 
   const [showTip, setShowTip] = useState(false);
 
@@ -145,6 +161,8 @@ export function WebSessionExpiredPage() {
           </div>
 
           <h1
+            ref={headingRef}
+            tabIndex={-1}
             style={{
               color: c.text1,
               fontSize: WEB_FONT['2xl'],
@@ -180,7 +198,7 @@ export function WebSessionExpiredPage() {
               marginBottom: 24,
             }}
           >
-            <span style={{ color: c.text3, fontSize: WEB_FONT.sm }}>Tài khoản:</span>
+            <span style={{ color: c.text2, fontSize: WEB_FONT.sm }}>Tài khoản:</span>
             <span style={{ color: c.text1, fontSize: WEB_FONT.md, fontWeight: 500 }}>
               {maskEmail(email)}
             </span>
@@ -201,7 +219,7 @@ export function WebSessionExpiredPage() {
           >
             <Info size={16} color="#3B82F6" className="shrink-0" />
             <p style={{ color: c.text2, fontSize: WEB_FONT.sm, lineHeight: 1.4 }}>
-              Bạn sẽ được chuyển về trang trước đó sau khi đăng nhập thành công.
+              Vui lòng đăng nhập lại để tiếp tục sử dụng VitTrade.
             </p>
           </div>
         )}
@@ -260,7 +278,7 @@ export function WebSessionExpiredPage() {
               borderRadius: 10,
               width: '100%',
               background: 'rgba(239,68,68,0.06)',
-              color: '#EF4444',
+              color: c.errorText,
               fontSize: WEB_FONT.md,
               fontWeight: 600,
               cursor: 'pointer',
@@ -277,9 +295,10 @@ export function WebSessionExpiredPage() {
         <div style={{ marginTop: 12 }}>
           <button
             onClick={() => setShowTip(!showTip)}
+            aria-expanded={showTip}
             className="flex items-center gap-2"
             style={{
-              color: c.text3,
+              color: c.text2,
               fontSize: WEB_FONT.sm,
               background: 'none',
               border: 'none',
@@ -312,7 +331,13 @@ export function WebSessionExpiredPage() {
                 border: `1px solid ${c.borderSolid}`,
               }}
             >
-              <p style={{ color: c.text2, fontSize: WEB_FONT.sm, lineHeight: 1.6 }}>
+              <p
+                style={{
+                  color: c.text2,
+                  fontSize: WEB_FONT.sm,
+                  lineHeight: 1.6,
+                }}
+              >
                 {config.tipBody}
               </p>
 
@@ -339,7 +364,7 @@ export function WebSessionExpiredPage() {
                   </p>
                   <ul
                     style={{
-                      color: c.text3,
+                      color: c.text2,
                       fontSize: WEB_FONT.xs,
                       lineHeight: 1.7,
                       paddingLeft: 16,
@@ -359,33 +384,9 @@ export function WebSessionExpiredPage() {
 
         {/* Footer */}
         <div style={{ marginTop: 40, textAlign: 'center' }}>
-          <p style={{ color: c.text3, fontSize: WEB_FONT.xs, lineHeight: 1.5 }}>
-            Cần trợ giúp?{' '}
-            <button
-              className="hover:underline"
-              style={{
-                color: '#3B82F6',
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                fontWeight: 500,
-              }}
-            >
-              Liên hệ hỗ trợ
-            </button>{' '}
-            ·{' '}
-            <button
-              className="hover:underline"
-              style={{
-                color: '#3B82F6',
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                fontWeight: 500,
-              }}
-            >
-              Trung tâm trợ giúp
-            </button>
+          <p style={{ color: c.text2, fontSize: WEB_FONT.xs, lineHeight: 1.5 }}>
+            Cần trợ giúp? <span style={{ color: c.text2, fontWeight: 500 }}>Liên hệ hỗ trợ</span> ·{' '}
+            <span style={{ color: c.text2, fontWeight: 500 }}>Trung tâm trợ giúp</span>
           </p>
         </div>
       </WebAuthFormShell>

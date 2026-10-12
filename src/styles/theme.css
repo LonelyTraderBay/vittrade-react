@@ -52,8 +52,10 @@
   --tr-primary-soft: #f5a524;
   --tr-buy: #10b981;
   --tr-buy-dark: #059669;
+  --tr-success-text: #34d399;
   --tr-sell: #ef4444;
   --tr-sell-dark: #dc2626;
+  --tr-error-text: #f87171;
   --tr-warn: #f0a63a;
   --tr-caution: #f59e0b;
   --tr-info: #3b82f6;
@@ -76,7 +78,7 @@
   --tr-status-bar-battery: #34d399;
   --tr-nav-bg: rgba(7, 9, 13, 0.95);
   --tr-nav-border: rgba(255, 255, 255, 0.06);
-  --tr-nav-inactive: #667085;
+  --tr-nav-inactive: #a7afbf;
   --tr-nav-active: #e58a00;
   --tr-nav-center-bg: linear-gradient(135deg, #e58a00 0%, #b96000 100%);
   --tr-nav-center-icon: #ffffff;
@@ -332,7 +334,9 @@
   --tr-border: rgba(255, 255, 255, 0.06);
   --tr-primary: #e58a00;
   --tr-buy: #10b981;
+  --tr-success-text: #34d399;
   --tr-sell: #ef4444;
+  --tr-error-text: #f87171;
   --tr-warn: #f0a63a;
   --tr-link: #60a5fa;
   --tr-accent: #8b5cf6;
@@ -396,8 +400,11 @@
   --tr-border: rgba(0, 0, 0, 0.06);
   --tr-primary: #e58a00;
   --tr-buy: #10b981;
+  --tr-success-text: #064e3b;
   --tr-sell: #ef4444;
+  --tr-error-text: #b91c1c;
   --tr-warn: #f0a63a;
+  --tr-warning-text: #92400e;
   --tr-link: #1d4ed8;
   --tr-accent: #8b5cf6;
   --tr-text-1: #111827;
@@ -418,7 +425,7 @@
   --tr-status-bar-battery: #34d399;
   --tr-nav-bg: rgba(255, 255, 255, 0.97);
   --tr-nav-border: rgba(0, 0, 0, 0.06);
-  --tr-nav-inactive: #9ca3af;
+  --tr-nav-inactive: #5d687d;
   --tr-nav-active: #e58a00;
   --tr-nav-center-bg: linear-gradient(135deg, #e58a00 0%, #b96000 100%);
   --tr-nav-center-icon: #ffffff;
@@ -927,6 +934,11 @@
     transition:
       box-shadow var(--tr-duration-normal) ease,
       border-color var(--tr-duration-normal) ease;
+  }
+
+  input[aria-invalid='true']:focus,
+  textarea[aria-invalid='true']:focus {
+    border-color: var(--input-border-error) !important;
   }
 }
 
