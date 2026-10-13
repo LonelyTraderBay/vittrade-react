@@ -18,14 +18,19 @@ import { captureException } from '../../shared/telemetry/telemetry';
 
 function getErrorMessage(error: unknown): { title: string; detail: string } {
   if (isRouteErrorResponse(error)) {
-    const title = `${error.status} — ${error.statusText || 'Lỗi định tuyến'}`;
+    const title = `${error.status} — ${env.isDev ? error.statusText || 'Lỗi định tuyến' : 'Lỗi định tuyến'}`;
     if (error.status === 404) {
       return { title, detail: 'Trang bạn tìm không tồn tại hoặc đã bị di chuyển.' };
     }
     return { title, detail: 'Yêu cầu không thể hoàn tất. Vui lòng thử lại.' };
   }
   if (error instanceof Error) {
-    return { title: 'Lỗi hiển thị trang', detail: error.message };
+    return {
+      title: 'Lỗi hiển thị trang',
+      detail: env.isDev
+        ? error.message
+        : 'Trang gặp sự cố. Vui lòng thử lại hoặc quay về trang trước.',
+    };
   }
   return { title: 'Lỗi không xác định', detail: 'Đã xảy ra sự cố ngoài dự kiến.' };
 }

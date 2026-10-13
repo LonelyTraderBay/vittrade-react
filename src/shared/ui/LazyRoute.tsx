@@ -113,7 +113,7 @@ class LazyErrorBoundary extends Component<EBProps, EBState> {
       release: env.releaseVersion,
       metadata: { componentStack: info.componentStack },
     });
-    console.error('[LazyRoute] Render error:', error, info);
+    if (env.isDev) console.error('[LazyRoute] Render error:', error, info);
   }
 
   render() {
