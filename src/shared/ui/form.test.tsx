@@ -1,6 +1,6 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { useForm } from 'react-hook-form';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import {
   Form,
   FormControl,
@@ -11,7 +11,15 @@ import {
   FormMessage,
 } from './form';
 
-function EmailForm({ onSubmit }: { onSubmit: (values: { email: string }) => void }) {
+afterEach(() => vi.restoreAllMocks());
+
+function EmailForm({
+  onSubmit,
+  required = 'Email is required',
+}: {
+  onSubmit: (values: { email: string }) => void;
+  required?: string | boolean;
+}) {
   const methods = useForm<{ email: string }>({ defaultValues: { email: '' } });
 
   return (
@@ -20,7 +28,7 @@ function EmailForm({ onSubmit }: { onSubmit: (values: { email: string }) => void
         <FormField
           control={methods.control}
           name="email"
-          rules={{ required: 'Email is required' }}
+          rules={{ required }}
           render={({ field }) => (
             <FormItem>
               <FormLabel>Email</FormLabel>
@@ -39,6 +47,45 @@ function EmailForm({ onSubmit }: { onSubmit: (values: { email: string }) => void
 }
 
 describe('shared form primitives', () => {
+  it('marks an invalid field without rendering an empty error message', async () => {
+    render(<EmailForm onSubmit={vi.fn()} required />);
+    fireEvent.submit(screen.getByRole('button', { name: 'Save' }).closest('form')!);
+    await waitFor(() =>
+      expect(screen.getByRole('textbox', { name: 'Email' })).toHaveAttribute(
+        'aria-invalid',
+        'true',
+      ),
+    );
+    expect(document.querySelector('[data-slot="form-message"]')).not.toBeInTheDocument();
+  });
+
+  it.each([
+    { missing: 'field', message: 'useFormField should be used within <FormField>' },
+    { missing: 'item', message: 'useFormField should be used within <FormItem>' },
+    { missing: 'form', message: 'useFormField should be used within <Form>' },
+  ])('fails clearly when its $missing owner is absent', ({ missing, message }) => {
+    vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    function BrokenForm() {
+      const methods = useForm({ defaultValues: { email: '' } });
+      const label = <FormLabel>Email</FormLabel>;
+      if (missing === 'field')
+        return (
+          <Form {...methods}>
+            <FormItem>{label}</FormItem>
+          </Form>
+        );
+      const field = (
+        <FormField
+          control={methods.control}
+          name="email"
+          render={() => (missing === 'item' ? label : <FormItem>{label}</FormItem>)}
+        />
+      );
+      return missing === 'form' ? field : <Form {...methods}>{field}</Form>;
+    }
+    expect(() => render(<BrokenForm />)).toThrow(message);
+  });
+
   it('connects the label and description to the field and displays validation errors', async () => {
     const onSubmit = vi.fn();
     render(<EmailForm onSubmit={onSubmit} />);

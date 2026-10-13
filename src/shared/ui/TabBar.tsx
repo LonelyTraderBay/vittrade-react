@@ -120,6 +120,9 @@ export function TabBar<T extends string>({
           e.key === 'ArrowRight'
             ? (currentIndex + 1) % normalizedTabs.length
             : (currentIndex - 1 + normalizedTabs.length) % normalizedTabs.length;
+        const tabButtons =
+          e.currentTarget.parentElement!.querySelectorAll<HTMLButtonElement>('[role="tab"]');
+        tabButtons[nextIndex].focus();
         handleSelect(normalizedTabs[nextIndex].id as T);
       }
     },

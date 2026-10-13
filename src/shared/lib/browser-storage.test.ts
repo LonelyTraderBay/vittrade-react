@@ -55,9 +55,12 @@ describe('browserStorage', () => {
 
     expect(browserStorage.session.getItem('tour_seen')).toBe('1');
     expect(browserStorage.local.getItem('tour_seen')).toBeNull();
+    expect(browserStorage.local.isStorageArea(window.localStorage)).toBe(true);
+    expect(browserStorage.local.isStorageArea(window.sessionStorage)).toBe(false);
   });
 
   it('returns safe fallbacks when browser storage access is denied', () => {
+    const previousStorage = window.localStorage;
     Object.defineProperty(window, 'localStorage', {
       configurable: true,
       get() {
@@ -68,6 +71,7 @@ describe('browserStorage', () => {
     expect(browserStorage.local.getItem('preference')).toBeNull();
     expect(browserStorage.local.setItem('preference', 'compact')).toBe(false);
     expect(browserStorage.local.removeItem('preference')).toBe(false);
+    expect(browserStorage.local.isStorageArea(previousStorage)).toBe(false);
   });
 
   it('isolates failures from storage methods after browser storage has been resolved', () => {
