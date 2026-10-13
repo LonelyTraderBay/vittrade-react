@@ -119,7 +119,7 @@ export function TradingMarketPanel({
           <span style={{ color: '#8B5CF6', fontSize: φ.xs, fontWeight: 600 }}>Mua định kỳ</span>
         </button>
         <button
-          onClick={() => navigate(`${routePrefix}/trade/${pair.id}/futures`)}
+          onClick={() => navigate(`${routePrefix}/trade/${encodeURIComponent(pair.id)}/futures`)}
           className="flex items-center gap-1.5 px-3 py-2 rounded-lg hover-chip shrink-0"
           style={{ background: c.surface2, border: `1px solid ${c.borderSolid}` }}
         >

@@ -85,7 +85,7 @@ export function TokenInfoPage() {
             <SparklineChart data={pair.sparklineData} isPositive={positive} />
           </div>
           <button
-            onClick={() => navigate(`${prefix}/trade/${pair.id}`)}
+            onClick={() => navigate(`${prefix}/trade/${encodeURIComponent(pair.id)}`)}
             className="w-full mt-3 rounded-xl py-3"
             style={{ background: '#3B82F6', color: '#fff', fontSize: 12, fontWeight: 700 }}
           >

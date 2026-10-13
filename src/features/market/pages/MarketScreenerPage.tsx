@@ -118,7 +118,7 @@ export function MarketScreenerPage() {
                 key={pair.id}
                 pair={pair}
                 rank={index + 1}
-                onClick={() => navigate(`${prefix}/pair/${pair.id}`)}
+                onClick={() => navigate(`${prefix}/pair/${encodeURIComponent(pair.id)}`)}
               />
             ))
           )}

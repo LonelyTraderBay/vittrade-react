@@ -202,7 +202,9 @@ export function WalletOverviewContractPage() {
                 asset={asset}
                 hidden={balanceHidden}
                 last={index === filteredAssets.length - 1}
-                onClick={() => navigate(`${shellPrefix}/wallet/asset/${asset.id}`)}
+                onClick={() =>
+                  navigate(`${shellPrefix}/wallet/asset/${encodeURIComponent(asset.id)}`)
+                }
               />
             ))
           )}

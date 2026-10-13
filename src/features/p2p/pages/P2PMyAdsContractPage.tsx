@@ -159,7 +159,7 @@ export function P2PMyAdsContractPage() {
                 key={ad.id}
                 ad={ad}
                 colors={colors}
-                onOpen={() => navigate(`${prefix}/p2p/ad/${ad.id}`)}
+                onOpen={() => navigate(`${prefix}/p2p/ad/${encodeURIComponent(ad.id)}`)}
                 onToggle={() => void updateStatus(ad)}
                 onDelete={() => setDeleteId(ad.id)}
                 canWrite={canWriteAds}

@@ -319,7 +319,7 @@ function SectorDetail({
             {topPairs.map((pair) => (
               <button
                 key={pair.id}
-                onClick={() => navigate(`${prefix}/pair/${pair.id}`)}
+                onClick={() => navigate(`${prefix}/pair/${encodeURIComponent(pair.id)}`)}
                 className="flex items-center gap-2 py-3 w-full"
                 style={{ borderBottom: `1px solid ${colors.divider}` }}
               >

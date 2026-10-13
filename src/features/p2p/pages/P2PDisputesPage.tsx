@@ -164,7 +164,7 @@ export function P2PDisputesPage() {
                   className="p-4 w-full text-left"
                   onClick={() => {
                     hapticSelection();
-                    navigate(`${prefix}/p2p/dispute/detail/${dispute.id}`);
+                    navigate(`${prefix}/p2p/dispute/detail/${encodeURIComponent(dispute.id)}`);
                   }}
                 >
                   <div className="flex items-start justify-between mb-2.5">

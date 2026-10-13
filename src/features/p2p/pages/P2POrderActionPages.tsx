@@ -169,7 +169,7 @@ export function P2POrderCancelContractPage() {
                   request: { reason },
                   idempotencyKey: crypto.randomUUID(),
                 });
-                navigate(`${prefix}/p2p/order/${order.id}`, { replace: true });
+                navigate(`${prefix}/p2p/order/${encodeURIComponent(order.id)}`, { replace: true });
               } catch {
                 // The mutation state renders the inline error; stay on the form so it can be retried.
               }

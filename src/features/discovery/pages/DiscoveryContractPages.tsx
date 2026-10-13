@@ -81,7 +81,7 @@ function PredictionResult({ item }: { item: DiscoveryPrediction }) {
     <button
       type="button"
       className="text-left"
-      onClick={() => navigate(`${prefix}/markets/predictions/event/${item.id}`)}
+      onClick={() => navigate(`${prefix}/markets/predictions/event/${encodeURIComponent(item.id)}`)}
     >
       <TrCard className="p-3.5">
         <ModuleLabel type="prediction" />
@@ -109,7 +109,9 @@ function ArenaResult({ item }: { item: DiscoveryArenaMode | DiscoveryArenaRoom }
       type="button"
       className="text-left"
       onClick={() =>
-        navigate(`${prefix}/arena/${isMode ? `mode/${item.id}` : `challenge/${item.id}`}`)
+        navigate(
+          `${prefix}/arena/${isMode ? `mode/${encodeURIComponent(item.id)}` : `challenge/${encodeURIComponent(item.id)}`}`,
+        )
       }
     >
       <TrCard className="p-3.5">

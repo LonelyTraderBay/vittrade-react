@@ -182,7 +182,7 @@ export function P2POrdersContractPage() {
               <OrderCard
                 key={order.id}
                 order={order}
-                onClick={() => navigate(`${shellPrefix}/p2p/order/${order.id}`)}
+                onClick={() => navigate(`${shellPrefix}/p2p/order/${encodeURIComponent(order.id)}`)}
               />
             ))}
           </div>

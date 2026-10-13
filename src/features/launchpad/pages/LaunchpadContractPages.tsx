@@ -91,7 +91,7 @@ export function LaunchpadContractPage() {
             <ProjectCard
               key={project.id}
               project={project}
-              onOpen={() => navigate(`${prefix}/launchpad/${project.id}`)}
+              onOpen={() => navigate(`${prefix}/launchpad/${encodeURIComponent(project.id)}`)}
             />
           ))
         )}

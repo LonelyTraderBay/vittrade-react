@@ -107,7 +107,7 @@ export function P2PChatPage() {
           </div>
           <button
             type="button"
-            onClick={() => navigate(`${prefix}/p2p/order/${order.id}`)}
+            onClick={() => navigate(`${prefix}/p2p/order/${encodeURIComponent(order.id)}`)}
             aria-label="Open P2P order"
             className="rounded-lg px-2.5 py-1.5 text-xs"
             style={{ background: colors.primaryAlpha12, color: colors.primary }}

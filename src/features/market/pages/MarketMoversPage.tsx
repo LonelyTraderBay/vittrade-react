@@ -151,7 +151,7 @@ export function MarketMoversPage() {
                   mover={mover}
                   rank={index + 1}
                   view={view}
-                  onClick={() => navigate(`${prefix}/pair/${mover.id}`)}
+                  onClick={() => navigate(`${prefix}/pair/${encodeURIComponent(mover.id)}`)}
                 />
               ))
             )}

@@ -192,7 +192,7 @@ export function MarketOverviewPage() {
             icon={TrendingUp}
             movers={topGainers}
             onNavigate={() => navigate(`${prefix}/markets/movers`)}
-            onPair={(mover) => navigate(`${prefix}/pair/${mover.id}`)}
+            onPair={(mover) => navigate(`${prefix}/pair/${encodeURIComponent(mover.id)}`)}
           />
           <MoverCard
             title="Giảm mạnh"
@@ -200,7 +200,7 @@ export function MarketOverviewPage() {
             icon={TrendingDown}
             movers={topLosers}
             onNavigate={() => navigate(`${prefix}/markets/movers`)}
-            onPair={(mover) => navigate(`${prefix}/pair/${mover.id}`)}
+            onPair={(mover) => navigate(`${prefix}/pair/${encodeURIComponent(mover.id)}`)}
           />
         </div>
 
@@ -210,7 +210,9 @@ export function MarketOverviewPage() {
               <SectorRow
                 key={sector.id}
                 sector={sector}
-                onClick={() => navigate(`${prefix}/markets/sectors?id=${sector.id}`)}
+                onClick={() =>
+                  navigate(`${prefix}/markets/sectors?id=${encodeURIComponent(sector.id)}`)
+                }
               />
             ))}
             <button

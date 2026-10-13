@@ -363,7 +363,9 @@ export function WalletAssetDetailPage({
             return (
               <button
                 key={tx.id}
-                onClick={() => navigate(`${prefix}/wallet/transaction/${tx.id}`)}
+                onClick={() =>
+                  navigate(`${prefix}/wallet/transaction/${encodeURIComponent(tx.id)}`)
+                }
                 className="w-full flex items-center gap-3 py-3"
                 style={{
                   borderBottom: i < assetTxs.length - 1 ? `1px solid ${c.divider}` : 'none',

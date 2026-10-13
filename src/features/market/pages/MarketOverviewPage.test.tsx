@@ -86,11 +86,53 @@ function LocationProbe() {
     <output data-testid="route-location">
       {location.pathname}
       {location.search}
+      {location.hash}
     </output>
   );
 }
 
 describe('MarketOverviewPage', () => {
+  it.each(['pair', 'sector'] as const)(
+    'preserves a %s identifier instead of treating it as URL syntax',
+    (kind) => {
+      const id = 'resource/a?b#c%&other=x';
+      useMarketOverviewQuery.mockReturnValue(
+        queryState({
+          data: {
+            ...overview,
+            topGainers: [{ ...overview.topGainers[0], id }],
+            sectors: [{ ...overview.sectors[0], id }],
+          },
+        }),
+      );
+      renderWithProviders(
+        <>
+          <MarketOverviewPage />
+          <LocationProbe />
+        </>,
+        {
+          routerProps: { initialEntries: ['/t/markets/overview'] },
+        },
+      );
+      fireEvent.click(
+        kind === 'pair'
+          ? screen.getByRole('button', { name: /BTC.*\+/ })
+          : screen.getByText('Layer 1'),
+      );
+      const route = screen.getByTestId('route-location').textContent!;
+      const url = new URL(route, 'https://frontend.test');
+      expect(url.hash).toBe('');
+      if (kind === 'pair') {
+        expect(url.search).toBe('');
+        expect(url.pathname).toBe(`/t/pair/${encodeURIComponent(id)}`);
+        expect(decodeURIComponent(url.pathname.split('/').at(-1)!)).toBe(id);
+      } else {
+        expect(url.pathname).toBe('/t/markets/sectors');
+        expect([...url.searchParams.entries()]).toEqual([['id', id]]);
+      }
+    },
+  );
+
   beforeEach(() => {
     useMarketOverviewQuery.mockReset();
   });

@@ -242,7 +242,10 @@ export function ArenaJoinContractPage() {
 
   const handleJoin = () => {
     join.mutate(undefined, {
-      onSuccess: () => navigate(`${prefix}/arena/challenge/${challenge.id}`, { replace: true }),
+      onSuccess: () =>
+        navigate(`${prefix}/arena/challenge/${encodeURIComponent(challenge.id)}`, {
+          replace: true,
+        }),
     });
   };
 

@@ -194,7 +194,7 @@ export function WatchlistPage() {
               <TrCard key={entry.id} className="mb-3 p-4">
                 <div className="flex items-center gap-3">
                   <button
-                    onClick={() => navigate(`${prefix}/pair/${pair.id}`)}
+                    onClick={() => navigate(`${prefix}/pair/${encodeURIComponent(pair.id)}`)}
                     className="w-11 h-11 rounded-full flex items-center justify-center shrink-0"
                     style={{ background: `${pair.logoColor}22` }}
                   >
@@ -203,7 +203,7 @@ export function WatchlistPage() {
                     </span>
                   </button>
                   <button
-                    onClick={() => navigate(`${prefix}/pair/${pair.id}`)}
+                    onClick={() => navigate(`${prefix}/pair/${encodeURIComponent(pair.id)}`)}
                     className="flex-1 min-w-0 text-left"
                   >
                     <p style={{ color: colors.text1, fontSize: 14, fontWeight: 700 }}>
@@ -267,7 +267,7 @@ export function WatchlistPage() {
                 )}
                 <div className="flex gap-2">
                   <button
-                    onClick={() => navigate(`${prefix}/trade/${pair.id}`)}
+                    onClick={() => navigate(`${prefix}/trade/${encodeURIComponent(pair.id)}`)}
                     className="flex-1 h-9 rounded-xl font-semibold"
                     style={{ background: '#3B82F6', color: '#fff', fontSize: 13 }}
                   >

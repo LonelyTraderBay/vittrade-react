@@ -327,7 +327,7 @@ export function P2PEscrowDetailPage() {
         <button
           type="button"
           aria-label="Open order detail"
-          onClick={() => navigate(`${prefix}/p2p/order/${order.id}`)}
+          onClick={() => navigate(`${prefix}/p2p/order/${encodeURIComponent(order.id)}`)}
           className="text-center py-2"
           style={{ color: colors.primary, fontSize: 12 }}
         >

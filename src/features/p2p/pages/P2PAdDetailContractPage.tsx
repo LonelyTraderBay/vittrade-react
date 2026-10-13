@@ -78,7 +78,7 @@ export function P2PAdDetailContractPage() {
         },
         idempotencyKey: `p2p-ad-order-${crypto.randomUUID()}`,
       });
-      navigate(`${prefix}/p2p/order/${receipt.orderId}`, { replace: true });
+      navigate(`${prefix}/p2p/order/${encodeURIComponent(receipt.orderId)}`, { replace: true });
     } catch (error) {
       if (isApiError(error) && error.status === 409) {
         setErrorMessage(

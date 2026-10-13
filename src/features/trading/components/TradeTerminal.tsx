@@ -342,7 +342,7 @@ export function TradeTerminal() {
   };
 
   const handlePairSwitch = (newPairId: string) => {
-    navigate(`${routePrefix}/trade/${newPairId}`, { replace: true });
+    navigate(`${routePrefix}/trade/${encodeURIComponent(newPairId)}`, { replace: true });
   };
 
   const handleModifyOrder = (orderId: string) => {

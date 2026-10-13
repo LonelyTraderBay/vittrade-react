@@ -199,7 +199,9 @@ export function ArenaDiscoveryPage() {
               <ChallengeCard
                 key={challenge.id}
                 challenge={challenge}
-                onOpen={() => navigate(`${prefix}/arena/challenge/${challenge.id}`)}
+                onOpen={() =>
+                  navigate(`${prefix}/arena/challenge/${encodeURIComponent(challenge.id)}`)
+                }
               />
             ))
           ) : (
@@ -214,7 +216,7 @@ export function ArenaDiscoveryPage() {
             <ModeCard
               key={mode.id}
               mode={mode}
-              onOpen={() => navigate(`${prefix}/arena/mode/${mode.id}`)}
+              onOpen={() => navigate(`${prefix}/arena/mode/${encodeURIComponent(mode.id)}`)}
             />
           ))
         ) : (

@@ -216,7 +216,7 @@ export function SwipeableAdCard({
                 <MoreHorizontal size={14} color={c.text3} />
               </button>
               <button
-                onClick={() => navigate(`${prefix}/p2p/ad/${ad.id}`)}
+                onClick={() => navigate(`${prefix}/p2p/ad/${encodeURIComponent(ad.id)}`)}
                 className="flex-shrink-0 px-4 py-2 rounded-xl"
                 style={{
                   background:

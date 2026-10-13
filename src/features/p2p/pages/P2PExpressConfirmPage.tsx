@@ -72,7 +72,7 @@ export function P2PExpressConfirmPage() {
         },
         idempotencyKey: `p2p-express-order-${crypto.randomUUID()}`,
       });
-      navigate(`${prefix}/p2p/order/${receipt.orderId}`, { replace: true });
+      navigate(`${prefix}/p2p/order/${encodeURIComponent(receipt.orderId)}`, { replace: true });
     } catch {
       // React Query owns the failure state rendered below.
     }

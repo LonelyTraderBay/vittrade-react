@@ -42,7 +42,9 @@ function PredictionCard({ event }: { event: PredictionEvent }) {
     <button
       type="button"
       className="text-left"
-      onClick={() => navigate(`${prefix}/markets/predictions/event/${event.id}`)}
+      onClick={() =>
+        navigate(`${prefix}/markets/predictions/event/${encodeURIComponent(event.id)}`)
+      }
     >
       <TrCard className="p-4">
         <div className="flex items-start justify-between gap-3">

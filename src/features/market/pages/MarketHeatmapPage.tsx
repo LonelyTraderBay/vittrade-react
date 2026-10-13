@@ -87,7 +87,7 @@ export function MarketHeatmapPage() {
                   key={pair.id}
                   pair={pair}
                   maxMarketCap={maxMarketCap}
-                  onClick={() => navigate(`${prefix}/pair/${pair.id}`)}
+                  onClick={() => navigate(`${prefix}/pair/${encodeURIComponent(pair.id)}`)}
                 />
               ))}
             </div>

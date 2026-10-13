@@ -141,7 +141,7 @@ export function MarketDepthPage() {
                 ${fmtPrice(pair.price)}
               </p>
               <button
-                onClick={() => navigate(`${prefix}/trade/${pair.id}`)}
+                onClick={() => navigate(`${prefix}/trade/${encodeURIComponent(pair.id)}`)}
                 className="mt-1 rounded-lg px-3 py-1.5 text-xs font-semibold"
                 style={{ background: '#3B82F6', color: '#fff' }}
               >

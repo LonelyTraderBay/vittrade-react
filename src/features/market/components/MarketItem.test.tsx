@@ -136,6 +136,28 @@ describe('MarketItem', () => {
   });
 
   describe('Navigation', () => {
+    it.each(['click', 'Enter', 'Space'])(
+      'keeps a resource ID in one URL segment for %s',
+      async (action) => {
+        const id = 'pair/a?b#c%';
+        const user = userEvent.setup();
+        renderWithProviders(<MarketItem pair={{ ...mockPair, id }} />);
+        const row = screen.getByRole('button', { name: /BTCUSDT/ });
+        if (action === 'click') await user.click(row);
+        else {
+          row.focus();
+          await user.keyboard(action === 'Enter' ? '{Enter}' : ' ');
+        }
+        expect(mockNavigate).toHaveBeenCalledTimes(1);
+        const route = mockNavigate.mock.calls[0][0] as string;
+        const url = new URL(route, 'https://frontend.test');
+        expect(url.search).toBe('');
+        expect(url.hash).toBe('');
+        expect(url.pathname).toBe('/pair/' + encodeURIComponent(id));
+        expect(decodeURIComponent(url.pathname.split('/').at(-1)!)).toBe(id);
+      },
+    );
+
     it('should navigate on click', async () => {
       const user = userEvent.setup();
       renderWithProviders(<MarketItem pair={mockPair} />);

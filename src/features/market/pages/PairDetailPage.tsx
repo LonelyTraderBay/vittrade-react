@@ -76,7 +76,9 @@ export function PairDetailPage() {
       actionToast.info('Vui lòng đăng nhập để lưu cặp giao dịch theo dõi.', {
         haptic: 'selection',
       });
-      navigate(`${prefix}/auth/login`, { state: { from: `${prefix}/pair/${pair.id}` } });
+      navigate(`${prefix}/auth/login`, {
+        state: { from: `${prefix}/pair/${encodeURIComponent(pair.id)}` },
+      });
       return;
     }
     if (!canManageWatchlist) {
@@ -257,7 +259,7 @@ export function PairDetailPage() {
             <div className="flex gap-2 mt-4">
               <button
                 type="button"
-                onClick={() => navigate(`${prefix}/trade/${pair.id}`)}
+                onClick={() => navigate(`${prefix}/trade/${encodeURIComponent(pair.id)}`)}
                 className="flex-1 py-3 rounded-xl font-semibold"
                 style={{ background: '#10B981', color: '#fff' }}
               >
@@ -265,7 +267,7 @@ export function PairDetailPage() {
               </button>
               <button
                 type="button"
-                onClick={() => navigate(`${prefix}/trade/${pair.id}`)}
+                onClick={() => navigate(`${prefix}/trade/${encodeURIComponent(pair.id)}`)}
                 className="flex-1 py-3 rounded-xl font-semibold"
                 style={{ background: '#EF4444', color: '#fff' }}
               >

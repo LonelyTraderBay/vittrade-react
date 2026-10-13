@@ -124,7 +124,9 @@ export function ProviderLeaderboardPage() {
             <button
               type="button"
               key={provider.id}
-              onClick={() => navigate(`${prefix}/trade/copy-provider/${provider.id}`)}
+              onClick={() =>
+                navigate(`${prefix}/trade/copy-provider/${encodeURIComponent(provider.id)}`)
+              }
               className="w-full text-left"
             >
               <TrCard className="p-4">

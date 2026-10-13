@@ -42,9 +42,10 @@ export const MarketItem = memo(function MarketItem({
     <div
       role="button"
       tabIndex={0}
-      onClick={() => navigate(`${prefix}/pair/${pair.id}`)}
+      onClick={() => navigate(`${prefix}/pair/${encodeURIComponent(pair.id)}`)}
       onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') navigate(`${prefix}/pair/${pair.id}`);
+        if (e.key === 'Enter' || e.key === ' ')
+          navigate(`${prefix}/pair/${encodeURIComponent(pair.id)}`);
       }}
       className="flex items-center gap-3 px-5 w-full active:opacity-70 transition-opacity cursor-pointer"
       style={{

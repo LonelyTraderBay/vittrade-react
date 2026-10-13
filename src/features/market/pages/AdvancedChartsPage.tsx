@@ -87,7 +87,7 @@ export function AdvancedChartsPage() {
             </select>
           </label>
           <button
-            onClick={() => navigate(`${prefix}/pair/${pair.id}`)}
+            onClick={() => navigate(`${prefix}/pair/${encodeURIComponent(pair.id)}`)}
             className="rounded-xl px-3"
             style={{ background: '#3B82F6', color: '#fff', fontSize: 11, fontWeight: 700 }}
           >
@@ -184,7 +184,7 @@ export function AdvancedChartsPage() {
           <QuickAction
             icon={Layers}
             label="Market depth"
-            onClick={() => navigate(`${prefix}/pair/${pair.id}/depth`)}
+            onClick={() => navigate(`${prefix}/pair/${encodeURIComponent(pair.id)}/depth`)}
           />
           <QuickAction
             icon={BarChart3}

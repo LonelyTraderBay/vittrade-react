@@ -100,7 +100,7 @@ export function P2PMerchantProfilePage() {
           <div className="flex gap-2 mt-4">
             <button
               type="button"
-              onClick={() => navigate(`${prefix}/p2p/report/${merchant.id}`)}
+              onClick={() => navigate(`${prefix}/p2p/report/${encodeURIComponent(merchant.id)}`)}
               aria-label="Report P2P merchant"
               className="flex-1 rounded-xl py-2.5 flex items-center justify-center gap-2"
               style={{

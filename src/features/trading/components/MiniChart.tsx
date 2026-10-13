@@ -227,7 +227,7 @@ export function MiniChart({
     if (onTap) {
       onTap();
     } else {
-      navigate(`${routePrefix}/trade/advanced-chart/${pairId}`);
+      navigate(`${routePrefix}/trade/advanced-chart/${encodeURIComponent(pairId)}`);
     }
   };
 
