@@ -1,4 +1,4 @@
-import { useState, type ChangeEvent, type ReactNode } from 'react';
+import { useRef, useState, type ChangeEvent, type ReactNode } from 'react';
 import { AlertTriangle, CheckCircle, Clock, Star, Upload, X } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router';
 import { ErrorState } from '@/shared/ui/ErrorState';
@@ -115,6 +115,9 @@ export function P2POrderCancelContractPage() {
   const query = useP2POrderActionQuery(orderId);
   const mutation = useP2POrderActionCancelMutation(orderId);
   const [reason, setReason] = useState('');
+  const [actionError, setActionError] = useState<string | null>(null);
+  const submitInFlight = useRef(false);
+  const attempts = useRef(new Map<string, string>());
   const canCancel = hasPermission('p2p:write') || hasPermission('p2p:cancel');
 
   return (
@@ -142,6 +145,7 @@ export function P2POrderCancelContractPage() {
                   color: reason === item ? '#EF4444' : colors.text2,
                   fontSize: 12,
                 }}
+                disabled={mutation.isPending}
                 onClick={() => setReason(item)}
               >
                 {reason === item ? <CheckCircle size={16} /> : <X size={16} />}
@@ -154,6 +158,11 @@ export function P2POrderCancelContractPage() {
               Không thể hủy đơn. Vui lòng thử lại hoặc mở dispute nếu đơn đã chuyển trạng thái.
             </p>
           )}
+          {actionError && (
+            <p role="alert" style={{ color: '#EF4444', fontSize: 12 }}>
+              {actionError}
+            </p>
+          )}
           {!canCancel && (
             <p role="alert" style={{ color: '#EF4444', fontSize: 12 }}>
               P2P order write permission is required to cancel an order.
@@ -164,14 +173,29 @@ export function P2POrderCancelContractPage() {
             disabled={!canCancel || !reason || mutation.isPending}
             loading={mutation.isPending}
             onClick={async () => {
+              if (!canCancel || !reason || order.id !== orderId || submitInFlight.current) return;
+              submitInFlight.current = true;
+              setActionError(null);
+              const signature = JSON.stringify([orderId, reason]);
+              const key = attempts.current.get(signature) ?? crypto.randomUUID();
+              attempts.current.set(signature, key);
               try {
-                await mutation.mutateAsync({
+                const result = await mutation.mutateAsync({
                   request: { reason },
-                  idempotencyKey: crypto.randomUUID(),
+                  idempotencyKey: key,
                 });
+                if (result.id !== orderId || result.status !== 'cancelled') {
+                  setActionError(
+                    'Chưa xác nhận được kết quả hủy đơn. Hãy kiểm tra trạng thái đơn trước khi thử lại.',
+                  );
+                  return;
+                }
+                attempts.current.delete(signature);
                 navigate(`${prefix}/p2p/order/${encodeURIComponent(order.id)}`, { replace: true });
               } catch {
-                // The mutation state renders the inline error; stay on the form so it can be retried.
+                // Mutation errors keep this intent available for an explicit retry.
+              } finally {
+                submitInFlight.current = false;
               }
             }}
           >
@@ -191,6 +215,8 @@ export function P2POrderRateContractPage() {
   const { hasPermission } = useAuth();
   const [rating, setRating] = useState(0);
   const [review, setReview] = useState('');
+  const submitInFlight = useRef(false);
+  const attempts = useRef(new Map<string, string>());
   const canRate = hasPermission('p2p:write') || hasPermission('p2p:rate');
 
   return (
@@ -207,6 +233,7 @@ export function P2POrderRateContractPage() {
                   key={value}
                   type="button"
                   aria-label={`${value} sao`}
+                  disabled={mutation.isPending}
                   onClick={() => setRating(value)}
                   className="rounded-full p-1"
                 >
@@ -221,6 +248,7 @@ export function P2POrderRateContractPage() {
           </TrCard>
           <textarea
             aria-label="Nhận xét"
+            disabled={mutation.isPending}
             value={review}
             onChange={(event) => setReview(event.target.value)}
             rows={4}
@@ -242,14 +270,30 @@ export function P2POrderRateContractPage() {
             disabled={!canRate || !rating || mutation.isPending}
             loading={mutation.isPending}
             onClick={async () => {
+              if (
+                !canRate ||
+                !orderId ||
+                order.id !== orderId ||
+                !Number.isInteger(rating) ||
+                rating < 1 ||
+                rating > 5 ||
+                review.trim().length > 500 ||
+                submitInFlight.current
+              )
+                return;
+              submitInFlight.current = true;
+              const request = { rating, review: review.trim() || undefined };
+              const signature = JSON.stringify([orderId, request]);
+              const key = attempts.current.get(signature) ?? crypto.randomUUID();
+              attempts.current.set(signature, key);
               try {
-                await mutation.mutateAsync({
-                  request: { rating, review: review.trim() || undefined },
-                  idempotencyKey: crypto.randomUUID(),
-                });
+                await mutation.mutateAsync({ request, idempotencyKey: key });
+                attempts.current.delete(signature);
                 navigate(-1);
               } catch {
-                // The mutation state renders the inline error; stay on the form so it can be retried.
+                // Mutation errors keep this intent available for an explicit retry.
+              } finally {
+                submitInFlight.current = false;
               }
             }}
           >
@@ -269,9 +313,12 @@ export function P2POrderProofContractPage() {
   const { hasPermission } = useAuth();
   const [files, setFiles] = useState<File[]>([]);
   const [error, setError] = useState('');
+  const submitInFlight = useRef(false);
+  const attempts = useRef<{ orderId: string; files: File[]; key: string }[]>([]);
   const canSubmitProof = hasPermission('p2p:write') || hasPermission('p2p:payment-proof');
 
   const onFilesSelected = (event: ChangeEvent<HTMLInputElement>) => {
+    if (submitInFlight.current) return;
     const selected = Array.from(event.target.files ?? []);
     event.target.value = '';
     const invalid = selected.find(
@@ -298,6 +345,7 @@ export function P2POrderProofContractPage() {
             </label>
             <input
               id="p2p-payment-proof"
+              disabled={mutation.isPending}
               type="file"
               accept="image/*"
               multiple
@@ -316,6 +364,7 @@ export function P2POrderProofContractPage() {
                   <button
                     type="button"
                     aria-label={`Xóa ${file.name}`}
+                    disabled={mutation.isPending}
                     onClick={() => setFiles((current) => current.filter((_, i) => i !== index))}
                   >
                     <X size={16} />
@@ -343,14 +392,40 @@ export function P2POrderProofContractPage() {
             disabled={!canSubmitProof || !files.length || mutation.isPending}
             loading={mutation.isPending}
             onClick={async () => {
+              if (
+                !canSubmitProof ||
+                !orderId ||
+                !files.length ||
+                files.length > 3 ||
+                files.some(
+                  (file) => !file.type.startsWith('image/') || file.size > 10 * 1024 * 1024,
+                ) ||
+                submitInFlight.current
+              )
+                return;
+              submitInFlight.current = true;
+              // File identity distinguishes selections with the same name and size.
+              let attempt = attempts.current.find(
+                (candidate) =>
+                  candidate.orderId === orderId &&
+                  candidate.files.length === files.length &&
+                  candidate.files.every((file, i) => file === files[i]),
+              );
+              if (!attempt) {
+                attempt = { orderId, files: [...files], key: crypto.randomUUID() };
+                attempts.current.push(attempt);
+              }
               try {
                 await mutation.mutateAsync({
-                  request: { files },
-                  idempotencyKey: crypto.randomUUID(),
+                  request: { files: attempt.files },
+                  idempotencyKey: attempt.key,
                 });
+                attempts.current = attempts.current.filter((candidate) => candidate !== attempt);
                 navigate(-1);
               } catch {
-                // The mutation state renders the inline error; stay on the form so it can be retried.
+                // Mutation errors keep this intent available for an explicit retry.
+              } finally {
+                submitInFlight.current = false;
               }
             }}
           >

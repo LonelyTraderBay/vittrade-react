@@ -36,8 +36,21 @@ export function P2PEscrowDetailPage() {
   const markPaidAttemptRef = useRef<{ orderId: string; key: string } | null>(null);
   const releaseAttemptRef = useRef<{ signature: string; key: string } | null>(null);
   const order = orderQuery.data;
+  const actionInFlight = useRef(false);
+  const actionPending =
+    markPaidMutation.isPending ||
+    challengeMutation.isPending ||
+    verificationMutation.isPending ||
+    releaseMutation.isPending;
+  const canMarkPaid =
+    order?.status === 'pending_payment' &&
+    (hasPermission('p2p:write') || hasPermission('p2p:mark-paid'));
+  const canRelease =
+    order?.status === 'paid' && (hasPermission('p2p:write') || hasPermission('p2p:release'));
 
   const startRelease = async () => {
+    if (!canRelease || challengeId || verificationToken || actionInFlight.current) return;
+    actionInFlight.current = true;
     setActionError(null);
     try {
       const challenge = await challengeMutation.mutateAsync();
@@ -48,22 +61,28 @@ export function P2PEscrowDetailPage() {
           ? 'Không có quyền tạo thử thách xác thực release escrow.'
           : 'Không thể tạo thử thách xác thực release.',
       );
+    } finally {
+      actionInFlight.current = false;
     }
   };
 
   const verify = async () => {
-    if (!challengeId || code.length < 6) return;
+    if (!canRelease || !challengeId || !/^\d{6}$/.test(code) || actionInFlight.current) return;
+    actionInFlight.current = true;
     setActionError(null);
     try {
       const result = await verificationMutation.mutateAsync({ challengeId, code });
       setVerificationToken(result.verificationToken);
     } catch {
       setActionError('Mã xác thực không hợp lệ hoặc đã hết hạn.');
+    } finally {
+      actionInFlight.current = false;
     }
   };
 
   const markPaid = async () => {
-    if (!orderId) return;
+    if (!orderId || !canMarkPaid || actionInFlight.current) return;
+    actionInFlight.current = true;
     setActionError(null);
     if (markPaidAttemptRef.current?.orderId !== orderId) {
       markPaidAttemptRef.current = {
@@ -72,9 +91,15 @@ export function P2PEscrowDetailPage() {
       };
     }
     try {
-      await markPaidMutation.mutateAsync({
+      const result = await markPaidMutation.mutateAsync({
         idempotencyKey: markPaidAttemptRef.current.key,
       });
+      if (result.id !== orderId || !['paid', 'released'].includes(result.status)) {
+        setActionError(
+          'Chưa xác nhận được trạng thái thanh toán. Hãy kiểm tra đơn trước khi thử lại.',
+        );
+        return;
+      }
       markPaidAttemptRef.current = null;
     } catch (error) {
       if (error instanceof ApiError && error.status === 409) {
@@ -85,11 +110,14 @@ export function P2PEscrowDetailPage() {
         return;
       }
       setActionError('Không thể đánh dấu đã thanh toán.');
+    } finally {
+      actionInFlight.current = false;
     }
   };
 
   const release = async () => {
-    if (!verificationToken) return;
+    if (!orderId || !canRelease || !verificationToken || actionInFlight.current) return;
+    actionInFlight.current = true;
     setActionError(null);
     const signature = JSON.stringify([orderId, verificationToken]);
     if (releaseAttemptRef.current?.signature !== signature) {
@@ -99,10 +127,14 @@ export function P2PEscrowDetailPage() {
       };
     }
     try {
-      await releaseMutation.mutateAsync({
+      const result = await releaseMutation.mutateAsync({
         verificationToken,
         idempotencyKey: releaseAttemptRef.current.key,
       });
+      if (result.id !== orderId || result.status !== 'released') {
+        setActionError('Chưa xác nhận được kết quả release. Hãy kiểm tra đơn trước khi thử lại.');
+        return;
+      }
       releaseAttemptRef.current = null;
       setVerificationToken(null);
       setChallengeId(null);
@@ -116,6 +148,8 @@ export function P2PEscrowDetailPage() {
         return;
       }
       setActionError('Không thể release escrow. Vui lòng thử lại.');
+    } finally {
+      actionInFlight.current = false;
     }
   };
 
@@ -152,11 +186,6 @@ export function P2PEscrowDetailPage() {
     cancelled: 'Đã hủy',
     expired: 'Đã hết hạn',
   };
-  const canMarkPaid =
-    order.status === 'pending_payment' &&
-    (hasPermission('p2p:write') || hasPermission('p2p:mark-paid'));
-  const canRelease =
-    order.status === 'paid' && (hasPermission('p2p:write') || hasPermission('p2p:release'));
   const canEscrowAction = canMarkPaid || canRelease;
 
   return (
@@ -234,7 +263,7 @@ export function P2PEscrowDetailPage() {
           <button
             type="button"
             aria-label="Mark order paid"
-            disabled={markPaidMutation.isPending}
+            disabled={actionPending}
             onClick={() => void markPaid()}
             className="w-full rounded-xl py-3 font-bold"
             style={{
@@ -250,7 +279,7 @@ export function P2PEscrowDetailPage() {
           <button
             type="button"
             aria-label="Start escrow release"
-            disabled={challengeMutation.isPending}
+            disabled={actionPending}
             onClick={() => void startRelease()}
             className="w-full rounded-xl py-3 font-bold"
             style={{
@@ -275,6 +304,7 @@ export function P2PEscrowDetailPage() {
             </div>
             <input
               aria-label="Release verification code"
+              disabled={!canRelease || actionPending}
               value={code}
               onChange={(event) => setCode(event.target.value.replace(/\D/g, '').slice(0, 6))}
               inputMode="numeric"
@@ -285,7 +315,7 @@ export function P2PEscrowDetailPage() {
             <button
               type="button"
               aria-label="Verify release code"
-              disabled={verificationMutation.isPending || code.length < 6}
+              disabled={!canRelease || actionPending || code.length < 6}
               onClick={() => void verify()}
               className="w-full rounded-xl py-3 font-bold"
               style={{
@@ -302,7 +332,7 @@ export function P2PEscrowDetailPage() {
           <button
             type="button"
             aria-label="Confirm escrow release"
-            disabled={releaseMutation.isPending}
+            disabled={actionPending}
             onClick={() => void release()}
             className="w-full rounded-xl py-3 font-bold"
             style={{
@@ -327,6 +357,7 @@ export function P2PEscrowDetailPage() {
         <button
           type="button"
           aria-label="Open order detail"
+          disabled={actionPending}
           onClick={() => navigate(`${prefix}/p2p/order/${encodeURIComponent(order.id)}`)}
           className="text-center py-2"
           style={{ color: colors.primary, fontSize: 12 }}

@@ -102,7 +102,7 @@ describe('Savings DCA contract page', () => {
       http.patch('*/dca/plans/plan-1', async ({ request }) => {
         expect(request.headers.get('Idempotency-Key')).toBeTruthy();
         expect(await request.json()).toEqual({ status: 'paused' });
-        return HttpResponse.json(serializeSnapshot(snapshot).plans[0]);
+        return HttpResponse.json({ ...serializeSnapshot(snapshot).plans[0], status: 'paused' });
       }),
     );
 
@@ -310,7 +310,7 @@ describe('Savings DCA contract page', () => {
         keys.push(request.headers.get('Idempotency-Key') ?? '');
         return attempts === 1
           ? HttpResponse.json({ message: 'Plan not found' }, { status: 404 })
-          : HttpResponse.json(serializeSnapshot(snapshot).plans[0]);
+          : HttpResponse.json({ ...serializeSnapshot(snapshot).plans[0], status: 'paused' });
       }),
     );
     const user = userEvent.setup();

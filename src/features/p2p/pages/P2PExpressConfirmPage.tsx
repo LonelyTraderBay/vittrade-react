@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useRef } from 'react';
 import { AlertTriangle, CheckCircle, Lock, Shield, Zap } from 'lucide-react';
 import { useNavigate, useSearchParams } from 'react-router';
 import { ErrorState } from '@/shared/ui/ErrorState';
@@ -26,6 +26,8 @@ export function P2PExpressConfirmPage() {
   const paymentMethod = params.get('payment') || '';
   const adQuery = useP2PAdQuery(adId);
   const orderMutation = useP2POrderMutation();
+  const createInFlight = useRef(false);
+  const orderAttempts = useRef(new Map<string, string>());
   const canCreateOrder = hasPermission('p2p:write') || hasPermission('p2p:order:create');
   const ad = adQuery.data;
   const cryptoAmount = useMemo(
@@ -59,22 +61,43 @@ export function P2PExpressConfirmPage() {
 
   // The query API parses successful responses with adSchema before exposing data.
   const confirmedAd = ad!;
+  const validOffer =
+    confirmedAd.id === adId &&
+    confirmedAd.status === 'active' &&
+    confirmedAd.type === (tradeType === 'buy' ? 'sell' : 'buy') &&
+    confirmedAd.asset === asset &&
+    confirmedAd.currency === 'VND' &&
+    Number.isFinite(fiatAmount) &&
+    fiatAmount > 0 &&
+    fiatAmount >= confirmedAd.minLimit &&
+    fiatAmount <= confirmedAd.maxLimit &&
+    Number.isFinite(cryptoAmount) &&
+    cryptoAmount > 0 &&
+    cryptoAmount <= confirmedAd.available &&
+    confirmedAd.paymentMethods.includes(paymentMethod);
+  const canConfirm = canCreateOrder && validOffer && !orderMutation.isPending;
   const confirm = async () => {
+    if (!canConfirm || createInFlight.current) return;
+    createInFlight.current = true;
+    const request = {
+      adId: confirmedAd.id,
+      asset,
+      currency: 'VND',
+      amount: cryptoAmount,
+      fiatAmount,
+      paymentMethod,
+    };
+    const signature = JSON.stringify(request);
+    const key = orderAttempts.current.get(signature) ?? `p2p-express-order-${crypto.randomUUID()}`;
+    orderAttempts.current.set(signature, key);
     try {
-      const receipt = await orderMutation.mutateAsync({
-        request: {
-          adId: confirmedAd.id,
-          asset,
-          currency: 'VND',
-          amount: cryptoAmount,
-          fiatAmount,
-          paymentMethod,
-        },
-        idempotencyKey: `p2p-express-order-${crypto.randomUUID()}`,
-      });
+      const receipt = await orderMutation.mutateAsync({ request, idempotencyKey: key });
+      orderAttempts.current.delete(signature);
       navigate(`${prefix}/p2p/order/${encodeURIComponent(receipt.orderId)}`, { replace: true });
     } catch {
       // React Query owns the failure state rendered below.
+    } finally {
+      createInFlight.current = false;
     }
   };
 
@@ -159,6 +182,11 @@ export function P2PExpressConfirmPage() {
             Không thể tạo order. Vui lòng thử lại hoặc chọn offer khác.
           </p>
         )}
+        {!validOffer && (
+          <p role="alert" style={{ color: '#EF4444', fontSize: 12 }}>
+            Thông tin xác nhận không còn khớp offer. Hãy kiểm tra số tiền và phương thức thanh toán.
+          </p>
+        )}
         {!canCreateOrder && (
           <p role="alert" style={{ color: '#EF4444', fontSize: 12 }}>
             P2P order write permission is required to create an Express order.
@@ -167,6 +195,7 @@ export function P2PExpressConfirmPage() {
         <div className="flex gap-3">
           <button
             type="button"
+            disabled={orderMutation.isPending}
             onClick={() => navigate(-1)}
             className="flex-1 rounded-xl py-3"
             style={{ background: colors.surface2, color: colors.text2 }}
@@ -175,17 +204,14 @@ export function P2PExpressConfirmPage() {
           </button>
           <button
             type="button"
-            disabled={!canCreateOrder || orderMutation.isPending || !paymentMethod || !cryptoAmount}
+            disabled={!canConfirm}
             onClick={() => void confirm()}
             aria-label="Confirm P2P Express order"
             className="flex-1 rounded-xl py-3 font-bold"
             style={{
               background: tradeType === 'buy' ? '#10B981' : '#EF4444',
               color: '#fff',
-              opacity:
-                !canCreateOrder || orderMutation.isPending || !paymentMethod || !cryptoAmount
-                  ? 0.6
-                  : 1,
+              opacity: canConfirm ? 1 : 0.6,
             }}
           >
             {orderMutation.isPending ? 'Đang tạo order…' : 'Xác nhận tạo order'}
