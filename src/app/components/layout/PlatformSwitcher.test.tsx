@@ -1,6 +1,13 @@
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import type { ReactNode } from 'react';
-import { MemoryRouter, Route, Routes, useLocation } from 'react-router';
+import {
+  createMemoryRouter,
+  MemoryRouter,
+  Route,
+  RouterProvider,
+  Routes,
+  useLocation,
+} from 'react-router';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { PlatformSwitcher } from './PlatformSwitcher';
 
@@ -9,7 +16,9 @@ function RouteProbe({ children }: { children?: ReactNode }) {
 
   return (
     <>
-      <output aria-label="Current path">{location.pathname}</output>
+      <output aria-label="Current path">
+        {location.pathname + location.search + location.hash}
+      </output>
       {children}
     </>
   );
@@ -46,7 +55,7 @@ describe('PlatformSwitcher', () => {
   it('moves the informational badge above the mock preview controls when they are present', () => {
     setViewportWidth(1440);
     render(
-      <MemoryRouter initialEntries={['/w/auth/login']}>
+      <MemoryRouter initialEntries={['/w/markets']}>
         <PlatformSwitcher previewControlsVisible />
         <Routes>
           <Route path="*" element={<RouteProbe />} />
@@ -92,12 +101,63 @@ describe('PlatformSwitcher', () => {
     ['/w/auth/login', 'Web'],
     ['/t/auth/login', 'Tablet'],
     ['/r/auth/login', 'Phone'],
-  ])('preserves prefixed auth route %s', (path, label) => {
+  ])('preserves prefixed auth route %s without a platform badge', (path, label) => {
     setViewportWidth(1440);
     renderAt(path);
 
     expect(screen.getByLabelText('Current path')).toHaveTextContent(path);
-    expect(screen.getByText(label)).toBeInTheDocument();
+    expect(screen.queryByText(label)).not.toBeInTheDocument();
+  });
+
+  it('preserves query and hash when selecting the initial shell', async () => {
+    setViewportWidth(1440);
+    const router = createMemoryRouter(
+      [
+        {
+          path: '*',
+          element: (
+            <>
+              <PlatformSwitcher />
+              <RouteProbe />
+            </>
+          ),
+        },
+      ],
+      { initialEntries: ['/markets?pair=BTC-USDT#depth'] },
+    );
+    render(<RouterProvider router={router} />);
+    await waitFor(() =>
+      expect(screen.getByLabelText('Current path')).toHaveTextContent(
+        '/w/markets?pair=BTC-USDT#depth',
+      ),
+    );
+  });
+
+  it('preserves query and hash when resizing into a different shell', () => {
+    vi.useFakeTimers();
+    setViewportWidth(390);
+    renderAt('/markets?pair=BTC-USDT#depth');
+    setViewportWidth(900);
+    fireEvent(window, new Event('resize'));
+    act(() => vi.advanceTimersByTime(250));
+    expect(screen.getByLabelText('Current path')).toHaveTextContent(
+      '/t/markets?pair=BTC-USDT#depth',
+    );
+  });
+
+  it('keeps auth location and entered form values across resize', () => {
+    vi.useFakeTimers();
+    setViewportWidth(1440);
+    renderAt('/w/auth/register?next=%2Fw%2Fwallet#email', <input aria-label="Email" />);
+    fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'person@example.test' } });
+    setViewportWidth(390);
+    fireEvent(window, new Event('resize'));
+    act(() => vi.advanceTimersByTime(250));
+    expect(screen.getByLabelText('Current path')).toHaveTextContent(
+      '/w/auth/register?next=%2Fw%2Fwallet#email',
+    );
+    expect(screen.getByLabelText('Email')).toHaveValue('person@example.test');
+    expect(screen.queryByText('Web')).not.toBeInTheDocument();
   });
 
   it.each([
@@ -207,6 +267,51 @@ describe('PlatformSwitcher', () => {
     act(() => vi.advanceTimersByTime(250));
 
     expect(screen.getByLabelText('Current path')).toHaveTextContent('/markets');
+  });
+
+  it('aligns the initial shell even when preview configuration differs from its default', async () => {
+    setViewportWidth(1440);
+    const router = createMemoryRouter(
+      [
+        {
+          path: '*',
+          element: (
+            <>
+              <aside data-testid="dev-preview-controls">
+                <select aria-label="Preview persona" value="admin" onChange={() => undefined}>
+                  <option value="visitor">Visitor</option>
+                  <option value="admin">Admin</option>
+                </select>
+              </aside>
+              <PlatformSwitcher />
+              <RouteProbe />
+            </>
+          ),
+        },
+      ],
+      { initialEntries: ['/home'] },
+    );
+    render(<RouterProvider router={router} />);
+    await waitFor(() => expect(screen.getByLabelText('Current path')).toHaveTextContent('/w/home'));
+  });
+
+  it('does not treat preview selector changes as an unsubmitted product form on resize', () => {
+    vi.useFakeTimers();
+    setViewportWidth(390);
+    renderAt(
+      '/markets',
+      <aside data-testid="dev-preview-controls">
+        <select aria-label="Preview persona" defaultValue="visitor">
+          <option value="visitor">Visitor</option>
+          <option value="admin">Admin</option>
+        </select>
+      </aside>,
+    );
+    fireEvent.change(screen.getByLabelText('Preview persona'), { target: { value: 'admin' } });
+    setViewportWidth(1440);
+    fireEvent(window, new Event('resize'));
+    act(() => vi.advanceTimersByTime(250));
+    expect(screen.getByLabelText('Current path')).toHaveTextContent('/w/markets');
   });
 
   it.each([

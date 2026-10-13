@@ -46,17 +46,17 @@ describe('App bootstrap', () => {
     expect(captureException).toHaveBeenCalledTimes(3);
     expect(captureException).toHaveBeenNthCalledWith(
       1,
-      runtimeError,
+      expect.objectContaining({ message: 'Client operation failed' }),
       expect.objectContaining({ area: 'app', operation: 'unhandled-error' }),
     );
     expect(captureException).toHaveBeenNthCalledWith(
       2,
-      'unhandled rejection',
+      expect.objectContaining({ message: 'Client operation failed' }),
       expect.objectContaining({ area: 'app', operation: 'unhandled-rejection' }),
     );
     expect(captureException).toHaveBeenNthCalledWith(
       3,
-      expect.objectContaining({ message: 'missing error object' }),
+      expect.objectContaining({ message: 'Client operation failed' }),
       expect.objectContaining({ area: 'app', operation: 'unhandled-error' }),
     );
 
