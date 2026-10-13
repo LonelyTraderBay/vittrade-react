@@ -1,7 +1,7 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 import { http, HttpResponse, type DefaultBodyType } from 'msw';
 import { setupServer } from 'msw/node';
-import { screen } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Route, Routes, useLocation } from 'react-router';
 import { renderWithProviders } from '@/test/test-utils';
@@ -130,6 +130,31 @@ function renderPairDetail(authAdapter?: AuthAdapter, initialEntries = ['/pair/bt
 }
 
 describe('Market pair detail page', () => {
+  it('locks favorite changes until a failed watchlist read is recovered by an explicit retry', async () => {
+    installMarketReadHandlers({ items: [] });
+    let fail = true;
+    let reads = 0;
+    server.use(
+      http.get('*/market/watchlist', () => {
+        reads += 1;
+        return fail
+          ? HttpResponse.json({ message: 'Watchlist unavailable' }, { status: 503 })
+          : HttpResponse.json({ items: [] });
+      }),
+    );
+    const user = userEvent.setup();
+    renderPairDetail(writeAdapter());
+    const retry = await screen.findByRole('button', { name: 'Thử tải lại' });
+    const favorite = screen.getByRole('button', { name: 'Theo dõi cặp giao dịch' });
+    expect(favorite).toBeDisabled();
+    const before = reads;
+    fail = false;
+    await user.click(retry);
+    await waitFor(() => expect(favorite).toBeEnabled());
+    expect(reads).toBe(before + 1);
+    expect(screen.queryByRole('button', { name: 'Thử tải lại' })).not.toBeInTheDocument();
+    expect(favorite).toHaveAttribute('aria-pressed', 'false');
+  });
   it('loads pair data and adds then removes the pair from the watchlist', async () => {
     const watchlist: { items: Array<Record<string, unknown>> } = { items: [] };
     installMarketReadHandlers(watchlist);

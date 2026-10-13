@@ -11,6 +11,42 @@ function LocationProbe() {
 }
 
 describe('WebSidebar', () => {
+  it.each([
+    { username: 'test-handle', email: undefined, name: 'test-handle' },
+    { username: undefined, email: 'fallback@example.com', name: 'fallback@example.com' },
+    { username: undefined, email: undefined, name: 'Tài khoản' },
+  ])('uses $name for an account without a display name', ({ username, email, name }) => {
+    const session = {
+      ...testAuthSession,
+      user: { ...testAuthSession.user, fullName: ' ', username, email },
+    };
+    renderWithProviders(
+      <>
+        <WebSidebar />
+        <LocationProbe />
+      </>,
+      {
+        authAdapter: {
+          ...testAuthAdapter,
+          initialSession: session,
+          getSession: async () => session,
+        },
+        routerProps: { initialEntries: ['/w/home'] },
+      },
+    );
+    fireEvent.click(screen.getByText(name).closest('button')!);
+    expect(screen.getByTestId('location')).toHaveTextContent('/w/profile');
+    fireEvent.click(screen.getByRole('button', { name: 'Ví' }));
+    expect(screen.getByTestId('location')).toHaveTextContent('/w/wallet');
+  });
+
+  it('shows the signed-out identity when the session is absent', () => {
+    renderWithProviders(<WebSidebar />, {
+      authAdapter: { ...testAuthAdapter, initialSession: null, getSession: async () => null },
+    });
+    expect(screen.getByText('Chưa đăng nhập')).toBeInTheDocument();
+    expect(screen.queryByText(testAuthSession.user.fullName)).not.toBeInTheDocument();
+  });
   it('reveals and marks the active module route in the scrollable sidebar', () => {
     const scrollIntoView = vi.fn();
     const originalDescriptor = Object.getOwnPropertyDescriptor(

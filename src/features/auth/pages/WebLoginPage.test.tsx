@@ -17,6 +17,20 @@ function CurrentRoute() {
 }
 
 describe('WebLoginPage', () => {
+  it('opens registration in the web authentication shell', () => {
+    renderWithProviders(
+      <>
+        <WebLoginPage />
+        <CurrentRoute />
+      </>,
+      {
+        routerProps: { initialEntries: ['/w/auth/login'] },
+        authAdapter: { ...testAuthAdapter, initialSession: null },
+      },
+    );
+    fireEvent.click(screen.getByRole('button', { name: 'Đăng ký ngay' }));
+    expect(screen.getByTestId('current-path')).toHaveTextContent('/w/auth/register');
+  });
   it('does not advertise social login without a configured provider contract', () => {
     renderWithProviders(<WebLoginPage />, {
       routerProps: { initialEntries: ['/w/auth/login'] },

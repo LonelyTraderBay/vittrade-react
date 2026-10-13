@@ -1,5 +1,6 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { useForm } from 'react-hook-form';
+import { useEffect } from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import {
   Form,
@@ -47,6 +48,39 @@ function EmailForm({
 }
 
 describe('shared form primitives', () => {
+  it('keeps a server field error without a message accessible without inventing error text', async () => {
+    function ServerErrorForm() {
+      const methods = useForm({ defaultValues: { email: '' } });
+      useEffect(() => {
+        methods.setError('email', { type: 'server' });
+      }, [methods]);
+      return (
+        <Form {...methods}>
+          <FormField
+            control={methods.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <input {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </Form>
+      );
+    }
+    render(<ServerErrorForm />);
+    await waitFor(() =>
+      expect(screen.getByRole('textbox', { name: 'Email' })).toHaveAttribute(
+        'aria-invalid',
+        'true',
+      ),
+    );
+    expect(document.querySelector('[data-slot="form-message"]')).not.toBeInTheDocument();
+  });
   it('marks an invalid field without rendering an empty error message', async () => {
     render(<EmailForm onSubmit={vi.fn()} required />);
     fireEvent.submit(screen.getByRole('button', { name: 'Save' }).closest('form')!);

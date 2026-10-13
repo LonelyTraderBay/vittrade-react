@@ -4,6 +4,23 @@ import { PageContent, PageSection } from './layout/PageContent';
 import { RefreshableSkeletonList, RefreshTimestamp } from './RefreshableSkeletonList';
 
 describe('layout and refresh feedback', () => {
+  it('shows the refresh result alongside an empty list after a completed refresh', () => {
+    render(
+      <RefreshableSkeletonList
+        isLoading={false}
+        isEmpty
+        emptyState={<p>No records</p>}
+        lastRefreshedLabel="just now"
+        refreshCount={2}
+      >
+        <p>Records</p>
+      </RefreshableSkeletonList>,
+    );
+    expect(screen.getByText('No records')).toBeInTheDocument();
+    expect(screen.getByText('Cập nhật lần cuối: just now')).toBeInTheDocument();
+    expect(screen.getByText('2')).toBeInTheDocument();
+    expect(screen.queryByText('Records')).not.toBeInTheDocument();
+  });
   it('uses density presets unless explicitly overridden, including full-bleed content', () => {
     const { rerender } = render(
       <PageContent density="compact" fullBleed>

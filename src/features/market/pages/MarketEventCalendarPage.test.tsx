@@ -41,6 +41,24 @@ describe('MarketEventCalendarPage', () => {
     useMarketCalendarQuery.mockReset();
   });
 
+  it('does not present a tentative event as confirmed and blocks refresh while fetching', () => {
+    const refetch = vi.fn();
+    const data = { ...response, items: [{ ...response.items[0], confirmed: false }] };
+    useMarketCalendarQuery.mockReturnValue(queryState({ data, refetch }));
+    const { rerender } = renderWithProviders(<MarketEventCalendarPage />);
+    expect(screen.getByText('Chưa xác nhận')).toBeInTheDocument();
+    expect(screen.queryByText('Đã xác nhận')).not.toBeInTheDocument();
+    const refresh = screen.getByRole('button', { name: 'Làm mới lịch sự kiện' });
+    fireEvent.click(refresh);
+    expect(refetch).toHaveBeenCalledOnce();
+    useMarketCalendarQuery.mockReturnValue(queryState({ data, refetch, isFetching: true }));
+    rerender(<MarketEventCalendarPage />);
+    expect(refresh).toBeDisabled();
+    expect(refresh.querySelector('svg')).toHaveClass('animate-spin');
+    fireEvent.click(refresh);
+    expect(refetch).toHaveBeenCalledOnce();
+  });
+
   it('shows a loading state and retries after an unavailable source', () => {
     useMarketCalendarQuery.mockReturnValue(queryState({ isPending: true }));
     const { rerender } = renderWithProviders(<MarketEventCalendarPage />);

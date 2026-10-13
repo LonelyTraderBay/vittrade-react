@@ -1,9 +1,9 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { screen, waitFor, within } from '@testing-library/react';
+import { fireEvent, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Route, Routes } from 'react-router';
+import { Route, Routes, useLocation } from 'react-router';
 import { renderWithProviders } from '@/test/test-utils';
 import type { AuthAdapter } from '@/shared/session/AuthContext';
 import { testAuthAdapter } from '@/test/auth-test-adapter';
@@ -85,6 +85,37 @@ function renderRoute(path: string, element: React.ReactNode, additionalRoutes = 
 }
 
 describe('contract-backed copy trading pages', () => {
+  it('carries the selected mode, sizing and ratio to confirmation without sending a trade', async () => {
+    mockProviderProfile();
+    function ConfirmationState() {
+      const location = useLocation();
+      return (
+        <output data-testid="copy-confirmation-state">{JSON.stringify(location.state)}</output>
+      );
+    }
+    renderRoute(
+      '/trade/copy-provider/:providerId/configuration',
+      <CopyConfigurationContractPage />,
+      <Route path="/trade/copy-provider/provider-1/confirmation" element={<ConfirmationState />} />,
+    );
+    expect(await screen.findByText('Provider One')).toBeInTheDocument();
+    const user = userEvent.setup();
+    await user.click(screen.getByRole('button', { name: 'smart' }));
+    await user.selectOptions(screen.getByRole('combobox', { name: 'Position sizing' }), 'fixed');
+    fireEvent.change(screen.getByRole('slider'), { target: { value: '25' } });
+    expect(screen.getByText('Ước tính lệnh của bạn: $1,250')).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Xem xác nhận' }));
+    const state = JSON.parse(
+      (await screen.findByTestId('copy-confirmation-state')).textContent ?? '{}',
+    );
+    expect(state).toEqual({
+      providerId: 'provider-1',
+      capital: 5000,
+      copyMode: 'smart',
+      positionSizing: 'fixed',
+      copyRatio: 25,
+    });
+  });
   it('loads providers from the API and applies server-side sorting', async () => {
     const receivedSorts: string[] = [];
     server.use(

@@ -46,6 +46,21 @@ describe('TokenUnlockSchedulePage', () => {
     useMarketTokenUnlocksQuery.mockReset();
   });
 
+  it('permits refresh after settlement and blocks it while the next request is pending', () => {
+    const refetch = vi.fn();
+    useMarketTokenUnlocksQuery.mockReturnValue(queryState({ refetch }));
+    const { rerender } = renderWithProviders(<TokenUnlockSchedulePage />);
+    const refresh = screen.getByRole('button', { name: 'Làm mới lịch mở khóa' });
+    fireEvent.click(refresh);
+    expect(refetch).toHaveBeenCalledOnce();
+    useMarketTokenUnlocksQuery.mockReturnValue(queryState({ refetch, isFetching: true }));
+    rerender(<TokenUnlockSchedulePage />);
+    expect(refresh).toBeDisabled();
+    expect(refresh.querySelector('svg')).toHaveClass('animate-spin');
+    fireEvent.click(refresh);
+    expect(refetch).toHaveBeenCalledOnce();
+  });
+
   it('shows loading and offers retry after an unavailable source', () => {
     useMarketTokenUnlocksQuery.mockReturnValue(queryState({ isPending: true }));
     const { rerender } = renderWithProviders(<TokenUnlockSchedulePage />);
