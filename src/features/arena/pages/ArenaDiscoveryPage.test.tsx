@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { queryClient } from '@/shared/api/query-client';
 import { renderWithProviders, screen, userEvent } from '@/test/test-utils';
 import { ArenaDiscoveryPage } from './ArenaDiscoveryPage';
+import { Route, Routes } from 'react-router';
 
 const server = setupServer();
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
@@ -75,6 +76,32 @@ function renderPage({ useAppQueryDefaults = false }: { useAppQueryDefaults?: boo
 }
 
 describe('ArenaDiscoveryPage', () => {
+  it.each(['challenge', 'mode'])(
+    'opens the selected %s under the current web shell',
+    async (destination) => {
+      server.use(
+        http.get('http://localhost:3000/api/arena/discovery', () => HttpResponse.json(response)),
+      );
+      renderWithProviders(
+        <Routes>
+          <Route path="/w/arena" element={<ArenaDiscoveryPage />} />
+          <Route path="/w/arena/challenge/challenge001" element={<p>Challenge destination</p>} />
+          <Route path="/w/arena/mode/mode001" element={<p>Mode destination</p>} />
+        </Routes>,
+        { routerProps: { initialEntries: ['/w/arena'] } },
+      );
+      expect(await screen.findByRole('heading', { name: 'BTC $70K?' })).toBeInTheDocument();
+      if (destination === 'mode') await userEvent.click(screen.getByRole('tab', { name: 'Mode' }));
+      await userEvent.click(
+        screen.getByRole('button', { name: destination === 'mode' ? 'Xem mode' : 'Xem challenge' }),
+      );
+      expect(
+        await screen.findByText(
+          destination === 'mode' ? 'Mode destination' : 'Challenge destination',
+        ),
+      ).toBeInTheDocument();
+    },
+  );
   it('loads public challenge discovery and discloses that points are not wallet assets', async () => {
     server.use(
       http.get('http://localhost:3000/api/arena/discovery', () => HttpResponse.json(response)),

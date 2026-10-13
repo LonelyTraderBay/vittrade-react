@@ -63,5 +63,8 @@ describe('P2P blacklist add contract page', () => {
     await user.click(screen.getByRole('button', { name: 'Block P2P user' }));
     expect(await screen.findByText('Không thể chặn người dùng')).toBeInTheDocument();
     expect(input).toHaveValue('unsafe-user');
+    await user.click(screen.getByRole('button', { name: 'Đóng thông báo' }));
+    expect(screen.queryByText('Không thể chặn người dùng')).not.toBeInTheDocument();
+    expect(input).toHaveValue('unsafe-user');
   });
 });

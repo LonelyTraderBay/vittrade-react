@@ -25,6 +25,19 @@ function renderForm(
 }
 
 describe('OCOOrderForm', () => {
+  it('opens and closes its explanation and shows a high reward-to-risk ratio', async () => {
+    renderForm();
+    const info = screen.getByRole('button', { name: 'Thông tin về lệnh OCO' });
+    await userEvent.click(info);
+    expect(screen.getByText('Lệnh OCO (One-Cancels-Other)')).toBeInTheDocument();
+    await userEvent.click(info);
+    expect(screen.queryByText('Lệnh OCO (One-Cancels-Other)')).not.toBeInTheDocument();
+    await userEvent.type(screen.getByRole('textbox', { name: 'Take Profit price' }), '140');
+    await userEvent.type(screen.getByRole('textbox', { name: 'Take Profit amount' }), '1');
+    await userEvent.type(screen.getByRole('textbox', { name: 'Stop Loss price' }), '90');
+    expect(screen.getByText('1:4.00')).toBeInTheDocument();
+    expect(screen.getByText('✓ Tỉ lệ tốt')).toBeInTheDocument();
+  });
   it('blocks a valid OCO order for a read-only trading session', async () => {
     const user = userEvent.setup();
     const { onSubmit } = renderForm({ canWriteTrading: false });

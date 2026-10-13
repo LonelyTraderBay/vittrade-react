@@ -74,6 +74,34 @@ function renderChat(authAdapter: AuthAdapter = testAuthAdapter) {
 }
 
 describe('P2P chat contract page', () => {
+  it.each(['back', 'order'])(
+    'opens the %s destination from the loaded chat',
+    async (destination) => {
+      server.use(
+        http.get('*/p2p/orders/order-1/chat', () => HttpResponse.json(chat)),
+        http.get('*/p2p/orders/order-1', () => HttpResponse.json(order)),
+      );
+      renderWithProviders(
+        <Routes>
+          <Route path="/previous" element={<p>Previous destination</p>} />
+          <Route path="/p2p/chat/:orderId" element={<P2PChatPage />} />
+          <Route path="/p2p/order/order-1" element={<p>Order destination</p>} />
+        </Routes>,
+        { routerProps: { initialEntries: ['/previous', '/p2p/chat/order-1'], initialIndex: 1 } },
+      );
+      expect(await screen.findByText('Please confirm the transfer.')).toBeInTheDocument();
+      await userEvent.click(
+        screen.getByRole('button', {
+          name: destination === 'back' ? 'Quay lại' : 'Open P2P order',
+        }),
+      );
+      expect(
+        await screen.findByText(
+          destination === 'back' ? 'Previous destination' : 'Order destination',
+        ),
+      ).toBeInTheDocument();
+    },
+  );
   it('renders messages and updates the chat cache after a successful send', async () => {
     const updatedChat: P2PChatResponse = {
       ...chat,
