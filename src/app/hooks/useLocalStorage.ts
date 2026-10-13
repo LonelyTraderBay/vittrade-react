@@ -1,3 +1,5 @@
+import { captureException } from '@/shared/telemetry/telemetry';
+import { env } from '@/shared/config/env';
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { browserStorage } from '@/shared/lib/browser-storage';
 
@@ -20,7 +22,8 @@ export function useLocalStorage<T>(
       const item = browserStorage.local.getItem(key);
       return item ? JSON.parse(item) : initialValue;
     } catch (error) {
-      console.warn(`Error reading localStorage key "${key}":`, error);
+      captureException(error, { area: 'storage', operation: 'read-preference' });
+      if (env.isDev) console.warn(`Error reading localStorage key "${key}":`, error);
       return initialValue;
     }
   });
@@ -37,7 +40,8 @@ export function useLocalStorage<T>(
         setStoredValue(valueToStore);
         browserStorage.local.setItem(key, JSON.stringify(valueToStore));
       } catch (error) {
-        console.warn(`Error setting localStorage key "${key}":`, error);
+        captureException(error, { area: 'storage', operation: 'write-preference' });
+        if (env.isDev) console.warn(`Error setting localStorage key "${key}":`, error);
       }
     },
     [key],
@@ -50,7 +54,8 @@ export function useLocalStorage<T>(
       setStoredValue(initialValue);
       browserStorage.local.removeItem(key);
     } catch (error) {
-      console.warn(`Error removing localStorage key "${key}":`, error);
+      captureException(error, { area: 'storage', operation: 'remove-preference' });
+      if (env.isDev) console.warn(`Error removing localStorage key "${key}":`, error);
     }
   }, [key, initialValue]);
 

@@ -12,6 +12,8 @@
  * @version 1.0 (Phase 3 - Product Positioning)
  */
 
+import { captureException } from '@/shared/telemetry/telemetry';
+import { env } from '@/shared/config/env';
 import { browserStorage } from '@/shared/lib/browser-storage';
 
 /* ═══════════════════════════════════════════
@@ -287,7 +289,8 @@ class CoachmarkService {
         return JSON.parse(data);
       }
     } catch (error) {
-      console.warn('Failed to load coachmark state:', error);
+      captureException(error, { area: 'coachmarks', operation: 'load-state' });
+      if (env.isDev) console.warn('Failed to load coachmark state:', error);
     }
     return {
       seen: [],
@@ -301,7 +304,8 @@ class CoachmarkService {
     try {
       browserStorage.local.setItem(STORAGE_KEY, JSON.stringify(this.state));
     } catch (error) {
-      console.warn('Failed to save coachmark state:', error);
+      captureException(error, { area: 'coachmarks', operation: 'save-state' });
+      if (env.isDev) console.warn('Failed to save coachmark state:', error);
     }
   }
 
