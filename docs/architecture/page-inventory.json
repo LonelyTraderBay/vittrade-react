@@ -10,15 +10,15 @@
     "src/app/services"
   ],
   "summary": {
-    "pageCount": 129,
-    "routeCount": 427,
+    "pageCount": 130,
+    "routeCount": 428,
     "componentCount": 149,
     "dataModuleCount": 0,
     "serviceCount": 32,
     "mockCount": 28,
     "pageStatus": {
       "production": 0,
-      "integration-pending": 125,
+      "integration-pending": 126,
       "demo": 2,
       "deprecated": 0,
       "not-implemented": 2
@@ -30,7 +30,7 @@
       "features/wallet": 16,
       "features/admin": 4,
       "features/arena": 2,
-      "features/auth": 13,
+      "features/auth": 14,
       "features/discovery": 1,
       "features/earn": 5,
       "features/launchpad": 1,
@@ -437,18 +437,46 @@
       }
     },
     {
+      "path": "src/features/auth/pages/AccountLockedPage.tsx",
+      "domain": "auth",
+      "owner": "features/auth",
+      "status": "integration-pending",
+      "lines": 88,
+      "routePaths": [
+        "account-locked"
+      ],
+      "dependencies": {
+        "localImports": [
+          "@/shared/hooks/useThemeColors",
+          "@/shared/navigation/useRoutePrefix",
+          "@/shared/ui/CTAButton",
+          "@/shared/ui/layout/Header",
+          "@/shared/ui/layout/PageContent",
+          "@/shared/ui/layout/PageLayout"
+        ],
+        "mockReferences": [],
+        "directRuntimeAccess": {
+          "fetch": false,
+          "websocket": false,
+          "storage": false
+        }
+      }
+    },
+    {
       "path": "src/features/auth/pages/LoginPage.tsx",
       "domain": "auth",
       "owner": "features/auth",
       "status": "integration-pending",
-      "lines": 218,
+      "lines": 241,
       "routePaths": [
         "login"
       ],
       "dependencies": {
         "localImports": [
+          "@/shared/api/api-error",
           "@/shared/config/env",
           "@/shared/hooks/useThemeColors",
+          "@/shared/lib/string",
           "@/shared/navigation/useRoutePrefix",
           "@/shared/session/useAuth",
           "@/shared/ui/CTAButton",
@@ -471,7 +499,7 @@
       "domain": "auth",
       "owner": "features/auth",
       "status": "integration-pending",
-      "lines": 271,
+      "lines": 284,
       "routePaths": [
         "otp"
       ],
@@ -501,7 +529,7 @@
       "domain": "auth",
       "owner": "features/auth",
       "status": "integration-pending",
-      "lines": 203,
+      "lines": 225,
       "routePaths": [
         "profile/security/change-password"
       ],
@@ -529,7 +557,7 @@
       "domain": "auth",
       "owner": "features/auth",
       "status": "integration-pending",
-      "lines": 363,
+      "lines": 426,
       "routePaths": [
         "forgot-password",
         "reset-password"
@@ -584,7 +612,7 @@
       "domain": "auth",
       "owner": "features/auth",
       "status": "integration-pending",
-      "lines": 342,
+      "lines": 361,
       "routePaths": [
         "2fa-setup"
       ],
@@ -635,7 +663,7 @@
       "domain": "auth",
       "owner": "features/auth",
       "status": "integration-pending",
-      "lines": 142,
+      "lines": 159,
       "routePaths": [
         "account-locked"
       ],
@@ -658,7 +686,7 @@
       "domain": "auth",
       "owner": "features/auth",
       "status": "integration-pending",
-      "lines": 436,
+      "lines": 476,
       "routePaths": [
         "success"
       ],
@@ -681,7 +709,7 @@
       "domain": "auth",
       "owner": "features/auth",
       "status": "integration-pending",
-      "lines": 464,
+      "lines": 490,
       "routePaths": [
         "login"
       ],
@@ -709,7 +737,7 @@
       "domain": "auth",
       "owner": "features/auth",
       "status": "integration-pending",
-      "lines": 570,
+      "lines": 556,
       "routePaths": [
         "otp"
       ],
@@ -762,7 +790,7 @@
       "domain": "auth",
       "owner": "features/auth",
       "status": "integration-pending",
-      "lines": 395,
+      "lines": 396,
       "routePaths": [
         "session-expired"
       ],
@@ -3851,7 +3879,7 @@
       "domain": "wallet",
       "owner": "features/wallet",
       "status": "integration-pending",
-      "lines": 266,
+      "lines": 287,
       "routePaths": [
         "wallet/withdraw",
         "wallet/withdraw/:asset"
@@ -3861,6 +3889,7 @@
           "../components/WithdrawSections",
           "../model/wallet-queries",
           "../model/wallet-types",
+          "@/shared/api/api-error",
           "@/shared/constants/toastMessages",
           "@/shared/hooks/useActionToast",
           "@/shared/hooks/useHaptic",
@@ -3930,6 +3959,14 @@
       "developmentOnly": false,
       "source": "src/app/routes.ts",
       "pageTarget": "src/features/auth/pages/Web2FASetupPage.tsx"
+    },
+    {
+      "path": "account-locked",
+      "component": "AccountLockedPage",
+      "target": "@/features/auth/pages/AccountLockedPage",
+      "developmentOnly": false,
+      "source": "src/app/routeConfig.ts",
+      "pageTarget": "src/features/auth/pages/AccountLockedPage.tsx"
     },
     {
       "path": "account-locked",
