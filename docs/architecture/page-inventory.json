@@ -380,7 +380,7 @@
       "domain": "arena",
       "owner": "features/arena",
       "status": "integration-pending",
-      "lines": 362,
+      "lines": 365,
       "routePaths": [
         "arena/challenge/:challengeId",
         "arena/join/:challengeId",
@@ -412,7 +412,7 @@
       "domain": "arena",
       "owner": "features/arena",
       "status": "integration-pending",
-      "lines": 229,
+      "lines": 231,
       "routePaths": [
         "arena"
       ],
@@ -916,7 +916,7 @@
       "domain": "discovery",
       "owner": "features/discovery",
       "status": "integration-pending",
-      "lines": 348,
+      "lines": 350,
       "routePaths": [
         "search",
         "topic/:topicId",
@@ -1432,7 +1432,7 @@
       "domain": "market",
       "owner": "features/market",
       "status": "integration-pending",
-      "lines": 229,
+      "lines": 231,
       "routePaths": [
         "markets/news"
       ],
@@ -1460,7 +1460,7 @@
       "domain": "market",
       "owner": "features/market",
       "status": "integration-pending",
-      "lines": 340,
+      "lines": 342,
       "routePaths": [
         "markets/overview"
       ],
@@ -1634,7 +1634,7 @@
       "domain": "market",
       "owner": "features/market",
       "status": "integration-pending",
-      "lines": 416,
+      "lines": 418,
       "routePaths": [
         "pair/:pairId"
       ],
@@ -2572,7 +2572,7 @@
       "domain": "predictions",
       "owner": "features/predictions",
       "status": "integration-pending",
-      "lines": 455,
+      "lines": 457,
       "routePaths": [
         "activity",
         "breaking",
@@ -3312,7 +3312,7 @@
       "domain": "trading",
       "owner": "features/trading",
       "status": "integration-pending",
-      "lines": 199,
+      "lines": 201,
       "routePaths": [
         "trade/copy-trading/leaderboard"
       ],
@@ -3419,7 +3419,7 @@
       "domain": "trading",
       "owner": "features/trading",
       "status": "integration-pending",
-      "lines": 273,
+      "lines": 277,
       "routePaths": [
         "trade/trader/:traderId"
       ],
@@ -3541,7 +3541,7 @@
       "domain": "wallet",
       "owner": "features/wallet",
       "status": "integration-pending",
-      "lines": 436,
+      "lines": 438,
       "routePaths": [
         "wallet/asset/:assetId"
       ],
@@ -3640,7 +3640,7 @@
       "domain": "wallet",
       "owner": "features/wallet",
       "status": "integration-pending",
-      "lines": 87,
+      "lines": 89,
       "routePaths": [
         "wallet/pending-deposits"
       ],
@@ -3761,7 +3761,7 @@
       "domain": "wallet",
       "owner": "features/wallet",
       "status": "integration-pending",
-      "lines": 430,
+      "lines": 432,
       "routePaths": [
         "wallet"
       ],
