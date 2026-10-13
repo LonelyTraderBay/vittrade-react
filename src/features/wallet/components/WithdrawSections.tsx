@@ -231,7 +231,12 @@ export function WithdrawalVerifyState({
           >
             Xác nhận rút tiền
           </CTAButton>
-          <button type="button" onClick={onBack} style={{ color: colors.text2, fontSize: 13 }}>
+          <button
+            type="button"
+            onClick={onBack}
+            disabled={busy}
+            style={{ color: colors.text2, fontSize: 13 }}
+          >
             Quay lại chỉnh sửa
           </button>
         </div>

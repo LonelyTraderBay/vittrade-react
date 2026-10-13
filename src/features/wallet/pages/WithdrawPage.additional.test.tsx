@@ -196,4 +196,46 @@ describe('WithdrawPage additional coverage', () => {
       ),
     );
   });
+  it('does not submit a withdrawal when MFA verification fails', async () => {
+    installReadHandlers();
+    let withdrawalRequested = false;
+    server.use(
+      http.post('*/wallet/withdrawals/challenge', () =>
+        HttpResponse.json({
+          id: 'challenge-1',
+          method: 'totp',
+          expiresAt: '2026-09-22T09:00:00Z',
+        }),
+      ),
+      http.post('*/wallet/withdrawals/challenge/:challengeId/verify', () =>
+        HttpResponse.json({ message: 'Invalid code' }, { status: 401 }),
+      ),
+      http.post('*/wallet/withdrawals', () => {
+        withdrawalRequested = true;
+        return HttpResponse.json({ id: 'unexpected' }, { status: 201 });
+      }),
+    );
+    renderWithProviders(<WithdrawPage />, {
+      routerProps: { initialEntries: ['/wallet/withdraw/USDT'] },
+    });
+    await screen.findByRole('combobox');
+    await userEvent.type(
+      document.getElementById('withdraw-address') as HTMLInputElement,
+      'wallet-address-long-enough-for-validation-123456',
+    );
+    await userEvent.type(document.getElementById('withdraw-amount') as HTMLInputElement, '12');
+    await userEvent.click(getContinueButton());
+    await userEvent.click(getButtonContaining('Xác minh 2FA'));
+    await userEvent.type(await screen.findByLabelText(/Mã xác minh/i), '123456');
+    await userEvent.click(getButtonContaining('Xác nhận rút tiền'));
+
+    await waitFor(() =>
+      expect(toast.error).toHaveBeenCalledWith(
+        'Mã xác minh không hợp lệ hoặc đã hết hạn. Vui lòng thử lại.',
+        { duration: 2000 },
+      ),
+    );
+    expect(withdrawalRequested).toBe(false);
+    expect(screen.getByText('Xác minh bảo mật')).toBeVisible();
+  });
 });

@@ -1,12 +1,14 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { fireEvent, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { renderWithProviders } from '@/test/test-utils';
 import type { AuthAdapter } from '@/shared/session/AuthContext';
 import { testAuthAdapter } from '@/test/auth-test-adapter';
 import { toast } from 'sonner';
+import { ApiError } from '@/shared/api/api-error';
+import { walletApi } from '../api/wallet-api';
 import { WithdrawPage } from './WithdrawPage';
 
 vi.mock('sonner', () => ({
@@ -52,6 +54,7 @@ const networks = {
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
 afterEach(() => {
   server.resetHandlers();
+  vi.restoreAllMocks();
   vi.clearAllMocks();
 });
 afterAll(() => server.close());
@@ -79,7 +82,139 @@ function getButtonContaining(text: string) {
   return button;
 }
 
+function installVerificationHandlers() {
+  installReadHandlers();
+  server.use(
+    http.post('*/wallet/withdrawals/challenge', () =>
+      HttpResponse.json({
+        id: 'challenge-submit-boundary',
+        method: 'totp',
+        expiresAt: '2026-09-22T09:00:00Z',
+      }),
+    ),
+    http.post('*/wallet/withdrawals/challenge/:challengeId/verify', () =>
+      HttpResponse.json({
+        verificationToken: 'verification-token-boundary',
+        expiresAt: '2026-09-22T09:00:00Z',
+      }),
+    ),
+  );
+}
+
+async function openWithdrawalVerification() {
+  renderWithProviders(<WithdrawPage />, {
+    routerProps: { initialEntries: ['/wallet/withdraw/USDT'] },
+  });
+  await screen.findByRole('combobox');
+  await userEvent.type(
+    document.getElementById('withdraw-address') as HTMLInputElement,
+    '0x1234567890abcdef1234567890abcdef12345678',
+  );
+  await userEvent.type(document.getElementById('withdraw-amount') as HTMLInputElement, '12.5');
+  await userEvent.click(getContinueButton());
+  await userEvent.click(getButtonContaining('2FA'));
+  await userEvent.type(await screen.findByLabelText(/Mã xác minh/i), '000000');
+  return getButtonContaining('Xác nhận');
+}
+
 describe('WithdrawPage', () => {
+  it('does not misreport a verification transport failure as an invalid OTP or submit money', async () => {
+    installVerificationHandlers();
+    server.use(
+      http.post('*/wallet/withdrawals/challenge/:challengeId/verify', () => HttpResponse.error()),
+    );
+    const submit = vi.spyOn(walletApi, 'createWithdrawal');
+    await userEvent.click(await openWithdrawalVerification());
+    await waitFor(() =>
+      expect(toast.error).toHaveBeenCalledWith('Không thể hoàn tất xác minh. Vui lòng thử lại.', {
+        duration: 2000,
+      }),
+    );
+    expect(submit).not.toHaveBeenCalled();
+    expect(toast.success).not.toHaveBeenCalled();
+  });
+
+  it.each(['network', 'timeout', 'invalid receipt'] as const)(
+    'does not blame a verified OTP or report success after a submit %s failure',
+    async (failure) => {
+      installVerificationHandlers();
+      const submit = vi.spyOn(walletApi, 'createWithdrawal');
+      if (failure === 'timeout') {
+        submit.mockRejectedValue(
+          new ApiError('Request timed out', { status: 0, code: 'REQUEST_TIMEOUT' }),
+        );
+      } else {
+        server.use(
+          http.post('*/wallet/withdrawals', () =>
+            failure === 'network' ? HttpResponse.error() : HttpResponse.json({}),
+          ),
+        );
+      }
+      await userEvent.click(await openWithdrawalVerification());
+
+      await waitFor(() =>
+        expect(toast.error).toHaveBeenCalledWith(
+          'Chưa xác nhận được kết quả rút tiền. Hãy kiểm tra lịch sử giao dịch trước khi thử lại.',
+          { duration: 2000 },
+        ),
+      );
+      expect(submit).toHaveBeenCalledTimes(1);
+      expect(toast.success).not.toHaveBeenCalled();
+      expect(toast.error).not.toHaveBeenCalledWith(
+        'Mã xác minh không hợp lệ hoặc đã hết hạn. Vui lòng thử lại.',
+        expect.anything(),
+      );
+      expect(screen.getByText('Xác minh bảo mật')).toBeVisible();
+      expect(screen.queryByText('Đang xử lý')).not.toBeInTheDocument();
+    },
+  );
+
+  it('accepts only one in-flight verification and withdrawal for rapid duplicate clicks', async () => {
+    installVerificationHandlers();
+    let finishVerification!: () => void;
+    const verificationResponse = new Promise<void>((resolve) => {
+      finishVerification = resolve;
+    });
+    let verificationRequests = 0;
+    let withdrawalRequests = 0;
+    server.use(
+      http.post('*/wallet/withdrawals/challenge/:challengeId/verify', async () => {
+        verificationRequests += 1;
+        await verificationResponse;
+        return HttpResponse.json({
+          verificationToken: 'verification-token-boundary',
+          expiresAt: '2026-09-22T09:00:00Z',
+        });
+      }),
+      http.post('*/wallet/withdrawals', () => {
+        withdrawalRequests += 1;
+        return HttpResponse.json({
+          id: 'withdrawal-double-click',
+          transactionId: 'transaction-double-click',
+          asset: 'USDT',
+          amount: 12.5,
+          status: 'pending',
+          createdAt: '2026-09-22T08:00:00Z',
+        });
+      }),
+    );
+    const button = await openWithdrawalVerification();
+    act(() => {
+      button.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      button.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    });
+    try {
+      await waitFor(() => expect(verificationRequests).toBe(1));
+      expect(button).toBeDisabled();
+      expect(screen.getByRole('button', { name: 'Quay lại chỉnh sửa' })).toBeDisabled();
+    } finally {
+      finishVerification();
+    }
+    expect(await screen.findByText('withdrawal-double-click')).toBeVisible();
+    expect(verificationRequests).toBe(1);
+    expect(withdrawalRequests).toBe(1);
+  });
+
   it('blocks invalid withdrawal input before creating an MFA challenge', async () => {
     installReadHandlers();
     let challengeRequested = false;
@@ -290,49 +425,6 @@ describe('WithdrawPage', () => {
       });
     });
     expect(document.getElementById('withdraw-address')).toBeInTheDocument();
-  });
-
-  it('does not submit a withdrawal when MFA verification fails', async () => {
-    installReadHandlers();
-    let withdrawalRequested = false;
-    server.use(
-      http.post('*/wallet/withdrawals/challenge', () =>
-        HttpResponse.json({
-          id: 'challenge-1',
-          method: 'totp',
-          expiresAt: '2026-09-22T09:00:00Z',
-        }),
-      ),
-      http.post('*/wallet/withdrawals/challenge/:challengeId/verify', () =>
-        HttpResponse.json({ message: 'Invalid code' }, { status: 401 }),
-      ),
-      http.post('*/wallet/withdrawals', () => {
-        withdrawalRequested = true;
-        return HttpResponse.json({ id: 'unexpected' }, { status: 201 });
-      }),
-    );
-    renderWithProviders(<WithdrawPage />, {
-      routerProps: { initialEntries: ['/wallet/withdraw/USDT'] },
-    });
-    await screen.findByRole('combobox');
-    await userEvent.type(
-      document.getElementById('withdraw-address') as HTMLInputElement,
-      'wallet-address-long-enough-for-validation-123456',
-    );
-    await userEvent.type(document.getElementById('withdraw-amount') as HTMLInputElement, '12');
-    await userEvent.click(getContinueButton());
-    await userEvent.click(getButtonContaining('Xác minh 2FA'));
-    await userEvent.type(await screen.findByLabelText(/Mã xác minh/i), '123456');
-    await userEvent.click(getButtonContaining('Xác nhận rút tiền'));
-
-    await waitFor(() =>
-      expect(toast.error).toHaveBeenCalledWith(
-        'Mã xác minh không hợp lệ hoặc đã hết hạn. Vui lòng thử lại.',
-        { duration: 2000 },
-      ),
-    );
-    expect(withdrawalRequested).toBe(false);
-    expect(screen.getByText('Xác minh bảo mật')).toBeVisible();
   });
 
   it('completes challenge, MFA verification and idempotent withdrawal submission', async () => {
