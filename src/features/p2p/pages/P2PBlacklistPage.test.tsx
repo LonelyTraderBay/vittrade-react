@@ -3,6 +3,7 @@ import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { Route, Routes } from 'react-router';
 import { renderWithProviders } from '@/test/test-utils';
 import type { P2PBlacklistEntry, P2PBlacklistResponse } from '../model/p2p-types';
 import { P2PBlacklistPage } from './P2PBlacklistPage';
@@ -37,6 +38,47 @@ const secondEntry: P2PBlacklistEntry = {
 };
 
 describe('P2P blacklist contract page', () => {
+  it('queries the trimmed search and opens the add-user route', async () => {
+    const searches: Array<string | null> = [];
+    let releaseSearch = () => {};
+    const pendingSearch = new Promise<void>((resolve) => {
+      releaseSearch = resolve;
+    });
+    server.use(
+      http.get('*/p2p/blacklist', async ({ request }) => {
+        const search = new URL(request.url).searchParams.get('search');
+        searches.push(search);
+        if (search) await pendingSearch;
+        return HttpResponse.json({
+          items: search ? [secondEntry] : [firstEntry, secondEntry],
+          total: search ? 1 : 2,
+        });
+      }),
+    );
+    renderWithProviders(
+      <Routes>
+        <Route path="/p2p/blacklist" element={<P2PBlacklistPage />} />
+        <Route path="/p2p/blacklist/add" element={<p>Add-user destination</p>} />
+      </Routes>,
+      { routerProps: { initialEntries: ['/p2p/blacklist'] } },
+    );
+    expect(await screen.findByText('scam-merchant')).toBeInTheDocument();
+    await userEvent.type(
+      screen.getByRole('textbox', { name: 'Tìm người dùng đã chặn' }),
+      '  slow  ',
+    );
+    await waitFor(() => expect(searches).toContain('slow'));
+    const searchInput = screen.getByRole('textbox', { name: 'Tìm người dùng đã chặn' });
+    expect(searchInput).toHaveFocus();
+    expect(searchInput).toHaveValue('  slow  ');
+    expect(screen.getByText('scam-merchant')).toBeInTheDocument();
+    releaseSearch();
+    await waitFor(() => expect(screen.queryByText('scam-merchant')).not.toBeInTheDocument());
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Thêm người dùng vào danh sách chặn' }),
+    );
+    expect(await screen.findByText('Add-user destination')).toBeInTheDocument();
+  });
   it('renders entries, filters by reason, and removes an entry idempotently', async () => {
     let response: P2PBlacklistResponse = { items: [firstEntry, secondEntry], total: 2 };
     server.use(

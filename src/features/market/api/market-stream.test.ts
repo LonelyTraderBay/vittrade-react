@@ -87,4 +87,57 @@ describe('market stream transport', () => {
     expect(FakeWebSocket.instances).toHaveLength(1);
     expect(FakeWebSocket.instances[0].closed).toBe(true);
   });
+
+  it('ignores queued socket events after the owner has disposed the stream', () => {
+    const onMessage = vi.fn();
+    const onStatus = vi.fn();
+    const dispose = connectMarketStream('wss://stream.example.test/market', {
+      onMessage,
+      onStatus,
+    });
+    const socket = FakeWebSocket.instances[0];
+    socket.emit('open');
+    dispose();
+    onStatus.mockClear();
+
+    dispose();
+
+    socket.emit('open');
+    socket.emit('message', new MessageEvent('message', { data: '{"type":"ticker","data":1}' }));
+    socket.emit('error');
+    socket.emit('close');
+    vi.runAllTimers();
+
+    expect(onMessage).not.toHaveBeenCalled();
+    expect(onStatus).not.toHaveBeenCalled();
+    expect(FakeWebSocket.instances).toHaveLength(1);
+  });
+
+  it('ignores events from a retired socket after reconnecting', () => {
+    const onMessage = vi.fn();
+    const onStatus = vi.fn();
+    const dispose = connectMarketStream('wss://stream.example.test/market', {
+      onMessage,
+      onStatus,
+    });
+    const oldSocket = FakeWebSocket.instances[0];
+    oldSocket.emit('close');
+    vi.advanceTimersByTime(1_000);
+    const currentSocket = FakeWebSocket.instances[1];
+    currentSocket.emit('open');
+    currentSocket.emit('error');
+    expect(onStatus).toHaveBeenLastCalledWith(false);
+    onStatus.mockClear();
+
+    oldSocket.emit('message', new MessageEvent('message', { data: '{"type":"ticker","data":1}' }));
+    oldSocket.emit('open');
+    oldSocket.emit('error');
+    oldSocket.emit('close');
+    vi.advanceTimersByTime(30_000);
+
+    expect(onMessage).not.toHaveBeenCalled();
+    expect(onStatus).not.toHaveBeenCalled();
+    expect(FakeWebSocket.instances).toHaveLength(2);
+    dispose();
+  });
 });
