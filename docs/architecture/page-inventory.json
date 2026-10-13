@@ -979,7 +979,7 @@
       "domain": "earn",
       "owner": "features/earn",
       "status": "integration-pending",
-      "lines": 265,
+      "lines": 276,
       "routePaths": [
         "earn",
         "earn/savings",
@@ -1076,7 +1076,7 @@
       "domain": "earn",
       "owner": "features/earn",
       "status": "integration-pending",
-      "lines": 133,
+      "lines": 156,
       "routePaths": [
         "earn/savings/portfolio"
       ],
@@ -2572,7 +2572,7 @@
       "domain": "predictions",
       "owner": "features/predictions",
       "status": "integration-pending",
-      "lines": 435,
+      "lines": 455,
       "routePaths": [
         "activity",
         "breaking",
@@ -3226,7 +3226,7 @@
       "domain": "trading",
       "owner": "features/trading",
       "status": "integration-pending",
-      "lines": 316,
+      "lines": 342,
       "routePaths": [
         "trade/orders",
         "trade/orders-history"
@@ -3825,7 +3825,7 @@
       "domain": "wallet",
       "owner": "features/wallet",
       "status": "integration-pending",
-      "lines": 366,
+      "lines": 380,
       "routePaths": [
         "wallet/transfer"
       ],

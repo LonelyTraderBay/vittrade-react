@@ -69,4 +69,28 @@ describe('browserStorage', () => {
     expect(browserStorage.local.setItem('preference', 'compact')).toBe(false);
     expect(browserStorage.local.removeItem('preference')).toBe(false);
   });
+
+  it('isolates failures from storage methods after browser storage has been resolved', () => {
+    Object.defineProperty(window, 'sessionStorage', {
+      configurable: true,
+      value: {
+        ...createMemoryStorage(),
+        getItem() {
+          throw new DOMException('Read denied', 'SecurityError');
+        },
+        setItem() {
+          throw new DOMException('Quota exceeded', 'QuotaExceededError');
+        },
+        removeItem() {
+          throw new DOMException('Removal denied', 'SecurityError');
+        },
+      },
+    });
+
+    expect(browserStorage.session.getItem('tour_seen')).toBeNull();
+    expect(browserStorage.session.setItem('tour_seen', '1')).toBe(false);
+    expect(browserStorage.session.removeItem('tour_seen')).toBe(false);
+    expect(browserStorage.local.setItem('preference', 'compact')).toBe(true);
+    expect(browserStorage.local.getItem('preference')).toBe('compact');
+  });
 });

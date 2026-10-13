@@ -169,4 +169,62 @@ describe('MarketOverviewPage', () => {
     fireEvent.click(screen.getByRole('button', { name: /làm mới/i }));
     expect(refetch).toHaveBeenCalledOnce();
   });
+
+  it('keeps the tablet shell for discovery shortcuts and losing-pair navigation', () => {
+    useMarketOverviewQuery.mockReturnValue(
+      queryState({
+        data: {
+          ...overview,
+          topLosers: [{ ...overview.topGainers[0], id: 'ETH-USDT', symbol: 'ETH', change24h: -4 }],
+        },
+      }),
+    );
+    renderWithProviders(
+      <>
+        <MarketOverviewPage />
+        <LocationProbe />
+      </>,
+      { routerProps: { initialEntries: ['/t/markets/overview'] } },
+    );
+
+    for (const [label, route] of [
+      ['Biến động', '/t/markets/movers'],
+      ['Ngành', '/t/markets/sectors'],
+      ['Heatmap', '/t/markets/heatmap'],
+      ['Tăng mạnh', '/t/markets/movers'],
+      ['Giảm mạnh', '/t/markets/movers'],
+      ['Xem tất cả ngành', '/t/markets/sectors'],
+    ]) {
+      fireEvent.click(screen.getByRole('button', { name: label }));
+      expect(screen.getByTestId('route-location')).toHaveTextContent(route);
+    }
+    fireEvent.click(screen.getByRole('button', { name: /ETH.*-4/ }));
+    expect(screen.getByTestId('route-location')).toHaveTextContent('/t/pair/ETH-USDT');
+  });
+
+  it('ranks the top five sectors without mutating the received market snapshot', () => {
+    const sectors = Array.from({ length: 6 }, (_, index) => ({
+      ...overview.sectors[0],
+      id: `sector-${index}`,
+      nameVi: `Sector ${index}`,
+      change24h: index,
+    }));
+    useMarketOverviewQuery.mockReturnValue(queryState({ data: { ...overview, sectors } }));
+    renderWithProviders(<MarketOverviewPage />);
+
+    const renderedSectors = screen.getAllByRole('button', { name: /Sector \d/ });
+    expect(renderedSectors).toHaveLength(5);
+    for (const [index, button] of renderedSectors.entries()) {
+      expect(button).toHaveTextContent(`Sector ${5 - index}`);
+    }
+    expect(screen.queryByText('Sector 0')).not.toBeInTheDocument();
+    expect(sectors.map((sector) => sector.id)).toEqual([
+      'sector-0',
+      'sector-1',
+      'sector-2',
+      'sector-3',
+      'sector-4',
+      'sector-5',
+    ]);
+  });
 });
