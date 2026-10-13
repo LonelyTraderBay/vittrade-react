@@ -13,6 +13,7 @@
  */
 
 import { captureException } from '@/shared/telemetry/telemetry';
+import { z } from 'zod';
 import { env } from '@/shared/config/env';
 import { browserStorage } from '@/shared/lib/browser-storage';
 
@@ -90,6 +91,15 @@ export interface CoachmarkState {
   /** Last shown timestamp */
   lastShown: number;
 }
+
+const coachmarkStateSchema = z
+  .object({
+    seen: z.array(z.string()),
+    dismissed: z.array(z.string()),
+    disabled: z.boolean(),
+    lastShown: z.number().finite(),
+  })
+  .passthrough();
 
 /* ═══════════════════════════════════════════
    COACHMARK DEFINITIONS
@@ -286,7 +296,7 @@ class CoachmarkService {
     try {
       const data = browserStorage.local.getItem(STORAGE_KEY);
       if (data) {
-        return JSON.parse(data);
+        return coachmarkStateSchema.parse(JSON.parse(data));
       }
     } catch (error) {
       captureException(error, { area: 'coachmarks', operation: 'load-state' });

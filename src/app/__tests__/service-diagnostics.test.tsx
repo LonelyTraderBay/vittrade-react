@@ -49,6 +49,7 @@ describe('release service diagnostics', () => {
       throw new Error('private-token');
     });
     const fetch = vi.spyOn(globalThis, 'fetch').mockResolvedValue({
+      ok: true,
       json: async () => ({
         remote_flag: { key: 'remote_flag', name: 'remote_flag', description: '', enabled: true },
       }),
