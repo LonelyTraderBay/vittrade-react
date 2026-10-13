@@ -848,7 +848,7 @@
       "domain": "dca",
       "owner": "features/dca",
       "status": "integration-pending",
-      "lines": 582,
+      "lines": 597,
       "routePaths": [
         "dca"
       ],
@@ -886,7 +886,7 @@
       "domain": "dca",
       "owner": "features/dca",
       "status": "integration-pending",
-      "lines": 265,
+      "lines": 296,
       "routePaths": [
         "earn/savings/dca"
       ],
@@ -1013,7 +1013,7 @@
       "domain": "earn",
       "owner": "features/earn",
       "status": "integration-pending",
-      "lines": 361,
+      "lines": 386,
       "routePaths": [
         "earn/:domain/receipt",
         "earn/savings/product/:productId",
@@ -1841,7 +1841,7 @@
       "domain": "p2p",
       "owner": "features/p2p",
       "status": "integration-pending",
-      "lines": 238,
+      "lines": 252,
       "routePaths": [
         "p2p/ad/:id"
       ],
@@ -2079,7 +2079,7 @@
       "domain": "p2p",
       "owner": "features/p2p",
       "status": "not-implemented",
-      "lines": 374,
+      "lines": 405,
       "routePaths": [],
       "dependencies": {
         "localImports": [
@@ -2107,7 +2107,7 @@
       "domain": "p2p",
       "owner": "features/p2p",
       "status": "integration-pending",
-      "lines": 204,
+      "lines": 230,
       "routePaths": [
         "p2p/express/confirm"
       ],
@@ -2357,7 +2357,7 @@
       "domain": "p2p",
       "owner": "features/p2p",
       "status": "integration-pending",
-      "lines": 409,
+      "lines": 484,
       "routePaths": [
         "p2p/order/cancel/:orderId",
         "p2p/order/proof/:orderId",
@@ -3575,7 +3575,7 @@
       "domain": "wallet",
       "owner": "features/wallet",
       "status": "integration-pending",
-      "lines": 564,
+      "lines": 596,
       "routePaths": [
         "wallet/dust-converter"
       ],
