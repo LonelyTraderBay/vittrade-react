@@ -6,6 +6,21 @@ const sink = () => ({ captureException: vi.fn(), captureEvent: vi.fn(), setUser:
 afterEach(() => configureTelemetry(sink()));
 
 describe('telemetry delivery boundary', () => {
+  it('keeps an unconfigured provider inert for the supported event and user operations', async () => {
+    vi.resetModules();
+    const fresh = await import('./telemetry');
+    expect(() =>
+      fresh.captureEvent('sheet_opened', {
+        sheetName: 'trade',
+        timestamp: 1,
+        isoDate: '1970-01-01T00:00:00.001Z',
+      }),
+    ).not.toThrow();
+    expect(() => fresh.captureException(new Error('operation failed'))).not.toThrow();
+    expect(() => fresh.setTelemetryUser({ id: 'opaque-user' })).not.toThrow();
+    await Promise.resolve();
+  });
+
   it('keeps release/request correlation and drops free-form and nested sensitive data', () => {
     const target = sink();
     configureTelemetry(target);

@@ -103,6 +103,37 @@ describe('useOnlineStatus', () => {
 });
 
 describe('useScrollPosition', () => {
+  it('coalesces queued frames and recovers when the element disappears before the frame', () => {
+    const frames: FrameRequestCallback[] = [];
+    vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) =>
+      frames.push(callback),
+    );
+    const element = document.createElement('div');
+    const ref: { current: HTMLElement | null } = { current: element };
+    const { result } = renderHook(() => useScrollPosition(ref));
+    act(() => {
+      element.dispatchEvent(new Event('scroll'));
+      element.dispatchEvent(new Event('scroll'));
+    });
+    expect(frames).toHaveLength(1);
+    ref.current = null;
+    act(() => frames.shift()!(0));
+    expect(result.current.scrollY).toBe(0);
+    act(() => result.current.scrollToTop());
+    ref.current = element;
+    element.scrollTop = 25;
+    act(() => element.dispatchEvent(new Event('scroll')));
+    expect(frames).toHaveLength(1);
+    act(() => frames.shift()!(0));
+    expect(result.current.scrollY).toBe(25);
+  });
+
+  it('keeps its initial state when no element ref is available', () => {
+    const { result } = renderHook(() => useScrollPosition());
+    act(() => result.current.scrollToTop());
+    expect(result.current).toMatchObject({ scrollY: 0, isAtTop: true, showScrollTop: false });
+  });
+
   it('tracks direction, edges, and the scroll-to-top threshold', () => {
     vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => {
       callback(0);
@@ -161,6 +192,55 @@ describe('usePullToRefresh', () => {
       touches: [{ clientY }],
     } as unknown as ReactTouchEvent;
   }
+
+  it('resets a visible pull when reversed or released below its threshold', async () => {
+    const onRefresh = vi.fn();
+    const { result } = renderHook(() => usePullToRefresh({ onRefresh }));
+    act(() => result.current.handlers.onTouchStart(touchEvent(100)));
+    act(() => result.current.handlers.onTouchMove(touchEvent(150)));
+    expect(result.current.isPulling).toBe(true);
+    act(() => result.current.handlers.onTouchMove(touchEvent(80)));
+    expect(result.current.isPulling).toBe(false);
+    act(() => result.current.handlers.onTouchStart(touchEvent(100)));
+    act(() => result.current.handlers.onTouchMove(touchEvent(150)));
+    await act(async () => result.current.handlers.onTouchEnd());
+    expect(result.current).toMatchObject({
+      pullDistance: 0,
+      isPulling: false,
+      isRefreshing: false,
+    });
+    expect(onRefresh).not.toHaveBeenCalled();
+  });
+
+  it('keeps the minimum loading window and blocks another gesture while refreshing', async () => {
+    vi.useFakeTimers();
+    const onRefresh = vi.fn().mockResolvedValue(undefined);
+    const { result } = renderHook(() => usePullToRefresh({ onRefresh, minLoadingTime: 800 }));
+    const start = touchEvent(100);
+    start.currentTarget.closest = () => null;
+    act(() => result.current.handlers.onTouchStart(start));
+    act(() => result.current.handlers.onTouchMove(touchEvent(400)));
+    let completion: Promise<void>;
+    await act(async () => {
+      completion = result.current.handlers.onTouchEnd();
+    });
+    expect(result.current.isRefreshing).toBe(true);
+    act(() => result.current.handlers.onTouchStart(touchEvent(100)));
+    act(() => result.current.handlers.onTouchMove(touchEvent(500)));
+    await act(async () => result.current.handlers.onTouchEnd());
+    expect(onRefresh).toHaveBeenCalledTimes(1);
+    act(() => vi.advanceTimersByTime(799));
+    expect(result.current.isRefreshing).toBe(true);
+    await act(async () => {
+      vi.advanceTimersByTime(1);
+      await completion!;
+    });
+    expect(result.current).toMatchObject({
+      isRefreshing: false,
+      pullDistance: 0,
+      isPulling: false,
+    });
+  });
 
   it('ignores scrolled containers and taps inside the ten-pixel dead zone', async () => {
     const onRefresh = vi.fn();

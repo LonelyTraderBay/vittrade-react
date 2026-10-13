@@ -10,6 +10,53 @@ afterEach(() => {
 });
 
 describe('PullToRefresh', () => {
+  it.each(['auto', 'scroll'] as const)(
+    'uses an overflow-%s ancestor and ignores gestures away from its top',
+    (overflowY) => {
+      const onRefresh = vi.fn();
+      const { container } = renderWithProviders(
+        <div style={{ overflowY }}>
+          <PullToRefresh onRefresh={onRefresh} threshold={30}>
+            <div>Content</div>
+          </PullToRefresh>
+        </div>,
+      );
+      const parent = container.firstElementChild as HTMLElement;
+      const surface = container.querySelector('.relative.flex-1')!;
+      parent.scrollTop = 10;
+      fireEvent.touchStart(surface, { touches: [{ clientY: 0 }] });
+      fireEvent.touchMove(surface, { touches: [{ clientY: 100 }] });
+      fireEvent.touchEnd(surface);
+      expect(onRefresh).not.toHaveBeenCalled();
+      parent.scrollTop = 0;
+      fireEvent.touchStart(surface, { touches: [{ clientY: 0 }] });
+      fireEvent.touchMove(surface, { touches: [{ clientY: 30 }] });
+      expect(surface.firstElementChild).toHaveStyle({ height: '13.5px' });
+      fireEvent.touchEnd(surface);
+      expect(onRefresh).not.toHaveBeenCalled();
+      expect(surface.firstElementChild).toHaveStyle({ height: '0px' });
+    },
+  );
+
+  it('does not refresh if the parent scrolls during the gesture dead zone', () => {
+    const onRefresh = vi.fn();
+    const { container } = renderWithProviders(
+      <div data-pull-scroll>
+        <PullToRefresh onRefresh={onRefresh}>
+          <div>Content</div>
+        </PullToRefresh>
+      </div>,
+    );
+    const parent = container.querySelector('[data-pull-scroll]') as HTMLElement;
+    const surface = container.querySelector('.relative.flex-1')!;
+    fireEvent.touchStart(surface, { touches: [{ clientY: 0 }] });
+    parent.scrollTop = 10;
+    fireEvent.touchMove(surface, { touches: [{ clientY: 8 }] });
+    fireEvent.touchEnd(surface);
+    expect(onRefresh).not.toHaveBeenCalled();
+    expect(surface.firstElementChild).toHaveStyle({ height: '0px' });
+  });
+
   it('shows an externally managed refresh and blocks another gesture', () => {
     const onRefresh = vi.fn().mockResolvedValue(undefined);
     const { container } = renderWithProviders(

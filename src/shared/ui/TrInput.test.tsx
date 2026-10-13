@@ -24,6 +24,22 @@ function ControlledInput({
 }
 
 describe('TrInput', () => {
+  it('supports hero numeric integers and an absent textarea value', () => {
+    const { rerender } = renderWithProviders(
+      <ControlledInput label="Total" initialValue="1234" size="hero" numeric />,
+    );
+    const input = screen.getByRole('textbox', { name: 'Total' });
+    expect(input).toHaveValue('1,234');
+    expect(input).toHaveStyle({ fontWeight: '700' });
+    fireEvent.change(input, { target: { value: '2,345' } });
+    expect(input).toHaveValue('2,345');
+    rerender(<TrInput label="Optional" />);
+    expect(screen.getByRole('textbox', { name: 'Optional' })).toHaveValue('');
+    rerender(<TrTextarea label="Note" maxLength={20} />);
+    expect(screen.getByRole('textbox', { name: 'Note' })).toHaveValue('');
+    expect(screen.getByText('0/20')).toBeInTheDocument();
+  });
+
   it('wires label, helper, adornments and focus/change/blur callbacks', () => {
     const onChange = vi.fn();
     const onChangeNative = vi.fn();
