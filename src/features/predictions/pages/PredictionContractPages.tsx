@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { ArrowLeft, BarChart3, Clock, Search, Users } from 'lucide-react';
 import { ErrorState } from '@/shared/ui/ErrorState';
@@ -152,22 +152,34 @@ export function PredictionEventContractPage() {
   const canTrade = hasPermission('predictions:write') || hasPermission('predictions:trade');
   const [selectedOutcome, setSelectedOutcome] = useState('');
   const [shares, setShares] = useState('100');
+  const orderInFlight = useRef(false);
+  const orderKeys = useRef(new Map<string, string>());
   if (query.isPending) return <LoadingPage title="Prediction event" />;
   if (query.isError || !query.data) return <ErrorState onAction={() => void query.refetch()} />;
   const event = query.data;
   const outcome = selectedOutcome || event.outcomes[0]?.label || '';
   const submit = async () => {
-    const receipt = await order.mutateAsync({
-      request: {
-        eventId: event.id,
-        outcome,
-        side: 'buy',
-        orderType: 'market',
-        shares: Number(shares),
-      },
-      idempotencyKey: `prediction-order-${crypto.randomUUID()}`,
-    });
-    navigate(`${prefix}/markets/predictions/receipt/${receipt.id}`);
+    const amount = Number(shares);
+    if (!canTrade || !outcome || !Number.isFinite(amount) || amount <= 0 || orderInFlight.current)
+      return;
+    orderInFlight.current = true;
+    const request = {
+      eventId: event.id,
+      outcome,
+      side: 'buy' as const,
+      orderType: 'market' as const,
+      shares: amount,
+    };
+    const actionId = JSON.stringify(request);
+    const key = orderKeys.current.get(actionId) ?? `prediction-order-${crypto.randomUUID()}`;
+    orderKeys.current.set(actionId, key);
+    try {
+      const receipt = await order.mutateAsync({ request, idempotencyKey: key });
+      orderKeys.current.delete(actionId);
+      navigate(`${prefix}/markets/predictions/receipt/${encodeURIComponent(receipt.id)}`);
+    } finally {
+      orderInFlight.current = false;
+    }
   };
   return (
     <PageLayout>
@@ -198,6 +210,7 @@ export function PredictionEventContractPage() {
             <button
               key={item.label}
               type="button"
+              disabled={order.isPending}
               onClick={() => setSelectedOutcome(item.label)}
               className="rounded-xl p-3 text-left"
               style={{
@@ -217,6 +230,7 @@ export function PredictionEventContractPage() {
           <div className="mt-3 flex gap-2">
             <input
               type="number"
+              disabled={order.isPending}
               min="1"
               value={shares}
               onChange={(event) => setShares(event.target.value)}
@@ -225,7 +239,13 @@ export function PredictionEventContractPage() {
             />
             <button
               type="button"
-              disabled={!canTrade || !outcome || order.isPending || Number(shares) <= 0}
+              disabled={
+                !canTrade ||
+                !outcome ||
+                order.isPending ||
+                !Number.isFinite(Number(shares)) ||
+                Number(shares) <= 0
+              }
               onClick={() => void submit().catch(() => undefined)}
               className="rounded-xl px-4 py-3 font-semibold"
               style={{

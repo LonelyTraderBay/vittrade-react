@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { AlertCircle, CheckCircle, Clock, TrendingUp, XCircle } from 'lucide-react';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { Header } from '@/shared/ui/layout/Header';
@@ -60,6 +60,8 @@ export function OrdersHistoryPage() {
   const openOrdersQuery = useOpenOrdersQuery(filters, canReadOrders && tab === 'open');
   const historyQuery = useOrderHistoryQuery(filters, canReadOrders && tab === 'history');
   const cancelMutation = useCancelOrderMutation();
+  const cancelInFlight = useRef(false);
+  const cancelAttemptKeys = useRef(new Map<string, string>());
   const canCancelOrders = hasPermission('trading:write') || hasPermission('trade:write');
 
   const activeQuery = tab === 'open' ? openOrdersQuery : historyQuery;
@@ -67,6 +69,26 @@ export function OrdersHistoryPage() {
 
   const retry = () => {
     void activeQuery.refetch();
+  };
+
+  const handleCancelOrder = (orderId: string) => {
+    if (cancelInFlight.current) return;
+    cancelInFlight.current = true;
+    const key = cancelAttemptKeys.current.get(orderId) ?? idempotencyKey(orderId);
+    cancelAttemptKeys.current.set(orderId, key);
+    cancelMutation.mutate(
+      { orderId, idempotencyKey: key },
+      {
+        onSuccess: (cancelledOrder) => {
+          if (cancelledOrder.id === orderId && cancelledOrder.status === 'cancelled') {
+            cancelAttemptKeys.current.delete(orderId);
+          }
+        },
+        onSettled: () => {
+          cancelInFlight.current = false;
+        },
+      },
+    );
   };
 
   return (
@@ -123,6 +145,15 @@ export function OrdersHistoryPage() {
         ))}
       </div>
 
+      {(cancelMutation.isError ||
+        (cancelMutation.isSuccess &&
+          (cancelMutation.data.id !== cancelMutation.variables.orderId ||
+            cancelMutation.data.status !== 'cancelled'))) && (
+        <p role="alert" className="px-5 py-3" style={{ color: colors.error }}>
+          Chưa xác nhận được kết quả hủy lệnh. Hãy kiểm tra trạng thái lệnh trước khi thử lại.
+        </p>
+      )}
+
       {!canReadOrders ? (
         <p role="alert" className="px-5 py-12 text-center" style={{ color: colors.text2 }}>
           Tài khoản của bạn không có quyền xem lệnh.
@@ -153,12 +184,7 @@ export function OrdersHistoryPage() {
                 (order.status === 'open' || order.status === 'partial')
               }
               isCancelling={cancelMutation.isPending}
-              onCancel={() =>
-                void cancelMutation.mutateAsync({
-                  orderId: order.id,
-                  idempotencyKey: idempotencyKey(order.id),
-                })
-              }
+              onCancel={() => handleCancelOrder(order.id)}
             />
           ))}
         </div>

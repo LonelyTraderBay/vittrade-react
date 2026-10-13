@@ -1,5 +1,5 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
-import { fireEvent, screen } from '@testing-library/react';
+import { act, fireEvent, screen, waitFor } from '@testing-library/react';
 import { useLocation } from 'react-router';
 import { useAuth } from '@/shared/session/useAuth';
 import { http, HttpResponse } from 'msw';
@@ -9,6 +9,8 @@ import { renderWithProviders } from '@/test/test-utils';
 import { testAuthAdapter } from '@/test/auth-test-adapter';
 import type { EarnSnapshot } from '../model/earn-types';
 import { SavingsPortfolioPage } from './SavingsPortfolioPage';
+import { EarnReceiptPage } from './EarnTransactionPages';
+import { Route, Routes } from 'react-router';
 
 const server = setupServer();
 const guardTestControl = vi.hoisted(() => ({ invokeRedeemWithoutPermission: false }));
@@ -131,6 +133,90 @@ function adapterWithPermissions(permissions: string[]): AuthAdapter {
 }
 
 describe('Savings portfolio contract page', () => {
+  it('routes a pending redemption to its receipt without reporting completion', async () => {
+    server.use(
+      http.get('*/earn/snapshot', () => HttpResponse.json(snapshot)),
+      http.post('*/earn/redemptions', () =>
+        HttpResponse.json({
+          id: 'pending-redemption',
+          operation: 'redeem',
+          productId: 'savings-product',
+          positionId: 'savings-position',
+          asset: 'USDT',
+          amount: 100,
+          status: 'pending',
+          createdAt: '2026-10-13T10:00:00.000Z',
+        }),
+      ),
+    );
+    renderWithProviders(
+      <Routes>
+        <Route path="/w/earn/savings/portfolio" element={<SavingsPortfolioPage />} />
+        <Route path="/w/earn/:domain/receipt" element={<EarnReceiptPage />} />
+      </Routes>,
+      {
+        routerProps: { initialEntries: ['/w/earn/savings/portfolio'] },
+        authAdapter: adapterWithPermissions(['earn:read', 'earn:redeem']),
+      },
+    );
+    fireEvent.click(await screen.findByRole('button', { name: 'Rút vốn' }));
+    fireEvent.change(screen.getByLabelText('Số lượng'), { target: { value: '100' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Xác nhận rút vốn' }));
+    expect(await screen.findByRole('heading', { name: 'Yêu cầu đang xử lý' })).toBeInTheDocument();
+    expect(screen.getByRole('status')).toHaveTextContent('Đang xử lý');
+    expect(screen.queryByText('Yêu cầu rút vốn đã được ghi nhận.')).not.toBeInTheDocument();
+  });
+
+  it('sends one redemption per in-flight intent and preserves its key after a lost response', async () => {
+    const keys: (string | null)[] = [];
+    let release!: () => void;
+    const pending = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    server.use(
+      http.get('*/earn/snapshot', () => HttpResponse.json(snapshot)),
+      http.post('*/earn/redemptions', async ({ request }) => {
+        keys.push(request.headers.get('Idempotency-Key'));
+        if (keys.length === 1) {
+          await pending;
+          return HttpResponse.error();
+        }
+        return HttpResponse.json({
+          id: 'redemption-receipt',
+          operation: 'redeem',
+          productId: 'savings-product',
+          positionId: 'savings-position',
+          asset: 'USDT',
+          amount: 100,
+          status: 'completed',
+          createdAt: '2026-10-13T10:00:00.000Z',
+        });
+      }),
+    );
+    renderWithProviders(<SavingsPortfolioPage />, {
+      authAdapter: adapterWithPermissions(['earn:read', 'earn:redeem']),
+    });
+    fireEvent.click(await screen.findByRole('button', { name: 'Rút vốn' }));
+    fireEvent.change(screen.getByLabelText('Số lượng'), { target: { value: '100' } });
+    const submit = screen.getByRole('button', { name: 'Xác nhận rút vốn' });
+    act(() => {
+      fireEvent.click(submit);
+      fireEvent.click(submit);
+    });
+    try {
+      await waitFor(() => expect(keys).toHaveLength(1));
+    } finally {
+      release();
+    }
+    expect(await screen.findByRole('alert')).toBeInTheDocument();
+    expect(keys).toHaveLength(1);
+    fireEvent.click(await screen.findByRole('button', { name: 'Xác nhận rút vốn' }));
+    expect(await screen.findByText('Yêu cầu rút vốn đã được ghi nhận.')).toBeInTheDocument();
+    expect(keys).toHaveLength(2);
+    expect(keys[0]).toBeTruthy();
+    expect(keys[1]).toBe(keys[0]);
+  });
+
   it('shows only savings positions and redeems through the idempotent API boundary', async () => {
     server.use(
       http.get('*/earn/snapshot', () => HttpResponse.json(snapshot)),

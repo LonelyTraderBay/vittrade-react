@@ -258,7 +258,7 @@ export function EarnActionSheet({
               {targetName} · {target.asset}
             </p>
           </div>
-          <button aria-label="Đóng" onClick={onClose}>
+          <button aria-label="Đóng" onClick={onClose} disabled={pending}>
             <X size={20} color={c.text3} />
           </button>
         </div>
@@ -289,6 +289,7 @@ export function EarnActionSheet({
         >
           <input
             id="earn-amount"
+            disabled={pending}
             inputMode="decimal"
             value={amount}
             onChange={(event) => setAmount(event.target.value)}
@@ -297,6 +298,7 @@ export function EarnActionSheet({
           />
           <button
             className="text-xs font-semibold text-blue-500"
+            disabled={pending}
             onClick={() => setAmount(String(maxAmount))}
           >
             MAX
@@ -306,6 +308,7 @@ export function EarnActionSheet({
           <label className="mb-4 flex items-start gap-2 text-xs" style={{ color: c.text2 }}>
             <input
               type="checkbox"
+              disabled={pending}
               checked={agreed}
               onChange={(event) => setAgreed(event.target.checked)}
               className="mt-0.5"

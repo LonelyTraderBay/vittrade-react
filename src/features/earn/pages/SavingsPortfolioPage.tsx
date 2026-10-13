@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { PiggyBank } from 'lucide-react';
 import { useNavigate } from 'react-router';
 import { useAuth } from '@/shared/session/useAuth';
@@ -46,6 +46,8 @@ export function SavingsPortfolioPage() {
   const redeemMutation = useRedeemEarnPositionMutation();
   const [selectedPosition, setSelectedPosition] = useState<EarnPosition>();
   const [successMessage, setSuccessMessage] = useState<string>();
+  const redemptionInFlight = useRef(false);
+  const redemptionKeys = useRef(new Map<string, string>());
   const positions =
     snapshotQuery.data?.positions.filter((position) =>
       snapshotQuery.data.products.some(
@@ -64,14 +66,35 @@ export function SavingsPortfolioPage() {
   }
 
   const submitRedemption = async (amount: number) => {
-    if (!canRedeem || !selectedPosition) return;
-    await redeemMutation.mutateAsync({
-      request: { positionId: selectedPosition.id, amount },
-      idempotencyKey: crypto.randomUUID(),
-    });
-    setSelectedPosition(undefined);
-    setSuccessMessage('Yêu cầu rút vốn đã được ghi nhận.');
-    hapticSuccess();
+    if (
+      !canRedeem ||
+      !selectedPosition ||
+      redemptionInFlight.current ||
+      !Number.isFinite(amount) ||
+      amount <= 0 ||
+      amount > selectedPosition.amount
+    )
+      return;
+    redemptionInFlight.current = true;
+    const actionId = `${selectedPosition.id}:${amount}`;
+    const key = redemptionKeys.current.get(actionId) ?? crypto.randomUUID();
+    redemptionKeys.current.set(actionId, key);
+    try {
+      const receipt = await redeemMutation.mutateAsync({
+        request: { positionId: selectedPosition.id, amount },
+        idempotencyKey: key,
+      });
+      redemptionKeys.current.delete(actionId);
+      setSelectedPosition(undefined);
+      if (receipt.status === 'pending') {
+        navigate(`${prefix}/earn/savings/receipt`, { state: { receipt } });
+        return;
+      }
+      setSuccessMessage('Yêu cầu rút vốn đã được ghi nhận.');
+      hapticSuccess();
+    } finally {
+      redemptionInFlight.current = false;
+    }
   };
 
   return (
