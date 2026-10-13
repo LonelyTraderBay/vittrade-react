@@ -52,6 +52,7 @@ export function useRefresh(options: UseRefreshOptions = {}) {
   const [refreshCount, setRefreshCount] = useState(0);
   const [lastRefreshedAt, setLastRefreshedAt] = useState<Date | null>(null);
   const [lastRefreshedLabel, setLastRefreshedLabel] = useState('');
+  const refreshInFlight = useRef(false);
 
   // Stable refs for callbacks to avoid re-creating `refresh`
   const onStartRef = useRef(options.onStart);
@@ -60,13 +61,19 @@ export function useRefresh(options: UseRefreshOptions = {}) {
   onEndRef.current = options.onEnd;
 
   const refresh = useCallback(async () => {
+    if (refreshInFlight.current) return;
+    refreshInFlight.current = true;
     setIsRefreshing(true);
-    onStartRef.current?.();
-    await new Promise((r) => setTimeout(r, delay));
-    onEndRef.current?.();
-    setIsRefreshing(false);
-    setRefreshCount((c) => c + 1);
-    setLastRefreshedAt(new Date());
+    try {
+      onStartRef.current?.();
+      await new Promise((r) => setTimeout(r, delay));
+      onEndRef.current?.();
+      setRefreshCount((c) => c + 1);
+      setLastRefreshedAt(new Date());
+    } finally {
+      refreshInFlight.current = false;
+      setIsRefreshing(false);
+    }
   }, [delay]);
 
   // Auto-update label every 30s
