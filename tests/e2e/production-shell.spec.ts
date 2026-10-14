@@ -598,4 +598,22 @@ test.describe('production shell smoke', () => {
 
     expect(seriousViolations, JSON.stringify(seriousViolations, null, 2)).toEqual([]);
   });
+
+  test('expanded tablet navigation keeps the active news label at WCAG AA contrast', async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 768, height: 900 });
+    await page.route('**/auth/session', (route) => route.fulfill({ json: authenticatedSession }));
+    await page.goto('/t/news');
+
+    await expect(page.getByRole('heading', { name: 'Tin tức' })).toBeVisible();
+    await page.getByRole('button', { name: 'Mở rộng' }).click();
+
+    const results = await new AxeBuilder({ page })
+      .withRules(['color-contrast'])
+      .include('button[aria-label="Tin tức"] span')
+      .analyze();
+
+    expect(results.violations, JSON.stringify(results.violations, null, 2)).toEqual([]);
+  });
 });

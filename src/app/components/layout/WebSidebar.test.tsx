@@ -88,6 +88,36 @@ describe('WebSidebar', () => {
     );
   });
 
+  it.each([
+    { pathname: '/w/profile/edit', currentItem: 'profile' },
+    { pathname: '/w/profile/security', currentItem: 'Bảo mật' },
+    { pathname: '/w/profile/settings', currentItem: 'Cài đặt' },
+  ])('marks the matching profile navigation active at $pathname', ({ pathname, currentItem }) => {
+    renderWithProviders(<WebSidebar />, { routerProps: { initialEntries: [pathname] } });
+
+    const currentButton =
+      currentItem === 'profile'
+        ? screen.getByText(testAuthSession.user.fullName).closest('button')
+        : screen.getByRole('button', { name: currentItem });
+    expect(currentButton).toHaveAttribute('aria-current', 'page');
+    expect(screen.getAllByRole('button', { current: 'page' })).toHaveLength(1);
+  });
+
+  it('exposes and marks the standalone news route in the utility navigation', () => {
+    renderWithProviders(
+      <>
+        <WebSidebar />
+        <LocationProbe />
+      </>,
+      { routerProps: { initialEntries: ['/w/home'] } },
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: 'Tin tức' }));
+
+    expect(screen.getByTestId('location')).toHaveTextContent('/w/news');
+    expect(screen.getByRole('button', { name: 'Tin tức' })).toHaveAttribute('aria-current', 'page');
+  });
+
   it('keeps the active market section expanded and follows web routes', () => {
     renderWithProviders(
       <>

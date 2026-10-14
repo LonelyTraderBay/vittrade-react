@@ -6,6 +6,7 @@ import {
   ArrowLeftRight,
   Wallet,
   Bell,
+  Newspaper,
   HelpCircle,
   Settings,
   Shield,
@@ -110,6 +111,7 @@ const NAV_SECTIONS: NavSection[] = [
 
 const BOTTOM_ITEMS: NavItem[] = [
   { path: `${PREFIX}/notifications`, icon: Bell, label: 'Thông báo' },
+  { path: `${PREFIX}/news`, icon: Newspaper, label: 'Tin tức' },
   { path: `${PREFIX}/support`, icon: HelpCircle, label: 'Hỗ trợ' },
   { path: `${PREFIX}/profile/security`, icon: Shield, label: 'Bảo mật' },
   { path: `${PREFIX}/profile/settings`, icon: Settings, label: 'Cài đặt' },
@@ -147,6 +149,10 @@ export function WebSidebar() {
   };
 
   const isExactActive = (path: string) => location.pathname === path;
+  const isProfileCardActive =
+    location.pathname === `${PREFIX}/profile` ||
+    (location.pathname.startsWith(`${PREFIX}/profile/`) &&
+      !bottomItems.some((item) => isActive(item.path)));
 
   useEffect(() => {
     activeNavItemRef.current?.scrollIntoView?.({ block: 'nearest', inline: 'nearest' });
@@ -340,7 +346,11 @@ export function WebSidebar() {
         <button
           onClick={() => navigate(`${PREFIX}/profile`)}
           className="web-sidebar-item flex items-center gap-3 rounded-lg px-3 mt-2 transition-colors"
-          style={{ height: 52, background: c.hoverBg }}
+          aria-current={isProfileCardActive ? 'page' : undefined}
+          style={{
+            height: 52,
+            background: isProfileCardActive ? 'rgba(59,130,246,0.06)' : c.hoverBg,
+          }}
         >
           <div
             className="flex items-center justify-center shrink-0 rounded-lg"
