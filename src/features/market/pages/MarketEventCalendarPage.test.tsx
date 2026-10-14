@@ -101,4 +101,20 @@ describe('MarketEventCalendarPage', () => {
     renderWithProviders(<MarketEventCalendarPage />);
     expect(screen.getByText('Không có sự kiện phù hợp.')).toBeInTheDocument();
   });
+
+  it('keeps unknown event type and impact values visible as fallbacks', () => {
+    useMarketCalendarQuery.mockReturnValue(
+      queryState({
+        data: {
+          ...response,
+          items: [{ ...response.items[0], type: 'protocol-change', impact: 'critical' }],
+        },
+      }),
+    );
+
+    renderWithProviders(<MarketEventCalendarPage />);
+
+    expect(screen.getByText('protocol-change')).toBeInTheDocument();
+    expect(screen.getByText('critical')).toBeInTheDocument();
+  });
 });

@@ -89,7 +89,12 @@ export function AdvancedChartsPage() {
           <button
             onClick={() => navigate(`${prefix}/pair/${encodeURIComponent(pair.id)}`)}
             className="rounded-xl px-3"
-            style={{ background: '#3B82F6', color: '#fff', fontSize: 11, fontWeight: 700 }}
+            style={{
+              background: 'var(--tr-info)',
+              color: 'var(--tr-text-on-color)',
+              fontSize: 11,
+              fontWeight: 700,
+            }}
           >
             Chi tiết
           </button>
@@ -98,7 +103,13 @@ export function AdvancedChartsPage() {
           <div className="flex items-center justify-between mb-3">
             <div>
               <p style={{ color: colors.text1, fontSize: 16, fontWeight: 700 }}>{pair.symbol}</p>
-              <p style={{ color: positive ? '#10B981' : '#EF4444', fontSize: 11, fontWeight: 700 }}>
+              <p
+                style={{
+                  color: positive ? 'var(--tr-success-text)' : 'var(--tr-error-text)',
+                  fontSize: 11,
+                  fontWeight: 700,
+                }}
+              >
                 {positive ? (
                   <TrendingUp size={12} className="inline" />
                 ) : (
@@ -149,8 +160,8 @@ export function AdvancedChartsPage() {
                 onClick={() => setTimeframe(item)}
                 className="rounded-lg px-3 py-1.5"
                 style={{
-                  background: timeframe === item ? '#3B82F6' : colors.chipBg,
-                  color: timeframe === item ? '#fff' : colors.chipText,
+                  background: timeframe === item ? 'var(--tr-info)' : colors.chipBg,
+                  color: timeframe === item ? 'var(--tr-text-on-color)' : colors.chipText,
                   fontSize: 11,
                   fontWeight: 600,
                 }}
@@ -170,7 +181,7 @@ export function AdvancedChartsPage() {
         </PageSection>
         <TrCard className="p-4">
           <div className="flex items-center gap-2">
-            <Info size={15} color="#F59E0B" />
+            <Info size={15} color="var(--tr-warning-text)" />
             <span style={{ color: colors.text1, fontSize: 12, fontWeight: 700 }}>
               Technical indicator contract pending
             </span>
@@ -209,7 +220,7 @@ function QuickAction({
   const colors = useThemeColors();
   return (
     <TrCard as="button" hover className="p-3 flex items-center gap-2" onClick={onClick}>
-      <Icon size={15} color="#3B82F6" />
+      <Icon size={15} color="var(--tr-link)" />
       <span style={{ color: colors.text1, fontSize: 11, fontWeight: 600 }}>{label}</span>
       <ChevronDown size={12} color={colors.text3} className="ml-auto -rotate-90" />
     </TrCard>

@@ -89,42 +89,42 @@ describe('MarketItem', () => {
   });
 
   describe('Positive vs Negative Change', () => {
-    it('should render positive change in green', () => {
+    it('should use the semantic success text color for positive change', () => {
       renderWithProviders(<MarketItem pair={mockPair} />);
 
       const changeElement = screen.getByText('+2.50%');
-      expect(changeElement).toHaveStyle({ color: '#10B981' });
+      expect(changeElement).toHaveStyle({ color: 'var(--tr-success-text)' });
     });
 
-    it('should render negative change in red', () => {
+    it('should use the semantic error text color for negative change', () => {
       renderWithProviders(<MarketItem pair={mockPairNegative} />);
 
       const changeElement = screen.getByText('-1.50%');
-      expect(changeElement).toHaveStyle({ color: '#EF4444' });
+      expect(changeElement).toHaveStyle({ color: 'var(--tr-error-text)' });
     });
 
-    it('should render zero change as positive', () => {
+    it('should use the semantic success text color when change is zero', () => {
       const zeroPair = { ...mockPair, change24h: 0 };
       renderWithProviders(<MarketItem pair={zeroPair} />);
 
       const changeElement = screen.getByText('0.00%');
-      expect(changeElement).toHaveStyle({ color: '#10B981' });
+      expect(changeElement).toHaveStyle({ color: 'var(--tr-success-text)' });
     });
   });
 
   describe('Logo Styling', () => {
-    it('should use logoColor for Bitcoin', () => {
+    it('should keep logo text legible against the colored logo background', () => {
       renderWithProviders(<MarketItem pair={mockPair} />);
 
       const logoText = screen.getByText('Bit');
-      expect(logoText).toHaveStyle({ color: '#F7931A' });
+      expect(logoText).toHaveStyle({ color: 'var(--tr-text-1)' });
     });
 
-    it('should use logoColor for Ethereum', () => {
+    it('should keep Ethereum logo text legible against its colored background', () => {
       renderWithProviders(<MarketItem pair={mockPairNegative} />);
 
       const logoText = screen.getByText('Eth');
-      expect(logoText).toHaveStyle({ color: '#627EEA' });
+      expect(logoText).toHaveStyle({ color: 'var(--tr-text-1)' });
     });
 
     it('should abbreviate base asset to 3 characters', () => {

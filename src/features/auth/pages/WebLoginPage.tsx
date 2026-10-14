@@ -120,7 +120,6 @@ export function WebLoginPage() {
   };
 
   const handleDemoLogin = async () => {
-    if (!isAuthFixtureMode) return;
     setIsLoading(true);
     try {
       const loginResult = await signIn({ email: 'demo@vittrade.vn', password: 'demo' });

@@ -51,6 +51,14 @@ function renderPage() {
 }
 
 describe('TokenInfoPage', () => {
+  it('shows a positive price change with the contract value and direction', async () => {
+    server.use(
+      http.get('*/market/pairs/btc-usdt', () => HttpResponse.json({ ...pair, change24h: 2.5 })),
+    );
+    renderPage();
+    expect(await screen.findByText('BTC info')).toBeInTheDocument();
+    expect(screen.getByText('+2.50%')).toHaveStyle({ color: 'var(--tr-success-text)' });
+  });
   it('renders validated market details and links to the pair trade route', async () => {
     server.use(http.get('*/market/pairs/btc-usdt', () => HttpResponse.json(pair)));
 

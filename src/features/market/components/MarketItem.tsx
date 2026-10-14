@@ -65,7 +65,7 @@ export const MarketItem = memo(function MarketItem({
           border: `1.5px solid ${hexToRgba(pair.logoColor, 30)}`,
         }}
       >
-        <span style={{ color: pair.logoColor, fontSize: 12, fontWeight: 700 }}>
+        <span style={{ color: c.text1, fontSize: 12, fontWeight: 700 }}>
           {pair.baseAsset.slice(0, 3)}
         </span>
       </div>
@@ -106,7 +106,7 @@ export const MarketItem = memo(function MarketItem({
           className="rounded-lg px-2 py-1"
           style={{
             background: isPositive ? 'rgba(16,185,129,0.12)' : 'rgba(239,68,68,0.12)',
-            color: isPositive ? '#10B981' : '#EF4444',
+            color: isPositive ? c.successText : c.errorText,
             fontSize: 12,
             fontWeight: 600,
           }}

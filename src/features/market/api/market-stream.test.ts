@@ -88,6 +88,27 @@ describe('market stream transport', () => {
     expect(FakeWebSocket.instances[0].closed).toBe(true);
   });
 
+  it('does not reconnect if a queued reconnect fires after disposal', () => {
+    const queued: VoidFunction[] = [];
+    vi.spyOn(window, 'setTimeout').mockImplementation(((handler: TimerHandler) => {
+      if (typeof handler === 'function') queued.push(() => handler());
+      return 1;
+    }) as typeof window.setTimeout);
+    vi.spyOn(window, 'clearTimeout').mockImplementation(() => {});
+    const dispose = connectMarketStream('wss://stream.example.test/market', {
+      onMessage: vi.fn(),
+      onStatus: vi.fn(),
+    });
+    FakeWebSocket.instances[0].emit('close');
+    expect(queued).toHaveLength(1);
+
+    dispose();
+    queued[0]();
+
+    expect(FakeWebSocket.instances).toHaveLength(1);
+    expect(FakeWebSocket.instances[0].closed).toBe(true);
+  });
+
   it('ignores queued socket events after the owner has disposed the stream', () => {
     const onMessage = vi.fn();
     const onStatus = vi.fn();

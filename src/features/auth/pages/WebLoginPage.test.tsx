@@ -17,6 +17,28 @@ function CurrentRoute() {
 }
 
 describe('WebLoginPage', () => {
+  it('keeps failed demo initialization on login with retry available and safe feedback', async () => {
+    const user = userEvent.setup();
+    const login = vi.fn().mockRejectedValue(new Error('private adapter failure'));
+    renderWithProviders(
+      <>
+        <WebLoginPage />
+        <CurrentRoute />
+      </>,
+      {
+        routerProps: { initialEntries: ['/w/auth/login'] },
+        authAdapter: { ...testAuthAdapter, initialSession: null, login },
+      },
+    );
+    await user.click(screen.getByRole('button', { name: 'Trải nghiệm Demo' }));
+
+    expect(await screen.findByRole('alert')).toHaveTextContent('Không thể khởi tạo phiên demo.');
+    expect(screen.getByTestId('current-path')).toHaveTextContent('/w/auth/login');
+    expect(screen.queryByText('private adapter failure')).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Trải nghiệm Demo' })).toBeEnabled();
+    expect(login).toHaveBeenCalledTimes(1);
+  });
+
   it('opens registration in the web authentication shell', () => {
     renderWithProviders(
       <>

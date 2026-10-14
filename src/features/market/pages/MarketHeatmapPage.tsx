@@ -99,11 +99,11 @@ export function MarketHeatmapPage() {
             {filteredPairs.length} cặp thị trường
           </span>
           <div className="flex items-center gap-3" style={{ fontSize: 10 }}>
-            <span className="flex items-center gap-1" style={{ color: '#10B981' }}>
+            <span className="flex items-center gap-1" style={{ color: colors.successText }}>
               <span className="w-2 h-2 rounded-full" style={{ background: '#10B981' }} />
               Tăng
             </span>
-            <span className="flex items-center gap-1" style={{ color: '#EF4444' }}>
+            <span className="flex items-center gap-1" style={{ color: colors.errorText }}>
               <span className="w-2 h-2 rounded-full" style={{ background: '#EF4444' }} />
               Giảm
             </span>
@@ -123,6 +123,7 @@ function HeatmapTile({
   maxMarketCap: number;
   onClick: () => void;
 }) {
+  const colors = useThemeColors();
   const positive = pair.change24h >= 0;
   const intensity = Math.min(Math.abs(pair.change24h) / 10, 1);
   const background = positive
@@ -139,19 +140,17 @@ function HeatmapTile({
       title={`${pair.symbol}: ${fmtCompact(pair.marketCap, { prefix: '$' })}`}
     >
       <span className="flex items-center justify-between gap-1">
-        <span style={{ color: '#fff', fontSize: 11, fontWeight: 700 }}>{pair.baseAsset}</span>
+        <span style={{ color: colors.text1, fontSize: 11, fontWeight: 700 }}>{pair.baseAsset}</span>
         {positive ? (
-          <ArrowUpRight size={12} color="#fff" />
+          <ArrowUpRight size={12} color={colors.text1} />
         ) : (
-          <ArrowDownRight size={12} color="#fff" />
+          <ArrowDownRight size={12} color={colors.text1} />
         )}
       </span>
-      <span style={{ color: 'rgba(255,255,255,.82)', display: 'block', fontSize: 10 }}>
-        {pair.quoteAsset}
-      </span>
+      <span style={{ color: colors.text2, display: 'block', fontSize: 10 }}>{pair.quoteAsset}</span>
       <span
         style={{
-          color: '#fff',
+          color: colors.text1,
           display: 'block',
           fontSize: 11,
           fontFamily: 'monospace',
@@ -160,7 +159,7 @@ function HeatmapTile({
       >
         {fmtPrice(pair.price)}
       </span>
-      <span style={{ color: '#fff', display: 'block', fontSize: 10, fontWeight: 700 }}>
+      <span style={{ color: colors.text1, display: 'block', fontSize: 10, fontWeight: 700 }}>
         {positive ? '+' : ''}
         {fmtPct(pair.change24h)}
       </span>

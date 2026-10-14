@@ -99,7 +99,7 @@ export function PredictionRiskCalculatorPage() {
                         className="py-2.5 rounded-xl transition-all"
                         style={{
                           background: outcome === opt ? (opt === 'yes' ? c.buy : c.sell) : c.bg,
-                          color: outcome === opt ? '#fff' : c.text1,
+                          color: outcome === opt ? 'var(--tr-text-on-color)' : c.text1,
                           border: `1px solid ${outcome === opt ? 'transparent' : c.border}`,
                           fontSize: 14,
                           fontWeight: 600,

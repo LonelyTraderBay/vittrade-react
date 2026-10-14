@@ -204,7 +204,7 @@ describe('MarketOverviewPage', () => {
 
     renderWithProviders(<MarketOverviewPage />);
 
-    expect(screen.getByText('+1.25%')).toHaveStyle({ color: 'rgb(16, 185, 129)' });
+    expect(screen.getByText('+1.25%')).toHaveStyle({ color: 'var(--tr-success-text)' });
     expect(screen.getByText('0 ATH mới')).toBeInTheDocument();
     expect(screen.getByText('0 giảm >10%')).toBeInTheDocument();
     expect(screen.queryByText('Layer 1')).not.toBeInTheDocument();

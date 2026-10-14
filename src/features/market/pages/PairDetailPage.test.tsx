@@ -1,7 +1,7 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 import { http, HttpResponse, type DefaultBodyType } from 'msw';
 import { setupServer } from 'msw/node';
-import { screen, waitFor } from '@testing-library/react';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Route, Routes, useLocation } from 'react-router';
 import { renderWithProviders } from '@/test/test-utils';
@@ -130,6 +130,24 @@ function renderPairDetail(authAdapter?: AuthAdapter, initialEntries = ['/pair/bt
 }
 
 describe('Market pair detail page', () => {
+  it('renders negative market performance and a sell-side recent trade', async () => {
+    installMarketReadHandlers({ items: [] });
+    server.use(
+      http.get('*/market/pairs/btc-usdt', () => HttpResponse.json({ ...pair, change24h: -2.34 })),
+      http.get('*/market/pairs/btc-usdt/trades', () =>
+        HttpResponse.json({
+          items: [{ ...recentTrades.items[0], side: 'sell' }],
+        }),
+      ),
+    );
+    renderPairDetail();
+    expect((await screen.findAllByText(/2\.34%/)).length).toBeGreaterThan(0);
+    await userEvent.click(screen.getByRole('button', { name: 'Giao dịch' }));
+    expect(await screen.findByText('0.125000')).toBeInTheDocument();
+    expect(screen.getByText('0.125000').closest('div')?.querySelector('svg')).toHaveClass(
+      'lucide-arrow-down',
+    );
+  });
   it('locks favorite changes until a failed watchlist read is recovered by an explicit retry', async () => {
     installMarketReadHandlers({ items: [] });
     let fail = true;
@@ -192,10 +210,21 @@ describe('Market pair detail page', () => {
   });
 
   it('keeps the watchlist control disabled for an authenticated read-only session', async () => {
+    let createCalls = 0;
     installMarketReadHandlers({ items: [] });
+    server.use(
+      http.post('*/market/watchlist', () => {
+        createCalls += 1;
+        return HttpResponse.json({ id: 'watchlist-1', pairId: pair.id }, { status: 201 });
+      }),
+    );
     renderPairDetail(readOnlyAdapter());
 
-    expect(await screen.findByRole('button', { name: 'Theo dõi cặp giao dịch' })).toBeDisabled();
+    const favorite = await screen.findByRole('button', { name: 'Theo dõi cặp giao dịch' });
+    expect(favorite).toBeDisabled();
+    favorite.removeAttribute('disabled');
+    fireEvent.click(favorite);
+    expect(createCalls).toBe(0);
   });
 
   it('renders server order-book and recent-trade tabs', async () => {

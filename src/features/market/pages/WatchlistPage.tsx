@@ -157,7 +157,7 @@ export function WatchlistPage() {
           <button
             onClick={() => navigate(`${prefix}/markets`)}
             className="w-10 h-10 rounded-xl flex items-center justify-center"
-            style={{ background: '#3B82F6' }}
+            style={{ background: colors.info }}
             aria-label="Thêm cặp giao dịch"
           >
             <span style={{ color: '#fff', fontSize: 22 }}>+</span>
@@ -180,7 +180,7 @@ export function WatchlistPage() {
             <button
               onClick={() => navigate(`${prefix}/markets`)}
               className="px-4 py-2 rounded-xl"
-              style={{ background: '#3B82F6', color: '#fff', fontSize: 13 }}
+              style={{ background: colors.info, color: 'var(--tr-text-on-color)', fontSize: 13 }}
             >
               Thêm cặp giao dịch
             </button>
@@ -198,7 +198,7 @@ export function WatchlistPage() {
                     className="w-11 h-11 rounded-full flex items-center justify-center shrink-0"
                     style={{ background: `${pair.logoColor}22` }}
                   >
-                    <span style={{ color: pair.logoColor, fontSize: 11, fontWeight: 700 }}>
+                    <span style={{ color: colors.text1, fontSize: 11, fontWeight: 700 }}>
                       {pair.baseAsset.slice(0, 3)}
                     </span>
                   </button>
@@ -224,11 +224,16 @@ export function WatchlistPage() {
                     </p>
                     <div className="flex items-center gap-1 justify-end">
                       {positive ? (
-                        <TrendingUp size={13} color="#10B981" />
+                        <TrendingUp size={13} color={colors.successText} />
                       ) : (
-                        <TrendingDown size={13} color="#EF4444" />
+                        <TrendingDown size={13} color={colors.errorText} />
                       )}
-                      <span style={{ color: positive ? '#10B981' : '#EF4444', fontSize: 11 }}>
+                      <span
+                        style={{
+                          color: positive ? colors.successText : colors.errorText,
+                          fontSize: 11,
+                        }}
+                      >
                         {fmtPct(pair.change24h)}
                       </span>
                     </div>
@@ -246,13 +251,13 @@ export function WatchlistPage() {
                 >
                   <div>
                     <p style={{ color: colors.text3, fontSize: 11 }}>24h High</p>
-                    <p style={{ color: '#10B981', fontSize: 12, fontFamily: 'monospace' }}>
+                    <p style={{ color: colors.successText, fontSize: 12, fontFamily: 'monospace' }}>
                       {fmtUsd(pair.high24h)}
                     </p>
                   </div>
                   <div>
                     <p style={{ color: colors.text3, fontSize: 11 }}>24h Low</p>
-                    <p style={{ color: '#EF4444', fontSize: 12, fontFamily: 'monospace' }}>
+                    <p style={{ color: colors.errorText, fontSize: 12, fontFamily: 'monospace' }}>
                       {fmtUsd(pair.low24h)}
                     </p>
                   </div>
@@ -260,7 +265,11 @@ export function WatchlistPage() {
                 {entry.note && (
                   <p
                     className="rounded-lg px-3 py-2 mb-3"
-                    style={{ background: 'rgba(59,130,246,0.05)', color: '#3B82F6', fontSize: 12 }}
+                    style={{
+                      background: 'rgba(59,130,246,0.05)',
+                      color: colors.link,
+                      fontSize: 12,
+                    }}
                   >
                     📝 {entry.note}
                   </p>
@@ -269,7 +278,11 @@ export function WatchlistPage() {
                   <button
                     onClick={() => navigate(`${prefix}/trade/${encodeURIComponent(pair.id)}`)}
                     className="flex-1 h-9 rounded-xl font-semibold"
-                    style={{ background: '#3B82F6', color: '#fff', fontSize: 13 }}
+                    style={{
+                      background: colors.info,
+                      color: 'var(--tr-text-on-color)',
+                      fontSize: 13,
+                    }}
                   >
                     Giao dịch
                   </button>
@@ -288,7 +301,7 @@ export function WatchlistPage() {
                     style={{ background: 'rgba(239,68,68,0.1)' }}
                     aria-label="Xóa khỏi danh sách theo dõi"
                   >
-                    <Trash2 size={14} color="#EF4444" />
+                    <Trash2 size={14} color={colors.errorText} />
                   </button>
                 </div>
               </TrCard>

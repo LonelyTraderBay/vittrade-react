@@ -72,6 +72,7 @@ function CurrentPath() {
 
 describe('MarketListPage', () => {
   it('keeps watchlist actions read-only when the session lacks write permission', async () => {
+    let createCalls = 0;
     server.use(
       http.get('http://localhost:3000/api/market/pairs', () =>
         HttpResponse.json({ items: [pair] }),
@@ -79,6 +80,10 @@ describe('MarketListPage', () => {
       http.get('http://localhost:3000/api/market/watchlist', () =>
         HttpResponse.json({ items: [] }),
       ),
+      http.post('http://localhost:3000/api/market/watchlist', () => {
+        createCalls += 1;
+        return HttpResponse.json({ id: 'watchlist-1', pairId: pair.id }, { status: 201 });
+      }),
     );
     const readOnlyAdapter: AuthAdapter = {
       ...authAdapter,
@@ -93,6 +98,12 @@ describe('MarketListPage', () => {
     expect(await screen.findByRole('alert')).toHaveTextContent(
       'Market watchlist is read-only for this session.',
     );
+    await screen.findByRole('button', { name: /BTC\/USDT —/ }, { timeout: 5_000 });
+    const favorite = screen.getByRole('button', { name: 'Thêm vào yêu thích' });
+    expect(favorite).toBeDisabled();
+    favorite.removeAttribute('disabled');
+    fireEvent.click(favorite);
+    expect(createCalls).toBe(0);
   });
 
   it('routes an unauthenticated favorite action to the matching shell login', async () => {

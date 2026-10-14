@@ -88,7 +88,7 @@ function ChallengeCard({
         type="button"
         onClick={onOpen}
         className="min-h-11 rounded-xl px-3 text-sm font-semibold"
-        style={{ background: '#8B5CF6', color: '#fff' }}
+        style={{ background: '#7c3aed', color: '#fff' }}
       >
         Xem challenge
       </button>
@@ -184,7 +184,7 @@ export function ArenaDiscoveryPage() {
               onClick={() => setTab(nextTab)}
               className="min-h-11 rounded-xl px-3 text-sm font-semibold"
               style={{
-                background: tab === nextTab ? '#8B5CF6' : colors.surface2,
+                background: tab === nextTab ? '#7c3aed' : colors.surface2,
                 color: tab === nextTab ? '#fff' : colors.text2,
               }}
             >

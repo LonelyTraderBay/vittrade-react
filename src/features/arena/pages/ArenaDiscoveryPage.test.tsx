@@ -172,6 +172,11 @@ describe('ArenaDiscoveryPage', () => {
     await userEvent.clear(screen.getByRole('textbox', { name: 'Tìm trong Open Arena' }));
     await userEvent.click(screen.getByRole('tab', { name: 'Mode' }));
     expect(await screen.findByRole('heading', { name: 'BTC Weekly Predict' })).toBeInTheDocument();
+    await userEvent.type(
+      screen.getByRole('textbox', { name: 'Tìm trong Open Arena' }),
+      'not found',
+    );
+    expect(screen.getByRole('status')).toHaveTextContent('Không tìm thấy mode phù hợp.');
   });
 
   it('shows explicit empty states without presenting join as failed', async () => {

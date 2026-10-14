@@ -42,6 +42,20 @@ function queryState(overrides: Record<string, unknown> = {}) {
 }
 
 describe('TokenUnlockSchedulePage', () => {
+  it('distinguishes an estimated schedule from a confirmed unlock', () => {
+    useMarketTokenUnlocksQuery.mockReturnValue(
+      queryState({
+        data: {
+          ...response,
+          items: [{ ...response.items[0], status: 'estimated' }],
+        },
+      }),
+    );
+    renderWithProviders(<TokenUnlockSchedulePage />);
+    expect(screen.getByText('Ước tính')).toBeInTheDocument();
+    expect(screen.queryByText('Đã xác nhận')).not.toBeInTheDocument();
+    expect(screen.getByText('92,650,000 ARB')).toBeInTheDocument();
+  });
   beforeEach(() => {
     useMarketTokenUnlocksQuery.mockReset();
   });

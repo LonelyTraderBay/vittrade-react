@@ -244,7 +244,7 @@ describe('WatchlistPage', () => {
 
     renderWithProviders(<WatchlistPage />, { authAdapter });
 
-    expect(await screen.findByText('-2.34%')).toHaveStyle({ color: 'rgb(239, 68, 68)' });
+    expect(await screen.findByText('-2.34%')).toHaveStyle({ color: 'var(--tr-error-text)' });
   });
 
   it('retries both market queries after a transient load error', async () => {

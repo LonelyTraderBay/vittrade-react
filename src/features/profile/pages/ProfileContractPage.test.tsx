@@ -25,6 +25,19 @@ const profile = {
 };
 
 describe('ProfileContractPage', () => {
+  it('announces the loading state while the server-owned profile is pending', () => {
+    profileQuery.mockReturnValue({
+      isPending: true,
+      isError: false,
+      data: undefined,
+      refetch: vi.fn(),
+    } as never);
+
+    renderWithRouter(<ProfileContractPage />);
+
+    expect(screen.getByText('Đang tải profile…')).toBeInTheDocument();
+  });
+
   it('follows each profile link in the current shell and sends sign-out back to login', async () => {
     profileQuery.mockReturnValue({
       isPending: false,

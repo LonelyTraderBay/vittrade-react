@@ -189,9 +189,9 @@ export function PredictionEventContractPage() {
       <PageContent gap="default">
         <TrCard className="p-4">
           <p style={{ color: colors.primary, fontSize: 11 }}>{event.category}</p>
-          <h1 className="mt-1" style={{ color: colors.text1, fontSize: 20, fontWeight: 700 }}>
+          <h2 className="mt-1" style={{ color: colors.text1, fontSize: 20, fontWeight: 700 }}>
             {event.title}
-          </h1>
+          </h2>
           <div className="mt-3 flex gap-2" style={{ color: colors.text3, fontSize: 11 }}>
             <span>
               <BarChart3 size={12} className="mr-1 inline" />
@@ -221,7 +221,7 @@ export function PredictionEventContractPage() {
               }}
             >
               <span style={{ color: colors.text2, fontSize: 12 }}>{item.label}</span>
-              <strong className="mt-1 block" style={{ color: item.color, fontSize: 20 }}>
+              <strong className="mt-1 block" style={{ color: colors.text1, fontSize: 20 }}>
                 {item.chance}%
               </strong>
             </button>
@@ -229,16 +229,26 @@ export function PredictionEventContractPage() {
         </div>
         <TrCard className="p-4">
           <h2 style={{ color: colors.text1, fontWeight: 700 }}>Đặt vị thế</h2>
-          <div className="mt-3 flex gap-2">
-            <input
-              type="number"
-              disabled={order.isPending}
-              min="1"
-              value={shares}
-              onChange={(event) => setShares(event.target.value)}
-              className="min-w-0 flex-1 rounded-xl px-3 py-3"
-              style={{ background: colors.surface2, color: colors.text1 }}
-            />
+          <div className="mt-3 flex items-end gap-2">
+            <div className="min-w-0 flex-1">
+              <label
+                htmlFor="prediction-shares"
+                className="mb-1 block text-xs"
+                style={{ color: colors.text2 }}
+              >
+                Số lượng cổ phần
+              </label>
+              <input
+                id="prediction-shares"
+                type="number"
+                disabled={order.isPending}
+                min="1"
+                value={shares}
+                onChange={(event) => setShares(event.target.value)}
+                className="w-full min-w-0 rounded-xl px-3 py-3"
+                style={{ background: colors.surface2, color: colors.text1 }}
+              />
+            </div>
             <button
               type="button"
               disabled={
@@ -252,7 +262,7 @@ export function PredictionEventContractPage() {
               className="rounded-xl px-4 py-3 font-semibold"
               style={{
                 background: canTrade ? colors.primary : colors.surface2,
-                color: canTrade ? '#fff' : colors.text3,
+                color: canTrade ? 'var(--tr-text-on-color)' : colors.text3,
               }}
             >
               {order.isPending ? 'Đang gửi…' : `Mua ${outcome}`}

@@ -43,10 +43,10 @@ export function LaunchpadContractPage() {
         <TrCard className="p-4">
           <div className="flex items-center gap-3">
             <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-violet-500/15">
-              <Rocket size={24} color="#A78BFA" />
+              <Rocket size={24} color="var(--tr-accent)" />
             </div>
             <div>
-              <h1 style={{ color: colors.text1, fontSize: 18, fontWeight: 700 }}>VitLaunch</h1>
+              <h2 style={{ color: colors.text1, fontSize: 18, fontWeight: 700 }}>VitLaunch</h2>
               <p style={{ color: colors.text2, fontSize: 12 }}>
                 Dự án và token sale được cung cấp từ Launchpad API.
               </p>
@@ -68,7 +68,7 @@ export function LaunchpadContractPage() {
               className="rounded-xl px-2 py-2 text-xs font-semibold"
               style={{
                 background: tab === value ? '#8B5CF620' : colors.surface2,
-                color: tab === value ? '#A78BFA' : colors.text3,
+                color: tab === value ? 'var(--tr-accent-text)' : colors.text3,
               }}
             >
               {value === 'all'
@@ -116,12 +116,14 @@ export function LaunchpadProjectContractPage() {
           <div className="flex items-start gap-3">
             <div
               className="flex h-14 w-14 items-center justify-center rounded-2xl text-lg font-bold"
-              style={{ background: `${project.logoColor}20`, color: project.logoColor }}
+              style={{ background: `${project.logoColor}20`, color: colors.text1 }}
             >
               {project.logo}
             </div>
             <div className="min-w-0 flex-1">
-              <h1 style={{ color: colors.text1, fontSize: 19, fontWeight: 700 }}>{project.name}</h1>
+              <p style={{ color: colors.text1, fontSize: 19, fontWeight: 700, margin: '0.67em 0' }}>
+                {project.name}
+              </p>
               <p style={{ color: colors.text2, fontSize: 12 }}>
                 ${project.symbol} · {project.type.toUpperCase()} · {project.chain}
               </p>
@@ -155,7 +157,14 @@ export function LaunchpadProjectContractPage() {
 
         <TrCard className="p-4">
           <div className="flex items-center gap-2">
-            <Shield size={16} color={project.audit.status === 'passed' ? '#10B981' : '#F59E0B'} />
+            <Shield
+              size={16}
+              color={
+                project.audit.status === 'passed'
+                  ? 'var(--tr-success-text)'
+                  : 'var(--tr-warning-text)'
+              }
+            />
             <h2 style={{ color: colors.text1, fontWeight: 700 }}>Audit & access</h2>
           </div>
           <InfoRow label="Auditor" value={project.audit.auditor} />
@@ -168,7 +177,8 @@ export function LaunchpadProjectContractPage() {
               href={project.website}
               target="_blank"
               rel="noreferrer"
-              className="mt-3 inline-flex items-center gap-1 text-xs text-blue-400"
+              className="mt-3 inline-flex items-center gap-1 text-xs"
+              style={{ color: colors.link }}
             >
               Website <ExternalLink size={12} />
             </a>
@@ -182,7 +192,7 @@ export function LaunchpadProjectContractPage() {
               <div key={`${step.label}-${step.date}`} className="flex items-center gap-2 text-xs">
                 <CheckCircle
                   size={13}
-                  color={step.status === 'claimed' ? '#10B981' : colors.text3}
+                  color={step.status === 'claimed' ? 'var(--tr-success-text)' : colors.text3}
                 />
                 <span style={{ color: colors.text2 }}>{step.label}</span>
                 <span className="ml-auto" style={{ color: colors.text3 }}>
@@ -220,7 +230,7 @@ function ProjectCard({
         <div className="flex items-start gap-3">
           <div
             className="flex h-11 w-11 items-center justify-center rounded-xl text-sm font-bold"
-            style={{ background: `${project.logoColor}20`, color: project.logoColor }}
+            style={{ background: `${project.logoColor}20`, color: colors.text1 }}
           >
             {project.logo}
           </div>
@@ -229,7 +239,7 @@ function ProjectCard({
               <h2 style={{ color: colors.text1, fontWeight: 700 }}>{project.name}</h2>
               <span
                 className="rounded-md px-1.5 py-0.5 text-[10px]"
-                style={{ background: `${project.logoColor}20`, color: project.logoColor }}
+                style={{ background: `${project.logoColor}20`, color: colors.text1 }}
               >
                 {project.type.toUpperCase()}
               </span>
@@ -253,9 +263,9 @@ function StatusLine({ project }: { project: LaunchpadProjectSummary }) {
   const colors = useThemeColors();
   const color =
     project.status === 'active'
-      ? '#10B981'
+      ? colors.successText
       : project.status === 'upcoming'
-        ? '#F59E0B'
+        ? colors.warningText
         : colors.text3;
   return (
     <p className="mt-2 text-xs" style={{ color }}>

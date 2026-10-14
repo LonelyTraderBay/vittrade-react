@@ -150,7 +150,7 @@ function ScreenerRow({
         className="w-8 h-8 rounded-lg flex items-center justify-center"
         style={{ background: `${pair.logoColor}20` }}
       >
-        <span style={{ color: pair.logoColor, fontSize: 9, fontWeight: 700 }}>
+        <span style={{ color: colors.text1, fontSize: 9, fontWeight: 700 }}>
           {pair.baseAsset.slice(0, 3)}
         </span>
       </span>
@@ -171,7 +171,13 @@ function ScreenerRow({
         >
           {fmtPrice(pair.price)}
         </span>
-        <span style={{ color: positive ? '#10B981' : '#EF4444', fontSize: 10, fontWeight: 700 }}>
+        <span
+          style={{
+            color: positive ? 'var(--tr-success-text)' : 'var(--tr-error-text)',
+            fontSize: 10,
+            fontWeight: 700,
+          }}
+        >
           {positive ? (
             <ArrowUpRight size={10} className="inline" />
           ) : (

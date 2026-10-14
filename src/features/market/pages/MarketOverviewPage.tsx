@@ -84,7 +84,7 @@ export function MarketOverviewPage() {
             </span>
             <span
               style={{
-                color: stats.totalMarketCapChange24h >= 0 ? '#10B981' : '#EF4444',
+                color: stats.totalMarketCapChange24h >= 0 ? colors.successText : colors.errorText,
                 fontSize: 12,
                 fontWeight: 700,
               }}
@@ -93,8 +93,8 @@ export function MarketOverviewPage() {
             </span>
           </div>
           <div className="grid grid-cols-3 gap-2">
-            <Metric label="BTC Dominance" value={`${stats.btcDominance}%`} color="#F7931A" />
-            <Metric label="ETH Dominance" value={`${stats.ethDominance}%`} color="#627EEA" />
+            <Metric label="BTC Dominance" value={`${stats.btcDominance}%`} />
+            <Metric label="ETH Dominance" value={`${stats.ethDominance}%`} />
             <Metric label="KL 24h" value={fmtCompact(stats.total24hVolume, { prefix: '$' })} />
           </div>
         </TrCard>
@@ -144,8 +144,8 @@ export function MarketOverviewPage() {
                 Biến động thị trường
               </span>
             </div>
-            <BreadthRow label="Tăng" value={breadth.advancing} color="#10B981" />
-            <BreadthRow label="Giảm" value={breadth.declining} color="#EF4444" />
+            <BreadthRow label="Tăng" value={breadth.advancing} color={colors.successText} />
+            <BreadthRow label="Giảm" value={breadth.declining} color={colors.errorText} />
             <div className="flex rounded-full overflow-hidden mt-2" style={{ height: 6 }}>
               <div
                 style={{
@@ -157,7 +157,7 @@ export function MarketOverviewPage() {
             </div>
             <div className="flex justify-between mt-2">
               <span style={{ color: colors.text3, fontSize: 10 }}>{breadth.newATH} ATH mới</span>
-              <span style={{ color: '#EF4444', fontSize: 10 }}>
+              <span style={{ color: colors.errorText, fontSize: 10 }}>
                 {breadth.dropping10Pct} giảm &gt;10%
               </span>
             </div>
@@ -189,6 +189,7 @@ export function MarketOverviewPage() {
           <MoverCard
             title="Tăng mạnh"
             color="#10B981"
+            textColor={colors.successText}
             icon={TrendingUp}
             movers={topGainers}
             onNavigate={() => navigate(`${prefix}/markets/movers`)}
@@ -197,6 +198,7 @@ export function MarketOverviewPage() {
           <MoverCard
             title="Giảm mạnh"
             color="#EF4444"
+            textColor={colors.errorText}
             icon={TrendingDown}
             movers={topLosers}
             onNavigate={() => navigate(`${prefix}/markets/movers`)}
@@ -219,7 +221,7 @@ export function MarketOverviewPage() {
               className="flex items-center justify-center gap-2 w-full py-3"
               onClick={() => navigate(`${prefix}/markets/sectors`)}
             >
-              <span style={{ color: '#3B82F6', fontSize: 11, fontWeight: 600 }}>
+              <span style={{ color: colors.link, fontSize: 11, fontWeight: 600 }}>
                 Xem tất cả ngành
               </span>
               <ChevronRight size={12} color="#3B82F6" />
@@ -311,6 +313,7 @@ function BreadthRow({ label, value, color }: { label: string; value: number; col
 function MoverCard({
   title,
   color,
+  textColor,
   icon: Icon,
   movers,
   onNavigate,
@@ -318,6 +321,7 @@ function MoverCard({
 }: {
   title: string;
   color: string;
+  textColor: string;
   icon: typeof TrendingUp;
   movers: MarketMoverSummary[];
   onNavigate: () => void;
@@ -327,7 +331,10 @@ function MoverCard({
   return (
     <TrCard className="p-3">
       <button className="flex items-center justify-between w-full mb-2" onClick={onNavigate}>
-        <span className="flex items-center gap-2" style={{ color, fontSize: 12, fontWeight: 700 }}>
+        <span
+          className="flex items-center gap-2"
+          style={{ color: textColor, fontSize: 12, fontWeight: 700 }}
+        >
           <Icon size={14} color={color} />
           {title}
         </span>

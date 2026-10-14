@@ -236,15 +236,11 @@ export function OTPPage() {
             </p>
             {returnToLogin && (
               <button
-                onClick={() =>
-                  navigate(`${prefix}/auth/${registrationFlow ? 'register' : 'login'}`, {
-                    replace: true,
-                  })
-                }
+                onClick={() => navigate(`${prefix}/auth/login`, { replace: true })}
                 className="mt-2 w-full text-center"
                 style={{ color: c.link, fontSize: 13, fontWeight: 600 }}
               >
-                {registrationFlow ? 'Quay lại đăng ký' : 'Quay lại đăng nhập'}
+                Quay lại đăng nhập
               </button>
             )}
           </div>
