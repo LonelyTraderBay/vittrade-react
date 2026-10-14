@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import { renderWithProviders, screen, userEvent } from '@/test/test-utils';
+import { invokeStaleReactHandler } from '@/test/invoke-stale-react-handler';
 import { OCOOrderForm, type OCOOrderParams } from './OCOOrderForm';
 
 function renderForm(
@@ -47,7 +48,10 @@ describe('OCOOrderForm', () => {
     await user.type(screen.getByRole('textbox', { name: 'Stop Loss price' }), '80');
 
     expect(screen.getByRole('alert')).toHaveTextContent('Trading permission is required');
-    expect(screen.getByRole('button', { name: /Đặt lệnh OCO/ })).toBeDisabled();
+    const submit = screen.getByRole('button', { name: /Đặt lệnh OCO/ });
+    expect(submit).toBeDisabled();
+    expect(onSubmit).not.toHaveBeenCalled();
+    invokeStaleReactHandler(submit, 'onClick');
     expect(onSubmit).not.toHaveBeenCalled();
   });
 

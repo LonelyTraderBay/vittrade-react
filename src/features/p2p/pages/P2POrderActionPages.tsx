@@ -126,7 +126,7 @@ export function P2POrderCancelContractPage() {
         <>
           <TrCard className="p-4" accentBorder="rgba(239,68,68,0.2)">
             <div className="flex items-start gap-2">
-              <AlertTriangle size={16} color="#EF4444" />
+              <AlertTriangle size={16} color="var(--tr-error-text)" />
               <p style={{ color: colors.text2, fontSize: 12, lineHeight: 1.5 }}>
                 Hủy đơn sẽ giải phóng {order.escrowAmount} {order.asset} khỏi escrow. Hãy chọn lý do
                 để tiếp tục.
@@ -142,7 +142,7 @@ export function P2POrderCancelContractPage() {
                 style={{
                   background: reason === item ? 'rgba(239,68,68,0.08)' : colors.surface2,
                   border: `1px solid ${reason === item ? '#EF4444' : colors.borderSolid}`,
-                  color: reason === item ? '#EF4444' : colors.text2,
+                  color: reason === item ? 'var(--tr-error-text)' : colors.text2,
                   fontSize: 12,
                 }}
                 disabled={mutation.isPending}
@@ -154,17 +154,17 @@ export function P2POrderCancelContractPage() {
             ))}
           </div>
           {mutation.isError && (
-            <p role="alert" style={{ color: '#EF4444', fontSize: 12 }}>
+            <p role="alert" style={{ color: 'var(--tr-error-text)', fontSize: 12 }}>
               Không thể hủy đơn. Vui lòng thử lại hoặc mở dispute nếu đơn đã chuyển trạng thái.
             </p>
           )}
           {actionError && (
-            <p role="alert" style={{ color: '#EF4444', fontSize: 12 }}>
+            <p role="alert" style={{ color: 'var(--tr-error-text)', fontSize: 12 }}>
               {actionError}
             </p>
           )}
           {!canCancel && (
-            <p role="alert" style={{ color: '#EF4444', fontSize: 12 }}>
+            <p role="alert" style={{ color: 'var(--tr-error-text)', fontSize: 12 }}>
               P2P order write permission is required to cancel an order.
             </p>
           )}
@@ -224,7 +224,7 @@ export function P2POrderRateContractPage() {
       {(order) => (
         <>
           <TrCard className="p-4">
-            <p className="mb-3 text-center" style={{ color: '#6B7280', fontSize: 12 }}>
+            <p className="mb-3 text-center" style={{ color: 'var(--tr-text-3)', fontSize: 12 }}>
               Đánh giá trải nghiệm với {order.merchant}
             </p>
             <div className="flex justify-center gap-2" aria-label="Chọn số sao">
@@ -240,7 +240,7 @@ export function P2POrderRateContractPage() {
                   <Star
                     size={28}
                     fill={value <= rating ? '#F59E0B' : 'transparent'}
-                    color="#F59E0B"
+                    color="var(--tr-warning-text)"
                   />
                 </button>
               ))}
@@ -257,12 +257,12 @@ export function P2POrderRateContractPage() {
             className="w-full rounded-xl p-3"
           />
           {mutation.isError && (
-            <p role="alert" style={{ color: '#EF4444', fontSize: 12 }}>
+            <p role="alert" style={{ color: 'var(--tr-error-text)', fontSize: 12 }}>
               Không thể gửi đánh giá. Vui lòng thử lại.
             </p>
           )}
           {!canRate && (
-            <p role="alert" style={{ color: '#EF4444', fontSize: 12 }}>
+            <p role="alert" style={{ color: 'var(--tr-error-text)', fontSize: 12 }}>
               P2P order write permission is required to submit a rating.
             </p>
           )}
@@ -338,8 +338,8 @@ export function P2POrderProofContractPage() {
         <>
           <TrCard className="p-4">
             <label htmlFor="p2p-payment-proof" className="flex cursor-pointer items-center gap-3">
-              <Upload size={20} color="#3B82F6" />
-              <span style={{ color: '#3B82F6', fontSize: 13, fontWeight: 600 }}>
+              <Upload size={20} color="var(--tr-link)" />
+              <span style={{ color: 'var(--tr-link)', fontSize: 13, fontWeight: 600 }}>
                 Chọn ảnh bằng chứng (tối đa 3 ảnh)
               </span>
             </label>
@@ -374,17 +374,17 @@ export function P2POrderProofContractPage() {
             </div>
           )}
           {error && (
-            <p role="alert" style={{ color: '#EF4444', fontSize: 12 }}>
+            <p role="alert" style={{ color: 'var(--tr-error-text)', fontSize: 12 }}>
               {error}
             </p>
           )}
           {mutation.isError && (
-            <p role="alert" style={{ color: '#EF4444', fontSize: 12 }}>
+            <p role="alert" style={{ color: 'var(--tr-error-text)', fontSize: 12 }}>
               Không thể tải bằng chứng lên. Vui lòng thử lại.
             </p>
           )}
           {!canSubmitProof && (
-            <p role="alert" style={{ color: '#EF4444', fontSize: 12 }}>
+            <p role="alert" style={{ color: 'var(--tr-error-text)', fontSize: 12 }}>
               P2P order write permission is required to submit payment proof.
             </p>
           )}
@@ -461,14 +461,16 @@ export function P2POrderTimelineContractPage() {
             {events.map((event) => (
               <div key={event.label} className="flex items-center gap-3">
                 {event.done ? (
-                  <CheckCircle size={18} color="#10B981" />
+                  <CheckCircle size={18} color="var(--tr-success-text)" />
                 ) : (
                   <Clock size={18} color="#9CA3AF" />
                 )}
                 <div>
-                  <p style={{ color: '#111827', fontSize: 12, fontWeight: 600 }}>{event.label}</p>
+                  <p style={{ color: 'var(--tr-text-1)', fontSize: 12, fontWeight: 600 }}>
+                    {event.label}
+                  </p>
                   {event.value && (
-                    <p style={{ color: '#6B7280', fontSize: 11 }}>
+                    <p style={{ color: 'var(--tr-text-3)', fontSize: 11 }}>
                       {new Date(event.value).toLocaleString('vi-VN')}
                     </p>
                   )}

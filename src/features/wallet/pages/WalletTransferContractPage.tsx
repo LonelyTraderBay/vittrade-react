@@ -300,7 +300,7 @@ export function WalletTransferContractPage() {
         </div>
 
         {validationError && (
-          <p role="alert" className="text-sm" style={{ color: '#EF4444' }}>
+          <p role="alert" className="text-sm" style={{ color: 'var(--tr-error-text)' }}>
             {validationError}
           </p>
         )}
@@ -312,7 +312,7 @@ export function WalletTransferContractPage() {
         )}
 
         {!canWriteWallet && (
-          <p role="alert" className="text-sm" style={{ color: '#EF4444' }}>
+          <p role="alert" className="text-sm" style={{ color: 'var(--tr-error-text)' }}>
             Wallet transfer permission is required to move funds.
           </p>
         )}

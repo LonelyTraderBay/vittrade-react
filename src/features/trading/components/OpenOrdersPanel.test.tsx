@@ -50,6 +50,13 @@ function renderPanel({
 }
 
 describe('OpenOrdersPanel', () => {
+  it('identifies a sell bracket independently of OCO linking', () => {
+    renderPanel({ orders: [{ ...order, side: 'sell', ocoLinked: false }] });
+    expect(screen.getByText('BÁN')).toBeInTheDocument();
+    expect(screen.queryByText('MUA')).not.toBeInTheDocument();
+    expect(screen.queryByText('OCO')).not.toBeInTheDocument();
+    expect(screen.getByText('Đã khớp 50%')).toBeInTheDocument();
+  });
   it('renders the empty state and keeps the export action available', () => {
     const { onExportHistory } = renderPanel({ orders: [] });
 

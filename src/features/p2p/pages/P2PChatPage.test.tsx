@@ -1,4 +1,4 @@
-import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
+import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import { screen, waitFor } from '@testing-library/react';
@@ -74,6 +74,71 @@ function renderChat(authAdapter: AuthAdapter = testAuthAdapter) {
 }
 
 describe('P2P chat contract page', () => {
+  it('ignores a whitespace-only message submitted with Enter', async () => {
+    const sendMessage = vi.fn();
+    server.use(
+      http.get('*/p2p/orders/order-1/chat', () => HttpResponse.json(chat)),
+      http.get('*/p2p/orders/order-1', () => HttpResponse.json(order)),
+      http.post('*/p2p/orders/order-1/chat/messages', () => {
+        sendMessage();
+        return HttpResponse.json(chat);
+      }),
+    );
+    const user = userEvent.setup();
+    renderChat();
+    await screen.findByText('Please confirm the transfer.');
+    expect(
+      screen.getByRole('heading', {
+        level: 1,
+        name: 'Cuộc trò chuyện P2P với Alpha Merchant',
+      }),
+    ).toBeInTheDocument();
+    const composer = screen.getByRole('textbox', { name: 'P2P chat message' });
+    await user.type(composer, '   ');
+    await user.keyboard('{Enter}');
+
+    expect(composer).toHaveValue('   ');
+    expect(sendMessage).not.toHaveBeenCalled();
+  });
+
+  it('labels a chat without end-to-end encryption as a protected channel', async () => {
+    server.use(
+      http.get('*/p2p/orders/order-1/chat', () =>
+        HttpResponse.json({ ...chat, e2eEncrypted: false }),
+      ),
+      http.get('*/p2p/orders/order-1', () => HttpResponse.json(order)),
+    );
+
+    renderChat();
+
+    expect(await screen.findByText('Please confirm the transfer.')).toBeInTheDocument();
+    expect(screen.getByText('Kênh chat bảo vệ')).toBeInTheDocument();
+    expect(screen.queryByText('Tin nhắn được mã hóa đầu cuối')).not.toBeInTheDocument();
+  });
+
+  it('sends on Enter while Shift+Enter keeps the message in the composer', async () => {
+    let sentText = '';
+    server.use(
+      http.get('*/p2p/orders/order-1/chat', () => HttpResponse.json(chat)),
+      http.get('*/p2p/orders/order-1', () => HttpResponse.json(order)),
+      http.post('*/p2p/orders/order-1/chat/messages', async ({ request }) => {
+        sentText = ((await request.json()) as { text: string }).text;
+        return HttpResponse.json(chat);
+      }),
+    );
+    const user = userEvent.setup();
+    renderChat();
+    await screen.findByText('Please confirm the transfer.');
+    const composer = screen.getByRole('textbox', { name: 'P2P chat message' });
+    await user.type(composer, 'First line');
+    await user.keyboard('{Shift>}{Enter}{/Shift}');
+    expect(composer).toHaveValue('First line\n');
+    expect(sentText).toBe('');
+    await user.clear(composer);
+    await user.type(composer, 'Send by keyboard');
+    await user.keyboard('{Enter}');
+    await waitFor(() => expect(sentText).toBe('Send by keyboard'));
+  });
   it.each(['back', 'order'])(
     'opens the %s destination from the loaded chat',
     async (destination) => {

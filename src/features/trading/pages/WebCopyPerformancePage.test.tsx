@@ -25,65 +25,82 @@ function adapterWithPermissions(permissions: string[]): AuthAdapter {
 }
 
 describe('web copy performance page', () => {
-  it('renders the selected relationship from the trading API', async () => {
-    server.use(
-      http.get('*/trading/copy/relationships', () =>
-        HttpResponse.json({
-          items: [
-            {
-              id: 'copy-1',
-              provider: {
-                id: 'provider-1',
-                name: 'Provider One',
-                avatar: 'P1',
+  it.each([
+    {
+      label: 'positive',
+      pnl: 75,
+      pnlPct: 7.5,
+      expectedColor: 'var(--tr-success-text)',
+    },
+    {
+      label: 'negative',
+      pnl: -75,
+      pnlPct: -7.5,
+      expectedColor: 'var(--tr-error-text)',
+    },
+  ])(
+    'renders $label copy performance from the trading API',
+    async ({ pnl, pnlPct, expectedColor }) => {
+      server.use(
+        http.get('*/trading/copy/relationships', () =>
+          HttpResponse.json({
+            items: [
+              {
+                id: 'copy-1',
+                provider: {
+                  id: 'provider-1',
+                  name: 'Provider One',
+                  avatar: 'P1',
+                  winRate: 66.7,
+                  totalPnl: 75,
+                  totalPnlPct: 7.5,
+                  aum: 250_000,
+                  copiers: 48,
+                  maxCopiers: 100,
+                  sharpeRatio: 1.8,
+                  maxDrawdown: 8.5,
+                  totalTrades: 120,
+                  avgHoldingTime: '4h',
+                  weeklyPnl: [1, 2, -1, 3],
+                  tags: ['swing'],
+                  isFollowing: true,
+                  riskLevel: 'medium',
+                  verified: true,
+                },
+                status: 'active',
+                copyMode: 'mirror',
+                positionSizing: 'percentage',
+                copyRatio: 50,
+                capital: 1_000,
+                currentValue: 1_075,
+                pnl,
+                pnlPct,
+                trades: 12,
                 winRate: 66.7,
-                totalPnl: 75,
-                totalPnlPct: 7.5,
-                aum: 250_000,
-                copiers: 48,
-                maxCopiers: 100,
-                sharpeRatio: 1.8,
-                maxDrawdown: 8.5,
-                totalTrades: 120,
-                avgHoldingTime: '4h',
-                weeklyPnl: [1, 2, -1, 3],
-                tags: ['swing'],
-                isFollowing: true,
-                riskLevel: 'medium',
-                verified: true,
+                hasCustomStopLoss: false,
+                performanceHistory: [{ date: '2026-09-22', value: 1_075 }],
               },
-              status: 'active',
-              copyMode: 'mirror',
-              positionSizing: 'percentage',
-              copyRatio: 50,
-              capital: 1_000,
-              currentValue: 1_075,
-              pnl: 75,
-              pnlPct: 7.5,
-              trades: 12,
-              winRate: 66.7,
-              hasCustomStopLoss: false,
-              performanceHistory: [{ date: '2026-09-22', value: 1_075 }],
-            },
-          ],
-        }),
-      ),
-    );
+            ],
+          }),
+        ),
+      );
 
-    renderWithProviders(
-      <Routes>
-        <Route path="/trade/copy/performance/:copyId" element={<WebCopyPerformancePage />} />
-      </Routes>,
-      {
-        routerProps: { initialEntries: ['/trade/copy/performance/copy-1'] },
-        authAdapter: adapterWithPermissions(['trade:read']),
-      },
-    );
+      renderWithProviders(
+        <Routes>
+          <Route path="/trade/copy/performance/:copyId" element={<WebCopyPerformancePage />} />
+        </Routes>,
+        {
+          routerProps: { initialEntries: ['/trade/copy/performance/copy-1'] },
+          authAdapter: adapterWithPermissions(['trade:read']),
+        },
+      );
 
-    expect(await screen.findByText('Provider One')).toBeInTheDocument();
-    expect(screen.getByText('7.50%')).toBeInTheDocument();
-    expect(screen.getByText('$1,075')).toBeInTheDocument();
-  });
+      expect(await screen.findByText('Provider One')).toBeInTheDocument();
+      const pnlMetric = screen.getByText(`${pnlPct.toFixed(2)}%`);
+      expect(pnlMetric).toHaveStyle({ color: expectedColor });
+      expect(screen.getByText('$1,075')).toBeInTheDocument();
+    },
+  );
 
   it('does not request or show copy performance without trade read permission', () => {
     let requestCount = 0;

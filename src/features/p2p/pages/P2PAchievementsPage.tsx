@@ -104,7 +104,7 @@ export function P2PAchievementsPage() {
                         }}
                       >
                         {achievement.unlocked ? (
-                          <CheckCircle size={18} color="#10B981" />
+                          <CheckCircle size={18} color="var(--tr-success-text)" />
                         ) : (
                           <Lock size={17} color={colors.text3} />
                         )}
@@ -116,7 +116,7 @@ export function P2PAchievementsPage() {
                           </p>
                           <span
                             style={{
-                              color: achievement.unlocked ? '#10B981' : colors.text3,
+                              color: achievement.unlocked ? 'var(--tr-success-text)' : colors.text3,
                               fontSize: 10,
                             }}
                           >

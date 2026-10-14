@@ -6,6 +6,7 @@ import userEvent from '@testing-library/user-event';
 import type { AuthAdapter } from '@/shared/session/AuthContext';
 import { testAuthAdapter } from '@/test/auth-test-adapter';
 import { renderWithProviders } from '@/test/test-utils';
+import { invokeStaleReactHandler } from '@/test/invoke-stale-react-handler';
 import { OrdersHistoryPage } from './OrdersHistoryPage';
 
 const server = setupServer();
@@ -188,6 +189,26 @@ describe('OrdersHistoryPage', () => {
     expect(requests).toEqual([]);
   });
 
+  it('disables forward pagination when the current response has no cursor', async () => {
+    server.use(
+      http.get('*/trading/orders', ({ request }) => {
+        const cursor = new URL(request.url).searchParams.get('cursor');
+        return cursor
+          ? HttpResponse.json({ items: [order({ id: 'order-2', symbol: 'ETH/USDT' })] })
+          : HttpResponse.json({ items: [order()], nextCursor: 'open-page-2' });
+      }),
+    );
+
+    renderWithProviders(<OrdersHistoryPage />, {
+      authAdapter: adapterWithPermissions(['trade:read']),
+    });
+
+    expect(await screen.findByText('BTC/USDT', { exact: true })).toBeInTheDocument();
+    await userEvent.click(screen.getByRole('button', { name: 'Sau' }));
+    expect(await screen.findByText('ETH/USDT', { exact: true })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Sau' })).toBeDisabled();
+  });
+
   it('surfaces an unconfirmed cancellation and retains its key for an explicit retry', async () => {
     const keys: (string | null)[] = [];
     let cancelled = false;
@@ -304,7 +325,9 @@ describe('OrdersHistoryPage', () => {
       http.get('*/trading/orders', ({ request }) => {
         const cursor = new URL(request.url).searchParams.get('cursor');
         cursors.push(cursor);
-        return HttpResponse.json({ items: [order()], nextCursor: 'page-2' });
+        return cursor
+          ? HttpResponse.json({ items: [order()] })
+          : HttpResponse.json({ items: [order()], nextCursor: 'page-2' });
       }),
     );
     renderWithProviders(<OrdersHistoryPage />, {
@@ -317,6 +340,10 @@ describe('OrdersHistoryPage', () => {
     });
     await waitFor(() => expect(cursors).toEqual([null, 'page-2']));
     expect(screen.getByText('Trang 2')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Sau' })).toBeDisabled();
+    const nextPage = screen.getByRole('button', { name: 'Sau' });
+    expect(nextPage).toBeDisabled();
+    invokeStaleReactHandler(nextPage, 'onClick');
+    expect(screen.getByText('Trang 2')).toBeInTheDocument();
+    expect(cursors).toEqual([null, 'page-2']);
   });
 });

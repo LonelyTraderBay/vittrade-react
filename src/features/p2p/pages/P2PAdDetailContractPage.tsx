@@ -115,7 +115,11 @@ export function P2PAdDetailContractPage() {
                 tất
               </p>
             </div>
-            <strong style={{ color: ad.type === 'sell' ? '#10B981' : '#EF4444' }}>
+            <strong
+              style={{
+                color: ad.type === 'sell' ? 'var(--tr-success-text)' : 'var(--tr-error-text)',
+              }}
+            >
               {ad.type === 'sell' ? 'Mua' : 'Bán'} {ad.asset}
             </strong>
           </div>
@@ -158,7 +162,7 @@ export function P2PAdDetailContractPage() {
                 className="rounded-lg px-3 py-2 text-xs"
                 style={{
                   background: paymentMethod === method ? colors.primary : colors.surface2,
-                  color: paymentMethod === method ? '#fff' : colors.text2,
+                  color: paymentMethod === method ? 'var(--tr-text-on-color)' : colors.text2,
                 }}
               >
                 {method}
@@ -166,17 +170,17 @@ export function P2PAdDetailContractPage() {
             ))}
           </div>
           {validationMessage && (
-            <p role="alert" className="mt-3 text-xs" style={{ color: '#EF4444' }}>
+            <p role="alert" className="mt-3 text-xs" style={{ color: 'var(--tr-error-text)' }}>
               {validationMessage}
             </p>
           )}
           {errorMessage && (
-            <p role="alert" className="mt-3 text-xs" style={{ color: '#EF4444' }}>
+            <p role="alert" className="mt-3 text-xs" style={{ color: 'var(--tr-error-text)' }}>
               {errorMessage}
             </p>
           )}
           {!canCreateOrder && (
-            <p role="alert" className="mt-3 text-xs" style={{ color: '#EF4444' }}>
+            <p role="alert" className="mt-3 text-xs" style={{ color: 'var(--tr-error-text)' }}>
               P2P order write permission is required to create an order.
             </p>
           )}
@@ -189,7 +193,7 @@ export function P2PAdDetailContractPage() {
           className="w-full rounded-xl py-3 font-semibold"
           style={{
             background: canCreateOrder && canReview ? colors.primary : colors.surface2,
-            color: canCreateOrder && canReview ? '#fff' : colors.text3,
+            color: canCreateOrder && canReview ? 'var(--tr-text-on-color)' : colors.text3,
           }}
         >
           Xem xác nhận đơn P2P
@@ -224,7 +228,7 @@ export function P2PAdDetailContractPage() {
                 onClick={() => void submitOrder()}
                 disabled={!canCreateOrder || !canReview || orderMutation.isPending}
                 className="flex-1 rounded-lg px-3 py-2 text-sm font-semibold"
-                style={{ background: colors.primary, color: '#fff' }}
+                style={{ background: colors.primary, color: 'var(--tr-text-on-color)' }}
               >
                 {orderMutation.isPending ? 'Đang tạo…' : 'Xác nhận đơn'}
               </button>

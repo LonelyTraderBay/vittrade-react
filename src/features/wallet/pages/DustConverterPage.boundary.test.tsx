@@ -4,6 +4,7 @@ import { setupServer } from 'msw/node';
 import { act, fireEvent, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { renderWithProviders } from '@/test/test-utils';
+import { invokeStaleReactHandler } from '@/test/invoke-stale-react-handler';
 import { DustConverterPage } from './DustConverterPage';
 import { walletApi } from '../api/wallet-api';
 
@@ -71,6 +72,17 @@ describe('Dust conversion financial boundaries', () => {
     });
     try {
       await waitFor(() => expect(posts).toBeGreaterThan(0));
+      const selectAll = screen.getByRole('button', { name: 'Bỏ chọn tất cả' });
+      const asset = screen.getByRole('button', { name: /DUST/ });
+      const alternateTarget = screen.getByRole('button', { name: /BNB/ });
+      expect(selectAll).toBeDisabled();
+      expect(asset).toBeDisabled();
+      expect(alternateTarget).toBeDisabled();
+      invokeStaleReactHandler(selectAll, 'onClick');
+      invokeStaleReactHandler(asset, 'onClick');
+      invokeStaleReactHandler(alternateTarget, 'onClick');
+      expect(screen.getByRole('button', { name: 'Bỏ chọn tất cả' })).toBeInTheDocument();
+      expect(posts).toBe(1);
     } finally {
       release();
     }

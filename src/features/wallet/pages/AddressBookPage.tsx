@@ -156,7 +156,7 @@ export function AddressBookPage() {
           className="w-10 h-10 rounded-2xl flex items-center justify-center shrink-0"
           style={{ background: colors.surface2, border: `1px solid ${colors.borderSolid}` }}
         >
-          <Shield size={18} color={entry.isWhitelisted ? '#10B981' : colors.text3} />
+          <Shield size={18} color={entry.isWhitelisted ? 'var(--tr-success-text)' : colors.text3} />
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1">
@@ -164,7 +164,7 @@ export function AddressBookPage() {
               {entry.label}
             </span>
             {entry.isWhitelisted && (
-              <span className="text-xs font-bold" style={{ color: '#10B981' }}>
+              <span className="text-xs font-bold" style={{ color: 'var(--tr-success-text)' }}>
                 ✓ Whitelist
               </span>
             )}
@@ -200,7 +200,7 @@ export function AddressBookPage() {
         <button
           onClick={() => void handleCopy(entry)}
           className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl text-xs font-semibold"
-          style={{ background: 'rgba(59,130,246,0.1)', color: '#3B82F6' }}
+          style={{ background: 'rgba(59,130,246,0.1)', color: 'var(--tr-link)' }}
         >
           {copiedId === entry.id ? <CheckCircle size={13} /> : <Copy size={13} />}
           {copiedId === entry.id ? 'Đã copy' : 'Sao chép'}
@@ -218,7 +218,7 @@ export function AddressBookPage() {
           }}
         >
           {entry.isFavorite ? (
-            <Star size={15} color="#F59E0B" fill="#F59E0B" />
+            <Star size={15} color="var(--tr-warning-text)" fill="#F59E0B" />
           ) : (
             <StarOff size={15} color={colors.text3} />
           )}
@@ -231,7 +231,7 @@ export function AddressBookPage() {
           className="w-9 h-9 flex items-center justify-center rounded-xl"
           style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.15)' }}
         >
-          <Trash2 size={14} color="#EF4444" />
+          <Trash2 size={14} color="var(--tr-error-text)" />
         </button>
       </div>
     </TrCard>
@@ -245,7 +245,7 @@ export function AddressBookPage() {
           onClose={() => setDeleteTarget(null)}
           onConfirm={() => handleDelete(deleteTarget)}
           variant="danger"
-          icon={<Trash2 size={24} color="#EF4444" />}
+          icon={<Trash2 size={24} color="var(--tr-error-text)" />}
           title="Xóa địa chỉ"
           description={
             <>
@@ -268,7 +268,7 @@ export function AddressBookPage() {
             className="w-10 h-10 flex items-center justify-center rounded-xl"
             style={{ background: 'rgba(59,130,246,0.15)' }}
           >
-            <Plus size={20} color="#3B82F6" />
+            <Plus size={20} color="var(--tr-link)" />
           </button>
         }
       />
@@ -308,7 +308,7 @@ export function AddressBookPage() {
               className="w-10 h-10 rounded-xl flex items-center justify-center"
               style={{ background: whitelistEnabled ? 'rgba(16,185,129,0.15)' : colors.surface2 }}
             >
-              <Lock size={18} color={whitelistEnabled ? '#10B981' : colors.text3} />
+              <Lock size={18} color={whitelistEnabled ? 'var(--tr-success-text)' : colors.text3} />
             </div>
             <div className="flex-1">
               <strong style={{ color: colors.text1, fontSize: 14 }}>Chế độ Whitelist</strong>
@@ -341,8 +341,8 @@ export function AddressBookPage() {
               className="flex items-start gap-2 mt-3 rounded-xl px-3 py-2"
               style={{ background: 'rgba(245,158,11,0.08)' }}
             >
-              <AlertTriangle size={12} color="#F59E0B" />
-              <p style={{ color: '#D97706', fontSize: 10 }}>
+              <AlertTriangle size={12} color="var(--tr-warning-text)" />
+              <p style={{ color: 'var(--tr-warning-text)', fontSize: 10 }}>
                 Địa chỉ mới trong whitelist có thể cần thời gian chờ trước khi rút.
               </p>
             </div>
@@ -387,7 +387,7 @@ export function AddressBookPage() {
         {favorites.length > 0 && (
           <section>
             <div className="flex items-center gap-2 mb-2">
-              <Star size={13} color="#F59E0B" fill="#F59E0B" />
+              <Star size={13} color="var(--tr-warning-text)" fill="#F59E0B" />
               <span style={{ color: colors.text2, fontSize: 13 }}>Yêu thích</span>
             </div>
             <div className="flex flex-col gap-2">{favorites.map(renderEntry)}</div>
@@ -419,7 +419,7 @@ export function AddressBookPage() {
           className="flex items-start gap-2 rounded-2xl px-4 py-3"
           style={{ background: 'rgba(59,130,246,0.06)' }}
         >
-          <Shield size={14} color="#3B82F6" />
+          <Shield size={14} color="var(--tr-link)" />
           <p style={{ color: colors.text2, fontSize: 12 }}>
             Địa chỉ whitelist được bảo vệ bởi 2FA và dùng làm nguồn kiểm soát rút tiền.
           </p>

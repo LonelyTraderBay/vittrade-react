@@ -69,7 +69,8 @@ describe('P2P home cards', () => {
     renderAdCard();
 
     expect(screen.getByText('Verified Merchant')).toBeInTheDocument();
-    expect(screen.getByText('Elite')).toBeInTheDocument();
+    expect(screen.getByText('Elite')).toHaveStyle({ color: 'var(--tr-warning-text)' });
+    expect(screen.getByText('98.5%')).toHaveStyle({ color: 'var(--tr-success-text)' });
     expect(screen.getByText('4.9')).toBeInTheDocument();
     expect(screen.getByText('+1')).toBeInTheDocument();
     expect(screen.getByText(/Merchant mới/)).toBeInTheDocument();

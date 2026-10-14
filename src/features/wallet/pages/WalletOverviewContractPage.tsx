@@ -318,7 +318,7 @@ function AssetRow({
     >
       <span
         className="flex h-9 w-9 items-center justify-center rounded-full text-xs font-bold"
-        style={{ background: `${asset.logoColor}20`, color: asset.logoColor }}
+        style={{ background: `${asset.logoColor}20`, color: colors.text1 }}
       >
         {asset.symbol.slice(0, 3)}
       </span>
@@ -427,5 +427,9 @@ function transactionLabel(type: WalletTransaction['type']) {
 }
 
 function statusColor(status: WalletTransaction['status']) {
-  return { completed: '#10B981', pending: '#F59E0B', failed: '#EF4444' }[status];
+  return {
+    completed: 'var(--tr-success-text)',
+    pending: 'var(--tr-warning-text)',
+    failed: 'var(--tr-error-text)',
+  }[status];
 }

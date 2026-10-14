@@ -10,6 +10,7 @@ import { TrCard } from '@/shared/ui/TrCard';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { useRoutePrefix } from '@/shared/navigation/useRoutePrefix';
 import { useAuth } from '@/shared/session/useAuth';
+import type { P2POrder } from '../model/p2p-types';
 import {
   useP2PMarkPaidMutation,
   useP2POrderQuery,
@@ -178,7 +179,7 @@ export function P2PEscrowDetailPage() {
     );
   }
 
-  const statusLabel: Record<string, string> = {
+  const statusLabel: Record<P2POrder['status'], string> = {
     pending_payment: 'Chờ thanh toán',
     paid: 'Đã thanh toán · Chờ release',
     released: 'Đã release',
@@ -214,7 +215,7 @@ export function P2PEscrowDetailPage() {
             </div>
             <div>
               <p style={{ color: colors.text1, fontSize: 16, fontWeight: 700 }}>
-                {statusLabel[order.status] ?? order.status}
+                {statusLabel[order.status]}
               </p>
               <p style={{ color: colors.text3, fontSize: 11 }}>Order #{order.orderNumber}</p>
             </div>
@@ -267,7 +268,7 @@ export function P2PEscrowDetailPage() {
             onClick={() => void markPaid()}
             className="w-full rounded-xl py-3 font-bold"
             style={{
-              background: '#3B82F6',
+              background: '#1D4ED8',
               color: '#fff',
               opacity: markPaidMutation.isPending ? 0.6 : 1,
             }}
@@ -283,7 +284,7 @@ export function P2PEscrowDetailPage() {
             onClick={() => void startRelease()}
             className="w-full rounded-xl py-3 font-bold"
             style={{
-              background: '#10B981',
+              background: '#047857',
               color: '#fff',
               opacity: challengeMutation.isPending ? 0.6 : 1,
             }}
@@ -319,7 +320,7 @@ export function P2PEscrowDetailPage() {
               onClick={() => void verify()}
               className="w-full rounded-xl py-3 font-bold"
               style={{
-                background: '#3B82F6',
+                background: '#1D4ED8',
                 color: '#fff',
                 opacity: verificationMutation.isPending || code.length < 6 ? 0.6 : 1,
               }}
@@ -336,7 +337,7 @@ export function P2PEscrowDetailPage() {
             onClick={() => void release()}
             className="w-full rounded-xl py-3 font-bold"
             style={{
-              background: '#10B981',
+              background: '#047857',
               color: '#fff',
               opacity: releaseMutation.isPending ? 0.6 : 1,
             }}

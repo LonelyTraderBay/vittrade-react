@@ -180,7 +180,11 @@ export function WalletAssetDetailPage({
               {fmtAmount(asset.balance)} {asset.symbol}
             </span>
             <span
-              style={{ color: isPositive ? '#10B981' : '#EF4444', fontSize: 13, fontWeight: 600 }}
+              style={{
+                color: isPositive ? c.successText : c.errorText,
+                fontSize: 13,
+                fontWeight: 600,
+              }}
             >
               {fmtPct(asset.change24h)}
             </span>
@@ -400,7 +404,7 @@ export function WalletAssetDetailPage({
                 <div className="text-right">
                   <p
                     style={{
-                      color: isDeposit ? '#10B981' : '#EF4444',
+                      color: isDeposit ? c.successText : c.errorText,
                       fontSize: 13,
                       fontWeight: 600,
                       fontFamily: 'monospace',
@@ -413,10 +417,10 @@ export function WalletAssetDetailPage({
                     style={{
                       color:
                         tx.status === 'completed'
-                          ? '#10B981'
+                          ? c.successText
                           : tx.status === 'pending'
-                            ? '#F59E0B'
-                            : '#EF4444',
+                            ? c.warningText
+                            : c.errorText,
                       fontSize: 10,
                     }}
                   >

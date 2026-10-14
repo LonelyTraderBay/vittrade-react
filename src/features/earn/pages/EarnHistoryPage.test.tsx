@@ -90,6 +90,21 @@ describe('Savings history contract page', () => {
     expect(await screen.findByText('Chưa có giao dịch tiết kiệm')).toBeInTheDocument();
   });
 
+  it('explains when a valid history list has no transactions for the selected filter', async () => {
+    server.use(
+      http.get('*/earn/transactions', () =>
+        HttpResponse.json({ items: [firstPage.items[0]], nextCursor: 'opaque-next-page' }),
+      ),
+    );
+
+    renderWithProviders(<SavingsHistoryPage />);
+    expect(await screen.findByText('Đăng ký · USDT Flexible')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Rút vốn' }));
+
+    expect(await screen.findByText('Không có kết quả')).toBeInTheDocument();
+    expect(screen.getByText('Thử chọn một loại giao dịch khác.')).toBeInTheDocument();
+  });
+
   it('uses the same typed history boundary for staking transactions', async () => {
     server.use(
       http.get('*/earn/transactions', ({ request }) => {

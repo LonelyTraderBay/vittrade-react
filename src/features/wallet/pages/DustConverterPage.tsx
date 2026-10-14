@@ -391,7 +391,7 @@ export function DustConverterPage() {
                   className="w-8 h-8 rounded-full flex items-center justify-center"
                   style={{ background: `${opt.color}22` }}
                 >
-                  <span style={{ color: opt.color, fontSize: 10, fontWeight: 700 }}>
+                  <span style={{ color: c.text1, fontSize: 10, fontWeight: 700 }}>
                     {opt.symbol.slice(0, 3)}
                   </span>
                 </div>
@@ -423,7 +423,7 @@ export function DustConverterPage() {
                 style={{ background: c.surface2 }}
               >
                 {selectedIds.size === dustAssets.length ? (
-                  <CheckSquare size={16} color="#3B82F6" />
+                  <CheckSquare size={16} color="var(--tr-link)" />
                 ) : (
                   <Square size={16} color={c.text3} />
                 )}
@@ -447,7 +447,7 @@ export function DustConverterPage() {
                       }}
                     >
                       {isSelected ? (
-                        <CheckSquare size={18} color="#3B82F6" />
+                        <CheckSquare size={18} color="var(--tr-link)" />
                       ) : (
                         <Square size={18} color={c.text3} />
                       )}
@@ -538,7 +538,7 @@ export function DustConverterPage() {
               <div className="flex items-center gap-2">
                 <span
                   style={{
-                    color: '#10B981',
+                    color: 'var(--tr-success-text)',
                     fontSize: 14,
                     fontWeight: 700,
                     fontFamily: 'monospace',
@@ -562,7 +562,7 @@ export function DustConverterPage() {
           className="flex items-start gap-2 rounded-2xl px-4 py-3"
           style={{ background: 'rgba(59,130,246,0.06)', border: '1px solid rgba(59,130,246,0.15)' }}
         >
-          <Info size={13} color="#3B82F6" className="shrink-0 mt-0.5" />
+          <Info size={13} color="var(--tr-link)" className="shrink-0 mt-0.5" />
           <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.6 }}>
             Số dư nhỏ dưới {fmtUsd(DUST_THRESHOLD)} có thể được chuyển đổi. Phí chuyển đổi: {feePct}
             %. Giá dựa trên tỷ giá thị trường. Tài sản đang đóng băng hoặc trong lệnh không thể

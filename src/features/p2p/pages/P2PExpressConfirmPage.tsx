@@ -163,32 +163,32 @@ export function P2PExpressConfirmPage() {
                 {confirmedAd.completionRate}% hoàn tất · {confirmedAd.completedOrders} orders
               </p>
             </div>
-            {confirmedAd.merchantVerified && <Shield size={15} color="#3B82F6" />}
-            <CheckCircle size={15} color="#10B981" />
+            {confirmedAd.merchantVerified && <Shield size={15} color="var(--tr-link)" />}
+            <CheckCircle size={15} color="var(--tr-success-text)" />
           </div>
         </TrCard>
         <div
           className="rounded-2xl p-3 flex items-start gap-2"
           style={{ background: 'rgba(16,185,129,0.06)', border: '1px solid rgba(16,185,129,0.15)' }}
         >
-          <Lock size={14} color="#10B981" className="shrink-0 mt-0.5" />
-          <p style={{ color: '#10B981', fontSize: 11, lineHeight: 1.6 }}>
+          <Lock size={14} color="var(--tr-success-text)" className="shrink-0 mt-0.5" />
+          <p style={{ color: 'var(--tr-success-text)', fontSize: 11, lineHeight: 1.6 }}>
             Order sẽ được bảo vệ bởi escrow. Trạng thái và hướng dẫn thanh toán sẽ được lấy từ
             backend sau khi tạo thành công.
           </p>
         </div>
         {orderMutation.isError && (
-          <p role="alert" style={{ color: '#EF4444', fontSize: 12 }}>
+          <p role="alert" style={{ color: 'var(--tr-error-text)', fontSize: 12 }}>
             Không thể tạo order. Vui lòng thử lại hoặc chọn offer khác.
           </p>
         )}
         {!validOffer && (
-          <p role="alert" style={{ color: '#EF4444', fontSize: 12 }}>
+          <p role="alert" style={{ color: 'var(--tr-error-text)', fontSize: 12 }}>
             Thông tin xác nhận không còn khớp offer. Hãy kiểm tra số tiền và phương thức thanh toán.
           </p>
         )}
         {!canCreateOrder && (
-          <p role="alert" style={{ color: '#EF4444', fontSize: 12 }}>
+          <p role="alert" style={{ color: 'var(--tr-error-text)', fontSize: 12 }}>
             P2P order write permission is required to create an Express order.
           </p>
         )}
@@ -218,7 +218,7 @@ export function P2PExpressConfirmPage() {
           </button>
         </div>
         <div className="flex items-center gap-2">
-          <AlertTriangle size={13} color="#F59E0B" />
+          <AlertTriangle size={13} color="var(--tr-warning-text)" />
           <span style={{ color: colors.text3, fontSize: 10 }}>
             Chỉ xác nhận khi bạn đã sẵn sàng thực hiện thanh toán.
           </span>

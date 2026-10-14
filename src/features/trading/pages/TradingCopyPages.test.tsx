@@ -182,7 +182,9 @@ describe('contract-backed copy trading pages', () => {
       <Route path="/trade/copy-provider/provider-1/assessment" element={<p>assessment-route</p>} />,
     );
 
-    expect(await screen.findByRole('heading', { name: 'Provider One' })).toBeInTheDocument();
+    expect(
+      await screen.findByRole('heading', { level: 1, name: 'Provider One' }),
+    ).toBeInTheDocument();
     expect(screen.getByText('1 điểm hiệu suất · 1 giao dịch gần đây · swing')).toBeInTheDocument();
     await userEvent.click(screen.getByRole('button', { name: /Đánh giá trước khi copy/ }));
     expect(await screen.findByText('assessment-route')).toBeInTheDocument();

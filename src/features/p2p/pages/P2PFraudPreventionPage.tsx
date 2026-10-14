@@ -71,7 +71,13 @@ export function P2PFraudPreventionPage() {
             <div className="flex items-center gap-2">
               <ShieldCheck
                 size={20}
-                color={safetyScore >= 80 ? '#10B981' : safetyScore >= 50 ? '#F59E0B' : '#EF4444'}
+                color={
+                  safetyScore >= 80
+                    ? c.successText
+                    : safetyScore >= 50
+                      ? c.warningText
+                      : c.errorText
+                }
               />
               <span style={{ color: c.text1, fontSize: φ.base, fontWeight: 700 }}>
                 Chỉ số an toàn
@@ -79,7 +85,12 @@ export function P2PFraudPreventionPage() {
             </div>
             <span
               style={{
-                color: safetyScore >= 80 ? '#10B981' : safetyScore >= 50 ? '#F59E0B' : '#EF4444',
+                color:
+                  safetyScore >= 80
+                    ? c.successText
+                    : safetyScore >= 50
+                      ? c.warningText
+                      : c.errorText,
                 fontSize: 28,
                 fontWeight: 700,
                 fontVariantNumeric: 'tabular-nums',
@@ -95,7 +106,11 @@ export function P2PFraudPreventionPage() {
               style={{
                 width: `${safetyScore}%`,
                 background:
-                  safetyScore >= 80 ? '#10B981' : safetyScore >= 50 ? '#F59E0B' : '#EF4444',
+                  safetyScore >= 80
+                    ? 'var(--tr-buy)'
+                    : safetyScore >= 50
+                      ? 'var(--tr-warning-text)'
+                      : 'var(--tr-sell)',
               }}
             />
           </div>
@@ -108,8 +123,8 @@ export function P2PFraudPreventionPage() {
               className="flex items-center gap-2 mt-3 px-3 py-2 rounded-lg"
               style={{ background: 'rgba(245,158,11,0.06)' }}
             >
-              <AlertTriangle size={12} color="#F59E0B" />
-              <span style={{ color: '#D97706', fontSize: 11, lineHeight: 1.5 }}>
+              <AlertTriangle size={12} color="var(--tr-warning-text)" />
+              <span style={{ color: c.warningText, fontSize: 11, lineHeight: 1.5 }}>
                 Hoàn thành checklist bên dưới để tăng chỉ số an toàn
               </span>
             </div>
@@ -119,7 +134,7 @@ export function P2PFraudPreventionPage() {
         {/* ── Common Scam Patterns ── */}
         <div>
           <div className="flex items-center gap-2 mb-3">
-            <ShieldAlert size={16} color="#EF4444" />
+            <ShieldAlert size={16} color="var(--tr-error-text)" />
             <span style={{ color: c.text1, fontSize: φ.body, fontWeight: 700 }}>
               Các hình thức gian lận phổ biến
             </span>
@@ -160,7 +175,12 @@ export function P2PFraudPreventionPage() {
                           className="px-1.5 py-0.5 rounded"
                           style={{
                             background: `${sevCfg.color}12`,
-                            color: sevCfg.color,
+                            color:
+                              pattern.severity === 'critical'
+                                ? c.errorText
+                                : pattern.severity === 'high'
+                                  ? c.warningText
+                                  : c.link,
                             fontSize: 9,
                             fontWeight: 700,
                           }}
@@ -222,7 +242,7 @@ export function P2PFraudPreventionPage() {
                       <div className="mb-4">
                         <p
                           style={{
-                            color: '#EF4444',
+                            color: c.errorText,
                             fontSize: 11,
                             fontWeight: 700,
                             marginBottom: 8,
@@ -234,8 +254,12 @@ export function P2PFraudPreventionPage() {
                         <div className="flex flex-col gap-1.5">
                           {pattern.redFlags.map((flag, i) => (
                             <div key={i} className="flex items-start gap-2">
-                              <CircleAlert size={12} color="#EF4444" className="shrink-0 mt-0.5" />
-                              <span style={{ color: '#DC2626', fontSize: φ.sm, lineHeight: 1.5 }}>
+                              <CircleAlert
+                                size={12}
+                                color={c.errorText}
+                                className="shrink-0 mt-0.5"
+                              />
+                              <span style={{ color: c.errorText, fontSize: φ.sm, lineHeight: 1.5 }}>
                                 {flag}
                               </span>
                             </div>
@@ -247,7 +271,7 @@ export function P2PFraudPreventionPage() {
                       <div>
                         <p
                           style={{
-                            color: '#10B981',
+                            color: c.successText,
                             fontSize: 11,
                             fontWeight: 700,
                             marginBottom: 8,
@@ -259,8 +283,14 @@ export function P2PFraudPreventionPage() {
                         <div className="flex flex-col gap-1.5">
                           {pattern.prevention.map((prev, i) => (
                             <div key={i} className="flex items-start gap-2">
-                              <CheckCircle size={12} color="#10B981" className="shrink-0 mt-0.5" />
-                              <span style={{ color: '#059669', fontSize: φ.sm, lineHeight: 1.5 }}>
+                              <CheckCircle
+                                size={12}
+                                color={c.successText}
+                                className="shrink-0 mt-0.5"
+                              />
+                              <span
+                                style={{ color: c.successText, fontSize: φ.sm, lineHeight: 1.5 }}
+                              >
                                 {prev}
                               </span>
                             </div>
@@ -278,7 +308,7 @@ export function P2PFraudPreventionPage() {
         {/* ── Safety Checklist ── */}
         <TrCard className="p-5">
           <div className="flex items-center gap-2 mb-4">
-            <BookOpen size={16} color="#3B82F6" />
+            <BookOpen size={16} color="var(--tr-link)" />
             <span style={{ color: c.text1, fontSize: φ.body, fontWeight: 700 }}>
               Checklist an toàn
             </span>
@@ -302,7 +332,7 @@ export function P2PFraudPreventionPage() {
                     fontSize: 11,
                     fontWeight: isActive ? 700 : 500,
                     color: isActive ? '#fff' : c.text2,
-                    background: isActive ? '#3B82F6' : c.surface2,
+                    background: isActive ? '#1D4ED8' : c.surface2,
                   }}
                 >
                   {CATEGORY_LABELS[cat]}
@@ -311,7 +341,7 @@ export function P2PFraudPreventionPage() {
                       display: 'block',
                       fontSize: 9,
                       marginTop: 2,
-                      color: isActive ? 'rgba(255,255,255,0.7)' : c.text3,
+                      color: isActive ? '#fff' : c.text2,
                     }}
                   >
                     {catChecked}/{catItems.length}
@@ -346,7 +376,7 @@ export function P2PFraudPreventionPage() {
                     <div className="flex-1">
                       <p
                         style={{
-                          color: item.checked ? '#10B981' : c.text1,
+                          color: item.checked ? c.successText : c.text1,
                           fontSize: φ.sm,
                           fontWeight: 600,
                           lineHeight: 1.5,
@@ -368,7 +398,7 @@ export function P2PFraudPreventionPage() {
         {/* ── Emergency Actions ── */}
         <TrCard className="p-5">
           <div className="flex items-center gap-2 mb-4">
-            <AlertOctagon size={16} color="#EF4444" />
+            <AlertOctagon size={16} color="var(--tr-error-text)" />
             <span style={{ color: c.text1, fontSize: φ.body, fontWeight: 700 }}>
               Bạn đang bị lừa đảo?
             </span>
@@ -387,14 +417,19 @@ export function P2PFraudPreventionPage() {
               }}
             >
               <div className="flex items-center gap-2.5">
-                <Shield size={16} color="#EF4444" />
+                <Shield size={16} color="var(--tr-error-text)" />
                 <span
-                  style={{ color: '#DC2626', fontSize: φ.sm, fontWeight: 600, lineHeight: 1.5 }}
+                  style={{
+                    color: 'var(--tr-error-text)',
+                    fontSize: φ.sm,
+                    fontWeight: 600,
+                    lineHeight: 1.5,
+                  }}
                 >
                   Gửi yêu cầu bồi thường bảo hiểm
                 </span>
               </div>
-              <ChevronRight size={16} color="#EF4444" />
+              <ChevronRight size={16} color="var(--tr-error-text)" />
             </button>
 
             <button
@@ -409,14 +444,19 @@ export function P2PFraudPreventionPage() {
               }}
             >
               <div className="flex items-center gap-2.5">
-                <Phone size={16} color="#F59E0B" />
+                <Phone size={16} color="var(--tr-warning-text)" />
                 <span
-                  style={{ color: '#D97706', fontSize: φ.sm, fontWeight: 600, lineHeight: 1.5 }}
+                  style={{
+                    color: 'var(--tr-warning-text)',
+                    fontSize: φ.sm,
+                    fontWeight: 600,
+                    lineHeight: 1.5,
+                  }}
                 >
                   Liên hệ hỗ trợ khẩn cấp
                 </span>
               </div>
-              <ChevronRight size={16} color="#F59E0B" />
+              <ChevronRight size={16} color="var(--tr-warning-text)" />
             </button>
 
             <button

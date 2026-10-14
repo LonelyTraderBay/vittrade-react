@@ -111,8 +111,8 @@ export function OrdersHistoryPage() {
             }}
             className="flex-1 h-10 rounded-xl font-semibold"
             style={{
-              background: tab === item.id ? '#3B82F6' : colors.hoverBg,
-              color: tab === item.id ? '#fff' : colors.text2,
+              background: tab === item.id ? colors.link : colors.hoverBg,
+              color: tab === item.id ? 'var(--tr-text-on-color)' : colors.text2,
               fontSize: 14,
             }}
           >
@@ -123,26 +123,35 @@ export function OrdersHistoryPage() {
       <div className="flex gap-2 px-4 py-2">
         {[
           { id: 'all' as const, label: 'Tất cả' },
-          { id: 'buy' as const, label: 'Mua', color: '#10B981' },
-          { id: 'sell' as const, label: 'Bán', color: '#EF4444' },
-        ].map((item) => (
-          <button
-            key={item.id}
-            aria-pressed={side === item.id}
-            onClick={() => {
-              setSide(item.id);
-              setCursors([undefined]);
-            }}
-            className="px-3 py-2 rounded-lg text-xs font-semibold"
-            style={{
-              background: side === item.id ? `${item.color ?? '#3B82F6'}22` : colors.chipBg,
-              color: side === item.id ? (item.color ?? '#3B82F6') : colors.chipText,
-              border: `1px solid ${side === item.id ? (item.color ?? '#3B82F6') : colors.chipBorder}44`,
-            }}
-          >
-            {item.label}
-          </button>
-        ))}
+          { id: 'buy' as const, label: 'Mua' },
+          { id: 'sell' as const, label: 'Bán' },
+        ].map((item) => {
+          const activeColor =
+            item.id === 'buy'
+              ? colors.successText
+              : item.id === 'sell'
+                ? colors.errorText
+                : colors.link;
+          const isActive = side === item.id;
+          return (
+            <button
+              key={item.id}
+              aria-pressed={isActive}
+              onClick={() => {
+                setSide(item.id);
+                setCursors([undefined]);
+              }}
+              className="px-3 py-2 rounded-lg text-xs font-semibold"
+              style={{
+                background: isActive ? colors.surface2 : colors.chipBg,
+                color: isActive ? activeColor : colors.chipText,
+                border: `1px solid ${isActive ? activeColor : colors.chipBorder}`,
+              }}
+            >
+              {item.label}
+            </button>
+          );
+        })}
       </div>
 
       {(cancelMutation.isError ||
@@ -252,7 +261,7 @@ function OrderRow({
 }) {
   const status = STATUS_CONFIG[order.status];
   const StatusIcon = status.icon;
-  const fillPercent = order.amount > 0 ? (order.filled / order.amount) * 100 : 0;
+  const fillPercent = (order.filled / order.amount) * 100;
   const isBuy = order.side === 'buy';
 
   return (

@@ -124,7 +124,7 @@ export function EarnHistoryPage({ domain }: { domain: EarnDomain }) {
                     <div
                       className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full"
                       style={{
-                        color: isSubscription ? '#10B981' : colors.primary,
+                        color: isSubscription ? 'var(--tr-success-text)' : colors.primary,
                         background: isSubscription
                           ? 'rgba(16,185,129,0.12)'
                           : colors.primaryAlpha12,
@@ -142,10 +142,10 @@ export function EarnHistoryPage({ domain }: { domain: EarnDomain }) {
                           style={{
                             color:
                               transaction.status === 'completed'
-                                ? '#059669'
+                                ? 'var(--tr-success-text)'
                                 : transaction.status === 'failed'
-                                  ? '#DC2626'
-                                  : '#D97706',
+                                  ? 'var(--tr-error-text)'
+                                  : 'var(--tr-warning-text)',
                             background:
                               transaction.status === 'completed'
                                 ? 'rgba(16,185,129,0.12)'

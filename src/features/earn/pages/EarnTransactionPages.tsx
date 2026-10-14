@@ -98,14 +98,14 @@ export function EarnProductDetailPage() {
           <div className="flex items-start justify-between gap-4">
             <div>
               <p style={{ color: c.text2, fontSize: 13 }}>{product.asset}</p>
-              <h1 style={{ color: c.text1, fontSize: 22, fontWeight: 800 }}>{product.name}</h1>
+              <h2 style={{ color: c.text1, fontSize: 22, fontWeight: 800 }}>{product.name}</h2>
             </div>
-            <ShieldCheck color="#34D399" size={28} />
+            <ShieldCheck color={c.successText} size={28} />
           </div>
           <div className="mt-5 grid grid-cols-2 gap-3">
             <div>
               <p style={{ color: c.text3, fontSize: 11 }}>APY hiện tại</p>
-              <p style={{ color: '#34D399', fontSize: 26, fontWeight: 800 }}>{product.apy}%</p>
+              <p style={{ color: c.successText, fontSize: 26, fontWeight: 800 }}>{product.apy}%</p>
             </div>
             <div>
               <p style={{ color: c.text3, fontSize: 11 }}>Thời hạn</p>
@@ -247,9 +247,7 @@ export function EarnRedeemPage() {
               className="flex h-11 w-11 items-center justify-center rounded-full"
               style={{ background: `${position.color}22` }}
             >
-              <span style={{ color: position.color, fontWeight: 800 }}>
-                {position.asset.slice(0, 3)}
-              </span>
+              <span style={{ color: c.text1, fontWeight: 800 }}>{position.asset.slice(0, 3)}</span>
             </div>
             <div>
               <p style={{ color: c.text1, fontSize: 16, fontWeight: 700 }}>{position.product}</p>
@@ -336,13 +334,13 @@ export function EarnReceiptPage() {
       <PageContent gap="relaxed">
         <div className="flex flex-col items-center gap-3 py-6">
           {isPending ? (
-            <Clock3 size={56} color="#D97706" aria-hidden="true" />
+            <Clock3 size={56} color="var(--tr-warning-text)" aria-hidden="true" />
           ) : (
-            <CheckCircle2 size={56} color="#10B981" aria-hidden="true" />
+            <CheckCircle2 size={56} color="var(--tr-success-text)" aria-hidden="true" />
           )}
-          <h1 className="text-xl font-bold">
+          <h2 className="text-xl font-bold">
             {isPending ? 'Yêu cầu đang xử lý' : 'Giao dịch đã hoàn tất'}
-          </h1>
+          </h2>
           <p className="text-center text-sm opacity-70">
             {isPending
               ? 'Yêu cầu đã được tiếp nhận. Kết quả cuối cùng vẫn đang chờ backend xác nhận.'

@@ -128,14 +128,14 @@ export function SavingsDCAContractPage() {
       <Header title="Savings DCA" subtitle="Contract-first scheduled investments" back />
       <PageContent gap="default">
         <TrCard className="p-4">
-          <div className="grid grid-cols-3 gap-2">
+          <div className="flex flex-wrap gap-2">
             <Metric label="Invested" value={query.data.overview.totalInvested.toLocaleString()} />
             <Metric label="Value" value={query.data.overview.currentValue.toLocaleString()} />
             <Metric label="Active" value={query.data.overview.activePlans} />
           </div>
         </TrCard>
         {!canManageDCA && (
-          <p role="alert" style={{ color: '#EF4444', fontSize: 12 }}>
+          <p role="alert" style={{ color: colors.errorText, fontSize: 12 }}>
             DCA write permission is required to change scheduled investment plans.
           </p>
         )}
@@ -188,18 +188,18 @@ export function SavingsDCAContractPage() {
             </button>
           </div>
           {create.isError && (
-            <p role="alert" className="mt-2" style={{ color: '#EF4444', fontSize: 12 }}>
+            <p role="alert" className="mt-2" style={{ color: colors.errorText, fontSize: 12 }}>
               Unable to create the DCA plan. Please retry.
             </p>
           )}
         </TrCard>
         {update.isError && (
-          <p role="alert" style={{ color: '#EF4444', fontSize: 12 }}>
+          <p role="alert" style={{ color: colors.errorText, fontSize: 12 }}>
             Unable to update the DCA plan. Please retry.
           </p>
         )}
         {remove.isError && (
-          <p role="alert" style={{ color: '#EF4444', fontSize: 12 }}>
+          <p role="alert" style={{ color: colors.errorText, fontSize: 12 }}>
             Unable to cancel the DCA plan. Please retry.
           </p>
         )}
@@ -214,10 +214,15 @@ export function SavingsDCAContractPage() {
             <TrCard key={plan.id} className="p-4">
               <div className="flex items-start gap-3">
                 <span
+                  data-testid="dca-plan-coin-icon"
                   className="flex h-9 w-9 items-center justify-center rounded-xl"
-                  style={{ background: colors.surface2, color: colors.primary }}
+                  style={{ background: colors.surface2, color: colors.warningText }}
                 >
-                  {plan.coinIcon}
+                  <DcaPlanCoinIcon
+                    key={plan.coinIcon}
+                    icon={plan.coinIcon}
+                    symbol={plan.coinSymbol}
+                  />
                 </span>
                 <div className="min-w-0 flex-1">
                   <p style={{ color: colors.text1, fontWeight: 700 }}>
@@ -228,7 +233,7 @@ export function SavingsDCAContractPage() {
                     {plan.nextExecution.toLocaleDateString()}
                   </p>
                 </div>
-                <span style={{ color: isActive ? colors.buy : colors.text3, fontSize: 11 }}>
+                <span style={{ color: isActive ? colors.successText : colors.text3, fontSize: 11 }}>
                   {plan.status}
                 </span>
               </div>
@@ -248,7 +253,11 @@ export function SavingsDCAContractPage() {
                   disabled={!canManageDCA || actionPending}
                   onClick={() => setConfirmCancelPlanId(plan.id)}
                   className="flex items-center gap-1 rounded-lg px-3 py-2"
-                  style={{ background: `${colors.sell}15`, color: colors.sell, fontSize: 11 }}
+                  style={{
+                    background: `${colors.sell}15`,
+                    color: colors.errorText,
+                    fontSize: 11,
+                  }}
                 >
                   <Trash2 size={12} /> Cancel
                 </button>
@@ -287,9 +296,49 @@ function LoadingPage() {
 function Metric({ label, value }: { label: string; value: string | number }) {
   const colors = useThemeColors();
   return (
-    <div className="rounded-xl p-2 text-center" style={{ background: colors.surface2 }}>
-      <strong style={{ color: colors.text1 }}>{value}</strong>
+    <div
+      className="min-w-0 flex-1 rounded-xl p-2 text-center"
+      style={{ background: colors.surface2, flexBasis: 96, minWidth: 96 }}
+    >
+      <strong
+        data-testid="dca-metric-value"
+        className="block whitespace-nowrap"
+        style={{
+          color: colors.text1,
+          fontSize: 'clamp(12px, 1.2vw, 16px)',
+          fontVariantNumeric: 'tabular-nums',
+          letterSpacing: '-0.02em',
+        }}
+      >
+        {value}
+      </strong>
       <p style={{ color: colors.text3, fontSize: 9 }}>{label}</p>
     </div>
+  );
+}
+
+function DcaPlanCoinIcon({ icon, symbol }: { icon: string; symbol: string }) {
+  const [imageFailed, setImageFailed] = useState(false);
+  const source = icon.trim();
+  const isImageSource = /^(?:https?:\/\/|\/|\.\.?\/|data:image\/)/i.test(source);
+
+  if (!source || !isImageSource || imageFailed) {
+    return (
+      <span aria-hidden="true" className="text-xs font-bold">
+        {symbol}
+      </span>
+    );
+  }
+
+  return (
+    <img
+      src={source}
+      alt=""
+      aria-hidden="true"
+      loading="lazy"
+      referrerPolicy="no-referrer"
+      className="h-6 w-6 object-contain"
+      onError={() => setImageFailed(true)}
+    />
   );
 }

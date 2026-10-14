@@ -78,7 +78,12 @@ function Metric({ label, value, positive }: { label: string; value: string; posi
       <p style={{ color: colors.text3, fontSize: 10 }}>{label}</p>
       <p
         style={{
-          color: positive === undefined ? colors.text1 : positive ? '#10B981' : '#EF4444',
+          color:
+            positive === undefined
+              ? colors.text1
+              : positive
+                ? colors.successText
+                : colors.errorText,
           fontSize: 16,
           fontWeight: 700,
         }}

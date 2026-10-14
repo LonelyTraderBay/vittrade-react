@@ -75,6 +75,16 @@ function authAdapterWithPermissions(permissions: string[]): AuthAdapter {
 }
 
 describe('P2P ad detail contract page', () => {
+  it('blocks order review when a loaded advertisement is no longer active', async () => {
+    server.use(http.get('*/p2p/ads/ad-1', () => HttpResponse.json({ ...ad, status: 'paused' })));
+    const user = userEvent.setup();
+    renderAdDetail(authAdapterWithPermissions(['market:read', 'p2p:read', 'p2p:order:create']));
+    expect(await screen.findByText('Merchant One')).toBeInTheDocument();
+    await user.type(screen.getByRole('spinbutton', { name: 'Fiat amount' }), '100000');
+    expect(await screen.findByRole('alert')).toHaveTextContent('Offer không còn khả dụng.');
+    expect(screen.getByRole('button', { name: 'Xem xác nhận đơn P2P' })).toBeDisabled();
+    expect(screen.queryByRole('button', { name: 'Confirm P2P order' })).not.toBeInTheDocument();
+  });
   it('serializes two confirmations before React commits its pending state', async () => {
     let releaseResponse!: () => void;
     const gate = new Promise<void>((resolve) => {
