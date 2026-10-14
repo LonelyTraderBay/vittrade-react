@@ -221,8 +221,8 @@ export function SwipeableAdCard({
                 style={{
                   background:
                     tradeType === 'buy'
-                      ? 'linear-gradient(135deg, #047857 0%, #059669 100%)'
-                      : 'linear-gradient(135deg, #b91c1c 0%, #dc2626 100%)',
+                      ? 'linear-gradient(135deg, #047857 0%, #065f46 100%)'
+                      : 'linear-gradient(135deg, #b91c1c 0%, #991b1b 100%)',
                   color: '#fff',
                   fontSize: 12,
                   fontWeight: 700,

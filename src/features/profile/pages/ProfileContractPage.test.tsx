@@ -71,6 +71,7 @@ describe('ProfileContractPage', () => {
     } as never);
     renderWithRouter(<ProfileContractPage />);
     expect(screen.getByText('Nguyễn Văn A')).toBeInTheDocument();
+    expect(screen.getByText('N').style.color).toBe('var(--tr-text-on-color)');
     expect(screen.getByText('$54,276.79')).toBeInTheDocument();
     expect(screen.getByText('Bảo mật')).toBeInTheDocument();
   });

@@ -158,11 +158,11 @@ export function WalletAssetDetailPage({
             <div
               className="w-12 h-12 rounded-full flex items-center justify-center"
               style={{
-                background: asset.logoColor + '22',
+                background: c.surface,
                 border: `2px solid ${asset.logoColor}44`,
               }}
             >
-              <span style={{ color: asset.logoColor, fontSize: 14, fontWeight: 700 }}>
+              <span style={{ color: c.text1, fontSize: 14, fontWeight: 700 }}>
                 {asset.symbol.slice(0, 3)}
               </span>
             </div>
@@ -200,17 +200,13 @@ export function WalletAssetDetailPage({
             </div>
             <div className="rounded-xl p-2.5" style={{ background: 'rgba(255,255,255,0.05)' }}>
               <p style={{ color: c.text3, fontSize: 10 }}>Trong lệnh</p>
-              <p
-                style={{ color: '#3B82F6', fontSize: 13, fontWeight: 600, fontFamily: 'monospace' }}
-              >
+              <p style={{ color: c.text1, fontSize: 13, fontWeight: 600, fontFamily: 'monospace' }}>
                 {fmtAmount(asset.inOrder)}
               </p>
             </div>
             <div className="rounded-xl p-2.5" style={{ background: 'rgba(255,255,255,0.05)' }}>
               <p style={{ color: c.text3, fontSize: 10 }}>Đóng băng</p>
-              <p
-                style={{ color: '#F59E0B', fontSize: 13, fontWeight: 600, fontFamily: 'monospace' }}
-              >
+              <p style={{ color: c.text1, fontSize: 13, fontWeight: 600, fontFamily: 'monospace' }}>
                 {fmtAmount(asset.frozen)}
               </p>
             </div>

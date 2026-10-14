@@ -1,6 +1,9 @@
 import { CheckCircle } from 'lucide-react';
 import type { ThemeColors } from '@/shared/hooks/useThemeColors';
 import { WEB_FONT } from '@/shared/theme/webTokens';
+
+const ACTIVE_STEP_COLOR = '#1d4ed8';
+
 interface Props {
   current: number;
   c: ThemeColors;
@@ -29,7 +32,7 @@ export function Web2FASetupStepIndicator({ current, c }: Props) {
                 width: 28,
                 height: 28,
                 borderRadius: '50%',
-                background: i <= current ? '#3B82F6' : c.surface,
+                background: i <= current ? ACTIVE_STEP_COLOR : c.surface,
                 border: i <= current ? 'none' : '1.5px solid ' + c.borderSolid,
                 transition: 'border-color 0.25s ease',
               }}
@@ -67,7 +70,7 @@ export function Web2FASetupStepIndicator({ current, c }: Props) {
                 height: 1,
                 marginLeft: 8,
                 marginRight: 8,
-                background: i < current ? '#3B82F6' : c.borderSolid,
+                background: i < current ? ACTIVE_STEP_COLOR : c.borderSolid,
                 transition: 'background 0.25s ease',
               }}
             />

@@ -81,6 +81,10 @@ describe('P2P home cards', () => {
     expect(screen.getByText('4.9')).toBeInTheDocument();
     expect(screen.getByText('+1')).toBeInTheDocument();
     expect(screen.getByText(/Merchant mới/)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Mua' })).toHaveStyle({
+      background: 'linear-gradient(135deg, #047857 0%, #065f46 100%)',
+      color: '#fff',
+    });
 
     fireEvent.click(screen.getByRole('button', { name: 'Mua' }));
     expect(await screen.findByText('Offer details')).toBeVisible();

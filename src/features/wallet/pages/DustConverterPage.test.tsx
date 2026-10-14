@@ -325,6 +325,9 @@ describe('DustConverterPage', () => {
     expect(screen.getAllByText('USDT', { selector: 'p' })).toHaveLength(1);
     expect(screen.queryByText('LOCKED')).not.toBeInTheDocument();
     expect(screen.getByText('Dust tìm thấy').previousElementSibling).toHaveTextContent('1');
+    expect(screen.getByText('Dust tìm thấy').previousElementSibling).toHaveStyle({
+      color: 'var(--tr-text-1)',
+    });
 
     await user.click(screen.getByRole('button', { name: /BNB/ }));
     expect(screen.getAllByText('USDT', { selector: 'p' })).toHaveLength(2);

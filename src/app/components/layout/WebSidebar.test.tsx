@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { fireEvent, screen } from '@testing-library/react';
 import { useLocation } from 'react-router';
+import { WEB_AVATAR_GRADIENT } from '@/shared/theme/webTokens';
 import { renderWithProviders } from '@/test/test-utils';
 import { testAuthAdapter, testAuthSession } from '@/test/auth-test-adapter';
 import { WebSidebar } from './WebSidebar';
@@ -11,6 +12,15 @@ function LocationProbe() {
 }
 
 describe('WebSidebar', () => {
+  it('uses the shared readable fill for account initials', () => {
+    renderWithProviders(<WebSidebar />);
+
+    const accountButton = screen.getByText(testAuthSession.user.fullName).closest('button');
+    const avatar = accountButton?.querySelector('div');
+    expect(avatar).toHaveStyle({ background: WEB_AVATAR_GRADIENT });
+    expect(avatar?.querySelector('span')).toHaveStyle({ color: '#fff' });
+  });
+
   it.each([
     { username: 'test-handle', email: undefined, name: 'test-handle' },
     { username: undefined, email: 'fallback@example.com', name: 'fallback@example.com' },

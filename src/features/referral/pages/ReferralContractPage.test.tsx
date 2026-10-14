@@ -130,6 +130,7 @@ describe('ReferralContractPage', () => {
     expect(screen.getByText('Nguyễn An')).toBeVisible();
     expect(screen.getByText('$123.45')).toBeVisible();
     expect(screen.getByText('7 days left · 250 participants')).toBeVisible();
+    expect(screen.getByText('7 days left · 250 participants')).toHaveStyle({ color: '#FFF7ED' });
 
     const inviteLink = screen.getByText('https://vittrade.app/ref/INVITE-42');
     const linkContainer = inviteLink.parentElement;

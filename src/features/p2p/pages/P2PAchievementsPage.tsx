@@ -61,21 +61,21 @@ export function P2PAchievementsPage() {
           <div className="flex items-center gap-4">
             <div
               className="w-14 h-14 rounded-2xl flex items-center justify-center"
-              style={{ background: 'rgba(245,158,11,0.25)' }}
+              style={{ background: colors.warningBg }}
             >
-              <Trophy size={28} color="#FBBF24" />
+              <Trophy size={28} color={colors.warningText} />
             </div>
             <div>
-              <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 11 }}>Thành tích đạt được</p>
-              <p style={{ color: '#fff', fontSize: 28, fontWeight: 700 }}>
+              <p style={{ color: colors.text2, fontSize: 11 }}>Thành tích đạt được</p>
+              <p style={{ color: colors.text1, fontSize: 28, fontWeight: 700 }}>
                 {data.totalUnlocked}/{achievements.length}
               </p>
             </div>
           </div>
           <div className="flex gap-2 mt-4">
-            <Stat label="Điểm uy tín" value={`+${data.totalPoints}`} color="#FBBF24" />
-            <Stat label="Huy hiệu" value={String(data.badgeCount)} color="#34D399" />
-            <Stat label="Cấp hiện tại" value={`Lv.${data.currentLevel}`} color="#60A5FA" />
+            <Stat label="Điểm uy tín" value={`+${data.totalPoints}`} colors={colors} />
+            <Stat label="Huy hiệu" value={String(data.badgeCount)} colors={colors} />
+            <Stat label="Cấp hiện tại" value={`Lv.${data.currentLevel}`} colors={colors} />
           </div>
         </TrCard>
 
@@ -155,14 +155,22 @@ export function P2PAchievementsPage() {
   );
 }
 
-function Stat({ label, value, color }: { label: string; value: string; color: string }) {
+function Stat({
+  label,
+  value,
+  colors,
+}: {
+  label: string;
+  value: string;
+  colors: ReturnType<typeof useThemeColors>;
+}) {
   return (
     <div
       className="flex-1 rounded-xl py-2 px-3 flex flex-col items-center"
-      style={{ background: 'rgba(255,255,255,0.08)' }}
+      style={{ background: colors.surface }}
     >
-      <span style={{ color, fontSize: 16, fontWeight: 700 }}>{value}</span>
-      <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: 10 }}>{label}</span>
+      <span style={{ color: colors.text1, fontSize: 16, fontWeight: 700 }}>{value}</span>
+      <span style={{ color: colors.text3, fontSize: 10 }}>{label}</span>
     </div>
   );
 }

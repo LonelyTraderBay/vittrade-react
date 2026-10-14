@@ -366,16 +366,16 @@ export function AddressBookPage() {
         </div>
         <div className="grid grid-cols-3 gap-2">
           {[
-            { label: 'Tổng địa chỉ', value: entries.length, color: '#3B82F6' },
+            { label: 'Tổng địa chỉ', value: entries.length, color: colors.info },
             {
               label: 'Yêu thích',
               value: entries.filter((item) => item.isFavorite).length,
-              color: '#F59E0B',
+              color: colors.warningText,
             },
             {
               label: 'Whitelist',
               value: entries.filter((item) => item.isWhitelisted).length,
-              color: '#10B981',
+              color: colors.successText,
             },
           ].map((stat) => (
             <TrCard key={stat.label} className="p-3 text-center">

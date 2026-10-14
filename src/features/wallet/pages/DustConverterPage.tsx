@@ -353,16 +353,16 @@ export function DustConverterPage() {
 
           <div className="grid grid-cols-3 gap-2">
             {[
-              { label: 'Dust tìm thấy', value: dustAssets.length.toString(), color: '#F59E0B' },
-              { label: 'Đã chọn', value: selectedIds.size.toString(), color: '#3B82F6' },
-              { label: 'Giá trị', value: fmtUsd(totalDustUsd), color: '#10B981' },
+              { label: 'Dust tìm thấy', value: dustAssets.length.toString() },
+              { label: 'Đã chọn', value: selectedIds.size.toString() },
+              { label: 'Giá trị', value: fmtUsd(totalDustUsd) },
             ].map((s) => (
               <div
                 key={s.label}
                 className="rounded-xl p-2.5 text-center"
                 style={{ background: c.portfolioBtnGhost }}
               >
-                <p style={{ color: s.color, fontSize: φ.sm, fontWeight: 700 }}>{s.value}</p>
+                <p style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>{s.value}</p>
                 <p style={{ color: c.portfolioTextMuted, fontSize: 9 }}>{s.label}</p>
               </div>
             ))}

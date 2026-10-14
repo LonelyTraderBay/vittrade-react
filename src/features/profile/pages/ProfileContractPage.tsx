@@ -41,7 +41,12 @@ export function ProfileContractPage() {
           <div className="flex items-center gap-3">
             <div
               className="flex h-14 w-14 items-center justify-center rounded-2xl"
-              style={{ background: colors.primary, color: '#fff', fontSize: 22, fontWeight: 700 }}
+              style={{
+                background: colors.primary,
+                color: 'var(--tr-text-on-color)',
+                fontSize: 22,
+                fontWeight: 700,
+              }}
             >
               {profile.fullName.charAt(0)}
             </div>

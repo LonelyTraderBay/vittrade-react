@@ -95,7 +95,7 @@ export function ReferralContractPage() {
           <p className="mt-2" style={{ color: '#FED7AA', fontSize: 12 }}>
             {overview.campaign.description}
           </p>
-          <p className="mt-3" style={{ color: '#FB923C', fontSize: 11 }}>
+          <p className="mt-3" style={{ color: '#FFF7ED', fontSize: 11 }}>
             {overview.campaign.daysLeft} days left ·{' '}
             {overview.campaign.totalParticipants.toLocaleString()} participants
           </p>

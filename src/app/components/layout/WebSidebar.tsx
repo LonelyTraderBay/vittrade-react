@@ -23,6 +23,7 @@ import {
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
+import { WEB_AVATAR_GRADIENT } from '@/shared/theme/webTokens';
 import { useAuth } from '@/shared/session/useAuth';
 import { useUI } from '../../hooks/useUI';
 import { WEB_SIDEBAR_WIDTH, WEB_COMMAND_BAR_HEIGHT } from './webConstants';
@@ -357,7 +358,7 @@ export function WebSidebar() {
             style={{
               width: 34,
               height: 34,
-              background: 'linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%)',
+              background: WEB_AVATAR_GRADIENT,
             }}
           >
             <span style={{ color: '#fff', fontSize: 13, fontWeight: 700 }}>

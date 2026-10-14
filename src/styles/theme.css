@@ -104,7 +104,7 @@
   --tr-portfolio-border: rgba(229, 138, 0, 0.1);
   --tr-portfolio-shadow: 0 2px 16px rgba(0, 0, 0, 0.3), 0 0 1px rgba(229, 138, 0, 0.1);
   --tr-portfolio-text-dim: rgba(255, 255, 255, 0.7);
-  --tr-portfolio-text-muted: rgba(255, 255, 255, 0.45);
+  --tr-portfolio-text-muted: #a7afbf;
   --tr-portfolio-btn-ghost: rgba(255, 255, 255, 0.12);
   --tr-portfolio-btn-ghost-border: rgba(255, 255, 255, 0.15);
   --tr-portfolio-btn-ghost-text: #ffffff;
@@ -459,7 +459,7 @@
   --tr-portfolio-border: rgba(229, 138, 0, 0.1);
   --tr-portfolio-shadow: 0 8px 24px rgba(229, 138, 0, 0.15);
   --tr-portfolio-text-dim: rgba(17, 24, 39, 0.7);
-  --tr-portfolio-text-muted: rgba(17, 24, 39, 0.45);
+  --tr-portfolio-text-muted: #475467;
   --tr-portfolio-btn-ghost: rgba(0, 0, 0, 0.05);
   --tr-portfolio-btn-ghost-border: rgba(0, 0, 0, 0.08);
   --tr-portfolio-btn-ghost-text: #111827;
