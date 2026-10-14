@@ -4256,3 +4256,15 @@ review bằng mắt **14/128** ảnh. Route/state review còn lại, axe và ph�
 fixture 404/503, asset bị chặn là việc riêng. Backend/staging vẫn **0/154** theo
 xác nhận thiếu đầu vào; 25/106 scenario cần contract owner, UAT **0/128**.
 Production bundle vẫn cần endpoint được duyệt; không tự đặt URL.
+
+
+### Iteration 57 — chuẩn hóa Prettier theo gate CI và chạy lại full coverage — 2026-10-14
+
+GitHub Actions run #52 trên SHA `9133dc78f215f1862bfbb68b14607add758dcff2` xác nhận typecheck, lint và lint-warning budget 0 đều pass, sau đó `format:check` fail trên đúng ba file `src/app/components/layout/PlatformSwitcher.test.tsx`, `src/features/dca/pages/SavingsDCAContractPage.test.tsx`, `src/shared/ui/TrInput.tsx`. Tests, coverage, E2E, policy, build và artifact steps phía sau bị skip. Không dùng run này làm bằng chứng CI xanh.
+
+Commit P2 `eacd039fddb797cc73c45e3596c0d0ec6e66cc32` áp dụng đúng Prettier 3.9.8 theo lockfile trên ba file đó. TypeScript app/node, ESLint, warning budget và toàn phạm vi `format:check` đều pass trên local. Full Vitest/V8 run `2026-10-14T02-04-09-819Z-vitest-81f8d835-dc7c-4844-9518-be97d8ca7ce1` pass **360/360 file, 3.462/3.462 test, 0 fail/skip**; **408/408 measurable source file đủ counter, 0 gap, 32 entry không có executable counter**. S/B/F/L: **12.441/12.441, 10.265/10.265, 3.972/3.972, 11.500/11.500 (100%)**; threshold/mẫu số không đổi. Snapshot source không đổi trong run; **905/905** tracked `src/` hash khớp và ba file format được đối chiếu với Git blob của commit P2.
+
+Run #52 không chạy tests/coverage hoặc các gate production phía sau vì dừng tại formatter. Workflow mới trên SHA được push sau sửa vẫn là điều kiện mở; C05.03 tiếp tục **0/128 accepted** (14/128 ảnh đã review), route/state review và axe trên source hiện hành còn mở. Backend/staging **0/154**, 25/106 scenario cần owner contract, UAT **0/128**, production endpoint và telemetry/SLO tiếp tục blocked/unverified theo xác nhận thiếu đầu vào.
+
+
+Kiểm tra local sau khi ghi ledger cho Iteration 57: `check-tracking.mjs` exit 0, `errorCount=0` (38 task, 205 step); architecture inventory `--check` pass (130 trang, 428 route, 149 component, 32 service, 28 mock); Git EOL và `git diff --check` đều pass. Workflow trên SHA cuối, kiểm tra artifact và governance vẫn chờ GitHub.
