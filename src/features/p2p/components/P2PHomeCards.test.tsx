@@ -65,6 +65,13 @@ function renderAdCard(overrides: Partial<Parameters<typeof SwipeableAdCard>[0]> 
 afterEach(() => vi.useRealTimers());
 
 describe('P2P home cards', () => {
+  it('does not fade card text during its entrance animation', () => {
+    const { container } = renderAdCard();
+    const animatedCard = container.querySelector('.relative.overflow-hidden.rounded-2xl');
+
+    expect((animatedCard as HTMLElement | null)?.style.opacity).toBe('');
+  });
+
   it('renders merchant details and opens the selected offer route', async () => {
     renderAdCard();
 
