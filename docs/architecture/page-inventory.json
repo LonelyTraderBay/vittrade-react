@@ -254,13 +254,14 @@
       "domain": "responsive",
       "owner": "app/platform",
       "status": "demo",
-      "lines": 592,
+      "lines": 593,
       "routePaths": [
         "r",
         "r/shell"
       ],
       "dependencies": {
         "localImports": [
+          "@/shared/theme/webTokens",
           "@/shared/ui/layout/PageLayout"
         ],
         "mockReferences": [],
@@ -1079,7 +1080,7 @@
       "domain": "earn",
       "owner": "features/earn",
       "status": "integration-pending",
-      "lines": 156,
+      "lines": 157,
       "routePaths": [
         "earn/savings/portfolio"
       ],
@@ -1789,7 +1790,7 @@
       "domain": "p2p",
       "owner": "features/p2p",
       "status": "integration-pending",
-      "lines": 169,
+      "lines": 177,
       "routePaths": [
         "p2p/achievements"
       ],
@@ -2361,7 +2362,7 @@
       "domain": "p2p",
       "owner": "features/p2p",
       "status": "integration-pending",
-      "lines": 486,
+      "lines": 487,
       "routePaths": [
         "p2p/order/cancel/:orderId",
         "p2p/order/proof/:orderId",
@@ -2727,7 +2728,7 @@
       "domain": "profile",
       "owner": "features/profile",
       "status": "integration-pending",
-      "lines": 111,
+      "lines": 116,
       "routePaths": [
         "profile"
       ],
@@ -3545,7 +3546,7 @@
       "domain": "wallet",
       "owner": "features/wallet",
       "status": "integration-pending",
-      "lines": 442,
+      "lines": 438,
       "routePaths": [
         "wallet/asset/:assetId"
       ],
@@ -3674,7 +3675,7 @@
       "domain": "wallet",
       "owner": "features/wallet",
       "status": "integration-pending",
-      "lines": 295,
+      "lines": 296,
       "routePaths": [
         "markets/portfolio-tracker",
         "portfolio/analytics",
