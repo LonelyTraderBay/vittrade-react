@@ -145,25 +145,19 @@ export function TrInput({
   const isHero = size === 'hero';
 
   /* ─── Numeric formatting ─── */
-  const formatNumeric = useCallback(
-    (raw: string): string => {
-      // Strip non-numeric except dot and minus
-      const cleaned = raw.replace(/[^0-9.-]/g, '');
-      // Split integer and decimal parts
-      const parts = cleaned.split('.');
-      // Add thousands separator to integer part
-      const intPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-      return parts.length > 1 ? `${intPart}.${parts[1]}` : intPart;
-    },
-    [],
-  );
+  const formatNumeric = useCallback((raw: string): string => {
+    // Strip non-numeric except dot and minus
+    const cleaned = raw.replace(/[^0-9.-]/g, '');
+    // Split integer and decimal parts
+    const parts = cleaned.split('.');
+    // Add thousands separator to integer part
+    const intPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    return parts.length > 1 ? `${intPart}.${parts[1]}` : intPart;
+  }, []);
 
-  const parseNumeric = useCallback(
-    (formatted: string): string => {
-      return formatted.replace(/,/g, '');
-    },
-    [],
-  );
+  const parseNumeric = useCallback((formatted: string): string => {
+    return formatted.replace(/,/g, '');
+  }, []);
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {

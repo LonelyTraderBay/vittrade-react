@@ -225,9 +225,7 @@ describe('PlatformSwitcher', () => {
     render(
       <MemoryRouter initialEntries={['/w/markets']}>
         <PlatformSwitcher
-          isEquivalentRoute={(current, target) =>
-            current === '/w/markets' && target === '/markets'
-          }
+          isEquivalentRoute={(current, target) => current === '/w/markets' && target === '/markets'}
         />
         <Routes>
           <Route path="*" element={<RouteProbe />} />

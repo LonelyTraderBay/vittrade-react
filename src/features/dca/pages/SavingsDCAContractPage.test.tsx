@@ -67,7 +67,9 @@ describe('Savings DCA contract page', () => {
 
     renderDCA();
 
-    expect(await screen.findByText(largeSnapshot.overview.currentValue.toLocaleString())).toBeVisible();
+    expect(
+      await screen.findByText(largeSnapshot.overview.currentValue.toLocaleString()),
+    ).toBeVisible();
   });
 
   it('shows a coin-symbol fallback when a plan icon image fails to load', async () => {
@@ -76,11 +78,15 @@ describe('Savings DCA contract page', () => {
       ...snapshot,
       plans: [{ ...snapshot.plans[0], coinIcon: imageUrl }],
     };
-    server.use(http.get('*/dca/snapshot', () => HttpResponse.json(serializeSnapshot(iconSnapshot))));
+    server.use(
+      http.get('*/dca/snapshot', () => HttpResponse.json(serializeSnapshot(iconSnapshot))),
+    );
 
     const { container } = renderDCA();
     await screen.findByText(/Bitcoin/);
-    const icon = container.querySelector<HTMLImageElement>('[data-testid="dca-plan-coin-icon"] img');
+    const icon = container.querySelector<HTMLImageElement>(
+      '[data-testid="dca-plan-coin-icon"] img',
+    );
 
     expect(icon).not.toBeNull();
     fireEvent.error(icon!);
