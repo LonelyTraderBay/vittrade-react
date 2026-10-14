@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-10-14T05:38:00.000Z",
+  "sourceHead": "8c977839141d6997b9c150a5846b820961344fd9",
+  "kind": "focused_local_navigation_screenshots",
+  "environment": "Local Chromium captures, Vite/MSW; report metrics captured on same application-source commit.",
+  "screenshots": [
+    {
+      "name": "1-web-profile-edit.png",
+      "path": "C:/Users/Joker-PC/.codex/visualizations/2026/10/14/01a13394-3caa-7930-a58f-e3e6c61b066f/vittrade-audit/ui-current-iteration-61-final-head/1-web-profile-edit.png",
+      "bytes": 65610,
+      "sha256": "39e8e21a5b3e03f77f66151f0103b8b76435ee11d7917fa40d2b86bca0efeb0e",
+      "route": "/w/profile/edit",
+      "pageTitle": "Chỉnh sửa hồ sơ",
+      "viewport": "1440×900",
+      "ariaCurrentCount": 1,
+      "documentWidthMatchesViewport": true
+    },
+    {
+      "name": "2-web-news-breadcrumb.png",
+      "path": "C:/Users/Joker-PC/.codex/visualizations/2026/10/14/01a13394-3caa-7930-a58f-e3e6c61b066f/vittrade-audit/ui-current-iteration-61-final-head/2-web-news-breadcrumb.png",
+      "bytes": 116632,
+      "sha256": "5591cfe2a5981c1746584097d1809b33b74d29afb33a003805f264fe02e8a0f5",
+      "route": "/w/news",
+      "pageTitle": "Tin tức",
+      "viewport": "1440×900",
+      "ariaCurrentCount": 1,
+      "documentWidthMatchesViewport": true
+    },
+    {
+      "name": "3-tablet-news-expanded.png",
+      "path": "C:/Users/Joker-PC/.codex/visualizations/2026/10/14/01a13394-3caa-7930-a58f-e3e6c61b066f/vittrade-audit/ui-current-iteration-61-final-head/3-tablet-news-expanded.png",
+      "bytes": 93232,
+      "sha256": "cd181aea3696b82647e999f67e58dc28fe53c26e472ed056c0de924a86f4be2f",
+      "route": "/t/news",
+      "pageTitle": "Tin tức",
+      "viewport": "768×900",
+      "ariaCurrentCount": 1,
+      "documentWidthMatchesViewport": true
+    }
+  ],
+  "review": {
+    "capturedRoutes": "3",
+    "visualReview": "Selected route/profile/news states show the matching current navigation marker, expected h1 and no document-width overflow at the captured viewports.",
+    "formalBaselineReviewsBefore": "14/128",
+    "formalBaselineReviewsAfter": "14/128",
+    "formalUserAcceptance": "0/128"
+  },
+  "limitations": [
+    "Focused captures do not replace the 128-page screenshot baseline or formal human acceptance.",
+    "No backend/staging data was used."
+  ]
+}

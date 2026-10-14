@@ -4295,3 +4295,18 @@ The inventory gate initially found one stale derived measurement: WebAccountLock
 
 
 Pre-self-audit repository gates for Iteration 59: canonical tracker checker exit 0/errorCount 0 (38 tasks/205 steps); generated inventory check pass at 130 pages/428 routes/149 components/0 data modules/32 services/28 mocks; EOL check pass on 4168 paths with 0 missing terminators; JSON parsing and git diff --check pass. These are local consistency checks. The final post-self-audit tracker result is kept in the external session manifest. See [EV-026](evidence/C03/c03-05-ledger-final-gates-iteration-59-2026-10-14.json).
+
+
+### Iteration 61 — hoàn tất lượt coverage, sửa tiêu đề truy cập và ổn định E2E — 2026-10-14
+
+Các commit frontend được tách theo phạm vi và phụ thuộc: b1d39145 sửa dấu điều hướng hiện hành; d28f0541 tăng độ tin cậy runner rà soát UI; 6067e255 hiển thị breadcrumb Tin tức trên Web; 8c977839 giữ h1 có ngữ cảnh khi Trade/Copy ở trạng thái lỗi dữ liệu. Quét rộng sau sửa, trên source SHA 8c977839, hoàn thành 376/376 route ở light và 376/376 ở dark. Hai report đều có 0 route mismatch, not-found, document overflow, page error, loading-not-settled, h1 thiếu và Axe violation node.
+
+[EV-20261014-029](evidence/C05/c05-03-wide-ui-a11y-iteration-61-2026-10-14.json) giữ report/hash từng theme. Axe còn 3.357 evaluation incomplete (3.339 contrast, 18 prohibited-ARIA); đây không phải pass và C05.03 vẫn mở. Mỗi theme ghi 20 response 404 và 33 response 503 từ local fixture/MSW, cùng request asset ngoài bị runner chặn; không quy các response này cho backend. Screenshot mục tiêu trên hồ sơ/news ở Web và News tablet được ghi tại [EV-20261014-030](evidence/C05/c05-03-navigation-screenshots-iteration-61-2026-10-14.json); số trang trong baseline review giữ 14/128, acceptance chính thức 0/128.
+
+P1 57acaaa9 cô lập hai host Google Fonts ở riêng ca E2E đăng nhập Web, không đổi timeout, chờ load, Auth fixture hoặc assertions. Lần full E2E đầu trên nội dung trước fix có 59 pass/1 fail/4 skip cấu hình vì navigation vượt 30 giây; ca tập trung sau fix 1/1, lượt cuối 60 pass/0 fail/4 skip. Bằng chứng là [EV-20261014-027](evidence/B07/b07-02-e2e-local-final-iteration-61-2026-10-14.json). Đây là local production-mode bundle với route fixtures, không phải staging.
+
+Full Vitest/V8 trên nội dung tương ứng commit test 57acaaa9 đạt 360/360 file, 3.471/3.471 test, 0 skip/fail; 408/408 file đo được không gap, 32 entry không có executable counter; S/B/F/L lần lượt 12.445/12.445, 10.286/10.286, 3.973/3.973, 11.511/11.511 (100%), giữ nguyên threshold/denominator. Manifest ghi 905/905 src hash; hash file E2E trong snapshot trùng blob commit test. Xem [EV-20261014-028](evidence/C03/c03-05-full-coverage-iteration-61-2026-10-14.json).
+
+Typecheck app/Node, full ESLint, warning budget 0/0, Prettier trên source/E2E, dependency architecture (936 module/5.284 dependency) và architecture inventory 130/428/149/0/32/28 đều pass local. Các check này chưa thay hosted workflow trên SHA đã push.
+
+C03.05, C05.03 và B07.02 tiếp tục in_progress tới khi hosted CI/artifact/governance và các tiêu chí UI còn mở có bằng chứng. Screenshot baseline vẫn 14/128, acceptance 0/128; axe incomplete 3.357; contract-dependent 25/106; backend/staging 0/154, UAT 0/128. Production endpoint/config, API/security owner, host/version, test account, telemetry/privacy owner và SLO chưa được cung cấp; giữ các mục backend/staging blocked, không tuyên bố frontend hoặc production readiness 100%.
