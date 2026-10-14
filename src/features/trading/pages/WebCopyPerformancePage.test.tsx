@@ -120,4 +120,23 @@ describe('web copy performance page', () => {
     expect(screen.queryByText('Provider One')).not.toBeInTheDocument();
     expect(requestCount).toBe(0);
   });
+
+  it('retains the page heading when the selected relationship is unavailable', async () => {
+    server.use(http.get('*/trading/copy/relationships', () => HttpResponse.json({ items: [] })));
+
+    renderWithProviders(
+      <Routes>
+        <Route path="/trade/copy/performance/:copyId" element={<WebCopyPerformancePage />} />
+      </Routes>,
+      {
+        routerProps: { initialEntries: ['/trade/copy/performance/copy-1'] },
+        authAdapter: adapterWithPermissions(['trade:read']),
+      },
+    );
+
+    expect(
+      await screen.findByRole('heading', { level: 1, name: 'Hiệu suất Copy' }),
+    ).toBeInTheDocument();
+    expect(await screen.findByText('Có lỗi xảy ra')).toBeInTheDocument();
+  });
 });

@@ -55,6 +55,9 @@ describe('TradingMarketPanel', () => {
   it('shows pair pricing and opens the pair switcher', () => {
     const { onOpenPairSwitcher } = renderPanel();
 
+    expect(
+      screen.getByRole('heading', { level: 1, name: 'Giao dịch BTC/USDT' }),
+    ).toBeInTheDocument();
     expect(screen.getByText('BTC/USDT')).toBeInTheDocument();
     expect(screen.getByText('65,000.00')).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: /BTC\/USDT/ }));

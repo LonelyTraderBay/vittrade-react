@@ -2983,7 +2983,7 @@
       "domain": "trading",
       "owner": "features/trading",
       "status": "integration-pending",
-      "lines": 148,
+      "lines": 155,
       "routePaths": [
         "trade/copy-provider/:providerId/configuration",
         "trade/copy/provider/:providerId/configuration"
@@ -3014,7 +3014,7 @@
       "domain": "trading",
       "owner": "features/trading",
       "status": "integration-pending",
-      "lines": 166,
+      "lines": 173,
       "routePaths": [
         "trade/copy-provider/:providerId/confirmation",
         "trade/copy/provider/:providerId/confirmation"
@@ -3258,7 +3258,7 @@
       "domain": "trading",
       "owner": "features/trading",
       "status": "integration-pending",
-      "lines": 109,
+      "lines": 116,
       "routePaths": [
         "trade/copy-provider/:providerId/assessment",
         "trade/copy/provider/:providerId/assessment"
@@ -3452,7 +3452,7 @@
       "domain": "trading",
       "owner": "features/trading",
       "status": "integration-pending",
-      "lines": 96,
+      "lines": 112,
       "routePaths": [
         "trade/copy-performance/:copyId",
         "trade/copy/performance/:copyId"

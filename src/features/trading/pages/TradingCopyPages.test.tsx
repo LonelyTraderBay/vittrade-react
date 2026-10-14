@@ -191,41 +191,53 @@ describe('contract-backed copy trading pages', () => {
   });
 
   it.each([
-    ['provider detail', '/trade/copy-provider/:providerId', <CopyProviderDetailContractPage />],
+    [
+      'provider detail',
+      '/trade/copy-provider/:providerId',
+      <CopyProviderDetailContractPage />,
+      'Provider',
+    ],
     [
       'risk assessment',
       '/trade/copy-provider/:providerId/assessment',
       <PreCopyAssessmentContractPage />,
+      'Đánh giá rủi ro',
     ],
     [
       'configuration',
       '/trade/copy-provider/:providerId/configuration',
       <CopyConfigurationContractPage />,
+      'Cấu hình Copy',
     ],
     [
       'confirmation',
       '/trade/copy-provider/:providerId/confirmation',
       <CopyConfirmationContractPage />,
+      'Xác nhận Copy',
     ],
-  ])('shows retry when the %s contract cannot load', async (_name, path, element) => {
-    let recover = false;
-    server.use(
-      http.get('*/trading/copy/providers/:providerId', () =>
-        recover
-          ? HttpResponse.json(profile)
-          : HttpResponse.json({ code: 'COPY_PROVIDER_UNAVAILABLE' }, { status: 503 }),
-      ),
-    );
-    renderRoute(path, element);
+  ])(
+    'shows retry and retains the %s heading when its contract cannot load',
+    async (_name, path, element, title) => {
+      let recover = false;
+      server.use(
+        http.get('*/trading/copy/providers/:providerId', () =>
+          recover
+            ? HttpResponse.json(profile)
+            : HttpResponse.json({ code: 'COPY_PROVIDER_UNAVAILABLE' }, { status: 503 }),
+        ),
+      );
+      renderRoute(path, element);
 
-    const retryButton = await screen.findByRole('button', { name: 'Thử lại' });
-    recover = true;
-    await userEvent.click(retryButton);
+      expect(await screen.findByRole('heading', { level: 1, name: title })).toBeInTheDocument();
+      const retryButton = await screen.findByRole('button', { name: 'Thử lại' });
+      recover = true;
+      await userEvent.click(retryButton);
 
-    await waitFor(() =>
-      expect(screen.queryByRole('button', { name: 'Thử lại' })).not.toBeInTheDocument(),
-    );
-  });
+      await waitFor(() =>
+        expect(screen.queryByRole('button', { name: 'Thử lại' })).not.toBeInTheDocument(),
+      );
+    },
+  );
 
   it('requires all assessment acknowledgements before continuing', async () => {
     mockProviderProfile();

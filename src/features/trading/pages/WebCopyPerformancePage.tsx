@@ -36,9 +36,25 @@ export function WebCopyPerformancePage() {
         </PageContent>
       </PageLayout>
     );
-  if (query.isError || !query.data) return <ErrorState onAction={() => void query.refetch()} />;
+  if (query.isError || !query.data)
+    return (
+      <PageLayout>
+        <Header title="Hiệu suất Copy" back />
+        <PageContent>
+          <ErrorState onAction={() => void query.refetch()} />
+        </PageContent>
+      </PageLayout>
+    );
   const relationship = query.data.items.find((item) => item.id === copyId);
-  if (!relationship) return <ErrorState onAction={() => void query.refetch()} />;
+  if (!relationship)
+    return (
+      <PageLayout>
+        <Header title="Hiệu suất Copy" back />
+        <PageContent>
+          <ErrorState onAction={() => void query.refetch()} />
+        </PageContent>
+      </PageLayout>
+    );
 
   return (
     <PageLayout>

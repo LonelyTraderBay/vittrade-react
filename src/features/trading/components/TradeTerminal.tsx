@@ -5,6 +5,7 @@ import { PageLayout } from '@/shared/ui/layout/PageLayout';
 import { PageContent } from '@/shared/ui/layout/PageContent';
 import { TabBar } from '@/shared/ui/TabBar';
 import { ErrorState } from '@/shared/ui/ErrorState';
+import { Header } from '@/shared/ui/layout/Header';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { useHaptic } from '@/shared/hooks/useHaptic';
 import { useRoutePrefix } from '@/shared/navigation/useRoutePrefix';
@@ -157,6 +158,7 @@ export function TradeTerminal() {
   if (marketPairQuery.isError) {
     return (
       <PageLayout>
+        <Header title="Giao dịch" />
         <PageContent>
           <ErrorState
             title="Không thể tải cặp giao dịch"
@@ -171,6 +173,7 @@ export function TradeTerminal() {
   if (marketPairQuery.isPending || !pair) {
     return (
       <PageLayout>
+        <Header title="Giao dịch" />
         <PageContent>
           <div className="flex flex-col items-center justify-center gap-3 py-20">
             <Loader2 size={28} className="animate-spin" color={c.primary} />

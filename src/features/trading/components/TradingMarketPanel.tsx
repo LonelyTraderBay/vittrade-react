@@ -43,6 +43,7 @@ export function TradingMarketPanel({
   const { hapticSelection } = useHaptic();
   return (
     <>
+      <h1 className="sr-only">Giao dịch {pair.symbol}</h1>
       {/* ═══ Row 1: Pair Selector + Live Price ═══ */}
       <div className="flex items-center justify-between px-5 pt-3 pb-2">
         <button
