@@ -3510,7 +3510,7 @@ test('Web session-expired recovery has no serious or critical axe violations @au
       const supportCopy = page.getByText('Liên hệ hỗ trợ', { exact: true });
       await expect
         .poll(() => supportCopy.evaluate((element) => getComputedStyle(element).color))
-        .toBe(theme === 'dark' ? 'rgb(167, 175, 191)' : 'rgb(107, 114, 128)');
+        .toBe(theme === 'dark' ? 'rgb(167, 175, 191)' : 'rgb(52, 64, 84)');
       const colorState = await supportCopy.evaluate((element) => ({
         rootClasses: document.documentElement.className,
         text2Token: getComputedStyle(document.documentElement)
@@ -3894,7 +3894,7 @@ test('Web account-locked page has no axe violations in both themes @auth-api', a
       const statusText = page.getByRole('status').locator('p');
       await expect
         .poll(() => statusText.evaluate((element) => getComputedStyle(element).color))
-        .toBe(theme === 'dark' ? 'rgb(167, 175, 191)' : 'rgb(107, 114, 128)');
+        .toBe(theme === 'dark' ? 'rgb(167, 175, 191)' : 'rgb(52, 64, 84)');
       const resetButton = page.getByRole('button', {
         name: 'Không phải bạn? Đặt lại mật khẩu',
       });

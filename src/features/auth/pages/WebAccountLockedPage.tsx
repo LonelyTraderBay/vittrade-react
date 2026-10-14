@@ -31,6 +31,7 @@ export function WebAccountLockedPage() {
             marginBottom: 32,
             background: 'none',
             border: 'none',
+            transition: 'transform var(--tr-duration-fast) var(--tr-ease-standard)',
             cursor: 'pointer',
           }}
         >

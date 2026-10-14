@@ -31,7 +31,7 @@ export function Web2FASetupStepIndicator({ current, c }: Props) {
                 borderRadius: '50%',
                 background: i <= current ? '#3B82F6' : c.surface,
                 border: i <= current ? 'none' : '1.5px solid ' + c.borderSolid,
-                transition: 'all 0.25s ease',
+                transition: 'border-color 0.25s ease',
               }}
             >
               {i < current ? (
