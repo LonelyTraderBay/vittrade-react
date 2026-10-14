@@ -244,23 +244,6 @@ export function WebSidebar() {
                       >
                         {item.label}
                       </span>
-                      {item.badge && item.badge > 0 && (
-                        <span
-                          className="flex items-center justify-center rounded"
-                          style={{
-                            minWidth: 22,
-                            height: 20,
-                            padding: '0 6px',
-                            background: '#EF4444',
-                            fontSize: 11,
-                            fontWeight: 700,
-                            color: '#fff',
-                            borderRadius: 5,
-                          }}
-                        >
-                          {item.badge}
-                        </span>
-                      )}
                     </button>
 
                     {/* Sub-items */}
@@ -276,7 +259,7 @@ export function WebSidebar() {
                             className="web-sidebar-subitem flex items-center pl-3.5 rounded-r transition-colors"
                             style={{
                               height: 34,
-                              color: isExactActive(child.path) ? '#3B82F6' : c.text2,
+                              color: isExactActive(child.path) ? c.link : c.text2,
                               fontSize: 13,
                               fontWeight: isExactActive(child.path) ? 600 : 400,
                               background: isExactActive(child.path)

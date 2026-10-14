@@ -69,6 +69,20 @@ describe('PlatformSwitcher', () => {
     });
   });
 
+  it('hides the redundant phone badge when mock preview controls occupy the mobile viewport', () => {
+    setViewportWidth(390);
+    render(
+      <MemoryRouter initialEntries={['/home']}>
+        <PlatformSwitcher previewControlsVisible />
+        <Routes>
+          <Route path="*" element={<RouteProbe />} />
+        </Routes>
+      </MemoryRouter>,
+    );
+
+    expect(screen.queryByText('Phone')).not.toBeInTheDocument();
+  });
+
   it('keeps the production shell badge position when development preview controls are absent', () => {
     setViewportWidth(1440);
     renderAt('/w/markets');
@@ -185,6 +199,89 @@ describe('PlatformSwitcher', () => {
     await waitFor(() => {
       expect(screen.getByLabelText('Current path')).toHaveTextContent('/markets');
     });
+  });
+
+  it('keeps a web-only route in its current shell when the phone route is unavailable', () => {
+    setViewportWidth(390);
+    render(
+      <MemoryRouter initialEntries={['/w/address-book']}>
+        <PlatformSwitcher
+          isEquivalentRoute={(current, target) =>
+            current === '/w/address-book' && target !== '/address-book'
+          }
+        />
+        <Routes>
+          <Route path="*" element={<RouteProbe />} />
+        </Routes>
+      </MemoryRouter>,
+    );
+
+    expect(screen.getByLabelText('Current path')).toHaveTextContent('/w/address-book');
+    expect(screen.getByText('Web')).toBeInTheDocument();
+  });
+
+  it('switches to a registered phone route from a Web URL', async () => {
+    setViewportWidth(390);
+    render(
+      <MemoryRouter initialEntries={['/w/markets']}>
+        <PlatformSwitcher
+          isEquivalentRoute={(current, target) =>
+            current === '/w/markets' && target === '/markets'
+          }
+        />
+        <Routes>
+          <Route path="*" element={<RouteProbe />} />
+        </Routes>
+      </MemoryRouter>,
+    );
+
+    await waitFor(() =>
+      expect(screen.getByLabelText('Current path')).toHaveTextContent('/markets'),
+    );
+  });
+
+  it('keeps the current shell when a resize target would resolve to no route', () => {
+    vi.useFakeTimers();
+    setViewportWidth(1440);
+    render(
+      <MemoryRouter initialEntries={['/w/address-book']}>
+        <PlatformSwitcher
+          isEquivalentRoute={(current, target) =>
+            current === '/w/address-book' && target !== '/address-book'
+          }
+        />
+        <Routes>
+          <Route path="*" element={<RouteProbe />} />
+        </Routes>
+      </MemoryRouter>,
+    );
+
+    setViewportWidth(390);
+    fireEvent(window, new Event('resize'));
+    act(() => vi.advanceTimersByTime(250));
+
+    expect(screen.getByLabelText('Current path')).toHaveTextContent('/w/address-book');
+    expect(screen.getByText('Web')).toBeInTheDocument();
+  });
+
+  it('hides the platform badge beside preview controls at a narrow Web-only route', () => {
+    setViewportWidth(390);
+    render(
+      <MemoryRouter initialEntries={['/w/address-book']}>
+        <PlatformSwitcher
+          previewControlsVisible
+          isEquivalentRoute={(current, target) =>
+            current === '/w/address-book' && target !== '/address-book'
+          }
+        />
+        <Routes>
+          <Route path="*" element={<RouteProbe />} />
+        </Routes>
+      </MemoryRouter>,
+    );
+
+    expect(screen.getByLabelText('Current path')).toHaveTextContent('/w/address-book');
+    expect(screen.queryByText('Web')).not.toBeInTheDocument();
   });
 
   it.each(['/r', '/r/markets'])('keeps reserved route %s on its shell during resize', (path) => {

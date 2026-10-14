@@ -11,6 +11,21 @@ afterEach(() => {
 });
 
 describe('useLocalStorage', () => {
+  it('contains a removal adapter exception and reports a safe failure while restoring the fallback', () => {
+    vi.spyOn(browserStorage.local, 'getItem').mockReturnValue('"saved"');
+    const error = new Error('remove blocked');
+    vi.spyOn(browserStorage.local, 'removeItem').mockImplementation(() => {
+      throw error;
+    });
+    const warning = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+    const { result } = renderHook(() => useLocalStorage('layout', 'compact'));
+
+    act(() => result.current[2]());
+
+    expect(result.current[0]).toBe('compact');
+    expect(warning).toHaveBeenCalledWith('Error removing localStorage key "layout":', error);
+  });
+
   it('renders its fallback on the server without browser globals', () => {
     function Probe() {
       const [value] = useLocalStorage('layout', 'compact');

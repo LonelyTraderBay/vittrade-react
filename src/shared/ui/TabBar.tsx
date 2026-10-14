@@ -88,7 +88,7 @@ export function TabBar<T extends string>({
   active,
   onChange,
   variant = 'underline',
-  activeColor = '#E58A00',
+  activeColor = 'var(--tr-primary)',
   colors,
   bordered,
   className = '',
@@ -236,7 +236,7 @@ export function TabBar<T extends string>({
             className="flex-1 py-2.5 rounded-lg flex items-center justify-center"
             style={{
               background: isActive ? tabColor : 'transparent',
-              color: isActive ? '#fff' : c.text3,
+              color: isActive ? 'var(--tr-text-on-color)' : c.text3,
               fontWeight: 700,
               fontSize: 13,
               minHeight: 40,

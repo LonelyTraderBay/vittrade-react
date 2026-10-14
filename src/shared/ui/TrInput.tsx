@@ -147,7 +147,6 @@ export function TrInput({
   /* ─── Numeric formatting ─── */
   const formatNumeric = useCallback(
     (raw: string): string => {
-      if (!numeric) return raw;
       // Strip non-numeric except dot and minus
       const cleaned = raw.replace(/[^0-9.-]/g, '');
       // Split integer and decimal parts
@@ -161,7 +160,6 @@ export function TrInput({
 
   const parseNumeric = useCallback(
     (formatted: string): string => {
-      if (!numeric) return formatted;
       return formatted.replace(/,/g, '');
     },
     [numeric],

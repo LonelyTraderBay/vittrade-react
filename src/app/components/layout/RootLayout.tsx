@@ -26,8 +26,10 @@ import { PlatformSwitcher } from './PlatformSwitcher';
  */
 export function RootLayout({
   developmentPreviewControls: DevelopmentPreviewControls,
+  isEquivalentRoute,
 }: {
   developmentPreviewControls?: React.ComponentType;
+  isEquivalentRoute?: (currentPathname: string, targetPathname: string) => boolean;
 }) {
   const location = useLocation();
 
@@ -56,7 +58,10 @@ export function RootLayout({
           )}
         </React.Suspense>
         <ThemedToaster />
-        <PlatformSwitcher previewControlsVisible={Boolean(DevelopmentPreviewControls)} />
+        <PlatformSwitcher
+          previewControlsVisible={Boolean(DevelopmentPreviewControls)}
+          isEquivalentRoute={isEquivalentRoute}
+        />
         {DevelopmentPreviewControls ? (
           <React.Suspense fallback={null}>
             <DevelopmentPreviewControls />

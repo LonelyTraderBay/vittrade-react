@@ -2,6 +2,7 @@ import { act, fireEvent, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { toast } from 'sonner';
 import { renderWithProviders } from '@/test/test-utils';
+import { getRenderedReactHandler } from '@/test/invoke-stale-react-handler';
 import { PullToRefresh } from './PullToRefresh';
 
 afterEach(() => {
@@ -72,6 +73,21 @@ describe('PullToRefresh', () => {
     fireEvent.touchMove(surface, { touches: [{ clientY: 120 }] });
     fireEvent.touchEnd(surface);
     expect(onRefresh).not.toHaveBeenCalled();
+  });
+
+  it('shows refresh count and last refreshed label while idle', () => {
+    renderWithProviders(
+      <PullToRefresh
+        onRefresh={vi.fn().mockResolvedValue(undefined)}
+        refreshCount={3}
+        lastRefreshedLabel="vừa xong"
+      >
+        <div>Content</div>
+      </PullToRefresh>,
+    );
+
+    expect(screen.getByText('3')).toBeInTheDocument();
+    expect(screen.getByText('Cập nhật: vừa xong')).toBeInTheDocument();
   });
 
   it('runs refresh after the threshold and returns to idle when it resolves', async () => {
@@ -146,6 +162,12 @@ describe('PullToRefresh', () => {
     fireEvent.touchMove(surface, { touches: [{ clientY: 70 }] });
     fireEvent.touchEnd(surface);
 
+    fireEvent.touchStart(surface, { touches: [{ clientY: 0 }] });
+    fireEvent.touchMove(surface, { touches: [{ clientY: 15 }] });
+    fireEvent.touchMove(surface, { touches: [{ clientY: -5 }] });
+    fireEvent.touchMove(surface, { touches: [{ clientY: -8 }] });
+    fireEvent.touchEnd(surface);
+
     expect(onRefresh).not.toHaveBeenCalled();
     expect(screen.getByText('Kéo xuống để làm mới')).toBeInTheDocument();
   });
@@ -173,5 +195,29 @@ describe('PullToRefresh', () => {
 
     expect(toastError).toHaveBeenCalledWith('Làm mới thất bại', { duration: 2000 });
     expect(screen.getByText('Kéo xuống để làm mới')).toBeInTheDocument();
+  });
+
+  it('ignores queued touch handlers after the container unmounts', () => {
+    const onRefresh = vi.fn().mockResolvedValue(undefined);
+    const { container, unmount } = renderWithProviders(
+      <PullToRefresh onRefresh={onRefresh}>
+        <div>Content</div>
+      </PullToRefresh>,
+    );
+    const surface = container.querySelector('.relative.flex-1') as HTMLElement;
+    const touchStart = getRenderedReactHandler(surface, 'onTouchStart');
+    const touchMove = getRenderedReactHandler(surface, 'onTouchMove');
+    const event = { touches: [{ clientY: 0 }] };
+
+    act(() => touchStart(event));
+    unmount();
+
+    expect(() => {
+      act(() => {
+        touchStart(event);
+        touchMove({ touches: [{ clientY: 100 }] });
+      });
+    }).not.toThrow();
+    expect(onRefresh).not.toHaveBeenCalled();
   });
 });

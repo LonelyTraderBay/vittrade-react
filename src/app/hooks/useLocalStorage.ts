@@ -61,8 +61,6 @@ export function useLocalStorage<T>(
 
   // Listen to storage events from other tabs/windows
   useEffect(() => {
-    if (typeof window === 'undefined') return;
-
     const handleStorageChange = (e: StorageEvent) => {
       if (e.storageArea && !browserStorage.local.isStorageArea(e.storageArea)) return;
       if (e.key === key || e.key === null) {

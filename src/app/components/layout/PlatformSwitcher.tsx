@@ -1,6 +1,7 @@
 import React, { useEffect, useLayoutEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router';
 import { Smartphone, Tablet, Monitor } from 'lucide-react';
+import { useBreakpoint } from '../../hooks/useBreakpoint';
 
 /**
  * ══════════════════════════════════════════════════════════
@@ -82,11 +83,14 @@ function hasUnsubmittedFormChanges(): boolean {
 
 export function PlatformSwitcher({
   previewControlsVisible = false,
+  isEquivalentRoute,
 }: {
   previewControlsVisible?: boolean;
+  isEquivalentRoute?: (currentPathname: string, targetPathname: string) => boolean;
 } = {}) {
   const navigate = useNavigate();
   const location = useLocation();
+  const { isMobile } = useBreakpoint();
 
   // Detect current platform from route
   const currentPrefix = getCurrentPrefix(location.pathname);
@@ -98,16 +102,18 @@ export function PlatformSwitcher({
     const targetPrefix = PLATFORM_CONFIG[detectPlatform(window.innerWidth)].prefix;
     const curPrefix = getCurrentPrefix(location.pathname);
     if (targetPrefix !== curPrefix) {
+      const targetPath = targetPrefix + getRoutePath(location.pathname);
+      if (isEquivalentRoute && !isEquivalentRoute(location.pathname, targetPath)) return;
       navigate(
         {
-          pathname: targetPrefix + getRoutePath(location.pathname),
+          pathname: targetPath,
           search: location.search,
           hash: location.hash,
         },
         { replace: true },
       );
     }
-  }, [location.pathname, location.search, location.hash, navigate]);
+  }, [location.pathname, location.search, location.hash, navigate, isEquivalentRoute]);
 
   useEffect(() => {
     let debounceTimer: ReturnType<typeof setTimeout> | null = null;
@@ -123,8 +129,10 @@ export function PlatformSwitcher({
         // Only navigate if the target prefix differs from current
         if (targetPrefix !== curPrefix) {
           const routePath = getRoutePath(location.pathname);
+          const targetPath = targetPrefix + routePath;
+          if (isEquivalentRoute && !isEquivalentRoute(location.pathname, targetPath)) return;
           navigate(
-            { pathname: targetPrefix + routePath, search: location.search, hash: location.hash },
+            { pathname: targetPath, search: location.search, hash: location.hash },
             { replace: true },
           );
         }
@@ -136,12 +144,16 @@ export function PlatformSwitcher({
       window.removeEventListener('resize', handleResize);
       if (debounceTimer) clearTimeout(debounceTimer);
     };
-  }, [location.pathname, location.search, location.hash, navigate]);
+  }, [location.pathname, location.search, location.hash, navigate, isEquivalentRoute]);
 
   const config = PLATFORM_CONFIG[currentPlatform];
   const Icon = config.icon;
 
-  if (isAuthenticationRoute(location.pathname)) return null;
+  if (
+    isAuthenticationRoute(location.pathname) ||
+    (previewControlsVisible && (currentPlatform === 'phone' || isMobile))
+  )
+    return null;
 
   return (
     <div

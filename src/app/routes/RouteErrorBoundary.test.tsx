@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { createMemoryRouter, RouterProvider } from 'react-router';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { RouteErrorBoundary } from './RouteErrorBoundary';
@@ -52,7 +52,7 @@ describe('route failure recovery', () => {
       expect(alert).not.toHaveTextContent('private-token');
       expect(alert).not.toHaveTextContent('private body');
       expect(screen.getByRole('button', { name: 'Tải lại trang' })).toBeInTheDocument();
-      expect(report).toHaveBeenCalled();
+      await waitFor(() => expect(report).toHaveBeenCalled());
     } finally {
       router.dispose();
     }

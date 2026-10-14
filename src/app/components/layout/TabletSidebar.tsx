@@ -214,21 +214,6 @@ export function TabletSidebar() {
                         strokeWidth={active ? 2.2 : 1.6}
                         color={active ? '#3B82F6' : c.text2}
                       />
-                      {item.badge && item.badge > 0 && (
-                        <div
-                          className="absolute -top-1.5 -right-1.5 flex items-center justify-center rounded-full"
-                          style={{
-                            width: 16,
-                            height: 16,
-                            background: '#EF4444',
-                            fontSize: 9,
-                            fontWeight: 700,
-                            color: '#fff',
-                          }}
-                        >
-                          {item.badge}
-                        </div>
-                      )}
                     </div>
 
                     {expanded && (

@@ -34,7 +34,11 @@ describe('TrInput', () => {
     fireEvent.change(input, { target: { value: '2,345' } });
     expect(input).toHaveValue('2,345');
     rerender(<TrInput label="Optional" />);
-    expect(screen.getByRole('textbox', { name: 'Optional' })).toHaveValue('');
+    const optionalInput = screen.getByRole('textbox', { name: 'Optional' });
+    expect(optionalInput).toHaveValue('');
+    fireEvent.change(optionalInput, { target: { value: 'uncontrolled' } });
+    // TrInput is a controlled input even when the caller omits its value prop.
+    expect(optionalInput).toHaveValue('');
     rerender(<TrTextarea label="Note" maxLength={20} />);
     expect(screen.getByRole('textbox', { name: 'Note' })).toHaveValue('');
     expect(screen.getByText('0/20')).toBeInTheDocument();
