@@ -1,0 +1,84 @@
+{
+  "observedAt": "2026-10-13T15:14:18.416Z",
+  "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
+  "workingRuntimeSourceHashes": {
+    "docs/architecture/production-readiness/evidence/A06/run-admin-error-browser-check.mjs": "7654da5d3f93911061988a3c37dc7e4616538853a7236b656658b92cb0e66bb2",
+    "docs/architecture/production-readiness/evidence/A06/run-market-empty-current-head-browser-check.mjs": "968168bcb072c722b78413b773a920b9f99f718a4dfd2e805d6eb2edc01a2b24",
+    "docs/architecture/production-readiness/evidence/A06/run-market-error-current-head-browser-check.mjs": "47aac6a996760d3c6c88a0fef94458ffaf036f8c8ad546872aaaa5e83d304579",
+    "docs/architecture/production-readiness/evidence/A06/run-market-loading-current-head-browser-check.mjs": "b87c43078157707020f8412f4fe55ecaed315e541be765849d318817ce010dde",
+    "docs/architecture/production-readiness/evidence/A06/run-market-success-current-head-browser-check.mjs": "0fd7bbad017a20bc2becb7ddbc20eb8bf6ad1397414f66838e7d9a4ee00adab0",
+    "docs/architecture/production-readiness/evidence/A06/run-predictions-empty-browser-check.mjs": "0a7e44e1d90b07de2c2da50fe1c0b79d56abab49c6053d6c754fd498e26985fc",
+    "docs/architecture/production-readiness/evidence/A06/run-predictions-error-browser-check.mjs": "cea63f6b0a39c84038b0d6c4b2d594537379aa92bb9d0b8d894242ba0f282d7c",
+    "docs/architecture/production-readiness/evidence/A06/run-predictions-loading-browser-check.mjs": "1e65f74969de9fb88baa7384fddb6533d434ff48734b15d9f749f05f62032cd7",
+    "docs/architecture/production-readiness/evidence/A06/run-predictions-pending-browser-check.mjs": "19e826618280a8a9dc5db37b06f284403b1274abeca4033d834b7d7fffc35e54",
+    "docs/architecture/production-readiness/evidence/A06/run-predictions-success-browser-check.mjs": "a4367441c23512b5325a54facae49e961808fe5c85ef8068fdb487234241758b",
+    "docs/architecture/production-readiness/evidence/A06/run-predictions-unauthorized-browser-check.mjs": "7045dec9f44a1b0ad7bdc8e690fba9b845edcb85f71edc14af8c0987dfccf846",
+    "docs/architecture/production-readiness/evidence/A06/run-profile-error-browser-check.mjs": "b4e8262943b2f0e609fd0846c3e7876d2c8c98d98bce49edc4403c1793931e45",
+    "docs/architecture/production-readiness/evidence/A06/run-trading-empty-browser-check.mjs": "83d44c906af86ef1e75909d6da8a3e5ce90d07cae6fdf207f72dce33abb7188b",
+    "docs/architecture/production-readiness/evidence/A06/run-trading-error-browser-check.mjs": "cd5710471c811df00c7ce534e165c98c57a80d93dca710bcb8d4ee95f1b06448",
+    "docs/architecture/production-readiness/evidence/A06/run-trading-loading-browser-check.mjs": "add9ccc1a71a2cf3dbfc8204d70d426b64e8158ea125250ee0dea65cc5789896",
+    "docs/architecture/production-readiness/evidence/A06/run-trading-pending-browser-check.mjs": "c54649d0a5e64733797c2ef2c04c3d1192cc4b82ef40a9a007315c0376e7ce95",
+    "docs/architecture/production-readiness/evidence/A06/run-trading-success-browser-check.mjs": "a3b15fa6c143a8afc3d47564e272c395a616c769bf73df120b7af466d76ec75d",
+    "docs/architecture/production-readiness/evidence/A06/run-wallet-error-current-head-browser-check.mjs": "c9aaed1f0031218ad43f94c0487355faf1724bc88d180d7abc2baaa1c9355ccf"
+  },
+  "environment": "Windows/Node24.19.0/Chromium; owned byte-equivalent clone; production build uses reserved .test origins, browser uses local API interception and MSW",
+  "verification": {
+    "productionBuild": {
+      "result": "pass",
+      "outputs": 222,
+      "jsChunks": 220,
+      "mockGate": "pass",
+      "bundleGate": "pass",
+      "rawMaxKB": 500,
+      "gzipMaxKiB": 250
+    },
+    "browser": {
+      "standard": {
+        "passed": 59,
+        "skipped": 4,
+        "newSkips": 0
+      },
+      "authApi": {
+        "passed": 34,
+        "skipped": 0
+      },
+      "authMsw": {
+        "passed": 41,
+        "skipped": 0
+      }
+    },
+    "sourceUnchanged": true,
+    "childClosed": true,
+    "rawLogs": {
+      "path": "docs/architecture/production-readiness/evidence/C03/current-runtime-verification-2026-10-13/logs.json.gz",
+      "sha256": "8b9f87b77730b5caaf52ec6667536193ac8833bd98dfb9df0c22b174339b88b4"
+    },
+    "manifests": [
+      {
+        "path": "docs/architecture/production-readiness/evidence/C03/current-runtime-verification-2026-10-13/2026-10-13T15-00-52-287Z-build-46b12805-5b2b-496b-b61b-619271899bc5.json",
+        "sha256": "63d5e1c4fcbac71bb222cb374346e1179ee7104603ec5f56c6c8874c168438e4"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/C03/current-runtime-verification-2026-10-13/2026-10-13T15-02-04-730Z-playwright-5dd9a33f-8a18-4982-a5b6-0beaf12e7928.json",
+        "sha256": "06ec18043413cd3f6ef51af0fb715d4dcb5d134a99df6956ae76643cc61cbd27"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/C03/current-runtime-verification-2026-10-13/2026-10-13T15-04-10-054Z-playwright-8362526a-4816-4528-ab08-ce298fb20484.json",
+        "sha256": "4b6a33053fa2db297ec7005be158d03364c820a57038ae0f453f8b2029375a73"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/C03/current-runtime-verification-2026-10-13/2026-10-13T15-07-02-332Z-playwright-179eb430-63f6-4af2-9da2-852c78e77287.json",
+        "sha256": "e3fa2c0ed9fb96501918c492f8c197a5d656f0b60f8f29f1c60a57a59bb82d3f"
+      }
+    ]
+  },
+  "diagnostics": [
+    "All managed runs completed on their actual declared HEAD and working input hashes; historical runtime reports were preserved.",
+    "Rollup stripped unsupported PURE annotations in the existing Zod dependency; the production build and bundle gate passed."
+  ],
+  "limits": [
+    "Local frontend regression proof only; no hosted Node22/Ubuntu, upload/download, backend/staging, UAT or production certification.",
+    "Four existing development registration skips remain in the standard profile; Auth API separately runs those development contracts.",
+    "Coverage target100 and broader technical UI review remain open;81 source-head scenario refresh follows final source stabilization."
+  ]
+}

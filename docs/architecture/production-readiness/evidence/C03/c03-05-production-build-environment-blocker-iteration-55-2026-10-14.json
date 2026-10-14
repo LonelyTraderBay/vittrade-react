@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "itemId": "C03.05",
+  "observedAt": "2026-10-13T22:44:37.017Z",
+  "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
+  "sourceState": "Dirty working tree unchanged during the owned production-build run.",
+  "dirtyFileHashes": {
+    "src/app/components/layout/PlatformSwitcher.tsx": "86c81c99ff493b799d34a34dabf59208341131fc17ccf069de2c3431a750e845",
+    "src/app/components/layout/RootLayout.tsx": "9d0e6078b25c2248bc6e214d1c5e9697b908a812fa43858b79d4c436cc9e1870",
+    "src/app/routes.ts": "bf67ffd9f2f82639de32f9e7844e59c7d624fa7c1d3f801c3efe97cc29b4f5c0",
+    "src/app/components/layout/WebShell.tsx": "b8a677a9415f951b8bd259fb3b56d1f54f3b36c34cc1f388907676c2a67b9c2c",
+    "src/app/components/layout/BottomNav.tsx": "057e3e3fc3419388bb99e11916b3cbd55ee9461df5f05200993926acca1fd267",
+    "src/app/components/layout/PlatformSwitcher.test.tsx": "b27315e5c00f3bae7f4a1139ca8704439b9dbda1bf5ee8287fa7d62d2251d258",
+    "src/app/components/layout/BottomNav.test.tsx": "f73c6f59c130fce9d835b1ec471c5891be26c29963ea897e4ba916bdcf4a5599",
+    "src/app/components/layout/WebShell.test.tsx": "8b22942ccef1425a5342e4813ebfab97b5e7986d5632161a48de777243b8af15",
+    "src/app/router/route-contract.test.ts": "5ee85a1f2cb7ac266137c28af25b38e6ab6fab2f04a91c2a9038561af6e0d637"
+  },
+  "verification": {
+    "environment": {
+      "nodeEnv": "production",
+      "nodeVersion": "v24.19.0",
+      "VITE_API_BASE_URL": "unset",
+      "VITE_WS_URL": "unset"
+    },
+    "command": "NODE_ENV=production node scripts/run-with-artifacts.mjs build",
+    "runId": "2026-10-13T22-44-37-017Z-build-eef8abd8-c2fe-4e4b-9963-da61ab48a5b5",
+    "runManifest": ".artifacts/runs/2026-10-13T22-44-37-017Z-build-eef8abd8-c2fe-4e4b-9963-da61ab48a5b5/run.json",
+    "runManifestSha256": "033e5a78f6e5487f0bdf7e4dc31b33050e2d22c7bc6a685430cbfa29b2898553",
+    "exitCode": 1,
+    "childClosed": true,
+    "sourceUnchangedDuringRun": true,
+    "log": {
+      "path": "C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\10\\14\\01a13394-3caa-7930-a58f-e3e6c61b066f\\vittrade-audit\\implementation\\iteration55-production-build-final.log",
+      "sha256": "5abf74bf7b0aa5601362f1a51322e14c68f620c34bef04b5c17f43a1764dca83"
+    },
+    "expected": "The configured production build should typecheck and emit a production bundle using the canonical API and WebSocket endpoints.",
+    "actual": "Vite stopped during config loading: Production environment is incomplete: VITE_API_BASE_URL, VITE_WS_URL. No production bundle was emitted; no placeholder endpoints were supplied.",
+    "missingInputs": [
+      "VITE_API_BASE_URL",
+      "VITE_WS_URL"
+    ]
+  },
+  "result": "fail",
+  "artifact": "C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\10\\14\\01a13394-3caa-7930-a58f-e3e6c61b066f\\vittrade-audit\\implementation\\iteration55-production-build-final.log; .artifacts/runs/2026-10-13T22-44-37-017Z-build-eef8abd8-c2fe-4e4b-9963-da61ab48a5b5/run.json",
+  "notes": "This local build gate is blocked by the missing canonical endpoint inputs; the failed process is not recorded as a source build defect. Backend/staging remains blocked per user instruction."
+}
