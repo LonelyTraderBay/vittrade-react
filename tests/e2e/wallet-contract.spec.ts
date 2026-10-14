@@ -151,7 +151,7 @@ test.describe('wallet contract smoke on staging build', () => {
     await page.goto('/wallet/deposit/USDT');
 
     await expect(page.getByLabel('Deposit network')).toHaveValue('ethereum');
-    await expect(page.getByLabel('Deposit QR code')).toBeVisible();
+    await expect(page.getByRole('img', { name: 'Deposit address QR code' })).toBeVisible();
     await expect(page.getByText(depositNetworks.networks[0].address)).toBeVisible();
     await expect(page.getByText('12 confirmations')).toBeVisible();
   });
