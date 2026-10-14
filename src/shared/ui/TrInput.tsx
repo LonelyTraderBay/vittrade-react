@@ -155,14 +155,14 @@ export function TrInput({
       const intPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
       return parts.length > 1 ? `${intPart}.${parts[1]}` : intPart;
     },
-    [numeric],
+    [],
   );
 
   const parseNumeric = useCallback(
     (formatted: string): string => {
       return formatted.replace(/,/g, '');
     },
-    [numeric],
+    [],
   );
 
   const handleChange = useCallback(
