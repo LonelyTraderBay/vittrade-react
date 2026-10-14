@@ -17,6 +17,8 @@ const originUrl = origin.origin;
 const route = '/w/markets/predictions';
 const checkedAt = new Date().toISOString();
 const date = checkedAt.slice(0, 10);
+const evidenceArtifactRunId = process.env.EVIDENCE_RUN_SUFFIX ?? String(Date.now());
+assert.match(evidenceArtifactRunId, /^[a-z0-9-]+$/i, 'Evidence run ID must be filename-safe.');
 const operationIds = [
   'listPredictionEvents',
   'getPredictionEvent',
@@ -64,15 +66,15 @@ const branch = execFileSync('git', ['branch', '--show-current'], {
 }).trim();
 
 const screenshotPaths = {
-  events: path.join(directory, `preview-predictions-success-events-${date}.png`),
-  event: path.join(directory, `preview-predictions-success-event-${date}.png`),
-  receipt: path.join(directory, `preview-predictions-success-receipt-${date}.png`),
-  portfolio: path.join(directory, `preview-predictions-success-portfolio-${date}.png`),
-  rewards: path.join(directory, `preview-predictions-success-rewards-${date}.png`),
-  leaderboard: path.join(directory, `preview-predictions-success-leaderboard-${date}.png`),
-  activity: path.join(directory, `preview-predictions-success-activity-${date}.png`),
+  events: path.join(directory, `preview-predictions-success-events-${date}-${evidenceArtifactRunId}.png`),
+  event: path.join(directory, `preview-predictions-success-event-${date}-${evidenceArtifactRunId}.png`),
+  receipt: path.join(directory, `preview-predictions-success-receipt-${date}-${evidenceArtifactRunId}.png`),
+  portfolio: path.join(directory, `preview-predictions-success-portfolio-${date}-${evidenceArtifactRunId}.png`),
+  rewards: path.join(directory, `preview-predictions-success-rewards-${date}-${evidenceArtifactRunId}.png`),
+  leaderboard: path.join(directory, `preview-predictions-success-leaderboard-${date}-${evidenceArtifactRunId}.png`),
+  activity: path.join(directory, `preview-predictions-success-activity-${date}-${evidenceArtifactRunId}.png`),
 };
-const reportPath = path.join(directory, `predictions-success-browser-check-${date}.json`);
+const reportPath = path.join(directory, `predictions-success-browser-check-${date}-${evidenceArtifactRunId}.json`);
 const requestCounts = Object.fromEntries(operationIds.map((operationId) => [operationId, 0]));
 const requests = [];
 const responses = [];

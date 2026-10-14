@@ -16,6 +16,8 @@ assert.equal(origin.pathname, '/', 'PREVIEW_BASE_URL must be an origin without a
 const originUrl = origin.origin;
 const checkedAt = new Date().toISOString();
 const date = checkedAt.slice(0, 10);
+const evidenceArtifactRunId = process.env.EVIDENCE_RUN_SUFFIX ?? String(Date.now());
+assert.match(evidenceArtifactRunId, /^[a-z0-9-]+$/i, 'Evidence run ID must be filename-safe.');
 const collections = [
   {
     operationId: 'listPredictionEvents',
@@ -87,10 +89,10 @@ const branch = execFileSync('git', ['branch', '--show-current'], {
 const screenshotPaths = Object.fromEntries(
   collections.map(({ key }) => [
     key,
-    path.join(directory, `preview-predictions-empty-${key}-${date}.png`),
+    path.join(directory, `preview-predictions-empty-${key}-${date}-${evidenceArtifactRunId}.png`),
   ]),
 );
-const reportPath = path.join(directory, `predictions-empty-browser-check-${date}.json`);
+const reportPath = path.join(directory, `predictions-empty-browser-check-${date}-${evidenceArtifactRunId}.json`);
 const requestCounts = Object.fromEntries(operationIds.map((operationId) => [operationId, 0]));
 const requests = [];
 const responses = [];
