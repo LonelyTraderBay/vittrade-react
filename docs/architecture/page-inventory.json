@@ -276,7 +276,7 @@
       "domain": "admin",
       "owner": "features/admin",
       "status": "integration-pending",
-      "lines": 64,
+      "lines": 70,
       "routePaths": [
         "admin/abtests"
       ],
@@ -304,7 +304,7 @@
       "domain": "admin",
       "owner": "features/admin",
       "status": "integration-pending",
-      "lines": 55,
+      "lines": 61,
       "routePaths": [
         "admin/funnels"
       ],
@@ -332,7 +332,7 @@
       "domain": "admin",
       "owner": "features/admin",
       "status": "integration-pending",
-      "lines": 59,
+      "lines": 65,
       "routePaths": [
         "admin",
         "admin/analytics"
@@ -360,12 +360,15 @@
       "domain": "admin",
       "owner": "features/admin",
       "status": "not-implemented",
-      "lines": 21,
+      "lines": 31,
       "routePaths": [],
       "dependencies": {
         "localImports": [
           "@/shared/api/api-error",
-          "@/shared/ui/ErrorState"
+          "@/shared/ui/ErrorState",
+          "@/shared/ui/layout/Header",
+          "@/shared/ui/layout/PageContent",
+          "@/shared/ui/layout/PageLayout"
         ],
         "mockReferences": [],
         "directRuntimeAccess": {
@@ -380,7 +383,7 @@
       "domain": "arena",
       "owner": "features/arena",
       "status": "integration-pending",
-      "lines": 365,
+      "lines": 377,
       "routePaths": [
         "arena/challenge/:challengeId",
         "arena/join/:challengeId",
@@ -499,7 +502,7 @@
       "domain": "auth",
       "owner": "features/auth",
       "status": "integration-pending",
-      "lines": 284,
+      "lines": 280,
       "routePaths": [
         "otp"
       ],
@@ -709,7 +712,7 @@
       "domain": "auth",
       "owner": "features/auth",
       "status": "integration-pending",
-      "lines": 490,
+      "lines": 489,
       "routePaths": [
         "login"
       ],
@@ -886,7 +889,7 @@
       "domain": "dca",
       "owner": "features/dca",
       "status": "integration-pending",
-      "lines": 296,
+      "lines": 345,
       "routePaths": [
         "earn/savings/dca"
       ],
@@ -916,7 +919,7 @@
       "domain": "discovery",
       "owner": "features/discovery",
       "status": "integration-pending",
-      "lines": 350,
+      "lines": 375,
       "routePaths": [
         "search",
         "topic/:topicId",
@@ -1013,7 +1016,7 @@
       "domain": "earn",
       "owner": "features/earn",
       "status": "integration-pending",
-      "lines": 386,
+      "lines": 384,
       "routePaths": [
         "earn/:domain/receipt",
         "earn/savings/product/:productId",
@@ -1108,7 +1111,7 @@
       "domain": "launchpad",
       "owner": "features/launchpad",
       "status": "integration-pending",
-      "lines": 292,
+      "lines": 302,
       "routePaths": [
         "launchpad",
         "launchpad/:id",
@@ -1139,7 +1142,7 @@
       "domain": "market",
       "owner": "features/market",
       "status": "integration-pending",
-      "lines": 218,
+      "lines": 229,
       "routePaths": [
         "markets/advanced-charts",
         "trade/advanced-chart/:pairId"
@@ -1283,7 +1286,7 @@
       "domain": "market",
       "owner": "features/market",
       "status": "integration-pending",
-      "lines": 197,
+      "lines": 206,
       "routePaths": [
         "markets/calendar"
       ],
@@ -1310,7 +1313,7 @@
       "domain": "market",
       "owner": "features/market",
       "status": "integration-pending",
-      "lines": 170,
+      "lines": 169,
       "routePaths": [
         "markets/heatmap"
       ],
@@ -1339,7 +1342,7 @@
       "domain": "market",
       "owner": "features/market",
       "status": "integration-pending",
-      "lines": 297,
+      "lines": 308,
       "routePaths": [
         "home"
       ],
@@ -1402,7 +1405,7 @@
       "domain": "market",
       "owner": "features/market",
       "status": "integration-pending",
-      "lines": 251,
+      "lines": 258,
       "routePaths": [
         "markets/movers"
       ],
@@ -1460,7 +1463,7 @@
       "domain": "market",
       "owner": "features/market",
       "status": "integration-pending",
-      "lines": 342,
+      "lines": 349,
       "routePaths": [
         "markets/overview"
       ],
@@ -1490,7 +1493,7 @@
       "domain": "market",
       "owner": "features/market",
       "status": "integration-pending",
-      "lines": 433,
+      "lines": 442,
       "routePaths": [
         "markets/alerts"
       ],
@@ -1520,7 +1523,7 @@
       "domain": "market",
       "owner": "features/market",
       "status": "integration-pending",
-      "lines": 205,
+      "lines": 211,
       "routePaths": [
         "markets/screener",
         "scanner"
@@ -1634,7 +1637,7 @@
       "domain": "market",
       "owner": "features/market",
       "status": "integration-pending",
-      "lines": 418,
+      "lines": 434,
       "routePaths": [
         "pair/:pairId"
       ],
@@ -1667,7 +1670,7 @@
       "domain": "market",
       "owner": "features/market",
       "status": "integration-pending",
-      "lines": 211,
+      "lines": 222,
       "routePaths": [
         "pair/:pairId/info"
       ],
@@ -1724,7 +1727,7 @@
       "domain": "market",
       "owner": "features/market",
       "status": "integration-pending",
-      "lines": 302,
+      "lines": 315,
       "routePaths": [
         "markets/watchlist"
       ],
@@ -1841,7 +1844,7 @@
       "domain": "p2p",
       "owner": "features/p2p",
       "status": "integration-pending",
-      "lines": 252,
+      "lines": 256,
       "routePaths": [
         "p2p/ad/:id"
       ],
@@ -1872,7 +1875,7 @@
       "domain": "p2p",
       "owner": "features/p2p",
       "status": "integration-pending",
-      "lines": 172,
+      "lines": 197,
       "routePaths": [
         "p2p/blacklist/add"
       ],
@@ -1933,7 +1936,7 @@
       "domain": "p2p",
       "owner": "features/p2p",
       "status": "integration-pending",
-      "lines": 235,
+      "lines": 236,
       "routePaths": [
         "p2p/chat/:orderId"
       ],
@@ -1991,7 +1994,7 @@
       "domain": "p2p",
       "owner": "features/p2p",
       "status": "integration-pending",
-      "lines": 242,
+      "lines": 245,
       "routePaths": [
         "p2p/dashboard"
       ],
@@ -2019,7 +2022,7 @@
       "domain": "p2p",
       "owner": "features/p2p",
       "status": "integration-pending",
-      "lines": 264,
+      "lines": 267,
       "routePaths": [
         "p2p/dispute/detail/:id"
       ],
@@ -2049,7 +2052,7 @@
       "domain": "p2p",
       "owner": "features/p2p",
       "status": "integration-pending",
-      "lines": 256,
+      "lines": 261,
       "routePaths": [
         "p2p/disputes"
       ],
@@ -2079,11 +2082,12 @@
       "domain": "p2p",
       "owner": "features/p2p",
       "status": "not-implemented",
-      "lines": 405,
+      "lines": 406,
       "routePaths": [],
       "dependencies": {
         "localImports": [
           "../model/p2p-order-action-queries",
+          "../model/p2p-types",
           "@/shared/api/api-error",
           "@/shared/hooks/useThemeColors",
           "@/shared/navigation/useRoutePrefix",
@@ -2138,7 +2142,7 @@
       "domain": "p2p",
       "owner": "features/p2p",
       "status": "integration-pending",
-      "lines": 254,
+      "lines": 261,
       "routePaths": [
         "p2p/express"
       ],
@@ -2168,7 +2172,7 @@
       "domain": "p2p",
       "owner": "features/p2p",
       "status": "integration-pending",
-      "lines": 458,
+      "lines": 498,
       "routePaths": [
         "p2p/fraud-prevention"
       ],
@@ -2296,7 +2300,7 @@
       "domain": "p2p",
       "owner": "features/p2p",
       "status": "integration-pending",
-      "lines": 260,
+      "lines": 263,
       "routePaths": [
         "p2p/merchant/:merchantId"
       ],
@@ -2357,7 +2361,7 @@
       "domain": "p2p",
       "owner": "features/p2p",
       "status": "integration-pending",
-      "lines": 484,
+      "lines": 486,
       "routePaths": [
         "p2p/order/cancel/:orderId",
         "p2p/order/proof/:orderId",
@@ -2391,7 +2395,7 @@
       "domain": "p2p",
       "owner": "features/p2p",
       "status": "integration-pending",
-      "lines": 276,
+      "lines": 286,
       "routePaths": [
         "p2p/my-orders",
         "p2p/order-room"
@@ -2515,7 +2519,7 @@
       "domain": "p2p",
       "owner": "features/p2p",
       "status": "integration-pending",
-      "lines": 171,
+      "lines": 174,
       "routePaths": [
         "p2p/reviews"
       ],
@@ -2544,7 +2548,7 @@
       "domain": "p2p",
       "owner": "features/p2p",
       "status": "integration-pending",
-      "lines": 275,
+      "lines": 285,
       "routePaths": [
         "p2p/trading-level"
       ],
@@ -2572,7 +2576,7 @@
       "domain": "predictions",
       "owner": "features/predictions",
       "status": "integration-pending",
-      "lines": 457,
+      "lines": 467,
       "routePaths": [
         "activity",
         "breaking",
@@ -2807,7 +2811,7 @@
       "domain": "referral",
       "owner": "features/referral",
       "status": "integration-pending",
-      "lines": 156,
+      "lines": 161,
       "routePaths": [
         "referral"
       ],
@@ -2948,7 +2952,7 @@
       "domain": "trading",
       "owner": "features/trading",
       "status": "integration-pending",
-      "lines": 157,
+      "lines": 161,
       "routePaths": [
         "trade/copy-trading/active",
         "trade/copy/active"
@@ -3133,7 +3137,7 @@
       "domain": "trading",
       "owner": "features/trading",
       "status": "integration-pending",
-      "lines": 181,
+      "lines": 193,
       "routePaths": [
         "trade/copy",
         "trade/copy-trading",
@@ -3196,7 +3200,7 @@
       "domain": "trading",
       "owner": "features/trading",
       "status": "integration-pending",
-      "lines": 256,
+      "lines": 260,
       "routePaths": [
         "trade/order-receipt"
       ],
@@ -3226,7 +3230,7 @@
       "domain": "trading",
       "owner": "features/trading",
       "status": "integration-pending",
-      "lines": 342,
+      "lines": 351,
       "routePaths": [
         "trade/orders",
         "trade/orders-history"
@@ -3312,7 +3316,7 @@
       "domain": "trading",
       "owner": "features/trading",
       "status": "integration-pending",
-      "lines": 201,
+      "lines": 206,
       "routePaths": [
         "trade/copy-trading/leaderboard"
       ],
@@ -3341,7 +3345,7 @@
       "domain": "trading",
       "owner": "features/trading",
       "status": "integration-pending",
-      "lines": 277,
+      "lines": 293,
       "routePaths": [
         "trade/analytics"
       ],
@@ -3448,7 +3452,7 @@
       "domain": "trading",
       "owner": "features/trading",
       "status": "integration-pending",
-      "lines": 91,
+      "lines": 96,
       "routePaths": [
         "trade/copy-performance/:copyId",
         "trade/copy/performance/:copyId"
@@ -3541,7 +3545,7 @@
       "domain": "wallet",
       "owner": "features/wallet",
       "status": "integration-pending",
-      "lines": 438,
+      "lines": 442,
       "routePaths": [
         "wallet/asset/:assetId"
       ],
@@ -3670,7 +3674,7 @@
       "domain": "wallet",
       "owner": "features/wallet",
       "status": "integration-pending",
-      "lines": 282,
+      "lines": 295,
       "routePaths": [
         "markets/portfolio-tracker",
         "portfolio/analytics",
@@ -3731,7 +3735,7 @@
       "domain": "wallet",
       "owner": "features/wallet",
       "status": "integration-pending",
-      "lines": 268,
+      "lines": 274,
       "routePaths": [
         "wallet/deposit",
         "wallet/deposit/:asset"
@@ -3761,7 +3765,7 @@
       "domain": "wallet",
       "owner": "features/wallet",
       "status": "integration-pending",
-      "lines": 432,
+      "lines": 436,
       "routePaths": [
         "wallet"
       ],
