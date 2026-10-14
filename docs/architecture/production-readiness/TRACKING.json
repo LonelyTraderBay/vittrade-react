@@ -48,37 +48,36 @@
     }
   ],
   "checkpoint": {
-    "updatedAt": "2026-10-14T01:28:31.285Z",
+    "updatedAt": "2026-10-14T01:52:06.132Z",
     "lastCompletedTask": "C03",
     "activeTask": "B07",
     "activeStep": "B07.02",
     "nextTask": "C05",
     "nextStep": "C05.03",
-    "nextAction": "Finish the ordered P0/P1/P2 commits, push this branch, and open a draft PR to run the full GitHub Ubuntu/Node22 workflow on the exact SHA. Do not merge. After hosted checks, continue per-page UI acceptance and preserve external blockers.",
+    "nextAction": "Push the separate P1 code fix and P2 evidence/checkpoint update. Inspect exact-SHA GitHub workflow, artifact and governance checks; then continue C05.03. Keep backend/staging blocked.",
     "changedFiles": [
-      "docs/architecture/production-readiness/evidence/C05/c05-03-overflow-candidate-triage-iteration-55-2026-10-14.json",
+      "src/shared/ui/TrInput.tsx",
+      "docs/architecture/production-readiness/evidence/C03/c03-05-full-coverage-after-trinput-lint-fix-iteration-56-2026-10-14.json",
       "docs/architecture/production-readiness/PLAN.md",
       "docs/architecture/production-readiness/TRACKING.json"
     ],
     "pendingChecks": [
-      "P1-FE-04/P2-OPS-01: exact-final-SHA hosted Node22/Ubuntu GitHub workflow, artifact upload/download and governance enforcement.",
-      "C05.03: visual and interaction acceptance is 0/128; 14/128 representative screenshots reviewed; axe is unverified and remaining pages need route/state review.",
-      "Local UI scan fixtures: classify API 404/503 responses and blocked font/logo attempts for intended fixture versus product behavior.",
-      "Production build requires approved VITE_API_BASE_URL and VITE_WS_URL; no placeholder endpoints supplied.",
-      "A06/C03.02/C03.03: 25/106 contract-dependent scenarios need approved API/security semantics and backend owners.",
-      "Backend/staging verification is 0/154; UAT is 0/128; telemetry provider/privacy owner and SLO inputs are unavailable."
+      "B07.02/P1-FE-04: exact-final-SHA Ubuntu/Node22 workflow, artifact upload/download and governance; run #51 on the prior SHA failed at the strict warning budget.",
+      "C05.03 formal UI acceptance 0/128; 14/128 representative screenshots reviewed; remaining route/state/axe review is open.",
+      "Classify local fixture API 404/503 and blocked font/logo requests by route/environment.",
+      "Production bundle requires approved VITE_API_BASE_URL and VITE_WS_URL.",
+      "25/106 contract-dependent scenarios need approved API/security semantics and backend owners.",
+      "Backend/staging 0/154; UAT 0/128; telemetry provider/privacy owner and SLO inputs unavailable."
     ],
     "blockers": [
-      "P1-FE-04/P2-OPS-01: hosted Node22/Ubuntu CI/artifact upload-download and governance/release evidence remain unverified.",
-      "25/106 contract-dependent scenarios remain not_verified; financial lost-response/replay/auth contracts need backend owners.",
-      "Backend/staging/provider/SLO/account/owner inputs remain unavailable per user; backend0/154 and user acceptance0/128.",
-      "C05.03 broader route interactions and unresolved historical UI findings are not closed by the scoped shell/Auth fixes.",
-      "Strict A06 provenance: earlier81 reports retain their observed prior HEAD; final-source-commit refresh required after coverage edits.",
-      "C05.03 follow-up: local mock responses include 404/503 and the browser scan blocked Google Fonts/Cryptologos; formal UI acceptance remains 0/128.",
-      "Canonical production bundle not emitted because VITE_API_BASE_URL and VITE_WS_URL are unavailable."
+      "Exact-final-SHA hosted CI/artifact/governance verification is pending; prior run #51 failed before dependent checks because two TrInput warnings exceeded budget 0.",
+      "C05.03 page-by-page UI/interaction acceptance and completed axe review remain open.",
+      "Backend/staging/API owner/account/provider/SLO inputs unavailable per user; backend 0/154 and UAT 0/128.",
+      "25/106 contract-dependent scenarios remain not_verified.",
+      "Production bundle needs approved VITE_API_BASE_URL and VITE_WS_URL."
     ],
-    "notes": "EV-086–090 chốt Earn pending: OpenAPI cho phép HTTP 201 với receipt pending; pre-fix browser đo được subscription/redemption đều hiện thông báo chung mà không có receipt; sửa để Savings/Staking mở receipt có status/reference; 10/10 focused tests và local Chromium/MSW verification pass; 5 Earn sidecars được làm mới. Matrix 39/106 fresh (18 full, 21 representative), 38/154 operations, 154/154 mappings, 39/64 sidecars, 0 stale; aggregate runtimeEvidenceFresh=false. earn.forbidden (0/4 khai báo 403) và earn.unknown/duplicate (thiếu receipt lookup/correlation/same-key replay contract) vẫn not_verified. Next launchpad.success. UI acceptance 0/128; backend/staging 0/154. Không có bằng chứng staging/backend hoặc user acceptance.\nEV-20260930-091–096 recorded Launchpad contract and current-head local outcomes: success 2/2 operations; empty/loading/error 1/2 each; loading response 2,018 ms; error 6+6 statusless GET failures. Matrix 43/106, 40/154 operations, 43/68 registered sidecars; runtimeEvidenceFresh=false. Next market.success.\nEV-20260930-097–099 resolved Launchpad retry multiplication: local error request count fell from 6+6 to 3+3 per initial/manual retry cycle; focused test 4/4 and four current-head browser scenarios passed. Current matrix 43/106 fresh, 40/154 operations, 43/68 sidecars, no stale hashes; runtimeEvidenceFresh=false. Next market.success.\nEV-20260930-100–102 confirmed the final retry policy covers list and detail: focused tests 5/5 and all four post-fix browser sidecars have current hashes. Matrix 43/106 fresh, 40/154 operations, 43/68 registered sidecars; runtimeEvidenceFresh=false. Next market.success. Market success refreshed on current HEAD c5fc38b: 20 routes, 22/22 operations, 43/43 source hashes, local MSW only; next market.empty. Final Market consistency EV-20260930-104: tracking/matrix/UI index/inventory/OpenAPI checks pass; 43 input hashes and all 21 screenshot catalog entries verified.\nEV-20260930-109–113 refreshed Market success/empty/loading/error on current sources. Retry multiplication measured 6 dispatches per execution before fix and 3 after; 16 Market query hooks now defer to the HTTP-client budget, with regression test proving 3 initial + 3 explicit refetch. EV-114 confirms zero contract-declared Market 401/403; next row profile.success. Matrix 47/106 fresh (22 full, 25 representative), 62/154 operations, 47/72 fresh sidecars, zero source hash stale; aggregate remains historical_baseline. Local evidence only, UI acceptance 0/128, backend/staging 0/154.\nEV-20260930-115 validation: Market tests 187/187; app/Node typecheck, scoped ESLint, OpenAPI, tracker, matrix, UI index, inventory, syntax, Prettier and git diff --check pass. Catalog 2149; matrix 47/106 (22 full), 62/154 operation, 47/72 fresh sidecars, zero stale hashes; aggregate remains historical. Local-only; UI acceptance 0/128; backend/staging 0/154.\nEV-20260930-116 profile.success: Chromium local current-head run across four routes observed 7/7 operation IDs and 15/15 service-worker responses, including three fixture-only writes (200/200/204); 22/22 source hashes match. Flow 4.704 ms, one revoke callback arrived after its successful 204 response, no unmatched failures/page errors/external API/backend requests. Sidebar at /w/profile/edit highlights Trang chủ, tracked under C05.03. Matrix 48/106 (23 full), 69/154 unique operations, 48/72 current sidecars, zero stale; runtime aggregate historical. EV-117 local repository validation passed; next profile.empty. Profile empty EV-20260930-118: 3/3 collection reads returned 200 {items:[]}; 9/9 service-worker responses, 0 writes, 21/21 source hashes, 1,656 ms local; profile root object preserved. Sidebar mismatch reproduced at /w/profile/devices. Next profile.loading. Profile loading EV-20260930-120: all 4 GET routes remained loading in flight; responses 200 after 2.006–2.017 seconds from local MSW; 22/22 hashes; 0 writes/errors. No active sidebar item on the loading screenshots; Preview warning/Web widget overlap persists. Next profile.error. Profile loading EV-20260930-120/121 registered: 4/4 reads, 7/7 service-worker responses, ~2-second local delay, 22/22 source hashes; matrix 50/106 fresh, 25 full, 69/154 operations, 50/72 sidecars and 0 stale. Tracker, matrix/index, inventory, OpenAPI, syntax/format and whitespace gates pass. Next profile.error.\nEV-20260930-130 measured referral.empty on current HEAD c5fc38b0755da3fe2c9831fe3040160a308a9a03: getReferralOverview 1/1, GET/200 via local MSW, 2 ms response, 237 ms scenario, 704 ms total flow, 20/20 source hashes, zero request errors/writes/page errors/external API origins; empty UI showed zero statistics and the expected message. Matrix is 54/106 fresh (27 full, 27 representative), 70/154 unique operations, 54/72 current sidecars, 19 historical baseline sidecars with current hashes, zero stale; aggregate remains historical_baseline. UI acceptance 0/128 and backend/staging 0/154. C05.03 top label and Preview/Web overlap remain open. Next referral.loading.\nEV-20260930-131 validation on current HEAD: scenario matrix and UI index current at 54/106; architecture inventory 129 pages/427 routes/149 components/32 services/28 mocks; OpenAPI 15 contracts/154 operations; Referral runner lint, format, syntax, and git diff --check pass; check-tracking errorCount=0. UI acceptance 0/128; backend/staging 0/154.\n\nEV-20260930-132 measured referral.loading on current HEAD c5fc38b0755da3fe2c9831fe3040160a308a9a03: getReferralOverview 1/1, GET/200 via local MSW, loading visible at 2,012 ms, response at 2,019 ms, scenario 2,137 ms, flow 2,610 ms, 20/20 source hashes, 0 errors/writes/page errors/external API origins. Matrix is 55/106 fresh (28 full, 27 representative), 70/154 unique operations, 55/72 current sidecars, 19 historical baseline sidecars with current hashes, 0 stale; aggregate remains historical_baseline. UI acceptance 0/128; backend/staging 0/154. C05.03 active-navigation and Preview/Web overlap remain open. Next referral.error.\nEV-20260930-133 validation passed: matrix/UI index current at 55/106; architecture inventory 129 pages/427 routes/149 components/32 services/28 mocks; OpenAPI 15 contracts/154 operations; runner ESLint/Prettier/node syntax and git diff --check pass; check-tracking errorCount=0. UI acceptance 0/128, backend/staging 0/154.\n Current support.loading is fully verified for its 4 read operations with 25/25 hashes; all responses were local MSW and do not verify backend/staging. Screenshots add the /w/news active-navigation and existing widget/banner issues to C05.03.\nEV-20260930-143–147: Support error retry ownership fixed and measured. Four read hooks now allow only the shared HTTP client budget (3 attempts); same local runner fell from 48 to 24 injected failures across initial+Retry. Success/empty/loading/pending reports refreshed to current query hashes. Support auth remains contract-blocked (0/6 401/403); next matrix row: audit admin.error. Matrix 61/106 fresh; user acceptance 0/128; backend/staging 0/154. Current-head refresh at 2026-09-30T18:59:15.021Z: 65/65 stale sidecars rerun and hash-verified; matrix has 73/106 fresh scenarios, 37 full, 85/154 operations, 0 stale. Next admin.unauthorized.\nEV-20261001-001: Admin unauthorized current-head Chromium/MSW run passed for 3 reachable GETs: 3/3 401, 3/3 refresh contract fixtures 200/null, 3/3 login redirects, stale content 0, Admin writes/failures 0, 24/24 source hashes. The trace also preserves 7 app-level abort callbacks (3 Auth logout with prior response, 4 Market pairs/watchlist without response during home teardown). Matrix 74/106 fresh, 37 full, 85/154 operations, 74/74 sidecars, zero stale; runtime aggregate historical. Next Arena 401/403 contract audit; user acceptance/backend/CI gates remain pending.\nEV-20261001-002: Arena OpenAPI audit confirms 0/4 401 and 0/4 403; keep both rows not_verified. wallet.empty current-head browser run: 3 GET/200, 2/2 operation IDs, 2 assets / $16,754.32, 0 transactions in both views, 0 Wallet writes, 0 page errors, 0 external API origins, 17/17 hashes; Wallet flow 205 ms / total local flow 842 ms. Screenshot review added Wallet overview active-nav, Preview/Web overlap and Google Fonts origins to C05.03. Matrix 75/106 fresh, 87/154 operations, 0 stale; aggregate historical. Next wallet.forbidden GETs only.\nEV-20261001-008 records the measured wallet.error retry fix and fresh Wallet sidecars; next checkpoint is local transfer-only wallet.pending.\nEV-20261001-009: Re-ran all six Wallet current-source sidecars after the regression test typing correction; next is transfer-only wallet.pending via local MSW.\nEV-20261001-042/043 recorded A06.03 Auth refresh contract correction and eight current-source scenario reruns; matrix/index synchronized. The global active checkpoint remains unchanged.\n\nB07.03 closed: exact-SHA run #34 on 92b1d15 passed 41/41 steps and artifact verification; final ledger commit cf9f33f passed exact-SHA run #35, 41/41 steps. Checker errorCount=0, unit/integration 2415/2415, E2E 51/51, bundle 221/221. Resume A06.03 at arena.unauthorized as specified by PLAN; unsupported 401/403 and unknown/duplicate states remain not_verified.\n\nEV-20261002-009: current source hashes confirm Arena unauthorized 0/4 HTTP 401, Arena forbidden 0/4 HTTP 403, and Auth forbidden 0/8 HTTP 403. Rows remain not_verified; no browser/API side effect. Next: dca.forbidden. B07 exact-SHA Ubuntu run #34 and final ledger commit run #35 passed.\n\nEV-20261002-010: dca.forbidden resolved 5/5 current operations and 0/5 declare HTTP 403. Row remains not_verified; no browser/API side effect. Next: discovery.unauthorized.\n\nEV-20261002-011: discovery.unauthorized resolves 2/2 with 0/2 HTTP 401; discovery.forbidden 0/2 HTTP 403. Both rows remain not_verified. Next: earn.forbidden.\n\nEV-20261002-012: Earn contract audit leaves forbidden/unknown/duplicate not_verified; writes require idempotency key but no conflict/replay or lookup result is specified. No side effect was sent. Next: Launchpad unauthorized/forbidden.\nEV-20261002-013: Launchpad 0/2 mapped operations declare 401 or 403; Market 0/22 contract operations declare either status and each authorization row maps 8 operations. Four rows remain not_verified; no browser/API side effect. Next p2p.unknown.\nEV-20261002-014: check-tracking exits 1, total 2191 errors; path scope maps 916/916, while 885/916 active non-plan file records lack catalogued source fingerprints. Keep A06.03 in_progress.\nEV-20261002-015: P2P unknown contract audit maps 4/4 operations; all 3 writes require Idempotency-Key but the create flow has no deterministic lost-receipt correlation or same-key replay response. Keep not_verified; next predictions.forbidden.\nEV-20261002-016: Predictions 8/8 operations map; 0/8 declare 403. Place-order 409 combines duplicate key and market-state conflict; no same-key replay or key lookup. All three rows remain not_verified; next profile.forbidden.\nEV-20261002-017: profile.forbidden maps 7/7 operations; 0/7 declare HTTP 403 (all seven declare 401). Row remains not_verified; next referral.forbidden.\nEV-20261002-018: getReferralOverview is the sole mapped operation and has 200/401 with no 403; referral.forbidden remains not_verified. Next support.unauthorized.\nEV-20261002-019: Support maps six operations; 0/6 declare either 401 or 403. Both rows remain not_verified; next trading.unknown.\nEV-20261002-020: Trading unknown/duplicate maps five operations; three writes require Idempotency-Key, but no stable replay or clientOrderId lookup contract exists. No orders were changed. Next wallet.unknown.\nEV-20261002-021: Wallet unknown/duplicate current-source audit confirms 2 writes require Idempotency-Key but no transaction correlation/key lookup or stable replay result; no financial side effect. This is the final not_verified row in matrix order; next action is blocker reconciliation, not an unsupported write.\nEV-20261002-030: 10 current-source scenario reports and 64 screenshots pass in local Chromium/MSW; handler test 59/59. Auth refresh guest response matches 200/null. Final checker remains 61 errors across exact application inventory 916/916 after 75 evidence artifact rows were registered without claiming an absent Git snapshot. UI acceptance 0/128, backend/staging 0/154, and 25 contract-dependent rows remain open. EV-20261003-002 recorded shared Auth Chromium/MSW preview at http://127.0.0.1:5174/: 8 application API responses, 0 failed API requests, 0 page errors; login MFA invalid/valid returned 400/200, locked returned 423, and full reload session returned 401 under the in-memory mock. No backend/staging or user acceptance evidence. EV-20261003-003 refreshed 20/20 A06 sidecars; matrix 81/106 fresh, 81/81 current sidecars, 0 source-hash stale. Runtime aggregate remains historical_baseline; 25 rows remain not_verified. U01.03 remains active pending the API/security decision on guest verifyMfa.\nEV-20261003-004: C05.03 follow-up measured a 19 px Web badge/banner gap and keyboard preview access at /w/auth/login; 16 focused tests pass. Local MSW only; C05 UI acceptance remains 0/128. EV-20261003-005 records scoped LF normalization; final EOL preflight passes 3218 paths. check-tracking remains exit 1 with 73 snapshot-ledger errors. Global active step remains U01.03 pending API/security approval for guest verifyMfa semantics. EV-20261003-006 records a 9/9 API-mode Auth E2E run including login MFA HTTP 410 handling; backend/staging evidence is absent and registration verifyMfa remains owner-blocked. Final EV-20261003-006 validation: focused browser 9/9 and local static gates pass; check-tracking remains exit 1 with 40 source-ledger errors and source inventory 916/916. EV-20261003-007 records a 10/10 combined Auth browser run, including the complete contract-backed password-reset flow; evidence remains local fixture only. Final EV-20261003-007 validation: browser 10/10 and local static gates pass; check-tracking remains exit 1 with 40 source-ledger errors and source inventory 916/916. EV-20261003-008 records Auth reset test-fixture alignment with declared OpenAPI outcomes; focused tests pass 6/6. Final EV-20261003-008 validation: focused tests and local static gates pass; check-tracking remains exit 1 with 40 source-ledger errors and source inventory 916/916.\nEV-20261010-042 registered; the 100% aggregate target remains in progress.\nEV-20261010-043 registered; aggregate coverage target remains in progress.\nEV-20261010-046: full Vitest/V8 suite 324/324 files, 2918/2918 tests; 97.52/95.58/96.66/98.14 aggregate, 304/406 measurable files complete, 102 gaps, 32 no-counter paths excluded. WebCommandBar and P2PHomeCards reach 100/100/100/100 in full suite; focused P2PHomeCards branch coverage is 51/62. Local Windows only; exact-SHA CI, backend, staging, production and acceptance unverified. Next P2PExpressConfirmPage and LaunchpadContractPages.\nEV-20261010-047: full Vitest/V8 suite 324/324 files, 2928/2928 tests; 97.58/95.76/96.78/98.19 aggregate, 306/406 measurable files complete, 100 gaps, 32 no-counter paths excluded. P2PExpressConfirmPage and LaunchpadContractPages reach 100/100/100/100. check-tracking exits 1 with 281 dirty-tree catalog/source-head mismatches; unrelated fingerprints were not rebaselined. Local Windows only; exact-SHA CI, backend, staging, production and acceptance unverified. Next OrderReceiptPage.\nEV-20261010-048: full Vitest/V8 suite 324/324 files, 2940/2940 tests; 97.63/95.82/96.89/98.26 aggregate, 307/406 measurable files complete, 99 gaps, 32 no-counter paths excluded. OrderReceiptPage reaches 100/100/100/100. check-tracking exits 1 with 284 dirty-tree catalog/source-head mismatches; unrelated fingerprints were not rebaselined. Local Windows only; exact-SHA CI, backend, staging, production and acceptance unverified. Next useSessionTimeout.\nEV-20261010-052: Web2FASetupFlow and Web2FASetupBackupStep focused counters are 100%; full Vitest is 324/324 files and 2952/2952 tests with aggregate S97.86/B96.05/F97.22/L98.45 and 95 measurable source gaps. Next MarketDepthPage owner coverage. Historical WebLoginPage full-suite failure is resolved by later passing full-suite runs. Exact-SHA hosted CI, backend, staging, production and user acceptance remain unverified.\nEV-20261010-053: MarketDepthPage.tsx is 100/100/100/100 in focused and full reports; full Vitest is 324/324 files and 2957/2957 tests with aggregate S97.91/B96.10/F97.30/L98.50, 312/406 measurable files complete and 94 gaps. Next MarketPriceAlertsPage owner coverage. Exact-SHA hosted CI, backend, staging, production and user acceptance remain unverified.\nEV-20261011-054 and EV-20261011-055 record local focused 13/13 Market and 5/5 MiniChart passes; both target files reached 100/100/100/100. The EV-053 aggregate is preserved unchanged.\n13/10/2026 DECISION-20261013-002: snapshot audit và 14 remediation slices recorded; previous application checkpoint retained in decision/executionPlan, no code implemented.\n13/10 337/337 files, 3087/3087 tests, standard59/4skip + AuthAPI34 + AuthMSW41, 14 static gates, production build/mock/bundle pass. Global ledger still exits1 with17 uncommitted-source fingerprint errors; hosted/external/C03.05 target remains open. Index generation refreshed and closed separately; global production readiness not certified.\nFinal canonical cleanup:0 files/0 bytes,0 errors; preserved referenced/legacy output and latest production build. Git delivery question is pending; no commit/push/PR performed.\nScoped review of two existing current-source Wallet screenshots does not reproduce historical active-navigation/preview overlap findings; no application changes. Wider C05.03 remains open.\n17 fingerprint errors resolved from actual local source commits; canonical checker0. Earlier81 reports not relabelled; strict-HEAD browser refresh remains pending on final commit.\nOwner continuation:19 pre-fix failures;3130 tests pass,14 gates pass,332/408 fully covered source files. No100/production/backend claim.\n25 owner source/test/inventory paths now have individual actual local commit proofs; strict-HEAD browser refresh follows on final source commit.\nResource navigation fixed at52 lines; strict-head browser/build refresh remains separate.\n44 navigation source/test/inventory paths now have individual actual local commit proofs; strict-HEAD browser refresh follows on final source commit.\nFinancial write owner boundaries repaired; strict-head browser/build refresh remains separate.\n22 financial source/test/inventory paths now have individual actual local commit proofs; strict-HEAD browser refresh follows on final source commit.\nShared control/privacy slice:21 verified failures repaired; final-source proof and aggregate100 remain separate.\n27 shared-control source/test/inventory paths now have individual actual local commit proofs; strict-HEAD browser refresh follows on final source commit.\nRelease service diagnostics verified; latest coverage measured on actual current working bytes.\n8 service-diagnostic source/test/inventory paths now have individual actual local commit proofs; strict-HEAD browser refresh follows on final source commit.\nOwner behavior evidence verified; latest coverage measured on current working bytes.\n16 owner-feedback source/test/inventory paths now have individual actual local commit proofs; strict-HEAD browser refresh follows on final source commit.\nService input validation evidence verified; latest coverage measured on current working bytes.\n16 cache-shape source/test/inventory paths now have individual actual local commit proofs; strict-HEAD browser refresh follows on final source commit.\nOwner lifecycle evidence verified; latest coverage measured on current working bytes.\n16 owner-lifecycle source/test/inventory paths now have individual actual local commit proofs; strict-HEAD browser refresh follows on final source commit.\nFinal current-source81-runner refresh complete;build/mock/bundle and matrix/UI checks pass. No100%/production claim;coverage55 gaps,widerUI and external inputs remain open.\nCurrent final canonical cleanup:deleted0 files/0 logical bytes,0errors;task-owned processes/listeners ended. Open frontend and external criteria preserved.\n2026-10-14 EV-20261014-001/002: coverage counter target measured complete; wide local desktop scan recorded separately. C03 parent/C05.03, backend/staging, hosted gates and acceptance remain open.\nEV-20261014-003: check-tracking exit1/186 errors; git diff --check and EOL pass; no source catalog rebased.\nFinal pre-audit check-tracking: exit1/187; coverage counters measured 100%; C03.05 remains in_progress due the required ledger gate.\nAfter registering iteration 53 evidence files, check-tracking exits1/184; remaining provenance errors are not rebased.",
-    "remainingWork": "Hosted Node22/Ubuntu PR workflow and artifact/governance evidence remain pending. C05.03 formal UI acceptance is 0/128; only 14/128 representative screenshots have been visually reviewed, axe was not run, and local fixture 404/503 plus blocked font/logo attempts need environment classification. Production build lacks approved VITE_API_BASE_URL and VITE_WS_URL. Backend/staging is 0/154; 25/106 scenarios lack approved API/security contracts; UAT is 0/128; telemetry/SLO owner inputs remain unavailable. Source coverage counters are 100% for 408/408 measurable files and the source provenance/inventory gates pass locally.",
+    "notes": "EV-086–090 chốt Earn pending: OpenAPI cho phép HTTP 201 với receipt pending; pre-fix browser đo được subscription/redemption đều hiện thông báo chung mà không có receipt; sửa để Savings/Staking mở receipt có status/reference; 10/10 focused tests và local Chromium/MSW verification pass; 5 Earn sidecars được làm mới. Matrix 39/106 fresh (18 full, 21 representative), 38/154 operations, 154/154 mappings, 39/64 sidecars, 0 stale; aggregate runtimeEvidenceFresh=false. earn.forbidden (0/4 khai báo 403) và earn.unknown/duplicate (thiếu receipt lookup/correlation/same-key replay contract) vẫn not_verified. Next launchpad.success. UI acceptance 0/128; backend/staging 0/154. Không có bằng chứng staging/backend hoặc user acceptance.\nEV-20260930-091–096 recorded Launchpad contract and current-head local outcomes: success 2/2 operations; empty/loading/error 1/2 each; loading response 2,018 ms; error 6+6 statusless GET failures. Matrix 43/106, 40/154 operations, 43/68 registered sidecars; runtimeEvidenceFresh=false. Next market.success.\nEV-20260930-097–099 resolved Launchpad retry multiplication: local error request count fell from 6+6 to 3+3 per initial/manual retry cycle; focused test 4/4 and four current-head browser scenarios passed. Current matrix 43/106 fresh, 40/154 operations, 43/68 sidecars, no stale hashes; runtimeEvidenceFresh=false. Next market.success.\nEV-20260930-100–102 confirmed the final retry policy covers list and detail: focused tests 5/5 and all four post-fix browser sidecars have current hashes. Matrix 43/106 fresh, 40/154 operations, 43/68 registered sidecars; runtimeEvidenceFresh=false. Next market.success. Market success refreshed on current HEAD c5fc38b: 20 routes, 22/22 operations, 43/43 source hashes, local MSW only; next market.empty. Final Market consistency EV-20260930-104: tracking/matrix/UI index/inventory/OpenAPI checks pass; 43 input hashes and all 21 screenshot catalog entries verified.\nEV-20260930-109–113 refreshed Market success/empty/loading/error on current sources. Retry multiplication measured 6 dispatches per execution before fix and 3 after; 16 Market query hooks now defer to the HTTP-client budget, with regression test proving 3 initial + 3 explicit refetch. EV-114 confirms zero contract-declared Market 401/403; next row profile.success. Matrix 47/106 fresh (22 full, 25 representative), 62/154 operations, 47/72 fresh sidecars, zero source hash stale; aggregate remains historical_baseline. Local evidence only, UI acceptance 0/128, backend/staging 0/154.\nEV-20260930-115 validation: Market tests 187/187; app/Node typecheck, scoped ESLint, OpenAPI, tracker, matrix, UI index, inventory, syntax, Prettier and git diff --check pass. Catalog 2149; matrix 47/106 (22 full), 62/154 operation, 47/72 fresh sidecars, zero stale hashes; aggregate remains historical. Local-only; UI acceptance 0/128; backend/staging 0/154.\nEV-20260930-116 profile.success: Chromium local current-head run across four routes observed 7/7 operation IDs and 15/15 service-worker responses, including three fixture-only writes (200/200/204); 22/22 source hashes match. Flow 4.704 ms, one revoke callback arrived after its successful 204 response, no unmatched failures/page errors/external API/backend requests. Sidebar at /w/profile/edit highlights Trang chủ, tracked under C05.03. Matrix 48/106 (23 full), 69/154 unique operations, 48/72 current sidecars, zero stale; runtime aggregate historical. EV-117 local repository validation passed; next profile.empty. Profile empty EV-20260930-118: 3/3 collection reads returned 200 {items:[]}; 9/9 service-worker responses, 0 writes, 21/21 source hashes, 1,656 ms local; profile root object preserved. Sidebar mismatch reproduced at /w/profile/devices. Next profile.loading. Profile loading EV-20260930-120: all 4 GET routes remained loading in flight; responses 200 after 2.006–2.017 seconds from local MSW; 22/22 hashes; 0 writes/errors. No active sidebar item on the loading screenshots; Preview warning/Web widget overlap persists. Next profile.error. Profile loading EV-20260930-120/121 registered: 4/4 reads, 7/7 service-worker responses, ~2-second local delay, 22/22 source hashes; matrix 50/106 fresh, 25 full, 69/154 operations, 50/72 sidecars and 0 stale. Tracker, matrix/index, inventory, OpenAPI, syntax/format and whitespace gates pass. Next profile.error.\nEV-20260930-130 measured referral.empty on current HEAD c5fc38b0755da3fe2c9831fe3040160a308a9a03: getReferralOverview 1/1, GET/200 via local MSW, 2 ms response, 237 ms scenario, 704 ms total flow, 20/20 source hashes, zero request errors/writes/page errors/external API origins; empty UI showed zero statistics and the expected message. Matrix is 54/106 fresh (27 full, 27 representative), 70/154 unique operations, 54/72 current sidecars, 19 historical baseline sidecars with current hashes, zero stale; aggregate remains historical_baseline. UI acceptance 0/128 and backend/staging 0/154. C05.03 top label and Preview/Web overlap remain open. Next referral.loading.\nEV-20260930-131 validation on current HEAD: scenario matrix and UI index current at 54/106; architecture inventory 129 pages/427 routes/149 components/32 services/28 mocks; OpenAPI 15 contracts/154 operations; Referral runner lint, format, syntax, and git diff --check pass; check-tracking errorCount=0. UI acceptance 0/128; backend/staging 0/154.\n\nEV-20260930-132 measured referral.loading on current HEAD c5fc38b0755da3fe2c9831fe3040160a308a9a03: getReferralOverview 1/1, GET/200 via local MSW, loading visible at 2,012 ms, response at 2,019 ms, scenario 2,137 ms, flow 2,610 ms, 20/20 source hashes, 0 errors/writes/page errors/external API origins. Matrix is 55/106 fresh (28 full, 27 representative), 70/154 unique operations, 55/72 current sidecars, 19 historical baseline sidecars with current hashes, 0 stale; aggregate remains historical_baseline. UI acceptance 0/128; backend/staging 0/154. C05.03 active-navigation and Preview/Web overlap remain open. Next referral.error.\nEV-20260930-133 validation passed: matrix/UI index current at 55/106; architecture inventory 129 pages/427 routes/149 components/32 services/28 mocks; OpenAPI 15 contracts/154 operations; runner ESLint/Prettier/node syntax and git diff --check pass; check-tracking errorCount=0. UI acceptance 0/128, backend/staging 0/154.\n Current support.loading is fully verified for its 4 read operations with 25/25 hashes; all responses were local MSW and do not verify backend/staging. Screenshots add the /w/news active-navigation and existing widget/banner issues to C05.03.\nEV-20260930-143–147: Support error retry ownership fixed and measured. Four read hooks now allow only the shared HTTP client budget (3 attempts); same local runner fell from 48 to 24 injected failures across initial+Retry. Success/empty/loading/pending reports refreshed to current query hashes. Support auth remains contract-blocked (0/6 401/403); next matrix row: audit admin.error. Matrix 61/106 fresh; user acceptance 0/128; backend/staging 0/154. Current-head refresh at 2026-09-30T18:59:15.021Z: 65/65 stale sidecars rerun and hash-verified; matrix has 73/106 fresh scenarios, 37 full, 85/154 operations, 0 stale. Next admin.unauthorized.\nEV-20261001-001: Admin unauthorized current-head Chromium/MSW run passed for 3 reachable GETs: 3/3 401, 3/3 refresh contract fixtures 200/null, 3/3 login redirects, stale content 0, Admin writes/failures 0, 24/24 source hashes. The trace also preserves 7 app-level abort callbacks (3 Auth logout with prior response, 4 Market pairs/watchlist without response during home teardown). Matrix 74/106 fresh, 37 full, 85/154 operations, 74/74 sidecars, zero stale; runtime aggregate historical. Next Arena 401/403 contract audit; user acceptance/backend/CI gates remain pending.\nEV-20261001-002: Arena OpenAPI audit confirms 0/4 401 and 0/4 403; keep both rows not_verified. wallet.empty current-head browser run: 3 GET/200, 2/2 operation IDs, 2 assets / $16,754.32, 0 transactions in both views, 0 Wallet writes, 0 page errors, 0 external API origins, 17/17 hashes; Wallet flow 205 ms / total local flow 842 ms. Screenshot review added Wallet overview active-nav, Preview/Web overlap and Google Fonts origins to C05.03. Matrix 75/106 fresh, 87/154 operations, 0 stale; aggregate historical. Next wallet.forbidden GETs only.\nEV-20261001-008 records the measured wallet.error retry fix and fresh Wallet sidecars; next checkpoint is local transfer-only wallet.pending.\nEV-20261001-009: Re-ran all six Wallet current-source sidecars after the regression test typing correction; next is transfer-only wallet.pending via local MSW.\nEV-20261001-042/043 recorded A06.03 Auth refresh contract correction and eight current-source scenario reruns; matrix/index synchronized. The global active checkpoint remains unchanged.\n\nB07.03 closed: exact-SHA run #34 on 92b1d15 passed 41/41 steps and artifact verification; final ledger commit cf9f33f passed exact-SHA run #35, 41/41 steps. Checker errorCount=0, unit/integration 2415/2415, E2E 51/51, bundle 221/221. Resume A06.03 at arena.unauthorized as specified by PLAN; unsupported 401/403 and unknown/duplicate states remain not_verified.\n\nEV-20261002-009: current source hashes confirm Arena unauthorized 0/4 HTTP 401, Arena forbidden 0/4 HTTP 403, and Auth forbidden 0/8 HTTP 403. Rows remain not_verified; no browser/API side effect. Next: dca.forbidden. B07 exact-SHA Ubuntu run #34 and final ledger commit run #35 passed.\n\nEV-20261002-010: dca.forbidden resolved 5/5 current operations and 0/5 declare HTTP 403. Row remains not_verified; no browser/API side effect. Next: discovery.unauthorized.\n\nEV-20261002-011: discovery.unauthorized resolves 2/2 with 0/2 HTTP 401; discovery.forbidden 0/2 HTTP 403. Both rows remain not_verified. Next: earn.forbidden.\n\nEV-20261002-012: Earn contract audit leaves forbidden/unknown/duplicate not_verified; writes require idempotency key but no conflict/replay or lookup result is specified. No side effect was sent. Next: Launchpad unauthorized/forbidden.\nEV-20261002-013: Launchpad 0/2 mapped operations declare 401 or 403; Market 0/22 contract operations declare either status and each authorization row maps 8 operations. Four rows remain not_verified; no browser/API side effect. Next p2p.unknown.\nEV-20261002-014: check-tracking exits 1, total 2191 errors; path scope maps 916/916, while 885/916 active non-plan file records lack catalogued source fingerprints. Keep A06.03 in_progress.\nEV-20261002-015: P2P unknown contract audit maps 4/4 operations; all 3 writes require Idempotency-Key but the create flow has no deterministic lost-receipt correlation or same-key replay response. Keep not_verified; next predictions.forbidden.\nEV-20261002-016: Predictions 8/8 operations map; 0/8 declare 403. Place-order 409 combines duplicate key and market-state conflict; no same-key replay or key lookup. All three rows remain not_verified; next profile.forbidden.\nEV-20261002-017: profile.forbidden maps 7/7 operations; 0/7 declare HTTP 403 (all seven declare 401). Row remains not_verified; next referral.forbidden.\nEV-20261002-018: getReferralOverview is the sole mapped operation and has 200/401 with no 403; referral.forbidden remains not_verified. Next support.unauthorized.\nEV-20261002-019: Support maps six operations; 0/6 declare either 401 or 403. Both rows remain not_verified; next trading.unknown.\nEV-20261002-020: Trading unknown/duplicate maps five operations; three writes require Idempotency-Key, but no stable replay or clientOrderId lookup contract exists. No orders were changed. Next wallet.unknown.\nEV-20261002-021: Wallet unknown/duplicate current-source audit confirms 2 writes require Idempotency-Key but no transaction correlation/key lookup or stable replay result; no financial side effect. This is the final not_verified row in matrix order; next action is blocker reconciliation, not an unsupported write.\nEV-20261002-030: 10 current-source scenario reports and 64 screenshots pass in local Chromium/MSW; handler test 59/59. Auth refresh guest response matches 200/null. Final checker remains 61 errors across exact application inventory 916/916 after 75 evidence artifact rows were registered without claiming an absent Git snapshot. UI acceptance 0/128, backend/staging 0/154, and 25 contract-dependent rows remain open. EV-20261003-002 recorded shared Auth Chromium/MSW preview at http://127.0.0.1:5174/: 8 application API responses, 0 failed API requests, 0 page errors; login MFA invalid/valid returned 400/200, locked returned 423, and full reload session returned 401 under the in-memory mock. No backend/staging or user acceptance evidence. EV-20261003-003 refreshed 20/20 A06 sidecars; matrix 81/106 fresh, 81/81 current sidecars, 0 source-hash stale. Runtime aggregate remains historical_baseline; 25 rows remain not_verified. U01.03 remains active pending the API/security decision on guest verifyMfa.\nEV-20261003-004: C05.03 follow-up measured a 19 px Web badge/banner gap and keyboard preview access at /w/auth/login; 16 focused tests pass. Local MSW only; C05 UI acceptance remains 0/128. EV-20261003-005 records scoped LF normalization; final EOL preflight passes 3218 paths. check-tracking remains exit 1 with 73 snapshot-ledger errors. Global active step remains U01.03 pending API/security approval for guest verifyMfa semantics. EV-20261003-006 records a 9/9 API-mode Auth E2E run including login MFA HTTP 410 handling; backend/staging evidence is absent and registration verifyMfa remains owner-blocked. Final EV-20261003-006 validation: focused browser 9/9 and local static gates pass; check-tracking remains exit 1 with 40 source-ledger errors and source inventory 916/916. EV-20261003-007 records a 10/10 combined Auth browser run, including the complete contract-backed password-reset flow; evidence remains local fixture only. Final EV-20261003-007 validation: browser 10/10 and local static gates pass; check-tracking remains exit 1 with 40 source-ledger errors and source inventory 916/916. EV-20261003-008 records Auth reset test-fixture alignment with declared OpenAPI outcomes; focused tests pass 6/6. Final EV-20261003-008 validation: focused tests and local static gates pass; check-tracking remains exit 1 with 40 source-ledger errors and source inventory 916/916.\nEV-20261010-042 registered; the 100% aggregate target remains in progress.\nEV-20261010-043 registered; aggregate coverage target remains in progress.\nEV-20261010-046: full Vitest/V8 suite 324/324 files, 2918/2918 tests; 97.52/95.58/96.66/98.14 aggregate, 304/406 measurable files complete, 102 gaps, 32 no-counter paths excluded. WebCommandBar and P2PHomeCards reach 100/100/100/100 in full suite; focused P2PHomeCards branch coverage is 51/62. Local Windows only; exact-SHA CI, backend, staging, production and acceptance unverified. Next P2PExpressConfirmPage and LaunchpadContractPages.\nEV-20261010-047: full Vitest/V8 suite 324/324 files, 2928/2928 tests; 97.58/95.76/96.78/98.19 aggregate, 306/406 measurable files complete, 100 gaps, 32 no-counter paths excluded. P2PExpressConfirmPage and LaunchpadContractPages reach 100/100/100/100. check-tracking exits 1 with 281 dirty-tree catalog/source-head mismatches; unrelated fingerprints were not rebaselined. Local Windows only; exact-SHA CI, backend, staging, production and acceptance unverified. Next OrderReceiptPage.\nEV-20261010-048: full Vitest/V8 suite 324/324 files, 2940/2940 tests; 97.63/95.82/96.89/98.26 aggregate, 307/406 measurable files complete, 99 gaps, 32 no-counter paths excluded. OrderReceiptPage reaches 100/100/100/100. check-tracking exits 1 with 284 dirty-tree catalog/source-head mismatches; unrelated fingerprints were not rebaselined. Local Windows only; exact-SHA CI, backend, staging, production and acceptance unverified. Next useSessionTimeout.\nEV-20261010-052: Web2FASetupFlow and Web2FASetupBackupStep focused counters are 100%; full Vitest is 324/324 files and 2952/2952 tests with aggregate S97.86/B96.05/F97.22/L98.45 and 95 measurable source gaps. Next MarketDepthPage owner coverage. Historical WebLoginPage full-suite failure is resolved by later passing full-suite runs. Exact-SHA hosted CI, backend, staging, production and user acceptance remain unverified.\nEV-20261010-053: MarketDepthPage.tsx is 100/100/100/100 in focused and full reports; full Vitest is 324/324 files and 2957/2957 tests with aggregate S97.91/B96.10/F97.30/L98.50, 312/406 measurable files complete and 94 gaps. Next MarketPriceAlertsPage owner coverage. Exact-SHA hosted CI, backend, staging, production and user acceptance remain unverified.\nEV-20261011-054 and EV-20261011-055 record local focused 13/13 Market and 5/5 MiniChart passes; both target files reached 100/100/100/100. The EV-053 aggregate is preserved unchanged.\n13/10/2026 DECISION-20261013-002: snapshot audit và 14 remediation slices recorded; previous application checkpoint retained in decision/executionPlan, no code implemented.\n13/10 337/337 files, 3087/3087 tests, standard59/4skip + AuthAPI34 + AuthMSW41, 14 static gates, production build/mock/bundle pass. Global ledger still exits1 with17 uncommitted-source fingerprint errors; hosted/external/C03.05 target remains open. Index generation refreshed and closed separately; global production readiness not certified.\nFinal canonical cleanup:0 files/0 bytes,0 errors; preserved referenced/legacy output and latest production build. Git delivery question is pending; no commit/push/PR performed.\nScoped review of two existing current-source Wallet screenshots does not reproduce historical active-navigation/preview overlap findings; no application changes. Wider C05.03 remains open.\n17 fingerprint errors resolved from actual local source commits; canonical checker0. Earlier81 reports not relabelled; strict-HEAD browser refresh remains pending on final commit.\nOwner continuation:19 pre-fix failures;3130 tests pass,14 gates pass,332/408 fully covered source files. No100/production/backend claim.\n25 owner source/test/inventory paths now have individual actual local commit proofs; strict-HEAD browser refresh follows on final source commit.\nResource navigation fixed at52 lines; strict-head browser/build refresh remains separate.\n44 navigation source/test/inventory paths now have individual actual local commit proofs; strict-HEAD browser refresh follows on final source commit.\nFinancial write owner boundaries repaired; strict-head browser/build refresh remains separate.\n22 financial source/test/inventory paths now have individual actual local commit proofs; strict-HEAD browser refresh follows on final source commit.\nShared control/privacy slice:21 verified failures repaired; final-source proof and aggregate100 remain separate.\n27 shared-control source/test/inventory paths now have individual actual local commit proofs; strict-HEAD browser refresh follows on final source commit.\nRelease service diagnostics verified; latest coverage measured on actual current working bytes.\n8 service-diagnostic source/test/inventory paths now have individual actual local commit proofs; strict-HEAD browser refresh follows on final source commit.\nOwner behavior evidence verified; latest coverage measured on current working bytes.\n16 owner-feedback source/test/inventory paths now have individual actual local commit proofs; strict-HEAD browser refresh follows on final source commit.\nService input validation evidence verified; latest coverage measured on current working bytes.\n16 cache-shape source/test/inventory paths now have individual actual local commit proofs; strict-HEAD browser refresh follows on final source commit.\nOwner lifecycle evidence verified; latest coverage measured on current working bytes.\n16 owner-lifecycle source/test/inventory paths now have individual actual local commit proofs; strict-HEAD browser refresh follows on final source commit.\nFinal current-source81-runner refresh complete;build/mock/bundle and matrix/UI checks pass. No100%/production claim;coverage55 gaps,widerUI and external inputs remain open.\nCurrent final canonical cleanup:deleted0 files/0 logical bytes,0errors;task-owned processes/listeners ended. Open frontend and external criteria preserved.\n2026-10-14 EV-20261014-001/002: coverage counter target measured complete; wide local desktop scan recorded separately. C03 parent/C05.03, backend/staging, hosted gates and acceptance remain open.\nEV-20261014-003: check-tracking exit1/186 errors; git diff --check and EOL pass; no source catalog rebased.\nFinal pre-audit check-tracking: exit1/187; coverage counters measured 100%; C03.05 remains in_progress due the required ledger gate.\nAfter registering iteration 53 evidence files, check-tracking exits1/184; remaining provenance errors are not rebased. EV-20261014-012/014: re-run full V8 suite 360/360 files, 3462/3462 tests and 408/408 measurable files fully covered; all 905 current source hashes match and strict lint budget is 0/0. Historical GitHub run #51 failed on the prior SHA; final-SHA rerun remains pending.",
+    "remainingWork": "Local coverage: 408/408 measurable source files at S/B/F/L 100%, 0 gaps; full suite 360/360 files and 3462/3462 tests. TrInput lint root cause is fixed in P1 commit 77fc8f6e with exact blob provenance and local zero-warning gates. Run #51 failed on prior SHA 0317c2c6; exact-final-SHA CI/artifact/governance remain pending. C05.03 acceptance 0/128, 14 representative screenshots reviewed; route/state/axe and fixture/asset classification remain. Production endpoints need approval. Backend/staging 0/154, 25/106 contract-dependent rows, UAT 0/128 and telemetry/SLO owners remain open.",
     "planningDecisionId": "DECISION-20261013-002",
     "blockerHistory": [
       {
@@ -15286,16 +15285,18 @@
             "EV-20261014-006",
             "EV-20261014-008",
             "EV-20261014-010",
-            "EV-20261014-011"
+            "EV-20261014-011",
+            "EV-20261014-012",
+            "EV-20261014-014"
           ],
-          "notes": "Historical C03.05 Vitest + V8 coverage run retained: 282 files, 2,385/2,386 tests, with all coverage thresholds passing; product intent for the old login-copy mismatch was then unresolved. Current full-suite revalidation EV-20261001-038 passes 288/288 files and 2,385/2,385 tests, and both TypeScript projects pass on the dirty Windows working tree. No clean Node22/Ubuntu CI, backend/staging, or user acceptance is implied. Iteration 7 evidence EV-20261010-007 records 310/310 files and 2771/2771 tests, with aggregate 96.04/92.09/94.51/97.21 percent; 170/406 measurable files retain gaps. Follow-up remains in progress toward 100/100/100/100. Iteration 8 EV-20261010-008: full suite 315/315 files and 2791/2791 tests; aggregate 96.05/92.39/94.56/97.23 percent; 160/406 measurable files retain gaps. Target remains 100/100/100/100. Iteration 9 EV-20261010-009: full suite 322/322 files and 2798/2798 tests; aggregate 96.05/92.49/94.56/97.23 percent; 153/406 measurable files retain gaps. Target remains 100/100/100/100. Iteration 10 EV-20261010-010: full suite 323/323 files and 2806/2806 tests; aggregate 96.06/92.59/94.56/97.23 percent; 152/406 measurable files retain gaps. Target remains 100/100/100/100. EV-20261010-011 focused Header slice: 1/1 owner test file, 15/15 tests; Header.tsx 36/36 statements, 90/90 branches, 7/7 functions, and all executable lines covered. Aggregate full-suite remeasurement is pending. EV-20261010-012 full suite 324/324 files and 2818/2818 tests; aggregate 96.09/92.86/94.59/97.26; 256/406 measurable source files have no gaps. Header and StickyHeader each measure 100/100/100/100 focused and in the full suite. EV-20261010-013 full suite 324/324 files and 2820/2820 tests; aggregate 96.12/93.01/94.64/97.28; 257/406 measurable files have no gaps. Header, StickyHeader and MarketSentimentPage each measure 100/100/100/100 focused and in the full suite. Tracking checker snapshot after EV-013: exit 1, 154 existing/working-tree provenance reconciliation errors; this does not invalidate passing Vitest results, and no forced source-head rebaseline was applied. EV-20261010-014 full suite 324/324 files and 2822/2822 tests; aggregate 96.18/93.14/94.64/97.28, 258/406 measurable files fully covered. Header, StickyHeader, MarketSentimentPage and ChartAnnotationOverlay each measure 100/100/100/100. EV-20261010-014 full suite 324/324 files and 2822/2822 tests; aggregate 96.18/93.14/94.64/97.28; 258/406 measurable files without gaps. ChartAnnotationOverlay joins Header, StickyHeader and MarketSentimentPage at 100/100/100/100. EV-023: full suite 324/324 files, 2869/2869 tests; aggregate 96.94/94.16/95.84/97.82%; 269/406 measurable files are full and 137 have gaps. MarketDerivativesPage is 100/100/100/100 in full-suite V8 coverage. EV-024: full suite 324/324 files, 2872/2872 tests; aggregate 96.98/94.29/95.84/97.83%; 270/406 measurable files are full and 136 have gaps. carousel.tsx is 100/100/100/100 in full-suite V8 coverage. EV-024: full suite 324/324 files, 2878/2878 tests; aggregate 97.03/94.41/95.84/97.83%; 271/406 measurable files are full and 135 have gaps. DCAOverviewCardVisuals.tsx is 100/100/100/100 in full-suite V8 coverage. EV-024: full suite 324/324 files, 2882/2882 tests; aggregate 97.06/94.53/95.86/97.84%; 272/406 measurable files are full and 134 have gaps. EarnFeatureComponents.tsx is 100/100/100/100 in full-suite V8 coverage. EV-027: full suite 324/324 files, 2884/2884 tests; aggregate 97.11/94.64/96.02/97.89%; 273/406 measurable files are full and 133 have gaps. PredictionRiskCalculatorPage.tsx is 100/100/100/100 in full-suite V8 coverage. EV-028: full suite 324/324 files, 2887/2887 tests; aggregate 97.15/94.76/96.09/97.93%; 274/406 measurable files are full and 132 have gaps. P2PCreateAdContractPage.tsx is 100/100/100/100 in full-suite V8 coverage. EV-029: full suite 324/324 files, 2889/2889 tests; aggregate 97.2/94.86/96.12/97.96%; 275/406 measurable files are full and 131 have gaps. Coachmark.tsx is 100/100/100/100 in full-suite V8 coverage. EV-030: full suite 324/324 files, 2892/2892 tests; aggregate 97.22/94.96/96.15/97.98%; 276/406 measurable files are full and 130 have gaps. P2PAchievementsPage.tsx is 100/100/100/100 in full-suite V8 coverage. EV-031: full suite 324/324 files, 2894/2894 tests; aggregate 97.28/95.05/96.27/98.02%; 277/406 measurable files are full and 129 have gaps. TradeAnalyticsContractPage.tsx is 100/100/100/100 in full-suite V8 coverage. EV-032: TwoFASetupPage.tsx is 100/100/100/100 in full-suite V8 coverage. Full suite 324/324 files, 2896/2896 tests; aggregate 97.32/95.14/96.3/98.03%; 278/406 measurable files fully covered and 128 retain gaps. Target remains 100/100/100/100. EV-033: IntegrationPendingPage.tsx is 100/100/100/100 in full-suite V8 coverage. Full suite 324/324 files, 2897/2897 tests; aggregate 97.32/95.15/96.3/98.02%; 279/406 measurable files fully covered and 127 retain gaps. Target remains 100/100/100/100. EV-034: MarketComparisonPage.tsx is 100/100/100/100 in full-suite V8 coverage. Full suite 324/324 files, 2897/2897 tests; aggregate 97.32/95.16/96.3/98.02%; 280/406 measurable files fully covered and 126 retain gaps. Target remains 100/100/100/100. EV-035: P2PDisputesPage.tsx is 100/100/100/100 in full-suite V8 coverage. Full suite 324/324 files, 2897/2897 tests; aggregate 97.32/95.17/96.3/98.02%; 281/406 measurable files fully covered and 125 retain gaps. Target remains 100/100/100/100. EV-036: CoachmarkService.ts and useDCAAnalytics.ts both measure 100/100/100/100 in the full-suite V8 report. Full suite 324/324 files and 2898/2898 tests; aggregate 97.33/95.18/96.3/98.03%; 283/406 measurable files fully covered and 123 retain gaps. Target remains 100/100/100/100. EV-037: six additional measurable sources reach 100/100/100/100; RootLayout, Web2FASetupBackupStep, DiscoveryContractPages, P2POrdersContractPage, TradingMarketPanel, and ReferralContractPage. Seven focused owner suites pass 46/46. Full suite 324/324 files and 2903/2903 tests; aggregate 97.35/95.26/96.35/98.04%; 289/406 measurable files fully covered and 117 retain gaps. Target remains 100/100/100/100. EV-038: LoginPage.tsx reaches 100/100/100/100 in the full-suite V8 report. Two owner test files pass 9/9 tests; no auth/API contract changed. Full suite 324/324 files and 2904/2904 tests; aggregate 97.36/95.28/96.35/98.04%; 290/406 measurable files fully covered and 116 retain gaps. Target remains 100/100/100/100. EV-039: DCAOverviewCard.tsx reaches 100/100/100/100 in the full-suite V8 report. Its owner test file passes 10/10 tests, covering billion-scale compact VND and toggling the open tooltip closed. Full suite 324/324 files and 2905/2905 tests; aggregate 97.37/95.3/96.35/98.04%; 291/406 measurable files fully covered and 115 retain gaps. Target remains 100/100/100/100. EV-040: market-api.ts reaches 100/100/100/100 in iteration-48 full-suite coverage. The owner test covers rejection when candle.low exceeds min(open, close). Full suite 324/324 files and 2905/2905 tests; aggregate 97.38/95.31/96.35/98.05 percent; 292/406 measurable files fully covered and 114 retain gaps. EV-041: P2PExpressPage.tsx reaches 100/100/100/100 in iteration-49 full-suite coverage. Owner test 5/5 covers no-offer disabled CTA/no navigation and the empty paymentMethods fallback. The duplicate confirmation-handler guard was removed while the CTA disabled invariant remains. Full suite 324/324 files, 2906/2906 tests; aggregate 97.38/95.33/96.35/98.05 percent; 293/406 measurable files fully covered and 113 retain gaps.\n13/10 final verification: 337/337 files, 3087/3087 tests, standard59/4skip + AuthAPI34 + AuthMSW41, 14 static gates, production build/mock/bundle pass. Global ledger still exits1 with17 uncommitted-source fingerprint errors; hosted/external/C03.05 target remains open.\n13/10 owner continuation:19 assertions red before fix;3130/3130 tests,14 gates pass;332/408 full coverage files. Same-intent serialization/error/pending boundaries verified locally. Existing full acceptance/backend criteria remain open.\n13/10 resource navigation:4 pre-fix failures,52 fixed route lines,7 added regressions;3137 tests and14 gates pass;332/408 fully covered. Final source browser/build and100 target remain open.\n13/10 financial writes:52 verified pre-fix failures;3189 tests and14 gates pass;329/408 fully covered. Final source browser/build and100 target remain open.\n13/10 shared controls/privacy:21 verified pre-fix failures;3244 tests and14 gates pass;339/408 fully covered. Target100 remains open.\n13/10 release services:10 verified pre-fix failures;3259 tests and14 gates pass;339/408 fully covered. Target100 remains open.\n13/10 owner behavior regression proofs:16 test paths;3310 tests and14 gates pass;351/408 fully covered. Target100 remains open.\n13/10 service input validation:21 verified pre-fix cases across5 source/test paths;3333 tests and14 gates pass;351/408 fully covered. Target100 remains open.\n13/10 owner lifecycle:4 verified pre-fix cases across11 source/test paths;3344 tests and14 gates pass;353/408 fully covered. Target100 remains open. Iteration 53 EV-20261014-001: full local V8 run passes 360/360 files and 3451/3451 tests, 408/408 measurable files fully covered, 0 gaps; aggregate S/B/F/L all 100%, thresholds and denominator unchanged. Production build still cannot produce a bundle without VITE_API_BASE_URL and VITE_WS_URL. EV-20261014-003 records the global ledger checker exit 1 (186 reported errors); C03.05 coverage counters remain measured complete, while C03 parent/ledger gate remains open.\n14/10 iteration54: EV-20261014-004 reruns the full suite after the DCA source change: 360/360 files, 3454/3454 tests, S/B/F/L 100/100/100/100. Formal step remains in_progress pending check-tracking and remaining C03 acceptance.\n14/10 iteration55: EV-20261014-006 records 360/360 files and 3462/3462 tests passing, 408/408 measurable files with 100% S/B/F/L and unchanged denominator. Both TypeScript projects pass; ESLint has 0 errors and 2 existing warnings. EV-20261014-008 records production build exit 1 because VITE_API_BASE_URL and VITE_WS_URL are absent. The required repository ledger gate is still failing on working-source/catalogued-head provenance; keep step in_progress.\n14/10/2026 EV-20261014-011: full-suite coverage remains applicable to current source (905/905 src SHA-256 matches); check-tracking errorCount=0, architecture inventory, EOL and git diff checks pass. Keep step in_progress: production bundle inputs are absent and remaining parent acceptance is not satisfied.",
+          "notes": "Historical C03.05 Vitest + V8 coverage run retained: 282 files, 2,385/2,386 tests, with all coverage thresholds passing; product intent for the old login-copy mismatch was then unresolved. Current full-suite revalidation EV-20261001-038 passes 288/288 files and 2,385/2,385 tests, and both TypeScript projects pass on the dirty Windows working tree. No clean Node22/Ubuntu CI, backend/staging, or user acceptance is implied. Iteration 7 evidence EV-20261010-007 records 310/310 files and 2771/2771 tests, with aggregate 96.04/92.09/94.51/97.21 percent; 170/406 measurable files retain gaps. Follow-up remains in progress toward 100/100/100/100. Iteration 8 EV-20261010-008: full suite 315/315 files and 2791/2791 tests; aggregate 96.05/92.39/94.56/97.23 percent; 160/406 measurable files retain gaps. Target remains 100/100/100/100. Iteration 9 EV-20261010-009: full suite 322/322 files and 2798/2798 tests; aggregate 96.05/92.49/94.56/97.23 percent; 153/406 measurable files retain gaps. Target remains 100/100/100/100. Iteration 10 EV-20261010-010: full suite 323/323 files and 2806/2806 tests; aggregate 96.06/92.59/94.56/97.23 percent; 152/406 measurable files retain gaps. Target remains 100/100/100/100. EV-20261010-011 focused Header slice: 1/1 owner test file, 15/15 tests; Header.tsx 36/36 statements, 90/90 branches, 7/7 functions, and all executable lines covered. Aggregate full-suite remeasurement is pending. EV-20261010-012 full suite 324/324 files and 2818/2818 tests; aggregate 96.09/92.86/94.59/97.26; 256/406 measurable source files have no gaps. Header and StickyHeader each measure 100/100/100/100 focused and in the full suite. EV-20261010-013 full suite 324/324 files and 2820/2820 tests; aggregate 96.12/93.01/94.64/97.28; 257/406 measurable files have no gaps. Header, StickyHeader and MarketSentimentPage each measure 100/100/100/100 focused and in the full suite. Tracking checker snapshot after EV-013: exit 1, 154 existing/working-tree provenance reconciliation errors; this does not invalidate passing Vitest results, and no forced source-head rebaseline was applied. EV-20261010-014 full suite 324/324 files and 2822/2822 tests; aggregate 96.18/93.14/94.64/97.28, 258/406 measurable files fully covered. Header, StickyHeader, MarketSentimentPage and ChartAnnotationOverlay each measure 100/100/100/100. EV-20261010-014 full suite 324/324 files and 2822/2822 tests; aggregate 96.18/93.14/94.64/97.28; 258/406 measurable files without gaps. ChartAnnotationOverlay joins Header, StickyHeader and MarketSentimentPage at 100/100/100/100. EV-023: full suite 324/324 files, 2869/2869 tests; aggregate 96.94/94.16/95.84/97.82%; 269/406 measurable files are full and 137 have gaps. MarketDerivativesPage is 100/100/100/100 in full-suite V8 coverage. EV-024: full suite 324/324 files, 2872/2872 tests; aggregate 96.98/94.29/95.84/97.83%; 270/406 measurable files are full and 136 have gaps. carousel.tsx is 100/100/100/100 in full-suite V8 coverage. EV-024: full suite 324/324 files, 2878/2878 tests; aggregate 97.03/94.41/95.84/97.83%; 271/406 measurable files are full and 135 have gaps. DCAOverviewCardVisuals.tsx is 100/100/100/100 in full-suite V8 coverage. EV-024: full suite 324/324 files, 2882/2882 tests; aggregate 97.06/94.53/95.86/97.84%; 272/406 measurable files are full and 134 have gaps. EarnFeatureComponents.tsx is 100/100/100/100 in full-suite V8 coverage. EV-027: full suite 324/324 files, 2884/2884 tests; aggregate 97.11/94.64/96.02/97.89%; 273/406 measurable files are full and 133 have gaps. PredictionRiskCalculatorPage.tsx is 100/100/100/100 in full-suite V8 coverage. EV-028: full suite 324/324 files, 2887/2887 tests; aggregate 97.15/94.76/96.09/97.93%; 274/406 measurable files are full and 132 have gaps. P2PCreateAdContractPage.tsx is 100/100/100/100 in full-suite V8 coverage. EV-029: full suite 324/324 files, 2889/2889 tests; aggregate 97.2/94.86/96.12/97.96%; 275/406 measurable files are full and 131 have gaps. Coachmark.tsx is 100/100/100/100 in full-suite V8 coverage. EV-030: full suite 324/324 files, 2892/2892 tests; aggregate 97.22/94.96/96.15/97.98%; 276/406 measurable files are full and 130 have gaps. P2PAchievementsPage.tsx is 100/100/100/100 in full-suite V8 coverage. EV-031: full suite 324/324 files, 2894/2894 tests; aggregate 97.28/95.05/96.27/98.02%; 277/406 measurable files are full and 129 have gaps. TradeAnalyticsContractPage.tsx is 100/100/100/100 in full-suite V8 coverage. EV-032: TwoFASetupPage.tsx is 100/100/100/100 in full-suite V8 coverage. Full suite 324/324 files, 2896/2896 tests; aggregate 97.32/95.14/96.3/98.03%; 278/406 measurable files fully covered and 128 retain gaps. Target remains 100/100/100/100. EV-033: IntegrationPendingPage.tsx is 100/100/100/100 in full-suite V8 coverage. Full suite 324/324 files, 2897/2897 tests; aggregate 97.32/95.15/96.3/98.02%; 279/406 measurable files fully covered and 127 retain gaps. Target remains 100/100/100/100. EV-034: MarketComparisonPage.tsx is 100/100/100/100 in full-suite V8 coverage. Full suite 324/324 files, 2897/2897 tests; aggregate 97.32/95.16/96.3/98.02%; 280/406 measurable files fully covered and 126 retain gaps. Target remains 100/100/100/100. EV-035: P2PDisputesPage.tsx is 100/100/100/100 in full-suite V8 coverage. Full suite 324/324 files, 2897/2897 tests; aggregate 97.32/95.17/96.3/98.02%; 281/406 measurable files fully covered and 125 retain gaps. Target remains 100/100/100/100. EV-036: CoachmarkService.ts and useDCAAnalytics.ts both measure 100/100/100/100 in the full-suite V8 report. Full suite 324/324 files and 2898/2898 tests; aggregate 97.33/95.18/96.3/98.03%; 283/406 measurable files fully covered and 123 retain gaps. Target remains 100/100/100/100. EV-037: six additional measurable sources reach 100/100/100/100; RootLayout, Web2FASetupBackupStep, DiscoveryContractPages, P2POrdersContractPage, TradingMarketPanel, and ReferralContractPage. Seven focused owner suites pass 46/46. Full suite 324/324 files and 2903/2903 tests; aggregate 97.35/95.26/96.35/98.04%; 289/406 measurable files fully covered and 117 retain gaps. Target remains 100/100/100/100. EV-038: LoginPage.tsx reaches 100/100/100/100 in the full-suite V8 report. Two owner test files pass 9/9 tests; no auth/API contract changed. Full suite 324/324 files and 2904/2904 tests; aggregate 97.36/95.28/96.35/98.04%; 290/406 measurable files fully covered and 116 retain gaps. Target remains 100/100/100/100. EV-039: DCAOverviewCard.tsx reaches 100/100/100/100 in the full-suite V8 report. Its owner test file passes 10/10 tests, covering billion-scale compact VND and toggling the open tooltip closed. Full suite 324/324 files and 2905/2905 tests; aggregate 97.37/95.3/96.35/98.04%; 291/406 measurable files fully covered and 115 retain gaps. Target remains 100/100/100/100. EV-040: market-api.ts reaches 100/100/100/100 in iteration-48 full-suite coverage. The owner test covers rejection when candle.low exceeds min(open, close). Full suite 324/324 files and 2905/2905 tests; aggregate 97.38/95.31/96.35/98.05 percent; 292/406 measurable files fully covered and 114 retain gaps. EV-041: P2PExpressPage.tsx reaches 100/100/100/100 in iteration-49 full-suite coverage. Owner test 5/5 covers no-offer disabled CTA/no navigation and the empty paymentMethods fallback. The duplicate confirmation-handler guard was removed while the CTA disabled invariant remains. Full suite 324/324 files, 2906/2906 tests; aggregate 97.38/95.33/96.35/98.05 percent; 293/406 measurable files fully covered and 113 retain gaps.\n13/10 final verification: 337/337 files, 3087/3087 tests, standard59/4skip + AuthAPI34 + AuthMSW41, 14 static gates, production build/mock/bundle pass. Global ledger still exits1 with17 uncommitted-source fingerprint errors; hosted/external/C03.05 target remains open.\n13/10 owner continuation:19 assertions red before fix;3130/3130 tests,14 gates pass;332/408 full coverage files. Same-intent serialization/error/pending boundaries verified locally. Existing full acceptance/backend criteria remain open.\n13/10 resource navigation:4 pre-fix failures,52 fixed route lines,7 added regressions;3137 tests and14 gates pass;332/408 fully covered. Final source browser/build and100 target remain open.\n13/10 financial writes:52 verified pre-fix failures;3189 tests and14 gates pass;329/408 fully covered. Final source browser/build and100 target remain open.\n13/10 shared controls/privacy:21 verified pre-fix failures;3244 tests and14 gates pass;339/408 fully covered. Target100 remains open.\n13/10 release services:10 verified pre-fix failures;3259 tests and14 gates pass;339/408 fully covered. Target100 remains open.\n13/10 owner behavior regression proofs:16 test paths;3310 tests and14 gates pass;351/408 fully covered. Target100 remains open.\n13/10 service input validation:21 verified pre-fix cases across5 source/test paths;3333 tests and14 gates pass;351/408 fully covered. Target100 remains open.\n13/10 owner lifecycle:4 verified pre-fix cases across11 source/test paths;3344 tests and14 gates pass;353/408 fully covered. Target100 remains open. Iteration 53 EV-20261014-001: full local V8 run passes 360/360 files and 3451/3451 tests, 408/408 measurable files fully covered, 0 gaps; aggregate S/B/F/L all 100%, thresholds and denominator unchanged. Production build still cannot produce a bundle without VITE_API_BASE_URL and VITE_WS_URL. EV-20261014-003 records the global ledger checker exit 1 (186 reported errors); C03.05 coverage counters remain measured complete, while C03 parent/ledger gate remains open.\n14/10 iteration54: EV-20261014-004 reruns the full suite after the DCA source change: 360/360 files, 3454/3454 tests, S/B/F/L 100/100/100/100. Formal step remains in_progress pending check-tracking and remaining C03 acceptance.\n14/10 iteration55: EV-20261014-006 records 360/360 files and 3462/3462 tests passing, 408/408 measurable files with 100% S/B/F/L and unchanged denominator. Both TypeScript projects pass; ESLint has 0 errors and 2 existing warnings. EV-20261014-008 records production build exit 1 because VITE_API_BASE_URL and VITE_WS_URL are absent. The required repository ledger gate is still failing on working-source/catalogued-head provenance; keep step in_progress.\n14/10/2026 EV-20261014-011: full-suite coverage remains applicable to current source (905/905 src SHA-256 matches); check-tracking errorCount=0, architecture inventory, EOL and git diff checks pass. Keep step in_progress: production bundle inputs are absent and remaining parent acceptance is not satisfied. Iteration 56: 360/360 files, 3462/3462 tests; 408/408 measurable files fully covered, 0 gaps, 32 no-counter entries. 905/905 current src hashes match; TrInput is committed at its tested blob. TS, full ESLint and strict lint budget pass. Keep in_progress until exact-final-SHA Node22/Ubuntu workflow and artifact checks pass.",
           "execution": {
             "instructionsRef": "PLAN.md#c03",
             "fileSelection": "files[].executionScope.stepIds includes C03.05",
             "followUp": {
               "status": "in_progress",
-              "reason": "Aggregate local coverage measured 100/100/100/100 with 408/408 measurable files. Keep C03.05 in_progress because post-update check-tracking still exits 1; after registering new evidence files, latest run reports 184 provenance errors. Do not rebaseline uncommitted bytes.",
-              "inventory": ".artifacts/runs/2026-10-13T21-08-11-622Z-vitest-31069bde-3320-49fc-b3ff-e78cdd7ccb41/coverage/coverage-final.json",
+              "reason": "Latest full suite is measured on committed TrInput bytes: 408/408 measurable files fully covered with unchanged thresholds/denominator; 905/905 source hashes match. Keep in_progress until exact-final-SHA Node22/Ubuntu workflow and artifact verification pass.",
+              "inventory": ".artifacts/runs/2026-10-14T01-36-07-268Z-vitest-23e32066-bb67-4e58-8aff-98c60ed9b629/coverage/coverage-final.json",
               "targetMetrics": {
                 "statements": 100,
                 "branches": 100,
@@ -15303,17 +15304,17 @@
                 "lines": 100
               },
               "baselineEvidenceId": "EV-20261009-003",
-              "lastUpdatedAt": "2026-10-13T21:45:31.083Z",
-              "latestProgressEvidenceId": "EV-20261014-001",
+              "lastUpdatedAt": "2026-10-14T01:36:07.268Z",
+              "latestProgressEvidenceId": "EV-20261014-012",
               "latestMeasurement": {
-                "sourceRevision": "0bdab349c2863008984c89366ba71f02b094a44a",
-                "sourceSnapshotFingerprint": null,
-                "reportSha256": "cc9be162664aa828e01dbea19a407733033ea405df196eb653a94d7170f8baf0",
-                "runManifestSha256": "b7ce8aee83c6e6bee9b7b488bff2bfb96237de5f35f47f99fbe77c9636cc192e",
-                "runId": "2026-10-13T21-08-11-622Z-vitest-31069bde-3320-49fc-b3ff-e78cdd7ccb41",
+                "sourceRevision": "0317c2c6ad8192a9f6d6228c39b6075328e6c7c2",
+                "sourceSnapshotFingerprint": "3d988dec145a5522e6b72b599699a2ebacaeead435cb926258d0b0d5be661a41",
+                "reportSha256": "964c3dbaa246bdd78bdde1c501115301bdca4e7839a3563d7e4a21b665364927",
+                "runManifestSha256": "3d988dec145a5522e6b72b599699a2ebacaeead435cb926258d0b0d5be661a41",
+                "runId": "2026-10-14T01-36-07-268Z-vitest-23e32066-bb67-4e58-8aff-98c60ed9b629",
                 "reportEntries": 440,
                 "testFilesPassed": 360,
-                "testsPassed": 3451,
+                "testsPassed": 3462,
                 "testsFailed": 0,
                 "testsSkipped": 0,
                 "measurableFiles": 408,
@@ -15322,37 +15323,35 @@
                 "noCounterFiles": 32,
                 "metrics": {
                   "statements": {
-                    "covered": 12426,
-                    "total": 12426,
+                    "covered": 12441,
+                    "total": 12441,
                     "missing": 0,
                     "pct": 100
                   },
                   "branches": {
-                    "covered": 10239,
-                    "total": 10239,
+                    "covered": 10265,
+                    "total": 10265,
                     "missing": 0,
                     "pct": 100
                   },
                   "functions": {
-                    "covered": 3970,
-                    "total": 3970,
+                    "covered": 3972,
+                    "total": 3972,
                     "missing": 0,
                     "pct": 100
                   },
                   "lines": {
-                    "covered": 11487,
-                    "total": 11487,
+                    "covered": 11500,
+                    "total": 11500,
                     "missing": 0,
                     "pct": 100
                   }
                 },
                 "workingSourceHashes": {
-                  "src/app/router/index.ts": "2bdc346e5c9a9b74599860ea89f29bdfb5e2af9787248942fe5f097c89d6267f",
-                  "src/features/profile/pages/EditProfileContractPage.test.tsx": "121c1fb7cbf07af1c27baadf4a6b34999e35377507f882731889efbab1132d90",
-                  "src/features/trading/components/OrderModifySheet.test.tsx": "1937a288baaf45581e6ce05b21963b54d030648bdcc79ebc996a3e89c37f3798",
-                  "src/features/trading/components/TradeTerminal.readonly-boundary.test.tsx": "a6688a654f6efdf29049b819d48b9a561a5d3d488667083b0a02a5e995c3d6b5",
-                  "src/features/trading/pages/OrdersHistoryPage.test.tsx": "d9e9af98e7cdc9756e1f98b60af3698660a01fc1cc28e24ca299fe1bfa9db06d"
-                }
+                  "src/shared/ui/TrInput.tsx": "0f0dfbb837e98e7d226032668f4da12781408d7c7fe6616d45cf215e19730616"
+                },
+                "trackedSourcePaths": 905,
+                "matchedCurrentSourcePaths": 905
               },
               "nextAction": "C03.05 aggregate counter target is met. Continue unresolved C03.02/C03.03 contracts and C05.03 UI acceptance without carrying this local coverage result into backend/staging readiness.",
               "latestFocusedSlice": {
@@ -15429,7 +15428,7 @@
               }
             ]
           },
-          "nextAction": "Obtain approved production API/WS endpoint inputs before a production build. Do not invent endpoints. Continue only contract-backed frontend tests; keep C03.02/C03.03 external semantics and hosted/UAT acceptance open.",
+          "nextAction": "Push the P1 fix and P2 evidence/checkpoint update; verify all GitHub workflow and artifact checks on the exact SHA before closing C03.05, then resume C05.03.",
           "changeIds": [
             "CHANGE-20261014-037",
             "CHANGE-20261014-038",
@@ -15447,7 +15446,11 @@
             "CHANGE-20261014-050",
             "CHANGE-20261014-051",
             "CHANGE-20261014-052",
-            "CHANGE-20261014-053"
+            "CHANGE-20261014-053",
+            "CHANGE-20261014-054",
+            "CHANGE-20261014-055",
+            "CHANGE-20261014-056",
+            "CHANGE-20261014-057"
           ]
         }
       ],
@@ -15518,7 +15521,9 @@
         "EV-20261014-004",
         "EV-20261014-006",
         "EV-20261014-008",
-        "EV-20261014-011"
+        "EV-20261014-011",
+        "EV-20261014-012",
+        "EV-20261014-014"
       ],
       "changeIds": [
         "CHANGE-20260929-2987",
@@ -17321,9 +17326,11 @@
             "EV-20261013-008",
             "EV-20261013-013",
             "EV-20261013-025",
-            "EV-20261013-036"
+            "EV-20261013-036",
+            "EV-20261014-013",
+            "EV-20261014-014"
           ],
-          "notes": "Run #28 on exact SHA 104896ea633f6f6deaa2dd36874f7720d91648a7 passed on ubuntu-24.04 with Node 22.23.3/npm 10.9.9: 34/34 workflow steps, EOL 1494 paths with 0 violations, Vitest 2405/2405 in 286 files, coverage 90.14/84.87/87.18/91.92, Playwright 51/51, artifact tooling tests 9/9 and bundle budget 221/221. CI artifact 11192484949 (2949003 bytes, SHA-256 a616d5b055f825af0b3825985759f885b3a17e8eb4ac95b35ac188f4a956b324) was uploaded and downloaded by the same job; checker verified exact run/SHA, 550 coverage files, Playwright report, bundle manifest and no dist/. Zero retained traces is valid for a clean passing run; test-results is included when retries/failures produce files. Earlier runs exposed and fixed an overstrict zero-trace assumption.\n13/10/2026 DECISION-20261013-002: P1-FE-04: current workflow needs revision-bound coverage/report/trace/artifact and failure-path verification; prior artifact run is historical.\n13/10/2026 P1-FE-04 (P1, frontend_ci): PLAN#khac-phuc-audit-20261013; criteria/paths/dependencies in executionPlan.remediationPlan; implementation not performed in this planning session.\n13/10 P1-FE-04: Prepared full Git history for blob verification, mandatory tracker gate, unchanged three browser profiles and always-upload reports/coverage/trace/manifests with SHA/attempt identity and artifact digest. Hosted Node22/Ubuntu execution and upload/download are not yet verified; no remote dispatch or delivery authorized.\n13/10 final verification: 337/337 files, 3087/3087 tests, standard59/4skip + AuthAPI34 + AuthMSW41, 14 static gates, production build/mock/bundle pass. Global ledger still exits1 with17 uncommitted-source fingerprint errors; hosted/external/C03.05 target remains open.\nActual financial source2a6d8fe4: local build/mock/bundle and three browser profiles pass. HostedNode22/Ubuntu,branch enforcement,backend/staging,UAT remain unverified.\nActual current source: local build/mock/bundle and three browser profiles pass. HostedNode22/Ubuntu,branch enforcement,backend/staging,UAT remain unverified.",
+          "notes": "Run #28 on exact SHA 104896ea633f6f6deaa2dd36874f7720d91648a7 passed on ubuntu-24.04 with Node 22.23.3/npm 10.9.9: 34/34 workflow steps, EOL 1494 paths with 0 violations, Vitest 2405/2405 in 286 files, coverage 90.14/84.87/87.18/91.92, Playwright 51/51, artifact tooling tests 9/9 and bundle budget 221/221. CI artifact 11192484949 (2949003 bytes, SHA-256 a616d5b055f825af0b3825985759f885b3a17e8eb4ac95b35ac188f4a956b324) was uploaded and downloaded by the same job; checker verified exact run/SHA, 550 coverage files, Playwright report, bundle manifest and no dist/. Zero retained traces is valid for a clean passing run; test-results is included when retries/failures produce files. Earlier runs exposed and fixed an overstrict zero-trace assumption.\n13/10/2026 DECISION-20261013-002: P1-FE-04: current workflow needs revision-bound coverage/report/trace/artifact and failure-path verification; prior artifact run is historical.\n13/10/2026 P1-FE-04 (P1, frontend_ci): PLAN#khac-phuc-audit-20261013; criteria/paths/dependencies in executionPlan.remediationPlan; implementation not performed in this planning session.\n13/10 P1-FE-04: Prepared full Git history for blob verification, mandatory tracker gate, unchanged three browser profiles and always-upload reports/coverage/trace/manifests with SHA/attempt identity and artifact digest. Hosted Node22/Ubuntu execution and upload/download are not yet verified; no remote dispatch or delivery authorized.\n13/10 final verification: 337/337 files, 3087/3087 tests, standard59/4skip + AuthAPI34 + AuthMSW41, 14 static gates, production build/mock/bundle pass. Global ledger still exits1 with17 uncommitted-source fingerprint errors; hosted/external/C03.05 target remains open.\nActual financial source2a6d8fe4: local build/mock/bundle and three browser profiles pass. HostedNode22/Ubuntu,branch enforcement,backend/staging,UAT remain unverified.\nActual current source: local build/mock/bundle and three browser profiles pass. HostedNode22/Ubuntu,branch enforcement,backend/staging,UAT remain unverified. GitHub run #51 failed at the strict lint-warning budget (2 > 0) on the prior SHA; P1 fix and local 0/0 budget pass. Exact final SHA rerun pending.",
           "execution": {
             "instructionsRef": "PLAN.md#b07",
             "fileSelection": "files[].executionScope.stepIds includes B07.02",
@@ -17341,7 +17348,11 @@
                 "EV-20261013-002"
               ]
             }
-          ]
+          ],
+          "changeIds": [
+            "CHANGE-20261014-054"
+          ],
+          "nextAction": "Run and inspect the full Ubuntu/Node22 GitHub workflow, artifacts and governance checks on the exact pushed SHA; fix any failure without relaxing thresholds."
         },
         {
           "id": "B07.03",
@@ -17462,7 +17473,9 @@
         "EV-20261013-008",
         "EV-20261013-013",
         "EV-20261013-025",
-        "EV-20261013-036"
+        "EV-20261013-036",
+        "EV-20261014-013",
+        "EV-20261014-014"
       ],
       "changeIds": [
         "CHANGE-20260930-0125",
@@ -17521,7 +17534,7 @@
       "startedAt": "2026-09-30T08:01:00.000Z",
       "completedAt": null,
       "elapsedMinutes": null,
-      "notes": "B07 is complete as a CI and repository-governance audit. Exact SHA 92b1d15fc3dcbc161a91d1074c614d1a024894f3 passed all configured Ubuntu CI gates and artifact verification (EV-20261002-008); the final ledger commit cf9f33f938764df35c797d6d9a6ec4aeadec2bdc also passed exact-SHA run #35, 41/41 steps. The run #33 shallow-checkout failure is retained and fixed by fetch-depth 5. B07.04 measured governance gaps remain open: main is unprotected, repository/parent rulesets are absent, and web commit sign-off is disabled. This does not certify live backend/staging, user acceptance or a wider browser/device matrix; the previously observed low npm finding and E2E resource messages remain untriaged.",
+      "notes": "B07 is complete as a CI and repository-governance audit. Exact SHA 92b1d15fc3dcbc161a91d1074c614d1a024894f3 passed all configured Ubuntu CI gates and artifact verification (EV-20261002-008); the final ledger commit cf9f33f938764df35c797d6d9a6ec4aeadec2bdc also passed exact-SHA run #35, 41/41 steps. The run #33 shallow-checkout failure is retained and fixed by fetch-depth 5. B07.04 measured governance gaps remain open: main is unprotected, repository/parent rulesets are absent, and web commit sign-off is disabled. This does not certify live backend/staging, user acceptance or a wider browser/device matrix; the previously observed low npm finding and E2E resource messages remain untriaged. Run #51 failed on prior SHA due to stale TrInput deps; P1 source fix and local gates pass, final-SHA CI pending.",
       "execution": {
         "requiredChecks": [
           "LF checkout and deterministic hash/generation checks",
@@ -129320,7 +129333,7 @@
         "U04"
       ],
       "disposition": "changed",
-      "reason": "Record U01.01 completion, measured Auth scope and the U01.02 next checkpoint. U01.02 reviewed against the Auth operation contract; no additional source change was needed. | EV-20261003-003: Record U01.03 browser observations and the measured A06 sidecar refresh, coverage and limitations. Record measured C05.03 UI overlap follow-up and its limits. | EV-20261003-006: record the login MFA 410 browser measurement and its local fixture boundary. Final U01.03 validation counts and remaining tracking-ledger errors are recorded. | EV-20261003-007: document the full contract-backed password-reset browser flow and local-only evidence boundary. Final U01.03 local check counts and the remaining source-ledger errors are recorded. | EV-20261003-008: document Auth reset fixture alignment with OpenAPI and its focused 6/6 result. Final U01.03 fixture-correction checks and source-ledger status are recorded. | EV-20261003-009: record the two email/phone registration challenge issuance browser cases, 12/12 combined E2E result, and owner-blocked OTP verification boundary. | EV-20261003-010: document registration request HTTP 400/429 browser outcomes and the 14/14 combined Auth E2E result. | EV-20261003-011: record the login HTTP 401 browser regression and 15/15 combined Auth E2E result. | EV-20261003-012: record contract session 401 normalization, transport preservation, and 36/36 focused plus 16/16 browser results. | EV-20261009-001: record the owner-approved credential choice, current local E2E results and remaining source-ledger errors. | EV-20261009-002: record exact-commit source ledger reconciliation and its local-only boundary. | EV-20261010-014: record DCA annotation full coverage and next P2P order-action target. | EV-015 records P2P order-action full-suite coverage and the P2P ad-detail next target. | EV-016 records Arena full-suite results and next P2P Merchant slice. | EV-017 records P2P Merchant full-suite results and next payment-method slice. | EV-018 records P2P payment creation full-suite results and next list page slice. | EV-019 records P2P payment-method list full-suite results and next Watchlist page gap. | EV-020 records P2P payment creation full-suite results and next list page slice. | EV-021 records MarketSectorsPage full-suite coverage and the next P2P marketplace slice. | EV-022 records P2P marketplace behavior coverage and next AppLayout slice. | EV-023 records full-suite progress and next measured gap. | EV-024 records full-suite progress and next measured gap. | EV-025 records full-suite progress and next measured gap. | EV-026 records full-suite progress and next measured gap. | EV-027 records full-suite progress and next measured gap. | EV-028 records full-suite progress and next measured gap. | EV-029 records full-suite progress and next measured gap. | EV-030 records full-suite progress and next measured gap. | EV-031 records full-suite progress and next measured gap. | User-authorized unused-output retention EV-20261012-008; previous catalogue retained until reviewed Git delivery. | DECISION-20261013-002: docs-only remediation planning; no runtime source edited. | P0-FE-01 verified local remediation. | Final local source and artifact verification. | EV-20261014-001/002/003: record iteration 53 measured coverage, desktop UI scan and final checker limitations. | EV-20261014-006/007/008: document iteration55 measurements, build blocker and unresolved acceptance. | EV-20261014-009: source-classify every iteration55 mobile/tablet hiddenOverflow entry; acceptance remains pending. | Record measured coverage closure, per-path Git blob reconciliation, gate results and remaining UI/external blockers.",
+      "reason": "Record U01.01 completion, measured Auth scope and the U01.02 next checkpoint. U01.02 reviewed against the Auth operation contract; no additional source change was needed. | EV-20261003-003: Record U01.03 browser observations and the measured A06 sidecar refresh, coverage and limitations. Record measured C05.03 UI overlap follow-up and its limits. | EV-20261003-006: record the login MFA 410 browser measurement and its local fixture boundary. Final U01.03 validation counts and remaining tracking-ledger errors are recorded. | EV-20261003-007: document the full contract-backed password-reset browser flow and local-only evidence boundary. Final U01.03 local check counts and the remaining source-ledger errors are recorded. | EV-20261003-008: document Auth reset fixture alignment with OpenAPI and its focused 6/6 result. Final U01.03 fixture-correction checks and source-ledger status are recorded. | EV-20261003-009: record the two email/phone registration challenge issuance browser cases, 12/12 combined E2E result, and owner-blocked OTP verification boundary. | EV-20261003-010: document registration request HTTP 400/429 browser outcomes and the 14/14 combined Auth E2E result. | EV-20261003-011: record the login HTTP 401 browser regression and 15/15 combined Auth E2E result. | EV-20261003-012: record contract session 401 normalization, transport preservation, and 36/36 focused plus 16/16 browser results. | EV-20261009-001: record the owner-approved credential choice, current local E2E results and remaining source-ledger errors. | EV-20261009-002: record exact-commit source ledger reconciliation and its local-only boundary. | EV-20261010-014: record DCA annotation full coverage and next P2P order-action target. | EV-015 records P2P order-action full-suite coverage and the P2P ad-detail next target. | EV-016 records Arena full-suite results and next P2P Merchant slice. | EV-017 records P2P Merchant full-suite results and next payment-method slice. | EV-018 records P2P payment creation full-suite results and next list page slice. | EV-019 records P2P payment-method list full-suite results and next Watchlist page gap. | EV-020 records P2P payment creation full-suite results and next list page slice. | EV-021 records MarketSectorsPage full-suite coverage and the next P2P marketplace slice. | EV-022 records P2P marketplace behavior coverage and next AppLayout slice. | EV-023 records full-suite progress and next measured gap. | EV-024 records full-suite progress and next measured gap. | EV-025 records full-suite progress and next measured gap. | EV-026 records full-suite progress and next measured gap. | EV-027 records full-suite progress and next measured gap. | EV-028 records full-suite progress and next measured gap. | EV-029 records full-suite progress and next measured gap. | EV-030 records full-suite progress and next measured gap. | EV-031 records full-suite progress and next measured gap. | User-authorized unused-output retention EV-20261012-008; previous catalogue retained until reviewed Git delivery. | DECISION-20261013-002: docs-only remediation planning; no runtime source edited. | P0-FE-01 verified local remediation. | Final local source and artifact verification. | EV-20261014-001/002/003: record iteration 53 measured coverage, desktop UI scan and final checker limitations. | EV-20261014-006/007/008: document iteration55 measurements, build blocker and unresolved acceptance. | EV-20261014-009: source-classify every iteration55 mobile/tablet hiddenOverflow entry; acceptance remains pending. | Record measured coverage closure, per-path Git blob reconciliation, gate results and remaining UI/external blockers. | EV-20261014-012–014: refresh coverage after TrInput lint fix and record CI failure/final-SHA boundary.",
       "evidenceIds": [
         "EV-20260927-076",
         "EV-20260928-001",
@@ -129909,7 +129922,10 @@
         "EV-20261014-007",
         "EV-20261014-008",
         "EV-20261014-009",
-        "EV-20261014-011"
+        "EV-20261014-011",
+        "EV-20261014-012",
+        "EV-20261014-013",
+        "EV-20261014-014"
       ],
       "changeIds": [
         "CHANGE-20260927-052",
@@ -130250,7 +130266,8 @@
         "CHANGE-20261014-013",
         "CHANGE-20261014-032",
         "CHANGE-20261014-035",
-        "CHANGE-20261014-052"
+        "CHANGE-20261014-052",
+        "CHANGE-20261014-056"
       ],
       "executionScope": {
         "ownerTaskId": "B10",
@@ -130680,7 +130697,7 @@
         "C05"
       ],
       "disposition": "changed",
-      "reason": "Register EV-013 full suite, MarketSentiment owner slice and DCA next target. EV-20261010-014 registers the DCA overlay full-suite slice and P2P next target. | EV-015 registers the full-suite counters, owner slice, evidence artifact and checkpoint. | EV-016 registers measured counters, scope and checkpoint. | EV-017 registers measured counters, scope and checkpoint. | EV-018 registers measured counters, scope and checkpoint. | EV-019 registers measured counters, scope and checkpoint. | EV-020 registers measured counters, scope and checkpoint. | EV-021 registers measured counters, scope and checkpoint. | EV-022 registers measured counters, scope and checkpoint. | EV-023 registers measured counters, owner scope, and checkpoint. | EV-024 registers measured counters, owner scope, and checkpoint. | EV-025 registers measured counters, owner scope, and checkpoint. | EV-026 maps the owner test to C03.05 and registers measured counters. | EV-027 maps the owner test to C03.05 and registers measured counters. | EV-028 maps the P2P create-ad owner test to C03.05 and registers measured counters. | EV-029 maps the Coachmark owner test to C03.05 and registers measured counters. | EV-030 maps the P2P achievements source and owner test to C03.05 and registers measured counters. | EV-031 maps the Trade Analytics owner test to C03.05 and registers measured counters. | EV-20261011-064 registers the current local full-suite report, exact dirty-status/mismatch inventory, and C03 checkpoint. | EV-20261011-065 records the P2P coverage iteration, full-suite counters, source change and next TabletTopBar checkpoint. | EV-20261011-066 records TabletTopBar owner coverage, full-suite counters, worktree-only test provenance and next SwipeBack checkpoint. | EV-20261011-067 records SwipeBack gesture coverage, source/test hashes, full-suite counters and PasswordChange next slice. | EV-20261011-068 records PasswordChangePage coverage, owner-test hash delta, full-suite counters and OrdersHistory next slice. | User-authorized unused-output retention EV-20261012-008; previous catalogue retained until reviewed Git delivery. | DECISION-20261013-002: docs-only remediation planning; no runtime source edited. | EV-20261014-001/002/003: record coverage, wide UI and checker evidence without rebasing dirty source provenance. | Iteration55 ledger payload records new coverage, responsive review and environment blocker evidence; self-audit change will be recorded after the actual payload snapshot. | EV-20261014-009: record source-based responsive candidate classification without changing source fingerprints. | CHANGE-20261014-036: preserve and audit the final overflow-triage payload. | Record exact post-audit gates and self-audit the inventory-pointer/evidence reconciliation.",
+      "reason": "Register EV-013 full suite, MarketSentiment owner slice and DCA next target. EV-20261010-014 registers the DCA overlay full-suite slice and P2P next target. | EV-015 registers the full-suite counters, owner slice, evidence artifact and checkpoint. | EV-016 registers measured counters, scope and checkpoint. | EV-017 registers measured counters, scope and checkpoint. | EV-018 registers measured counters, scope and checkpoint. | EV-019 registers measured counters, scope and checkpoint. | EV-020 registers measured counters, scope and checkpoint. | EV-021 registers measured counters, scope and checkpoint. | EV-022 registers measured counters, scope and checkpoint. | EV-023 registers measured counters, owner scope, and checkpoint. | EV-024 registers measured counters, owner scope, and checkpoint. | EV-025 registers measured counters, owner scope, and checkpoint. | EV-026 maps the owner test to C03.05 and registers measured counters. | EV-027 maps the owner test to C03.05 and registers measured counters. | EV-028 maps the P2P create-ad owner test to C03.05 and registers measured counters. | EV-029 maps the Coachmark owner test to C03.05 and registers measured counters. | EV-030 maps the P2P achievements source and owner test to C03.05 and registers measured counters. | EV-031 maps the Trade Analytics owner test to C03.05 and registers measured counters. | EV-20261011-064 registers the current local full-suite report, exact dirty-status/mismatch inventory, and C03 checkpoint. | EV-20261011-065 records the P2P coverage iteration, full-suite counters, source change and next TabletTopBar checkpoint. | EV-20261011-066 records TabletTopBar owner coverage, full-suite counters, worktree-only test provenance and next SwipeBack checkpoint. | EV-20261011-067 records SwipeBack gesture coverage, source/test hashes, full-suite counters and PasswordChange next slice. | EV-20261011-068 records PasswordChangePage coverage, owner-test hash delta, full-suite counters and OrdersHistory next slice. | User-authorized unused-output retention EV-20261012-008; previous catalogue retained until reviewed Git delivery. | DECISION-20261013-002: docs-only remediation planning; no runtime source edited. | EV-20261014-001/002/003: record coverage, wide UI and checker evidence without rebasing dirty source provenance. | Iteration55 ledger payload records new coverage, responsive review and environment blocker evidence; self-audit change will be recorded after the actual payload snapshot. | EV-20261014-009: record source-based responsive candidate classification without changing source fingerprints. | CHANGE-20261014-036: preserve and audit the final overflow-triage payload. | Record exact post-audit gates and self-audit the inventory-pointer/evidence reconciliation. | EV-20261014-012–014: register full coverage, exact source provenance and hosted CI #51 result.",
       "evidenceIds": [
         "EV-20261001-034",
         "EV-20261001-035",
@@ -130769,7 +130786,10 @@
         "EV-20261014-008",
         "EV-20261014-009",
         "EV-20261014-010",
-        "EV-20261014-011"
+        "EV-20261014-011",
+        "EV-20261014-012",
+        "EV-20261014-013",
+        "EV-20261014-014"
       ],
       "changeIds": [
         "CHANGE-20261001-0316",
@@ -130894,7 +130914,8 @@
         "CHANGE-20261014-036",
         "CHANGE-20261014-048",
         "CHANGE-20261014-049",
-        "CHANGE-20261014-053"
+        "CHANGE-20261014-053",
+        "CHANGE-20261014-057"
       ],
       "cataloguedAt": "2026-10-01T04:02:26.000Z",
       "executionScope": {
@@ -168680,9 +168701,13 @@
       "disposition": "not_assessed",
       "reason": "",
       "evidenceIds": [
-        "EV-20261014-010"
+        "EV-20261014-010",
+        "EV-20261014-012",
+        "EV-20261014-014"
       ],
-      "changeIds": [],
+      "changeIds": [
+        "CHANGE-20261014-054"
+      ],
       "executionScope": {
         "ownerTaskId": "C01",
         "role": "ui_component",
@@ -168696,8 +168721,8 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "80ba3ae80bff7dfb6a2f0f3d87f10059b875a44d",
-      "cataloguedSha256": "78cab7b0f26a38d18f06244e5edcfb6b9d3151b2b901661c5a4e7a77c81f2d4b",
+      "cataloguedSourceHead": "77fc8f6e05c66986a2dd992f87b18257425d411f",
+      "cataloguedSha256": "0f0dfbb837e98e7d226032668f4da12781408d7c7fe6616d45cf215e19730616",
       "cataloguedSourceHistory": [
         {
           "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
@@ -168705,6 +168730,13 @@
           "supersededAt": "2026-10-14T01:15:27.283Z",
           "evidenceId": "EV-20261014-010",
           "reason": "Previous source pointer retained; current path-specific commit and Git blob independently verified in this evidence."
+        },
+        {
+          "sourceHead": "80ba3ae80bff7dfb6a2f0f3d87f10059b875a44d",
+          "sha256": "78cab7b0f26a38d18f06244e5edcfb6b9d3151b2b901661c5a4e7a77c81f2d4b",
+          "supersededAt": "2026-10-14T01:40:54.000Z",
+          "evidenceId": "EV-20261014-014",
+          "reason": "Previous pointer retained; P1 fix is committed and the path-specific Git blob matches the tested source bytes."
         }
       ]
     },
@@ -192745,6 +192777,32 @@
           "A08.05"
         ],
         "action": "record_post_reconciliation_gate_results"
+      }
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/C03/c03-05-full-coverage-after-trinput-lint-fix-iteration-56-2026-10-14.json",
+      "baselineSha256": null,
+      "lifecycle": "active",
+      "taskIds": [
+        "C03"
+      ],
+      "disposition": "added",
+      "reason": "Record iteration 56 full-suite coverage, source provenance, local zero-warning gates and previous hosted failure.",
+      "evidenceIds": [
+        "EV-20261014-012",
+        "EV-20261014-013",
+        "EV-20261014-014"
+      ],
+      "changeIds": [
+        "CHANGE-20261014-055"
+      ],
+      "executionScope": {
+        "ownerTaskId": "C03",
+        "role": "evidence_artifact",
+        "stepIds": [
+          "C03.05"
+        ],
+        "action": "record_iteration_56_full_coverage_and_ci_lint_remediation"
       }
     }
   ],
@@ -300472,6 +300530,79 @@
         "EV-20261014-011"
       ],
       "commit": null
+    },
+    {
+      "id": "CHANGE-20261014-054",
+      "taskId": "C03",
+      "stepId": "C03.05",
+      "path": "src/shared/ui/TrInput.tsx",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Remove two stale callback dependencies after GitHub CI proved they exceed the strict zero-warning budget; preserve input behavior.",
+      "beforeHash": "78cab7b0f26a38d18f06244e5edcfb6b9d3151b2b901661c5a4e7a77c81f2d4b",
+      "afterHash": "0f0dfbb837e98e7d226032668f4da12781408d7c7fe6616d45cf215e19730616",
+      "evidenceIds": [
+        "EV-20261014-013",
+        "EV-20261014-014"
+      ],
+      "commit": "77fc8f6e05c66986a2dd992f87b18257425d411f"
+    },
+    {
+      "id": "CHANGE-20261014-055",
+      "taskId": "C03",
+      "stepId": "C03.05",
+      "path": "docs/architecture/production-readiness/evidence/C03/c03-05-full-coverage-after-trinput-lint-fix-iteration-56-2026-10-14.json",
+      "action": "add",
+      "oldPath": null,
+      "reason": "Record iteration 56 coverage, local gates, source provenance and prior hosted CI failure.",
+      "beforeHash": null,
+      "afterHash": "c108a2e17d3a60e81dcb2a10e11601bcee164deb0ffca31736d1611b810856a5",
+      "evidenceIds": [
+        "EV-20261014-012",
+        "EV-20261014-013",
+        "EV-20261014-014"
+      ],
+      "commit": null
+    },
+    {
+      "id": "CHANGE-20261014-056",
+      "taskId": "C03",
+      "stepId": "C03.05",
+      "path": "docs/architecture/production-readiness/PLAN.md",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Supersede the stale coverage source statement and record iteration 56 results and remaining UI/external gates.",
+      "beforeHash": "783b45ccc19c403df2083dfa08338cce8d8fa7bccd625dcb1e497d477ffdc1fd",
+      "afterHash": "2fb56ab29492597868fbd89c32825508e559a12a63301cc65c4f341f39659e02",
+      "evidenceIds": [
+        "EV-20261014-012",
+        "EV-20261014-013",
+        "EV-20261014-014"
+      ],
+      "commit": null
+    },
+    {
+      "id": "CHANGE-20261014-057",
+      "taskId": "C03",
+      "stepId": "C03.05",
+      "path": "docs/architecture/production-readiness/TRACKING.json",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Record current coverage, provenance and workflow checkpoint; self-audit the written payload without hashing a fixed point.",
+      "beforeHash": "9420dbc66c91a7b789af6547db8803c602a9f900e5eae2aef554bc4660847e1b",
+      "afterHash": "40818749539f5260ef62ff30a2200b2f50549a2689ff63ba604ff208cbad702c",
+      "afterHashRecovery": {
+        "kind": "actual-written-business-payload-before-self-audit",
+        "archivePath": "C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\10\\14\\01a13394-3caa-7930-a58f-e3e6c61b066f\\vittrade-audit\\implementation\\release-2026-10-14\\coverage-ci-remediation-business-payload-before-audit.json",
+        "archiveSha256": "40818749539f5260ef62ff30a2200b2f50549a2689ff63ba604ff208cbad702c",
+        "archivePayloadSha256": "40818749539f5260ef62ff30a2200b2f50549a2689ff63ba604ff208cbad702c"
+      },
+      "evidenceIds": [
+        "EV-20261014-012",
+        "EV-20261014-013",
+        "EV-20261014-014"
+      ],
+      "commit": null
     }
   ],
   "evidence": [
@@ -334221,6 +334352,54 @@
       "result": "pass",
       "artifact": "docs/architecture/production-readiness/evidence/C03/source-catalogue-and-inventory-final-check-2026-10-14.json",
       "notes": "The inventory --check first detected a stale generator-owned page-inventory.json. The canonical generator refreshed it, a separate signed P1 commit preserved the output, and the exact blob pointer was reconciled. The retained coverage run recorded 360/360 test files and 3462/3462 tests, 408/408 measurable files at S/B/F/L 100%, with unchanged thresholds and denominator. This validation does not imply UI acceptance, backend/staging, a production bundle, hosted CI or production readiness."
+    },
+    {
+      "id": "EV-20261014-012",
+      "taskId": "C03",
+      "stepId": "C03.05",
+      "kind": "unit",
+      "commandOrSteps": "Run full Vitest/V8 suite; summarize per-file S/B/F/L with istanbul-lib-coverage; compare tracked src hashes to run snapshot.",
+      "environment": "Windows local; bundled Node v24.19.0; Vitest 4.1.11; no backend or staging.",
+      "observedAt": "2026-10-14T01:36:07.268Z",
+      "sourceHead": "0317c2c6ad8192a9f6d6228c39b6075328e6c7c2",
+      "dirtyFileHashes": {
+        "src/shared/ui/TrInput.tsx": "0f0dfbb837e98e7d226032668f4da12781408d7c7fe6616d45cf215e19730616"
+      },
+      "expected": "Full suite passes and all measurable source files have all executable S/B/F/L counters covered without changing threshold or denominator.",
+      "actual": "360/360 test files and 3462/3462 tests passed, 0 failed/skipped; 408/408 measurable source files fully covered, 0 gaps, 32 entries without counters; S/B/F/L 12441/12441, 10265/10265, 3972/3972, 11500/11500 (100%). Runner source unchanged; 905/905 current src hashes match; TrInput run hash equals its later committed Git blob.",
+      "result": "pass",
+      "artifact": "docs/architecture/production-readiness/evidence/C03/c03-05-full-coverage-after-trinput-lint-fix-iteration-56-2026-10-14.json; .artifacts/runs/2026-10-14T01-36-07-268Z-vitest-23e32066-bb67-4e58-8aff-98c60ed9b629/run.json; .artifacts/runs/2026-10-14T01-36-07-268Z-vitest-23e32066-bb67-4e58-8aff-98c60ed9b629/coverage/coverage-final.json; https://github.com/LonelyTraderBay/vittrade-react/actions/runs/38496168550",
+      "notes": "Local coverage does not close UI acceptance or hosted/backend/staging checks."
+    },
+    {
+      "id": "EV-20261014-013",
+      "taskId": "B07",
+      "stepId": "B07.02",
+      "kind": "hosted_ci",
+      "commandOrSteps": "Inspect GitHub Actions run #51 and Production gates step results for the exact commit SHA.",
+      "environment": "GitHub Actions; Ubuntu 24.04; Node 22; PR #3.",
+      "observedAt": "2026-10-14T01:32:57.000Z",
+      "sourceHead": "0317c2c6ad8192a9f6d6228c39b6075328e6c7c2",
+      "expected": "The exact pushed pull-request SHA passes all configured CI steps.",
+      "actual": "Run #51 (38496168550) failed at Lint warning budget: 2 react-hooks/exhaustive-deps warnings exceeded budget 0. Checkout, setup, EOL, install, browser, typecheck and lint passed; dependent format/tests/coverage/E2E/policy/build steps were skipped. Root cause was stale [numeric] deps in TrInput after callbacks stopped reading numeric. P1 fix 77fc8f6e removes them; rerun on final SHA pending.",
+      "result": "fail",
+      "artifact": "docs/architecture/production-readiness/evidence/C03/c03-05-full-coverage-after-trinput-lint-fix-iteration-56-2026-10-14.json; .artifacts/runs/2026-10-14T01-36-07-268Z-vitest-23e32066-bb67-4e58-8aff-98c60ed9b629/run.json; .artifacts/runs/2026-10-14T01-36-07-268Z-vitest-23e32066-bb67-4e58-8aff-98c60ed9b629/coverage/coverage-final.json; https://github.com/LonelyTraderBay/vittrade-react/actions/runs/38496168550",
+      "notes": "Historical failure on SHA 0317c2c6; not a result for corrected source."
+    },
+    {
+      "id": "EV-20261014-014",
+      "taskId": "C03",
+      "stepId": "C03.05",
+      "kind": "source_provenance",
+      "commandOrSteps": "Verify path-specific commit/blob and SHA-256 of Git blob/current/run snapshot; run focused test, both TS projects, ESLint and zero-warning budget.",
+      "environment": "Windows local; bundled Node v24.19.0; Git object database; no backend or staging.",
+      "observedAt": "2026-10-14T01:51:22.778Z",
+      "sourceHead": "77fc8f6e05c66986a2dd992f87b18257425d411f",
+      "expected": "The full-suite tested TrInput bytes are committed to the path-specific Git blob and local tests/typechecks/strict lint gates pass.",
+      "actual": "Commit 77fc8f6e05c66986a2dd992f87b18257425d411f, blob 759cfe800618c650af6b404a7ecadc9b12b9ea93; Git blob/current/run snapshot SHA-256 0f0dfbb837e98e7d226032668f4da12781408d7c7fe6616d45cf215e19730616. TrInput focused tests 5/5; full suite 360/360 files and 3462/3462 tests; both TypeScript projects pass; ESLint 0 errors/0 warnings; lint budget 0/0. Exact-final-SHA GitHub rerun pending.",
+      "result": "pass",
+      "artifact": "docs/architecture/production-readiness/evidence/C03/c03-05-full-coverage-after-trinput-lint-fix-iteration-56-2026-10-14.json; .artifacts/runs/2026-10-14T01-36-07-268Z-vitest-23e32066-bb67-4e58-8aff-98c60ed9b629/run.json; .artifacts/runs/2026-10-14T01-36-07-268Z-vitest-23e32066-bb67-4e58-8aff-98c60ed9b629/coverage/coverage-final.json; https://github.com/LonelyTraderBay/vittrade-react/actions/runs/38496168550",
+      "notes": "Local evidence does not establish hosted CI, format/build, UI acceptance, backend/staging or production readiness."
     }
   ],
   "decisions": [
@@ -356637,6 +356816,128 @@
           "productionBuild": "blocked_missing_approved_VITE_API_BASE_URL_and_VITE_WS_URL"
         }
       }
+    },
+    {
+      "id": "SESSION-20261014-005",
+      "startedAt": "2026-10-14T01:31:06.000Z",
+      "endedAt": "2026-10-14T01:52:06.132Z",
+      "sourceHeadBefore": "0317c2c6ad8192a9f6d6228c39b6075328e6c7c2",
+      "sourceHeadAfter": "77fc8f6e05c66986a2dd992f87b18257425d411f",
+      "taskIds": [
+        "C03",
+        "B07"
+      ],
+      "stepIds": [
+        "C03.05",
+        "B07.02"
+      ],
+      "changeIds": [
+        "CHANGE-20261014-054",
+        "CHANGE-20261014-055",
+        "CHANGE-20261014-056",
+        "CHANGE-20261014-057"
+      ],
+      "evidenceIds": [
+        "EV-20261014-012",
+        "EV-20261014-013",
+        "EV-20261014-014"
+      ],
+      "elapsedMinutes": 21,
+      "changedFiles": [
+        "src/shared/ui/TrInput.tsx",
+        "docs/architecture/production-readiness/evidence/C03/c03-05-full-coverage-after-trinput-lint-fix-iteration-56-2026-10-14.json",
+        "docs/architecture/production-readiness/PLAN.md",
+        "docs/architecture/production-readiness/TRACKING.json"
+      ],
+      "remainingWork": [
+        "Exact-final-SHA Ubuntu/Node22 workflow, artifact integrity and governance checks.",
+        "C05.03 formal UI acceptance 0/128; remaining route/state, screenshots, axe and fixture/asset review.",
+        "Backend/staging owner/account/provider/SLO inputs and UAT remain unavailable."
+      ],
+      "blockers": [
+        "Run #51 failed at the zero-warning budget on the prior SHA; root cause fixed and final-SHA rerun pending.",
+        "User confirmed backend/staging and owner/account/provider/SLO inputs unavailable; keep blocked."
+      ],
+      "nextAction": "Complete tracker self-audit and P2 commit, push, inspect exact-SHA GitHub checks, then continue C05.03.",
+      "manifestPath": "C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\10\\14\\01a13394-3caa-7930-a58f-e3e6c61b066f\\vittrade-audit\\implementation\\release-2026-10-14\\coverage-ci-remediation-session-2026-10-14.json",
+      "validation": {
+        "coverage": {
+          "runId": "2026-10-14T01-36-07-268Z-vitest-23e32066-bb67-4e58-8aff-98c60ed9b629",
+          "manifestSha256": "3d988dec145a5522e6b72b599699a2ebacaeead435cb926258d0b0d5be661a41",
+          "coverageSha256": "964c3dbaa246bdd78bdde1c501115301bdca4e7839a3563d7e4a21b665364927",
+          "exitCode": 0,
+          "testFiles": "360/360",
+          "tests": "3462/3462",
+          "measurableFiles": "408/408",
+          "gaps": 0,
+          "noCounterFiles": 32,
+          "sourcePathsMatched": "905/905",
+          "thresholdsOrDenominatorChanged": false
+        },
+        "local": {
+          "focusedTrInput": "5/5",
+          "appTypecheckExitCode": 0,
+          "nodeTypecheckExitCode": 0,
+          "eslint": {
+            "exitCode": 0,
+            "errors": 0,
+            "warnings": 0
+          },
+          "lintWarningBudget": {
+            "exitCode": 0,
+            "errors": 0,
+            "warnings": 0,
+            "budget": 0
+          }
+        },
+        "priorHostedCi": {
+          "runId": 38496168550,
+          "sha": "0317c2c6ad8192a9f6d6228c39b6075328e6c7c2",
+          "conclusion": "failure",
+          "failedStep": "Lint warning budget",
+          "rerunOnFinalSha": "pending"
+        },
+        "sourceProvenance": {
+          "commit": "77fc8f6e05c66986a2dd992f87b18257425d411f",
+          "blob": "759cfe800618c650af6b404a7ecadc9b12b9ea93",
+          "sha256": "0f0dfbb837e98e7d226032668f4da12781408d7c7fe6616d45cf215e19730616"
+        },
+        "preSelfAuditChecks": {
+          "checkTracking": {
+            "exitCode": 0,
+            "errorCount": 0,
+            "tasks": 38,
+            "steps": 205,
+            "pages": 130,
+            "routes": 428,
+            "operations": 154,
+            "filesOutsidePlan": 1011
+          },
+          "architectureInventory": {
+            "exitCode": 0,
+            "pages": 130,
+            "routes": 428,
+            "components": 149,
+            "dataModules": 0,
+            "services": 32,
+            "mocks": 28
+          },
+          "eol": {
+            "exitCode": 0,
+            "paths": 4160,
+            "lf": 2057,
+            "withoutLineTerminators": 0,
+            "preservedNonText": 2100,
+            "protectedWindowsCrlf": 3
+          },
+          "gitDiffCheck": {
+            "exitCode": 0
+          },
+          "jsonParse": {
+            "exitCode": 0
+          }
+        }
+      }
     }
   ],
   "templates": {
@@ -357450,5 +357751,5 @@
       "implementationDecisionId": "DECISION-20261013-003"
     }
   },
-  "remainingWork": "Hosted Node22/Ubuntu PR workflow and artifact/governance evidence remain pending. C05.03 formal UI acceptance is 0/128; only 14/128 representative screenshots have been visually reviewed, axe was not run, and local fixture 404/503 plus blocked font/logo attempts need environment classification. Production build lacks approved VITE_API_BASE_URL and VITE_WS_URL. Backend/staging is 0/154; 25/106 scenarios lack approved API/security contracts; UAT is 0/128; telemetry/SLO owner inputs remain unavailable. Source coverage counters are 100% for 408/408 measurable files and the source provenance/inventory gates pass locally."
+  "remainingWork": "Local coverage: 408/408 measurable source files at S/B/F/L 100%, 0 gaps; full suite 360/360 files and 3462/3462 tests. TrInput lint root cause is fixed in P1 commit 77fc8f6e with exact blob provenance and local zero-warning gates. Run #51 failed on prior SHA 0317c2c6; exact-final-SHA CI/artifact/governance remain pending. C05.03 acceptance 0/128, 14 representative screenshots reviewed; route/state/axe and fixture/asset classification remain. Production endpoints need approval. Backend/staging 0/154, 25/106 contract-dependent rows, UAT 0/128 and telemetry/SLO owners remain open."
 }

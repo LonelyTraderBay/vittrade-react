@@ -4206,12 +4206,10 @@ khi generator cập nhật index: **130 trang, 428 route, 149 component, 32 serv
 ghi provenance; [EV-20261014-011](evidence/C03/source-catalogue-and-inventory-final-check-2026-10-14.json)
 ghi kết quả gate sau self-audit.
 
-Coverage EV-20261014-006 vẫn áp dụng cho source hiện tại: manifest giữ snapshot
-`sourceUnchanged=true`; kiểm tra độc lập so khớp SHA-256 của **905/905 file
-`src/`** hiện tại với snapshot của run, không có mismatch. Kết quả là
-**360/360 file test, 3.462/3.462 test**, **408/408 measurable file đủ counter,
-0 gap**, 32 entry không có executable counter; statement/branch/function/line
-đều 100% và không đổi threshold hoặc mẫu số.
+Coverage EV-20261014-006 là snapshot tại thời điểm EV-20261014-011. Sau khi
+sửa dependency thừa ở `TrInput.tsx` bằng commit `77fc8f6e`, EV-006 không còn là
+phép đo source mới nhất; phép đo full-suite mới trên cùng nội dung source đã
+commit được ghi ở Iteration 56 / EV-20261014-012.
 
 Không mở rộng kết luận UI từ route scan thành nghiệm thu: iteration 55 đo 372
 route ở mobile và 372 route ở tablet; 0 not-found, document overflow, page error
@@ -4222,3 +4220,39 @@ build thiếu `VITE_API_BASE_URL`/`VITE_WS_URL`; backend/staging **0/154**, 25/1
 scenario contract-dependent, UAT **0/128**, hosted Node22/Ubuntu CI và
 telemetry/SLO tiếp tục chưa xác minh hoặc blocked. Không dùng các gate local này
 để tuyên bố 100% frontend acceptance hay production readiness.
+
+### Iteration 56 — sửa lint-warning budget và đo lại full coverage — 14/10/2026
+
+GitHub Actions run #51 trên SHA `0317c2c6ad8192a9f6d6228c39b6075328e6c7c2`
+dừng tại `Lint warning budget`: 2 cảnh báo `react-hooks/exhaustive-deps` vượt
+budget 0. Typecheck và lint pass nhưng các bước phụ thuộc bị skip. Nguyên nhân
+được xác nhận trong `src/shared/ui/TrInput.tsx`: hai callback format/parse không
+còn đọc `numeric` nhưng vẫn giữ dependency này. Commit P1
+`77fc8f6e05c66986a2dd992f87b18257425d411f` chỉ bỏ hai dependency thừa, không đổi
+logic input hoặc hạ budget.
+
+[EV-20261014-012](evidence/C03/c03-05-full-coverage-after-trinput-lint-fix-iteration-56-2026-10-14.json)
+chạy lại full Vitest/V8 trên nội dung source sau fix: **360/360 file,
+3.462/3.462 test, 0 fail/skip**; **408/408 measurable source file đủ S/B/F/L,
+0 gap**, 32 entry không có executable counter. Counter là **12.441/12.441
+statements, 10.265/10.265 branches, 3.972/3.972 functions, 11.500/11.500 lines
+(100%)**. Threshold/mẫu số không đổi. So khớp độc lập **905/905 source path**
+với manifest; hash TrInput trong run trùng SHA-256 của Git blob commit P1.
+
+TrInput focused **5/5**, hai TypeScript project pass, full ESLint **0 lỗi/0
+warning**, lint-warning budget pass **0/0**. EV-20261014-013 giữ run #51 thất bại
+trên SHA cũ; GitHub rerun Node22/Ubuntu trên SHA cuối mới vẫn là điều kiện mở,
+không được coi run #51 là xanh.
+
+Sau khi ghi evidence và catalogue, `check-tracking.mjs` exit **0** với
+`errorCount=0`; architecture inventory `--check` pass (**130 trang, 428 route,
+149 component, 32 service, 28 mock**); EOL gate pass trên **4.160 path**
+(2.057 LF, 0 thiếu line terminator, 2.100 non-text được giữ, 3 CRLF được bảo
+vệ); `git diff --check` và parse JSON pass. Kết quả này là consistency/provenance
+local, không thay lần check cuối sau self-audit hoặc GitHub workflow.
+
+Coverage đầy đủ không thay UI acceptance: C05.03 vẫn **0/128 accepted**, hiện đã
+review bằng mắt **14/128** ảnh. Route/state review còn lại, axe và phân loại
+fixture 404/503, asset bị chặn là việc riêng. Backend/staging vẫn **0/154** theo
+xác nhận thiếu đầu vào; 25/106 scenario cần contract owner, UAT **0/128**.
+Production bundle vẫn cần endpoint được duyệt; không tự đặt URL.
