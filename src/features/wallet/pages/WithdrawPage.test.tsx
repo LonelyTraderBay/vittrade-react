@@ -6,6 +6,7 @@ import userEvent from '@testing-library/user-event';
 import { renderWithProviders } from '@/test/test-utils';
 import type { AuthAdapter } from '@/shared/session/AuthContext';
 import { testAuthAdapter } from '@/test/auth-test-adapter';
+import { invokeStaleReactHandler } from '@/test/invoke-stale-react-handler';
 import { toast } from 'sonner';
 import { ApiError } from '@/shared/api/api-error';
 import { walletApi } from '../api/wallet-api';
@@ -206,7 +207,10 @@ describe('WithdrawPage', () => {
     try {
       await waitFor(() => expect(verificationRequests).toBe(1));
       expect(button).toBeDisabled();
-      expect(screen.getByRole('button', { name: 'Quay lại chỉnh sửa' })).toBeDisabled();
+      const backButton = screen.getByRole('button', { name: 'Quay lại chỉnh sửa' });
+      expect(backButton).toBeDisabled();
+      invokeStaleReactHandler(backButton, 'onClick');
+      expect(screen.getByText('Xác minh bảo mật')).toBeVisible();
     } finally {
       finishVerification();
     }
