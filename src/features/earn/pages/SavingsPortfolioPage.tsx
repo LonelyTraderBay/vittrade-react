@@ -121,11 +121,12 @@ export function SavingsPortfolioPage() {
             onCta={() => navigate(`${prefix}/earn/savings`)}
           />
         ) : (
-          <div className="flex flex-col gap-3" aria-label="Các vị thế tiết kiệm">
+          <div role="list" className="flex flex-col gap-3" aria-label="Các vị thế tiết kiệm">
             {positions.map((position) => (
               <PositionCard
                 key={position.id}
                 position={position}
+                role="listitem"
                 onRedeem={() => {
                   if (canRedeem) setSelectedPosition(position);
                 }}

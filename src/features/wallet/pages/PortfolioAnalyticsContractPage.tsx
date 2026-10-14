@@ -53,12 +53,13 @@ export function PortfolioAnalyticsContractPage() {
     <PageLayout>
       <Header title="Portfolio Analytics" subtitle="Server-owned wallet performance" back />
       <PageContent gap="default">
-        <div className="flex gap-2 overflow-x-auto" aria-label="Analytics period">
+        <div role="group" className="flex gap-2 overflow-x-auto" aria-label="Analytics period">
           {PERIODS.map((value) => (
             <button
               key={value}
               type="button"
               onClick={() => setPeriod(value)}
+              aria-pressed={period === value}
               className="rounded-full px-4 py-2 text-xs font-semibold"
               style={{
                 background: period === value ? colors.primary : colors.surface2,

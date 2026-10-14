@@ -1,5 +1,5 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
-import { act, fireEvent, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, screen, waitFor, within } from '@testing-library/react';
 import { useLocation } from 'react-router';
 import { useAuth } from '@/shared/session/useAuth';
 import { http, HttpResponse } from 'msw';
@@ -244,6 +244,8 @@ describe('Savings portfolio contract page', () => {
     });
 
     expect(await screen.findByText('Stable Savings')).toBeInTheDocument();
+    const positions = screen.getByRole('list', { name: 'Các vị thế tiết kiệm' });
+    expect(within(positions).getByRole('listitem')).toBeInTheDocument();
     expect(screen.queryByText('Validator Stake')).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Rút vốn' }));
     fireEvent.change(screen.getByLabelText('Số lượng'), { target: { value: '100' } });

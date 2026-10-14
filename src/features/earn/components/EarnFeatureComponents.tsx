@@ -103,17 +103,19 @@ export function PositionCard({
   position,
   onRedeem,
   canRedeem = true,
+  role,
 }: {
   position: EarnPosition;
   onRedeem: () => void;
   canRedeem?: boolean;
+  role?: string;
 }) {
   const c = useThemeColors();
   const daysLeft = position.endDate
     ? Math.max(0, Math.ceil((new Date(position.endDate).getTime() - Date.now()) / 86_400_000))
     : undefined;
   return (
-    <TrCard className="p-4">
+    <TrCard role={role} className="p-4">
       <div className="flex items-start gap-3">
         <div
           className="flex h-10 w-10 items-center justify-center rounded-full"

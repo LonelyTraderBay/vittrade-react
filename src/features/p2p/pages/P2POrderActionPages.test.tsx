@@ -1,7 +1,7 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { act, fireEvent, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Route, Routes } from 'react-router';
 import { renderWithProviders } from '@/test/test-utils';
@@ -130,7 +130,16 @@ describe('P2P order action feature pages', () => {
     );
 
     expect(await screen.findByText('P2P-001')).toBeInTheDocument();
+    const rating = screen.getByRole('group', { name: 'Chọn số sao' });
+    expect(within(rating).getByRole('button', { name: '1 sao' })).toHaveAttribute(
+      'aria-pressed',
+      'false',
+    );
     await userEvent.click(screen.getByRole('button', { name: '5 sao' }));
+    expect(within(rating).getByRole('button', { name: '5 sao' })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    );
     await userEvent.type(screen.getByRole('textbox', { name: 'Nhận xét' }), 'Giao dịch tốt');
     await userEvent.click(screen.getByRole('button', { name: 'Gửi đánh giá' }));
 

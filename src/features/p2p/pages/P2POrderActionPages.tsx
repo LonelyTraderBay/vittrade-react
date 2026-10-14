@@ -227,12 +227,13 @@ export function P2POrderRateContractPage() {
             <p className="mb-3 text-center" style={{ color: 'var(--tr-text-3)', fontSize: 12 }}>
               Đánh giá trải nghiệm với {order.merchant}
             </p>
-            <div className="flex justify-center gap-2" aria-label="Chọn số sao">
+            <div role="group" className="flex justify-center gap-2" aria-label="Chọn số sao">
               {[1, 2, 3, 4, 5].map((value) => (
                 <button
                   key={value}
                   type="button"
                   aria-label={`${value} sao`}
+                  aria-pressed={value === rating}
                   disabled={mutation.isPending}
                   onClick={() => setRating(value)}
                   className="rounded-full p-1"
