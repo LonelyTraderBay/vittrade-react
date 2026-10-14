@@ -36,6 +36,7 @@ const SEGMENT_LABELS: Record<string, string> = {
   dca: 'DCA',
   profile: 'Tài khoản',
   p2p: 'P2P',
+  news: 'Tin tức',
   arena: 'Arena',
   earn: 'Earn',
   notifications: 'Thông báo',

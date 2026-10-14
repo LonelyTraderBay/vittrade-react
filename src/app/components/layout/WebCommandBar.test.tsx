@@ -45,6 +45,15 @@ describe('WebCommandBar', () => {
     expect(screen.queryByText('Dashboard')).not.toBeInTheDocument();
   });
 
+  it('shows a News breadcrumb instead of the dashboard fallback on /w/news', () => {
+    renderWithProviders(<WebCommandBar />, {
+      routerProps: { initialEntries: ['/w/news'] },
+    });
+
+    expect(screen.getByRole('button', { name: 'Tin tức' })).toBeInTheDocument();
+    expect(screen.queryByText('Dashboard')).not.toBeInTheDocument();
+  });
+
   it.each([
     { user: { fullName: ' ', username: 'trader' }, name: 'trader' },
     {
