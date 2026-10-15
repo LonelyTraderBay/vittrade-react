@@ -394,18 +394,26 @@ test.describe('wallet contract smoke on staging build', () => {
     await page.goto('/wallet/withdraw/USDT');
     await expect(page).toHaveURL(/\/w\/wallet\/withdraw\/USDT$/);
     await expect(page.getByLabel('Mạng lưới')).toHaveValue('ethereum');
-    await page
-      .locator('#withdraw-address')
-      .fill('wallet-address-long-enough-for-validation-123456');
+    const addressField = page.locator('#withdraw-address');
+    const amountField = page.locator('#withdraw-amount');
+    await page.getByRole('button', { name: /Tiếp tục/ }).click();
+    await expect(addressField).toHaveAttribute('aria-invalid', 'true');
+    await expect(addressField).toHaveAttribute('aria-describedby', 'withdraw-address-error');
+    await expect(page.locator('#withdraw-address-error')).toHaveAttribute('role', 'alert');
+    await expect(amountField).toHaveAttribute('aria-invalid', 'true');
+    await expect(amountField).toHaveAttribute('aria-describedby', 'withdraw-amount-error');
+    expect(challengeBody).toBeUndefined();
+
+    await addressField.fill('wallet-address-long-enough-for-validation-123456');
+    await expect(page.locator('#withdraw-address-error')).toHaveCount(0);
     await page.getByRole('button', { name: 'Tất cả' }).click();
-    await expect(page.locator('#withdraw-amount')).toHaveValue('50.000000');
+    await expect(amountField).toHaveValue('50.000000');
+    await expect(page.locator('#withdraw-amount-error')).toHaveCount(0);
     await page.setViewportSize({ width: 390, height: 844 });
     await page.waitForTimeout(350);
     await expect(page).toHaveURL(/\/w\/wallet\/withdraw\/USDT$/);
-    await expect(page.locator('#withdraw-address')).toHaveValue(
-      'wallet-address-long-enough-for-validation-123456',
-    );
-    await expect(page.locator('#withdraw-amount')).toHaveValue('50.000000');
+    await expect(addressField).toHaveValue('wallet-address-long-enough-for-validation-123456');
+    await expect(amountField).toHaveValue('50.000000');
     await page.getByRole('button', { name: /Tiếp tục/ }).click();
     await page.getByRole('button', { name: /Xác minh 2FA/ }).click();
 

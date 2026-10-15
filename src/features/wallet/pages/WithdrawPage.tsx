@@ -65,6 +65,15 @@ export function WithdrawPage() {
   const withdrawalAttempt = useRef<{ signature: string; key: string } | null>(null);
   const submissionInFlight = useRef(false);
 
+  const clearErrors = (...fields: string[]) => {
+    setErrors((current) => {
+      if (!fields.some((field) => current[field])) return current;
+      const next = { ...current };
+      fields.forEach((field) => delete next[field]);
+      return next;
+    });
+  };
+
   const selectedNetwork = useMemo(
     () => networks.find((network) => network.id === networkId) ?? networks[0],
     [networkId, networks],
@@ -249,14 +258,25 @@ export function WithdrawPage() {
           canWithdraw={canWithdraw}
           onNetworkChange={(event) => {
             setNetworkId(event.target.value);
+            clearErrors('memo', 'amount');
             hapticSelection();
           }}
-          onAddressChange={(event) => setAddress(event.target.value)}
-          onMemoChange={(event) => setMemo(event.target.value)}
-          onAmountChange={(event) => setAmount(event.target.value)}
-          onSetMax={() =>
-            setAmount(Math.min(assetData.available, selectedNetwork.maxWithdraw).toFixed(6))
-          }
+          onAddressChange={(event) => {
+            setAddress(event.target.value);
+            clearErrors('address');
+          }}
+          onMemoChange={(event) => {
+            setMemo(event.target.value);
+            clearErrors('memo');
+          }}
+          onAmountChange={(event) => {
+            setAmount(event.target.value);
+            clearErrors('amount');
+          }}
+          onSetMax={() => {
+            setAmount(Math.min(assetData.available, selectedNetwork.maxWithdraw).toFixed(6));
+            clearErrors('amount');
+          }}
           onContinue={() => {
             if (!validate()) {
               hapticWarning();

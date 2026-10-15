@@ -243,7 +243,19 @@ describe('WithdrawPage', () => {
     expect(challengeRequested).toBe(false);
     expect(await screen.findByText('Địa chỉ ví không hợp lệ.')).toBeVisible();
     expect(screen.getByText('Nhập số tiền cần rút.')).toBeVisible();
-    expect(document.getElementById('withdraw-address')).toHaveValue('');
+    const address = screen.getByLabelText('Địa chỉ ví nhận');
+    expect(address).toHaveValue('');
+    expect(address).toHaveAttribute('aria-invalid', 'true');
+    expect(address).toHaveAttribute('aria-describedby', 'withdraw-address-error');
+    expect(screen.getByText('Địa chỉ ví không hợp lệ.')).toHaveAttribute(
+      'id',
+      'withdraw-address-error',
+    );
+
+    await userEvent.type(address, 'wallet-address-long-enough-for-validation-123456');
+    expect(screen.queryByText('Địa chỉ ví không hợp lệ.')).not.toBeInTheDocument();
+    expect(address).toHaveAttribute('aria-invalid', 'false');
+    expect(address).not.toHaveAttribute('aria-describedby');
   });
 
   it('enforces both available-balance and network maximum limits before MFA', async () => {
@@ -348,9 +360,32 @@ describe('WithdrawPage', () => {
 
     expect(await screen.findByText('Memo là bắt buộc cho mạng này.')).toBeVisible();
     expect(screen.getByText('Tối thiểu 5 USDT.')).toBeVisible();
+    expect(screen.getByLabelText('Memo')).toHaveAttribute(
+      'aria-describedby',
+      'withdraw-memo-error',
+    );
+    expect(screen.getByLabelText('Số lượng rút')).toHaveAttribute(
+      'aria-describedby',
+      'withdraw-amount-error',
+    );
+
+    await userEvent.selectOptions(screen.getByRole('combobox'), 'ethereum');
+    expect(screen.queryByText('Tối thiểu 5 USDT.')).not.toBeInTheDocument();
+    expect(screen.queryByLabelText('Memo')).not.toBeInTheDocument();
+    await userEvent.selectOptions(screen.getByRole('combobox'), 'tag-network');
+    expect(screen.getByLabelText('Memo')).toHaveAttribute('aria-invalid', 'false');
+    expect(screen.getByLabelText('Số lượng rút')).toHaveAttribute('aria-invalid', 'false');
+
+    await userEvent.click(getContinueButton());
+    expect(await screen.findByText('Memo là bắt buộc cho mạng này.')).toBeVisible();
+    expect(screen.getByText('Tối thiểu 5 USDT.')).toBeVisible();
 
     await userEvent.type(document.getElementById('withdraw-memo') as HTMLInputElement, 'tag-123');
     fireEvent.change(screen.getByLabelText('Số lượng rút'), { target: { value: '6' } });
+    expect(screen.queryByText('Memo là bắt buộc cho mạng này.')).not.toBeInTheDocument();
+    expect(screen.queryByText('Tối thiểu 5 USDT.')).not.toBeInTheDocument();
+    expect(screen.getByLabelText('Memo')).not.toHaveAttribute('aria-describedby');
+    expect(screen.getByLabelText('Số lượng rút')).not.toHaveAttribute('aria-describedby');
     await userEvent.click(getContinueButton());
     await userEvent.click(getButtonContaining('2FA'));
     await waitFor(() => expect(challengeBody).toBeDefined());
@@ -370,12 +405,17 @@ describe('WithdrawPage', () => {
     });
     await screen.findByRole('combobox');
 
-    await userEvent.click(getButtonContaining('Tất cả'));
-    expect(document.getElementById('withdraw-amount')).toHaveValue(50);
+    await userEvent.type(document.getElementById('withdraw-amount') as HTMLInputElement, '1');
     await userEvent.type(
       document.getElementById('withdraw-address') as HTMLInputElement,
       'wallet-address-long-enough-for-validation-123456',
     );
+    await userEvent.click(getContinueButton());
+    expect(await screen.findByText('Tối thiểu 5 USDT.')).toBeVisible();
+
+    await userEvent.click(getButtonContaining('Tất cả'));
+    expect(document.getElementById('withdraw-amount')).toHaveValue(50);
+    expect(screen.queryByText('Tối thiểu 5 USDT.')).not.toBeInTheDocument();
     await userEvent.click(getContinueButton());
 
     expect(await screen.findByText('50.000000 USDT')).toBeVisible();
