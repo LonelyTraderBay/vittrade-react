@@ -48,30 +48,43 @@
     }
   ],
   "checkpoint": {
-    "updatedAt": "2026-10-15T05:41:48.000Z",
+    "updatedAt": "2026-10-15T07:45:00.000Z",
     "lastCompletedTask": "C03",
     "activeTask": "C06",
     "activeStep": "C06.03",
     "nextTask": "C06",
     "nextStep": "C06.03",
-    "nextAction": "C06.02 completed: exact run #63 on 35108ac6899f141086985a86445805c4530c9658 passed 34/34 steps and artifact digest verification. C06.03 is queued; commit/push this transition ledger, require every exact-SHA GitHub gate plus artifact integrity on that SHA, then begin measured Market action-contrast work.",
+    "nextAction": "Reconcile 14 exact path provenance pointers in TRACKING for source 6192a3fd8c6fc44ddfd1b0f6a7780b9252947a8e and generated inventory 7565177eee029b0cf7077fab3e180c3d086f6aae; keep C06.03 in_progress. Wait GitHub run #66 (exact SHA 7565177eee029b0cf7077fab3e180c3d086f6aae) terminal, then commit/push the ledger, verify the exact new SHA and artifact digest; close C06.03 only after a green exact-SHA run. Do not start C06.04 before that gate.",
     "changedFiles": [
+      "src/app/__tests__/CTAButton.test.tsx",
+      "src/features/auth/pages/WebLoginPage.test.tsx",
+      "src/features/auth/pages/WebLoginPage.tsx",
+      "src/features/market/components/MarketItem.test.tsx",
+      "src/features/market/components/MarketItem.tsx",
+      "src/features/market/pages/PairDetailPage.test.tsx",
+      "src/features/market/pages/PairDetailPage.tsx",
+      "src/features/market/pages/WatchlistPage.test.tsx",
+      "src/features/market/pages/WatchlistPage.tsx",
+      "src/shared/theme/button.ts",
+      "src/shared/theme/theme-token-contract.test.tsx",
+      "src/shared/ui/CTAButton.test.tsx",
+      "src/shared/ui/CTAButton.tsx",
+      "docs/architecture/page-inventory.json",
       "docs/architecture/production-readiness/TRACKING.json"
     ],
     "pendingChecks": [
-      "C06.03 source work is queued but must not begin until this step-transition ledger commit passes all exact-SHA GitHub gates and downloaded artifact digest verification.",
-      "Tiếp tục C05.03: revision-bound review Axe incomplete và UI; formal user acceptance vẫn chờ người dùng.",
-      "B05/C05.04/C05.05 chỉ mở lại khi các đầu vào backend/staging đã xác nhận được cung cấp."
+      "GitHub run #66 (run ID 38699462430) on exact SHA 7565177eee029b0cf7077fab3e180c3d086f6aae is still in progress; record terminal job/artifact result.",
+      "C06.03 tracker provenance reconciliation and post-self-audit check-tracking must pass locally and on exact pushed SHA.",
+      "C06.03 source acceptance remains open until a subsequent exact-SHA GitHub run completes every required gate and artifact digest verification.",
+      "C05.03 formal user acceptance and unresolved Axe evaluations remain separate; backend/staging and production build credentials remain unavailable as already recorded."
     ],
     "blockers": [
-      "Hai local Playwright runs iteration 62 chưa kết thúc/không có summary; không tính là pass.",
-      "Exact pushed-SHA GitHub workflow, artifacts và governance chưa xác minh; chờ push.",
-      "C05.03: Axe incomplete 1655/1656, screenshot review 14/128, formal acceptance 0/128.",
-      "B05 và C05.04/C05.05 blocked theo xác nhận thiếu backend/staging owners, host/version, quyền test, telemetry/privacy owner và SLO; backend 0/154, UAT 0/128.",
-      "Production build vẫn cần VITE_API_BASE_URL/VITE_WS_URL được phê duyệt.",
-      "C06.02 implementation and exact run #62 are complete; the separate completion-ledger SHA must pass exact-SHA GitHub gates before C06.03."
+      "Local full-suite runner failed with EPERM before test child started; incomplete manifest and output are preserved and are not PASS.",
+      "GitHub run #66 on exact inventory SHA 7565177eee029b0cf7077fab3e180c3d086f6aae is not terminal yet.",
+      "After run #66, the refreshed tracking ledger must pass local and exact-SHA readiness source-ledger gates.",
+      "C05.03 formal UI acceptance, backend/staging inputs and approved production build endpoints remain outside this C06.03 slice."
     ],
-    "notes": "EV-086–090 chốt Earn pending: OpenAPI cho phép HTTP 201 với receipt pending; pre-fix browser đo được subscription/redemption đều hiện thông báo chung mà không có receipt; sửa để Savings/Staking mở receipt có status/reference; 10/10 focused tests và local Chromium/MSW verification pass; 5 Earn sidecars được làm mới. Matrix 39/106 fresh (18 full, 21 representative), 38/154 operations, 154/154 mappings, 39/64 sidecars, 0 stale; aggregate runtimeEvidenceFresh=false. earn.forbidden (0/4 khai báo 403) và earn.unknown/duplicate (thiếu receipt lookup/correlation/same-key replay contract) vẫn not_verified. Next launchpad.success. UI acceptance 0/128; backend/staging 0/154. Không có bằng chứng staging/backend hoặc user acceptance.\nEV-20260930-091–096 recorded Launchpad contract and current-head local outcomes: success 2/2 operations; empty/loading/error 1/2 each; loading response 2,018 ms; error 6+6 statusless GET failures. Matrix 43/106, 40/154 operations, 43/68 registered sidecars; runtimeEvidenceFresh=false. Next market.success.\nEV-20260930-097–099 resolved Launchpad retry multiplication: local error request count fell from 6+6 to 3+3 per initial/manual retry cycle; focused test 4/4 and four current-head browser scenarios passed. Current matrix 43/106 fresh, 40/154 operations, 43/68 sidecars, no stale hashes; runtimeEvidenceFresh=false. Next market.success.\nEV-20260930-100–102 confirmed the final retry policy covers list and detail: focused tests 5/5 and all four post-fix browser sidecars have current hashes. Matrix 43/106 fresh, 40/154 operations, 43/68 registered sidecars; runtimeEvidenceFresh=false. Next market.success. Market success refreshed on current HEAD c5fc38b: 20 routes, 22/22 operations, 43/43 source hashes, local MSW only; next market.empty. Final Market consistency EV-20260930-104: tracking/matrix/UI index/inventory/OpenAPI checks pass; 43 input hashes and all 21 screenshot catalog entries verified.\nEV-20260930-109–113 refreshed Market success/empty/loading/error on current sources. Retry multiplication measured 6 dispatches per execution before fix and 3 after; 16 Market query hooks now defer to the HTTP-client budget, with regression test proving 3 initial + 3 explicit refetch. EV-114 confirms zero contract-declared Market 401/403; next row profile.success. Matrix 47/106 fresh (22 full, 25 representative), 62/154 operations, 47/72 fresh sidecars, zero source hash stale; aggregate remains historical_baseline. Local evidence only, UI acceptance 0/128, backend/staging 0/154.\nEV-20260930-115 validation: Market tests 187/187; app/Node typecheck, scoped ESLint, OpenAPI, tracker, matrix, UI index, inventory, syntax, Prettier and git diff --check pass. Catalog 2149; matrix 47/106 (22 full), 62/154 operation, 47/72 fresh sidecars, zero stale hashes; aggregate remains historical. Local-only; UI acceptance 0/128; backend/staging 0/154.\nEV-20260930-116 profile.success: Chromium local current-head run across four routes observed 7/7 operation IDs and 15/15 service-worker responses, including three fixture-only writes (200/200/204); 22/22 source hashes match. Flow 4.704 ms, one revoke callback arrived after its successful 204 response, no unmatched failures/page errors/external API/backend requests. Sidebar at /w/profile/edit highlights Trang chủ, tracked under C05.03. Matrix 48/106 (23 full), 69/154 unique operations, 48/72 current sidecars, zero stale; runtime aggregate historical. EV-117 local repository validation passed; next profile.empty. Profile empty EV-20260930-118: 3/3 collection reads returned 200 {items:[]}; 9/9 service-worker responses, 0 writes, 21/21 source hashes, 1,656 ms local; profile root object preserved. Sidebar mismatch reproduced at /w/profile/devices. Next profile.loading. Profile loading EV-20260930-120: all 4 GET routes remained loading in flight; responses 200 after 2.006–2.017 seconds from local MSW; 22/22 hashes; 0 writes/errors. No active sidebar item on the loading screenshots; Preview warning/Web widget overlap persists. Next profile.error. Profile loading EV-20260930-120/121 registered: 4/4 reads, 7/7 service-worker responses, ~2-second local delay, 22/22 source hashes; matrix 50/106 fresh, 25 full, 69/154 operations, 50/72 sidecars and 0 stale. Tracker, matrix/index, inventory, OpenAPI, syntax/format and whitespace gates pass. Next profile.error.\nEV-20260930-130 measured referral.empty on current HEAD c5fc38b0755da3fe2c9831fe3040160a308a9a03: getReferralOverview 1/1, GET/200 via local MSW, 2 ms response, 237 ms scenario, 704 ms total flow, 20/20 source hashes, zero request errors/writes/page errors/external API origins; empty UI showed zero statistics and the expected message. Matrix is 54/106 fresh (27 full, 27 representative), 70/154 unique operations, 54/72 current sidecars, 19 historical baseline sidecars with current hashes, zero stale; aggregate remains historical_baseline. UI acceptance 0/128 and backend/staging 0/154. C05.03 top label and Preview/Web overlap remain open. Next referral.loading.\nEV-20260930-131 validation on current HEAD: scenario matrix and UI index current at 54/106; architecture inventory 129 pages/427 routes/149 components/32 services/28 mocks; OpenAPI 15 contracts/154 operations; Referral runner lint, format, syntax, and git diff --check pass; check-tracking errorCount=0. UI acceptance 0/128; backend/staging 0/154.\n\nEV-20260930-132 measured referral.loading on current HEAD c5fc38b0755da3fe2c9831fe3040160a308a9a03: getReferralOverview 1/1, GET/200 via local MSW, loading visible at 2,012 ms, response at 2,019 ms, scenario 2,137 ms, flow 2,610 ms, 20/20 source hashes, 0 errors/writes/page errors/external API origins. Matrix is 55/106 fresh (28 full, 27 representative), 70/154 unique operations, 55/72 current sidecars, 19 historical baseline sidecars with current hashes, 0 stale; aggregate remains historical_baseline. UI acceptance 0/128; backend/staging 0/154. C05.03 active-navigation and Preview/Web overlap remain open. Next referral.error.\nEV-20260930-133 validation passed: matrix/UI index current at 55/106; architecture inventory 129 pages/427 routes/149 components/32 services/28 mocks; OpenAPI 15 contracts/154 operations; runner ESLint/Prettier/node syntax and git diff --check pass; check-tracking errorCount=0. UI acceptance 0/128, backend/staging 0/154.\n Current support.loading is fully verified for its 4 read operations with 25/25 hashes; all responses were local MSW and do not verify backend/staging. Screenshots add the /w/news active-navigation and existing widget/banner issues to C05.03.\nEV-20260930-143–147: Support error retry ownership fixed and measured. Four read hooks now allow only the shared HTTP client budget (3 attempts); same local runner fell from 48 to 24 injected failures across initial+Retry. Success/empty/loading/pending reports refreshed to current query hashes. Support auth remains contract-blocked (0/6 401/403); next matrix row: audit admin.error. Matrix 61/106 fresh; user acceptance 0/128; backend/staging 0/154. Current-head refresh at 2026-09-30T18:59:15.021Z: 65/65 stale sidecars rerun and hash-verified; matrix has 73/106 fresh scenarios, 37 full, 85/154 operations, 0 stale. Next admin.unauthorized.\nEV-20261001-001: Admin unauthorized current-head Chromium/MSW run passed for 3 reachable GETs: 3/3 401, 3/3 refresh contract fixtures 200/null, 3/3 login redirects, stale content 0, Admin writes/failures 0, 24/24 source hashes. The trace also preserves 7 app-level abort callbacks (3 Auth logout with prior response, 4 Market pairs/watchlist without response during home teardown). Matrix 74/106 fresh, 37 full, 85/154 operations, 74/74 sidecars, zero stale; runtime aggregate historical. Next Arena 401/403 contract audit; user acceptance/backend/CI gates remain pending.\nEV-20261001-002: Arena OpenAPI audit confirms 0/4 401 and 0/4 403; keep both rows not_verified. wallet.empty current-head browser run: 3 GET/200, 2/2 operation IDs, 2 assets / $16,754.32, 0 transactions in both views, 0 Wallet writes, 0 page errors, 0 external API origins, 17/17 hashes; Wallet flow 205 ms / total local flow 842 ms. Screenshot review added Wallet overview active-nav, Preview/Web overlap and Google Fonts origins to C05.03. Matrix 75/106 fresh, 87/154 operations, 0 stale; aggregate historical. Next wallet.forbidden GETs only.\nEV-20261001-008 records the measured wallet.error retry fix and fresh Wallet sidecars; next checkpoint is local transfer-only wallet.pending.\nEV-20261001-009: Re-ran all six Wallet current-source sidecars after the regression test typing correction; next is transfer-only wallet.pending via local MSW.\nEV-20261001-042/043 recorded A06.03 Auth refresh contract correction and eight current-source scenario reruns; matrix/index synchronized. The global active checkpoint remains unchanged.\n\nB07.03 closed: exact-SHA run #34 on 92b1d15 passed 41/41 steps and artifact verification; final ledger commit cf9f33f passed exact-SHA run #35, 41/41 steps. Checker errorCount=0, unit/integration 2415/2415, E2E 51/51, bundle 221/221. Resume A06.03 at arena.unauthorized as specified by PLAN; unsupported 401/403 and unknown/duplicate states remain not_verified.\n\nEV-20261002-009: current source hashes confirm Arena unauthorized 0/4 HTTP 401, Arena forbidden 0/4 HTTP 403, and Auth forbidden 0/8 HTTP 403. Rows remain not_verified; no browser/API side effect. Next: dca.forbidden. B07 exact-SHA Ubuntu run #34 and final ledger commit run #35 passed.\n\nEV-20261002-010: dca.forbidden resolved 5/5 current operations and 0/5 declare HTTP 403. Row remains not_verified; no browser/API side effect. Next: discovery.unauthorized.\n\nEV-20261002-011: discovery.unauthorized resolves 2/2 with 0/2 HTTP 401; discovery.forbidden 0/2 HTTP 403. Both rows remain not_verified. Next: earn.forbidden.\n\nEV-20261002-012: Earn contract audit leaves forbidden/unknown/duplicate not_verified; writes require idempotency key but no conflict/replay or lookup result is specified. No side effect was sent. Next: Launchpad unauthorized/forbidden.\nEV-20261002-013: Launchpad 0/2 mapped operations declare 401 or 403; Market 0/22 contract operations declare either status and each authorization row maps 8 operations. Four rows remain not_verified; no browser/API side effect. Next p2p.unknown.\nEV-20261002-014: check-tracking exits 1, total 2191 errors; path scope maps 916/916, while 885/916 active non-plan file records lack catalogued source fingerprints. Keep A06.03 in_progress.\nEV-20261002-015: P2P unknown contract audit maps 4/4 operations; all 3 writes require Idempotency-Key but the create flow has no deterministic lost-receipt correlation or same-key replay response. Keep not_verified; next predictions.forbidden.\nEV-20261002-016: Predictions 8/8 operations map; 0/8 declare 403. Place-order 409 combines duplicate key and market-state conflict; no same-key replay or key lookup. All three rows remain not_verified; next profile.forbidden.\nEV-20261002-017: profile.forbidden maps 7/7 operations; 0/7 declare HTTP 403 (all seven declare 401). Row remains not_verified; next referral.forbidden.\nEV-20261002-018: getReferralOverview is the sole mapped operation and has 200/401 with no 403; referral.forbidden remains not_verified. Next support.unauthorized.\nEV-20261002-019: Support maps six operations; 0/6 declare either 401 or 403. Both rows remain not_verified; next trading.unknown.\nEV-20261002-020: Trading unknown/duplicate maps five operations; three writes require Idempotency-Key, but no stable replay or clientOrderId lookup contract exists. No orders were changed. Next wallet.unknown.\nEV-20261002-021: Wallet unknown/duplicate current-source audit confirms 2 writes require Idempotency-Key but no transaction correlation/key lookup or stable replay result; no financial side effect. This is the final not_verified row in matrix order; next action is blocker reconciliation, not an unsupported write.\nEV-20261002-030: 10 current-source scenario reports and 64 screenshots pass in local Chromium/MSW; handler test 59/59. Auth refresh guest response matches 200/null. Final checker remains 61 errors across exact application inventory 916/916 after 75 evidence artifact rows were registered without claiming an absent Git snapshot. UI acceptance 0/128, backend/staging 0/154, and 25 contract-dependent rows remain open. EV-20261003-002 recorded shared Auth Chromium/MSW preview at http://127.0.0.1:5174/: 8 application API responses, 0 failed API requests, 0 page errors; login MFA invalid/valid returned 400/200, locked returned 423, and full reload session returned 401 under the in-memory mock. No backend/staging or user acceptance evidence. EV-20261003-003 refreshed 20/20 A06 sidecars; matrix 81/106 fresh, 81/81 current sidecars, 0 source-hash stale. Runtime aggregate remains historical_baseline; 25 rows remain not_verified. U01.03 remains active pending the API/security decision on guest verifyMfa.\nEV-20261003-004: C05.03 follow-up measured a 19 px Web badge/banner gap and keyboard preview access at /w/auth/login; 16 focused tests pass. Local MSW only; C05 UI acceptance remains 0/128. EV-20261003-005 records scoped LF normalization; final EOL preflight passes 3218 paths. check-tracking remains exit 1 with 73 snapshot-ledger errors. Global active step remains U01.03 pending API/security approval for guest verifyMfa semantics. EV-20261003-006 records a 9/9 API-mode Auth E2E run including login MFA HTTP 410 handling; backend/staging evidence is absent and registration verifyMfa remains owner-blocked. Final EV-20261003-006 validation: focused browser 9/9 and local static gates pass; check-tracking remains exit 1 with 40 source-ledger errors and source inventory 916/916. EV-20261003-007 records a 10/10 combined Auth browser run, including the complete contract-backed password-reset flow; evidence remains local fixture only. Final EV-20261003-007 validation: browser 10/10 and local static gates pass; check-tracking remains exit 1 with 40 source-ledger errors and source inventory 916/916. EV-20261003-008 records Auth reset test-fixture alignment with declared OpenAPI outcomes; focused tests pass 6/6. Final EV-20261003-008 validation: focused tests and local static gates pass; check-tracking remains exit 1 with 40 source-ledger errors and source inventory 916/916.\nEV-20261010-042 registered; the 100% aggregate target remains in progress.\nEV-20261010-043 registered; aggregate coverage target remains in progress.\nEV-20261010-046: full Vitest/V8 suite 324/324 files, 2918/2918 tests; 97.52/95.58/96.66/98.14 aggregate, 304/406 measurable files complete, 102 gaps, 32 no-counter paths excluded. WebCommandBar and P2PHomeCards reach 100/100/100/100 in full suite; focused P2PHomeCards branch coverage is 51/62. Local Windows only; exact-SHA CI, backend, staging, production and acceptance unverified. Next P2PExpressConfirmPage and LaunchpadContractPages.\nEV-20261010-047: full Vitest/V8 suite 324/324 files, 2928/2928 tests; 97.58/95.76/96.78/98.19 aggregate, 306/406 measurable files complete, 100 gaps, 32 no-counter paths excluded. P2PExpressConfirmPage and LaunchpadContractPages reach 100/100/100/100. check-tracking exits 1 with 281 dirty-tree catalog/source-head mismatches; unrelated fingerprints were not rebaselined. Local Windows only; exact-SHA CI, backend, staging, production and acceptance unverified. Next OrderReceiptPage.\nEV-20261010-048: full Vitest/V8 suite 324/324 files, 2940/2940 tests; 97.63/95.82/96.89/98.26 aggregate, 307/406 measurable files complete, 99 gaps, 32 no-counter paths excluded. OrderReceiptPage reaches 100/100/100/100. check-tracking exits 1 with 284 dirty-tree catalog/source-head mismatches; unrelated fingerprints were not rebaselined. Local Windows only; exact-SHA CI, backend, staging, production and acceptance unverified. Next useSessionTimeout.\nEV-20261010-052: Web2FASetupFlow and Web2FASetupBackupStep focused counters are 100%; full Vitest is 324/324 files and 2952/2952 tests with aggregate S97.86/B96.05/F97.22/L98.45 and 95 measurable source gaps. Next MarketDepthPage owner coverage. Historical WebLoginPage full-suite failure is resolved by later passing full-suite runs. Exact-SHA hosted CI, backend, staging, production and user acceptance remain unverified.\nEV-20261010-053: MarketDepthPage.tsx is 100/100/100/100 in focused and full reports; full Vitest is 324/324 files and 2957/2957 tests with aggregate S97.91/B96.10/F97.30/L98.50, 312/406 measurable files complete and 94 gaps. Next MarketPriceAlertsPage owner coverage. Exact-SHA hosted CI, backend, staging, production and user acceptance remain unverified.\nEV-20261011-054 and EV-20261011-055 record local focused 13/13 Market and 5/5 MiniChart passes; both target files reached 100/100/100/100. The EV-053 aggregate is preserved unchanged.\n13/10/2026 DECISION-20261013-002: snapshot audit và 14 remediation slices recorded; previous application checkpoint retained in decision/executionPlan, no code implemented.\n13/10 337/337 files, 3087/3087 tests, standard59/4skip + AuthAPI34 + AuthMSW41, 14 static gates, production build/mock/bundle pass. Global ledger still exits1 with17 uncommitted-source fingerprint errors; hosted/external/C03.05 target remains open. Index generation refreshed and closed separately; global production readiness not certified.\nFinal canonical cleanup:0 files/0 bytes,0 errors; preserved referenced/legacy output and latest production build. Git delivery question is pending; no commit/push/PR performed.\nScoped review of two existing current-source Wallet screenshots does not reproduce historical active-navigation/preview overlap findings; no application changes. Wider C05.03 remains open.\n17 fingerprint errors resolved from actual local source commits; canonical checker0. Earlier81 reports not relabelled; strict-HEAD browser refresh remains pending on final commit.\nOwner continuation:19 pre-fix failures;3130 tests pass,14 gates pass,332/408 fully covered source files. No100/production/backend claim.\n25 owner source/test/inventory paths now have individual actual local commit proofs; strict-HEAD browser refresh follows on final source commit.\nResource navigation fixed at52 lines; strict-head browser/build refresh remains separate.\n44 navigation source/test/inventory paths now have individual actual local commit proofs; strict-HEAD browser refresh follows on final source commit.\nFinancial write owner boundaries repaired; strict-head browser/build refresh remains separate.\n22 financial source/test/inventory paths now have individual actual local commit proofs; strict-HEAD browser refresh follows on final source commit.\nShared control/privacy slice:21 verified failures repaired; final-source proof and aggregate100 remain separate.\n27 shared-control source/test/inventory paths now have individual actual local commit proofs; strict-HEAD browser refresh follows on final source commit.\nRelease service diagnostics verified; latest coverage measured on actual current working bytes.\n8 service-diagnostic source/test/inventory paths now have individual actual local commit proofs; strict-HEAD browser refresh follows on final source commit.\nOwner behavior evidence verified; latest coverage measured on current working bytes.\n16 owner-feedback source/test/inventory paths now have individual actual local commit proofs; strict-HEAD browser refresh follows on final source commit.\nService input validation evidence verified; latest coverage measured on current working bytes.\n16 cache-shape source/test/inventory paths now have individual actual local commit proofs; strict-HEAD browser refresh follows on final source commit.\nOwner lifecycle evidence verified; latest coverage measured on current working bytes.\n16 owner-lifecycle source/test/inventory paths now have individual actual local commit proofs; strict-HEAD browser refresh follows on final source commit.\nFinal current-source81-runner refresh complete;build/mock/bundle and matrix/UI checks pass. No100%/production claim;coverage55 gaps,widerUI and external inputs remain open.\nCurrent final canonical cleanup:deleted0 files/0 logical bytes,0errors;task-owned processes/listeners ended. Open frontend and external criteria preserved.\n2026-10-14 EV-20261014-001/002: coverage counter target measured complete; wide local desktop scan recorded separately. C03 parent/C05.03, backend/staging, hosted gates and acceptance remain open.\nEV-20261014-003: check-tracking exit1/186 errors; git diff --check and EOL pass; no source catalog rebased.\nFinal pre-audit check-tracking: exit1/187; coverage counters measured 100%; C03.05 remains in_progress due the required ledger gate.\nAfter registering iteration 53 evidence files, check-tracking exits1/184; remaining provenance errors are not rebased. EV-20261014-012/014: re-run full V8 suite 360/360 files, 3462/3462 tests and 408/408 measurable files fully covered; all 905 current source hashes match and strict lint budget is 0/0. Historical GitHub run #51 failed on the prior SHA; final-SHA rerun remains pending.\nIteration 58: P2P contrast fade removed; P2P focus 6/6 and full suite 360/360 files, 3463/3463 tests, 408/408 measurable source files at 100%; axe 754/754 with zero detected violations and documented incomplete nodes; QR locator fixed, local E2E 59 pass/4 skip; exact pushed-SHA CI and C05/backend acceptance remain open.\nIteration 62: source commits c4cdd6a3/d3c8a578 và inventory commit 0c86ed92; coverage pass; wide UI scan có Axe incomplete; E2E runner chưa kết thúc; backend/staging giữ blocked.\n15/10/2026: bắt đầu C06.01 trên checkout sạch 19593f88; 54 path WIP của checkout ban đầu được giữ nguyên. Route/page baseline và runtime chưa chạy được ghi trong EV-20261015-001/002.\n15/10/2026: C06.01 local acceptance done; runtime remains unverified. Optional TRACKING Prettier diagnostic fails on both HEAD baseline and current file; recorded without broad formatting.\nC06.02 implementation in progress; only the BottomSheet owner, direct integration and P2P runtime smoke have been exercised. Local Playwright wrapper did not terminate; no broad route, WCAG, backend, or production acceptance is claimed.\nC06.02 precommit checker found four stale source catalogue pointers; provenance must be corrected after the real source commit.",
+    "notes": "C06.02 exact run #64 PASS at SHA 278700733d6d623fb2bfa06bf07426b2e5117feb; see EV-20261015-018. C06.03 source code SHA 6192a3fd8c6fc44ddfd1b0f6a7780b9252947a8e, generated inventory SHA 7565177eee029b0cf7077fab3e180c3d086f6aae; focused/static/local browser measurements and limitations in EV-019, local full-suite infra failure EV-020, GitHub #65 attempts EV-021/022, canonical inventory refresh EV-023. C06.03 remains in_progress pending terminal run #66, provenance reconciliation, and exact-SHA green GitHub gates. Runtime sample is 2 of 428 route declarations, one viewport, light/dark default states only; do not claim complete UI/WCAG/production acceptance. Local tracker reconciliation now passes on the draft payload (EV-20261015-025); run #66 remains in progress.",
     "remainingWork": "Coverage local đạt 362/362 test files, 3477/3477 tests và 100% trên 408 measurable files; 32 entries không có executable counter. C05.03 chưa xong: Axe có 1655/1656 incomplete evaluation, screenshot baseline 14/128, formal acceptance 0/128. B07.02 chưa xong: hai local E2E attempt không có terminal summary; exact pushed-SHA workflow/artifact/governance chưa xác minh. Backend/staging B05 và C05.04/.05 blocked; backend 0/154, 25/106 contract-dependent, UAT 0/128; thiếu các owner, host/version, quyền test, endpoint, telemetry/privacy và SLO đã nêu. C06.01 local inventory/matrix acceptance is complete (EV-20261015-003/004). Runtime route matrix is a source baseline only (0/428 runtime routes); later exact run #62 passed the source-ledger gate and all hosted steps (EV-20261015-016), but does not establish route-by-route runtime coverage.\nC06.02 browser assertions reported ok 1 across 6 viewport/theme cases; local Playwright run remains incomplete (run manifest not closed).\nC06.02 implementation passed exact run #62 on d97a7628497962c8d58a29f79fc2fff9ed5790b1; separate closure commit 35108ac6899f141086985a86445805c4530c9658 passed exact run #63 with 34/34 steps and artifact digest verification (EV-20261015-017). The current precondition for C06.03 is exact-SHA verification of the step-transition ledger commit; C06.03 code work has not started.\nC06.02 source and source fingerprints are committed and pushed; local Playwright teardown remains incomplete (EV-20261015-014) and is not counted as PASS. Guarded cleanup after run #63 deleted 0 files/0 bytes and retained 12 incomplete/active outputs.",
     "planningDecisionId": "DECISION-20261013-002",
     "blockerHistory": [
@@ -18819,9 +18832,17 @@
         },
         {
           "id": "C06.03",
-          "status": "todo",
-          "evidenceIds": [],
-          "notes": "See PLAN.md#frontend-ui-ux-ds-migration-20261015 for scope, dependencies, acceptance, and rollback. Step is not started.",
+          "status": "in_progress",
+          "evidenceIds": [
+            "EV-20261015-019",
+            "EV-20261015-020",
+            "EV-20261015-021",
+            "EV-20261015-022",
+            "EV-20261015-023",
+            "EV-20261015-024",
+            "EV-20261015-025"
+          ],
+          "notes": "C06.03 source commit 6192a3fd8c6fc44ddfd1b0f6a7780b9252947a8e đã được push; inventory generator cập nhật và commit riêng 7565177eee029b0cf7077fab3e180c3d086f6aae. Local focused/static/browser evidence pass trong phạm vi ghi tại EV-20261015-019; full local suite không bắt đầu do runner EPERM (EV-020). GitHub #65 attempt 1 lỗi một DCA test chưa xác định quan hệ; retry cùng SHA qua test suite nhưng xác nhận inventory stale, nên step vẫn in_progress. Inventory đã được sửa tại generator owner; run #66 trên exact inventory SHA đang được theo dõi. Ledger trước reconcile đo 14 pointer mismatch ở EV-024. Không bắt đầu C06.04 trước khi final exact-SHA GitHub gate + artifact integrity + tracker pass. Local post-reconciliation validation EV-20261015-025 passed (errorCount 0, inventory and diff checks pass); exact GitHub run #66 remains pending.",
           "execution": {
             "instructionsRef": "PLAN.md#frontend-ui-ux-ds-migration-20261015",
             "fileSelection": "files[].executionScope.stepIds includes C06.03",
@@ -19540,7 +19561,15 @@
         "EV-20261015-013",
         "EV-20261015-014",
         "EV-20261015-015",
-        "EV-20261015-016"
+        "EV-20261015-016",
+        "EV-20261015-018",
+        "EV-20261015-019",
+        "EV-20261015-020",
+        "EV-20261015-021",
+        "EV-20261015-022",
+        "EV-20261015-023",
+        "EV-20261015-024",
+        "EV-20261015-025"
       ],
       "changeIds": [
         "CHANGE-20261015-001",
@@ -19564,13 +19593,30 @@
         "CHANGE-20261015-020",
         "CHANGE-20261015-021",
         "CHANGE-20261015-022",
-        "CHANGE-20261015-023"
+        "CHANGE-20261015-023",
+        "CHANGE-20261015-025",
+        "CHANGE-20261015-026",
+        "CHANGE-20261015-027",
+        "CHANGE-20261015-028",
+        "CHANGE-20261015-029",
+        "CHANGE-20261015-030",
+        "CHANGE-20261015-031",
+        "CHANGE-20261015-032",
+        "CHANGE-20261015-033",
+        "CHANGE-20261015-034",
+        "CHANGE-20261015-035",
+        "CHANGE-20261015-036",
+        "CHANGE-20261015-037",
+        "CHANGE-20261015-038",
+        "CHANGE-20261015-039"
       ],
-      "blockers": [],
+      "blockers": [
+        "C06.03 chờ exact-SHA GitHub CI terminal và provenance ledger pass; local full suite runner EPERM trước khi test child start, được ghi riêng."
+      ],
       "startedAt": "2026-10-15T01:47:05.375Z",
       "completedAt": null,
       "elapsedMinutes": 3,
-      "notes": "User-authorized sequential UI/UX Design System migration. Scope remains the existing C06 inventory and approved execution plan; original checkout WIP remains untouched. C06.02 corrective source commit a29a255e72aa98aa7199d6ee21e506bdd5d4f6ca is pushed. CI #60 exposed 11 failed tests across 9 files; the modal close/accessibility lifecycle and affected consumer tests were corrected. Local full/focused and static checks passed with the limitations recorded in EV-20261015-013/014. CI #61 passed 26 steps but failed only the readiness source-ledger gate because 11 catalogue pointers had not yet been rebound. C06.02 remains in progress until the refreshed ledger passes the checker and all required GitHub gates/artifact integrity pass on the exact pushed ledger SHA. TRACKING.json Prettier --check remains a known baseline failure (EV-20261015-004); it is not part of package format:check, whose scoped source check passed.",
+      "notes": "User-authorized sequential UI/UX Design System migration. Scope remains the existing C06 inventory and approved execution plan; original checkout WIP remains untouched. C06.02 corrective source commit a29a255e72aa98aa7199d6ee21e506bdd5d4f6ca is pushed. CI #60 exposed 11 failed tests across 9 files; the modal close/accessibility lifecycle and affected consumer tests were corrected. Local full/focused and static checks passed with the limitations recorded in EV-20261015-013/014. CI #61 passed 26 steps but failed only the readiness source-ledger gate because 11 catalogue pointers had not yet been rebound. C06.02 remains in progress until the refreshed ledger passes the checker and all required GitHub gates/artifact integrity pass on the exact pushed ledger SHA. TRACKING.json Prettier --check remains a known baseline failure (EV-20261015-004); it is not part of package format:check, whose scoped source check passed.\nC06.02 được đóng bằng GitHub run #64 trên exact SHA 278700733d6d623fb2bfa06bf07426b2e5117feb, 34/34 bước và artifact digest pass (EV-20261015-018). C06.03 source commit 6192a3fd8c6fc44ddfd1b0f6a7780b9252947a8e và inventory commit 7565177eee029b0cf7077fab3e180c3d086f6aae đã push theo thứ tự; 14 path provenance đang được reconciled. Run #65 attempt 1 và attempt 2 đều được giữ trong lịch sử (EV-021/022); không hạ assertion. C06.03 chưa done.",
       "execution": {
         "orderedStepIds": [
           "C06.01",
@@ -74530,7 +74576,7 @@
         "C06"
       ],
       "disposition": "changed",
-      "reason": "Regenerated during A07.05 after route/mock source changes; records React.createElement layout routes and current auth mock references without dropping route records.; Regenerate inventory after Market routes changed; retain canonical generator serialization.; Regenerated from current source under A08.01; current inventory is recorded in EV-20260929-439. | Regenerate the documented page inventory from current source; the only page-record delta is SupportContractPage line count 129 to 130. | Regenerate the checked route inventory after the Earn receipt route change. | Re-generated under A06.03 after the inventory check identified stale Earn receipt route and page line counts. Current local commit individually verified; earlier WIP deferral is historical. | 14/10/2026: canonical inventory regenerated and committed at 2bb952da13d13eec4275ad3aec5a2328346a07c0; current Git blob and working SHA-256 verified, prior pointer retained. | Regenerate architecture inventory from current source and reconcile its path-specific Git blob. | Iteration 59: regenerated after P1 added one source line; totals remain 130 pages/428 routes/149 components/32 services/28 mocks. | Iteration 61: Tạo lại inventory chuẩn sau thay đổi số dòng của heading có ngữ cảnh; chỉ generator chính thức cập nhật số đo. | Iteration 62: generator chính thức đồng bộ line count/dependency của 7 page sau source changes.",
+      "reason": "Regenerated during A07.05 after route/mock source changes; records React.createElement layout routes and current auth mock references without dropping route records.; Regenerate inventory after Market routes changed; retain canonical generator serialization.; Regenerated from current source under A08.01; current inventory is recorded in EV-20260929-439. | Regenerate the documented page inventory from current source; the only page-record delta is SupportContractPage line count 129 to 130. | Regenerate the checked route inventory after the Earn receipt route change. | Re-generated under A06.03 after the inventory check identified stale Earn receipt route and page line counts. Current local commit individually verified; earlier WIP deferral is historical. | 14/10/2026: canonical inventory regenerated and committed at 2bb952da13d13eec4275ad3aec5a2328346a07c0; current Git blob and working SHA-256 verified, prior pointer retained. | Regenerate architecture inventory from current source and reconcile its path-specific Git blob. | Iteration 59: regenerated after P1 added one source line; totals remain 130 pages/428 routes/149 components/32 services/28 mocks. | Iteration 61: Tạo lại inventory chuẩn sau thay đổi số dòng của heading có ngữ cảnh; chỉ generator chính thức cập nhật số đo. | Iteration 62: generator chính thức đồng bộ line count/dependency của 7 page sau source changes. | C06.03: Sinh lại inventory chuẩn sau khi login page đổi consumer sang CTAButton.",
       "evidenceIds": [
         "EV-20260928-015",
         "EV-20260928-016",
@@ -74558,7 +74604,8 @@
         "EV-20261014-024",
         "EV-20261014-026",
         "EV-20261014-028",
-        "EV-20261014-035"
+        "EV-20261014-035",
+        "EV-20261015-023"
       ],
       "changeIds": [
         "CHANGE-20260928-990",
@@ -74576,7 +74623,8 @@
         "CHANGE-20261014-051",
         "CHANGE-20261014-080",
         "CHANGE-20261014-091",
-        "CHANGE-20261014-149"
+        "CHANGE-20261014-149",
+        "CHANGE-20261015-038"
       ],
       "executionScope": {
         "ownerTaskId": "B10",
@@ -74605,13 +74653,14 @@
           "C05.05",
           "A06.03",
           "C03.05",
-          "C06.01"
+          "C06.01",
+          "C06.03"
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedAt": "2026-10-14T08:27:55.150Z",
-      "cataloguedSourceHead": "0c86ed9276089ea37b2397ad446bae8115b399f4",
-      "cataloguedSha256": "270f00fcaaee209eb2aad1c3b354fe87aab045e737b5c4299a5f8ea092c59c91",
+      "cataloguedAt": "2026-10-15T07:40:00.000Z",
+      "cataloguedSourceHead": "7565177eee029b0cf7077fab3e180c3d086f6aae",
+      "cataloguedSha256": "26d375121d201fa64a0f70b62ad792e7500ced4c61a6e93e33648f049b991315",
       "cataloguedSourceHistory": [
         {
           "sourceHead": "309a2003749c2b1874e75af501fa6c3ea1e37c18",
@@ -74661,6 +74710,13 @@
           "supersededAt": "2026-10-14T08:27:55.150Z",
           "evidenceId": "EV-20261014-035",
           "reason": "Giữ catalogue inventory cũ; chuyển sang generator output trong commit inventory Iteration 62."
+        },
+        {
+          "sourceHead": "0c86ed9276089ea37b2397ad446bae8115b399f4",
+          "sha256": "270f00fcaaee209eb2aad1c3b354fe87aab045e737b5c4299a5f8ea092c59c91",
+          "supersededAt": "2026-10-15T07:40:00.000Z",
+          "evidenceId": "EV-20261015-023",
+          "reason": "Preserved exact prior source pointer before C06.03 ownership update; verified against source SHA 278700733d6d623fb2bfa06bf07426b2e5117feb."
         }
       ]
     },
@@ -132449,7 +132505,7 @@
         "C06"
       ],
       "disposition": "changed",
-      "reason": "Register EV-013 full suite, MarketSentiment owner slice and DCA next target. EV-20261010-014 registers the DCA overlay full-suite slice and P2P next target. | EV-015 registers the full-suite counters, owner slice, evidence artifact and checkpoint. | EV-016 registers measured counters, scope and checkpoint. | EV-017 registers measured counters, scope and checkpoint. | EV-018 registers measured counters, scope and checkpoint. | EV-019 registers measured counters, scope and checkpoint. | EV-020 registers measured counters, scope and checkpoint. | EV-021 registers measured counters, scope and checkpoint. | EV-022 registers measured counters, scope and checkpoint. | EV-023 registers measured counters, owner scope, and checkpoint. | EV-024 registers measured counters, owner scope, and checkpoint. | EV-025 registers measured counters, owner scope, and checkpoint. | EV-026 maps the owner test to C03.05 and registers measured counters. | EV-027 maps the owner test to C03.05 and registers measured counters. | EV-028 maps the P2P create-ad owner test to C03.05 and registers measured counters. | EV-029 maps the Coachmark owner test to C03.05 and registers measured counters. | EV-030 maps the P2P achievements source and owner test to C03.05 and registers measured counters. | EV-031 maps the Trade Analytics owner test to C03.05 and registers measured counters. | EV-20261011-064 registers the current local full-suite report, exact dirty-status/mismatch inventory, and C03 checkpoint. | EV-20261011-065 records the P2P coverage iteration, full-suite counters, source change and next TabletTopBar checkpoint. | EV-20261011-066 records TabletTopBar owner coverage, full-suite counters, worktree-only test provenance and next SwipeBack checkpoint. | EV-20261011-067 records SwipeBack gesture coverage, source/test hashes, full-suite counters and PasswordChange next slice. | EV-20261011-068 records PasswordChangePage coverage, owner-test hash delta, full-suite counters and OrdersHistory next slice. | User-authorized unused-output retention EV-20261012-008; previous catalogue retained until reviewed Git delivery. | DECISION-20261013-002: docs-only remediation planning; no runtime source edited. | EV-20261014-001/002/003: record coverage, wide UI and checker evidence without rebasing dirty source provenance. | Iteration55 ledger payload records new coverage, responsive review and environment blocker evidence; self-audit change will be recorded after the actual payload snapshot. | EV-20261014-009: record source-based responsive candidate classification without changing source fingerprints. | CHANGE-20261014-036: preserve and audit the final overflow-triage payload. | Record exact post-audit gates and self-audit the inventory-pointer/evidence reconciliation. | EV-20261014-012–014: register full coverage, exact source provenance and hosted CI #51 result. | Iteration 62: ghi source hashes, coverage/UI/E2E evidence, blocker status và checkpoint. | C06.01: đăng ký 15-step scope, route/page matrix, local validation, và provenance audit. | C06.02 self-audit round 5: records exact-SHA CI regression/fix, local and hosted verification, preserves old file snapshots, and rebinds 11 actual source blobs to a29a255e. | EV-20261015-016 records exact pushed-SHA CI #62 success and verified downloaded artifact digest.",
+      "reason": "Register EV-013 full suite, MarketSentiment owner slice and DCA next target. EV-20261010-014 registers the DCA overlay full-suite slice and P2P next target. | EV-015 registers the full-suite counters, owner slice, evidence artifact and checkpoint. | EV-016 registers measured counters, scope and checkpoint. | EV-017 registers measured counters, scope and checkpoint. | EV-018 registers measured counters, scope and checkpoint. | EV-019 registers measured counters, scope and checkpoint. | EV-020 registers measured counters, scope and checkpoint. | EV-021 registers measured counters, scope and checkpoint. | EV-022 registers measured counters, scope and checkpoint. | EV-023 registers measured counters, owner scope, and checkpoint. | EV-024 registers measured counters, owner scope, and checkpoint. | EV-025 registers measured counters, owner scope, and checkpoint. | EV-026 maps the owner test to C03.05 and registers measured counters. | EV-027 maps the owner test to C03.05 and registers measured counters. | EV-028 maps the P2P create-ad owner test to C03.05 and registers measured counters. | EV-029 maps the Coachmark owner test to C03.05 and registers measured counters. | EV-030 maps the P2P achievements source and owner test to C03.05 and registers measured counters. | EV-031 maps the Trade Analytics owner test to C03.05 and registers measured counters. | EV-20261011-064 registers the current local full-suite report, exact dirty-status/mismatch inventory, and C03 checkpoint. | EV-20261011-065 records the P2P coverage iteration, full-suite counters, source change and next TabletTopBar checkpoint. | EV-20261011-066 records TabletTopBar owner coverage, full-suite counters, worktree-only test provenance and next SwipeBack checkpoint. | EV-20261011-067 records SwipeBack gesture coverage, source/test hashes, full-suite counters and PasswordChange next slice. | EV-20261011-068 records PasswordChangePage coverage, owner-test hash delta, full-suite counters and OrdersHistory next slice. | User-authorized unused-output retention EV-20261012-008; previous catalogue retained until reviewed Git delivery. | DECISION-20261013-002: docs-only remediation planning; no runtime source edited. | EV-20261014-001/002/003: record coverage, wide UI and checker evidence without rebasing dirty source provenance. | Iteration55 ledger payload records new coverage, responsive review and environment blocker evidence; self-audit change will be recorded after the actual payload snapshot. | EV-20261014-009: record source-based responsive candidate classification without changing source fingerprints. | CHANGE-20261014-036: preserve and audit the final overflow-triage payload. | Record exact post-audit gates and self-audit the inventory-pointer/evidence reconciliation. | EV-20261014-012–014: register full coverage, exact source provenance and hosted CI #51 result. | Iteration 62: ghi source hashes, coverage/UI/E2E evidence, blocker status và checkpoint. | C06.01: đăng ký 15-step scope, route/page matrix, local validation, và provenance audit. | C06.02 self-audit round 5: records exact-SHA CI regression/fix, local and hosted verification, preserves old file snapshots, and rebinds 11 actual source blobs to a29a255e. | EV-20261015-016 records exact pushed-SHA CI #62 success and verified downloaded artifact digest. | C06.03: ghi provenance, evidence và checkpoint theo exact commit; self-audit archive được lưu ngoài repository.",
       "evidenceIds": [
         "EV-20261001-034",
         "EV-20261001-035",
@@ -132562,7 +132618,9 @@
         "EV-20261015-013",
         "EV-20261015-014",
         "EV-20261015-015",
-        "EV-20261015-016"
+        "EV-20261015-016",
+        "EV-20261015-024",
+        "EV-20261015-025"
       ],
       "changeIds": [
         "CHANGE-20261001-0316",
@@ -132698,7 +132756,8 @@
         "CHANGE-20261015-010",
         "CHANGE-20261015-011",
         "CHANGE-20261015-022",
-        "CHANGE-20261015-023"
+        "CHANGE-20261015-023",
+        "CHANGE-20261015-039"
       ],
       "cataloguedAt": "2026-10-01T04:02:26.000Z",
       "executionScope": {
@@ -132911,7 +132970,8 @@
           "U15.05",
           "U15.06",
           "C06.01",
-          "C06.02"
+          "C06.02",
+          "C06.03"
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       }
@@ -135517,10 +135577,14 @@
         "A07",
         "C06"
       ],
-      "disposition": "not_assessed",
-      "reason": "",
-      "evidenceIds": [],
-      "changeIds": [],
+      "disposition": "changed",
+      "reason": "C06.03: Khóa test hợp đồng màu chữ theo variant và tương phản CTA.",
+      "evidenceIds": [
+        "EV-20261015-019"
+      ],
+      "changeIds": [
+        "CHANGE-20261015-025"
+      ],
       "executionScope": {
         "ownerTaskId": "A07",
         "role": "behavior_test",
@@ -135535,8 +135599,18 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
-      "cataloguedSha256": "d5c188abd221e6dc31c6a384934c42e097a9469614d3a770fc86b3583ea90177"
+      "cataloguedSourceHead": "6192a3fd8c6fc44ddfd1b0f6a7780b9252947a8e",
+      "cataloguedSha256": "9d04c6747f6a0e562417ca9a76c6f289d1d0882b969b5a19aff2e0847661acd7",
+      "cataloguedSourceHistory": [
+        {
+          "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+          "sha256": "d5c188abd221e6dc31c6a384934c42e097a9469614d3a770fc86b3583ea90177",
+          "supersededAt": "2026-10-15T07:40:00.000Z",
+          "evidenceId": "EV-20261015-019",
+          "reason": "Preserved exact prior source pointer before C06.03 ownership update; verified against source SHA 278700733d6d623fb2bfa06bf07426b2e5117feb."
+        }
+      ],
+      "cataloguedAt": "2026-10-15T07:40:00.000Z"
     },
     {
       "path": "src/app/__tests__/DCAContext.test.tsx",
@@ -146970,7 +147044,7 @@
         "C06"
       ],
       "disposition": "changed",
-      "reason": "C03.01 coverage denominator or observed login assertion context. U01.02 reviewed against the Auth operation contract; no additional source change was needed.",
+      "reason": "C03.01 coverage denominator or observed login assertion context. U01.02 reviewed against the Auth operation contract; no additional source change was needed. | C06.03: Kiểm CTA đăng nhập dùng contract dùng chung mà vẫn giữ hành vi submit.",
       "evidenceIds": [
         "EV-20260929-459",
         "EV-20260929-460",
@@ -146978,10 +147052,12 @@
         "EV-20261013-006",
         "EV-20261013-030",
         "EV-20261013-031",
-        "EV-20261014-010"
+        "EV-20261014-010",
+        "EV-20261015-019"
       ],
       "changeIds": [
-        "CHANGE-20261013-589"
+        "CHANGE-20261013-589",
+        "CHANGE-20261015-026"
       ],
       "executionScope": {
         "ownerTaskId": "U01",
@@ -147000,12 +147076,13 @@
           "U01.06",
           "C03.05",
           "C06.13",
-          "C06.15"
+          "C06.15",
+          "C06.03"
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "75a7a57850562bd1d6c3ca5571fcf03060cc37c8",
-      "cataloguedSha256": "b10b0d650966b7c47edc2cc36be7eca552480d5d61eb9fa0c542713b412427d2",
+      "cataloguedSourceHead": "6192a3fd8c6fc44ddfd1b0f6a7780b9252947a8e",
+      "cataloguedSha256": "866a301d96d1b80b7c790dbb49cbcda13eaa9d7e29306985a9f237a25c57f480",
       "cataloguedSourceHistory": [
         {
           "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
@@ -147027,8 +147104,16 @@
           "supersededAt": "2026-10-14T01:15:27.283Z",
           "evidenceId": "EV-20261014-010",
           "reason": "Previous source pointer retained; current path-specific commit and Git blob independently verified in this evidence."
+        },
+        {
+          "sourceHead": "75a7a57850562bd1d6c3ca5571fcf03060cc37c8",
+          "sha256": "b10b0d650966b7c47edc2cc36be7eca552480d5d61eb9fa0c542713b412427d2",
+          "supersededAt": "2026-10-15T07:40:00.000Z",
+          "evidenceId": "EV-20261015-019",
+          "reason": "Preserved exact prior source pointer before C06.03 ownership update; verified against source SHA 278700733d6d623fb2bfa06bf07426b2e5117feb."
         }
-      ]
+      ],
+      "cataloguedAt": "2026-10-15T07:40:00.000Z"
     },
     {
       "path": "src/features/auth/pages/WebLoginPage.tsx",
@@ -147043,7 +147128,7 @@
         "C06"
       ],
       "disposition": "changed",
-      "reason": "Show development-only demo credentials and outcomes that match the deterministic MSW fixtures instead of claiming every email succeeds. Preserve existing development fixture flows but restrict their controls, hints, and outcomes to mock development or unit tests.; Expose a neutral accessible recoverable login transport error and preserve retry.; C03.01 coverage denominator or observed login assertion context.",
+      "reason": "Show development-only demo credentials and outcomes that match the deterministic MSW fixtures instead of claiming every email succeeds. Preserve existing development fixture flows but restrict their controls, hints, and outcomes to mock development or unit tests.; Expose a neutral accessible recoverable login transport error and preserve retry.; C03.01 coverage denominator or observed login assertion context. | C06.03: Thay style CTA đăng nhập tự khai báo bằng CTAButton dùng chung.",
       "evidenceIds": [
         "EV-20260927-008",
         "EV-20260927-011",
@@ -147056,12 +147141,14 @@
         "EV-20260929-459",
         "EV-20260929-460",
         "EV-20261013-006",
-        "EV-20261014-010"
+        "EV-20261014-010",
+        "EV-20261015-019"
       ],
       "changeIds": [
         "CHANGE-20260927-003",
         "CHANGE-20260927-043",
-        "CHANGE-20260929-2309"
+        "CHANGE-20260929-2309",
+        "CHANGE-20261015-027"
       ],
       "executionScope": {
         "ownerTaskId": "U01",
@@ -147084,12 +147171,13 @@
           "U01.06",
           "C03.05",
           "C06.13",
-          "C06.15"
+          "C06.15",
+          "C06.03"
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "75a7a57850562bd1d6c3ca5571fcf03060cc37c8",
-      "cataloguedSha256": "25d20cc6c5bbe79e2f82d1c71eeda317af8131a3779d476912846dacf94590f2",
+      "cataloguedSourceHead": "6192a3fd8c6fc44ddfd1b0f6a7780b9252947a8e",
+      "cataloguedSha256": "d77a9a763dcc5f1dfeb5db2366d03dc84e6ed7e9e284ec2cd8fa12256e3d8fb5",
       "cataloguedSourceHistory": [
         {
           "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
@@ -147104,8 +147192,16 @@
           "supersededAt": "2026-10-14T01:15:27.283Z",
           "evidenceId": "EV-20261014-010",
           "reason": "Previous source pointer retained; current path-specific commit and Git blob independently verified in this evidence."
+        },
+        {
+          "sourceHead": "75a7a57850562bd1d6c3ca5571fcf03060cc37c8",
+          "sha256": "25d20cc6c5bbe79e2f82d1c71eeda317af8131a3779d476912846dacf94590f2",
+          "supersededAt": "2026-10-15T07:40:00.000Z",
+          "evidenceId": "EV-20261015-019",
+          "reason": "Preserved exact prior source pointer before C06.03 ownership update; verified against source SHA 278700733d6d623fb2bfa06bf07426b2e5117feb."
         }
-      ]
+      ],
+      "cataloguedAt": "2026-10-15T07:40:00.000Z"
     },
     {
       "path": "src/features/auth/pages/WebOTPPage.test.tsx",
@@ -151423,16 +151519,18 @@
         "C06"
       ],
       "disposition": "changed",
-      "reason": "Verify unsupported keyboard keys do not navigate the market row.",
+      "reason": "Verify unsupported keyboard keys do not navigate the market row. | C06.03: Khóa trạng thái favorite của Market theo token semantic.",
       "evidenceIds": [
         "EV-20261010-008",
         "EV-20261013-021",
         "EV-20261013-022",
-        "EV-20261014-010"
+        "EV-20261014-010",
+        "EV-20261015-019"
       ],
       "changeIds": [
         "CHANGE-20261010-0039",
-        "CHANGE-20261013-444"
+        "CHANGE-20261013-444",
+        "CHANGE-20261015-028"
       ],
       "executionScope": {
         "ownerTaskId": "U02",
@@ -151452,8 +151550,8 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "75a7a57850562bd1d6c3ca5571fcf03060cc37c8",
-      "cataloguedSha256": "12f9904744ceef126a03cf389ccb205c9e4a8569bb393e89f0b163279d7e8298",
+      "cataloguedSourceHead": "6192a3fd8c6fc44ddfd1b0f6a7780b9252947a8e",
+      "cataloguedSha256": "69f7457793ad75b110ef882faa2ce63a4387201c2fea15e350a11be06e7d6a8b",
       "cataloguedSourceHistory": [
         {
           "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
@@ -151468,8 +151566,16 @@
           "supersededAt": "2026-10-14T01:15:27.283Z",
           "evidenceId": "EV-20261014-010",
           "reason": "Previous source pointer retained; current path-specific commit and Git blob independently verified in this evidence."
+        },
+        {
+          "sourceHead": "75a7a57850562bd1d6c3ca5571fcf03060cc37c8",
+          "sha256": "12f9904744ceef126a03cf389ccb205c9e4a8569bb393e89f0b163279d7e8298",
+          "supersededAt": "2026-10-15T07:40:00.000Z",
+          "evidenceId": "EV-20261015-019",
+          "reason": "Preserved exact prior source pointer before C06.03 ownership update; verified against source SHA 278700733d6d623fb2bfa06bf07426b2e5117feb."
         }
-      ]
+      ],
+      "cataloguedAt": "2026-10-15T07:40:00.000Z"
     },
     {
       "path": "src/features/market/components/MarketItem.tsx",
@@ -151481,14 +151587,16 @@
         "C06"
       ],
       "disposition": "changed",
-      "reason": "",
+      "reason": "C06.03: Dùng màu semantic cho favorite action ở MarketItem.",
       "evidenceIds": [
         "EV-20261013-021",
         "EV-20261013-022",
-        "EV-20261014-010"
+        "EV-20261014-010",
+        "EV-20261015-019"
       ],
       "changeIds": [
-        "CHANGE-20261013-445"
+        "CHANGE-20261013-445",
+        "CHANGE-20261015-029"
       ],
       "executionScope": {
         "ownerTaskId": "U02",
@@ -151507,8 +151615,8 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "75a7a57850562bd1d6c3ca5571fcf03060cc37c8",
-      "cataloguedSha256": "1c5a2a27ad4c8d84dc7327ef015dc84c28cf7c2fc88b1b940da7fec1f26e5e54",
+      "cataloguedSourceHead": "6192a3fd8c6fc44ddfd1b0f6a7780b9252947a8e",
+      "cataloguedSha256": "d090db73bce8dd94dd1a4dfa7fb099826e794236c2f66f3c483bdad7cbe57410",
       "cataloguedSourceHistory": [
         {
           "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
@@ -151523,8 +151631,16 @@
           "supersededAt": "2026-10-14T01:15:27.283Z",
           "evidenceId": "EV-20261014-010",
           "reason": "Previous source pointer retained; current path-specific commit and Git blob independently verified in this evidence."
+        },
+        {
+          "sourceHead": "75a7a57850562bd1d6c3ca5571fcf03060cc37c8",
+          "sha256": "1c5a2a27ad4c8d84dc7327ef015dc84c28cf7c2fc88b1b940da7fec1f26e5e54",
+          "supersededAt": "2026-10-15T07:40:00.000Z",
+          "evidenceId": "EV-20261015-019",
+          "reason": "Preserved exact prior source pointer before C06.03 ownership update; verified against source SHA 278700733d6d623fb2bfa06bf07426b2e5117feb."
         }
-      ]
+      ],
+      "cataloguedAt": "2026-10-15T07:40:00.000Z"
     },
     {
       "path": "src/features/market/components/MarketListSections.tsx",
@@ -153354,19 +153470,21 @@
         "C06"
       ],
       "disposition": "changed",
-      "reason": "Assert shell login target and preserved return destination for anonymous pair access. | Add deferred loading assertions for the pair order-book and recent-trades tabs with typed MSW responses.",
+      "reason": "Assert shell login target and preserved return destination for anonymous pair access. | Add deferred loading assertions for the pair order-book and recent-trades tabs with typed MSW responses. | C06.03: Kiểm semantic favorite action trên trang chi tiết cặp.",
       "evidenceIds": [
         "EV-20260928-013",
         "EV-20260929-357",
         "EV-20260929-359",
         "EV-20261013-030",
         "EV-20261013-031",
-        "EV-20261014-010"
+        "EV-20261014-010",
+        "EV-20261015-019"
       ],
       "changeIds": [
         "CHANGE-20260928-976",
         "CHANGE-20260929-2812",
-        "CHANGE-20261013-595"
+        "CHANGE-20261013-595",
+        "CHANGE-20261015-030"
       ],
       "executionScope": {
         "ownerTaskId": "U02",
@@ -153381,12 +153499,13 @@
           "C03.05",
           "C06.11",
           "C06.13",
-          "C06.15"
+          "C06.15",
+          "C06.03"
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "75a7a57850562bd1d6c3ca5571fcf03060cc37c8",
-      "cataloguedSha256": "651b8fdca5ddf67d40d22da897581ecd91defc7157fdf94834712a5415da6a8e",
+      "cataloguedSourceHead": "6192a3fd8c6fc44ddfd1b0f6a7780b9252947a8e",
+      "cataloguedSha256": "2ff3c16fc81042ef3891ce13012ffea958ba930a0f2bb0c9cfc8d81b1947d815",
       "cataloguedSourceHistory": [
         {
           "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
@@ -153401,8 +153520,16 @@
           "supersededAt": "2026-10-14T01:15:27.283Z",
           "evidenceId": "EV-20261014-010",
           "reason": "Previous source pointer retained; current path-specific commit and Git blob independently verified in this evidence."
+        },
+        {
+          "sourceHead": "75a7a57850562bd1d6c3ca5571fcf03060cc37c8",
+          "sha256": "651b8fdca5ddf67d40d22da897581ecd91defc7157fdf94834712a5415da6a8e",
+          "supersededAt": "2026-10-15T07:40:00.000Z",
+          "evidenceId": "EV-20261015-019",
+          "reason": "Preserved exact prior source pointer before C06.03 ownership update; verified against source SHA 278700733d6d623fb2bfa06bf07426b2e5117feb."
         }
-      ]
+      ],
+      "cataloguedAt": "2026-10-15T07:40:00.000Z"
     },
     {
       "path": "src/features/market/pages/PairDetailPage.tsx",
@@ -153415,16 +153542,18 @@
         "C06"
       ],
       "disposition": "changed",
-      "reason": "Correct anonymous login destination to the existing shell auth route /auth/login.",
+      "reason": "Correct anonymous login destination to the existing shell auth route /auth/login. | C06.03: Dùng token semantic cho favorite action trên trang chi tiết.",
       "evidenceIds": [
         "EV-20260928-013",
         "EV-20261013-021",
         "EV-20261013-022",
-        "EV-20261014-010"
+        "EV-20261014-010",
+        "EV-20261015-019"
       ],
       "changeIds": [
         "CHANGE-20260928-975",
-        "CHANGE-20261013-457"
+        "CHANGE-20261013-457",
+        "CHANGE-20261015-031"
       ],
       "executionScope": {
         "ownerTaskId": "U02",
@@ -153438,12 +153567,13 @@
           "C03.05",
           "C06.11",
           "C06.13",
-          "C06.15"
+          "C06.15",
+          "C06.03"
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "75a7a57850562bd1d6c3ca5571fcf03060cc37c8",
-      "cataloguedSha256": "2c0b0be176bf720452232358f1a764ee2ee68547a110d2194da3fd7034b18c92",
+      "cataloguedSourceHead": "6192a3fd8c6fc44ddfd1b0f6a7780b9252947a8e",
+      "cataloguedSha256": "dd87e786131a0c4a9ef09c945b0d302ea154c0529b4cd5efd332ac4ff51c073a",
       "cataloguedSourceHistory": [
         {
           "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
@@ -153458,8 +153588,16 @@
           "supersededAt": "2026-10-14T01:15:27.283Z",
           "evidenceId": "EV-20261014-010",
           "reason": "Previous source pointer retained; current path-specific commit and Git blob independently verified in this evidence."
+        },
+        {
+          "sourceHead": "75a7a57850562bd1d6c3ca5571fcf03060cc37c8",
+          "sha256": "2c0b0be176bf720452232358f1a764ee2ee68547a110d2194da3fd7034b18c92",
+          "supersededAt": "2026-10-15T07:40:00.000Z",
+          "evidenceId": "EV-20261015-019",
+          "reason": "Preserved exact prior source pointer before C06.03 ownership update; verified against source SHA 278700733d6d623fb2bfa06bf07426b2e5117feb."
         }
-      ]
+      ],
+      "cataloguedAt": "2026-10-15T07:40:00.000Z"
     },
     {
       "path": "src/features/market/pages/SmartAlertCenterPage.tsx",
@@ -153677,15 +153815,17 @@
         "C06"
       ],
       "disposition": "changed",
-      "reason": "Assert the 403 watchlist state does not show an empty-state or retry control. EV-020 covers WatchlistPage.tsx in all four configured counters.",
+      "reason": "Assert the 403 watchlist state does not show an empty-state or retry control. EV-020 covers WatchlistPage.tsx in all four configured counters. | C06.03: Kiểm màu semantic của trạng thái favorite trong Watchlist.",
       "evidenceIds": [
         "EV-20260928-041",
         "EV-20261010-020",
-        "EV-20261014-010"
+        "EV-20261014-010",
+        "EV-20261015-019"
       ],
       "changeIds": [
         "CHANGE-20260928-1037",
-        "CHANGE-20261010-0108"
+        "CHANGE-20261010-0108",
+        "CHANGE-20261015-032"
       ],
       "executionScope": {
         "ownerTaskId": "U02",
@@ -153699,12 +153839,13 @@
           "U02.06",
           "C06.11",
           "C06.13",
-          "C06.15"
+          "C06.15",
+          "C06.03"
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "75a7a57850562bd1d6c3ca5571fcf03060cc37c8",
-      "cataloguedSha256": "1a73ba17febf4945f0a92b5703799badde725d20b342e0b1023f0c43d4d04916",
+      "cataloguedSourceHead": "6192a3fd8c6fc44ddfd1b0f6a7780b9252947a8e",
+      "cataloguedSha256": "ed5bb1279d76f40f80bc14cea45bfea6469a578f791c3365b4c76c4709c7cc38",
       "cataloguedSourceHistory": [
         {
           "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
@@ -153712,8 +153853,16 @@
           "supersededAt": "2026-10-14T01:15:27.283Z",
           "evidenceId": "EV-20261014-010",
           "reason": "Previous source pointer retained; current path-specific commit and Git blob independently verified in this evidence."
+        },
+        {
+          "sourceHead": "75a7a57850562bd1d6c3ca5571fcf03060cc37c8",
+          "sha256": "1a73ba17febf4945f0a92b5703799badde725d20b342e0b1023f0c43d4d04916",
+          "supersededAt": "2026-10-15T07:40:00.000Z",
+          "evidenceId": "EV-20261015-019",
+          "reason": "Preserved exact prior source pointer before C06.03 ownership update; verified against source SHA 278700733d6d623fb2bfa06bf07426b2e5117feb."
         }
-      ]
+      ],
+      "cataloguedAt": "2026-10-15T07:40:00.000Z"
     },
     {
       "path": "src/features/market/pages/WatchlistPage.tsx",
@@ -153726,19 +153875,21 @@
         "C06"
       ],
       "disposition": "changed",
-      "reason": "Render explicit access-denied UI on 403 instead of presenting an empty or retryable watchlist. EV-020 covers WatchlistPage.tsx in all four configured counters.",
+      "reason": "Render explicit access-denied UI on 403 instead of presenting an empty or retryable watchlist. EV-020 covers WatchlistPage.tsx in all four configured counters. | C06.03: Dùng màu semantic cho favorite action trong Watchlist.",
       "evidenceIds": [
         "EV-20260928-040",
         "EV-20260928-041",
         "EV-20261010-020",
         "EV-20261013-021",
         "EV-20261013-022",
-        "EV-20261014-010"
+        "EV-20261014-010",
+        "EV-20261015-019"
       ],
       "changeIds": [
         "CHANGE-20260928-1036",
         "CHANGE-20261010-0107",
-        "CHANGE-20261013-459"
+        "CHANGE-20261013-459",
+        "CHANGE-20261015-033"
       ],
       "executionScope": {
         "ownerTaskId": "U02",
@@ -153752,12 +153903,13 @@
           "C03.05",
           "C06.11",
           "C06.13",
-          "C06.15"
+          "C06.15",
+          "C06.03"
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "75a7a57850562bd1d6c3ca5571fcf03060cc37c8",
-      "cataloguedSha256": "27f80f5bbca7c7c3b7188cdab59e7187d68da8caaae49d1365528cde2101086d",
+      "cataloguedSourceHead": "6192a3fd8c6fc44ddfd1b0f6a7780b9252947a8e",
+      "cataloguedSha256": "93ab7245ea162593bad615af613a2c2839f621d930a44ab41efb4b054670b4f6",
       "cataloguedSourceHistory": [
         {
           "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
@@ -153772,8 +153924,16 @@
           "supersededAt": "2026-10-14T01:15:27.283Z",
           "evidenceId": "EV-20261014-010",
           "reason": "Previous source pointer retained; current path-specific commit and Git blob independently verified in this evidence."
+        },
+        {
+          "sourceHead": "75a7a57850562bd1d6c3ca5571fcf03060cc37c8",
+          "sha256": "27f80f5bbca7c7c3b7188cdab59e7187d68da8caaae49d1365528cde2101086d",
+          "supersededAt": "2026-10-15T07:40:00.000Z",
+          "evidenceId": "EV-20261015-019",
+          "reason": "Preserved exact prior source pointer before C06.03 ownership update; verified against source SHA 278700733d6d623fb2bfa06bf07426b2e5117feb."
         }
-      ]
+      ],
+      "cataloguedAt": "2026-10-15T07:40:00.000Z"
     },
     {
       "path": "src/features/market/routes.test.ts",
@@ -170332,10 +170492,14 @@
         "C01",
         "C06"
       ],
-      "disposition": "not_assessed",
-      "reason": "",
-      "evidenceIds": [],
-      "changeIds": [],
+      "disposition": "changed",
+      "reason": "C06.03: Đồng bộ foreground CTA với từng variant để giữ tương phản.",
+      "evidenceIds": [
+        "EV-20261015-019"
+      ],
+      "changeIds": [
+        "CHANGE-20261015-034"
+      ],
       "executionScope": {
         "ownerTaskId": "C01",
         "role": "supporting_source",
@@ -170346,12 +170510,23 @@
           "C01.04",
           "C01.05",
           "C06.07",
-          "C06.15"
+          "C06.15",
+          "C06.03"
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
-      "cataloguedSha256": "3312b279f71588c7cfed481b196a981f70c8c9654cce86156d058ae6c05c8fec"
+      "cataloguedSourceHead": "6192a3fd8c6fc44ddfd1b0f6a7780b9252947a8e",
+      "cataloguedSha256": "96ff10fd152221dc1f9deb9e87ffa441d06af76e1ed935cfd2cd50aa982b7930",
+      "cataloguedSourceHistory": [
+        {
+          "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+          "sha256": "3312b279f71588c7cfed481b196a981f70c8c9654cce86156d058ae6c05c8fec",
+          "supersededAt": "2026-10-15T07:40:00.000Z",
+          "evidenceId": "EV-20261015-019",
+          "reason": "Preserved exact prior source pointer before C06.03 ownership update; verified against source SHA 278700733d6d623fb2bfa06bf07426b2e5117feb."
+        }
+      ],
+      "cataloguedAt": "2026-10-15T07:40:00.000Z"
     },
     {
       "path": "src/shared/theme/colors.ts",
@@ -171331,12 +171506,14 @@
         "C06"
       ],
       "disposition": "changed",
-      "reason": "Verify custom/default/secondary styling and disabled/loading behavior.",
+      "reason": "Verify custom/default/secondary styling and disabled/loading behavior. | C06.03: Kiểm readable foreground cho default, variant, loading và gradient.",
       "evidenceIds": [
-        "EV-20261010-008"
+        "EV-20261010-008",
+        "EV-20261015-019"
       ],
       "changeIds": [
-        "CHANGE-20261010-0043"
+        "CHANGE-20261010-0043",
+        "CHANGE-20261015-036"
       ],
       "executionScope": {
         "ownerTaskId": "C03",
@@ -171350,8 +171527,18 @@
         ],
         "action": "add_coverage_regression_test"
       },
-      "cataloguedSourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
-      "cataloguedSha256": "317c8d13e73c6c2252021eacdc2bc9d7bacf77ad40392cccf01cbeb2a5c2f3f0"
+      "cataloguedSourceHead": "6192a3fd8c6fc44ddfd1b0f6a7780b9252947a8e",
+      "cataloguedSha256": "4c3e09042c66db28eb07853a1a37ede0806b37c42f175b1e2f2a1cad66c36a12",
+      "cataloguedSourceHistory": [
+        {
+          "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
+          "sha256": "317c8d13e73c6c2252021eacdc2bc9d7bacf77ad40392cccf01cbeb2a5c2f3f0",
+          "supersededAt": "2026-10-15T07:40:00.000Z",
+          "evidenceId": "EV-20261015-019",
+          "reason": "Preserved exact prior source pointer before C06.03 ownership update; verified against source SHA 278700733d6d623fb2bfa06bf07426b2e5117feb."
+        }
+      ],
+      "cataloguedAt": "2026-10-15T07:40:00.000Z"
     },
     {
       "path": "src/shared/ui/CTAButton.tsx",
@@ -171361,10 +171548,14 @@
         "C01",
         "C06"
       ],
-      "disposition": "not_assessed",
-      "reason": "",
-      "evidenceIds": [],
-      "changeIds": [],
+      "disposition": "changed",
+      "reason": "C06.03: Để variant sở hữu foreground; giữ trạng thái loading dễ đọc.",
+      "evidenceIds": [
+        "EV-20261015-019"
+      ],
+      "changeIds": [
+        "CHANGE-20261015-037"
+      ],
       "executionScope": {
         "ownerTaskId": "C01",
         "role": "ui_component",
@@ -171382,8 +171573,18 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
-      "cataloguedSha256": "81ce61e6824e4f71595b3dcdd8c744e97d866a5254af4ceedc7b33eae1bb2cb3"
+      "cataloguedSourceHead": "6192a3fd8c6fc44ddfd1b0f6a7780b9252947a8e",
+      "cataloguedSha256": "2b44910a183b621f13bdd6b97dd3f6b6e150e98eaaf2e46f222431190ce40fcb",
+      "cataloguedSourceHistory": [
+        {
+          "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+          "sha256": "81ce61e6824e4f71595b3dcdd8c744e97d866a5254af4ceedc7b33eae1bb2cb3",
+          "supersededAt": "2026-10-15T07:40:00.000Z",
+          "evidenceId": "EV-20261015-019",
+          "reason": "Preserved exact prior source pointer before C06.03 ownership update; verified against source SHA 278700733d6d623fb2bfa06bf07426b2e5117feb."
+        }
+      ],
+      "cataloguedAt": "2026-10-15T07:40:00.000Z"
     },
     {
       "path": "src/shared/ui/dialog.tsx",
@@ -176243,14 +176444,16 @@
         "C06"
       ],
       "disposition": "changed",
-      "reason": "Đăng ký source đã có trong Git theo proof riêng của file và snapshot full suite thật; không sửa bytes source hay rebaseline lịch sử. | Iteration 62: sửa accessibility semantics/tương phản và khóa bằng regression test; không đổi API/backend.",
+      "reason": "Đăng ký source đã có trong Git theo proof riêng của file và snapshot full suite thật; không sửa bytes source hay rebaseline lịch sử. | Iteration 62: sửa accessibility semantics/tương phản và khóa bằng regression test; không đổi API/backend. | C06.03: Khóa contract màu semantic và variant bằng regression test.",
       "evidenceIds": [
         "EV-20261012-002",
         "EV-20261014-032",
-        "EV-20261014-033"
+        "EV-20261014-033",
+        "EV-20261015-019"
       ],
       "changeIds": [
-        "CHANGE-20261014-143"
+        "CHANGE-20261014-143",
+        "CHANGE-20261015-035"
       ],
       "executionScope": {
         "ownerTaskId": "C03",
@@ -176258,13 +176461,14 @@
         "stepIds": [
           "C03.05",
           "C06.07",
-          "C06.15"
+          "C06.15",
+          "C06.03"
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "d3c8a578beb939cc4f7bc57178a5bf0c37f454de",
-      "cataloguedSha256": "299b6cce8449aa914abade073a4a16d9ae3b9c9cd3f56b301f6f5c4a728f9c83",
-      "cataloguedAt": "2026-10-14T08:27:55.150Z",
+      "cataloguedSourceHead": "6192a3fd8c6fc44ddfd1b0f6a7780b9252947a8e",
+      "cataloguedSha256": "6667225d5c1c5704c5682f425d06f31a6fb568cc6601f9ab7f576340c716fc94",
+      "cataloguedAt": "2026-10-15T07:40:00.000Z",
       "cataloguedSourceHistory": [
         {
           "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
@@ -176272,6 +176476,13 @@
           "supersededAt": "2026-10-14T08:27:55.150Z",
           "evidenceId": "EV-20261014-032",
           "reason": "Giữ lại catalogue trước Iteration 62; chuyển con trỏ sang Git snapshot chứa source đã commit."
+        },
+        {
+          "sourceHead": "d3c8a578beb939cc4f7bc57178a5bf0c37f454de",
+          "sha256": "299b6cce8449aa914abade073a4a16d9ae3b9c9cd3f56b301f6f5c4a728f9c83",
+          "supersededAt": "2026-10-15T07:40:00.000Z",
+          "evidenceId": "EV-20261015-019",
+          "reason": "Preserved exact prior source pointer before C06.03 ownership update; verified against source SHA 278700733d6d623fb2bfa06bf07426b2e5117feb."
         }
       ]
     },
@@ -307827,6 +308038,237 @@
         "EV-20261015-017"
       ],
       "commit": null
+    },
+    {
+      "id": "CHANGE-20261015-025",
+      "taskId": "C06",
+      "stepId": "C06.03",
+      "path": "src/app/__tests__/CTAButton.test.tsx",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "C06.03 — Khóa test hợp đồng màu chữ theo variant và tương phản CTA. Giữ nguyên API/business payload; cập nhật provenance từ Git blob thực tế.",
+      "beforeHash": "d5c188abd221e6dc31c6a384934c42e097a9469614d3a770fc86b3583ea90177",
+      "afterHash": "9d04c6747f6a0e562417ca9a76c6f289d1d0882b969b5a19aff2e0847661acd7",
+      "evidenceIds": [
+        "EV-20261015-019"
+      ],
+      "commit": "6192a3fd8c6fc44ddfd1b0f6a7780b9252947a8e"
+    },
+    {
+      "id": "CHANGE-20261015-026",
+      "taskId": "C06",
+      "stepId": "C06.03",
+      "path": "src/features/auth/pages/WebLoginPage.test.tsx",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "C06.03 — Kiểm CTA đăng nhập dùng contract dùng chung mà vẫn giữ hành vi submit. Giữ nguyên API/business payload; cập nhật provenance từ Git blob thực tế.",
+      "beforeHash": "b10b0d650966b7c47edc2cc36be7eca552480d5d61eb9fa0c542713b412427d2",
+      "afterHash": "866a301d96d1b80b7c790dbb49cbcda13eaa9d7e29306985a9f237a25c57f480",
+      "evidenceIds": [
+        "EV-20261015-019"
+      ],
+      "commit": "6192a3fd8c6fc44ddfd1b0f6a7780b9252947a8e"
+    },
+    {
+      "id": "CHANGE-20261015-027",
+      "taskId": "C06",
+      "stepId": "C06.03",
+      "path": "src/features/auth/pages/WebLoginPage.tsx",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "C06.03 — Thay style CTA đăng nhập tự khai báo bằng CTAButton dùng chung. Giữ nguyên API/business payload; cập nhật provenance từ Git blob thực tế.",
+      "beforeHash": "25d20cc6c5bbe79e2f82d1c71eeda317af8131a3779d476912846dacf94590f2",
+      "afterHash": "d77a9a763dcc5f1dfeb5db2366d03dc84e6ed7e9e284ec2cd8fa12256e3d8fb5",
+      "evidenceIds": [
+        "EV-20261015-019"
+      ],
+      "commit": "6192a3fd8c6fc44ddfd1b0f6a7780b9252947a8e"
+    },
+    {
+      "id": "CHANGE-20261015-028",
+      "taskId": "C06",
+      "stepId": "C06.03",
+      "path": "src/features/market/components/MarketItem.test.tsx",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "C06.03 — Khóa trạng thái favorite của Market theo token semantic. Giữ nguyên API/business payload; cập nhật provenance từ Git blob thực tế.",
+      "beforeHash": "12f9904744ceef126a03cf389ccb205c9e4a8569bb393e89f0b163279d7e8298",
+      "afterHash": "69f7457793ad75b110ef882faa2ce63a4387201c2fea15e350a11be06e7d6a8b",
+      "evidenceIds": [
+        "EV-20261015-019"
+      ],
+      "commit": "6192a3fd8c6fc44ddfd1b0f6a7780b9252947a8e"
+    },
+    {
+      "id": "CHANGE-20261015-029",
+      "taskId": "C06",
+      "stepId": "C06.03",
+      "path": "src/features/market/components/MarketItem.tsx",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "C06.03 — Dùng màu semantic cho favorite action ở MarketItem. Giữ nguyên API/business payload; cập nhật provenance từ Git blob thực tế.",
+      "beforeHash": "1c5a2a27ad4c8d84dc7327ef015dc84c28cf7c2fc88b1b940da7fec1f26e5e54",
+      "afterHash": "d090db73bce8dd94dd1a4dfa7fb099826e794236c2f66f3c483bdad7cbe57410",
+      "evidenceIds": [
+        "EV-20261015-019"
+      ],
+      "commit": "6192a3fd8c6fc44ddfd1b0f6a7780b9252947a8e"
+    },
+    {
+      "id": "CHANGE-20261015-030",
+      "taskId": "C06",
+      "stepId": "C06.03",
+      "path": "src/features/market/pages/PairDetailPage.test.tsx",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "C06.03 — Kiểm semantic favorite action trên trang chi tiết cặp. Giữ nguyên API/business payload; cập nhật provenance từ Git blob thực tế.",
+      "beforeHash": "651b8fdca5ddf67d40d22da897581ecd91defc7157fdf94834712a5415da6a8e",
+      "afterHash": "2ff3c16fc81042ef3891ce13012ffea958ba930a0f2bb0c9cfc8d81b1947d815",
+      "evidenceIds": [
+        "EV-20261015-019"
+      ],
+      "commit": "6192a3fd8c6fc44ddfd1b0f6a7780b9252947a8e"
+    },
+    {
+      "id": "CHANGE-20261015-031",
+      "taskId": "C06",
+      "stepId": "C06.03",
+      "path": "src/features/market/pages/PairDetailPage.tsx",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "C06.03 — Dùng token semantic cho favorite action trên trang chi tiết. Giữ nguyên API/business payload; cập nhật provenance từ Git blob thực tế.",
+      "beforeHash": "2c0b0be176bf720452232358f1a764ee2ee68547a110d2194da3fd7034b18c92",
+      "afterHash": "dd87e786131a0c4a9ef09c945b0d302ea154c0529b4cd5efd332ac4ff51c073a",
+      "evidenceIds": [
+        "EV-20261015-019"
+      ],
+      "commit": "6192a3fd8c6fc44ddfd1b0f6a7780b9252947a8e"
+    },
+    {
+      "id": "CHANGE-20261015-032",
+      "taskId": "C06",
+      "stepId": "C06.03",
+      "path": "src/features/market/pages/WatchlistPage.test.tsx",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "C06.03 — Kiểm màu semantic của trạng thái favorite trong Watchlist. Giữ nguyên API/business payload; cập nhật provenance từ Git blob thực tế.",
+      "beforeHash": "1a73ba17febf4945f0a92b5703799badde725d20b342e0b1023f0c43d4d04916",
+      "afterHash": "ed5bb1279d76f40f80bc14cea45bfea6469a578f791c3365b4c76c4709c7cc38",
+      "evidenceIds": [
+        "EV-20261015-019"
+      ],
+      "commit": "6192a3fd8c6fc44ddfd1b0f6a7780b9252947a8e"
+    },
+    {
+      "id": "CHANGE-20261015-033",
+      "taskId": "C06",
+      "stepId": "C06.03",
+      "path": "src/features/market/pages/WatchlistPage.tsx",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "C06.03 — Dùng màu semantic cho favorite action trong Watchlist. Giữ nguyên API/business payload; cập nhật provenance từ Git blob thực tế.",
+      "beforeHash": "27f80f5bbca7c7c3b7188cdab59e7187d68da8caaae49d1365528cde2101086d",
+      "afterHash": "93ab7245ea162593bad615af613a2c2839f621d930a44ab41efb4b054670b4f6",
+      "evidenceIds": [
+        "EV-20261015-019"
+      ],
+      "commit": "6192a3fd8c6fc44ddfd1b0f6a7780b9252947a8e"
+    },
+    {
+      "id": "CHANGE-20261015-034",
+      "taskId": "C06",
+      "stepId": "C06.03",
+      "path": "src/shared/theme/button.ts",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "C06.03 — Đồng bộ foreground CTA với từng variant để giữ tương phản. Giữ nguyên API/business payload; cập nhật provenance từ Git blob thực tế.",
+      "beforeHash": "3312b279f71588c7cfed481b196a981f70c8c9654cce86156d058ae6c05c8fec",
+      "afterHash": "96ff10fd152221dc1f9deb9e87ffa441d06af76e1ed935cfd2cd50aa982b7930",
+      "evidenceIds": [
+        "EV-20261015-019"
+      ],
+      "commit": "6192a3fd8c6fc44ddfd1b0f6a7780b9252947a8e"
+    },
+    {
+      "id": "CHANGE-20261015-035",
+      "taskId": "C06",
+      "stepId": "C06.03",
+      "path": "src/shared/theme/theme-token-contract.test.tsx",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "C06.03 — Khóa contract màu semantic và variant bằng regression test. Giữ nguyên API/business payload; cập nhật provenance từ Git blob thực tế.",
+      "beforeHash": "299b6cce8449aa914abade073a4a16d9ae3b9c9cd3f56b301f6f5c4a728f9c83",
+      "afterHash": "6667225d5c1c5704c5682f425d06f31a6fb568cc6601f9ab7f576340c716fc94",
+      "evidenceIds": [
+        "EV-20261015-019"
+      ],
+      "commit": "6192a3fd8c6fc44ddfd1b0f6a7780b9252947a8e"
+    },
+    {
+      "id": "CHANGE-20261015-036",
+      "taskId": "C06",
+      "stepId": "C06.03",
+      "path": "src/shared/ui/CTAButton.test.tsx",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "C06.03 — Kiểm readable foreground cho default, variant, loading và gradient. Giữ nguyên API/business payload; cập nhật provenance từ Git blob thực tế.",
+      "beforeHash": "317c8d13e73c6c2252021eacdc2bc9d7bacf77ad40392cccf01cbeb2a5c2f3f0",
+      "afterHash": "4c3e09042c66db28eb07853a1a37ede0806b37c42f175b1e2f2a1cad66c36a12",
+      "evidenceIds": [
+        "EV-20261015-019"
+      ],
+      "commit": "6192a3fd8c6fc44ddfd1b0f6a7780b9252947a8e"
+    },
+    {
+      "id": "CHANGE-20261015-037",
+      "taskId": "C06",
+      "stepId": "C06.03",
+      "path": "src/shared/ui/CTAButton.tsx",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "C06.03 — Để variant sở hữu foreground; giữ trạng thái loading dễ đọc. Giữ nguyên API/business payload; cập nhật provenance từ Git blob thực tế.",
+      "beforeHash": "81ce61e6824e4f71595b3dcdd8c744e97d866a5254af4ceedc7b33eae1bb2cb3",
+      "afterHash": "2b44910a183b621f13bdd6b97dd3f6b6e150e98eaaf2e46f222431190ce40fcb",
+      "evidenceIds": [
+        "EV-20261015-019"
+      ],
+      "commit": "6192a3fd8c6fc44ddfd1b0f6a7780b9252947a8e"
+    },
+    {
+      "id": "CHANGE-20261015-038",
+      "taskId": "C06",
+      "stepId": "C06.03",
+      "path": "docs/architecture/page-inventory.json",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "C06.03 — Sinh lại inventory chuẩn sau khi login page đổi consumer sang CTAButton. Giữ nguyên API/business payload; cập nhật provenance từ Git blob thực tế.",
+      "beforeHash": "270f00fcaaee209eb2aad1c3b354fe87aab045e737b5c4299a5f8ea092c59c91",
+      "afterHash": "26d375121d201fa64a0f70b62ad792e7500ced4c61a6e93e33648f049b991315",
+      "evidenceIds": [
+        "EV-20261015-023"
+      ],
+      "commit": "7565177eee029b0cf7077fab3e180c3d086f6aae"
+    },
+    {
+      "id": "CHANGE-20261015-039",
+      "taskId": "C06",
+      "stepId": "C06.03",
+      "path": "docs/architecture/production-readiness/TRACKING.json",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Self-audit TRACKING.json C06.03: record C06.02 exact run #64, C06.03 source/inventory commits, measured local outcomes, failed CI attempts, reconciled Git blobs and local validation; step remains open pending exact-SHA CI.",
+      "beforeHash": "cc71e67e8ab197ddad416d36911d85d69fe115407b60052bf9f607dd9a896282",
+      "afterHash": "d2b68c5ce0fbdcdab6039a1945a23e9160ceeb4595e40e4577d6e03a1c9058ad",
+      "afterHashRecovery": {
+        "kind": "actual_written_business_payload_before_final_audit",
+        "archivePath": "C:/Users/Joker-PC/.codex/visualizations/2026/10/15/c06-03-evidence-6192a3f/c06-03-tracking-business-payload-before-self-audit.json",
+        "archiveSha256": "d2b68c5ce0fbdcdab6039a1945a23e9160ceeb4595e40e4577d6e03a1c9058ad",
+        "payloadSha256": "d2b68c5ce0fbdcdab6039a1945a23e9160ceeb4595e40e4577d6e03a1c9058ad"
+      },
+      "evidenceIds": [
+        "EV-20261015-025"
+      ],
+      "commit": null
     }
   ],
   "evidence": [
@@ -342204,6 +342646,152 @@
       "result": "pass",
       "artifact": "C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\10\\15\\c06-02-ledger-audit-91df11e736f642708e6cd71d20a12fed\\c06-02-exact-sha-run-63-artifact-verification.json",
       "notes": "This exact hosted run validates code/ledger policy gates, not production, backend/staging, route-by-route runtime coverage or formal UI acceptance. The local incomplete Playwright teardown is preserved and not counted as PASS."
+    },
+    {
+      "id": "EV-20261015-018",
+      "taskId": "C06",
+      "stepId": "C06.02",
+      "kind": "github_exact_sha_full_ci_and_artifact_integrity",
+      "commandOrSteps": "GitHub Actions CI run #64 on exact pushed SHA 278700733d6d623fb2bfa06bf07426b2e5117feb; inspect all job steps; download artifact 11952077691 and compare downloaded SHA-256 with GitHub metadata.",
+      "environment": "GitHub Actions ubuntu-latest; pull request #3; exact pushed SHA; artifact downloaded and hashed in Node.",
+      "observedAt": "2026-10-15T06:11:02.000Z",
+      "sourceHead": "278700733d6d623fb2bfa06bf07426b2e5117feb",
+      "dirtyFileHashes": {},
+      "expected": "C06.02 closure commit passes every required exact-SHA workflow gate and the downloaded artifact bytes match the published digest.",
+      "actual": "PASS: run #64 completed success, all 34/34 steps succeeded, 0 failed and 0 skipped. Artifact 11952077691 downloaded as 33,560,407 bytes; SHA-256 bd380f75927b7c9f97b826bcc24dfd0d89c3e0ec94564a847696fe6059dc96be matched GitHub metadata.",
+      "result": "pass",
+      "artifact": "C:/Users/Joker-PC/.codex/visualizations/2026/10/15/c06-02-ledger-audit-91df11e736f642708e6cd71d20a12fed/c06-02-transition-ledger-run-64-verification.json",
+      "notes": "Closes C06.02 on its exact transition ledger SHA. Local incomplete Playwright attempt remains separate evidence; this hosted run does not certify backend/staging or formal user acceptance."
+    },
+    {
+      "id": "EV-20261015-019",
+      "taskId": "C06",
+      "stepId": "C06.03",
+      "kind": "focused_ui_tests_static_checks_browser_measurement_and_contrast",
+      "commandOrSteps": "Focused Vitest across 8 owner files; app and Node typechecks; lint budget; scoped Prettier; architecture dependency check; local browser inspection of /w/auth/login and /w/markets at 1280x720 in light/dark; WCAG sRGB luminance sampled at 101 points per gradient segment.",
+      "environment": "Local Windows worktree; Node 24.19.0; SHA 6192a3fd8c6fc44ddfd1b0f6a7780b9252947a8e; browser uses local development/mock environment.",
+      "observedAt": "2026-10-15T06:45:18.000Z",
+      "sourceHead": "6192a3fd8c6fc44ddfd1b0f6a7780b9252947a8e",
+      "dirtyFileHashes": {
+        "src/app/__tests__/CTAButton.test.tsx": "9d04c6747f6a0e562417ca9a76c6f289d1d0882b969b5a19aff2e0847661acd7",
+        "src/features/auth/pages/WebLoginPage.test.tsx": "866a301d96d1b80b7c790dbb49cbcda13eaa9d7e29306985a9f237a25c57f480",
+        "src/features/auth/pages/WebLoginPage.tsx": "d77a9a763dcc5f1dfeb5db2366d03dc84e6ed7e9e284ec2cd8fa12256e3d8fb5",
+        "src/features/market/components/MarketItem.test.tsx": "69f7457793ad75b110ef882faa2ce63a4387201c2fea15e350a11be06e7d6a8b",
+        "src/features/market/components/MarketItem.tsx": "d090db73bce8dd94dd1a4dfa7fb099826e794236c2f66f3c483bdad7cbe57410",
+        "src/features/market/pages/PairDetailPage.test.tsx": "2ff3c16fc81042ef3891ce13012ffea958ba930a0f2bb0c9cfc8d81b1947d815",
+        "src/features/market/pages/PairDetailPage.tsx": "dd87e786131a0c4a9ef09c945b0d302ea154c0529b4cd5efd332ac4ff51c073a",
+        "src/features/market/pages/WatchlistPage.test.tsx": "ed5bb1279d76f40f80bc14cea45bfea6469a578f791c3365b4c76c4709c7cc38",
+        "src/features/market/pages/WatchlistPage.tsx": "93ab7245ea162593bad615af613a2c2839f621d930a44ab41efb4b054670b4f6",
+        "src/shared/theme/button.ts": "96ff10fd152221dc1f9deb9e87ffa441d06af76e1ed935cfd2cd50aa982b7930",
+        "src/shared/theme/theme-token-contract.test.tsx": "6667225d5c1c5704c5682f425d06f31a6fb568cc6601f9ab7f576340c716fc94",
+        "src/shared/ui/CTAButton.test.tsx": "4c3e09042c66db28eb07853a1a37ede0806b37c42f175b1e2f2a1cad66c36a12",
+        "src/shared/ui/CTAButton.tsx": "2b44910a183b621f13bdd6b97dd3f6b6e150e98eaaf2e46f222431190ce40fcb"
+      },
+      "expected": "Changed CTA/favorite owners pass focused regression; intended text contrast meets 4.5:1 for normal text; UI integration evidence is route/theme/viewport bounded.",
+      "actual": "PASS: 8/8 focused files, 174/174 tests; app/Node typecheck pass; lint budget 0 errors/0 warnings; scoped format 13/13; dependency graph 937 modules/5,301 dependencies/0 violations. Contrast minima: primary 5.568:1, success 4.708:1, danger 4.829:1, warning 5.568:1. Runtime measured only 2 routes at 1280x720, light/dark: login CTA computed foreground rgb(17,24,39), gradient rgb(229,138,0)→rgb(217,119,6), height 52px; Market favorite target 32×32px. Browser did not complete guest favorite activation; component test covers selected state.",
+      "result": "pass",
+      "artifact": "C:/Users/Joker-PC/.codex/visualizations/2026/10/15/c06-03-evidence-6192a3f/c06-03-local-measurements.json",
+      "notes": "Local/MSW only, 2/428 route declarations runtime inspected, one desktop viewport. No mobile/tablet, production/backend, user acceptance or assistive-technology session. CTAButton still exposes bg/textColor/CSS overrides; risk remains assigned to C06.08/C06.10."
+    },
+    {
+      "id": "EV-20261015-020",
+      "taskId": "C06",
+      "stepId": "C06.03",
+      "kind": "full_local_test_infrastructure_failure",
+      "commandOrSteps": "node scripts/run-with-artifacts.mjs vitest run",
+      "environment": "Local Windows; Node 24.19.0; source SHA 6192a3fd8c6fc44ddfd1b0f6a7780b9252947a8e.",
+      "observedAt": "2026-10-15T06:40:00.690Z",
+      "sourceHead": "6192a3fd8c6fc44ddfd1b0f6a7780b9252947a8e",
+      "dirtyFileHashes": {},
+      "expected": "Full local suite starts with an owned run manifest and exits with a completed result.",
+      "actual": "FAIL / NOT RUN: runner hit EPERM while atomically renaming run manifest before child start; childPid=null, childClosed=false, manifest remains running. No test assertion ran. Preserved the manifest/run directory per workflow; not counted as pass.",
+      "result": "fail",
+      "artifact": ".artifacts/runs/2026-10-15T06-40-00-690Z-vitest-3ea3475e-6f8e-49d5-8a0e-29ba5ad6ddea/run.json",
+      "notes": "The failed local wrapper run is an infrastructure failure, not a product test failure. Do not edit/delete the incomplete run; use hosted CI for comprehensive verification."
+    },
+    {
+      "id": "EV-20261015-021",
+      "taskId": "C06",
+      "stepId": "C06.03",
+      "kind": "github_exact_sha_ci_attempt_failure",
+      "commandOrSteps": "GitHub Actions CI run #65 attempt 1 on exact source SHA 6192a3fd8c6fc44ddfd1b0f6a7780b9252947a8e; preserve report artifact and inspect failed test/job.",
+      "environment": "GitHub Actions ubuntu-latest; pull request #3; run 38694128933, job 116286622202.",
+      "observedAt": "2026-10-15T06:53:13.000Z",
+      "sourceHead": "6192a3fd8c6fc44ddfd1b0f6a7780b9252947a8e",
+      "dirtyFileHashes": {},
+      "expected": "All required checks complete on the pushed source SHA.",
+      "actual": "FAIL at Unit and integration tests: 361/362 files and 3,484/3,485 tests passed; one DCA cancel-confirmation test could not find heading “Hủy kế hoạch DCA?”. Subsequent gates skipped. Causality with C06.03 unconfirmed; the test/source was not changed, exact parent CI passed, and the same test/file passed locally 1/1 and 17/17.",
+      "result": "fail",
+      "artifact": "C:/Users/Joker-PC/.codex/visualizations/2026/10/15/c06-03-evidence-6192a3f/c06-03-local-measurements.json",
+      "notes": "Artifact 11954127024, 108,222 bytes, downloaded HTTP 200; SHA-256 49f5033b5f7b7d89cad2b8c7c112f87fb92b54055dd68a0912fb88be02be7de2 matched GitHub metadata. Failure remains recorded; no assertions were weakened."
+    },
+    {
+      "id": "EV-20261015-022",
+      "taskId": "C06",
+      "stepId": "C06.03",
+      "kind": "github_exact_sha_ci_attempt_failure_inventory_stale",
+      "commandOrSteps": "Retry failed jobs of GitHub Actions run #65 on the same exact source SHA 6192a3fd8c6fc44ddfd1b0f6a7780b9252947a8e; inspect all step conclusions and download/hash the retained artifact.",
+      "environment": "GitHub Actions ubuntu-latest; pull request #3; run 38694128933 attempt 2, job 116290917921.",
+      "observedAt": "2026-10-15T07:28:39.000Z",
+      "sourceHead": "6192a3fd8c6fc44ddfd1b0f6a7780b9252947a8e",
+      "dirtyFileHashes": {},
+      "expected": "All required exact-SHA gates complete successfully and artifact bytes match published digest.",
+      "actual": "FAIL: unit/integration, coverage, E2E/accessibility, Auth API/mock browser, dependency/security/environment/OpenAPI and architecture check all passed. Architecture inventory failed because generated page-inventory.json omitted the CTAButton consumer and had a stale WebLoginPage line count. Readiness source ledger and subsequent gates were skipped.",
+      "result": "fail",
+      "artifact": "C:/Users/Joker-PC/.codex/visualizations/2026/10/15/c06-03-evidence-6192a3f/c06-03-local-measurements.json",
+      "notes": "Artifact 11955164587, 33,654,800 bytes, downloaded HTTP 200; SHA-256 f444354a1e33b62daaf604283c1425874e17adfc259c6f8c046dcecd4dd4f747 matched GitHub metadata. The generator owns the changed page inventory; no manual patch was applied."
+    },
+    {
+      "id": "EV-20261015-023",
+      "taskId": "C06",
+      "stepId": "C06.03",
+      "kind": "canonical_architecture_inventory_regeneration",
+      "commandOrSteps": "node scripts/generate-architecture-inventory.mjs; node scripts/generate-architecture-inventory.mjs --check; git diff --check.",
+      "environment": "Local Windows worktree at source SHA 6192a3fd8c6fc44ddfd1b0f6a7780b9252947a8e; generated inventory commit 7565177eee029b0cf7077fab3e180c3d086f6aae; PR #3.",
+      "observedAt": "2026-10-15T07:34:00.000Z",
+      "sourceHead": "7565177eee029b0cf7077fab3e180c3d086f6aae",
+      "dirtyFileHashes": {
+        "docs/architecture/page-inventory.json": "26d375121d201fa64a0f70b62ad792e7500ced4c61a6e93e33648f049b991315"
+      },
+      "expected": "Only the canonical inventory changes to reflect source; output is deterministic and check passes.",
+      "actual": "PASS: canonical generator updated only docs/architecture/page-inventory.json, 2 insertions/1 deletion; WebLoginPage lines 489→462 and import dependency @/shared/ui/CTAButton added. Counts remain 130 pages, 428 routes, 149 components, 0 data modules, 32 services and 28 mocks. Post-generation inventory --check and git diff --check pass; inventory change was committed/pushed separately. GitHub run #66 on exact SHA 7565177eee029b0cf7077fab3e180c3d086f6aae is still in progress at the time of this record.",
+      "result": "pass",
+      "artifact": "C:/Users/Joker-PC/.codex/visualizations/2026/10/15/c06-03-evidence-6192a3f/c06-03-local-measurements.json",
+      "notes": "Local generated-artifact check is not the exact-SHA CI result. Wait for run #66 terminal result and record it separately."
+    },
+    {
+      "id": "EV-20261015-024",
+      "taskId": "C06",
+      "stepId": "C06.03",
+      "kind": "readiness_ledger_pre_reconciliation_failure",
+      "commandOrSteps": "node docs/architecture/production-readiness/check-tracking.mjs",
+      "environment": "Local Windows worktree at exact pushed SHA 7565177eee029b0cf7077fab3e180c3d086f6aae; Node 24.19.0.",
+      "observedAt": "2026-10-15T07:38:00.000Z",
+      "sourceHead": "7565177eee029b0cf7077fab3e180c3d086f6aae",
+      "dirtyFileHashes": {},
+      "expected": "TRACKING source pointers match all current active source and generated inventory files.",
+      "actual": "FAIL exit 1, errorCount=14: 13 C06.03 source files and docs/architecture/page-inventory.json differ from their cataloguedSourceHead. Exact pre-change/current SHA-256 pairs were computed from committed Git blobs; this is stale provenance and requires ledger reconciliation before source-ledger CI can pass.",
+      "result": "fail",
+      "artifact": "C:/Users/Joker-PC/.codex/visualizations/2026/10/15/c06-03-evidence-6192a3f/c06-03-local-measurements.json",
+      "notes": "No source was changed by this checker. All 14 mismatches are the paths listed in the adjacent C06.03 change records."
+    },
+    {
+      "id": "EV-20261015-025",
+      "taskId": "C06",
+      "stepId": "C06.03",
+      "kind": "local_tracker_inventory_and_diff_validation",
+      "commandOrSteps": "node docs/architecture/production-readiness/check-tracking.mjs; node scripts/generate-architecture-inventory.mjs --check; git diff --check.",
+      "environment": "Local Windows worktree; Node 24.19.0; source HEAD 7565177eee029b0cf7077fab3e180c3d086f6aae; TRACKING draft before adding this evidence had SHA-256 e24d3389ac089dc8f346421d531b12174a1e0f5ba7d6222d39cdb742264e47df.",
+      "observedAt": "2026-10-15T07:45:00.000Z",
+      "sourceHead": "7565177eee029b0cf7077fab3e180c3d086f6aae",
+      "dirtyFileHashes": {
+        "docs/architecture/production-readiness/TRACKING.json": "e24d3389ac089dc8f346421d531b12174a1e0f5ba7d6222d39cdb742264e47df"
+      },
+      "expected": "The post-reconciliation local tracker checker reports zero errors; generated inventory and whitespace checks pass without changing source.",
+      "actual": "PASS: check-tracking exit 0 with errorCount=0; architecture inventory check 130 pages/428 routes/149 components/0 data modules/32 services/28 mocks; git diff --check exit 0. This confirms local ledger consistency before the evidence/self-audit record refresh; final self-audited content is checked again separately.",
+      "result": "pass",
+      "artifact": "C:/Users/Joker-PC/.codex/visualizations/2026/10/15/c06-03-evidence-6192a3f/c06-03-tracking-self-audit.json",
+      "notes": "Local check only; run #66 on the inventory commit is still in progress and no exact-SHA GitHub completion is claimed."
     }
   ],
   "decisions": [
@@ -365392,11 +365980,11 @@
     {
       "id": "SESSION-20261015-001",
       "startedAt": "2026-10-15T02:50:04.711Z",
-      "endedAt": null,
+      "endedAt": "2026-10-15T06:11:02.000Z",
       "timingBasis": "UTC start recorded when C06.02 evidence was written; session remains open until exact-SHA GitHub verification and cleanup.",
       "sourceHeadBefore": "8981bfd490c3d7fd8df72a9966d20e7e32646164",
-      "sourceHeadAfter": "ae43116b02d383bfe2135526c6c9c7b1313c8f38",
-      "documentationHead": "ae43116b02d383bfe2135526c6c9c7b1313c8f38",
+      "sourceHeadAfter": "278700733d6d623fb2bfa06bf07426b2e5117feb",
+      "documentationHead": "278700733d6d623fb2bfa06bf07426b2e5117feb",
       "taskIds": [
         "C06"
       ],
@@ -365420,7 +366008,8 @@
         "EV-20261015-008",
         "EV-20261015-009",
         "EV-20261015-010",
-        "EV-20261015-011"
+        "EV-20261015-011",
+        "EV-20261015-018"
       ],
       "filesTouched": [
         "src/shared/ui/BottomSheetV2.tsx",
@@ -365431,15 +366020,12 @@
       ],
       "elapsedMinutes": 55,
       "remainingWork": [
-        "Commit the ledger as a separate Vietnamese documentation commit; push source then ledger commits in order without force.",
-        "Verify every required GitHub job, artifact upload/download digest and governance result on exact pushed tip SHA.",
-        "Keep C06.03 blocked until exact-SHA gates pass and this slice cleanup completes."
+        "C06.03: implement measured CTA/favorite correction, regenerate inventory if source dependencies change, reconcile ledger and verify exact-SHA GitHub CI before C06.04."
       ],
       "blockers": [
-        "Local Windows Playwright body reported ok 1, but manifest remains running/childClosed=false and is not a completed PASS.",
-        "Exact pushed-SHA GitHub required checks and artifact integrity are pending."
+        "Local incomplete Playwright run remains historical; hosted exact-SHA E2E completed successfully."
       ],
-      "nextAction": "Commit TRACKING separately, push the ordered source and ledger commits, then verify exact pushed-SHA GitHub checks/artifacts before C06.03.",
+      "nextAction": "C06.02 closed: exact GitHub run #64 and artifact digest pass. C06.03 begins in SESSION-20261015-002.",
       "manifestPath": "C:/Users/Joker-PC/.codex/visualizations/2026/10/15/c06-02-ledger-audit-91df11e736f642708e6cd71d20a12fed/c06-02-session-manifest.json",
       "validation": {
         "focusedVitest": {
@@ -365511,6 +366097,153 @@
           "artifactPath": "C:/Users/Joker-PC/.codex/visualizations/2026/10/15/c06-02-ledger-audit-91df11e736f642708e6cd71d20a12fed/c06-02-post-self-audit-check-tracking-round1.json",
           "artifactSha256": "7330954474e1012c09adad748c95eec3f91a46ea2007d87800b44f64f82a6b0d",
           "note": "Final post-self-audit checker will be rerun after this ledger metadata update."
+        }
+      }
+    },
+    {
+      "id": "SESSION-20261015-002",
+      "startedAt": "2026-10-15T06:11:03.000Z",
+      "endedAt": null,
+      "sourceHeadBefore": "278700733d6d623fb2bfa06bf07426b2e5117feb",
+      "sourceHeadAfter": "7565177eee029b0cf7077fab3e180c3d086f6aae",
+      "taskIds": [
+        "C06"
+      ],
+      "stepIds": [
+        "C06.03"
+      ],
+      "changeIds": [
+        "CHANGE-20261015-025",
+        "CHANGE-20261015-026",
+        "CHANGE-20261015-027",
+        "CHANGE-20261015-028",
+        "CHANGE-20261015-029",
+        "CHANGE-20261015-030",
+        "CHANGE-20261015-031",
+        "CHANGE-20261015-032",
+        "CHANGE-20261015-033",
+        "CHANGE-20261015-034",
+        "CHANGE-20261015-035",
+        "CHANGE-20261015-036",
+        "CHANGE-20261015-037",
+        "CHANGE-20261015-038",
+        "CHANGE-20261015-039"
+      ],
+      "evidenceIds": [
+        "EV-20261015-019",
+        "EV-20261015-020",
+        "EV-20261015-021",
+        "EV-20261015-022",
+        "EV-20261015-023",
+        "EV-20261015-024",
+        "EV-20261015-025"
+      ],
+      "elapsedMinutes": null,
+      "remainingWork": [
+        "Record GitHub run #66 terminal outcome and exact artifact digest.",
+        "Commit/push reconciled provenance ledger and wait for exact-SHA required GitHub checks.",
+        "Close C06.03 only on green source+tracker SHA; then start C06.04 in a fresh bounded slice."
+      ],
+      "blockers": [
+        "Local full Vitest wrapper failed before test child start (EPERM); preserved as infrastructure failure.",
+        "GitHub run #66 on SHA 7565177eee029b0cf7077fab3e180c3d086f6aae is in progress.",
+        "C06.03 tracker source ledger currently has 14 pointer mismatches and must be reconciled."
+      ],
+      "nextAction": "Keep C06.03 in_progress. Reconcile the exact 14 path records, preserve the GitHub #65 failures, then verify every required gate and artifact integrity on the pushed tracker SHA before C06.04.",
+      "filesTouched": [
+        "src/app/__tests__/CTAButton.test.tsx",
+        "src/features/auth/pages/WebLoginPage.test.tsx",
+        "src/features/auth/pages/WebLoginPage.tsx",
+        "src/features/market/components/MarketItem.test.tsx",
+        "src/features/market/components/MarketItem.tsx",
+        "src/features/market/pages/PairDetailPage.test.tsx",
+        "src/features/market/pages/PairDetailPage.tsx",
+        "src/features/market/pages/WatchlistPage.test.tsx",
+        "src/features/market/pages/WatchlistPage.tsx",
+        "src/shared/theme/button.ts",
+        "src/shared/theme/theme-token-contract.test.tsx",
+        "src/shared/ui/CTAButton.test.tsx",
+        "src/shared/ui/CTAButton.tsx",
+        "docs/architecture/page-inventory.json",
+        "docs/architecture/production-readiness/TRACKING.json"
+      ],
+      "manifestPath": "C:/Users/Joker-PC/.codex/visualizations/2026/10/15/c06-03-evidence-6192a3f/c06-03-local-measurements.json",
+      "validation": {
+        "focusedVitest": {
+          "testFiles": 8,
+          "tests": 174,
+          "status": "pass",
+          "sourceHead": "6192a3fd8c6fc44ddfd1b0f6a7780b9252947a8e"
+        },
+        "typecheck": {
+          "app": "pass",
+          "node": "pass",
+          "sourceHead": "6192a3fd8c6fc44ddfd1b0f6a7780b9252947a8e"
+        },
+        "lintBudget": {
+          "errors": 0,
+          "warnings": 0,
+          "status": "pass",
+          "sourceHead": "6192a3fd8c6fc44ddfd1b0f6a7780b9252947a8e"
+        },
+        "scopedPrettier": {
+          "files": 13,
+          "status": "pass",
+          "sourceHead": "6192a3fd8c6fc44ddfd1b0f6a7780b9252947a8e"
+        },
+        "architecture": {
+          "modules": 937,
+          "dependencies": 5301,
+          "violations": 0,
+          "status": "pass",
+          "sourceHead": "6192a3fd8c6fc44ddfd1b0f6a7780b9252947a8e"
+        },
+        "inventory": {
+          "status": "pass",
+          "pages": 130,
+          "routes": 428,
+          "components": 149,
+          "dataModules": 0,
+          "services": 32,
+          "mocks": 28,
+          "sourceHead": "7565177eee029b0cf7077fab3e180c3d086f6aae"
+        },
+        "routeRuntime": {
+          "routes": 2,
+          "registeredRoutes": 428,
+          "viewport": "1280x720",
+          "themes": [
+            "light",
+            "dark"
+          ],
+          "status": "representative_only"
+        },
+        "fullLocalSuite": {
+          "status": "fail_infrastructure_before_test_start",
+          "sourceHead": "6192a3fd8c6fc44ddfd1b0f6a7780b9252947a8e"
+        },
+        "githubRun65": {
+          "attempt1": "fail_unit_integration_one_unconfirmed_DCA_test",
+          "attempt2": "fail_stale_inventory"
+        },
+        "githubRun66": {
+          "runId": 38699462430,
+          "status": "in_progress",
+          "sourceHead": "7565177eee029b0cf7077fab3e180c3d086f6aae"
+        },
+        "ledgerBeforeReconciliation": {
+          "status": "fail",
+          "errorCount": 14,
+          "sourceHead": "7565177eee029b0cf7077fab3e180c3d086f6aae"
+        },
+        "postSelfAuditTrackerCheck": {
+          "status": "pass",
+          "exitCode": 0,
+          "errorCount": 0,
+          "checkedTrackingSha256": "e24d3389ac089dc8f346421d531b12174a1e0f5ba7d6222d39cdb742264e47df",
+          "inventory": "pass",
+          "gitDiffCheck": "pass",
+          "note": "Re-run on final self-audited tracker content after writing; final SHA is stored in the external session manifest."
         }
       }
     }
