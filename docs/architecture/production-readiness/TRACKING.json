@@ -48,19 +48,20 @@
     }
   ],
   "checkpoint": {
-    "updatedAt": "2026-10-15T08:28:33.000Z",
+    "updatedAt": "2026-10-15T09:31:03Z",
     "lastCompletedTask": "C03",
     "activeTask": "C06",
-    "activeStep": "C06.04",
+    "activeStep": "C06.03",
     "nextTask": "C06",
     "nextStep": "C06.04",
-    "nextAction": "C06.03 is complete on verified code/inventory/ledger SHA ff4fd4186e0667f550056294677ee3c8cbbf1c1b: exact run #67 passed 34/34 steps and downloaded artifact SHA-256 matched GitHub. Commit/push this closeout ledger separately and require all gates plus artifact digest on that exact SHA (#68). Only then start C06.04: inspect WithdrawPage/WithdrawSections and wallet.yaml; preserve payload, precision, idempotency and unknown semantics; run focused validation/error-association/focus/draft-preservation tests and browser keyboard proof.",
+    "nextAction": "C06.03 source/inventory work passed exact run #67. Closeout SHA f7868bec failed the registration browser step at 320px (#68); diagnostic test SHA f583c1f8 passed API and mock browser steps on #69, but #69 failed only the ledger with one stale pointer. This tracker now catalogs that test at f583c1f8. Commit and push the ledger separately; require all 34 workflow steps and matching artifact SHA on the new exact SHA (#70) before starting C06.04 WithdrawPage/WithdrawSections. Preserve payload, precision, idempotency, receipt and unknown semantics.",
     "changedFiles": [
+      "tests/e2e/auth-registration-mfa-setup.spec.ts",
       "docs/architecture/production-readiness/TRACKING.json"
     ],
     "pendingChecks": [
-      "C06.03 implementation gates are green on exact SHA ff4fd4186e0667f550056294677ee3c8cbbf1c1b (GitHub run #67, 34/34 and artifact digest match).",
-      "The separate tracking-closeout commit must pass its exact-SHA workflow and downloaded artifact checksum (run #68 expected); do not modify C06.04 source until it passes.",
+      "C06.03 code and inventory gates passed on #67; the later closeout #68 exposed a 320px registration viewport assertion failure. Diagnostic-only commit f583c1f8 passed the API and mock browser steps on #69; the assertion pass does not establish a layout fix.",
+      "This tracker corrects the single test source pointer found by #69. Run the exact pushed tracker SHA through all required GitHub steps and verify the downloaded artifact checksum (#70); do not edit C06.04 source until this gate passes.",
       "C06.04 Wallet verification remains frontend/mock evidence only; never use production account/data or submit a real withdrawal.",
       "C05.03 formal UI acceptance and unresolved Axe evaluations remain separate; backend/staging and production credentials are not evidenced here."
     ],
@@ -68,8 +69,8 @@
       "Local full-suite runner failed with EPERM before test child started; incomplete manifest and output are preserved and are not PASS.",
       "C05.03 formal UI acceptance and unresolved Axe evaluations remain separate; backend/staging inputs and approved production build endpoints are not available in this C06 slice."
     ],
-    "notes": "C06.02 exact run #64 PASS at SHA 278700733d6d623fb2bfa06bf07426b2e5117feb; see EV-20261015-018. C06.03 source code SHA 6192a3fd8c6fc44ddfd1b0f6a7780b9252947a8e, generated inventory SHA 7565177eee029b0cf7077fab3e180c3d086f6aae; focused/static/local browser measurements and limitations in EV-019, local full-suite infra failure EV-020, GitHub #65 attempts EV-021/022, canonical inventory refresh EV-023. C06.03 completed after exact run #67 on reconciled SHA ff4fd4186e0667f550056294677ee3c8cbbf1c1b passed all 34 steps; artifact digest matched GitHub (EV-026/027). Post-commit tracker/inventory/remote checks pass at that SHA (EV-028). Runtime sample remains 2/428 routes; not a full UI or WCAG certification. Runtime sample is 2 of 428 route declarations, one viewport, light/dark default states only; do not claim complete UI/WCAG/production acceptance. Local tracker reconciliation now passes on the draft payload (EV-20261015-025); run #66 remains in progress.",
-    "remainingWork": "Coverage local đạt 362/362 test files, 3477/3477 tests và 100% trên 408 measurable files; 32 entries không có executable counter. C05.03 chưa xong: Axe có 1655/1656 incomplete evaluation, screenshot baseline 14/128, formal acceptance 0/128. B07.02 chưa xong: hai local E2E attempt không có terminal summary; exact pushed-SHA workflow/artifact/governance chưa xác minh. Backend/staging B05 và C05.04/.05 blocked; backend 0/154, 25/106 contract-dependent, UAT 0/128; thiếu các owner, host/version, quyền test, endpoint, telemetry/privacy và SLO đã nêu. C06.01 local inventory/matrix acceptance is complete (EV-20261015-003/004). Runtime route matrix is a source baseline only (0/428 runtime routes); later exact run #62 passed the source-ledger gate and all hosted steps (EV-20261015-016), but does not establish route-by-route runtime coverage.\nC06.02 browser assertions reported ok 1 across 6 viewport/theme cases; local Playwright run remains incomplete (run manifest not closed).\nC06.02 implementation passed exact run #62 on d97a7628497962c8d58a29f79fc2fff9ed5790b1; separate closure commit 35108ac6899f141086985a86445805c4530c9658 passed exact run #63 with 34/34 steps and artifact digest verification (EV-20261015-017). C06.03 is complete on exact SHA ff4fd4186e0667f550056294677ee3c8cbbf1c1b (run #67 passed 34/34 and artifact digest matched). C06.04 is next after the separate tracking-closeout SHA passes all exact-SHA GitHub gates and artifact verification.\nC06.02 source and source fingerprints are committed and pushed; local Playwright teardown remains incomplete (EV-20261015-014) and is not counted as PASS. Guarded cleanup after run #63 deleted 0 files/0 bytes and retained 12 incomplete/active outputs.",
+    "notes": "C06.02 exact run #64 PASS at SHA 278700733d6d623fb2bfa06bf07426b2e5117feb; see EV-20261015-018. C06.03 source code SHA 6192a3fd8c6fc44ddfd1b0f6a7780b9252947a8e, generated inventory SHA 7565177eee029b0cf7077fab3e180c3d086f6aae; focused/static/local browser measurements and limitations in EV-019, local full-suite infra failure EV-020, GitHub #65 attempts EV-021/022, canonical inventory refresh EV-023. C06.03 completed after exact run #67 on reconciled SHA ff4fd4186e0667f550056294677ee3c8cbbf1c1b passed all 34 steps; artifact digest matched GitHub (EV-026/027). Post-commit tracker/inventory/remote checks pass at that SHA (EV-028). Runtime sample remains 2/428 routes; not a full UI or WCAG certification. Runtime sample is 2 of 428 route declarations, one viewport, light/dark default states only; do not claim complete UI/WCAG/production acceptance. Local tracker reconciliation now passes on the draft payload (EV-20261015-025); run #66 completed with a provenance-ledger failure; #67 passed; #68 failed the registration viewport browser assertion; #69 passed both auth browser steps but failed the source ledger on one stale test pointer, now corrected here.",
+    "remainingWork": "Coverage local đạt 362/362 test files, 3477/3477 tests và 100% trên 408 measurable files; 32 entries không có executable counter. C05.03 chưa xong: Axe có 1655/1656 incomplete evaluation, screenshot baseline 14/128, formal acceptance 0/128. B07.02 chưa xong: hai local E2E attempt không có terminal summary; exact pushed-SHA workflow/artifact/governance chưa xác minh. Backend/staging B05 và C05.04/.05 blocked; backend 0/154, 25/106 contract-dependent, UAT 0/128; thiếu các owner, host/version, quyền test, endpoint, telemetry/privacy và SLO đã nêu. C06.01 local inventory/matrix acceptance is complete (EV-20261015-003/004). Runtime route matrix is a source baseline only (0/428 runtime routes); later exact run #62 passed the source-ledger gate and all hosted steps (EV-20261015-016), but does not establish route-by-route runtime coverage.\nC06.02 browser assertions reported ok 1 across 6 viewport/theme cases; local Playwright run remains incomplete (run manifest not closed).\nC06.02 implementation passed exact run #62 on d97a7628497962c8d58a29f79fc2fff9ed5790b1; separate closure commit 35108ac6899f141086985a86445805c4530c9658 passed exact run #63 with 34/34 steps and artifact digest verification (EV-20261015-017). C06.03 source acceptance passed exact run #67, but its later closeout SHA f7868bec failed the registration viewport browser step (#68). Diagnostic commit f583c1f8 passed API and mock browser gates on #69; the run failed only the ledger because one source pointer was stale. This tracker reconciles that pointer. C06.04 remains gated on all required gates and artifact digest for the new exact tracker SHA (#70).\nC06.02 source and source fingerprints are committed and pushed; local Playwright teardown remains incomplete (EV-20261015-014) and is not counted as PASS. Guarded cleanup after run #63 deleted 0 files/0 bytes and retained 12 incomplete/active outputs.",
     "planningDecisionId": "DECISION-20261013-002",
     "blockerHistory": [
       {
@@ -18827,9 +18828,12 @@
             "EV-20261015-025",
             "EV-20261015-026",
             "EV-20261015-027",
-            "EV-20261015-028"
+            "EV-20261015-028",
+            "EV-20261015-029",
+            "EV-20261015-030",
+            "EV-20261015-031"
           ],
-          "notes": "C06.03 hoàn tất. Source commit 6192a3fd8c6fc44ddfd1b0f6a7780b9252947a8e, inventory commit 7565177eee029b0cf7077fab3e180c3d086f6aae và ledger reconciliation commit ff4fd4186e0667f550056294677ee3c8cbbf1c1b đã push riêng theo thứ tự. Run #66 trên SHA inventory cũ chỉ fail Readiness source ledger với 14 pointer mismatch (EV-20261015-026); cập nhật provenance đã xử lý các mismatch. Run #67 trên exact SHA ff4fd4186e0667f550056294677ee3c8cbbf1c1b PASS 34/34, 0 fail/skip; artifact checksum khớp GitHub (EV-20261015-027). Check tracker/inventory/remote local sau commit đều pass (EV-20261015-028). Giữ giới hạn: local full-suite wrapper vẫn lỗi EPERM trước khi test child khởi chạy; runtime sample vẫn 2/428 route, một viewport 1280x720 light/dark default. Chưa chứng minh toàn bộ route, WCAG, backend, production hoặc user acceptance. CTAButton escape hatches tiếp tục để C06.08/C06.10 đánh giá.",
+          "notes": "C06.03 hoàn tất. Source commit 6192a3fd8c6fc44ddfd1b0f6a7780b9252947a8e, inventory commit 7565177eee029b0cf7077fab3e180c3d086f6aae và ledger reconciliation commit ff4fd4186e0667f550056294677ee3c8cbbf1c1b đã push riêng theo thứ tự. Run #66 trên SHA inventory cũ chỉ fail Readiness source ledger với 14 pointer mismatch (EV-20261015-026); cập nhật provenance đã xử lý các mismatch. Run #67 trên exact SHA ff4fd4186e0667f550056294677ee3c8cbbf1c1b PASS 34/34, 0 fail/skip; artifact checksum khớp GitHub (EV-20261015-027). Check tracker/inventory/remote local sau commit đều pass (EV-20261015-028). Giữ giới hạn: local full-suite wrapper vẫn lỗi EPERM trước khi test child khởi chạy; runtime sample vẫn 2/428 route, một viewport 1280x720 light/dark default. Chưa chứng minh toàn bộ route, WCAG, backend, production hoặc user acceptance. CTAButton escape hatches tiếp tục để C06.08/C06.10 đánh giá. Follow-up: GitHub #68 failed the registration viewport assertion at 320px after three attempts; the old aggregate boolean output did not identify controls. Test-only commit f583c1f8 adds named control diagnostics. The focused Windows run passed all four configured widths; GitHub #69 passed the API and mock browser steps, but the overall run failed only because this test file source pointer was stale (errorCount=1). No layout fix is inferred from that pass. Reconcile the pointer and require exact-SHA run #70 plus artifact digest before C06.04.",
           "execution": {
             "instructionsRef": "PLAN.md#frontend-ui-ux-ds-migration-20261015",
             "fileSelection": "files[].executionScope.stepIds includes C06.03",
@@ -18853,7 +18857,8 @@
             "CHANGE-20261015-037",
             "CHANGE-20261015-038",
             "CHANGE-20261015-039",
-            "CHANGE-20261015-040"
+            "CHANGE-20261015-040",
+            "CHANGE-20261015-041"
           ]
         },
         {
@@ -19579,7 +19584,10 @@
         "EV-20261015-025",
         "EV-20261015-026",
         "EV-20261015-027",
-        "EV-20261015-028"
+        "EV-20261015-028",
+        "EV-20261015-029",
+        "EV-20261015-030",
+        "EV-20261015-031"
       ],
       "changeIds": [
         "CHANGE-20261015-001",
@@ -19625,7 +19633,7 @@
       "startedAt": "2026-10-15T01:47:05.375Z",
       "completedAt": null,
       "elapsedMinutes": 3,
-      "notes": "User-authorized sequential UI/UX Design System migration. Scope remains the existing C06 inventory and approved execution plan; original checkout WIP remains untouched. C06.02 corrective source commit a29a255e72aa98aa7199d6ee21e506bdd5d4f6ca is pushed. CI #60 exposed 11 failed tests across 9 files; the modal close/accessibility lifecycle and affected consumer tests were corrected. Local full/focused and static checks passed with the limitations recorded in EV-20261015-013/014. CI #61 passed 26 steps but failed only the readiness source-ledger gate because 11 catalogue pointers had not yet been rebound. C06.02 was subsequently closed by exact-SHA GitHub runs #63 and #64; see EV-20261015-017/018. TRACKING.json Prettier --check remains a known baseline failure (EV-20261015-004); it is not part of package format:check, whose scoped source check passed.\nC06.02 được đóng bằng GitHub run #64 trên exact SHA 278700733d6d623fb2bfa06bf07426b2e5117feb, 34/34 bước và artifact digest pass (EV-20261015-018). C06.03 source commit 6192a3fd8c6fc44ddfd1b0f6a7780b9252947a8e, inventory commit 7565177eee029b0cf7077fab3e180c3d086f6aae, and tracker reconciliation commit ff4fd4186e0667f550056294677ee3c8cbbf1c1b are separately pushed. Run #66 on the pre-reconciliation inventory SHA failed only at Readiness source ledger (14 stale pointers); exact run #67 on ff4fd4186e0667f550056294677ee3c8cbbf1c1b passed 34/34 steps and its downloaded artifact digest matched GitHub (EV-026/027). C06.03 is complete; C06.04 is next after the tracking-closeout SHA itself passes GitHub and artifact verification. The local full-suite EPERM and limited runtime sample remain recorded, not represented as PASS/full coverage.",
+      "notes": "User-authorized sequential UI/UX Design System migration. Scope remains the existing C06 inventory and approved execution plan; original checkout WIP remains untouched. C06.02 corrective source commit a29a255e72aa98aa7199d6ee21e506bdd5d4f6ca is pushed. CI #60 exposed 11 failed tests across 9 files; the modal close/accessibility lifecycle and affected consumer tests were corrected. Local full/focused and static checks passed with the limitations recorded in EV-20261015-013/014. CI #61 passed 26 steps but failed only the readiness source-ledger gate because 11 catalogue pointers had not yet been rebound. C06.02 was subsequently closed by exact-SHA GitHub runs #63 and #64; see EV-20261015-017/018. TRACKING.json Prettier --check remains a known baseline failure (EV-20261015-004); it is not part of package format:check, whose scoped source check passed.\nC06.02 được đóng bằng GitHub run #64 trên exact SHA 278700733d6d623fb2bfa06bf07426b2e5117feb, 34/34 bước và artifact digest pass (EV-20261015-018). C06.03 source commit 6192a3fd8c6fc44ddfd1b0f6a7780b9252947a8e, inventory commit 7565177eee029b0cf7077fab3e180c3d086f6aae, and tracker reconciliation commit ff4fd4186e0667f550056294677ee3c8cbbf1c1b are separately pushed. Run #66 on the pre-reconciliation inventory SHA failed only at Readiness source ledger (14 stale pointers); exact run #67 on ff4fd4186e0667f550056294677ee3c8cbbf1c1b passed 34/34 steps and its downloaded artifact digest matched GitHub (EV-026/027). C06.03 is complete; C06.04 is next after the tracking-closeout SHA itself passes GitHub and artifact verification. The local full-suite EPERM and limited runtime sample remain recorded, not represented as PASS/full coverage. Follow-up to closeout: #68 on f7868bec failed the auth registration API-mode browser step (320px clip assertion, three attempts); diagnostic-only test commit f583c1f8 passed that browser step and auth mock on #69. Run #69 failed only Readiness source ledger because the test file still pointed to its prior catalogued hash; the pointer is reconciled in this tracker update. C06.04 source remains gated until the new tracker SHA passes all required gates and artifact verification (run #70). The passing #69 assertion does not establish that the earlier viewport discrepancy is fixed.",
       "execution": {
         "orderedStepIds": [
           "C06.01",
@@ -177344,17 +177352,22 @@
       "baselineSha256": null,
       "lifecycle": "active",
       "taskIds": [
-        "U01"
+        "U01",
+        "C06"
       ],
       "disposition": "changed",
-      "reason": "Existing committed owner omitted from ledger; actual per-file Git blob verified. | Align two light-theme expectations with the current #344054 token; retain existing WCAG contrast and axe thresholds.",
+      "reason": "Existing committed owner omitted from ledger; actual per-file Git blob verified. | Align two light-theme expectations with the current #344054 token; retain existing WCAG contrast and axe thresholds. | Add per-control diagnostics after GitHub #68 failed at 320px; Windows focused runtime and GitHub #69 both passed the updated assertion.",
       "evidenceIds": [
         "EV-20261013-006",
         "EV-20261014-023",
-        "EV-20261014-025"
+        "EV-20261014-025",
+        "EV-20261015-029",
+        "EV-20261015-030",
+        "EV-20261015-031"
       ],
       "changeIds": [
-        "CHANGE-20261014-075"
+        "CHANGE-20261014-075",
+        "CHANGE-20261015-041"
       ],
       "executionScope": {
         "ownerTaskId": "U01",
@@ -177362,12 +177375,13 @@
         "stepIds": [
           "U01.01",
           "U01.04",
-          "U01.05"
+          "U01.05",
+          "C06.03"
         ],
-        "action": "review_actual_committed_owner"
+        "action": "retain U01 owner and add named viewport clipping diagnostics for C06.03"
       },
-      "cataloguedSourceHead": "ef3fb92f4db679cf58ab5ba824f088d19ea01c71",
-      "cataloguedSha256": "5a0c0632b99080c83704671c533c3d691eafc316ae4f946fd5e6008378e31444"
+      "cataloguedSourceHead": "f583c1f819db9ade3f188183dc410b6278d97f84",
+      "cataloguedSha256": "d90b3ec44a800d3458c7493016d08049d8474f338f99e73fbb59a838f64241dd"
     },
     {
       "path": "tests/e2e/auth-registration-mock.spec.ts",
@@ -308301,6 +308315,23 @@
         "EV-20261015-028"
       ],
       "commit": null
+    },
+    {
+      "id": "CHANGE-20261015-041",
+      "taskId": "C06",
+      "stepId": "C06.03",
+      "path": "tests/e2e/auth-registration-mfa-setup.spec.ts",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "After exact-SHA CI #68 repeatedly reported two clipped controls at 320px but its aggregate boolean assertion omitted their identities, name each primary control in the failure message so subsequent runtime failures identify the exact control. This improves evidence only and makes no product-layout claim.",
+      "beforeHash": "5a0c0632b99080c83704671c533c3d691eafc316ae4f946fd5e6008378e31444",
+      "afterHash": "d90b3ec44a800d3458c7493016d08049d8474f338f99e73fbb59a838f64241dd",
+      "evidenceIds": [
+        "EV-20261015-029",
+        "EV-20261015-030",
+        "EV-20261015-031"
+      ],
+      "commit": "f583c1f819db9ade3f188183dc410b6278d97f84"
     }
   ],
   "evidence": [
@@ -342872,6 +342903,56 @@
       "result": "pass",
       "artifact": "C:/Users/Joker-PC/.codex/visualizations/2026/10/15/c06-03-evidence-6192a3f/c06-03-local-measurements.json",
       "notes": "The future ledger-closeout commit that records these outcomes still needs its own exact-SHA GitHub run and artifact verification before C06.04 code work begins."
+    },
+    {
+      "id": "EV-20261015-029",
+      "taskId": "C06",
+      "stepId": "C06.03",
+      "kind": "github_exact_sha_registration_viewport_failure",
+      "commandOrSteps": "GitHub Actions CI run #68, run ID 38706214896, job ID 116326162061; Auth registration API-mode browser contract.",
+      "environment": "GitHub PR #3; exact pushed SHA f7868becd4db8151b48c41bbb4ba68ac414716b5; Chromium on GitHub-hosted Linux.",
+      "observedAt": "2026-10-15T08:45:16Z",
+      "sourceHead": "f7868becd4db8151b48c41bbb4ba68ac414716b5",
+      "dirtyFileHashes": {},
+      "expected": "The registration keyboard/viewport browser contract passes at 320, 390, 768, and 1440 CSS px.",
+      "actual": "FAIL: supports accessible keyboard registration across Web widths failed at 320px on all three attempts. The assertion reported two false visibility values but did not identify the control names; preceding typecheck, lint, unit, coverage, and E2E smoke steps passed. Artifact 11958833988, 20,891,757 bytes, downloaded SHA-256 5e30bd4b80333b90dcabc68792c77c172d3557a32307c91a1f7509b3116c4fdf matched GitHub metadata.",
+      "result": "fail",
+      "artifact": "C:/Users/Joker-PC/.codex/visualizations/2026/10/15/c06-03-evidence-6192a3f/run-68-f7868bec-verification.zip",
+      "notes": "The screenshot and any image contents were not opened or included. This is runtime evidence of a viewport assertion failure, not a diagnosis of which layout owner caused it."
+    },
+    {
+      "id": "EV-20261015-030",
+      "taskId": "C06",
+      "stepId": "C06.03",
+      "kind": "local_named_viewport_assertion_verification",
+      "commandOrSteps": "node scripts/run-with-artifacts.mjs playwright test --config playwright.auth-api.config.ts tests/e2e/auth-registration-mfa-setup.spec.ts --grep 'supports accessible keyboard registration across Web widths'; TypeScript app/node checks; targeted ESLint and Prettier.",
+      "environment": "Local Windows worktree, Node 24.19.0, Chromium, API-mode fixture intercepting reserved e2e.test host; source parent f7868bec with only the recorded test-file delta.",
+      "observedAt": "2026-10-15T08:53:23Z",
+      "sourceHead": "f7868becd4db8151b48c41bbb4ba68ac414716b5",
+      "dirtyFileHashes": {
+        "tests/e2e/auth-registration-mfa-setup.spec.ts": "d90b3ec44a800d3458c7493016d08049d8474f338f99e73fbb59a838f64241dd"
+      },
+      "expected": "Named diagnostic assertion checks horizontal document overflow and every primary control at 320x844, 390x844, 768x900, and 1440x900; targeted static checks pass.",
+      "actual": "PASS: 1 focused Playwright test across all four configured widths; app and node typechecks pass; targeted ESLint and Prettier pass. The browser profile is local fixture evidence only. Owned run cleanup reported 62 files and 23,406,230 logical bytes deleted with 0 errors.",
+      "result": "pass",
+      "artifact": "C:/Users/Joker-PC/.codex/visualizations/2026/10/15/c06-03-evidence-6192a3f/c06-03-ledger-reconciliation-run-69.json",
+      "notes": "The tested file content matches commit f583c1f8; the run occurred before that commit with the exact file hash recorded above. This pass does not explain the prior Linux failure or prove a layout correction."
+    },
+    {
+      "id": "EV-20261015-031",
+      "taskId": "C06",
+      "stepId": "C06.03",
+      "kind": "github_exact_sha_diagnostic_gate_and_ledger_failure",
+      "commandOrSteps": "GitHub Actions CI run #69, run ID 38708978719, job ID 116335352523; exact SHA f583c1f819db9ade3f188183dc410b6278d97f84.",
+      "environment": "GitHub PR #3; GitHub-hosted Linux, repository LonelyTraderBay/vittrade-react.",
+      "observedAt": "2026-10-15T09:25:46Z",
+      "sourceHead": "f583c1f819db9ade3f188183dc410b6278d97f84",
+      "dirtyFileHashes": {},
+      "expected": "All required workflow gates pass on the diagnostic test SHA and its readiness ledger describes every changed source file.",
+      "actual": "FAIL only at Readiness source ledger. Typecheck, lint, lint budget, formatting, unit/integration, coverage, E2E smoke/accessibility, auth API-mode browser, auth mock browser, dependency audit, license, security, environment, OpenAPI, architecture, and inventory gates passed. The checker reported errorCount=1: tests/e2e/auth-registration-mfa-setup.spec.ts differed from cataloguedSourceHead. 26 steps succeeded, 1 failed, and 7 were skipped. Artifact 11961462394, 33,635,255 bytes, downloaded SHA-256 95ab08068620bfbf5d50190a01ae3e807676737b763fd638fd3bf289fb7b3f69 matched GitHub metadata.",
+      "result": "fail",
+      "artifact": "C:/Users/Joker-PC/.codex/visualizations/2026/10/15/c06-03-evidence-6192a3f/run-69-f583c1f8-verification.zip",
+      "notes": "The local check-tracking run on this SHA reproduced the single stale source pointer. The file pointer now records f583c1f8 and its measured SHA-256; exact-SHA run #70 is required before C06.04."
     }
   ],
   "decisions": [
@@ -366350,6 +366431,72 @@
           "inventory": "PASS; 130 pages/428 routes/149 components/0 data modules/32 services/28 mocks",
           "diffCheck": "PASS",
           "remoteBranchMatches": true
+        }
+      }
+    },
+    {
+      "id": "SESSION-20261015-003",
+      "startedAt": "2026-10-15T08:45:17Z",
+      "endedAt": "2026-10-15T09:31:03Z",
+      "sourceHeadBefore": "f7868becd4db8151b48c41bbb4ba68ac414716b5",
+      "sourceHeadAfter": "f583c1f819db9ade3f188183dc410b6278d97f84",
+      "taskIds": [
+        "C06"
+      ],
+      "stepIds": [
+        "C06.03"
+      ],
+      "changeIds": [
+        "CHANGE-20261015-041"
+      ],
+      "evidenceIds": [
+        "EV-20261015-029",
+        "EV-20261015-030",
+        "EV-20261015-031"
+      ],
+      "elapsedMinutes": 46,
+      "remainingWork": [
+        "Commit and push this ledger correction separately.",
+        "Require exact-SHA run #70 to pass every required step and verify its artifact digest before C06.04."
+      ],
+      "blockers": [],
+      "nextAction": "After #70 passes, begin the C06.04 wallet withdrawal slice; if the named viewport assertion fails again, use the reported control identity and computed geometry before touching layout.",
+      "filesTouched": [
+        "tests/e2e/auth-registration-mfa-setup.spec.ts",
+        "docs/architecture/production-readiness/TRACKING.json"
+      ],
+      "manifestPath": "C:/Users/Joker-PC/.codex/visualizations/2026/10/15/c06-03-evidence-6192a3f/c06-03-ledger-reconciliation-run-69.json",
+      "validation": {
+        "localFocusedE2E": {
+          "status": "pass",
+          "tests": 1,
+          "viewports": [
+            "320x844",
+            "390x844",
+            "768x900",
+            "1440x900"
+          ],
+          "sourceHead": "f7868becd4db8151b48c41bbb4ba68ac414716b5",
+          "dirtyTestSha256": "d90b3ec44a800d3458c7493016d08049d8474f338f99e73fbb59a838f64241dd"
+        },
+        "localTypecheckLintPrettier": {
+          "status": "pass"
+        },
+        "githubRun68": {
+          "status": "fail",
+          "runId": 38706214896,
+          "failedStep": "Auth registration API-mode browser contract"
+        },
+        "githubRun69": {
+          "status": "fail",
+          "runId": 38708978719,
+          "passedBrowserGates": [
+            "Auth registration API-mode browser contract",
+            "Auth development mock browser contract"
+          ],
+          "failedStep": "Readiness source ledger",
+          "errorCount": 1,
+          "artifactSha256": "95ab08068620bfbf5d50190a01ae3e807676737b763fd638fd3bf289fb7b3f69"
         }
       }
     }
