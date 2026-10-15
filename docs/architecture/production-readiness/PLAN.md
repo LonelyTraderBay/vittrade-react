@@ -322,16 +322,13 @@ không gọi phần dependent là done, không gán người/đội/backend URL 
 
 <a id="frontend-ui-ux-ds-migration-20261015"></a>
 
-### Lộ trình bổ sung: chuẩn hóa UI/UX và Design System — 15/10/2026
+### C06 — Lộ trình chuẩn hóa UI/UX và Design System — 15/10/2026
 
-**Trạng thái:** kế hoạch thực thi được đề xuất theo yêu cầu người dùng; các bước
-dưới đây chưa được đánh dấu hoàn tất. Kế hoạch này bổ sung vào roadmap hiện hành,
-không thay C01/C03/C05, các task feature U01–U15 hoặc checkpoint B07. Trạng thái
-thực thi tiếp tục chỉ ghi trong [TRACKING.json](TRACKING.json); khi bắt đầu code,
-đăng ký task `C06` và từng step `C06.01`…`C06.15` tại đó, gắn file bằng
-`files[].executionScope.stepIds`, thêm evidence/checkpoint và chạy
-`check-tracking.mjs` trước khi bước đầu tiên được coi là đang triển khai. `C06`
-là ID đề xuất, chưa tồn tại trong tracker tại lúc lập kế hoạch.
+**Trạng thái:** người dùng đã ủy quyền thực thi ngày 15/10/2026; tiến độ từng bước
+được ghi duy nhất trong [TRACKING.json](TRACKING.json). C06 bổ sung vào roadmap
+hiện hành, không thay C01/C03/C05, các task feature U01–U15 hoặc checkpoint B07.
+Mỗi step phải gắn file bằng `files[].executionScope.stepIds`, có evidence/checkpoint
+và qua `check-tracking.mjs` trước khi được coi là hoàn tất.
 
 **Mốc đọc thực tế:** HEAD `074ed3bedfbbcac9e7c31697911ebf234845f0ad`, nhánh
 `codex/frontend-readiness-remediation-20261013`. Worktree có **54 path** sửa đổi
@@ -353,6 +350,13 @@ cataloguedSourceHead`; report có `sourceHead=074ed3bedfbbcac9e7c31697911ebf2348
 hoàn thành từng lát cắt có scope rồi cập nhật provenance; các bước phụ thuộc
 tracker chỉ được bắt đầu khi checker pass. Giữ nguyên toàn bộ WIP và evidence.
 
+**Baseline thực thi C06.01:** detached worktree sạch ở
+`19593f88d4f8bdc0e4d9c09eb6b9489ffdac0734` (commit chỉ đăng ký kế hoạch trên
+cùng nhánh). Ma trận inventory/route đối chiếu tại
+`evidence/C06/c06-01-route-matrix-2026-10-15-19593f88.json`: 130 active page
+source, 428/428 active route declaration khớp inventory, 1.465 URL registration,
+1.396 URL duy nhất; runtime route rows trong bước baseline là **0/428**.
+
 #### Finding được dùng để điều khiển thứ tự
 
 | ID / ưu tiên | Bằng chứng hiện có | Tác động và điều kiện | Owner sửa trước khi rollout | Rủi ro / độ chắc chắn |
@@ -366,6 +370,7 @@ tracker chỉ được bắt đầu khi checker pass. Giữ nguyên toàn bộ W
 | UI-07 / P2 | `src/shared/ui/button.tsx`, `CTAButton.tsx`, `IconButton.tsx`; `InputField.tsx`/`TrInput.tsx`; `TrCard.tsx` nhận `className`/`style`; có nhiều consumer thật | Có các API giao nhau nhưng khác mục đích có thể hợp lệ; thiếu catalog/contract làm người viết trang khó chọn đúng API | Primitive API và catalog trong nguồn hướng dẫn hiện hành | Không hợp nhất theo số import hoặc hình thức; giữ native controls đúng ngữ cảnh; **trung bình** |
 | UI-08 / P2 | `src/shared/theme/density.ts`; `PageContent.tsx`; `src/shared/theme/legacyTypography.ts` được dùng bởi `MarketListSections.tsx`, `OCOOrderForm.tsx`; `φSpace` được dùng bởi `P2PFraudPreventionPage.tsx` và dev legacy | Nhiều thang/value owner cùng tồn tại; Web density và phone/tool density có thể là khác biệt nghiệp vụ hợp lệ | Token/layout owner sau khi lập consumer ledger | Xóa API chỉ sau cả static/dynamic consumer proof; **cao về các vị trí đã thấy, chưa đủ điều kiện retire** |
 | UI-09 / P2 | `src/shared/theme/ThemeContext.tsx:5,15`; z-index tại `src/styles/theme.css:805,1302,1314`, `src/shared/ui/ThemedToaster.tsx:36,46`, `src/app/components/layout/PlatformSwitcher.tsx:165`; `/dev/design-system` và `/dev/showcase` hiện trỏ placeholder trong `src/app/routes.ts` | Theme class khởi tạo qua effect và z-index lớn là điểm cần runtime review; chưa có bằng chứng chắc chắn về nháy theme hoặc overlay che nhau. Catalog route chưa phải catalog component | Theme/overlay owner và trang đại diện | Không nâng z-index hoặc thêm provider theo phỏng đoán; **giả thuyết runtime cần xác minh** |
+| UI-10 / P2 | Baseline sạch `19593f88d4f8bdc0e4d9c09eb6b9489ffdac0734`: generated inventory có 130 page file; `TRACKING.pages` có 331 record gồm đúng 130 `active` source path tồn tại và 201 `planned` source path chưa tồn tại. Trong 201 record planned đó, 200 liên kết tới 203 route rows. `check-tracking.mjs` không yêu cầu source file tồn tại cho record `planned`; đây là trạng thái hợp lệ của ledger, không phải 201 implementation bị thiếu | Scope UI có nguy cơ đếm nhầm trang dự kiến thành consumer đã triển khai hoặc bỏ route có alias. Chưa đủ bằng chứng để chuyển 201 planned record thành active/retired; đối chiếu route target, placeholder, source history và owner trước | C06.01/C06.13: tracker/inventory owner cùng route registry owner | Không bulk retire hoặc tạo 201 page mới. C06 đo 130 active page source và toàn bộ 428 active route declarations; **độ chắc chắn cao về số đo, lifecycle tương lai chưa xác minh** |
 
 Các status tổng quát trong bảng là độ chắc chắn của finding, không thay thế trạng
 thái `todo/in_progress/blocked/done` của tracker. Không nâng một phát hiện heuristic
@@ -398,10 +403,15 @@ thành dữ liệu usability test. Không kết luận “unused” từ một l
    lệ phải có path/consumer, lý do, người hoặc nhóm duyệt theo cơ chế sẵn có, test,
    phạm vi và điều kiện xem xét lại. Không tự bịa owner.
 
-#### C06.01 — đóng băng baseline, scope và tracker
+#### **C06.01** — đóng băng baseline, scope và tracker
 
 - **Mục tiêu:** thiết lập mẫu số và provenance sạch trước khi sửa; không nhập 54
-  path dirty hiện có vào migration nếu chưa xác minh ownership và kết quả.
+  path dirty hiện có vào migration nếu chưa xác minh ownership và kết quả. Đối
+  chiếu riêng 331 page records trong TRACKING với 130 page files do inventory
+  generator xác nhận: 130 record có lifecycle `active` và source path tồn tại;
+  201 record lifecycle `planned` có source path chưa tồn tại. Trong nhóm planned,
+  200 record liên kết tới 203 route rows. Không tự chuyển lifecycle, retire, tạo
+  source page hoặc tính planned record là UI đã triển khai.
 - **Đọc:** `AGENTS.md`, `AI_RULES.md` theo yêu cầu repo, `ARCHITECTURE.md`,
   `guidelines/Guidelines.md`, `docs/ai/WORKFLOW.md`, PLAN/TRACKING, `package.json`,
   `.nvmrc`, `.github/workflows/ci.yml`, inventory, route registry, `src/styles`,
@@ -415,8 +425,11 @@ thành dữ liệu usability test. Không kết luận “unused” từ một l
   cho mọi step; cập nhật execution plan/item và checker theo schema đang dùng.
 - **Done khi:** inventory count/hash khớp generator trên SHA đã chọn; route tổng
   khớp test/generator hoặc sai lệch được giải thích; mọi file dirty được bảo toàn;
-  tracker có C06 và checker exit 0; matrix không có ô thiếu lý do. Ghi chính xác
-  số routes/pages/files và coverage runtime hiện có, không dùng tỷ lệ ước đoán.
+  tracker có C06 và checker exit 0; matrix ghi đủ 428 route declaration, shell,
+  implementation/template, state, viewport, theme, locale và role; từng ô chưa
+  kiểm chứng có trạng thái, owner-step và lý do cụ thể. Ghi riêng 130 source page
+  files, 331 ledger page records (trong đó 201 source path chưa tồn tại) và phạm vi
+  runtime thực tế; không dùng tỷ lệ ước đoán.
 - **Kiểm tra:** `npm.cmd run architecture:inventory:check`,
   `node docs/architecture/production-readiness/check-tracking.mjs`, các route
   inventory tests và `git diff --check`. Chạy read-only, không regenerate baseline
@@ -428,11 +441,11 @@ thành dữ liệu usability test. Không kết luận “unused” từ một l
 
 | Step | Thay đổi tối thiểu và owner | Kiểm chứng bắt buộc trước khi commit | Điều kiện đóng / rollback |
 | --- | --- | --- | --- |
-| C06.02 / UI-01 | Review `BottomSheetV2` focus entry, trap/keyboard theo primitive, escape/cancel, close, focus return, scroll lock và background interaction. Giữ API nếu không cần đổi; cùng commit component + tests trực tiếp + consumers bị ảnh hưởng | Focused Vitest trước/sau; Playwright keyboard với open, Tab/Shift+Tab, Escape, close button, focus restore; viewport phone/tablet/Web áp dụng; light/dark; inspect actual focus order và computed style | Mọi nhánh mở/đóng áp dụng có assertion; không regress body scroll/submit; revert nguyên lát cắt component + tests nếu bất kỳ gate nào fail |
-| C06.03 / UI-02 | Đo foreground/background computed colors cho action quan trọng trong `MarketItem` và các CTA cùng semantic role. Tách text thường/lớn và non-text indicator; map tới token/API, không chọn màu theo cảm giác | Tính contrast đúng cặp và trạng thái light/dark; focused component tests + route `/w/markets` browser; keyboard focus, selected/disabled/loading khi áp dụng; ảnh before/after nếu đổi visual | Text thường ≥4.5:1, text lớn theo định nghĩa WCAG ≥3:1; ngưỡng non-text theo tiêu chí áp dụng, không dùng ngưỡng chữ cho mọi phần; không thêm màu brand mới. Revert token+consumer cùng commit nếu mapping đổi ngoài dự kiến |
-| C06.04 / UI-03 | Review `WithdrawPage`/`WithdrawSections` form validation, inline association, submit/loading, server error, preserved draft và retry boundary. Sửa field owner trước shared feedback; giữ payload/precision/idempotency/receipt semantics | Wallet focused tests cho valid/invalid, server rejection, double-submit, pending/failed/unknown, cancel/confirmation; browser mock chỉ ghi frontend proof; keyboard/focus/error announcement; không dùng production account/data | Không mất dữ liệu nhập khi lỗi; lỗi gắn field/form và có bước tiếp theo; không báo success giả; route `/w/wallet/withdraw` và alias áp dụng pass. Rollback không đổi contract API |
-| C06.05 / UI-04 | Kiểm `MarketItem` row semantics, nested action, tab order, accessible name, enter/space, pointer parity; dùng `<button>`/`<a>` phù hợp, không thêm ARIA thay behavior | Owner tests + keyboard browser trên `/w/markets` và phone/tablet aliases; row click/action click không double-fire; 0 nested interactive controls invalid; audit focus order | Hành động row dùng được không hover; không đổi navigation/trade business behavior. Revert row+test cùng lát cắt |
-| C06.06 / UI-05–07 | Chốt guideline ownership/path, token/density/gutter mapping và catalog component thực có. So sánh Git HEAD với working-tree draft ở `guidelines/Guidelines.md`; rà Section 21, `PageContent`, `page-layout-contract.test.ts`; không ghi đè dirty docs/tests. Catalog ghi API/variants/states/consumers/tests, không tạo catalog framework mới | Link/line/code path kiểm được; checker; consumer inventory; proposal token mapping table có `current`, `proposed`, semantic role, theme, affected consumers, visual-diff yes/no, test. Review route exceptions và browser evidence chưa được áp dụng | Không có quyết định brand chưa duyệt; value cũ/new khác nhau phải có người duyệt theo cơ chế hiện hành. Nếu chỉ map alias giữ computed output, kiểm chứng pixel/style equality. Revert docs contract đơn lẻ nếu link hoặc contract mâu thuẫn |
+| **C06.02** / UI-01 | Review `BottomSheetV2` focus entry, trap/keyboard theo primitive, escape/cancel, close, focus return, scroll lock và background interaction. Giữ API nếu không cần đổi; cùng commit component + tests trực tiếp + consumers bị ảnh hưởng | Focused Vitest trước/sau; Playwright keyboard với open, Tab/Shift+Tab, Escape, close button, focus restore; viewport phone/tablet/Web áp dụng; light/dark; inspect actual focus order và computed style | Mọi nhánh mở/đóng áp dụng có assertion; không regress body scroll/submit; revert nguyên lát cắt component + tests nếu bất kỳ gate nào fail |
+| **C06.03** / UI-02 | Đo foreground/background computed colors cho action quan trọng trong `MarketItem` và các CTA cùng semantic role. Tách text thường/lớn và non-text indicator; map tới token/API, không chọn màu theo cảm giác | Tính contrast đúng cặp và trạng thái light/dark; focused component tests + route `/w/markets` browser; keyboard focus, selected/disabled/loading khi áp dụng; ảnh before/after nếu đổi visual | Text thường ≥4.5:1, text lớn theo định nghĩa WCAG ≥3:1; ngưỡng non-text theo tiêu chí áp dụng, không dùng ngưỡng chữ cho mọi phần; không thêm màu brand mới. Revert token+consumer cùng commit nếu mapping đổi ngoài dự kiến |
+| **C06.04** / UI-03 | Review `WithdrawPage`/`WithdrawSections` form validation, inline association, submit/loading, server error, preserved draft và retry boundary. Sửa field owner trước shared feedback; giữ payload/precision/idempotency/receipt semantics | Wallet focused tests cho valid/invalid, server rejection, double-submit, pending/failed/unknown, cancel/confirmation; browser mock chỉ ghi frontend proof; keyboard/focus/error announcement; không dùng production account/data | Không mất dữ liệu nhập khi lỗi; lỗi gắn field/form và có bước tiếp theo; không báo success giả; route `/w/wallet/withdraw` và alias áp dụng pass. Rollback không đổi contract API |
+| **C06.05** / UI-04 | Kiểm `MarketItem` row semantics, nested action, tab order, accessible name, enter/space, pointer parity; dùng `<button>`/`<a>` phù hợp, không thêm ARIA thay behavior | Owner tests + keyboard browser trên `/w/markets` và phone/tablet aliases; row click/action click không double-fire; 0 nested interactive controls invalid; audit focus order | Hành động row dùng được không hover; không đổi navigation/trade business behavior. Revert row+test cùng lát cắt |
+| **C06.06** / UI-05–07 | Chốt guideline ownership/path, token/density/gutter mapping và catalog component thực có. So sánh Git HEAD với working-tree draft ở `guidelines/Guidelines.md`; rà Section 21, `PageContent`, `page-layout-contract.test.ts`; không ghi đè dirty docs/tests. Catalog ghi API/variants/states/consumers/tests, không tạo catalog framework mới | Link/line/code path kiểm được; checker; consumer inventory; proposal token mapping table có `current`, `proposed`, semantic role, theme, affected consumers, visual-diff yes/no, test. Review route exceptions và browser evidence chưa được áp dụng | Không có quyết định brand chưa duyệt; value cũ/new khác nhau phải có người duyệt theo cơ chế hiện hành. Nếu chỉ map alias giữ computed output, kiểm chứng pixel/style equality. Revert docs contract đơn lẻ nếu link hoặc contract mâu thuẫn |
 
 Thêm một việc P1 trong C06.02 nếu kiểm tra lại xác nhận default UI tiếng Việt nhưng
 `index.html` còn `lang="en"`: xác định locale ownership/dynamic update trước; cập
@@ -444,10 +457,10 @@ accessibility/nội dung, không được coi test contrast thay thế.
 
 | Step | Owner/source dự kiến (phải xác minh consumers trước sửa) | Acceptance và kiểm tra |
 | --- | --- | --- |
-| C06.07 Token/theme | `src/styles/theme.css` (CSS variables và `@theme inline`), `src/shared/hooks/useThemeColors.ts`, `src/shared/theme/button.ts`, theme/radii/typography/density modules; CSS/SVG/chart/portal consumers | Lập mapping primitive → semantic → optional component token cho color/state/surface/text/border, spacing, typography, sizing, radius, shadow/elevation, opacity, motion, z-index, breakpoint/container/density. Gắn light/dark đầy đủ; kiểm alias/cycle/fallback. Không tạo bản TS/CSS độc lập; giữ adapter nếu consumer cần. Thay literal lỗi/error bằng `--input-border-error` chỉ khi computed color giữ nguyên. Rà theme bootstrap/flicker bằng browser trước khi sửa. Chạy token contract tests, CSS/theme consumers, route screenshot light/dark |
-| C06.08 Primitives | `src/shared/ui/button.tsx`, `CTAButton.tsx`, `IconButton.tsx`, `InputField.tsx`, `TrInput.tsx`, `TrCard.tsx`, dialog/sheet/toast, table/menu/tab implementations | Chọn canonical owner theo semantic behavior, keyboard, accessible name, focus, async/disabled/readonly và consumer cost. Tách variant public lặp lại khỏi style xuyên tầng; `className/style` chỉ được giữ nếu có contract phù hợp. Không gom `TrInput`/`InputField` hay native button theo hình thức. Consumer count và import graph được tính lại trước/sau; focused tests và ít nhất một page integration cho mỗi changed primitive |
-| C06.09 Layout | `src/shared/ui/layout/{PageLayout,PageContent,Header}.tsx`, app shells ở `src/app/components/layout/`; current draft `guidelines/Guidelines.md` mục 21 là evidence cần đối chiếu, không tự coi đã duyệt | Chốt ownership của page gutter/max-width, header/content gap, section, card, form fields, toolbar, table cells, dialog/action groups; parent sở hữu group gap, child sở hữu internal component padding. Kiểm double spacing, fixed-height clipping, margin âm, empty spacer, scroll/sticky/overflow/portal stacking. Retain phone/tablet/Web densities. Có tests contract cho layout và route integration; exception ghi owner/lý do/test/review date |
-| C06.10 Guardrails | Checker/tests/CI hiện có; nếu cần script mới, owner và denominator xác định trước | Bổ sung “không thêm vi phạm mới” cho changed paths trước; chỉ sau khi baseline đo được mới lập migration giảm. Guardrail có thể bắt: primitive hardcode colors, semantic token cycle/missing theme, import legacy mới, public boundary. Allowlist phải hẹp, có expiry/owner/exception, không cho wildcard. Test false-positive trên tất cả frontend source; không làm CI đỏ vì backlog cũ |
+| **C06.07** Token/theme | `src/styles/theme.css` (CSS variables và `@theme inline`), `src/shared/hooks/useThemeColors.ts`, `src/shared/theme/button.ts`, theme/radii/typography/density modules; CSS/SVG/chart/portal consumers. `src/shared/theme/golden.ts` không tồn tại tại baseline; không tạo/giả định module này. | Lập mapping primitive → semantic → optional component token cho color/state/surface/text/border, spacing, typography, sizing, radius, shadow/elevation, opacity, motion, z-index, breakpoint/container/density. Gắn light/dark đầy đủ; kiểm alias/cycle/fallback. Không tạo bản TS/CSS độc lập; giữ adapter nếu consumer cần. Thay literal lỗi/error bằng `--input-border-error` chỉ khi computed color giữ nguyên. Rà theme bootstrap/flicker bằng browser trước khi sửa. Chạy token contract tests, CSS/theme consumers, route screenshot light/dark |
+| **C06.08** Primitives | `src/shared/ui/button.tsx`, `CTAButton.tsx`, `IconButton.tsx`, `InputField.tsx`, `TrInput.tsx`, `TrCard.tsx`, dialog/sheet/toast, table/menu/tab implementations | Chọn canonical owner theo semantic behavior, keyboard, accessible name, focus, async/disabled/readonly và consumer cost. Tách variant public lặp lại khỏi style xuyên tầng; `className/style` chỉ được giữ nếu có contract phù hợp. Không gom `TrInput`/`InputField` hay native button theo hình thức. Consumer count và import graph được tính lại trước/sau; focused tests và ít nhất một page integration cho mỗi changed primitive |
+| **C06.09** Layout | `src/shared/ui/layout/{PageLayout,PageContent,Header}.tsx`, app shells ở `src/app/components/layout/`; current draft `guidelines/Guidelines.md` mục 21 là evidence cần đối chiếu, không tự coi đã duyệt | Chốt ownership của page gutter/max-width, header/content gap, section, card, form fields, toolbar, table cells, dialog/action groups; parent sở hữu group gap, child sở hữu internal component padding. Kiểm double spacing, fixed-height clipping, margin âm, empty spacer, scroll/sticky/overflow/portal stacking. Retain phone/tablet/Web densities. Có tests contract cho layout và route integration; exception ghi owner/lý do/test/review date |
+| **C06.10** Guardrails | Checker/tests/CI hiện có; nếu cần script mới, owner và denominator xác định trước | Bổ sung “không thêm vi phạm mới” cho changed paths trước; chỉ sau khi baseline đo được mới lập migration giảm. Guardrail có thể bắt: primitive hardcode colors, semantic token cycle/missing theme, import legacy mới, public boundary. Allowlist phải hẹp, có expiry/owner/exception, không cho wildcard. Test false-positive trên tất cả frontend source; không làm CI đỏ vì backlog cũ |
 
 Mapping proposal ban đầu (mọi tên/giá trị mới là **PROPOSED**, cần được chấp
 thuận trước khi thành public contract): `src/styles/theme.css` tiếp tục là owner
@@ -466,8 +479,8 @@ SVG/chart/library color trong đợt token tổng hợp nếu chưa có owner ma
 
 | Pilot | Routes/consumers | Kiểm chứng và giữ nguyên |
 | --- | --- | --- |
-| C06.11 Market list | `/w/markets`, `/t/markets`, phone alias nếu registry hiện hành xác nhận; `MarketItem`, list sections, search/filter/sort/empty/loading/error, route Back | Inventory alias từ `src/app/routes.ts` và generated inventory; kiểm keyboard/pointer, focus, filtering, sort, pagination nếu có, Back giữ filter/context, data dài/empty/error, light/dark và mỗi phía breakpoint thực tế trong CSS/config. Visual snapshot ổn định fixture/time/locale/font/viewport; không mask row/action. So consumer trước/sau. Market streaming/backend thật là gate riêng |
-| C06.12 Wallet withdrawal | `/w/wallet/withdraw` và shell aliases được route registry xác nhận; `WithdrawPage`, form fields, confirmation/error feedback | Kiểm invalid/valid/cancel/confirm/pending/fail/unknown/permission, double-submit, preserved draft, error association, focus, touch/keyboard, keyboard viewport/scroll. Mock chỉ chứng minh UI contract; không gửi giao dịch thật. Giữ calculation/precision/request key/API/authorization unchanged. Kết quả visual đổi phải được review |
+| **C06.11** Market list | `/w/markets`, `/t/markets`, phone alias nếu registry hiện hành xác nhận; `MarketItem`, list sections, search/filter/sort/empty/loading/error, route Back | Inventory alias từ `src/app/routes.ts` và generated inventory; kiểm keyboard/pointer, focus, filtering, sort, pagination nếu có, Back giữ filter/context, data dài/empty/error, light/dark và mỗi phía breakpoint thực tế trong CSS/config. Visual snapshot ổn định fixture/time/locale/font/viewport; không mask row/action. So consumer trước/sau. Market streaming/backend thật là gate riêng |
+| **C06.12** Wallet withdrawal | `/w/wallet/withdraw` và shell aliases được route registry xác nhận; `WithdrawPage`, form fields, confirmation/error feedback | Kiểm invalid/valid/cancel/confirm/pending/fail/unknown/permission, double-submit, preserved draft, error association, focus, touch/keyboard, keyboard viewport/scroll. Mock chỉ chứng minh UI contract; không gửi giao dịch thật. Giữ calculation/precision/request key/API/authorization unchanged. Kết quả visual đổi phải được review |
 
 Mỗi pilot là commit riêng cho mỗi pattern. Không đưa shared primitive vào pilot
 nếu nó chưa qua C06.07–C06.10; adapter tạm thời phải testable, có đường xóa và
@@ -475,6 +488,10 @@ không trở thành chuẩn thứ hai lâu dài. Consumer ngoài pilot được 
 trên file thực tế, không chỉ snapshot của trang thí điểm.
 
 #### C06.13–C06.14 — rollout theo inventory và ngoại lệ
+
+**C06.13** quản lý rollout cho 130 page source files đang tồn tại và toàn bộ 428
+route declarations; các page record khác trong TRACKING được đối chiếu riêng theo
+trạng thái route/placeholder, không mặc định là source hiện hữu.
 
 1. Sau hai pilot, nhóm route từ 130 page files/428 declarations theo component,
    shell, interaction và density; phân nhóm từ inventory/source, không theo tên
@@ -487,7 +504,7 @@ trên file thực tế, không chỉ snapshot của trang thí điểm.
    và side effects của shared CSS. Không bulk replace token hoặc class bằng regex.
    Thay đổi nhiều product/shell trong một nhóm chỉ khi cùng hợp đồng và cùng cổng
    rollback; nếu khác nhau thì chia commit/step.
-3. Ngoại lệ nghiệp vụ/mật độ/immersive/chart/auth/developer preview ghi đúng nơi
+3. **C06.14** — Ngoại lệ nghiệp vụ/mật độ/immersive/chart/auth/developer preview ghi đúng nơi
    policy hiện hành chỉ định. Không ép dashboard dày đặc như form, không ép Web
    desktop như phone, không xóa quyền native/dynamic style. Nếu owner duyệt visual
    change, lưu decision/evidence; nếu chưa rõ mà có thể giữ hình thức cũ, giữ cũ.
@@ -496,7 +513,7 @@ trên file thực tế, không chỉ snapshot của trang thí điểm.
    không tăng số vi phạm hardcode/import legacy trên baseline; route/state chưa
    chạy được ghi `blocked` hoặc `N/A` hợp lệ, không tính vào numerator như pass.
 
-#### C06.15 — retire legacy và nghiệm thu 100% trong phạm vi đã khóa
+#### **C06.15** — retire legacy và nghiệm thu 100% trong phạm vi đã khóa
 
 - Trước xóa alias/token/component, dùng static import graph, re-export/barrel,
   dynamic import/registry/route/flag lookup, test/story/demo/dev, CSS selector,
