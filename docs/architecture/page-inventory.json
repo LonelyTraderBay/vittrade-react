@@ -713,7 +713,7 @@
       "domain": "auth",
       "owner": "features/auth",
       "status": "integration-pending",
-      "lines": 489,
+      "lines": 462,
       "routePaths": [
         "login"
       ],
@@ -724,6 +724,7 @@
           "@/shared/hooks/useThemeColors",
           "@/shared/session/useAuth",
           "@/shared/theme/webTokens",
+          "@/shared/ui/CTAButton",
           "@/shared/ui/auth/WebAuthBrandPanel"
         ],
         "mockReferences": [
