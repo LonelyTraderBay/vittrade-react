@@ -98,7 +98,7 @@ describe('MarketListPage', () => {
     expect(await screen.findByRole('alert')).toHaveTextContent(
       'Market watchlist is read-only for this session.',
     );
-    await screen.findByRole('button', { name: /BTC\/USDT —/ }, { timeout: 5_000 });
+    await screen.findByRole('link', { name: /BTC\/USDT —/ }, { timeout: 5_000 });
     const favorite = screen.getByRole('button', { name: 'Thêm vào yêu thích' });
     expect(favorite).toBeDisabled();
     favorite.removeAttribute('disabled');
@@ -149,12 +149,12 @@ describe('MarketListPage', () => {
     );
     renderWithProviders(<MarketListPage />);
 
-    await screen.findByRole('button', { name: /BTC\/USDT —/ }, { timeout: 5_000 });
+    await screen.findByRole('link', { name: /BTC\/USDT —/ }, { timeout: 5_000 });
     fireEvent.click(screen.getByRole('button', { name: 'DeFi' }));
     expect(
-      await screen.findByRole('button', { name: /ETH\/USDT —/ }, { timeout: 5_000 }),
+      await screen.findByRole('link', { name: /ETH\/USDT —/ }, { timeout: 5_000 }),
     ).toBeInTheDocument();
-    expect(screen.queryByRole('button', { name: /BTC\/USDT —/ })).toBeNull();
+    expect(screen.queryByRole('link', { name: /BTC\/USDT —/ })).toBeNull();
 
     fireEvent.click(screen.getByRole('button', { name: 'Tất cả' }));
     const sortCases = [
@@ -169,7 +169,7 @@ describe('MarketListPage', () => {
       fireEvent.click(screen.getByRole('button', { name: 'Mở bộ sắp xếp' }));
       fireEvent.click(screen.getByRole('button', { name: label }));
       await screen.findByRole(
-        'button',
+        'link',
         { name: new RegExp(`^${order[0]}\\/USDT —`) },
         {
           timeout: 5_000,
@@ -177,7 +177,7 @@ describe('MarketListPage', () => {
       );
 
       const rows = screen
-        .getAllByRole('button')
+        .getAllByRole('link')
         .filter((button) => /\/USDT —/.test(button.getAttribute('aria-label') ?? ''));
       expect(rows.map((row) => row.getAttribute('aria-label')?.split(' — ')[0])).toEqual(
         order.map((asset) => `${asset}/USDT`),
@@ -201,26 +201,26 @@ describe('MarketListPage', () => {
     const searchInput = await screen.findByPlaceholderText('Tìm kiếm BTC, ETH...');
 
     await user.type(searchInput, 'BTC');
-    expect(await screen.findByRole('button', { name: /XBT\/USDT —/ })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /BTC\/USDT —/ })).toBeInTheDocument();
+    expect(await screen.findByRole('link', { name: /XBT\/USDT —/ })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /BTC\/USDT —/ })).toBeInTheDocument();
     await user.click(screen.getByRole('button', { name: 'Xóa tìm kiếm' }));
     await user.type(searchInput, 'SOL');
-    expect(await screen.findByRole('button', { name: /SOL\/USDT —/ })).toBeInTheDocument();
+    expect(await screen.findByRole('link', { name: /SOL\/USDT —/ })).toBeInTheDocument();
 
     await user.clear(searchInput);
     await user.click(screen.getByRole('button', { name: 'DeFi' }));
-    expect(await screen.findByRole('button', { name: /ETH\/USDT —/ })).toBeInTheDocument();
-    expect(screen.queryByRole('button', { name: /BTC\/USDT —/ })).toBeNull();
+    expect(await screen.findByRole('link', { name: /ETH\/USDT —/ })).toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: /BTC\/USDT —/ })).toBeNull();
     await user.click(screen.getByRole('button', { name: 'Mở bộ sắp xếp' }));
     await user.click(screen.getByRole('button', { name: 'Giá thấp → cao' }));
     await user.type(searchInput, 'missing');
     await user.click(await screen.findByRole('button', { name: 'Xóa bộ lọc' }));
 
-    expect(await screen.findByRole('button', { name: /BTC\/USDT —/ })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /XBT\/USDT —/ })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /ETH\/USDT —/ })).toBeInTheDocument();
+    expect(await screen.findByRole('link', { name: /BTC\/USDT —/ })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /XBT\/USDT —/ })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /ETH\/USDT —/ })).toBeInTheDocument();
     const rows = screen
-      .getAllByRole('button')
+      .getAllByRole('link')
       .filter((button) => /\/USDT —/.test(button.getAttribute('aria-label') ?? ''));
     expect(rows.map((row) => row.getAttribute('aria-label')?.split(' — ')[0])).toEqual([
       'BTC/USDT',
@@ -249,7 +249,7 @@ describe('MarketListPage', () => {
 
     await user.click(await screen.findByRole('button', { name: 'Thử lại' }, { timeout: 5_000 }));
 
-    expect(await screen.findByRole('button', { name: /BTC\/USDT —/ })).toBeInTheDocument();
+    expect(await screen.findByRole('link', { name: /BTC\/USDT —/ })).toBeInTheDocument();
     expect(pairReads).toBe(4);
   });
 
@@ -277,7 +277,7 @@ describe('MarketListPage', () => {
     await user.click(screen.getByRole('button', { name: 'Thử tải lại' }));
 
     await waitFor(() => expect(screen.queryByRole('alert')).not.toBeInTheDocument());
-    expect(screen.getByRole('button', { name: /BTC\/USDT —/ })).toBeEnabled();
+    expect(screen.getByRole('link', { name: /BTC\/USDT —/ })).toBeVisible();
     expect(watchlistReads).toBe(4);
   });
 
@@ -330,7 +330,7 @@ describe('MarketListPage', () => {
       </>,
       { authAdapter, routerProps: { initialEntries: ['/t/markets'] } },
     );
-    await screen.findByRole('button', { name: /XRP\/USDT —/ }, { timeout: 5_000 });
+    await screen.findByRole('link', { name: /XRP\/USDT —/ }, { timeout: 5_000 });
     const loserCard = screen.getByText('Giảm mạnh').parentElement?.parentElement;
     expect(loserCard).not.toBeNull();
     expect(loserCard!.textContent!.indexOf('XRP')).toBeLessThan(
