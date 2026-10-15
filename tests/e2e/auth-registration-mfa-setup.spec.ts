@@ -892,7 +892,15 @@ test('supports accessible keyboard registration across Web widths @auth-api', as
     const terms = page.getByRole('checkbox');
     const submit = page.getByRole('button', { name: 'Tiếp tục' });
     const login = page.getByRole('button', { name: 'Đăng nhập' });
-    const primaryControls = [channelGroup, name, email, password, confirmation, terms, submit];
+    const primaryControls = [
+      { name: 'registration channel group', locator: channelGroup },
+      { name: 'full name', locator: name },
+      { name: 'email', locator: email },
+      { name: 'password', locator: password },
+      { name: 'password confirmation', locator: confirmation },
+      { name: 'terms checkbox', locator: terms },
+      { name: 'continue action', locator: submit },
+    ];
 
     await expect(emailChannel).toHaveAttribute('aria-pressed', 'true');
     await expect(phoneChannel).toHaveAttribute('aria-pressed', 'false');
@@ -901,15 +909,19 @@ test('supports accessible keyboard registration across Web widths @auth-api', as
       scrollWidth: document.documentElement.scrollWidth,
     }));
     const visible = await Promise.all(
-      primaryControls.map((control) => isFullyVisibleHorizontally(control)),
+      primaryControls.map(({ locator }) => isFullyVisibleHorizontally(locator)),
     );
     expect(
       document.scrollWidth,
       `Web registration overflows at ${viewport.width}px`,
     ).toBeLessThanOrEqual(document.width);
-    expect(visible, `Web registration controls clip at ${viewport.width}px`).toEqual(
-      primaryControls.map(() => true),
-    );
+    const clippedControls = primaryControls
+      .filter((_, index) => !visible[index])
+      .map(({ name: controlName }) => controlName);
+    expect(
+      clippedControls,
+      `Web registration controls clip at ${viewport.width}px: ${clippedControls.join(', ') || 'none'}`,
+    ).toEqual([]);
 
     if (viewport.width === 320 || viewport.width === 1440) {
       const screenshotPath = testInfo.outputPath(
