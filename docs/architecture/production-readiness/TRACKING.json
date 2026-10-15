@@ -48,29 +48,34 @@
     }
   ],
   "checkpoint": {
-    "updatedAt": "2026-10-15T11:20:00Z",
+    "updatedAt": "2026-10-15T12:12:05.104Z",
     "lastCompletedTask": "C03",
     "activeTask": "C06",
-    "activeStep": "C06.03",
+    "activeStep": "C06.04",
     "nextTask": "C06",
     "nextStep": "C06.04",
-    "nextAction": "C06.03 source/inventory acceptance passed #67. Tracker closeout SHA b2f4859279a73c993b6a88bccc0447b09c9d9480: GitHub #71 attempt 1 failed at Coverage gate on one DCA retry test; retry attempt 2 passed all 34 steps and its artifact digest matched GitHub (EV-20261015-034/035). Cause of the first attempt remains unproven; no DCA source/test changed. This tracker-only closeout must be committed and pushed; require all 34 steps and matching artifact SHA on its new exact SHA (#72) before beginning C06.04 WithdrawPage/WithdrawSections. Preserve withdrawal payload, precision, idempotency, receipt, and unknown semantics.",
+    "nextAction": "C06.04 source and inventory commits are verified locally. Push with the in-progress ledger; require every GitHub production gate and matching artifact digest on exact SHA #73 before marking done. Then commit/push tracker closeout and require its exact-SHA run #74 before C06.05. Preserve incomplete local Playwright output; do not claim backend/production acceptance.",
     "changedFiles": [
-      "tests/e2e/auth-registration-mfa-setup.spec.ts",
+      "src/features/wallet/pages/WithdrawPage.tsx",
+      "src/features/wallet/pages/WithdrawPage.test.tsx",
+      "src/features/wallet/components/WithdrawSections.tsx",
+      "src/features/wallet/components/WithdrawSections.test.tsx",
+      "tests/e2e/wallet-contract.spec.ts",
+      "docs/architecture/page-inventory.json",
       "docs/architecture/production-readiness/TRACKING.json"
     ],
     "pendingChecks": [
-      "C06.03 code and inventory gates passed on #67; the later closeout #68 exposed a 320px registration viewport assertion failure. Diagnostic-only commit f583c1f8 passed the API and mock browser steps on #69; the assertion pass does not establish a layout fix.",
-      "The tracker now records both exact-SHA run #70 attempts on head a6053624: attempt 1 failed one DCA retry test; attempt 2 passed 34/34, and both downloaded artifact hashes matched GitHub metadata. Three local full-file runs also passed 17/17; the first failure's cause remains unproven. Do not change DCA code on this evidence. Run #71 attempt 1 failed only at Coverage gate on one DCA cancel-retry test; attempt 2 passed all 34 steps and its artifact SHA-256 matched GitHub (EV-20261015-034/035). The cause remains unproven; no DCA source/test changed. The current tracker closeout SHA must pass every required step and artifact verification (#72) before C06.04 source edits.",
-      "C06.04 Wallet verification remains frontend/mock evidence only; never use production account/data or submit a real withdrawal.",
-      "C05.03 formal UI acceptance and unresolved Axe evaluations remain separate; backend/staging and production credentials are not evidenced here."
+      "Exact GitHub required gates and artifact digest on pushed C06.04 SHA pending (#73).",
+      "Local Playwright shutdown incomplete; preserve artifact and do not count printed ok 1 as PASS. Hosted exact-SHA E2E must complete.",
+      "C06.04 evidence is frontend/MSW only; backend/staging/UAT, production, all-route and WCAG-wide acceptance are not claimed.",
+      "C05.03 formal UI acceptance and unresolved Axe evaluations remain separate."
     ],
     "blockers": [
-      "Local full-suite runner failed with EPERM before test child started; incomplete manifest and output are preserved and are not PASS.",
-      "C05.03 formal UI acceptance and unresolved Axe evaluations remain separate; backend/staging inputs and approved production build endpoints are not available in this C06 slice."
+      "Local Playwright wrapper did not close after target scenario; incomplete run retained and exact-SHA hosted E2E required.",
+      "C05.03 formal UI acceptance/Axe and backend/staging evidence remain outside this C06.04 slice."
     ],
     "notes": "C06.02 exact run #64 PASS at SHA 278700733d6d623fb2bfa06bf07426b2e5117feb; see EV-20261015-018. C06.03 source code SHA 6192a3fd8c6fc44ddfd1b0f6a7780b9252947a8e, generated inventory SHA 7565177eee029b0cf7077fab3e180c3d086f6aae; focused/static/local browser measurements and limitations in EV-019, local full-suite infra failure EV-020, GitHub #65 attempts EV-021/022, canonical inventory refresh EV-023. C06.03 completed after exact run #67 on reconciled SHA ff4fd4186e0667f550056294677ee3c8cbbf1c1b passed all 34 steps; artifact digest matched GitHub (EV-026/027). Post-commit tracker/inventory/remote checks pass at that SHA (EV-028). Runtime sample remains 2/428 routes; not a full UI or WCAG certification. Runtime sample is 2 of 428 route declarations, one viewport, light/dark default states only; do not claim complete UI/WCAG/production acceptance. Local tracker reconciliation now passes on the draft payload (EV-20261015-025); run #66 completed with a provenance-ledger failure; #67 passed; #68 failed the registration viewport browser assertion; #69 passed both auth browser steps but failed the source ledger on one stale test pointer, now corrected here. Run #70 on exact head a60536243646a52c523fe7bcad8e0c7c0615b9e7 failed one DCA retry test on attempt 1, then passed 34/34 on retry attempt 2; both artifact checksums matched GitHub metadata (EV-032/033). The cause of attempt 1 is unproven and no DCA code changed. Run #71 attempt 1 failed the coverage-instrumented DCA retry test; retry attempt 2 passed all 34 steps on the same head and the artifact digest matched GitHub (EV-20261015-034/035). Cause remains unproven; no DCA source/test changed. This tracker closeout SHA requires run #72 and matching artifact verification before C06.04.",
-    "remainingWork": "Coverage local đạt 362/362 test files, 3477/3477 tests và 100% trên 408 measurable files; 32 entries không có executable counter. C05.03 chưa xong: Axe có 1655/1656 incomplete evaluation, screenshot baseline 14/128, formal acceptance 0/128. B07.02 chưa xong: hai local E2E attempt không có terminal summary; exact pushed-SHA workflow/artifact/governance chưa xác minh. Backend/staging B05 và C05.04/.05 blocked; backend 0/154, 25/106 contract-dependent, UAT 0/128; thiếu các owner, host/version, quyền test, endpoint, telemetry/privacy và SLO đã nêu. C06.01 local inventory/matrix acceptance is complete (EV-20261015-003/004). Runtime route matrix is a source baseline only (0/428 runtime routes); later exact run #62 passed the source-ledger gate and all hosted steps (EV-20261015-016), but does not establish route-by-route runtime coverage.\nC06.02 browser assertions reported ok 1 across 6 viewport/theme cases; local Playwright run remains incomplete (run manifest not closed).\nC06.02 implementation passed exact run #62 on d97a7628497962c8d58a29f79fc2fff9ed5790b1; separate closure commit 35108ac6899f141086985a86445805c4530c9658 passed exact run #63 with 34/34 steps and artifact digest verification (EV-20261015-017). C06.03 source acceptance passed exact run #67, but its later closeout SHA f7868bec failed the registration viewport browser step (#68). Diagnostic commit f583c1f8 passed API and mock browser gates on #69; the run failed only the ledger because one source pointer was stale. This tracker reconciles that pointer. C06.04 remains gated on all required gates and artifact digest for the new exact tracker SHA (#70).\nC06.02 source and source fingerprints are committed and pushed; local Playwright teardown remains incomplete (EV-20261015-014) and is not counted as PASS. Guarded cleanup after run #63 deleted 0 files/0 bytes and retained 12 incomplete/active outputs.\nC06.03 hosted verification follow-up: run #70 attempt 1 failed one DCA cancel retry test; attempt 2 passed 34/34. Both artifacts were downloaded and SHA-256 verified against GitHub. Local focused test passed 1/1 and the complete DCA page file passed 17/17 in three runs. The first attempt's cause remains unproven; no DCA source changed. Run #71 on tracker SHA b2f4859279a73c993b6a88bccc0447b09c9d9480 failed only at Coverage gate on attempt 1 (3484/3485 tests); retry attempt 2 passed 34/34 with verified artifact digest (EV-034/035), with the cause of the first failure still unproven and no DCA code changed. The current tracker closeout SHA must pass run #72 and artifact verification before C06.04.",
+    "remainingWork": "Coverage local đạt 362/362 test files, 3477/3477 tests và 100% trên 408 measurable files; 32 entries không có executable counter. C05.03 chưa xong: Axe có 1655/1656 incomplete evaluation, screenshot baseline 14/128, formal acceptance 0/128. B07.02 chưa xong: hai local E2E attempt không có terminal summary; exact pushed-SHA workflow/artifact/governance chưa xác minh. Backend/staging B05 và C05.04/.05 blocked; backend 0/154, 25/106 contract-dependent, UAT 0/128; thiếu các owner, host/version, quyền test, endpoint, telemetry/privacy và SLO đã nêu. C06.01 local inventory/matrix acceptance is complete (EV-20261015-003/004). Runtime route matrix is a source baseline only (0/428 runtime routes); later exact run #62 passed the source-ledger gate and all hosted steps (EV-20261015-016), but does not establish route-by-route runtime coverage.\nC06.02 browser assertions reported ok 1 across 6 viewport/theme cases; local Playwright run remains incomplete (run manifest not closed).\nC06.02 implementation passed exact run #62 on d97a7628497962c8d58a29f79fc2fff9ed5790b1; separate closure commit 35108ac6899f141086985a86445805c4530c9658 passed exact run #63 with 34/34 steps and artifact digest verification (EV-20261015-017). C06.03 source acceptance passed exact run #67, but its later closeout SHA f7868bec failed the registration viewport browser step (#68). Diagnostic commit f583c1f8 passed API and mock browser gates on #69; the run failed only the ledger because one source pointer was stale. This tracker reconciles that pointer. C06.04 remains gated on all required gates and artifact digest for the new exact tracker SHA (#70).\nC06.02 source and source fingerprints are committed and pushed; local Playwright teardown remains incomplete (EV-20261015-014) and is not counted as PASS. Guarded cleanup after run #63 deleted 0 files/0 bytes and retained 12 incomplete/active outputs.\nC06.03 hosted verification follow-up: run #70 attempt 1 failed one DCA cancel retry test; attempt 2 passed 34/34. Both artifacts were downloaded and SHA-256 verified against GitHub. Local focused test passed 1/1 and the complete DCA page file passed 17/17 in three runs. The first attempt's cause remains unproven; no DCA source changed. Run #71 on tracker SHA b2f4859279a73c993b6a88bccc0447b09c9d9480 failed only at Coverage gate on attempt 1 (3484/3485 tests); retry attempt 2 passed 34/34 with verified artifact digest (EV-034/035), with the cause of the first failure still unproven and no DCA code changed. GitHub run #72 passed on exact SHA ef13326cd36f04c38fc9d717515c29c9261c0a14 with artifact digest verification (EV-20261015-036); C06.04 is underway and exact run #73 is pending.",
     "planningDecisionId": "DECISION-20261013-002",
     "blockerHistory": [
       {
@@ -18740,7 +18745,8 @@
         "src/features/trading/components/trading-order-config.test.ts",
         "src/features/wallet/components/WalletTransactionHistoryComponents.tsx",
         "docs/ai/WORKFLOW.md",
-        "tests/e2e/production-shell.spec.ts"
+        "tests/e2e/production-shell.spec.ts",
+        "tests/e2e/wallet-contract.spec.ts"
       ],
       "proposedPaths": [],
       "steps": [
@@ -18868,14 +18874,39 @@
         },
         {
           "id": "C06.04",
-          "status": "todo",
-          "evidenceIds": [],
-          "notes": "See PLAN.md#frontend-ui-ux-ds-migration-20261015 for scope, dependencies, acceptance, and rollback. Step is not started.",
+          "status": "in_progress",
+          "evidenceIds": [
+            "EV-20261015-036",
+            "EV-20261015-037",
+            "EV-20261015-038",
+            "EV-20261015-039",
+            "EV-20261015-040"
+          ],
+          "notes": "C06.04 đang triển khai. Source e9ff45c0 và inventory ae5f900b đã commit riêng; 23/23 focused tests, typecheck, full lint budget và format pass. Local Playwright in ok 1 nhưng teardown chưa kết thúc, manifest được giữ và không tính PASS. Run #72 prerequisite đã pass exact SHA; push tracker/source/inventory, đợi đủ gates/digest trên exact SHA #73, ghi closeout riêng và xác minh lần nữa trước C06.05.",
           "execution": {
             "instructionsRef": "PLAN.md#frontend-ui-ux-ds-migration-20261015",
             "fileSelection": "files[].executionScope.stepIds includes C06.04",
-            "requiredChecksRef": "tasks[C06].execution.requiredChecks"
-          }
+            "requiredChecksRef": "tasks[C06].execution.requiredChecks",
+            "sourceCommit": "e9ff45c09c91fb75270af527c632dac368972f1f",
+            "inventoryCommit": "ae5f900bcc041c814dc233ab3ef832b82902d42f",
+            "localEvidenceIds": [
+              "EV-20261015-037",
+              "EV-20261015-038",
+              "EV-20261015-039",
+              "EV-20261015-040"
+            ],
+            "prerequisiteGithubEvidenceId": "EV-20261015-036",
+            "requiredNextGate": "All GitHub required jobs and matching artifact digest pass on exact pushed SHA before closeout."
+          },
+          "startedAt": "2026-10-15T11:58:04.860Z",
+          "changeIds": [
+            "CHANGE-20261015-043",
+            "CHANGE-20261015-044",
+            "CHANGE-20261015-045",
+            "CHANGE-20261015-046",
+            "CHANGE-20261015-047",
+            "CHANGE-20261015-048"
+          ]
         },
         {
           "id": "C06.05",
@@ -19596,7 +19627,12 @@
         "EV-20261015-032",
         "EV-20261015-033",
         "EV-20261015-034",
-        "EV-20261015-035"
+        "EV-20261015-035",
+        "EV-20261015-036",
+        "EV-20261015-037",
+        "EV-20261015-038",
+        "EV-20261015-039",
+        "EV-20261015-040"
       ],
       "changeIds": [
         "CHANGE-20261015-001",
@@ -19637,13 +19673,20 @@
         "CHANGE-20261015-038",
         "CHANGE-20261015-039",
         "CHANGE-20261015-040",
-        "CHANGE-20261015-042"
+        "CHANGE-20261015-042",
+        "CHANGE-20261015-043",
+        "CHANGE-20261015-044",
+        "CHANGE-20261015-045",
+        "CHANGE-20261015-046",
+        "CHANGE-20261015-047",
+        "CHANGE-20261015-048",
+        "CHANGE-20261015-049"
       ],
       "blockers": [],
       "startedAt": "2026-10-15T01:47:05.375Z",
       "completedAt": null,
       "elapsedMinutes": 3,
-      "notes": "User-authorized sequential UI/UX Design System migration. Scope remains the existing C06 inventory and approved execution plan; original checkout WIP remains untouched. C06.02 corrective source commit a29a255e72aa98aa7199d6ee21e506bdd5d4f6ca is pushed. CI #60 exposed 11 failed tests across 9 files; the modal close/accessibility lifecycle and affected consumer tests were corrected. Local full/focused and static checks passed with the limitations recorded in EV-20261015-013/014. CI #61 passed 26 steps but failed only the readiness source-ledger gate because 11 catalogue pointers had not yet been rebound. C06.02 was subsequently closed by exact-SHA GitHub runs #63 and #64; see EV-20261015-017/018. TRACKING.json Prettier --check remains a known baseline failure (EV-20261015-004); it is not part of package format:check, whose scoped source check passed.\nC06.02 được đóng bằng GitHub run #64 trên exact SHA 278700733d6d623fb2bfa06bf07426b2e5117feb, 34/34 bước và artifact digest pass (EV-20261015-018). C06.03 source commit 6192a3fd8c6fc44ddfd1b0f6a7780b9252947a8e, inventory commit 7565177eee029b0cf7077fab3e180c3d086f6aae, and tracker reconciliation commit ff4fd4186e0667f550056294677ee3c8cbbf1c1b are separately pushed. Run #66 on the pre-reconciliation inventory SHA failed only at Readiness source ledger (14 stale pointers); exact run #67 on ff4fd4186e0667f550056294677ee3c8cbbf1c1b passed 34/34 steps and its downloaded artifact digest matched GitHub (EV-026/027). C06.03 is complete; C06.04 is next after the tracking-closeout SHA itself passes GitHub and artifact verification. The local full-suite EPERM and limited runtime sample remain recorded, not represented as PASS/full coverage. Follow-up to closeout: #68 on f7868bec failed the auth registration API-mode browser step (320px clip assertion, three attempts); diagnostic-only test commit f583c1f8 passed that browser step and auth mock on #69. Run #69 failed only Readiness source ledger because the test file still pointed to its prior catalogued hash; the pointer is reconciled in this tracker update. C06.04 source remains gated until this tracker closeout SHA passes all required gates and artifact verification (run #72). The passing #69 assertion does not establish that the earlier viewport discrepancy is fixed. Run #70 attempt 1 failed one DCA retry test, then the exact same head passed all 34 steps on retry attempt 2; both artifact digests matched GitHub. Local focused DCA test passed 1/1 and the full file passed 17/17 in three consecutive runs. The first attempt's cause remains unproven; no DCA source or test changed (EV-032/033). The tracker closeout SHA still requires run #72 and artifact verification before C06.04. Run #71 on tracker SHA b2f4859279a73c993b6a88bccc0447b09c9d9480 failed on attempt 1 at Coverage gate: 3484/3485 tests passed and the DCA cancel-retry test could not find “Xác nhận hủy” after reopening. Attempt 2 passed all 34 steps on the same head; both attempt artifacts were downloaded and SHA-256 verified (EV-20261015-034/035). The first-attempt cause remains unproven; no DCA source or test changed. This tracker-only closeout SHA requires run #72 and matching artifact verification before C06.04.",
+      "notes": "User-authorized sequential UI/UX Design System migration. Scope remains the existing C06 inventory and approved execution plan; original checkout WIP remains untouched. C06.02 corrective source commit a29a255e72aa98aa7199d6ee21e506bdd5d4f6ca is pushed. CI #60 exposed 11 failed tests across 9 files; the modal close/accessibility lifecycle and affected consumer tests were corrected. Local full/focused and static checks passed with the limitations recorded in EV-20261015-013/014. CI #61 passed 26 steps but failed only the readiness source-ledger gate because 11 catalogue pointers had not yet been rebound. C06.02 was subsequently closed by exact-SHA GitHub runs #63 and #64; see EV-20261015-017/018. TRACKING.json Prettier --check remains a known baseline failure (EV-20261015-004); it is not part of package format:check, whose scoped source check passed.\nC06.02 được đóng bằng GitHub run #64 trên exact SHA 278700733d6d623fb2bfa06bf07426b2e5117feb, 34/34 bước và artifact digest pass (EV-20261015-018). C06.03 source commit 6192a3fd8c6fc44ddfd1b0f6a7780b9252947a8e, inventory commit 7565177eee029b0cf7077fab3e180c3d086f6aae, and tracker reconciliation commit ff4fd4186e0667f550056294677ee3c8cbbf1c1b are separately pushed. Run #66 on the pre-reconciliation inventory SHA failed only at Readiness source ledger (14 stale pointers); exact run #67 on ff4fd4186e0667f550056294677ee3c8cbbf1c1b passed 34/34 steps and its downloaded artifact digest matched GitHub (EV-026/027). C06.03 is complete; C06.04 is next after the tracking-closeout SHA itself passes GitHub and artifact verification. The local full-suite EPERM and limited runtime sample remain recorded, not represented as PASS/full coverage. Follow-up to closeout: #68 on f7868bec failed the auth registration API-mode browser step (320px clip assertion, three attempts); diagnostic-only test commit f583c1f8 passed that browser step and auth mock on #69. Run #69 failed only Readiness source ledger because the test file still pointed to its prior catalogued hash; the pointer is reconciled in this tracker update. C06.04 source remains gated until this tracker closeout SHA passes all required gates and artifact verification (run #72). The passing #69 assertion does not establish that the earlier viewport discrepancy is fixed. Run #70 attempt 1 failed one DCA retry test, then the exact same head passed all 34 steps on retry attempt 2; both artifact digests matched GitHub. Local focused DCA test passed 1/1 and the full file passed 17/17 in three consecutive runs. The first attempt's cause remains unproven; no DCA source or test changed (EV-032/033). The tracker closeout SHA still requires run #72 and artifact verification before C06.04. Run #71 on tracker SHA b2f4859279a73c993b6a88bccc0447b09c9d9480 failed on attempt 1 at Coverage gate: 3484/3485 tests passed and the DCA cancel-retry test could not find “Xác nhận hủy” after reopening. Attempt 2 passed all 34 steps on the same head; both attempt artifacts were downloaded and SHA-256 verified (EV-20261015-034/035). The first-attempt cause remains unproven; no DCA source or test changed. This tracker-only closeout SHA requires run #72 and matching artifact verification before C06.04.\nC06.04 mở sau khi GitHub #72 PASS exact SHA ef13326cd36f04c38fc9d717515c29c9261c0a14 (34/34, artifact digest verified; EV-20261015-036). Source e9ff45c0 và inventory ae5f900b đã commit riêng. Local focused tests 23/23, typecheck, lint 0/0, five-file format và inventory 130/428/149/0/32/28 PASS (EV-037/038/040). Local Playwright teardown stalled; artifact retained and not counted as PASS (EV-039). Exact pushed-SHA full gates remain required before closing C06.04.",
       "execution": {
         "orderedStepIds": [
           "C06.01",
@@ -74632,7 +74675,8 @@
         "EV-20261014-026",
         "EV-20261014-028",
         "EV-20261014-035",
-        "EV-20261015-023"
+        "EV-20261015-023",
+        "EV-20261015-040"
       ],
       "changeIds": [
         "CHANGE-20260928-990",
@@ -74651,7 +74695,8 @@
         "CHANGE-20261014-080",
         "CHANGE-20261014-091",
         "CHANGE-20261014-149",
-        "CHANGE-20261015-038"
+        "CHANGE-20261015-038",
+        "CHANGE-20261015-048"
       ],
       "executionScope": {
         "ownerTaskId": "B10",
@@ -74681,13 +74726,14 @@
           "A06.03",
           "C03.05",
           "C06.01",
-          "C06.03"
+          "C06.03",
+          "C06.04"
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedAt": "2026-10-15T07:40:00.000Z",
-      "cataloguedSourceHead": "7565177eee029b0cf7077fab3e180c3d086f6aae",
-      "cataloguedSha256": "26d375121d201fa64a0f70b62ad792e7500ced4c61a6e93e33648f049b991315",
+      "cataloguedAt": "2026-10-15T12:12:05.104Z",
+      "cataloguedSourceHead": "ae5f900bcc041c814dc233ab3ef832b82902d42f",
+      "cataloguedSha256": "8f4021d52c265d8942abc6c1e6ca6e00e2af05846e537908f8bc9c51d4af4703",
       "cataloguedSourceHistory": [
         {
           "sourceHead": "309a2003749c2b1874e75af501fa6c3ea1e37c18",
@@ -74744,6 +74790,13 @@
           "supersededAt": "2026-10-15T07:40:00.000Z",
           "evidenceId": "EV-20261015-023",
           "reason": "Preserved exact prior source pointer before C06.03 ownership update; verified against source SHA 278700733d6d623fb2bfa06bf07426b2e5117feb."
+        },
+        {
+          "sourceHead": "7565177eee029b0cf7077fab3e180c3d086f6aae",
+          "sha256": "26d375121d201fa64a0f70b62ad792e7500ced4c61a6e93e33648f049b991315",
+          "supersededAt": "2026-10-15T12:12:05.104Z",
+          "evidenceId": "EV-20261015-040",
+          "reason": "Preserved prior pointer before reconciling to exact C06.04 committed bytes."
         }
       ]
     },
@@ -132649,7 +132702,12 @@
         "EV-20261015-024",
         "EV-20261015-025",
         "EV-20261015-034",
-        "EV-20261015-035"
+        "EV-20261015-035",
+        "EV-20261015-036",
+        "EV-20261015-037",
+        "EV-20261015-038",
+        "EV-20261015-039",
+        "EV-20261015-040"
       ],
       "changeIds": [
         "CHANGE-20261001-0316",
@@ -132787,7 +132845,8 @@
         "CHANGE-20261015-022",
         "CHANGE-20261015-023",
         "CHANGE-20261015-039",
-        "CHANGE-20261015-042"
+        "CHANGE-20261015-042",
+        "CHANGE-20261015-049"
       ],
       "cataloguedAt": "2026-10-01T04:02:26.000Z",
       "executionScope": {
@@ -133001,7 +133060,8 @@
           "U15.06",
           "C06.01",
           "C06.02",
-          "C06.03"
+          "C06.03",
+          "C06.04"
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       }
@@ -167237,11 +167297,14 @@
         "EV-20261010-002",
         "EV-20261013-005",
         "EV-20261013-006",
-        "EV-20261013-017"
+        "EV-20261013-017",
+        "EV-20261015-037",
+        "EV-20261015-038"
       ],
       "changeIds": [
         "CHANGE-20261010-0003",
-        "CHANGE-20261013-009"
+        "CHANGE-20261013-009",
+        "CHANGE-20261015-045"
       ],
       "executionScope": {
         "ownerTaskId": "U04",
@@ -167260,8 +167323,8 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "be2a19334d4ffe5f8153f4847f83eb60c7b0a226",
-      "cataloguedSha256": "a9c4c535d7b38d3bb5e59667b3b2792ec072e841d3f24fec3f9f882d95389f37",
+      "cataloguedSourceHead": "e9ff45c09c91fb75270af527c632dac368972f1f",
+      "cataloguedSha256": "d0467f7ae043263f86a6a88e53efa6916c11dc8e75c4dfb20e944486b246e6a8",
       "cataloguedSourceHistory": [
         {
           "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
@@ -167276,8 +167339,16 @@
           "supersededAt": "2026-10-13T11:09:43.366Z",
           "evidenceId": "EV-20261013-017",
           "reason": "Individually verified actual committed source; previous catalogue retained."
+        },
+        {
+          "sourceHead": "be2a19334d4ffe5f8153f4847f83eb60c7b0a226",
+          "sha256": "a9c4c535d7b38d3bb5e59667b3b2792ec072e841d3f24fec3f9f882d95389f37",
+          "supersededAt": "2026-10-15T12:12:05.104Z",
+          "evidenceId": "EV-20261015-037",
+          "reason": "Preserved prior pointer before reconciling to exact C06.04 committed bytes."
         }
-      ]
+      ],
+      "cataloguedAt": "2026-10-15T12:12:05.104Z"
     },
     {
       "path": "src/features/wallet/index.ts",
@@ -168888,11 +168959,13 @@
         "EV-20261013-006",
         "EV-20261013-013",
         "EV-20261013-017",
-        "EV-20261014-010"
+        "EV-20261014-010",
+        "EV-20261015-037"
       ],
       "changeIds": [
         "CHANGE-20261013-008",
-        "CHANGE-20261013-375"
+        "CHANGE-20261013-375",
+        "CHANGE-20261015-044"
       ],
       "executionScope": {
         "ownerTaskId": "U04",
@@ -168912,8 +168985,8 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "b5a2b357ae73b03e3155b291f35f2e588039c107",
-      "cataloguedSha256": "d9e884e25c9f5dc6ed2eca15101c1dfb37b9b171e913c490000ac754f6ed2bef",
+      "cataloguedSourceHead": "e9ff45c09c91fb75270af527c632dac368972f1f",
+      "cataloguedSha256": "07ebdc4b0c5d79907506bf1e300458765d6df98f100f448c6ff974de06aa26f8",
       "cataloguedSourceHistory": [
         {
           "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
@@ -168935,8 +169008,16 @@
           "supersededAt": "2026-10-14T01:15:27.283Z",
           "evidenceId": "EV-20261014-010",
           "reason": "Previous source pointer retained; current path-specific commit and Git blob independently verified in this evidence."
+        },
+        {
+          "sourceHead": "b5a2b357ae73b03e3155b291f35f2e588039c107",
+          "sha256": "d9e884e25c9f5dc6ed2eca15101c1dfb37b9b171e913c490000ac754f6ed2bef",
+          "supersededAt": "2026-10-15T12:12:05.104Z",
+          "evidenceId": "EV-20261015-037",
+          "reason": "Preserved prior pointer before reconciling to exact C06.04 committed bytes."
         }
-      ]
+      ],
+      "cataloguedAt": "2026-10-15T12:12:05.104Z"
     },
     {
       "path": "src/features/wallet/pages/WithdrawPage.tsx",
@@ -168953,11 +169034,14 @@
         "EV-20261010-002",
         "EV-20261013-005",
         "EV-20261013-006",
-        "EV-20261013-017"
+        "EV-20261013-017",
+        "EV-20261015-037",
+        "EV-20261015-038"
       ],
       "changeIds": [
         "CHANGE-20261010-0001",
-        "CHANGE-20261013-007"
+        "CHANGE-20261013-007",
+        "CHANGE-20261015-043"
       ],
       "executionScope": {
         "ownerTaskId": "U04",
@@ -168976,8 +169060,8 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "be2a19334d4ffe5f8153f4847f83eb60c7b0a226",
-      "cataloguedSha256": "c342d6c0d7f0ea7c2dc5fcf66ba4aa339d1a4af541131cf0ffe599ba63c6d0d8",
+      "cataloguedSourceHead": "e9ff45c09c91fb75270af527c632dac368972f1f",
+      "cataloguedSha256": "6b2738cda18cf1fdafeeb83003e3a890efbab03cd925c6db3a29dfc7a203a462",
       "cataloguedSourceHistory": [
         {
           "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
@@ -168992,8 +169076,16 @@
           "supersededAt": "2026-10-13T11:09:43.366Z",
           "evidenceId": "EV-20261013-017",
           "reason": "Individually verified actual committed source; previous catalogue retained."
+        },
+        {
+          "sourceHead": "be2a19334d4ffe5f8153f4847f83eb60c7b0a226",
+          "sha256": "c342d6c0d7f0ea7c2dc5fcf66ba4aa339d1a4af541131cf0ffe599ba63c6d0d8",
+          "supersededAt": "2026-10-15T12:12:05.104Z",
+          "evidenceId": "EV-20261015-037",
+          "reason": "Preserved prior pointer before reconciling to exact C06.04 committed bytes."
         }
-      ]
+      ],
+      "cataloguedAt": "2026-10-15T12:12:05.104Z"
     },
     {
       "path": "src/features/wallet/routes.test.ts",
@@ -174145,16 +174237,19 @@
       "taskIds": [
         "C03",
         "B05",
-        "B07"
+        "B07",
+        "C06"
       ],
       "disposition": "changed",
       "reason": "Iteration 58: correct the stale QR image locator and verify local E2E.",
       "evidenceIds": [
         "EV-20261014-020",
-        "EV-20261014-021"
+        "EV-20261014-021",
+        "EV-20261015-039"
       ],
       "changeIds": [
-        "CHANGE-20261014-066"
+        "CHANGE-20261014-066",
+        "CHANGE-20261015-047"
       ],
       "executionScope": {
         "ownerTaskId": "C03",
@@ -174171,12 +174266,13 @@
           "C03.03",
           "C03.04",
           "C03.05",
-          "B07.02"
+          "B07.02",
+          "C06.04"
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "6b335a20acb9dfaef1b269ca5c2aefd1a9550ef1",
-      "cataloguedSha256": "4ee01cf13e9208e467ceea850a48418e09076812c1122522b0f969b07e8f68f6",
+      "cataloguedSourceHead": "e9ff45c09c91fb75270af527c632dac368972f1f",
+      "cataloguedSha256": "3ba3885fc1de4438b199d22e7780cea3039e2a3e5bc896209a3cc19bcfc93bb7",
       "cataloguedSourceHistory": [
         {
           "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
@@ -174184,8 +174280,16 @@
           "supersededAt": "2026-10-14T03:08:27.474Z",
           "evidenceId": "EV-20261014-020",
           "reason": "Previous catalogue fingerprint preserved before updating to the path-specific verified commit."
+        },
+        {
+          "sourceHead": "6b335a20acb9dfaef1b269ca5c2aefd1a9550ef1",
+          "sha256": "4ee01cf13e9208e467ceea850a48418e09076812c1122522b0f969b07e8f68f6",
+          "supersededAt": "2026-10-15T12:12:05.104Z",
+          "evidenceId": "EV-20261015-037",
+          "reason": "Preserved prior pointer before reconciling to exact C06.04 committed bytes."
         }
-      ]
+      ],
+      "cataloguedAt": "2026-10-15T12:12:05.104Z"
     },
     {
       "path": "tsconfig.json",
@@ -175614,10 +175718,12 @@
       "reason": "Reconcile omitted source record from CHANGE-20261010-0004 and its existing evidence; no behavior or historic hash changed.",
       "evidenceIds": [
         "EV-20261010-001",
-        "EV-20261010-002"
+        "EV-20261010-002",
+        "EV-20261015-037"
       ],
       "changeIds": [
-        "CHANGE-20261010-0004"
+        "CHANGE-20261010-0004",
+        "CHANGE-20261015-046"
       ],
       "executionScope": {
         "ownerTaskId": "C03",
@@ -175631,8 +175737,18 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
-      "cataloguedSha256": "987a8a6a3af9a83455daf59f254962548d4e68f9cf1a0fdeec4a92618ae3b4fd"
+      "cataloguedSourceHead": "e9ff45c09c91fb75270af527c632dac368972f1f",
+      "cataloguedSha256": "77b7af94f499aa22fb80cca357f9d7fa1a0bad42ea0f11891c232c00df1409f8",
+      "cataloguedSourceHistory": [
+        {
+          "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
+          "sha256": "987a8a6a3af9a83455daf59f254962548d4e68f9cf1a0fdeec4a92618ae3b4fd",
+          "supersededAt": "2026-10-15T12:12:05.104Z",
+          "evidenceId": "EV-20261015-037",
+          "reason": "Preserved prior pointer before reconciling to exact C06.04 committed bytes."
+        }
+      ],
+      "cataloguedAt": "2026-10-15T12:12:05.104Z"
     },
     {
       "path": "src/features/wallet/model/validate-wallet-transfer.test.ts",
@@ -308367,6 +308483,129 @@
         "EV-20261015-035"
       ],
       "commit": null
+    },
+    {
+      "id": "CHANGE-20261015-043",
+      "taskId": "C06",
+      "stepId": "C06.04",
+      "path": "src/features/wallet/pages/WithdrawPage.tsx",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Clear only stale validation errors while preserving policy, payload, precision, permission, idempotency and receipt behavior.",
+      "beforeHash": "c342d6c0d7f0ea7c2dc5fcf66ba4aa339d1a4af541131cf0ffe599ba63c6d0d8",
+      "afterHash": "6b2738cda18cf1fdafeeb83003e3a890efbab03cd925c6db3a29dfc7a203a462",
+      "afterHashRecovery": null,
+      "evidenceIds": [
+        "EV-20261015-037",
+        "EV-20261015-038"
+      ],
+      "commit": "e9ff45c09c91fb75270af527c632dac368972f1f"
+    },
+    {
+      "id": "CHANGE-20261015-044",
+      "taskId": "C06",
+      "stepId": "C06.04",
+      "path": "src/features/wallet/pages/WithdrawPage.test.tsx",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Test accessible errors, edit/network clearing and unchanged withdrawal request behavior.",
+      "beforeHash": "d9e884e25c9f5dc6ed2eca15101c1dfb37b9b171e913c490000ac754f6ed2bef",
+      "afterHash": "07ebdc4b0c5d79907506bf1e300458765d6df98f100f448c6ff974de06aa26f8",
+      "afterHashRecovery": null,
+      "evidenceIds": [
+        "EV-20261015-037"
+      ],
+      "commit": "e9ff45c09c91fb75270af527c632dac368972f1f"
+    },
+    {
+      "id": "CHANGE-20261015-045",
+      "taskId": "C06",
+      "stepId": "C06.04",
+      "path": "src/features/wallet/components/WithdrawSections.tsx",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Associate address/memo/amount/MFA errors using aria-invalid, aria-describedby and alert text.",
+      "beforeHash": "a9c4c535d7b38d3bb5e59667b3b2792ec072e841d3f24fec3f9f882d95389f37",
+      "afterHash": "d0467f7ae043263f86a6a88e53efa6916c11dc8e75c4dfb20e944486b246e6a8",
+      "afterHashRecovery": null,
+      "evidenceIds": [
+        "EV-20261015-037",
+        "EV-20261015-038"
+      ],
+      "commit": "e9ff45c09c91fb75270af527c632dac368972f1f"
+    },
+    {
+      "id": "CHANGE-20261015-046",
+      "taskId": "C06",
+      "stepId": "C06.04",
+      "path": "src/features/wallet/components/WithdrawSections.test.tsx",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Test MFA input error association.",
+      "beforeHash": "987a8a6a3af9a83455daf59f254962548d4e68f9cf1a0fdeec4a92618ae3b4fd",
+      "afterHash": "77b7af94f499aa22fb80cca357f9d7fa1a0bad42ea0f11891c232c00df1409f8",
+      "afterHashRecovery": null,
+      "evidenceIds": [
+        "EV-20261015-037"
+      ],
+      "commit": "e9ff45c09c91fb75270af527c632dac368972f1f"
+    },
+    {
+      "id": "CHANGE-20261015-047",
+      "taskId": "C06",
+      "stepId": "C06.04",
+      "path": "tests/e2e/wallet-contract.spec.ts",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Add validation and accessible error assertions to mocked browser withdrawal flow.",
+      "beforeHash": "4ee01cf13e9208e467ceea850a48418e09076812c1122522b0f969b07e8f68f6",
+      "afterHash": "3ba3885fc1de4438b199d22e7780cea3039e2a3e5bc896209a3cc19bcfc93bb7",
+      "afterHashRecovery": null,
+      "evidenceIds": [
+        "EV-20261015-039"
+      ],
+      "commit": "e9ff45c09c91fb75270af527c632dac368972f1f"
+    },
+    {
+      "id": "CHANGE-20261015-048",
+      "taskId": "C06",
+      "stepId": "C06.04",
+      "path": "docs/architecture/page-inventory.json",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Regenerate canonical WithdrawPage line count after source change.",
+      "beforeHash": "26d375121d201fa64a0f70b62ad792e7500ced4c61a6e93e33648f049b991315",
+      "afterHash": "8f4021d52c265d8942abc6c1e6ca6e00e2af05846e537908f8bc9c51d4af4703",
+      "afterHashRecovery": null,
+      "evidenceIds": [
+        "EV-20261015-040"
+      ],
+      "commit": "ae5f900bcc041c814dc233ab3ef832b82902d42f"
+    },
+    {
+      "id": "CHANGE-20261015-049",
+      "taskId": "C06",
+      "stepId": "C06.04",
+      "path": "docs/architecture/production-readiness/TRACKING.json",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "C06.04 in-progress reconciliation records verified prerequisite run #72, local evidence/limits, source and inventory commits, source catalog pointers, and keeps C06.05 gated on exact-SHA CI.",
+      "beforeHash": "dedd76a218885e60bdaafad3c7a083a44735480a2c88282d383c968cacdad747",
+      "afterHash": "492f15292b534bd176ab45c0b43e90c40dbd083466023142a10eb541d42468af",
+      "afterHashRecovery": {
+        "kind": "actual_written_business_payload_before_final_audit",
+        "archivePath": "C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\10\\15\\c06-04-evidence\\c06-04-tracking-business-payload-before-self-audit.json",
+        "archiveSha256": "492f15292b534bd176ab45c0b43e90c40dbd083466023142a10eb541d42468af",
+        "payloadSha256": "492f15292b534bd176ab45c0b43e90c40dbd083466023142a10eb541d42468af"
+      },
+      "evidenceIds": [
+        "EV-20261015-036",
+        "EV-20261015-037",
+        "EV-20261015-038",
+        "EV-20261015-039",
+        "EV-20261015-040"
+      ],
+      "commit": null
     }
   ],
   "evidence": [
@@ -343052,6 +343291,104 @@
       "result": "pass",
       "artifact": "C:/Users/Joker-PC/.codex/visualizations/2026/10/15/c06-run71-evidence/production-gates-run71-retry-11967613513.zip",
       "notes": "Retry ran on the same exact head b2f4859279a73c993b6a88bccc0447b09c9d9480; no source changed between attempts. The unchanged DCA test passed within the full retry; the first-attempt cause remains unproven. This pass verifies the current tracker SHA only; the following tracker-closeout commit requires its own run #72 and artifact digest check before C06.04."
+    },
+    {
+      "id": "EV-20261015-036",
+      "taskId": "C06",
+      "stepId": "C06.03",
+      "kind": "github_exact_sha_full_gate_pass",
+      "commandOrSteps": "github_exact_sha_full_gate_pass",
+      "environment": "Windows local worktree; Node 24.19.0 unless noted; no production account or live transaction.",
+      "observedAt": "2026-10-15T12:12:05.104Z",
+      "sourceHead": "ef13326cd36f04c38fc9d717515c29c9261c0a14",
+      "dirtyFileHashes": {},
+      "expected": "Run #72 on exact tracker SHA completes all gates and artifact digest matches metadata.",
+      "actual": "PASS: run 38726832886 (#72), exact SHA ef13326cd36f04c38fc9d717515c29c9261c0a14; Production gates 34/34 successful, 0 failed, 0 skipped. Unit+integration and coverage each 362/362 files and 3485/3485 tests; E2E smoke/accessibility, auth API/mock, policies, architecture/inventory/source ledger, build/mock/bundle passed. Artifact 11970118942, 33,645,531 bytes, sha256 c153bd50b5d9dda46754018c55c6c5f2c27be171bfcde1751cca391b27a57a29; downloaded digest matched metadata.",
+      "result": "pass",
+      "artifact": "C:/Users/Joker-PC/.codex/visualizations/2026/10/15/c06-run71-evidence/production-gates-run72-11970118942.zip",
+      "notes": "Verified using GitHub connector; prerequisite for C06.04."
+    },
+    {
+      "id": "EV-20261015-037",
+      "taskId": "C06",
+      "stepId": "C06.04",
+      "kind": "local_wallet_withdrawal_vitest",
+      "commandOrSteps": "local_wallet_withdrawal_vitest",
+      "environment": "Windows local worktree; Node 24.19.0 unless noted; no production account or live transaction.",
+      "observedAt": "2026-10-15T12:12:05.104Z",
+      "sourceHead": "ef13326cd36f04c38fc9d717515c29c9261c0a14",
+      "dirtyFileHashes": {
+        "src/features/wallet/pages/WithdrawPage.tsx": "6b2738cda18cf1fdafeeb83003e3a890efbab03cd925c6db3a29dfc7a203a462",
+        "src/features/wallet/pages/WithdrawPage.test.tsx": "07ebdc4b0c5d79907506bf1e300458765d6df98f100f448c6ff974de06aa26f8",
+        "src/features/wallet/components/WithdrawSections.tsx": "d0467f7ae043263f86a6a88e53efa6916c11dc8e75c4dfb20e944486b246e6a8",
+        "src/features/wallet/components/WithdrawSections.test.tsx": "77b7af94f499aa22fb80cca357f9d7fa1a0bad42ea0f11891c232c00df1409f8",
+        "tests/e2e/wallet-contract.spec.ts": "3ba3885fc1de4438b199d22e7780cea3039e2a3e5bc896209a3cc19bcfc93bb7"
+      },
+      "expected": "Withdrawal errors associate to controls and clear on correction or relevant network change; invalid input does not request a challenge.",
+      "actual": "PASS: focused Vitest 3/3 files, 23/23 tests. Covers invalid address, memo/minimum, network-change clearing, corrected fields, Max clearing and existing verification/receipt flows. MSW only.",
+      "result": "pass",
+      "artifact": "C:/Users/Joker-PC/.codex/visualizations/2026/10/15/c06-04-evidence/c06-04-local-verification.json",
+      "notes": "dirtyFileHashes identify the exact tested bytes subsequently committed as e9ff45c0."
+    },
+    {
+      "id": "EV-20261015-038",
+      "taskId": "C06",
+      "stepId": "C06.04",
+      "kind": "local_static_checks",
+      "commandOrSteps": "local_static_checks",
+      "environment": "Windows local worktree; Node 24.19.0 unless noted; no production account or live transaction.",
+      "observedAt": "2026-10-15T12:12:05.104Z",
+      "sourceHead": "ef13326cd36f04c38fc9d717515c29c9261c0a14",
+      "dirtyFileHashes": {
+        "src/features/wallet/pages/WithdrawPage.tsx": "6b2738cda18cf1fdafeeb83003e3a890efbab03cd925c6db3a29dfc7a203a462",
+        "src/features/wallet/pages/WithdrawPage.test.tsx": "07ebdc4b0c5d79907506bf1e300458765d6df98f100f448c6ff974de06aa26f8",
+        "src/features/wallet/components/WithdrawSections.tsx": "d0467f7ae043263f86a6a88e53efa6916c11dc8e75c4dfb20e944486b246e6a8",
+        "src/features/wallet/components/WithdrawSections.test.tsx": "77b7af94f499aa22fb80cca357f9d7fa1a0bad42ea0f11891c232c00df1409f8",
+        "tests/e2e/wallet-contract.spec.ts": "3ba3885fc1de4438b199d22e7780cea3039e2a3e5bc896209a3cc19bcfc93bb7"
+      },
+      "expected": "Typecheck, lint budget, scoped formatting and diff checks pass.",
+      "actual": "PASS: app/node TypeScript; full lint 0 errors/0 warnings (budget 0); Prettier 5 changed files; git diff --check.",
+      "result": "pass",
+      "artifact": "C:/Users/Joker-PC/.codex/visualizations/2026/10/15/c06-04-evidence/c06-04-local-verification.json",
+      "notes": "No import/boundary changes; architecture check remains included in exact-SHA GitHub gates."
+    },
+    {
+      "id": "EV-20261015-039",
+      "taskId": "C06",
+      "stepId": "C06.04",
+      "kind": "local_wallet_withdrawal_playwright_incomplete",
+      "commandOrSteps": "local_wallet_withdrawal_playwright_incomplete",
+      "environment": "Windows local worktree; Node 24.19.0 unless noted; no production account or live transaction.",
+      "observedAt": "2026-10-15T12:12:05.104Z",
+      "sourceHead": "ef13326cd36f04c38fc9d717515c29c9261c0a14",
+      "dirtyFileHashes": {
+        "src/features/wallet/pages/WithdrawPage.tsx": "6b2738cda18cf1fdafeeb83003e3a890efbab03cd925c6db3a29dfc7a203a462",
+        "src/features/wallet/pages/WithdrawPage.test.tsx": "07ebdc4b0c5d79907506bf1e300458765d6df98f100f448c6ff974de06aa26f8",
+        "src/features/wallet/components/WithdrawSections.tsx": "d0467f7ae043263f86a6a88e53efa6916c11dc8e75c4dfb20e944486b246e6a8",
+        "src/features/wallet/components/WithdrawSections.test.tsx": "77b7af94f499aa22fb80cca357f9d7fa1a0bad42ea0f11891c232c00df1409f8",
+        "tests/e2e/wallet-contract.spec.ts": "3ba3885fc1de4438b199d22e7780cea3039e2a3e5bc896209a3cc19bcfc93bb7"
+      },
+      "expected": "Browser test run closes cleanly before counting as PASS.",
+      "actual": "INCOMPLETE: Playwright printed “ok 1” for targeted Chromium flow, but wrapper did not exit; run.json remains running, childClosed=false, exitCode=null after stopping only test-owned processes. Assertion output is diagnostic only.",
+      "result": "fail",
+      "artifact": "C:/Users/Joker-PC/.codex/worktrees/vittrade-ui-ds-c06/vittrade-react/.artifacts/runs/2026-10-15T12-01-13-912Z-playwright-c6098a1e-31fd-4db2-9830-d4471e65eab0/run.json",
+      "notes": "Preserve incomplete output; require hosted exact-SHA E2E."
+    },
+    {
+      "id": "EV-20261015-040",
+      "taskId": "C06",
+      "stepId": "C06.04",
+      "kind": "architecture_inventory_generated",
+      "commandOrSteps": "architecture_inventory_generated",
+      "environment": "Windows local worktree; Node 24.19.0 unless noted; no production account or live transaction.",
+      "observedAt": "2026-10-15T12:12:05.104Z",
+      "sourceHead": "ae5f900bcc041c814dc233ab3ef832b82902d42f",
+      "dirtyFileHashes": {},
+      "expected": "Canonical inventory matches source after WithdrawPage change.",
+      "actual": "PASS: official generator changed WithdrawPage line count 287→307; --check: 130 pages, 428 routes, 149 components, 0 data modules, 32 services, 28 mocks.",
+      "result": "pass",
+      "artifact": "C:/Users/Joker-PC/.codex/visualizations/2026/10/15/c06-04-evidence/c06-04-local-verification.json",
+      "notes": "Generated inventory committed separately as ae5f900b."
     }
   ],
   "decisions": [
@@ -366597,6 +366934,113 @@
           "errorCount": 1,
           "artifactSha256": "95ab08068620bfbf5d50190a01ae3e807676737b763fd638fd3bf289fb7b3f69"
         }
+      }
+    },
+    {
+      "id": "SESSION-20261015-004",
+      "startedAt": "2026-10-15T11:58:04.860Z",
+      "endedAt": "2026-10-15T12:12:05.104Z",
+      "sourceHeadBefore": "ef13326cd36f04c38fc9d717515c29c9261c0a14",
+      "sourceHeadAfter": "ae5f900bcc041c814dc233ab3ef832b82902d42f",
+      "taskIds": [
+        "C06"
+      ],
+      "stepIds": [
+        "C06.04"
+      ],
+      "changeIds": [
+        "CHANGE-20261015-043",
+        "CHANGE-20261015-044",
+        "CHANGE-20261015-045",
+        "CHANGE-20261015-046",
+        "CHANGE-20261015-047",
+        "CHANGE-20261015-048"
+      ],
+      "evidenceIds": [
+        "EV-20261015-036",
+        "EV-20261015-037",
+        "EV-20261015-038",
+        "EV-20261015-039",
+        "EV-20261015-040"
+      ],
+      "elapsedMinutes": 14,
+      "remainingWork": [
+        "Push source, generated inventory, and in-progress tracker commits as fast-forward.",
+        "Require exact-SHA GitHub run #73 and artifact digest.",
+        "After #73 passes, close C06.04 in separate tracker commit and pass exact-SHA #74 before C06.05."
+      ],
+      "blockers": [
+        "Local Playwright printed one passing scenario but did not terminate; preserve incomplete evidence, not PASS."
+      ],
+      "nextAction": "Push and verify exact SHA #73; do not start C06.05 before tracker closeout SHA also passes.",
+      "filesTouched": [
+        "src/features/wallet/pages/WithdrawPage.tsx",
+        "src/features/wallet/pages/WithdrawPage.test.tsx",
+        "src/features/wallet/components/WithdrawSections.tsx",
+        "src/features/wallet/components/WithdrawSections.test.tsx",
+        "tests/e2e/wallet-contract.spec.ts",
+        "docs/architecture/page-inventory.json",
+        "docs/architecture/production-readiness/TRACKING.json"
+      ],
+      "manifestPath": "C:/Users/Joker-PC/.codex/visualizations/2026/10/15/c06-04-evidence/c06-04-local-verification.json",
+      "validation": {
+        "focusedVitest": {
+          "testFiles": 3,
+          "tests": 23,
+          "status": "pass",
+          "sourceHead": "ef13326cd36f04c38fc9d717515c29c9261c0a14",
+          "dirtyFileHashes": {
+            "src/features/wallet/pages/WithdrawPage.tsx": "6b2738cda18cf1fdafeeb83003e3a890efbab03cd925c6db3a29dfc7a203a462",
+            "src/features/wallet/pages/WithdrawPage.test.tsx": "07ebdc4b0c5d79907506bf1e300458765d6df98f100f448c6ff974de06aa26f8",
+            "src/features/wallet/components/WithdrawSections.tsx": "d0467f7ae043263f86a6a88e53efa6916c11dc8e75c4dfb20e944486b246e6a8",
+            "src/features/wallet/components/WithdrawSections.test.tsx": "77b7af94f499aa22fb80cca357f9d7fa1a0bad42ea0f11891c232c00df1409f8",
+            "tests/e2e/wallet-contract.spec.ts": "3ba3885fc1de4438b199d22e7780cea3039e2a3e5bc896209a3cc19bcfc93bb7"
+          }
+        },
+        "typecheck": {
+          "app": "pass",
+          "node": "pass"
+        },
+        "lintBudget": {
+          "errors": 0,
+          "warnings": 0,
+          "budget": 0,
+          "status": "pass"
+        },
+        "scopedPrettier": {
+          "files": 5,
+          "status": "pass"
+        },
+        "architectureInventory": {
+          "pages": 130,
+          "routes": 428,
+          "components": 149,
+          "dataModules": 0,
+          "services": 32,
+          "mocks": 28,
+          "status": "pass",
+          "sourceHead": "ae5f900bcc041c814dc233ab3ef832b82902d42f"
+        },
+        "localBrowser": {
+          "status": "incomplete",
+          "runId": "2026-10-15T12-01-13-912Z-playwright-c6098a1e-31fd-4db2-9830-d4471e65eab0",
+          "bodyOutput": "ok 1",
+          "runManifestStatus": "running",
+          "childClosed": false,
+          "sourceBytesMatchCommit": true
+        },
+        "githubRun72": {
+          "runId": 38726832886,
+          "sourceSha": "ef13326cd36f04c38fc9d717515c29c9261c0a14",
+          "successfulSteps": 34,
+          "failedSteps": 0,
+          "skippedSteps": 0,
+          "artifactId": 11970118942,
+          "artifactBytes": 33645531,
+          "artifactSha256": "c153bd50b5d9dda46754018c55c6c5f2c27be171bfcde1751cca391b27a57a29",
+          "downloadedDigestMatches": true
+        },
+        "githubExactShaC0604": "pending"
       }
     }
   ],
