@@ -330,6 +330,65 @@ hiện hành, không thay C01/C03/C05, các task feature U01–U15 hoặc checkp
 Mỗi step phải gắn file bằng `files[].executionScope.stepIds`, có evidence/checkpoint
 và qua `check-tracking.mjs` trước khi được coi là hoàn tất.
 
+#### Giao thức thi công, commit và nghiệm thu C06 — ủy quyền ngày 16/10/2026
+
+Giao thức này áp dụng riêng cho C06.01–C06.15 trên nhánh remediation hiện hành.
+Người dùng đã yêu cầu AI tự thực hiện tuần tự, đo trên code thật, tạo commit ký
+tên có ghi chú tiếng Việt và push từng lát cắt trước khi sang việc khác. Đây là
+ủy quyền rõ cho phạm vi C06; không mở rộng sang task ngoài C06, merge PR, force
+push, deploy hay thao tác làm thay đổi dữ liệu dịch vụ. Quy tắc mặc định trong
+`docs/ai/PRODUCTION-READINESS-PROMPT.md` vẫn áp dụng cho mọi phạm vi chưa được
+ủy quyền riêng.
+
+Với **mỗi lát cắt C06**, AI MUST thực hiện đúng chu trình sau và ghi kết quả vào
+`TRACKING.json`; không được bỏ qua bước vì một lần chạy trước đã xanh:
+
+1. **Xác nhận checkpoint:** đọc trạng thái task/step, dependency, `nextAction`,
+   SHA/branch, `git status` (staged, unstaged, untracked) và scope trong tracker.
+   Bảo toàn mọi thay đổi không thuộc lát cắt; không dùng reset/clean hay format
+   toàn repo. Đọc script/config trước khi chạy lệnh có thể ghi output.
+2. **Chọn đúng một đơn vị công việc:** chỉ bắt đầu step có dependency hoàn tất;
+   kiểm chứng consumer/call site và giữ nguyên business/API/permission/data
+   contracts. Gộp implementation với regression test trực tiếp; không kèm việc
+   độc lập chỉ để giảm số commit. Khi một finding cần quyết định visual/brand,
+   không tự thay đổi ngoài contract đã được duyệt.
+3. **Đo local trên bytes cuối:** chạy test owner và mọi kiểm tra liên quan theo
+   script đã đọc; tối thiểu gồm checker tracker, `git diff --check`, typecheck/
+   lint/format/inventory khi file bị ảnh hưởng. Ghi command, revision, tử số/
+   mẫu số, exit code, test skip có cấu hình và artifact hash. FAIL/timeout/incomplete
+   không phải PASS; giữ log/output được workflow bảo vệ, tìm root cause, sửa bằng
+   commit riêng nếu cần và chạy lại toàn bộ gate liên quan.
+4. **Rà và giao source:** xác nhận diff chỉ chứa file do lát cắt sở hữu, test có ý
+   nghĩa, không chứa secret/output ngoài ý muốn; tạo một commit coherent bằng
+   `git commit -s` với subject/body tiếng Việt nêu rõ hành vi và phạm vi. Không
+   amend, rewrite history hoặc gộp nhiều step độc lập thành một commit. Push commit
+   lên đúng PR branch hiện hữu; không force push. Chỉ push sau khi local acceptance
+   pass và checkpoint trong tracker nêu SHA/next gate.
+5. **Nghiệm thu GitHub exact-SHA:** chờ workflow bắt đầu từ đúng PR head của commit
+   vừa push; đối chiếu tất cả required checks và step, nêu riêng PASS/FAIL/SKIP.
+   Nếu là pull request, xác nhận synthetic merge có đúng base/head parents và
+   merge tree bằng tree của head. Tải artifact verification, so sánh byte count và
+   SHA-256 với GitHub metadata; xác nhận artifact/run thuộc đúng workflow, attempt
+   và SHA. Không coi CI của SHA cha, rerun khác head hoặc artifact thiếu provenance
+   là nghiệm thu.
+6. **Đóng checkpoint riêng:** sau khi source SHA và artifact đã xác minh, cập nhật
+   evidence/change/checkpoint/nextAction trong `TRACKING.json`, chạy
+   `node docs/architecture/production-readiness/check-tracking.mjs`, rà diff và
+   tạo/push một commit tracker-only có ghi chú tiếng Việt. Chạy lại workflow trên
+   đúng SHA tracker mới; kiểm lại merge/artifact provenance. Chỉ đặt step `done`
+   và chọn step kế khi cả source gate lẫn tracker-closeout gate đều PASS.
+7. **Xử lý trở ngại:** nếu một gate fail, step hiện tại vẫn mở; không sang dependency
+   kế, không hạ assertion/ngưỡng hoặc đổi baseline để làm xanh. Có thể tiếp tục
+   công việc độc lập không phụ thuộc gate đó, ghi blocker/nextAction cụ thể và giữ
+   artifacts. Chỉ đánh dấu BLOCKED khi thiếu quyền, dịch vụ, dữ liệu hoặc quyết
+   định ngoài repository thực sự cần thiết; tiếp tục phần độc lập và không tuyên
+   bố “100%” vượt quá phạm vi đã đo.
+
+Commit/push riêng là yêu cầu giao nhận cho từng đơn vị được nghiệm thu; “toàn bộ
+thay đổi” nghĩa là toàn bộ thay đổi **thuộc lát cắt đã xác minh**, không gồm WIP
+của người khác, file ngoài scope, output được giữ làm bằng chứng hay thay đổi
+chưa được kiểm chứng. Không merge PR nếu chưa có yêu cầu riêng.
+
 **Mốc đọc thực tế:** HEAD `074ed3bedfbbcac9e7c31697911ebf234845f0ad`, nhánh
 `codex/frontend-readiness-remediation-20261013`. Worktree có **54 path** sửa đổi
 chưa commit (51 tracked, 3 untracked; 920 insertions/571 deletions); các thay đổi
