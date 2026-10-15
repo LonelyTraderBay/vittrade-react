@@ -87,6 +87,16 @@ describe('shared theme token contracts', () => {
     }
   });
 
+  it('keeps the primary state indicator at non-text contrast on page and surface backgrounds', () => {
+    for (const block of [themeBlock(':root'), themeBlock('\\.light')]) {
+      const foreground = themeColor(block, 'tr-primary');
+      for (const backgroundToken of ['tr-bg', 'tr-surface']) {
+        const background = themeColor(block, backgroundToken);
+        expect(contrastRatio(foreground, background)).toBeGreaterThanOrEqual(3);
+      }
+    }
+  });
+
   it('maps every documented color alpha and safely handles custom hex alpha', () => {
     expect(Object.keys(ALPHA)).toEqual(Object.keys(OPACITY));
     for (const [token, suffix] of Object.entries(ALPHA)) {

@@ -129,8 +129,8 @@ export const MarketItem = memo(function MarketItem({
         >
           <Star
             size={14}
-            fill={isFavorite ? '#F59E0B' : 'none'}
-            color={isFavorite ? '#F59E0B' : c.text3}
+            fill={isFavorite ? c.primary : 'none'}
+            color={isFavorite ? c.primary : c.text3}
           />
         </button>
       )}

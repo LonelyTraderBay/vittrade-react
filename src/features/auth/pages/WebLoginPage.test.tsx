@@ -17,6 +17,18 @@ function CurrentRoute() {
 }
 
 describe('WebLoginPage', () => {
+  it('uses the shared accessible primary CTA contract for login submission', () => {
+    renderWithProviders(<WebLoginPage />, {
+      routerProps: { initialEntries: ['/w/auth/login'] },
+      authAdapter: { ...testAuthAdapter, initialSession: null },
+    });
+
+    const submit = screen.getByTestId('auth-submit');
+    expect(submit).toHaveStyle({ color: 'rgb(17, 24, 39)' });
+    expect((submit as HTMLButtonElement).style.background).toContain('rgb(229, 138, 0)');
+    expect(submit).toHaveAttribute('aria-busy', 'false');
+  });
+
   it('keeps failed demo initialization on login with retry available and safe feedback', async () => {
     const user = userEvent.setup();
     const login = vi.fn().mockRejectedValue(new Error('private adapter failure'));

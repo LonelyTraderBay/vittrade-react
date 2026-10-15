@@ -158,8 +158,8 @@ export function PairDetailPage() {
           >
             <Star
               size={20}
-              color={isFavorite ? 'var(--tr-warning-text)' : colors.text3}
-              fill={isFavorite ? '#F59E0B' : 'none'}
+              color={isFavorite ? colors.primary : colors.text3}
+              fill={isFavorite ? colors.primary : 'none'}
             />
           </button>
         }

@@ -164,7 +164,7 @@ export function WatchlistPage() {
           </button>
         </div>
         <div className="flex items-center gap-2">
-          <Star size={14} color="#F59E0B" fill="#F59E0B" />
+          <Star size={14} color={colors.primary} fill={colors.primary} />
           <span style={{ color: colors.text2, fontSize: 12 }}>
             {watchlistQuery.data.items.length} cặp đang theo dõi
           </span>

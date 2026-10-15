@@ -7,6 +7,7 @@ import { env, isProductionBuild } from '@/shared/config/env';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { WEB_FONT, WEB_BUTTON } from '@/shared/theme/webTokens';
 import { WebAuthBrandPanel, WebAuthFormShell } from '@/shared/ui/auth/WebAuthBrandPanel';
+import { CTAButton } from '@/shared/ui/CTAButton';
 
 /**
  * WebLoginPage — Enterprise Desktop Login
@@ -319,45 +320,17 @@ export function WebLoginPage() {
             )}
 
             {/* Login button */}
-            <button
+            <CTAButton
               type="submit"
               data-testid="auth-submit"
-              disabled={isLoading}
-              className="flex items-center justify-center gap-2"
-              style={{
-                height: WEB_BUTTON.lg,
-                borderRadius: 10,
-                background: isLoading
-                  ? c.surface2
-                  : 'linear-gradient(135deg, #3B82F6 0%, #1d4ed8 100%)',
-                color: '#fff',
-                fontSize: WEB_FONT.md,
-                fontWeight: 600,
-                cursor: isLoading ? 'not-allowed' : 'pointer',
-                border: 'none',
-                boxShadow: isLoading ? 'none' : '0 4px 16px rgba(59,130,246,0.25)',
-                transition: 'all 0.15s ease',
-                width: '100%',
-              }}
+              loading={isLoading}
+              variant="primary"
             >
-              {isLoading ? (
-                <div
-                  style={{
-                    width: 18,
-                    height: 18,
-                    borderRadius: '50%',
-                    border: '2px solid rgba(255,255,255,0.3)',
-                    borderTopColor: '#fff',
-                    animation: 'spin 0.7s linear infinite',
-                  }}
-                />
-              ) : (
-                <div className="flex items-center" style={{ gap: 8 }}>
-                  Đăng nhập
-                  <ArrowRight size={16} />
-                </div>
-              )}
-            </button>
+              <span className="flex items-center gap-2">
+                Đăng nhập
+                <ArrowRight size={16} aria-hidden="true" />
+              </span>
+            </CTAButton>
           </form>
 
           {/* Demo login is development/test-only and is excluded from production UI. */}

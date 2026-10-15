@@ -272,7 +272,24 @@ describe('MarketItem', () => {
         <MarketItem pair={mockPair} isFavorite onFavoriteToggle={onFavoriteToggle} />,
       );
 
-      expect(screen.getByLabelText('Bỏ yêu thích')).toBeInTheDocument();
+      const favoriteButton = screen.getByLabelText('Bỏ yêu thích');
+      const star = favoriteButton.querySelector('svg');
+      expect(favoriteButton).toBeInTheDocument();
+      expect(star).toHaveAttribute('fill', 'var(--tr-primary)');
+      expect(star).toHaveAttribute('stroke', 'var(--tr-primary)');
+    });
+
+    it('keeps a disabled favorite action unavailable to pointer activation', async () => {
+      const user = userEvent.setup();
+      const onFavoriteToggle = vi.fn();
+      renderWithProviders(
+        <MarketItem pair={mockPair} onFavoriteToggle={onFavoriteToggle} favoriteDisabled />,
+      );
+
+      const favoriteButton = screen.getByLabelText('Thêm vào yêu thích');
+      expect(favoriteButton).toBeDisabled();
+      await user.click(favoriteButton);
+      expect(onFavoriteToggle).not.toHaveBeenCalled();
     });
 
     it('should show unfilled star for non-favorite pairs', () => {
@@ -320,6 +337,19 @@ describe('MarketItem', () => {
 
       const star = screen.getByLabelText('Thêm vào yêu thích');
       expect(star).toBeInstanceOf(HTMLButtonElement);
+    });
+
+    it('should reach the favorite action with keyboard tab navigation', async () => {
+      const user = userEvent.setup();
+      const onFavoriteToggle = vi.fn();
+      renderWithProviders(<MarketItem pair={mockPair} onFavoriteToggle={onFavoriteToggle} />);
+
+      const row = screen.getByRole('button', { name: 'BTCUSDT — 45,000.00' });
+      const favorite = screen.getByLabelText('Thêm vào yêu thích');
+      await user.tab();
+      expect(row).toHaveFocus();
+      await user.tab();
+      expect(favorite).toHaveFocus();
     });
   });
 

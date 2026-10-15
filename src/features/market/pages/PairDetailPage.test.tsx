@@ -198,9 +198,11 @@ describe('Market pair detail page', () => {
     expect(await screen.findAllByText('BTC/USDT')).not.toHaveLength(0);
     const user = userEvent.setup();
     await user.click(await screen.findByRole('button', { name: 'Theo dõi cặp giao dịch' }));
-    expect(
-      await screen.findByRole('button', { name: 'Bỏ theo dõi cặp giao dịch' }),
-    ).toHaveAttribute('aria-pressed', 'true');
+    const activeFavorite = await screen.findByRole('button', {
+      name: 'Bỏ theo dõi cặp giao dịch',
+    });
+    expect(activeFavorite).toHaveAttribute('aria-pressed', 'true');
+    expect(activeFavorite.querySelector('svg')).toHaveAttribute('fill', 'var(--tr-primary)');
 
     await user.click(screen.getByRole('button', { name: 'Bỏ theo dõi cặp giao dịch' }));
     expect(await screen.findByRole('button', { name: 'Theo dõi cặp giao dịch' })).toHaveAttribute(
