@@ -303,6 +303,7 @@ describe('BottomSheetV2', () => {
   it('calls onAfterOpen once and restores focus when the sheet closes', async () => {
     reducedMotion.value = true;
     const trigger = document.createElement('button');
+    trigger.textContent = 'Open sheet';
     document.body.append(trigger);
     trigger.focus();
     const onAfterOpen = vi.fn();
@@ -320,6 +321,7 @@ describe('BottomSheetV2', () => {
         <button>Action</button>
       </BottomSheetV2>,
     );
+    expect(screen.getByRole('button', { name: 'Open sheet' })).toBeInTheDocument();
     await waitFor(() =>
       expect(screen.queryByRole('dialog', { name: 'Focus' })).not.toBeInTheDocument(),
     );

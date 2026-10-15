@@ -424,6 +424,7 @@ export function TradeTerminal() {
       <OrderConfirmationSheet
         open={showConfirm}
         isPlacing={isPlacing}
+        canWriteTrading={canWriteTrading}
         side={side}
         pair={pair}
         orderTypeLabel={orderTypeLabel}

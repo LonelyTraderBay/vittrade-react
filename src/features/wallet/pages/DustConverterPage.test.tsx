@@ -114,6 +114,11 @@ describe('DustConverterPage', () => {
     expect(idempotencyKey).toEqual(expect.any(String));
 
     await userEvent.click(screen.getByRole('button', { name: 'Hoàn tất' }));
+    await waitFor(() =>
+      expect(
+        screen.queryByRole('dialog', { name: 'Chuyển đổi thành công!' }),
+      ).not.toBeInTheDocument(),
+    );
     expect(screen.getByRole('button', { name: 'Chọn tài sản để chuyển đổi' })).toBeDisabled();
 
     await userEvent.click(screen.getByRole('button', { name: 'Chọn tất cả' }));

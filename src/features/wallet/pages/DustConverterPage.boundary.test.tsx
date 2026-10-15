@@ -72,16 +72,21 @@ describe('Dust conversion financial boundaries', () => {
     });
     try {
       await waitFor(() => expect(posts).toBeGreaterThan(0));
-      const selectAll = screen.getByRole('button', { name: 'Bỏ chọn tất cả' });
-      const asset = screen.getByRole('button', { name: /DUST/ });
-      const alternateTarget = screen.getByRole('button', { name: /BNB/ });
+      // The confirmation sheet correctly removes the page behind it from the
+      // accessible tree. This boundary test deliberately reaches those controls
+      // to invoke stale React handlers and verify that pending writes stay locked.
+      const selectAll = screen.getByRole('button', { name: 'Bỏ chọn tất cả', hidden: true });
+      const asset = screen.getByRole('button', { name: /DUST/, hidden: true });
+      const alternateTarget = screen.getByRole('button', { name: /BNB/, hidden: true });
       expect(selectAll).toBeDisabled();
       expect(asset).toBeDisabled();
       expect(alternateTarget).toBeDisabled();
       invokeStaleReactHandler(selectAll, 'onClick');
       invokeStaleReactHandler(asset, 'onClick');
       invokeStaleReactHandler(alternateTarget, 'onClick');
-      expect(screen.getByRole('button', { name: 'Bỏ chọn tất cả' })).toBeInTheDocument();
+      expect(
+        screen.getByRole('button', { name: 'Bỏ chọn tất cả', hidden: true }),
+      ).toBeInTheDocument();
       expect(posts).toBe(1);
     } finally {
       release();

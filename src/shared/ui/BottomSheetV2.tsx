@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useCallback, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useCallback, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { X } from 'lucide-react';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
@@ -92,6 +92,8 @@ export function BottomSheetV2({
   const sheetRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const previousFocusRef = useRef<HTMLElement | null>(null);
+  const wasOpenRef = useRef(false);
+  const portalContentRef = useRef<HTMLDivElement>(null);
 
   /* ─── Scroll lock ─── */
   useScrollLock(open);
@@ -217,24 +219,41 @@ export function BottomSheetV2({
 
   /* ─── Modal focus lifecycle ─── */
   const handleOpenAutoFocus = useCallback((event: Event) => {
-    previousFocusRef.current =
-      document.activeElement instanceof HTMLElement ? document.activeElement : null;
     event.preventDefault();
     sheetRef.current?.focus({ preventScroll: true });
   }, []);
 
   const handleCloseAutoFocus = useCallback((event: Event) => {
     event.preventDefault();
-    const previousFocus = previousFocusRef.current;
-    previousFocusRef.current = null;
-
-    if (!previousFocus?.isConnected) return;
-    if (document.querySelector('[role="dialog"][data-state="open"]')) return;
-
-    requestAnimationFrame(() => {
-      if (previousFocus.isConnected) previousFocus.focus({ preventScroll: true });
-    });
   }, []);
+
+  useLayoutEffect(() => {
+    const portalContent = portalContentRef.current;
+    if (portalContent) {
+      if (open) portalContent.removeAttribute('inert');
+      else portalContent.setAttribute('inert', '');
+    }
+
+    if (open && !wasOpenRef.current) {
+      previousFocusRef.current =
+        document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    } else if (!open && wasOpenRef.current) {
+      const previousFocus = previousFocusRef.current;
+      previousFocusRef.current = null;
+      const hasOpenDialog = Boolean(document.querySelector('[role="dialog"][data-state="open"]'));
+      const focusWasInsideOpenDialog = Boolean(
+        previousFocus?.closest('[role="dialog"][data-state="open"]'),
+      );
+
+      if (previousFocus?.isConnected && (!hasOpenDialog || focusWasInsideOpenDialog)) {
+        requestAnimationFrame(() => {
+          if (previousFocus.isConnected) previousFocus.focus({ preventScroll: true });
+        });
+      }
+    }
+
+    wasOpenRef.current = open;
+  }, [open]);
 
   /* ─── onAfterOpen callback ─── */
   useEffect(() => {
@@ -290,11 +309,12 @@ export function BottomSheetV2({
   const resolvedAriaLabel =
     ariaLabel ?? (typeof title === 'string' ? title : title ? undefined : 'Dialog');
   const hiddenDialogTitle =
-    ariaLabel || customHeader || !title ? (
-      <DialogPrimitive.Title className="sr-only">
-        {ariaLabel ?? title ?? 'Dialog'}
+    !title || customHeader || ariaLabel ? (
+      <DialogPrimitive.Title asChild>
+        <span className="sr-only">{title ?? ariaLabel ?? 'Dialog'}</span>
       </DialogPrimitive.Title>
     ) : null;
+  const dialogLabelProps = ariaLabel ? { 'aria-labelledby': undefined } : {};
   /* ─── Default header — 44×44pt close button ─── */
   const defaultHeader =
     title || showCloseButton ? (
@@ -353,22 +373,28 @@ export function BottomSheetV2({
   const sheetContent = (
     <DialogPrimitive.Root
       open={open}
+      modal={open}
       onOpenChange={(nextOpen) => {
         if (!nextOpen) handleCloseRequest();
       }}
     >
       <DialogPrimitive.Portal container={portalTarget} forceMount>
-        <AnimatePresence>
-          {open && (
-            <motion.div
-              key={variant}
-              className="absolute inset-0 z-[60]"
-              initial={false}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: prefersReducedMotion ? 0 : 0.2 }}
-            >
-              <div className="contents">
+        <div
+          ref={portalContentRef}
+          className="contents"
+          aria-hidden={!open}
+          style={{ pointerEvents: open ? 'auto' : 'none' }}
+        >
+          <AnimatePresence>
+            {open && (
+              <motion.div
+                key={variant}
+                className="absolute inset-0 z-[60]"
+                initial={false}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: prefersReducedMotion ? 0 : 0.2 }}
+              >
                 {variant === 'bottom' ? (
                   /* ═══ Bottom Sheet ═══ */
                   <div className="absolute inset-0 z-[60] flex justify-center items-end">
@@ -401,9 +427,10 @@ export function BottomSheetV2({
                       onCloseAutoFocus={handleCloseAutoFocus}
                       onEscapeKeyDown={handleEscapeKeyDown}
                       onPointerDownOutside={preventOutsideDismiss}
+                      {...dialogLabelProps}
                       aria-label={resolvedAriaLabel}
                       aria-describedby={undefined}
-                      aria-modal="true"
+                      aria-modal={open ? true : undefined}
                       tabIndex={-1}
                     >
                       <motion.div
@@ -474,9 +501,10 @@ export function BottomSheetV2({
                         onCloseAutoFocus={handleCloseAutoFocus}
                         onEscapeKeyDown={handleEscapeKeyDown}
                         onPointerDownOutside={preventOutsideDismiss}
+                        {...dialogLabelProps}
                         aria-label={resolvedAriaLabel}
                         aria-describedby={undefined}
-                        aria-modal="true"
+                        aria-modal={open ? true : undefined}
                         tabIndex={-1}
                       >
                         <motion.div
@@ -519,10 +547,10 @@ export function BottomSheetV2({
                     </div>
                   </div>
                 )}
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
       </DialogPrimitive.Portal>
     </DialogPrimitive.Root>
   );

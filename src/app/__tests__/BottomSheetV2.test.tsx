@@ -524,7 +524,8 @@ describe('BottomSheetV2', () => {
         </BottomSheetV2>,
       );
 
-      expect(screen.getByRole('heading', { name: 'Should not show' })).toHaveClass('sr-only');
+      expect(screen.getByRole('dialog', { name: 'Should not show' })).toBeInTheDocument();
+      expect(screen.queryByRole('heading', { name: 'Should not show' })).not.toBeInTheDocument();
       expect(screen.getByText('Custom Header')).toBeInTheDocument();
     });
   });
