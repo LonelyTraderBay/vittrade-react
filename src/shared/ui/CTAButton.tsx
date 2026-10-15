@@ -38,6 +38,7 @@ export interface CTAButtonProps extends React.ButtonHTMLAttributes<HTMLButtonEle
 }
 
 export function CTAButton({
+  type = 'button',
   variant = 'primary',
   loading = false,
   fullWidth = true,
@@ -64,6 +65,7 @@ export function CTAButton({
 
   return (
     <button
+      type={type}
       disabled={isDisabled}
       aria-disabled={isDisabled}
       aria-busy={loading}

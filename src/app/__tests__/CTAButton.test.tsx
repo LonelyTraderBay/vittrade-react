@@ -512,6 +512,28 @@ describe('CTAButton', () => {
       expect(button).toHaveAttribute('type', 'submit');
     });
 
+    it('defaults to a non-submitting button inside a form', async () => {
+      const user = userEvent.setup();
+      const onSubmit = vi.fn();
+
+      render(
+        <form
+          onSubmit={(event) => {
+            event.preventDefault();
+            onSubmit();
+          }}
+        >
+          <CTAButton>Secondary action</CTAButton>
+        </form>,
+      );
+
+      const button = screen.getByRole('button', { name: 'Secondary action' });
+      expect(button).toHaveAttribute('type', 'button');
+
+      await user.click(button);
+      expect(onSubmit).not.toHaveBeenCalled();
+    });
+
     it('should support aria-label', () => {
       render(<CTAButton aria-label="Buy Bitcoin">Buy</CTAButton>);
 
