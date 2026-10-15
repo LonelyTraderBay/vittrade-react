@@ -74,7 +74,14 @@ export function CopyConfirmationContractPage() {
     );
   }
   if (query.isError || !query.data) {
-    return <ErrorState onAction={() => void query.refetch()} />;
+    return (
+      <PageLayout>
+        <Header title="Xác nhận Copy" back />
+        <PageContent>
+          <ErrorState onAction={() => void query.refetch()} />
+        </PageContent>
+      </PageLayout>
+    );
   }
 
   const provider = query.data.provider;

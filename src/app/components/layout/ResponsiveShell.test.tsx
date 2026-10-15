@@ -1,4 +1,4 @@
-import { lazy, type ComponentType } from 'react';
+import { lazy, useState, type ComponentType } from 'react';
 import { afterEach, describe, expect, it } from 'vitest';
 import { fireEvent, screen } from '@testing-library/react';
 import { Route, Routes } from 'react-router';
@@ -22,6 +22,17 @@ function contextValue(isOffline: boolean) {
 
 const SuspendedPage = lazy(() => new Promise<{ default: ComponentType }>(() => {}));
 
+function DraftPage() {
+  const [draft, setDraft] = useState('');
+  return (
+    <input
+      aria-label="Registration draft"
+      value={draft}
+      onChange={(event) => setDraft(event.target.value)}
+    />
+  );
+}
+
 function setWidth(width: number) {
   Object.defineProperty(window, 'innerWidth', { configurable: true, value: width });
 }
@@ -31,6 +42,29 @@ afterEach(() => {
 });
 
 describe('ResponsiveAppLayout', () => {
+  it.each(['adaptive', 'centered'] as const)(
+    'preserves the route form and DOM identity across breakpoint changes in %s mode',
+    (desktopMode) => {
+      setWidth(1280);
+      renderWithProviders(
+        <Routes>
+          <Route element={<ResponsiveAppLayout desktopMode={desktopMode} />}>
+            <Route path="/r/auth/register" element={<DraftPage />} />
+          </Route>
+        </Routes>,
+        { routerProps: { initialEntries: ['/r/auth/register'] } },
+      );
+      const input = screen.getByRole('textbox', { name: 'Registration draft' });
+      fireEvent.change(input, { target: { value: 'Unsaved registration' } });
+      for (const width of [1, 390, 900, 1280]) {
+        setWidth(width);
+        fireEvent.resize(window);
+        expect(screen.getByRole('textbox', { name: 'Registration draft' })).toBe(input);
+        expect(input).toHaveValue('Unsaved registration');
+      }
+    },
+  );
+
   it('switches from the phone shell to the adaptive desktop shell on resize', () => {
     setWidth(390);
     const view = renderWithProviders(<ResponsiveAppLayout />);

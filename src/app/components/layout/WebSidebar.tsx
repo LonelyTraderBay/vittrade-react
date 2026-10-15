@@ -6,6 +6,7 @@ import {
   ArrowLeftRight,
   Wallet,
   Bell,
+  Newspaper,
   HelpCircle,
   Settings,
   Shield,
@@ -22,6 +23,7 @@ import {
 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
+import { WEB_AVATAR_GRADIENT } from '@/shared/theme/webTokens';
 import { useAuth } from '@/shared/session/useAuth';
 import { useUI } from '../../hooks/useUI';
 import { WEB_SIDEBAR_WIDTH, WEB_COMMAND_BAR_HEIGHT } from './webConstants';
@@ -110,6 +112,7 @@ const NAV_SECTIONS: NavSection[] = [
 
 const BOTTOM_ITEMS: NavItem[] = [
   { path: `${PREFIX}/notifications`, icon: Bell, label: 'Thông báo' },
+  { path: `${PREFIX}/news`, icon: Newspaper, label: 'Tin tức' },
   { path: `${PREFIX}/support`, icon: HelpCircle, label: 'Hỗ trợ' },
   { path: `${PREFIX}/profile/security`, icon: Shield, label: 'Bảo mật' },
   { path: `${PREFIX}/profile/settings`, icon: Settings, label: 'Cài đặt' },
@@ -147,6 +150,10 @@ export function WebSidebar() {
   };
 
   const isExactActive = (path: string) => location.pathname === path;
+  const isProfileCardActive =
+    location.pathname === `${PREFIX}/profile` ||
+    (location.pathname.startsWith(`${PREFIX}/profile/`) &&
+      !bottomItems.some((item) => isActive(item.path)));
 
   useEffect(() => {
     activeNavItemRef.current?.scrollIntoView?.({ block: 'nearest', inline: 'nearest' });
@@ -244,23 +251,6 @@ export function WebSidebar() {
                       >
                         {item.label}
                       </span>
-                      {item.badge && item.badge > 0 && (
-                        <span
-                          className="flex items-center justify-center rounded"
-                          style={{
-                            minWidth: 22,
-                            height: 20,
-                            padding: '0 6px',
-                            background: '#EF4444',
-                            fontSize: 11,
-                            fontWeight: 700,
-                            color: '#fff',
-                            borderRadius: 5,
-                          }}
-                        >
-                          {item.badge}
-                        </span>
-                      )}
                     </button>
 
                     {/* Sub-items */}
@@ -276,7 +266,7 @@ export function WebSidebar() {
                             className="web-sidebar-subitem flex items-center pl-3.5 rounded-r transition-colors"
                             style={{
                               height: 34,
-                              color: isExactActive(child.path) ? '#3B82F6' : c.text2,
+                              color: isExactActive(child.path) ? c.link : c.text2,
                               fontSize: 13,
                               fontWeight: isExactActive(child.path) ? 600 : 400,
                               background: isExactActive(child.path)
@@ -357,14 +347,18 @@ export function WebSidebar() {
         <button
           onClick={() => navigate(`${PREFIX}/profile`)}
           className="web-sidebar-item flex items-center gap-3 rounded-lg px-3 mt-2 transition-colors"
-          style={{ height: 52, background: c.hoverBg }}
+          aria-current={isProfileCardActive ? 'page' : undefined}
+          style={{
+            height: 52,
+            background: isProfileCardActive ? 'rgba(59,130,246,0.06)' : c.hoverBg,
+          }}
         >
           <div
             className="flex items-center justify-center shrink-0 rounded-lg"
             style={{
               width: 34,
               height: 34,
-              background: 'linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%)',
+              background: WEB_AVATAR_GRADIENT,
             }}
           >
             <span style={{ color: '#fff', fontSize: 13, fontWeight: 700 }}>

@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { ArrowLeft, BarChart3, Clock, Search, Users } from 'lucide-react';
 import { ErrorState } from '@/shared/ui/ErrorState';
@@ -42,7 +42,9 @@ function PredictionCard({ event }: { event: PredictionEvent }) {
     <button
       type="button"
       className="text-left"
-      onClick={() => navigate(`${prefix}/markets/predictions/event/${event.id}`)}
+      onClick={() =>
+        navigate(`${prefix}/markets/predictions/event/${encodeURIComponent(event.id)}`)
+      }
     >
       <TrCard className="p-4">
         <div className="flex items-start justify-between gap-3">
@@ -152,22 +154,34 @@ export function PredictionEventContractPage() {
   const canTrade = hasPermission('predictions:write') || hasPermission('predictions:trade');
   const [selectedOutcome, setSelectedOutcome] = useState('');
   const [shares, setShares] = useState('100');
+  const orderInFlight = useRef(false);
+  const orderKeys = useRef(new Map<string, string>());
   if (query.isPending) return <LoadingPage title="Prediction event" />;
   if (query.isError || !query.data) return <ErrorState onAction={() => void query.refetch()} />;
   const event = query.data;
   const outcome = selectedOutcome || event.outcomes[0]?.label || '';
   const submit = async () => {
-    const receipt = await order.mutateAsync({
-      request: {
-        eventId: event.id,
-        outcome,
-        side: 'buy',
-        orderType: 'market',
-        shares: Number(shares),
-      },
-      idempotencyKey: `prediction-order-${crypto.randomUUID()}`,
-    });
-    navigate(`${prefix}/markets/predictions/receipt/${receipt.id}`);
+    const amount = Number(shares);
+    if (!canTrade || !outcome || !Number.isFinite(amount) || amount <= 0 || orderInFlight.current)
+      return;
+    orderInFlight.current = true;
+    const request = {
+      eventId: event.id,
+      outcome,
+      side: 'buy' as const,
+      orderType: 'market' as const,
+      shares: amount,
+    };
+    const actionId = JSON.stringify(request);
+    const key = orderKeys.current.get(actionId) ?? `prediction-order-${crypto.randomUUID()}`;
+    orderKeys.current.set(actionId, key);
+    try {
+      const receipt = await order.mutateAsync({ request, idempotencyKey: key });
+      orderKeys.current.delete(actionId);
+      navigate(`${prefix}/markets/predictions/receipt/${encodeURIComponent(receipt.id)}`);
+    } finally {
+      orderInFlight.current = false;
+    }
   };
   return (
     <PageLayout>
@@ -175,9 +189,9 @@ export function PredictionEventContractPage() {
       <PageContent gap="default">
         <TrCard className="p-4">
           <p style={{ color: colors.primary, fontSize: 11 }}>{event.category}</p>
-          <h1 className="mt-1" style={{ color: colors.text1, fontSize: 20, fontWeight: 700 }}>
+          <h2 className="mt-1" style={{ color: colors.text1, fontSize: 20, fontWeight: 700 }}>
             {event.title}
-          </h1>
+          </h2>
           <div className="mt-3 flex gap-2" style={{ color: colors.text3, fontSize: 11 }}>
             <span>
               <BarChart3 size={12} className="mr-1 inline" />
@@ -198,6 +212,7 @@ export function PredictionEventContractPage() {
             <button
               key={item.label}
               type="button"
+              disabled={order.isPending}
               onClick={() => setSelectedOutcome(item.label)}
               className="rounded-xl p-3 text-left"
               style={{
@@ -206,7 +221,7 @@ export function PredictionEventContractPage() {
               }}
             >
               <span style={{ color: colors.text2, fontSize: 12 }}>{item.label}</span>
-              <strong className="mt-1 block" style={{ color: item.color, fontSize: 20 }}>
+              <strong className="mt-1 block" style={{ color: colors.text1, fontSize: 20 }}>
                 {item.chance}%
               </strong>
             </button>
@@ -214,23 +229,40 @@ export function PredictionEventContractPage() {
         </div>
         <TrCard className="p-4">
           <h2 style={{ color: colors.text1, fontWeight: 700 }}>Đặt vị thế</h2>
-          <div className="mt-3 flex gap-2">
-            <input
-              type="number"
-              min="1"
-              value={shares}
-              onChange={(event) => setShares(event.target.value)}
-              className="min-w-0 flex-1 rounded-xl px-3 py-3"
-              style={{ background: colors.surface2, color: colors.text1 }}
-            />
+          <div className="mt-3 flex items-end gap-2">
+            <div className="min-w-0 flex-1">
+              <label
+                htmlFor="prediction-shares"
+                className="mb-1 block text-xs"
+                style={{ color: colors.text2 }}
+              >
+                Số lượng cổ phần
+              </label>
+              <input
+                id="prediction-shares"
+                type="number"
+                disabled={order.isPending}
+                min="1"
+                value={shares}
+                onChange={(event) => setShares(event.target.value)}
+                className="w-full min-w-0 rounded-xl px-3 py-3"
+                style={{ background: colors.surface2, color: colors.text1 }}
+              />
+            </div>
             <button
               type="button"
-              disabled={!canTrade || !outcome || order.isPending || Number(shares) <= 0}
+              disabled={
+                !canTrade ||
+                !outcome ||
+                order.isPending ||
+                !Number.isFinite(Number(shares)) ||
+                Number(shares) <= 0
+              }
               onClick={() => void submit().catch(() => undefined)}
               className="rounded-xl px-4 py-3 font-semibold"
               style={{
                 background: canTrade ? colors.primary : colors.surface2,
-                color: canTrade ? '#fff' : colors.text3,
+                color: canTrade ? 'var(--tr-text-on-color)' : colors.text3,
               }}
             >
               {order.isPending ? 'Đang gửi…' : `Mua ${outcome}`}

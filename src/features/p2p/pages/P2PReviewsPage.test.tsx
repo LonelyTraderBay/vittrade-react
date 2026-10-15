@@ -1,16 +1,20 @@
-import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
+import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { renderWithProviders } from '@/test/test-utils';
+import { p2pApi } from '../api/p2p-api';
 import type { P2PReviewsResponse } from '../model/p2p-types';
 import { P2PReviewsPage } from './P2PReviewsPage';
 
 const server = setupServer();
 
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
-afterEach(() => server.resetHandlers());
+afterEach(() => {
+  server.resetHandlers();
+  vi.restoreAllMocks();
+});
 afterAll(() => server.close());
 
 const reviews: P2PReviewsResponse = {
@@ -35,6 +39,28 @@ const reviews: P2PReviewsResponse = {
 };
 
 describe('P2P reviews contract page', () => {
+  it('renders low ratings and the merchant reply without showing five filled stars', async () => {
+    server.use(
+      http.get('*/p2p/reviews', () =>
+        HttpResponse.json({
+          ...reviews,
+          averageRating: 2,
+          positiveCount: 0,
+          negativeCount: 1,
+          items: [
+            { ...reviews.items[0], rating: 2, type: 'negative', reply: 'We will investigate.' },
+          ],
+        }),
+      ),
+    );
+    renderWithProviders(<P2PReviewsPage />);
+    expect(await screen.findByText('Phản hồi: We will investigate.')).toBeInTheDocument();
+    const stars = screen.getByRole('img', { name: '2 sao' }).querySelectorAll('svg');
+    expect(stars).toHaveLength(5);
+    expect(
+      Array.from(stars).filter((star) => star.getAttribute('fill') === '#F59E0B'),
+    ).toHaveLength(2);
+  });
   it('loads received and given scopes through the typed query boundary', async () => {
     server.use(
       http.get('*/p2p/reviews', ({ request }) => {
@@ -54,6 +80,20 @@ describe('P2P reviews contract page', () => {
     expect(await screen.findByText('merchant-one')).toBeInTheDocument();
   });
 
+  it('defaults absent summary counts to zero at the page boundary', async () => {
+    vi.spyOn(p2pApi, 'listReviews').mockResolvedValueOnce({
+      items: [],
+      total: 0,
+      averageRating: 0,
+    } as unknown as P2PReviewsResponse);
+
+    renderWithProviders(<P2PReviewsPage />);
+
+    expect(await screen.findByText('Tích cực')).toBeInTheDocument();
+    expect(screen.getByText('Tích cực').parentElement).toHaveTextContent('0');
+    expect(screen.getByText('Tiêu cực').parentElement).toHaveTextContent('0');
+  });
+
   it('renders empty and retryable error states', async () => {
     let shouldFail = true;
     server.use(
@@ -68,6 +108,6 @@ describe('P2P reviews contract page', () => {
     expect(await screen.findByText('Không thể tải đánh giá P2P')).toBeInTheDocument();
     shouldFail = false;
     await userEvent.click(screen.getByRole('button', { name: 'Thử lại' }));
-    expect(await screen.findByRole('status', { name: 'No P2P reviews' })).toBeInTheDocument();
+    expect(await screen.findByRole('status')).toHaveTextContent('Chưa có đánh giá nào');
   });
 });

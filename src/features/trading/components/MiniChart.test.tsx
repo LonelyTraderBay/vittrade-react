@@ -72,7 +72,12 @@ describe('MiniChart', () => {
     );
 
     expect(await screen.findByText('Tap for details')).toBeInTheDocument();
+    expect(screen.getByText('Tap for details')).toHaveStyle({ background: 'var(--tr-surface)' });
     expect(screen.getByText('24H')).toBeInTheDocument();
+    expect(screen.getByText('24H')).toHaveStyle({
+      background: 'var(--tr-surface)',
+      color: 'var(--tr-success-text)',
+    });
     expect(screen.getByRole('button', { name: '1D' })).toBeInTheDocument();
     expect(createChartMock).toHaveBeenCalledTimes(1);
     expect(chart.addSeries).toHaveBeenCalledTimes(3);

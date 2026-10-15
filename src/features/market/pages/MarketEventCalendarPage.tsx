@@ -69,6 +69,12 @@ export function MarketEventCalendarPage() {
         <div className="flex gap-2 overflow-x-auto" role="group" aria-label="Lọc mức tác động">
           {impacts.map((option) => {
             const active = impact === option.value;
+            const impactTextColor = {
+              all: colors.text2,
+              high: colors.errorText,
+              medium: colors.warningText,
+              low: colors.successText,
+            }[option.value];
             return (
               <button
                 key={option.value}
@@ -79,7 +85,7 @@ export function MarketEventCalendarPage() {
                 style={{
                   background: active ? `${option.color}14` : 'transparent',
                   border: `1px solid ${active ? `${option.color}35` : colors.borderSolid}`,
-                  color: active ? option.color : colors.text3,
+                  color: active ? impactTextColor : colors.text2,
                   fontSize: 10,
                 }}
               >
@@ -143,7 +149,10 @@ export function MarketEventCalendarPage() {
                         {eventImpact?.label ?? event.impact}
                       </span>
                       <span
-                        style={{ color: event.confirmed ? '#10B981' : colors.text3, fontSize: 9 }}
+                        style={{
+                          color: event.confirmed ? 'var(--tr-success-text)' : colors.text3,
+                          fontSize: 9,
+                        }}
                       >
                         {event.confirmed ? 'Đã xác nhận' : 'Chưa xác nhận'}
                       </span>

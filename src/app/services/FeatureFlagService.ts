@@ -14,6 +14,8 @@
  * @version 2.0 (Phase 2 - Sprint 2)
  */
 
+import { captureException } from '@/shared/telemetry/telemetry';
+import { z } from 'zod';
 import type {
   FeatureFlag,
   UserContext,
@@ -27,6 +29,46 @@ import {
 } from '@/features/dca/model/dca-feature-flags';
 import { env } from '@/shared/config/env';
 import { browserStorage } from '@/shared/lib/browser-storage';
+
+const featureFlagSchema = z
+  .object({
+    key: z.string(),
+    name: z.string(),
+    description: z.string(),
+    enabled: z.boolean(),
+    rolloutPercentage: z.number().finite().optional(),
+    userSegments: z.array(z.string()).optional(),
+    variants: z
+      .array(
+        z
+          .object({
+            key: z.string(),
+            name: z.string(),
+            weight: z.number().finite(),
+            value: z.unknown(),
+          })
+          .passthrough(),
+      )
+      .optional(),
+    defaultVariant: z.string().optional(),
+    expiresAt: z
+      .union([
+        z.date(),
+        z
+          .string()
+          .datetime({ offset: true })
+          .transform((value) => new Date(value)),
+      ])
+      .optional(),
+    metadata: z.record(z.string(), z.unknown()).optional(),
+  })
+  .passthrough();
+const featureFlagDictionarySchema = z.record(z.string(), featureFlagSchema);
+const featureFlagCacheSchema = z.object({
+  flags: z.unknown(),
+  timestamp: z.number().finite(),
+});
+const variantAssignmentsSchema = z.record(z.string(), z.string());
 
 /* ═══════════════════════════════════════════
    SERVICE CLASS
@@ -88,13 +130,13 @@ class FeatureFlagService implements IFeatureFlagService {
    */
   isEnabled(flagKey: string, userContext?: UserContext): boolean {
     // Check override first
-    if (flagKey in this.overrides) {
+    if (Object.hasOwn(this.overrides, flagKey)) {
       return Boolean(this.overrides[flagKey]);
     }
 
-    const flag = this.flags[flagKey];
+    const flag = Object.hasOwn(this.flags, flagKey) ? this.flags[flagKey] : undefined;
     if (!flag) {
-      if (this.config.debug) {
+      if (env.isDev && this.config.debug) {
         console.warn(`[FeatureFlags] Flag not found: ${flagKey}`);
       }
       return false;
@@ -129,11 +171,11 @@ class FeatureFlagService implements IFeatureFlagService {
    */
   getValue<T>(flagKey: string, defaultValue: T, userContext?: UserContext): T {
     // Check override first
-    if (flagKey in this.overrides) {
+    if (Object.hasOwn(this.overrides, flagKey)) {
       return this.overrides[flagKey] as T;
     }
 
-    const flag = this.flags[flagKey];
+    const flag = Object.hasOwn(this.flags, flagKey) ? this.flags[flagKey] : undefined;
     if (!flag) {
       return defaultValue;
     }
@@ -153,14 +195,14 @@ class FeatureFlagService implements IFeatureFlagService {
    * Get variant for A/B test
    */
   getVariant(flagKey: string, userContext?: UserContext): string {
-    const flag = this.flags[flagKey];
+    const flag = Object.hasOwn(this.flags, flagKey) ? this.flags[flagKey] : undefined;
     if (!flag || !flag.variants || flag.variants.length === 0) {
       return flag?.defaultVariant || 'control';
     }
 
     // Check if already assigned
     const assignmentKey = this.getAssignmentKey(flagKey, userContext);
-    if (assignmentKey in this.variantAssignments) {
+    if (Object.hasOwn(this.variantAssignments, assignmentKey)) {
       return this.variantAssignments[assignmentKey];
     }
 
@@ -171,7 +213,7 @@ class FeatureFlagService implements IFeatureFlagService {
     this.variantAssignments[assignmentKey] = variant;
     this.saveVariantAssignments();
 
-    if (this.config.debug) {
+    if (env.isDev && this.config.debug) {
       // eslint-disable-next-line no-console -- debug-only assignment diagnostics are intentional
       console.log(`[FeatureFlags] Assigned variant "${variant}" for flag "${flagKey}"`);
     }
@@ -190,9 +232,9 @@ class FeatureFlagService implements IFeatureFlagService {
    * Override flag value (for testing/QA)
    */
   override(flagKey: string, value: unknown): void {
-    this.overrides[flagKey] = value;
+    this.overrides = { ...this.overrides, [flagKey]: value };
 
-    if (this.config.debug) {
+    if (env.isDev && this.config.debug) {
       // eslint-disable-next-line no-console -- debug-only override diagnostics are intentional
       console.log(`[FeatureFlags] Override "${flagKey}" = ${value}`);
     }
@@ -201,7 +243,8 @@ class FeatureFlagService implements IFeatureFlagService {
     try {
       browserStorage.session.setItem('feature_flag_overrides', JSON.stringify(this.overrides));
     } catch (error) {
-      console.error('[FeatureFlags] Failed to save overrides:', error);
+      captureException(error, { area: 'feature-flags', operation: 'save-overrides' });
+      if (env.isDev) console.error('[FeatureFlags] Failed to save overrides:', error);
     }
 
     this.notifyChange();
@@ -216,10 +259,11 @@ class FeatureFlagService implements IFeatureFlagService {
     try {
       browserStorage.session.removeItem('feature_flag_overrides');
     } catch (error) {
-      console.error('[FeatureFlags] Failed to clear overrides:', error);
+      captureException(error, { area: 'feature-flags', operation: 'clear-overrides' });
+      if (env.isDev) console.error('[FeatureFlags] Failed to clear overrides:', error);
     }
 
-    if (this.config.debug) {
+    if (env.isDev && this.config.debug) {
       // eslint-disable-next-line no-console -- debug-only state diagnostics are intentional
       console.log('[FeatureFlags] Cleared all overrides');
     }
@@ -237,7 +281,8 @@ class FeatureFlagService implements IFeatureFlagService {
 
     try {
       const response = await fetch(this.config.remoteConfigUrl);
-      const remoteFlags = await response.json();
+      if (!response.ok) throw new Error('Remote feature configuration request failed.');
+      const remoteFlags = featureFlagDictionarySchema.parse(await response.json());
 
       // Merge with local flags
       this.flags = {
@@ -251,12 +296,13 @@ class FeatureFlagService implements IFeatureFlagService {
         this.saveToCache();
       }
 
-      if (this.config.debug) {
+      if (env.isDev && this.config.debug) {
         // eslint-disable-next-line no-console -- debug-only refresh diagnostics are intentional
         console.log('[FeatureFlags] Refreshed from remote');
       }
     } catch (error) {
-      console.error('[FeatureFlags] Failed to refresh:', error);
+      captureException(error, { area: 'feature-flags', operation: 'refresh' });
+      if (env.isDev) console.error('[FeatureFlags] Failed to refresh:', error);
     }
   }
 
@@ -328,7 +374,8 @@ class FeatureFlagService implements IFeatureFlagService {
       };
       browserStorage.local.setItem('feature_flags_cache', JSON.stringify(cacheData));
     } catch (error) {
-      console.error('[FeatureFlags] Failed to save cache:', error);
+      captureException(error, { area: 'feature-flags', operation: 'save-cache' });
+      if (env.isDev) console.error('[FeatureFlags] Failed to save cache:', error);
     }
   }
 
@@ -340,7 +387,7 @@ class FeatureFlagService implements IFeatureFlagService {
       const cached = browserStorage.local.getItem('feature_flags_cache');
       if (!cached) return;
 
-      const cacheData = JSON.parse(cached);
+      const cacheData = featureFlagCacheSchema.parse(JSON.parse(cached));
 
       // Check if cache is still valid
       const age = Date.now() - cacheData.timestamp;
@@ -351,15 +398,16 @@ class FeatureFlagService implements IFeatureFlagService {
 
       this.flags = {
         ...this.flags,
-        ...cacheData.flags,
+        ...featureFlagDictionarySchema.parse(cacheData.flags),
       };
 
-      if (this.config.debug) {
+      if (env.isDev && this.config.debug) {
         // eslint-disable-next-line no-console -- debug-only cache diagnostics are intentional
         console.log('[FeatureFlags] Loaded from cache');
       }
     } catch (error) {
-      console.error('[FeatureFlags] Failed to load cache:', error);
+      captureException(error, { area: 'feature-flags', operation: 'load-cache' });
+      if (env.isDev) console.error('[FeatureFlags] Failed to load cache:', error);
     }
   }
 
@@ -373,7 +421,8 @@ class FeatureFlagService implements IFeatureFlagService {
         JSON.stringify(this.variantAssignments),
       );
     } catch (error) {
-      console.error('[FeatureFlags] Failed to save assignments:', error);
+      captureException(error, { area: 'feature-flags', operation: 'save-assignments' });
+      if (env.isDev) console.error('[FeatureFlags] Failed to save assignments:', error);
     }
   }
 
@@ -384,10 +433,11 @@ class FeatureFlagService implements IFeatureFlagService {
     try {
       const stored = browserStorage.local.getItem('feature_flag_assignments');
       if (stored) {
-        this.variantAssignments = JSON.parse(stored);
+        this.variantAssignments = variantAssignmentsSchema.parse(JSON.parse(stored));
       }
     } catch (error) {
-      console.error('[FeatureFlags] Failed to load assignments:', error);
+      captureException(error, { area: 'feature-flags', operation: 'load-assignments' });
+      if (env.isDev) console.error('[FeatureFlags] Failed to load assignments:', error);
     }
   }
 
@@ -423,8 +473,10 @@ class FeatureFlagService implements IFeatureFlagService {
    */
   enableDebugMode(enabled: boolean): void {
     this.config.debug = enabled;
-    // eslint-disable-next-line no-console -- announces an explicit developer diagnostic mode change
-    console.log(`[FeatureFlags] Debug mode ${enabled ? 'enabled' : 'disabled'}`);
+    if (env.isDev) {
+      // eslint-disable-next-line no-console -- announces an explicit developer diagnostic mode change
+      console.log(`[FeatureFlags] Debug mode ${enabled ? 'enabled' : 'disabled'}`);
+    }
   }
 
   /**

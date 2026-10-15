@@ -62,9 +62,9 @@ export function ReferralContractPage() {
             </div>
             <div>
               <p style={{ color: colors.text3, fontSize: 11 }}>Current tier</p>
-              <h1 style={{ color: overview.currentTier.color, fontSize: 18, fontWeight: 700 }}>
+              <h2 style={{ color: colors.text1, fontSize: 18, fontWeight: 700 }}>
                 {overview.currentTier.icon} {overview.currentTier.name}
-              </h1>
+              </h2>
             </div>
           </div>
           <div
@@ -77,7 +77,12 @@ export function ReferralContractPage() {
             >
               {referralLink}
             </span>
-            <button type="button" onClick={() => void copyLink()} style={{ color: colors.primary }}>
+            <button
+              type="button"
+              aria-label="Sao chép đường dẫn giới thiệu"
+              onClick={() => void copyLink()}
+              style={{ color: colors.primary }}
+            >
               {copied ? <CheckCircle2 size={16} /> : <Copy size={16} />}
             </button>
           </div>
@@ -90,7 +95,7 @@ export function ReferralContractPage() {
           <p className="mt-2" style={{ color: '#FED7AA', fontSize: 12 }}>
             {overview.campaign.description}
           </p>
-          <p className="mt-3" style={{ color: '#FB923C', fontSize: 11 }}>
+          <p className="mt-3" style={{ color: '#FFF7ED', fontSize: 11 }}>
             {overview.campaign.daysLeft} days left ·{' '}
             {overview.campaign.totalParticipants.toLocaleString()} participants
           </p>
@@ -128,7 +133,7 @@ export function ReferralContractPage() {
                       {friend.joinedDate} · {friend.status}
                     </p>
                   </div>
-                  <span style={{ color: colors.buy, fontSize: 11 }}>
+                  <span style={{ color: colors.successText, fontSize: 11 }}>
                     ${friend.totalCommission.toFixed(2)}
                   </span>
                 </div>

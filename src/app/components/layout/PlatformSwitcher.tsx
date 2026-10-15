@@ -1,6 +1,7 @@
 import React, { useEffect, useLayoutEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router';
 import { Smartphone, Tablet, Monitor } from 'lucide-react';
+import { useBreakpoint } from '../../hooks/useBreakpoint';
 
 /**
  * ══════════════════════════════════════════════════════════
@@ -46,9 +47,13 @@ function getRoutePath(pathname: string): string {
   return pathname.replace(/^\/(w|t)\//, '/').replace(/^\/(w|t)$/, '/home');
 }
 
+function isAuthenticationRoute(pathname: string): boolean {
+  return /^\/(?:w\/|t\/|r\/)?auth(?:\/|$)/.test(pathname);
+}
+
 function keepsRouteShell(pathname: string): boolean {
   return (
-    /^\/(?:w\/|t\/|r\/)?auth(?:\/|$)/.test(pathname) ||
+    isAuthenticationRoute(pathname) ||
     pathname === '/onboarding' ||
     pathname.startsWith('/onboarding/') ||
     pathname === '/r' ||
@@ -60,6 +65,8 @@ function hasUnsubmittedFormChanges(): boolean {
   type FormControl = HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
   return Array.from(document.querySelectorAll<FormControl>('input, textarea, select')).some(
     (control) => {
+      // Preview selectors configure fixtures; they are not an unsubmitted product form.
+      if (control.closest('[data-testid="dev-preview-controls"]')) return false;
       if (control instanceof HTMLInputElement) {
         if (['button', 'hidden', 'reset', 'submit'].includes(control.type)) return false;
         return ['checkbox', 'radio'].includes(control.type)
@@ -76,11 +83,14 @@ function hasUnsubmittedFormChanges(): boolean {
 
 export function PlatformSwitcher({
   previewControlsVisible = false,
+  isEquivalentRoute,
 }: {
   previewControlsVisible?: boolean;
+  isEquivalentRoute?: (currentPathname: string, targetPathname: string) => boolean;
 } = {}) {
   const navigate = useNavigate();
   const location = useLocation();
+  const { isMobile } = useBreakpoint();
 
   // Detect current platform from route
   const currentPrefix = getCurrentPrefix(location.pathname);
@@ -92,9 +102,18 @@ export function PlatformSwitcher({
     const targetPrefix = PLATFORM_CONFIG[detectPlatform(window.innerWidth)].prefix;
     const curPrefix = getCurrentPrefix(location.pathname);
     if (targetPrefix !== curPrefix) {
-      navigate(targetPrefix + getRoutePath(location.pathname), { replace: true });
+      const targetPath = targetPrefix + getRoutePath(location.pathname);
+      if (isEquivalentRoute && !isEquivalentRoute(location.pathname, targetPath)) return;
+      navigate(
+        {
+          pathname: targetPath,
+          search: location.search,
+          hash: location.hash,
+        },
+        { replace: true },
+      );
     }
-  }, [location.pathname, navigate]);
+  }, [location.pathname, location.search, location.hash, navigate, isEquivalentRoute]);
 
   useEffect(() => {
     let debounceTimer: ReturnType<typeof setTimeout> | null = null;
@@ -110,7 +129,12 @@ export function PlatformSwitcher({
         // Only navigate if the target prefix differs from current
         if (targetPrefix !== curPrefix) {
           const routePath = getRoutePath(location.pathname);
-          navigate(targetPrefix + routePath, { replace: true });
+          const targetPath = targetPrefix + routePath;
+          if (isEquivalentRoute && !isEquivalentRoute(location.pathname, targetPath)) return;
+          navigate(
+            { pathname: targetPath, search: location.search, hash: location.hash },
+            { replace: true },
+          );
         }
       }, 250);
     }
@@ -120,10 +144,16 @@ export function PlatformSwitcher({
       window.removeEventListener('resize', handleResize);
       if (debounceTimer) clearTimeout(debounceTimer);
     };
-  }, [location.pathname, navigate]);
+  }, [location.pathname, location.search, location.hash, navigate, isEquivalentRoute]);
 
   const config = PLATFORM_CONFIG[currentPlatform];
   const Icon = config.icon;
+
+  if (
+    isAuthenticationRoute(location.pathname) ||
+    (previewControlsVisible && (currentPlatform === 'phone' || isMobile))
+  )
+    return null;
 
   return (
     <div
@@ -133,7 +163,7 @@ export function PlatformSwitcher({
         right: 16,
         height: 32,
         zIndex: previewControlsVisible ? 1200 : 9999,
-        background: `${config.color}18`,
+        background: 'var(--tr-surface)',
         border: `1px solid ${config.color}30`,
         backdropFilter: 'blur(12px)',
       }}

@@ -1,4 +1,6 @@
 import { describe, expect, it } from 'vitest';
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 import { renderHook, renderWithProviders, screen } from '@/test/test-utils';
 import { ALPHA, CRYPTO_COLORS, OPACITY, SEMANTIC_COLORS, withAlpha } from './colors';
 import { ICON_CONTAINER, ICON_SIZE, ICON_STROKE } from './icons';
@@ -33,7 +35,68 @@ import * as CoreTheme from './index';
 import { ThemeProvider } from './ThemeContext';
 import { useTheme } from './useTheme';
 
+const themeCss = readFileSync(resolve(process.cwd(), 'src/styles/theme.css'), 'utf8');
+
+function themeBlock(selector: string) {
+  const match = themeCss.match(new RegExp(`${selector}\\s*\\{([^}]+)\\}`));
+  if (!match) throw new Error(`Missing theme block: ${selector}`);
+  return match[1];
+}
+
+function themeColor(block: string, name: string) {
+  const match = block.match(new RegExp(`--${name}:\\s*(#[\\da-f]{6})`, 'i'));
+  if (!match) throw new Error(`Missing solid theme color: --${name}`);
+  return match[1];
+}
+
+function themeGradientStops(block: string, name: string) {
+  const match = block.match(new RegExp(`--${name}:\\s*([^;]+)`));
+  const stops = match?.[1].match(/#[\da-f]{6}/gi);
+  if (!stops?.length) throw new Error(`Missing gradient theme stops: --${name}`);
+  return stops;
+}
+
+function contrastRatio(foreground: string, background: string) {
+  const luminance = (color: string) => {
+    const channels = color
+      .slice(1)
+      .match(/.{2}/g)
+      ?.map((channel) => parseInt(channel, 16) / 255);
+    if (!channels || channels.length !== 3) throw new Error(`Invalid color: ${color}`);
+    const [red, green, blue] = channels.map((channel) =>
+      channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4,
+    );
+    return 0.2126 * red + 0.7152 * green + 0.0722 * blue;
+  };
+  const foregroundLuminance = luminance(foreground);
+  const backgroundLuminance = luminance(background);
+  return (
+    (Math.max(foregroundLuminance, backgroundLuminance) + 0.05) /
+    (Math.min(foregroundLuminance, backgroundLuminance) + 0.05)
+  );
+}
+
 describe('shared theme token contracts', () => {
+  it('keeps muted portfolio text at WCAG AA contrast across dark and light hero gradients', () => {
+    for (const block of [themeBlock(':root'), themeBlock('\\.light')]) {
+      const foreground = themeColor(block, 'tr-portfolio-text-muted');
+      const backgrounds = themeGradientStops(block, 'tr-portfolio-bg');
+      for (const background of backgrounds) {
+        expect(contrastRatio(foreground, background)).toBeGreaterThanOrEqual(4.5);
+      }
+    }
+  });
+
+  it('keeps the primary state indicator at non-text contrast on page and surface backgrounds', () => {
+    for (const block of [themeBlock(':root'), themeBlock('\\.light')]) {
+      const foreground = themeColor(block, 'tr-primary');
+      for (const backgroundToken of ['tr-bg', 'tr-surface']) {
+        const background = themeColor(block, backgroundToken);
+        expect(contrastRatio(foreground, background)).toBeGreaterThanOrEqual(3);
+      }
+    }
+  });
+
   it('maps every documented color alpha and safely handles custom hex alpha', () => {
     expect(Object.keys(ALPHA)).toEqual(Object.keys(OPACITY));
     for (const [token, suffix] of Object.entries(ALPHA)) {

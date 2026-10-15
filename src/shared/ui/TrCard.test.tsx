@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { fireEvent } from '@testing-library/react';
 import { renderWithTheme, screen } from '@/test/test-utils';
-import { TrCard } from '@/shared/ui/TrCard';
+import { TrCard, TrCardStat } from '@/shared/ui/TrCard';
 
 /**
  * ══════════════════════════════════════════════════════════
@@ -11,6 +11,28 @@ import { TrCard } from '@/shared/ui/TrCard';
  */
 
 describe('TrCard', () => {
+  it('supports CSS padding overrides and radius tokens', () => {
+    renderWithTheme(
+      <TrCard padding="12px 20px" radius="full">
+        Padded
+      </TrCard>,
+    );
+    expect(screen.getByText('Padded')).toHaveStyle({ padding: '12px 20px' });
+    expect(screen.getByText('Padded')).toHaveClass('rounded-full');
+  });
+
+  it.each([
+    { density: 'compact', padding: '8px' },
+    { density: 'tool', padding: '8px' },
+    { density: 'relaxed', padding: '16px' },
+    { density: 'hero', padding: '16px' },
+    { density: 'standard', padding: '12px' },
+  ] as const)('applies $density inner stat spacing', ({ density, padding }) => {
+    renderWithTheme(<TrCardStat density={density}>Stat</TrCardStat>);
+    expect(screen.getByText('Stat')).toHaveStyle({ padding });
+    expect(screen.getByText('Stat')).not.toHaveClass('p-2.5');
+  });
+
   describe('Rendering', () => {
     it('should render children correctly', () => {
       renderWithTheme(<TrCard>Test Content</TrCard>);

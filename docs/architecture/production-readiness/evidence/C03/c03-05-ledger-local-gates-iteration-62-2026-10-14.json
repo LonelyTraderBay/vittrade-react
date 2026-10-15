@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-10-14T08:20:00.000Z",
+  "sourceHead": "d3c8a578beb939cc4f7bc57178a5bf0c37f454de",
+  "kind": "local_repository_validation_pre_self_audit",
+  "environment": "Windows local; Node v24.19.0; Git working tree with iteration 62 evidence/plan updates; no backend/staging.",
+  "gates": {
+    "architectureInventory": {
+      "command": "node scripts/generate-architecture-inventory.mjs --check",
+      "exitCode": 0,
+      "pages": 130,
+      "routes": 428,
+      "components": 149,
+      "dataModules": 0,
+      "services": 32,
+      "mocks": 28
+    },
+    "gitEol": {
+      "command": "node scripts/check-git-eol.mjs",
+      "exitCode": 0,
+      "paths": 4180,
+      "lf": 2077,
+      "missingTerminators": 0,
+      "preservedNonText": 2100,
+      "protectedWindowsCrlf": 3
+    },
+    "prettier": {
+      "command": "node node_modules/prettier/bin/prettier.cjs --check PLAN.md and iteration 62 evidence",
+      "exitCode": 0,
+      "result": "pass"
+    },
+    "jsonParsing": {
+      "files": 5,
+      "result": "pass"
+    },
+    "diffCheck": {
+      "command": "git diff --check",
+      "exitCode": 0
+    }
+  },
+  "expected": "Generated inventory, EOL policy, JSON evidence, Prettier and whitespace checks pass without reformatting the readiness ledger or changing code thresholds.",
+  "actual": "Architecture inventory passed (130/428/149/0/32/28); Git EOL passed on 4180 paths (2077 LF, 0 missing terminators, 2100 preserved non-text, 3 protected CRLF); all five current JSON files parse; targeted Prettier and git diff --check passed. The tracker consistency check is performed after the ledger update and is recorded in the external session manifest after self-audit.",
+  "result": "pass",
+  "limitations": [
+    "These local repository consistency checks are not hosted CI, UI acceptance, backend/staging, UAT or production proof.",
+    "The readiness tracker is kept in canonical JSON.stringify serialization; no whole-ledger Prettier reflow is applied.",
+    "The two local Playwright attempts remain incomplete and are not counted as passing tests."
+  ]
+}

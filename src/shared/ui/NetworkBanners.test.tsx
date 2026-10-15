@@ -6,7 +6,9 @@ describe('OfflineBanner', () => {
   it('shows the default offline notice and optional stale-data hint', () => {
     render(<OfflineBanner showStaleHint />);
 
-    expect(screen.getByText('Mất kết nối. Đang hiển thị dữ liệu gần nhất.')).toBeInTheDocument();
+    expect(screen.getByText('Mất kết nối. Đang hiển thị dữ liệu gần nhất.')).toHaveStyle({
+      color: 'var(--tr-warning-text)',
+    });
     expect(screen.getByText('Cập nhật lần cuối: 2 phút trước')).toBeInTheDocument();
   });
 
@@ -14,6 +16,7 @@ describe('OfflineBanner', () => {
     render(<OfflineBanner variant="error" isReconnecting showStaleHint message="Offline" />);
 
     expect(screen.getByText('Đang kết nối lại...')).toBeInTheDocument();
+    expect(screen.getByText('Đang kết nối lại...')).toHaveStyle({ color: 'var(--tr-link)' });
     expect(screen.getByText('Tự động thử lại sau vài giây')).toBeInTheDocument();
     expect(screen.queryByText('Cập nhật lần cuối: 2 phút trước')).not.toBeInTheDocument();
   });
@@ -39,6 +42,9 @@ describe('Banner', () => {
     render(<Banner variant="warn" message="Check the network" />);
 
     expect(screen.getByText('Check the network')).toBeInTheDocument();
+    expect(screen.getByText('Check the network')).toHaveStyle({
+      color: 'var(--tr-warning-text)',
+    });
     expect(screen.queryByText('Live data is current')).not.toBeInTheDocument();
   });
 });

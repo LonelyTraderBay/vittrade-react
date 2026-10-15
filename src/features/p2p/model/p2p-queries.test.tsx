@@ -256,6 +256,73 @@ const mutationCases = [
   api: keyof typeof p2pApi;
 }>;
 
+const missingIdMutationCases = [
+  {
+    title: 'chat message',
+    hook: () => queries.useP2PChatMessageMutation(undefined),
+    variables: { request: {}, idempotencyKey: 'chat-missing-id' },
+    api: 'sendChatMessage',
+  },
+  {
+    title: 'mark paid',
+    hook: () => queries.useP2PMarkPaidMutation(undefined),
+    variables: { idempotencyKey: 'mark-paid-missing-id' },
+    api: 'markOrderPaid',
+  },
+  {
+    title: 'release order',
+    hook: () => queries.useP2PReleaseOrderMutation(undefined),
+    variables: { verificationToken: 'token', idempotencyKey: 'release-missing-id' },
+    api: 'releaseOrder',
+  },
+  {
+    title: 'release challenge',
+    hook: () => queries.useP2PReleaseChallengeMutation(undefined),
+    api: 'createReleaseChallenge',
+  },
+  {
+    title: 'release verification',
+    hook: () => queries.useP2PReleaseVerificationMutation(undefined),
+    variables: { challengeId: 'challenge-1', code: '123456' },
+    api: 'verifyReleaseChallenge',
+  },
+  {
+    title: 'cancel order',
+    hook: () => queries.useP2PCancelOrderMutation(undefined),
+    variables: { request: {}, idempotencyKey: 'cancel-missing-id' },
+    api: 'cancelOrder',
+  },
+  {
+    title: 'rate order',
+    hook: () => queries.useP2PRateOrderMutation(undefined),
+    variables: { request: {}, idempotencyKey: 'rate-missing-id' },
+    api: 'rateOrder',
+  },
+  {
+    title: 'payment proof',
+    hook: () => queries.useP2PPaymentProofMutation(undefined),
+    variables: { request: {}, idempotencyKey: 'proof-missing-id' },
+    api: 'submitPaymentProof',
+  },
+  {
+    title: 'dispute message',
+    hook: () => queries.useP2PDisputeMessageMutation(undefined),
+    variables: { request: {}, idempotencyKey: 'dispute-message-missing-id' },
+    api: 'sendDisputeMessage',
+  },
+  {
+    title: 'dispute escalation',
+    hook: () => queries.useP2PDisputeEscalationMutation(undefined),
+    variables: { request: {}, idempotencyKey: 'dispute-escalation-missing-id' },
+    api: 'escalateDispute',
+  },
+] satisfies Array<{
+  title: string;
+  hook: () => unknown;
+  variables?: unknown;
+  api: keyof typeof p2pApi;
+}>;
+
 beforeEach(() => {
   for (const method of Object.keys(apiMethods)) {
     vi.spyOn(apiMethods, method).mockResolvedValue({});
@@ -309,6 +376,26 @@ describe('P2P mutation hooks', () => {
 
       expect(apiMethods[api]).toHaveBeenCalled();
       unmount();
+    },
+  );
+
+  it.each(missingIdMutationCases)(
+    'rejects $title before making a request when its resource ID is missing',
+    async ({ hook, variables, api }) => {
+      const client = createQueryClient();
+      const rendered = renderHook(
+        hook as () => UseMutationResult<unknown, Error, unknown, unknown>,
+        { wrapper: createWrapper(client) },
+      );
+
+      await act(async () => {
+        await expect(rendered.result.current.mutateAsync(variables)).rejects.toThrow(
+          'P2P resource ID is required.',
+        );
+      });
+
+      expect(apiMethods[api]).not.toHaveBeenCalled();
+      rendered.unmount();
     },
   );
 

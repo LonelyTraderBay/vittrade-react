@@ -42,9 +42,10 @@ export const MarketItem = memo(function MarketItem({
     <div
       role="button"
       tabIndex={0}
-      onClick={() => navigate(`${prefix}/pair/${pair.id}`)}
+      onClick={() => navigate(`${prefix}/pair/${encodeURIComponent(pair.id)}`)}
       onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') navigate(`${prefix}/pair/${pair.id}`);
+        if (e.key === 'Enter' || e.key === ' ')
+          navigate(`${prefix}/pair/${encodeURIComponent(pair.id)}`);
       }}
       className="flex items-center gap-3 px-5 w-full active:opacity-70 transition-opacity cursor-pointer"
       style={{
@@ -64,7 +65,7 @@ export const MarketItem = memo(function MarketItem({
           border: `1.5px solid ${hexToRgba(pair.logoColor, 30)}`,
         }}
       >
-        <span style={{ color: pair.logoColor, fontSize: 12, fontWeight: 700 }}>
+        <span style={{ color: c.text1, fontSize: 12, fontWeight: 700 }}>
           {pair.baseAsset.slice(0, 3)}
         </span>
       </div>
@@ -105,7 +106,7 @@ export const MarketItem = memo(function MarketItem({
           className="rounded-lg px-2 py-1"
           style={{
             background: isPositive ? 'rgba(16,185,129,0.12)' : 'rgba(239,68,68,0.12)',
-            color: isPositive ? '#10B981' : '#EF4444',
+            color: isPositive ? c.successText : c.errorText,
             fontSize: 12,
             fontWeight: 600,
           }}
@@ -128,8 +129,8 @@ export const MarketItem = memo(function MarketItem({
         >
           <Star
             size={14}
-            fill={isFavorite ? '#F59E0B' : 'none'}
-            color={isFavorite ? '#F59E0B' : c.text3}
+            fill={isFavorite ? c.primary : 'none'}
+            color={isFavorite ? c.primary : c.text3}
           />
         </button>
       )}

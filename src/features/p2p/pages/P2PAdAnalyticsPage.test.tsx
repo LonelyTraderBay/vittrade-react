@@ -63,6 +63,20 @@ const analytics: P2PAdAnalytics = {
 };
 
 describe('P2P ad analytics contract page', () => {
+  it('identifies analytics for a buy advertisement without relabeling it as a sale', async () => {
+    server.use(
+      http.get('*/p2p/ads/ad-1', () => HttpResponse.json({ ...ad, type: 'buy' })),
+      http.get('*/p2p/ads/ad-1/analytics', () => HttpResponse.json(analytics)),
+    );
+    renderWithProviders(
+      <Routes>
+        <Route path="/p2p/ad-analytics/:id" element={<P2PAdAnalyticsPage />} />
+      </Routes>,
+      { routerProps: { initialEntries: ['/p2p/ad-analytics/ad-1'] } },
+    );
+    expect(await screen.findByText('Mua USDT')).toBeInTheDocument();
+    expect(screen.queryByText('Bán USDT')).not.toBeInTheDocument();
+  });
   it('loads ad identity and analytics through separate typed queries', async () => {
     server.use(
       http.get('*/p2p/ads/ad-1', () => HttpResponse.json(ad)),
