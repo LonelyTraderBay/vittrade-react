@@ -63,7 +63,7 @@ describe('CTAButton', () => {
 
       const button = container.firstChild as HTMLElement;
       expect(button.style.background).toContain('linear-gradient');
-      expect(button.style.background).toContain('rgb(239, 68, 68)');
+      expect(button.style.background).toContain('rgb(220, 38, 38)');
     });
 
     it('should render ghost variant', () => {
@@ -172,12 +172,12 @@ describe('CTAButton', () => {
       expect(onClick).not.toHaveBeenCalled();
     });
 
-    it('should use disabled styles when loading', () => {
+    it('should keep the variant styling visible while loading', () => {
       const { container } = render(<CTAButton loading>Loading</CTAButton>);
 
       const button = container.firstChild as HTMLElement;
-      expect(button.style.background).toBe('var(--tr-surface-2)');
-      expect(button.style.color).toBe('var(--tr-text-3)');
+      expect(button.style.background).toContain('linear-gradient');
+      expect(button.style.color).toBe('rgb(17, 24, 39)');
     });
   });
 
@@ -315,7 +315,7 @@ describe('CTAButton', () => {
       const { container } = render(<CTAButton variant="danger">Danger</CTAButton>);
 
       const button = container.firstChild as HTMLElement;
-      expect(button.style.boxShadow).toContain('rgba(239,68,68,0.3)');
+      expect(button.style.boxShadow).toContain('rgba(220,38,38,0.3)');
     });
 
     it('should have no shadow for ghost variant', () => {
@@ -362,11 +362,11 @@ describe('CTAButton', () => {
       expect(button).toHaveClass('font-semibold');
     });
 
-    it('should have text-white class', () => {
+    it('should not force a white foreground across variants', () => {
       const { container } = render(<CTAButton>Button</CTAButton>);
 
       const button = container.firstChild as HTMLElement;
-      expect(button).toHaveClass('text-white');
+      expect(button).not.toHaveClass('text-white');
     });
 
     it('should have ripple class', () => {
@@ -399,7 +399,7 @@ describe('CTAButton', () => {
 
       expect(screen.getByText('Bán BTC')).toBeInTheDocument();
       const button = container.firstChild as HTMLElement;
-      expect(button.style.background).toContain('rgb(239, 68, 68)');
+      expect(button.style.background).toContain('rgb(220, 38, 38)');
     });
 
     it('should show loading state during submission', () => {
@@ -435,11 +435,11 @@ describe('CTAButton', () => {
       expect(spinner).toHaveClass('h-5');
     });
 
-    it('should have white spinner border', () => {
+    it('should use the current foreground for the spinner', () => {
       const { container } = render(<CTAButton loading>Loading</CTAButton>);
 
       const spinner = container.querySelector('.animate-spin') as HTMLElement;
-      expect(spinner).toHaveClass('border-t-white');
+      expect(spinner).toHaveClass('border-current', 'border-t-transparent');
     });
 
     it('should have rounded spinner', () => {

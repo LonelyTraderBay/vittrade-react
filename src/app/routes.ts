@@ -18,7 +18,7 @@ import { env, isDevelopmentBuild } from '@/shared/config/env';
  *  - Information density
  */
 
-import { createBrowserRouter } from 'react-router';
+import { createBrowserRouter, matchRoutes, type RouteObject } from 'react-router';
 import React from 'react';
 import { Navigate } from 'react-router';
 import { RouteErrorBoundary } from './routes/RouteErrorBoundary';
@@ -329,11 +329,36 @@ const developmentRoutes = isDevelopmentBuild
    Router Definition — 3 Platform Shells
    ═══════════════════════════════════════════ */
 
-export const router = createBrowserRouter([
+let appRouteTree: RouteObject[] = [];
+
+function getRouteRenderIdentity(route: RouteObject): unknown {
+  const routeWithRender = route as RouteObject & {
+    Component?: React.ComponentType;
+    element?: React.ReactNode;
+    lazy?: unknown;
+  };
+  if (routeWithRender.Component) return routeWithRender.Component;
+  if (React.isValidElement(routeWithRender.element)) return routeWithRender.element.type;
+  return routeWithRender.lazy ?? null;
+}
+
+export function isAppRouteEquivalent(currentPathname: string, targetPathname: string) {
+  const currentMatches = matchRoutes(appRouteTree, currentPathname);
+  const targetMatches = matchRoutes(appRouteTree, targetPathname);
+  const currentLeaf = currentMatches?.[currentMatches.length - 1]?.route;
+  const targetLeaf = targetMatches?.[targetMatches.length - 1]?.route;
+  if (!currentLeaf || !targetLeaf) return false;
+
+  const currentIdentity = getRouteRenderIdentity(currentLeaf);
+  return currentIdentity !== null && currentIdentity === getRouteRenderIdentity(targetLeaf);
+}
+
+appRouteTree = [
   {
     path: '/',
     element: React.createElement(RootLayout, {
       developmentPreviewControls: DevelopmentPreviewControls,
+      isEquivalentRoute: isAppRouteEquivalent,
     }),
     errorElement: React.createElement(RouteErrorBoundary),
     children: [
@@ -504,4 +529,6 @@ export const router = createBrowserRouter([
       },
     ],
   },
-]);
+];
+
+export const router = createBrowserRouter(appRouteTree);

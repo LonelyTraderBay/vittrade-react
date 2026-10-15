@@ -1,0 +1,72 @@
+{
+  "observedAt": "2026-10-13T15:31:33.210Z",
+  "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
+  "tasks": 38,
+  "steps": 205,
+  "historicalSidecarsPreserved": 81,
+  "sharedRulesUnchanged": true,
+  "ciStructure": "pass",
+  "matrixSummary": {
+    "domains": 15,
+    "trackedOperations": 154,
+    "exactHandlerMappings": 154,
+    "operationsWithDirectSharedHandlerTestReferences": 21,
+    "scenariosDefined": 106,
+    "scenarioRowsWithFreshBrowserEvidence": 81,
+    "scenarioRowsFullyCoveredByFreshBrowserEvidence": 38,
+    "uniqueOperationsWithFreshBrowserEvidence": 88,
+    "runtimeEvidenceFresh": false,
+    "currentHead": "0bdab349c2863008984c89366ba71f02b094a44a",
+    "runtimeEvidenceRevision": "historical_baseline",
+    "freshScenarioEvidenceSidecars": 81,
+    "registeredScenarioEvidenceSidecars": 81,
+    "historicalBaselineScenarioEvidenceSidecars": 0,
+    "historicalBaselineSidecarsWithCurrentSourceHashes": 0,
+    "sourceHashStaleScenarioEvidenceSidecars": 0,
+    "financialDomainsWithPendingUnknownDuplicateCases": [
+      "earn",
+      "p2p",
+      "predictions",
+      "trading",
+      "wallet"
+    ]
+  },
+  "uiScope": {
+    "activeRouteDeclarations": 428,
+    "retiredRouteDeclarationsExcluded": [
+      {
+        "routeId": "ROUTE-076da8bdac7d",
+        "path": "arena",
+        "reason": "Source registration is now represented by the canonical routeConfig/createProtectedRoutes route; this is a ledger identity reconciliation, not URL removal."
+      }
+    ],
+    "urlRegistrations": 1465,
+    "uniqueResolvedUrlSamples": 1396,
+    "shellUrlRegistrations": {
+      "phone": 354,
+      "tablet": 349,
+      "web": 411,
+      "responsive": 351
+    },
+    "routeDeclarationsWithPageRecords": 418,
+    "routeDeclarationsWithoutPageRecords": 10,
+    "routeDeclarationsWithDirectScenarioLinks": 11,
+    "scenarioLinks": 26,
+    "scenarioCandidates": 338,
+    "routeDeclarationsWithAnyScenarioReference": 55,
+    "personaMappingsAssigned": 17,
+    "trackedPageRecords": 331,
+    "userAcceptedPages": 0,
+    "userAcceptanceScopePages": 128,
+    "backendOperationsVerified": 0,
+    "backendOperationsTotal": 154,
+    "activeRoutesWithHistoricalPreviewUrlParity": 426,
+    "activeRoutesComparedToHistoricalResolver": 428,
+    "activeRouteDeclarationsWithStaleResolverSource": 224,
+    "activeRouteDeclarationsWithMatchingResolverSource": 204
+  },
+  "limits": [
+    "Static CI config verification; no hosted execution or upload/download.",
+    "Local fixture reports and inventory are not backend, staging, production or user acceptance."
+  ]
+}

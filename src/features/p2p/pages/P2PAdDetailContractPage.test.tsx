@@ -1,7 +1,7 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { screen } from '@testing-library/react';
+import { act, fireEvent, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Route, Routes, useParams } from 'react-router';
 import { renderWithProviders } from '@/test/test-utils';
@@ -75,6 +75,72 @@ function authAdapterWithPermissions(permissions: string[]): AuthAdapter {
 }
 
 describe('P2P ad detail contract page', () => {
+  it('blocks order review when a loaded advertisement is no longer active', async () => {
+    server.use(http.get('*/p2p/ads/ad-1', () => HttpResponse.json({ ...ad, status: 'paused' })));
+    const user = userEvent.setup();
+    renderAdDetail(authAdapterWithPermissions(['market:read', 'p2p:read', 'p2p:order:create']));
+    expect(await screen.findByText('Merchant One')).toBeInTheDocument();
+    await user.type(screen.getByRole('spinbutton', { name: 'Fiat amount' }), '100000');
+    expect(await screen.findByRole('alert')).toHaveTextContent('Offer không còn khả dụng.');
+    expect(screen.getByRole('button', { name: 'Xem xác nhận đơn P2P' })).toBeDisabled();
+    expect(screen.queryByRole('button', { name: 'Confirm P2P order' })).not.toBeInTheDocument();
+  });
+  it('serializes two confirmations before React commits its pending state', async () => {
+    let releaseResponse!: () => void;
+    const gate = new Promise<void>((resolve) => {
+      releaseResponse = resolve;
+    });
+    const keys: string[] = [];
+    server.use(
+      http.get('*/p2p/ads/ad-1', () => HttpResponse.json(ad)),
+      http.post('*/p2p/orders', async ({ request }) => {
+        keys.push(request.headers.get('Idempotency-Key')!);
+        await gate;
+        return HttpResponse.json({ code: 'TEMPORARY_FAILURE' }, { status: 503 });
+      }),
+    );
+    const user = userEvent.setup();
+    renderAdDetail();
+    await user.type(await screen.findByRole('spinbutton', { name: 'Fiat amount' }), '100000');
+    await user.click(screen.getByRole('button', { name: 'Xem xác nhận đơn P2P' }));
+    const button = await screen.findByRole('button', { name: 'Confirm P2P order' });
+    act(() => {
+      fireEvent.click(button);
+      fireEvent.click(button);
+    });
+    try {
+      await waitFor(() => expect(keys.length).toBeGreaterThan(0));
+    } finally {
+      releaseResponse();
+    }
+    await waitFor(() => expect(button).not.toBeDisabled());
+    expect(keys).toHaveLength(1);
+  });
+
+  it('retains the same-intent key after a lost create response until an explicit retry', async () => {
+    const keys: string[] = [];
+    server.use(
+      http.get('*/p2p/ads/ad-1', () => HttpResponse.json(ad)),
+      http.post('*/p2p/orders', ({ request }) => {
+        keys.push(request.headers.get('Idempotency-Key')!);
+        return HttpResponse.error();
+      }),
+    );
+    const user = userEvent.setup();
+    renderAdDetail();
+    await user.type(await screen.findByRole('spinbutton', { name: 'Fiat amount' }), '100000');
+    await user.click(screen.getByRole('button', { name: 'Xem xác nhận đơn P2P' }));
+    const button = await screen.findByRole('button', { name: 'Confirm P2P order' });
+    await user.click(button);
+    await screen.findByRole('alert');
+    await waitFor(() => expect(button).not.toBeDisabled());
+    expect(keys).toHaveLength(1);
+    await user.click(button);
+    await waitFor(() => expect(keys).toHaveLength(2));
+    await waitFor(() => expect(button).not.toBeDisabled());
+    expect(keys[1]).toBe(keys[0]);
+  });
+
   it('loads the ad and creates an order with an idempotency key', async () => {
     let orderRequest: unknown;
     server.use(
@@ -295,6 +361,9 @@ describe('P2P ad detail contract page', () => {
       'Đang tạo…',
     );
     expect(screen.getByRole('button', { name: 'Confirm P2P order' })).toBeDisabled();
+    expect(screen.getByRole('spinbutton', { name: 'Fiat amount' })).toBeDisabled();
+    expect(screen.getByRole('button', { name: 'MoMo' })).toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Hủy' })).toBeDisabled();
     finishRequest(HttpResponse.json(receipt, { status: 201 }) as unknown as Response);
     expect(await screen.findByTestId('created-order-route')).toHaveTextContent('order-created');
   });

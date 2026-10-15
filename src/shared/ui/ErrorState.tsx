@@ -14,7 +14,7 @@ interface ErrorStateProps {
 }
 
 export function ErrorState({
-  icon = <AlertTriangle size={36} color="#EF4444" strokeWidth={1.5} />,
+  icon = <AlertTriangle size={36} color="var(--tr-error-text)" strokeWidth={1.5} />,
   title = 'Có lỗi xảy ra',
   message = 'Vui lòng thử lại sau hoặc kiểm tra kết nối mạng.',
   actionLabel = 'Thử lại',
@@ -43,7 +43,7 @@ export function ErrorState({
           className="flex items-center gap-2 px-6 py-3 rounded-2xl font-semibold text-sm"
           style={{
             background: 'rgba(239,68,68,0.12)',
-            color: '#EF4444',
+            color: 'var(--tr-error-text)',
             border: '1px solid rgba(239,68,68,0.3)',
           }}
         >
@@ -58,7 +58,7 @@ export function ErrorState({
           className="flex items-center gap-2 px-6 py-3 rounded-2xl font-semibold text-sm"
           style={{
             background: 'rgba(239,68,68,0.12)',
-            color: '#EF4444',
+            color: 'var(--tr-error-text)',
             border: '1px solid rgba(239,68,68,0.3)',
           }}
         >

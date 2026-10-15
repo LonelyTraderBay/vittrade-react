@@ -55,6 +55,9 @@ describe('TradingMarketPanel', () => {
   it('shows pair pricing and opens the pair switcher', () => {
     const { onOpenPairSwitcher } = renderPanel();
 
+    expect(
+      screen.getByRole('heading', { level: 1, name: 'Giao dịch BTC/USDT' }),
+    ).toBeInTheDocument();
     expect(screen.getByText('BTC/USDT')).toBeInTheDocument();
     expect(screen.getByText('65,000.00')).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: /BTC\/USDT/ }));
@@ -108,13 +111,13 @@ describe('TradingMarketPanel', () => {
   it('uses the down price color when the daily change is negative and there is no flash', () => {
     renderPanel({ pair: { ...pair, change24h: -1.5 }, isPositive: false });
 
-    expect(screen.getByText('65,000.00')).toHaveStyle({ color: '#EF4444' });
+    expect(screen.getByText('65,000.00')).toHaveStyle({ color: 'var(--tr-error-text)' });
   });
 
   it('prioritizes the upward live flash over a negative daily change', () => {
     renderPanel({ pair: { ...pair, change24h: -1.5 }, flash: 'up', isPositive: false });
 
-    expect(screen.getByText('65,000.00')).toHaveStyle({ color: '#10B981' });
+    expect(screen.getByText('65,000.00')).toHaveStyle({ color: 'var(--tr-success-text)' });
   });
 
   it.each([

@@ -38,7 +38,14 @@ export function CopyConfigurationContractPage() {
     );
   }
   if (query.isError || !query.data) {
-    return <ErrorState onAction={() => void query.refetch()} />;
+    return (
+      <PageLayout>
+        <Header title="Cấu hình Copy" back />
+        <PageContent>
+          <ErrorState onAction={() => void query.refetch()} />
+        </PageContent>
+      </PageLayout>
+    );
   }
 
   const provider = query.data.provider;

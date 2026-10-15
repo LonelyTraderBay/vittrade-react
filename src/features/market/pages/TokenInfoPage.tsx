@@ -71,7 +71,13 @@ export function TokenInfoPage() {
               >
                 {fmtPrice(pair.price)}
               </p>
-              <p style={{ color: positive ? '#10B981' : '#EF4444', fontSize: 11, fontWeight: 700 }}>
+              <p
+                style={{
+                  color: positive ? 'var(--tr-success-text)' : 'var(--tr-error-text)',
+                  fontSize: 11,
+                  fontWeight: 700,
+                }}
+              >
                 {positive ? (
                   <ArrowUpRight size={12} className="inline" />
                 ) : (
@@ -85,9 +91,14 @@ export function TokenInfoPage() {
             <SparklineChart data={pair.sparklineData} isPositive={positive} />
           </div>
           <button
-            onClick={() => navigate(`${prefix}/trade/${pair.id}`)}
+            onClick={() => navigate(`${prefix}/trade/${encodeURIComponent(pair.id)}`)}
             className="w-full mt-3 rounded-xl py-3"
-            style={{ background: '#3B82F6', color: '#fff', fontSize: 12, fontWeight: 700 }}
+            style={{
+              background: 'var(--tr-info)',
+              color: 'var(--tr-text-on-color)',
+              fontSize: 12,
+              fontWeight: 700,
+            }}
           >
             Giao dịch {pair.symbol}
           </button>
@@ -108,13 +119,13 @@ export function TokenInfoPage() {
             label="Cao nhất 24h"
             value={fmtPrice(pair.high24h)}
             icon={ArrowUpRight}
-            color="#10B981"
+            color="var(--tr-success-text)"
           />
           <Metric
             label="Thấp nhất 24h"
             value={fmtPrice(pair.low24h)}
             icon={ArrowDownRight}
-            color="#EF4444"
+            color="var(--tr-error-text)"
           />
         </div>
 
@@ -126,14 +137,14 @@ export function TokenInfoPage() {
             <InfoRow
               label="Mức thay đổi 24h"
               value={`${positive ? '+' : ''}${fmtPct(pair.change24h)}`}
-              color={positive ? '#10B981' : '#EF4444'}
+              color={positive ? 'var(--tr-success-text)' : 'var(--tr-error-text)'}
             />
           </TrCard>
         </PageSection>
 
         <TrCard className="p-4">
           <div className="flex items-center gap-2">
-            <Globe size={16} color="#3B82F6" />
+            <Globe size={16} color="var(--tr-link)" />
             <span style={{ color: colors.text1, fontSize: 13, fontWeight: 700 }}>
               Nguồn dữ liệu
             </span>
@@ -145,7 +156,7 @@ export function TokenInfoPage() {
           <a
             href={`${prefix}/markets`}
             className="mt-3 inline-flex items-center gap-1"
-            style={{ color: '#3B82F6', fontSize: 11 }}
+            style={{ color: 'var(--tr-link)', fontSize: 11 }}
           >
             Xem toàn bộ thị trường <ExternalLink size={12} />
           </a>

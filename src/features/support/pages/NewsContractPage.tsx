@@ -40,9 +40,9 @@ export function NewsContractPage({ announcementsOnly = false }: { announcementsO
             >
               ← Danh sách
             </button>
-            <h1 className="mt-3" style={{ color: colors.text1, fontSize: 18, fontWeight: 700 }}>
+            <h2 className="mt-3" style={{ color: colors.text1, fontSize: 18, fontWeight: 700 }}>
               {selected.title}
-            </h1>
+            </h2>
             <p className="mt-2" style={{ color: colors.text2, fontSize: 12 }}>
               {selected.publishedAt}
             </p>

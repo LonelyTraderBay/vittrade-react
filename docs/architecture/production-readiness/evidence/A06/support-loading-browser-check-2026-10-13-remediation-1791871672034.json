@@ -1,0 +1,293 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-13T06:09:13.438Z",
+  "sourceHead": "db9c9064fa3ba79bd76fb7acb1023d90486b6cbf",
+  "branch": "",
+  "origin": "http://127.0.0.1:4193",
+  "browser": "Chromium via Playwright",
+  "viewport": { "width": 1440, "height": 900 },
+  "scenario": {
+    "id": "support.loading",
+    "status": "passed",
+    "persona": "support (development preview)",
+    "operationIds": [
+      "listNews",
+      "listNotifications",
+      "getHelpCenter",
+      "listSupportTickets"
+    ],
+    "observedOperationIds": [
+      "getHelpCenter",
+      "listNews",
+      "listNotifications",
+      "listSupportTickets"
+    ],
+    "expectedDomainOperationCount": 4,
+    "coverage": "full_scenario_operations_browser_observed"
+  },
+  "fixtureBoundary": {
+    "serviceWorkerControlled": true,
+    "personaAndScenarioApplied": true,
+    "allObservedResponsesFromServiceWorker": true,
+    "observedScenarioResponseCount": 4,
+    "localMockMutationCount": 0,
+    "realBackendRequestSent": false,
+    "realBackendMutationSent": false,
+    "externalApiOrigins": [],
+    "unexpectedScenarioRequestCount": 0,
+    "pageErrorCount": 0,
+    "scenarioTransportFailureCount": 0
+  },
+  "measurements": {
+    "totalFlowMs": 8802,
+    "completedAt": "2026-10-13T06:09:22.401Z",
+    "scenarioRequestCount": 4,
+    "scenarioResponseCount": 4,
+    "scenarioOperationRequestCounts": {
+      "listNews": 1,
+      "listNotifications": 1,
+      "getHelpCenter": 1,
+      "listSupportTickets": 1
+    },
+    "scenarioOperationResponseCounts": {
+      "listNews": 1,
+      "listNotifications": 1,
+      "getHelpCenter": 1,
+      "listSupportTickets": 1
+    },
+    "readOperations": [
+      {
+        "operationId": "listNotifications",
+        "route": "/w/notifications",
+        "status": 200,
+        "fromServiceWorker": true,
+        "loadingVisibleBeforeResponse": true,
+        "loadingVisibleMsBeforeResponse": 1757,
+        "requestToResponseMs": 1961
+      },
+      {
+        "operationId": "listNews",
+        "route": "/w/news",
+        "status": 200,
+        "fromServiceWorker": true,
+        "loadingVisibleBeforeResponse": true,
+        "loadingVisibleMsBeforeResponse": 1991,
+        "requestToResponseMs": 2027
+      },
+      {
+        "operationId": "getHelpCenter",
+        "route": "/w/support/help",
+        "status": 200,
+        "fromServiceWorker": true,
+        "loadingVisibleBeforeResponse": true,
+        "loadingVisibleMsBeforeResponse": 1976,
+        "requestToResponseMs": 2076
+      },
+      {
+        "operationId": "listSupportTickets",
+        "route": "/w/support",
+        "status": 200,
+        "fromServiceWorker": true,
+        "loadingVisibleBeforeResponse": true,
+        "loadingVisibleMsBeforeResponse": 2000,
+        "requestToResponseMs": 2028
+      }
+    ],
+    "excludedMutationOperationIds": [
+      "markNotificationRead",
+      "createSupportTicket"
+    ],
+    "excludedMutationRequestCount": 0,
+    "externalApiOriginCount": 0,
+    "scenarioTransportFailureCount": 0,
+    "pageErrorCount": 0
+  },
+  "assertions": {
+    "loadingVisibleBeforeEachResponse": true,
+    "resolvedContentVisibleAfterEachResponse": true,
+    "finalRoute": "/w/support",
+    "responses": [
+      {
+        "method": "GET",
+        "path": "/api/notifications",
+        "operationId": "listNotifications",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 2028
+      },
+      {
+        "method": "GET",
+        "path": "/api/content/news",
+        "operationId": "listNews",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 2009
+      },
+      {
+        "method": "GET",
+        "path": "/api/support/help",
+        "operationId": "getHelpCenter",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 2013
+      },
+      {
+        "method": "GET",
+        "path": "/api/support/tickets",
+        "operationId": "listSupportTickets",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 2016
+      }
+    ]
+  },
+  "apiRequests": [
+    {
+      "method": "GET",
+      "path": "/api/auth/session",
+      "operationId": null,
+      "startedAt": 1791871753878
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/logout",
+      "operationId": null,
+      "startedAt": 1791871754152
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/login",
+      "operationId": null,
+      "startedAt": 1791871754167
+    },
+    {
+      "method": "GET",
+      "path": "/api/notifications",
+      "operationId": "listNotifications",
+      "startedAt": 1791871754182
+    },
+    {
+      "method": "GET",
+      "path": "/api/content/news",
+      "operationId": "listNews",
+      "startedAt": 1791871756254
+    },
+    {
+      "method": "GET",
+      "path": "/api/support/help",
+      "operationId": "getHelpCenter",
+      "startedAt": 1791871758335
+    },
+    {
+      "method": "GET",
+      "path": "/api/support/tickets",
+      "operationId": "listSupportTickets",
+      "startedAt": 1791871760378
+    }
+  ],
+  "apiResponses": [
+    {
+      "method": "GET",
+      "path": "/api/auth/session",
+      "operationId": null,
+      "status": 401,
+      "fromServiceWorker": true,
+      "elapsedMs": 21
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/logout",
+      "operationId": null,
+      "status": 204,
+      "fromServiceWorker": true,
+      "elapsedMs": 15
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/login",
+      "operationId": null,
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 5
+    },
+    {
+      "method": "GET",
+      "path": "/api/notifications",
+      "operationId": "listNotifications",
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 2028
+    },
+    {
+      "method": "GET",
+      "path": "/api/content/news",
+      "operationId": "listNews",
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 2009
+    },
+    {
+      "method": "GET",
+      "path": "/api/support/help",
+      "operationId": "getHelpCenter",
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 2013
+    },
+    {
+      "method": "GET",
+      "path": "/api/support/tickets",
+      "operationId": "listSupportTickets",
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 2016
+    }
+  ],
+  "apiFailures": [
+    {
+      "method": "POST",
+      "path": "/api/auth/logout",
+      "operationId": null,
+      "failure": "net::ERR_ABORTED",
+      "hadResponse": true
+    }
+  ],
+  "screenshots": {
+    "news": "preview-support-loading-news-2026-10-13-remediation-1791871672034.png",
+    "notifications": "preview-support-loading-notifications-2026-10-13-remediation-1791871672034.png",
+    "help": "preview-support-loading-help-2026-10-13-remediation-1791871672034.png",
+    "tickets": "preview-support-loading-tickets-2026-10-13-remediation-1791871672034.png"
+  },
+  "sourceHashes": {
+    "contracts/openapi/support.yaml": "765533b6f9f9892ac7ec2fa70031b54c53daf07ff5c77775fca155e23ef58d5a",
+    "src/app/routeConfig.ts": "675ea95ec4831b9d0caf1cbf68524efaebda8ed9b970b5dad129bdd55f28bac9",
+    "src/app/routes.ts": "c93a80e123fd95c3abd246aeb00589a51f5ff4560e794e87f70f7ff96248c0d5",
+    "src/app/components/layout/WebSidebar.tsx": "be4d7c10c7378290dc69516cd66c071e3e821215afbd97c3bc508d437c37362c",
+    "src/dev/PreviewControls.tsx": "a318fb182dda24c9b8d2103ae4b40eeecb7c3eded57332aad3c5bc8a1836a54c",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/handlers.ts": "9d1ea085bab944b0bd0e59a665222113cb7bb661bbcd2408f09c6adf08cd3ea9",
+    "src/dev/mocks/personas.ts": "6189b9cbfb9765f5c442c52a089d30b5be171170fe054ef6bf2faffbbb53dccd",
+    "src/dev/mocks/preview-scenario-handler.ts": "1b05e3e420b1df43de6d2e37533d4d8dbcd203fedb70ca59a65a4a62179396f5",
+    "src/dev/mocks/scenario-runtime.ts": "446d43808b478a1eaca07faa29d690c49c8e7ffb21fc1f12d2de2feb524e2e50",
+    "src/dev/mocks/trading-fixtures.ts": "b082e4bc4094a4d7b36f41897ce9b27ea4c487fd3bf714622baf2f91fe2153cf",
+    "src/features/support/api/support-api.ts": "60b08b775dfb638f873e71dae62158ea5bbf0526fceea48a6758fee049ec1726",
+    "src/features/support/model/support-queries.ts": "47e0a0c29f2ce527e6d23db3f8cdff902de2a4fd2eedc183cee52bdab91748c4",
+    "src/features/support/model/support-types.ts": "adfc8a68c8b4e5b757ae52c1ae6ef24d176ee66922d84b6d385ad99c18c8cc84",
+    "src/features/support/pages/HelpCenterContractPage.tsx": "9610248e71e3109b35923192be658284f7c8866b09ceeb3c662b17c7e60243c7",
+    "src/features/support/pages/NewsContractPage.tsx": "86d27ed0c445a6bb03b2daae12e04909a046c9abeefed52a14308c270ef1dd98",
+    "src/features/support/pages/NotificationsContractPage.tsx": "e813a604872f020142e561b171bc8b2576f233e5af19ee73fdb76d098bcf597e",
+    "src/features/support/pages/SupportContractPage.tsx": "2199a7e3758fca690ad8b013e2ba8c51c70c068a973d611989132b562ffe778b",
+    "src/shared/api/app-client.ts": "038ad4426147147f31f44fab94770860991ef90aaa8ed394ec2a4940c83c7b81",
+    "src/shared/api/client.ts": "882197549d075a8be1f495c7d2271dcbf1530ff1606190531da59b75020977bb",
+    "src/shared/api/http-client.ts": "12a04035eac23a2999f8c7a76aafa32966585402c06d98f451ef33eb8601cf42",
+    "src/shared/api/query-client.ts": "b2b0e5fe60f7ade24017f12859fa1b68bd2de143868c42e37df51a71ee259ac2",
+    "src/shared/session/useAuth.ts": "65d58cfe61d4618a1849da066ecd4d6ae7c94c036af7361a91a1383a6b383e0b",
+    "src/main.tsx": "c150098914a25b7e0630d66f480ffbfe4160e96a8bdb54262b5ad4b5b33719e6",
+    "docs/architecture/production-readiness/evidence/A06/run-support-loading-browser-check.mjs": "c04201b8032b00fc65de56a91cf076fbb6e79fa0efe8c9fedbcb577f37fbbf9e"
+  },
+  "limitations": [
+    "The fixed 2,000 ms wait is injected by the local MSW scenario handler and is not backend latency or an SLO measurement.",
+    "This scenario covers four collection GETs; notification-read and ticket-create mutations are deliberately not sent while reads are pending.",
+    "MSW does not establish backend authorization, persistence, staging behavior or user acceptance."
+  ]
+}

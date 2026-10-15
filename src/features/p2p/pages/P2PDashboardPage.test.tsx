@@ -50,4 +50,22 @@ describe('P2P dashboard contract page', () => {
     expect(await screen.findByText('Merchant One')).toBeInTheDocument();
     expect(screen.getByText('Đơn hoàn thành')).toBeInTheDocument();
   });
+
+  it('uses the neutral chart color for an asset without a configured brand color', async () => {
+    server.use(
+      http.get('*/p2p/dashboard', () =>
+        HttpResponse.json({
+          ...dashboard,
+          assetDistribution: [{ asset: 'DOGE', percentage: 45, volume: 2_250 }],
+        }),
+      ),
+    );
+
+    renderWithProviders(<P2PDashboardPage />);
+
+    expect(await screen.findByText('DOGE')).toBeInTheDocument();
+    expect(document.querySelector<HTMLElement>('[style*="width: 45%"]')?.style.background).toBe(
+      'rgb(59, 130, 246)',
+    );
+  });
 });

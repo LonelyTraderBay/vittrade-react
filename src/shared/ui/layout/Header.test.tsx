@@ -17,7 +17,7 @@ describe('Header', () => {
   it('renders the page title without a blank action placeholder by default', () => {
     const { container } = renderWithProviders(<Header title="P2P" subtitle="Giao dịch" />);
 
-    expect(screen.getByText('P2P')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 1, name: 'P2P' })).toBeInTheDocument();
     expect(screen.getByText('Giao dịch')).toBeInTheDocument();
     expect(screen.queryByRole('button')).not.toBeInTheDocument();
     expect(container.querySelector('[aria-label="Quay lại"]')).not.toBeInTheDocument();
@@ -36,6 +36,7 @@ describe('Header', () => {
       />,
     );
 
+    expect(screen.getByRole('heading', { level: 1, name: 'Tổng quan' })).toBeInTheDocument();
     expect(screen.getAllByText('99+')).toHaveLength(2);
     fireEvent.click(screen.getByRole('button', { name: 'Thông báo (120)' }));
     expect(onNotificationsClick).toHaveBeenCalledOnce();

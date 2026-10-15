@@ -270,8 +270,8 @@ export function Header({
           {/* Title group — left aligned, flex-1 */}
           <div className="flex-1 min-w-0">
             {title && (
-              <span
-                className="block truncate"
+              <h1
+                className="m-0 block truncate"
                 style={{
                   color: c.text1,
                   /* FIX 1.6: 17px = iOS nav bar standard (exception from φ scale, documented) */
@@ -282,7 +282,7 @@ export function Header({
                 }}
               >
                 {title}
-              </span>
+              </h1>
             )}
             {subtitle && (
               <span
@@ -328,16 +328,18 @@ export function Header({
         <div className="flex flex-col items-center flex-2 text-center">
           {title && (
             <div className="flex items-center gap-1.5">
-              <span
+              <h1
                 style={{
                   color: c.text1,
                   fontSize: 17 /* iOS nav bar exception */,
                   fontWeight: 600,
                   letterSpacing: -0.2,
+                  lineHeight: 1.3,
+                  margin: 0,
                 }}
               >
                 {title}
-              </span>
+              </h1>
               {badge != null && badge > 0 && <CountBadge count={badge} />}
             </div>
           )}

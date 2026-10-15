@@ -490,6 +490,66 @@ describe('useRefresh', () => {
   });
 
   describe('Performance', () => {
+    it.each([
+      [90_000, '2 phút trước'],
+      [7_170_000, '2 giờ trước'],
+    ] as const)('keeps the last refresh label accurate after %i ms', async (elapsed, label) => {
+      const { result, unmount } = renderHook(() => useRefresh({ delay: 0 }));
+      await act(async () => {
+        const pending = result.current.refresh();
+        await vi.advanceTimersByTimeAsync(0);
+        await pending;
+      });
+      expect(result.current.lastRefreshedLabel).toBe('Vừa cập nhật');
+      vi.setSystemTime(Date.now() + elapsed);
+      act(() => vi.advanceTimersByTime(30_000));
+      expect(result.current.lastRefreshedLabel).toBe(label);
+      unmount();
+      expect(vi.getTimerCount()).toBe(0);
+    });
+
+    it('starts one refresh when requests overlap before React renders pending state', async () => {
+      const onStart = vi.fn();
+      const onEnd = vi.fn();
+      const { result } = renderHook(() => useRefresh({ delay: 100, onStart, onEnd }));
+      await act(async () => {
+        const first = result.current.refresh();
+        const second = result.current.refresh();
+        await vi.advanceTimersByTimeAsync(100);
+        await Promise.all([first, second]);
+      });
+      expect(onStart).toHaveBeenCalledOnce();
+      expect(onEnd).toHaveBeenCalledOnce();
+      expect(result.current.refreshCount).toBe(1);
+      expect(result.current.isRefreshing).toBe(false);
+    });
+
+    it.each(['onStart', 'onEnd'] as const)(
+      'returns to idle if %s throws and allows recovery',
+      async (callback) => {
+        const failure = new Error('refresh callback failed');
+        const fn = vi.fn().mockImplementationOnce(() => {
+          throw failure;
+        });
+        const { result } = renderHook(() => useRefresh({ delay: 100, [callback]: fn }));
+        await act(async () => {
+          const settled = result.current.refresh().catch((error) => error);
+          await vi.advanceTimersByTimeAsync(100);
+          expect(await settled).toBe(failure);
+        });
+        expect(result.current.isRefreshing).toBe(false);
+        expect(result.current.refreshCount).toBe(0);
+        expect(result.current.lastRefreshedAt).toBeNull();
+        await act(async () => {
+          const next = result.current.refresh();
+          await vi.advanceTimersByTimeAsync(100);
+          await next;
+        });
+        expect(result.current.refreshCount).toBe(1);
+        expect(result.current.isRefreshing).toBe(false);
+      },
+    );
+
     it('should handle high-frequency refreshes', async () => {
       const { result } = renderHook(() => useRefresh({ delay: 50 }));
 
