@@ -324,6 +324,9 @@ describe('Savings DCA contract page', () => {
     await waitFor(() =>
       expect(screen.queryByRole('dialog', { name: 'Hủy kế hoạch DCA?' })).not.toBeInTheDocument(),
     );
+    await waitFor(() =>
+      expect(document.querySelector('[data-bottom-sheet-overlay]')).not.toBeInTheDocument(),
+    );
     await user.click(screen.getByRole('button', { name: 'Cancel' }));
     await waitFor(() =>
       expect(screen.getByRole('heading', { name: 'Hủy kế hoạch DCA?' })).toBeVisible(),
@@ -353,6 +356,9 @@ describe('Savings DCA contract page', () => {
 
     await waitFor(() =>
       expect(screen.queryByRole('dialog', { name: 'Hủy kế hoạch DCA?' })).not.toBeInTheDocument(),
+    );
+    await waitFor(() =>
+      expect(document.querySelector('[data-bottom-sheet-overlay]')).not.toBeInTheDocument(),
     );
     await user.click(screen.getByRole('button', { name: 'Cancel' }));
     await screen.findByRole('dialog', { name: 'Hủy kế hoạch DCA?' });
