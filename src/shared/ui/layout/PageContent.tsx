@@ -11,14 +11,14 @@ import { type VitDensity } from '@/shared/theme/density';
  *  Enforces consistent horizontal padding and vertical spacing
  *  across all pages.
  *
- *  SPACING SYSTEM (Guidelines §2.3 — 4pt base grid, 8pt rhythm):
+ *  SPACING CONTRACT (Guidelines §21.6 — current PageContent presets):
  *  ─────────────────────────────────────────────────────────────
  *  Horizontal padding: 20px (device standard, matching Header px-5)
  *  Vertical padding presets:
- *    "compact" — pt-2 pb-0 (12px top) — lists, dense content
+ *    "compact" — pt-2 pb-0 (8px top at 16px root) — lists, dense content
  *    "default" — pt-3 pb-0 (12px top) — standard pages
  *    "relaxed" — pt-4 pb-0 (16px top) — forms, settings
- *    "none"    — no padding          — custom hero/gradient
+ *    "none"    — no vertical padding — horizontal px-5 remains unless fullBleed
  *
  *  Gap presets (between child sections):
  *    "tight"   — 8px  — compact lists, dense cards
