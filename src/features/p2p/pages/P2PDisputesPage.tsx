@@ -24,22 +24,27 @@ const STATUS_MAP: Record<
   P2PDisputeStatus,
   { label: string; color: string; bg: string; icon: typeof Clock }
 > = {
-  submitted: { label: 'Đã gửi', color: '#F59E0B', bg: 'rgba(245,158,11,0.12)', icon: Clock },
+  submitted: {
+    label: 'Đã gửi',
+    color: 'var(--tr-warning-text)',
+    bg: 'rgba(245,158,11,0.12)',
+    icon: Clock,
+  },
   under_review: {
     label: 'Đang xem xét',
-    color: '#3B82F6',
+    color: 'var(--tr-info-text)',
     bg: 'rgba(59,130,246,0.12)',
     icon: FileText,
   },
   resolved: {
     label: 'Đã giải quyết',
-    color: '#10B981',
+    color: 'var(--tr-success-text)',
     bg: 'rgba(16,185,129,0.12)',
     icon: CheckCircle,
   },
   rejected: {
     label: 'Bị từ chối',
-    color: '#EF4444',
+    color: 'var(--tr-error-text)',
     bg: 'rgba(239,68,68,0.12)',
     icon: AlertTriangle,
   },
@@ -90,22 +95,22 @@ export function P2PDisputesPage() {
         <div className="grid grid-cols-3 gap-3">
           {/* Successful responses have passed disputesResponseSchema, which requires total. */}
           <SummaryCard
-            icon={<Scale size={16} color="#EF4444" />}
+            icon={<Scale size={16} color="var(--tr-error-text)" />}
             value={query.data!.total}
             label="Tổng cộng"
             color={colors.text1}
           />
           <SummaryCard
-            icon={<Clock size={16} color="#F59E0B" />}
+            icon={<Clock size={16} color="var(--tr-warning-text)" />}
             value={activeCount}
             label="Đang xử lý"
-            color="#F59E0B"
+            color="var(--tr-warning-text)"
           />
           <SummaryCard
-            icon={<CheckCircle size={16} color="#10B981" />}
+            icon={<CheckCircle size={16} color="var(--tr-success-text)" />}
             value={disputes.filter((d) => d.status === 'resolved').length}
             label="Đã giải quyết"
-            color="#10B981"
+            color="var(--tr-success-text)"
           />
         </div>
 
@@ -135,7 +140,7 @@ export function P2PDisputesPage() {
           className="flex items-start gap-2.5 p-3 rounded-xl"
           style={{ background: 'rgba(59,130,246,0.08)', border: '1px solid rgba(59,130,246,0.15)' }}
         >
-          <ShieldCheck size={16} color="#3B82F6" className="shrink-0 mt-0.5" />
+          <ShieldCheck size={16} color="var(--tr-link)" className="shrink-0 mt-0.5" />
           <p style={{ color: colors.text2, fontSize: 11, lineHeight: 1.5 }}>
             Tranh chấp được theo dõi bằng timeline, evidence và quyền escalation từ API contract.
           </p>
@@ -164,7 +169,7 @@ export function P2PDisputesPage() {
                   className="p-4 w-full text-left"
                   onClick={() => {
                     hapticSelection();
-                    navigate(`${prefix}/p2p/dispute/detail/${dispute.id}`);
+                    navigate(`${prefix}/p2p/dispute/detail/${encodeURIComponent(dispute.id)}`);
                   }}
                 >
                   <div className="flex items-start justify-between mb-2.5">

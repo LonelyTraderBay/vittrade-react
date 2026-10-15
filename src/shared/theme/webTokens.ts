@@ -1,5 +1,6 @@
 /* ─── Enterprise desktop font scale ─── */
 export const WEB_COMMAND_BAR_HEIGHT = 64;
+export const WEB_AVATAR_GRADIENT = 'linear-gradient(135deg, #1d4ed8 0%, #6d28d9 100%)';
 
 export const WEB_FONT = {
   /** Micro labels, keyboard hints */

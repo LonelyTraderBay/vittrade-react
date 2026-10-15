@@ -2,7 +2,7 @@ import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import { delay, http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import { Route, Routes, useLocation } from 'react-router';
-import { fireEvent, screen } from '@testing-library/react';
+import { act, fireEvent, screen, waitFor } from '@testing-library/react';
 import { renderWithProviders } from '@/test/test-utils';
 import type { PredictionEvent } from '../model/prediction-types';
 import {
@@ -37,6 +37,81 @@ const event: PredictionEvent = {
 };
 
 describe('prediction contract interaction coverage', () => {
+  it('guards same-turn duplicate orders and reuses the same key after a lost response', async () => {
+    const keys: (string | null)[] = [];
+    let release!: () => void;
+    const pending = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    server.use(
+      http.get('*/predictions/events/event-1', () => HttpResponse.json(event)),
+      http.post('*/predictions/orders', async ({ request }) => {
+        keys.push(request.headers.get('Idempotency-Key'));
+        expect(await request.json()).toEqual({
+          eventId: 'event-1',
+          outcome: 'Yes',
+          side: 'buy',
+          orderType: 'market',
+          shares: 100,
+        });
+        if (keys.length === 1) {
+          await pending;
+          return HttpResponse.error();
+        }
+        return HttpResponse.json({
+          id: 'retry-receipt',
+          eventId: event.id,
+          eventTitle: event.title,
+          outcome: 'Yes',
+          side: 'buy',
+          orderType: 'market',
+          shares: 100,
+          filledShares: 100,
+          price: 0.62,
+          avgPrice: 0.62,
+          total: 62,
+          fee: 0,
+          status: 'filled',
+          createdAt: '2026-10-13T10:00:00.000Z',
+          updatedAt: '2026-10-13T10:00:00.000Z',
+          timeline: [],
+        });
+      }),
+    );
+    renderWithProviders(
+      <Routes>
+        <Route
+          path="/markets/predictions/event/:eventId"
+          element={<PredictionEventContractPage />}
+        />
+        <Route
+          path="/markets/predictions/receipt/:orderId"
+          element={<output data-testid="retry-receipt">Receipt</output>}
+        />
+      </Routes>,
+      { routerProps: { initialEntries: ['/markets/predictions/event/event-1'] } },
+    );
+    const submit = await screen.findByRole('button', { name: 'Mua Yes' });
+    act(() => {
+      fireEvent.click(submit);
+      fireEvent.click(submit);
+    });
+    try {
+      await waitFor(() => expect(keys).toHaveLength(1));
+      expect(screen.getByRole('spinbutton')).toBeDisabled();
+      expect(screen.getByRole('button', { name: /No.*38/ })).toBeDisabled();
+    } finally {
+      release();
+    }
+    expect(await screen.findByText('Không thể gửi lệnh. Vui lòng thử lại.')).toBeInTheDocument();
+    expect(keys).toHaveLength(1);
+    fireEvent.click(screen.getByRole('button', { name: 'Mua Yes' }));
+    expect(await screen.findByTestId('retry-receipt')).toBeInTheDocument();
+    expect(keys).toHaveLength(2);
+    expect(keys[0]).toMatch(/^prediction-order-/);
+    expect(keys[1]).toBe(keys[0]);
+  });
+
   it('keeps order placement pending and disabled until the API responds', async () => {
     server.use(
       http.get('*/predictions/events/event-1', () => HttpResponse.json(event)),

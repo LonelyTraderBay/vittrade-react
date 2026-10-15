@@ -1,0 +1,127 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-13T15:28:16.585Z",
+  "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
+  "branch": "",
+  "origin": "http://127.0.0.1:4193",
+  "browser": "Chromium via Playwright",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "scenario": {
+    "id": "auth.error",
+    "domain": "auth",
+    "state": "error",
+    "status": "passed",
+    "persona": "guest (no authenticated session)",
+    "role": "unauthenticated",
+    "permissions": [],
+    "operationIds": [
+      "register",
+      "login",
+      "verifyLoginMfaChallenge",
+      "getSession",
+      "refreshSession",
+      "logout",
+      "verifyMfa",
+      "confirmMfaSetup",
+      "beginMfaSetup",
+      "requestPasswordResetCode",
+      "verifyCurrentPassword",
+      "changePassword",
+      "verifyPasswordResetCode",
+      "confirmPasswordReset"
+    ],
+    "observedOperationIds": ["login"],
+    "operationRequestCounts": {
+      "login": 2,
+      "getSession": 0
+    },
+    "requests": [
+      {
+        "method": "POST",
+        "path": "/api/auth/login"
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/login"
+      }
+    ],
+    "responses": [],
+    "requestFailures": [
+      {
+        "method": "POST",
+        "path": "/api/auth/login",
+        "failure": "net::ERR_FAILED"
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/login",
+        "failure": "net::ERR_FAILED"
+      }
+    ],
+    "bootstrapSessionResponse": {
+      "status": 401,
+      "fromServiceWorker": true
+    },
+    "errorVisibleAfterFirstFailure": true,
+    "errorMessageAfterFirstFailure": "Không thể đăng nhập lúc này. Vui lòng thử lại.",
+    "retryEnabledAfterFirstFailure": true,
+    "errorVisibleAfterRetry": true,
+    "errorMessageAfterRetry": "Không thể đăng nhập lúc này. Vui lòng thử lại.",
+    "retryEnabledAfterSecondFailure": true,
+    "staysOnLoginRoute": true,
+    "writeRequestCount": 2,
+    "unexpectedWriteCount": 0,
+    "financialApiRequestCount": 0,
+    "elapsedMs": 1688,
+    "externalApiOrigins": [],
+    "pageErrors": [],
+    "screenshots": [
+      "preview-auth-error-current-head-202610131528165.png",
+      "preview-auth-error-retry-current-head-202610131528165.png"
+    ],
+    "note": "OpenAPI declares no 5xx for login. The local preview returns statusless transport failures for two deliberate POST /auth/login attempts. The form shows a recoverable error, remains retryable and does not navigate as though login succeeded. This is local browser/MSW evidence only."
+  },
+  "fixtureBoundary": {
+    "serviceWorkerControlled": true,
+    "allObservedResponsesFromServiceWorker": true,
+    "externalApiOrigins": [],
+    "realBackendRequestSent": false,
+    "realBackendMutationSent": false
+  },
+  "measurements": {
+    "totalFlowMs": 1690,
+    "apiRequestCount": 3,
+    "apiResponseCount": 1,
+    "loginPostCount": 2,
+    "loginTransportFailureCount": 2,
+    "loginHttpResponseCount": 0,
+    "writeRequestCount": 2,
+    "unexpectedWriteCount": 0,
+    "financialApiRequestCount": 0,
+    "externalApiOriginCount": 0,
+    "pageErrors": []
+  },
+  "contract": {
+    "operationId": "login",
+    "declaredResponses": ["200", "401", "423"],
+    "declared5xxResponses": []
+  },
+  "sourceHashes": {
+    "contracts/openapi/auth.yaml": "cceb23c9745d716a14cc9db823afee87e8e0ebea642426e12c41524351eaab83",
+    "docs/architecture/production-readiness/evidence/A06/run-auth-error-current-head-browser-check.mjs": "62908b6aab23eec4e427d61ba37408275edcfcf3d067709fcc2381feaa1bd281",
+    "src/dev/PreviewControls.tsx": "a318fb182dda24c9b8d2103ae4b40eeecb7c3eded57332aad3c5bc8a1836a54c",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/handlers.ts": "9d1ea085bab944b0bd0e59a665222113cb7bb661bbcd2408f09c6adf08cd3ea9",
+    "src/dev/mocks/preview-scenario-handler.ts": "1b05e3e420b1df43de6d2e37533d4d8dbcd203fedb70ca59a65a4a62179396f5",
+    "src/dev/mocks/scenario-runtime.ts": "446d43808b478a1eaca07faa29d690c49c8e7ffb21fc1f12d2de2feb524e2e50",
+    "src/features/auth/api/auth-api.ts": "e3733bea27f15fb63c15d04541c3dbbcf3dd619f30e650907ba8923893855b1a",
+    "src/features/auth/pages/WebLoginPage.tsx": "740142c311aa06792d3c504d0a6268c7c8ec59bc4b7203de156ba48c9acbf029",
+    "src/shared/api/http-client.ts": "12a04035eac23a2999f8c7a76aafa32966585402c06d98f451ef33eb8601cf42",
+    "src/shared/api/query-client.ts": "b2b0e5fe60f7ade24017f12859fa1b68bd2de143868c42e37df51a71ee259ac2",
+    "src/shared/session/AuthContext.tsx": "b95d134413d28d85278553b752a4d6738857ed7785ea53d7a0e441db61b310f2"
+  },
+  "limitations": "This run used local Vite development and MSW. The login failures had no HTTP status. It does not establish backend behavior, staging, production or user acceptance."
+}

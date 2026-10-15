@@ -177,7 +177,10 @@ const waitForEarnResponse = (method, pathname) => {
 
 async function inspectPendingReceipt(receipt, genericSuccessText) {
   await page.getByRole('dialog').waitFor({ state: 'detached' });
-  await page.waitForTimeout(100);
+  await page.waitForURL('**/w/earn/savings/receipt');
+  await page.getByRole('heading', { name: 'Yêu cầu đang xử lý', exact: true }).waitFor();
+  await page.getByRole('status').filter({ hasText: 'Đang xử lý' }).waitFor();
+  await page.getByText(receipt.id, { exact: true }).waitFor();
   const route = new URL(page.url()).pathname;
   return {
     route,

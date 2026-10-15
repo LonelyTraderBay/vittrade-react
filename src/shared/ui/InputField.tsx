@@ -189,6 +189,15 @@ export function InputWrapper({
           ...style,
         }}
         onClick={onClick}
+        role={onClick ? 'button' : undefined}
+        aria-label={onClick ? label : undefined}
+        onKeyDown={(event) => {
+          if (event.target !== event.currentTarget || !onClick) return;
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            onClick();
+          }
+        }}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
         tabIndex={onClick ? 0 : undefined}

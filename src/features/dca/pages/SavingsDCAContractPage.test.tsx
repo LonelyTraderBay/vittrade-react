@@ -2,7 +2,7 @@ import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import { toast } from 'sonner';
-import { screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { renderWithProviders } from '@/test/test-utils';
 import { testAuthAdapter } from '@/test/auth-test-adapter';
@@ -56,6 +56,62 @@ function renderDCA(authAdapter: AuthAdapter = testAuthAdapter) {
 }
 
 describe('Savings DCA contract page', () => {
+  it('keeps large overview totals exact in the summary', async () => {
+    const largeSnapshot: DCASnapshot = {
+      ...snapshot,
+      overview: { ...snapshot.overview, currentValue: 3_027_250_000 },
+    };
+    server.use(
+      http.get('*/dca/snapshot', () => HttpResponse.json(serializeSnapshot(largeSnapshot))),
+    );
+
+    renderDCA();
+
+    expect(
+      await screen.findByText(largeSnapshot.overview.currentValue.toLocaleString()),
+    ).toBeVisible();
+  });
+
+  it('shows a coin-symbol fallback when a plan icon image fails to load', async () => {
+    const imageUrl = 'https://cryptologos.cc/logos/bitcoin-btc-logo.png';
+    const iconSnapshot: DCASnapshot = {
+      ...snapshot,
+      plans: [{ ...snapshot.plans[0], coinIcon: imageUrl }],
+    };
+    server.use(
+      http.get('*/dca/snapshot', () => HttpResponse.json(serializeSnapshot(iconSnapshot))),
+    );
+
+    const { container } = renderDCA();
+    await screen.findByText(/Bitcoin/);
+    const icon = container.querySelector<HTMLImageElement>(
+      '[data-testid="dca-plan-coin-icon"] img',
+    );
+
+    expect(icon).not.toBeNull();
+    fireEvent.error(icon!);
+
+    const iconContainer = screen.getByTestId('dca-plan-coin-icon');
+    expect(iconContainer).toHaveTextContent('BTC');
+    expect(iconContainer).not.toHaveTextContent(imageUrl);
+  });
+
+  it('shows a coin-symbol fallback when the plan has no icon source', async () => {
+    const emptyIconSnapshot: DCASnapshot = {
+      ...snapshot,
+      plans: [{ ...snapshot.plans[0], coinIcon: '' }],
+    };
+    server.use(
+      http.get('*/dca/snapshot', () => HttpResponse.json(serializeSnapshot(emptyIconSnapshot))),
+    );
+
+    renderDCA();
+
+    const iconContainer = await screen.findByTestId('dca-plan-coin-icon');
+    expect(iconContainer).toHaveTextContent('BTC');
+    expect(iconContainer.querySelector('img')).toBeNull();
+  });
+
   it('creates a plan through the typed API with an idempotency key', async () => {
     const idempotencyKeys: string[] = [];
     const toastSuccess = vi.spyOn(toast, 'success');
@@ -102,7 +158,7 @@ describe('Savings DCA contract page', () => {
       http.patch('*/dca/plans/plan-1', async ({ request }) => {
         expect(request.headers.get('Idempotency-Key')).toBeTruthy();
         expect(await request.json()).toEqual({ status: 'paused' });
-        return HttpResponse.json(serializeSnapshot(snapshot).plans[0]);
+        return HttpResponse.json({ ...serializeSnapshot(snapshot).plans[0], status: 'paused' });
       }),
     );
 
@@ -263,9 +319,11 @@ describe('Savings DCA contract page', () => {
       expect(screen.getByRole('heading', { name: 'Hủy kế hoạch DCA?' })).toBeVisible(),
     );
     expect(cancelRequests).toBe(0);
-    const confirmation = screen.getByRole('heading', { name: 'Hủy kế hoạch DCA?' });
+    expect(screen.getAllByRole('heading', { name: 'Hủy kế hoạch DCA?' })).toHaveLength(1);
     await user.click(screen.getByRole('button', { name: 'Giữ kế hoạch' }));
-    await waitForElementToBeRemoved(confirmation);
+    await waitFor(() =>
+      expect(screen.queryByRole('dialog', { name: 'Hủy kế hoạch DCA?' })).not.toBeInTheDocument(),
+    );
     await user.click(screen.getByRole('button', { name: 'Cancel' }));
     await waitFor(() =>
       expect(screen.getByRole('heading', { name: 'Hủy kế hoạch DCA?' })).toBeVisible(),
@@ -310,7 +368,7 @@ describe('Savings DCA contract page', () => {
         keys.push(request.headers.get('Idempotency-Key') ?? '');
         return attempts === 1
           ? HttpResponse.json({ message: 'Plan not found' }, { status: 404 })
-          : HttpResponse.json(serializeSnapshot(snapshot).plans[0]);
+          : HttpResponse.json({ ...serializeSnapshot(snapshot).plans[0], status: 'paused' });
       }),
     );
     const user = userEvent.setup();

@@ -9,7 +9,7 @@
   --popover: #171c24;
   --popover-foreground: #f5f7fa;
   --primary: #e58a00;
-  --primary-foreground: #ffffff;
+  --primary-foreground: #111827;
   --secondary: #171c24;
   --secondary-foreground: #f5f7fa;
   --muted: #171c24;
@@ -34,7 +34,7 @@
   --sidebar: #10141b;
   --sidebar-foreground: #f5f7fa;
   --sidebar-primary: #e58a00;
-  --sidebar-primary-foreground: #ffffff;
+  --sidebar-primary-foreground: #111827;
   --sidebar-accent: #171c24;
   --sidebar-accent-foreground: #f5f7fa;
   --sidebar-border: rgba(255, 255, 255, 0.06);
@@ -63,7 +63,10 @@
   --tr-accent: #8b5cf6;
   --tr-text-1: #f5f7fa;
   --tr-text-2: #a7afbf;
-  --tr-text-3: #667085;
+  --tr-text-3: #9ca3af;
+  --tr-text-on-color: #111827;
+  --tr-accent-text: #c4b5fd;
+  --tr-info-text: #93c5fd;
 
   /* Trading extended tokens (single source of truth) */
   --tr-chip-active-bg: rgba(229, 138, 0, 0.12);
@@ -95,13 +98,13 @@
   --tr-hover-bg: rgba(255, 255, 255, 0.04);
   --tr-search-bg: #171c24;
   --tr-search-border: #2d3440;
-  --tr-search-placeholder: #667085;
+  --tr-search-placeholder: #9ca3af;
   --tr-divider: rgba(255, 255, 255, 0.04);
   --tr-portfolio-bg: linear-gradient(145deg, #2a1d08 0%, #171005 50%, #0d0903 100%);
   --tr-portfolio-border: rgba(229, 138, 0, 0.1);
   --tr-portfolio-shadow: 0 2px 16px rgba(0, 0, 0, 0.3), 0 0 1px rgba(229, 138, 0, 0.1);
   --tr-portfolio-text-dim: rgba(255, 255, 255, 0.7);
-  --tr-portfolio-text-muted: rgba(255, 255, 255, 0.45);
+  --tr-portfolio-text-muted: #a7afbf;
   --tr-portfolio-btn-ghost: rgba(255, 255, 255, 0.12);
   --tr-portfolio-btn-ghost-border: rgba(255, 255, 255, 0.15);
   --tr-portfolio-btn-ghost-text: #ffffff;
@@ -298,7 +301,7 @@
   --popover: #171c24;
   --popover-foreground: #f5f7fa;
   --primary: #e58a00;
-  --primary-foreground: #ffffff;
+  --primary-foreground: #111827;
   --secondary: #171c24;
   --secondary-foreground: #f5f7fa;
   --muted: #171c24;
@@ -320,7 +323,7 @@
   --sidebar: #10141b;
   --sidebar-foreground: #f5f7fa;
   --sidebar-primary: #e58a00;
-  --sidebar-primary-foreground: #ffffff;
+  --sidebar-primary-foreground: #111827;
   --sidebar-accent: #171c24;
   --sidebar-accent-foreground: #f5f7fa;
   --sidebar-border: rgba(255, 255, 255, 0.06);
@@ -342,7 +345,7 @@
   --tr-accent: #8b5cf6;
   --tr-text-1: #f5f7fa;
   --tr-text-2: #a7afbf;
-  --tr-text-3: #667085;
+  --tr-text-3: #9ca3af;
 
   /* Trading extended dark tokens (inherited from :root) */
 
@@ -398,26 +401,34 @@
   --tr-surface-2: #f2f3f7;
   --tr-surface-3: #e5e7eb;
   --tr-border: rgba(0, 0, 0, 0.06);
-  --tr-primary: #e58a00;
-  --tr-buy: #10b981;
+  --tr-primary: #92400e;
+  --tr-primary-dark: #78350f;
+  --tr-buy: #047857;
+  --tr-buy-dark: #065f46;
   --tr-success-text: #064e3b;
-  --tr-sell: #ef4444;
+  --tr-sell: #b91c1c;
+  --tr-sell-dark: #991b1b;
   --tr-error-text: #b91c1c;
-  --tr-warn: #f0a63a;
+  --tr-warn: #92400e;
+  --tr-caution: #92400e;
   --tr-warning-text: #92400e;
+  --tr-info: #1d4ed8;
   --tr-link: #1d4ed8;
-  --tr-accent: #8b5cf6;
+  --tr-accent: #6d28d9;
   --tr-text-1: #111827;
-  --tr-text-2: #6b7280;
-  --tr-text-3: #9ca3af;
+  --tr-text-2: #344054;
+  --tr-text-3: #475467;
+  --tr-text-on-color: #ffffff;
+  --tr-accent-text: #6d28d9;
+  --tr-info-text: #1d4ed8;
 
   /* Trading extended light tokens (single source of truth) */
   --tr-border-solid: #e5e7eb;
   --tr-chip-active-bg: rgba(229, 138, 0, 0.12);
-  --tr-chip-active-text: #e58a00;
+  --tr-chip-active-text: #92400e;
   --tr-chip-active-border: rgba(229, 138, 0, 0.25);
   --tr-chip-bg: #f9fafb;
-  --tr-chip-text: #6b7280;
+  --tr-chip-text: #475467;
   --tr-chip-border: #e5e7eb;
   --tr-status-bar-text: #111827;
   --tr-status-bar-icon: #111827;
@@ -426,8 +437,8 @@
   --tr-nav-bg: rgba(255, 255, 255, 0.97);
   --tr-nav-border: rgba(0, 0, 0, 0.06);
   --tr-nav-inactive: #5d687d;
-  --tr-nav-active: #e58a00;
-  --tr-nav-center-bg: linear-gradient(135deg, #e58a00 0%, #b96000 100%);
+  --tr-nav-active: #92400e;
+  --tr-nav-center-bg: linear-gradient(135deg, #92400e 0%, #78350f 100%);
   --tr-nav-center-icon: #ffffff;
   --tr-nav-gradient-from: transparent;
   --tr-nav-gradient-mid: rgba(255, 255, 255, 0.6);
@@ -448,7 +459,7 @@
   --tr-portfolio-border: rgba(229, 138, 0, 0.1);
   --tr-portfolio-shadow: 0 8px 24px rgba(229, 138, 0, 0.15);
   --tr-portfolio-text-dim: rgba(17, 24, 39, 0.7);
-  --tr-portfolio-text-muted: rgba(17, 24, 39, 0.45);
+  --tr-portfolio-text-muted: #475467;
   --tr-portfolio-btn-ghost: rgba(0, 0, 0, 0.05);
   --tr-portfolio-btn-ghost-border: rgba(0, 0, 0, 0.08);
   --tr-portfolio-btn-ghost-text: #111827;
@@ -474,6 +485,45 @@
   --text-secondary: var(--tr-text-2);
   --text-tertiary: var(--tr-text-3);
   --accent-primary: var(--tr-primary);
+}
+
+/* Keep common utility status text and solid actions readable in the light theme. */
+.light .text-emerald-500 {
+  color: var(--tr-success-text);
+}
+
+.light .text-red-500 {
+  color: var(--tr-error-text);
+}
+
+.light .text-blue-500 {
+  color: var(--tr-link);
+}
+
+.light .text-amber-500,
+.light .text-amber-600 {
+  color: var(--tr-warning-text);
+}
+
+.light .text-violet-500,
+.light .text-purple-500 {
+  color: var(--tr-accent);
+}
+
+.light .bg-blue-500 {
+  background-color: var(--tr-info);
+}
+
+.light .bg-emerald-500 {
+  background-color: var(--tr-buy);
+}
+
+.light .bg-red-500 {
+  background-color: var(--tr-sell);
+}
+
+.light .bg-amber-500 {
+  background-color: var(--tr-warning-text);
 }
 
 @theme inline {

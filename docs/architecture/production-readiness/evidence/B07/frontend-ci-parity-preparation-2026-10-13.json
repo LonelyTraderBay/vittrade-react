@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "itemId": "P1-FE-04",
+  "observedAt": "2026-10-13T05:59:30.084Z",
+  "sourceHead": "db9c9064fa3ba79bd76fb7acb1023d90486b6cbf",
+  "sourceHashes": {
+    ".github/workflows/ci.yml": "fd84d6b654a5f17274722b233ccae837838844fb919569ef4298a79cdf09b47e"
+  },
+  "verification": {
+    "sourceReview": "Three browser commands, fail-closed source ledger, no continue-on-error, fetch-depth 0, always upload scoped evidence, 7-day retention, digest output",
+    "documentation": "https://github.com/actions/upload-artifact/blob/v4/README.md",
+    "hostedRun": null
+  },
+  "actual": "Prepared full Git history for blob verification, mandatory tracker gate, unchanged three browser profiles and always-upload reports/coverage/trace/manifests with SHA/attempt identity and artifact digest. Hosted Node22/Ubuntu execution and upload/download are not yet verified; no remote dispatch or delivery authorized.",
+  "limits": [
+    "Local Windows / Node24 / Chromium fixtures; no backend, staging or user acceptance.",
+    "Source catalogue continues to describe actual committed blobs; working changes remain uncommitted.",
+    "Broad task steps remain open until every existing acceptance criterion and external input is verified."
+  ]
+}

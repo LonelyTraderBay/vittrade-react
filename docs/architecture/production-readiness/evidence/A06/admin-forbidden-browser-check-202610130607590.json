@@ -1,0 +1,190 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-13T06:07:59.082Z",
+  "sourceHead": "db9c9064fa3ba79bd76fb7acb1023d90486b6cbf",
+  "branch": "",
+  "origin": "http://127.0.0.1:4193",
+  "browser": "Chromium via Playwright",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "scenario": {
+    "id": "admin.forbidden",
+    "domain": "admin",
+    "state": "forbidden",
+    "status": "passed",
+    "persona": "admin",
+    "role": "admin",
+    "permissions": [
+      "admin:read"
+    ],
+    "routes": [
+      "/w/admin",
+      "/w/admin/funnels",
+      "/w/admin/abtests"
+    ],
+    "operationIds": [
+      "getAdminOverview",
+      "getAdminFunnel",
+      "listAdminAbTests",
+      "getAdminAbTest",
+      "updateAdminFeatureFlag"
+    ],
+    "observedOperationIds": [
+      "getAdminOverview",
+      "getAdminFunnel",
+      "listAdminAbTests"
+    ],
+    "declared403OperationCount": 5,
+    "expectedDomainOperationCount": 5,
+    "coverage": "representative_scenario_operations_browser_observed",
+    "operationRequestCounts": {
+      "getAdminOverview": 1,
+      "getAdminFunnel": 1,
+      "listAdminAbTests": 1
+    },
+    "requests": [
+      {
+        "operationId": "getAdminOverview",
+        "method": "GET",
+        "path": "/api/admin/overview"
+      },
+      {
+        "operationId": "getAdminFunnel",
+        "method": "GET",
+        "path": "/api/admin/analytics/funnel"
+      },
+      {
+        "operationId": "listAdminAbTests",
+        "method": "GET",
+        "path": "/api/admin/analytics/ab-tests"
+      }
+    ],
+    "responses": [
+      {
+        "operationId": "getAdminOverview",
+        "method": "GET",
+        "path": "/api/admin/overview",
+        "status": 403,
+        "fromServiceWorker": true
+      },
+      {
+        "operationId": "getAdminFunnel",
+        "method": "GET",
+        "path": "/api/admin/analytics/funnel",
+        "status": 403,
+        "fromServiceWorker": true
+      },
+      {
+        "operationId": "listAdminAbTests",
+        "method": "GET",
+        "path": "/api/admin/analytics/ab-tests",
+        "status": 403,
+        "fromServiceWorker": true
+      }
+    ],
+    "observations": [
+      {
+        "operationId": "getAdminOverview",
+        "route": "/w/admin",
+        "permissionDeniedVisible": true,
+        "retryActionVisible": false,
+        "falseSuccessContentVisible": false,
+        "elapsedMs": 96
+      },
+      {
+        "operationId": "getAdminFunnel",
+        "route": "/w/admin/funnels",
+        "permissionDeniedVisible": true,
+        "retryActionVisible": false,
+        "falseSuccessContentVisible": false,
+        "elapsedMs": 210
+      },
+      {
+        "operationId": "listAdminAbTests",
+        "route": "/w/admin/abtests",
+        "permissionDeniedVisible": true,
+        "retryActionVisible": false,
+        "falseSuccessContentVisible": false,
+        "elapsedMs": 116
+      }
+    ],
+    "refreshRequestCount": 0,
+    "permissionDeniedVisibleOnAllRoutes": true,
+    "retryActionVisibleOnAnyRoute": false,
+    "falseSuccessContentVisibleOnAnyRoute": false,
+    "unexpectedAdminRequestCount": 0,
+    "writeRequestCount": 0,
+    "finalRoute": "/w/admin/abtests",
+    "elapsedMs": 1150,
+    "screenshots": {
+      "getAdminOverview": "preview-admin-forbidden-overview-202610130607590.png",
+      "getAdminFunnel": "preview-admin-forbidden-funnel-202610130607590.png",
+      "listAdminAbTests": "preview-admin-forbidden-ab-tests-202610130607590.png"
+    },
+    "detailOperationNotReachableFromCurrentRoutes": "getAdminAbTest",
+    "mutationNotSent": "updateAdminFeatureFlag; current persona has admin:read and no UI form exists.",
+    "note": "All five Admin operations declare 403 in OpenAPI. This local browser scenario observed one MSW 403 response for each of the three current Admin read routes and explicit permission-denied UI without retry or success content. getAdminAbTest has no current detail route and updateAdminFeatureFlag has no current form. No session refresh, mutation, external API, backend, staging, or user-acceptance behavior was exercised."
+  },
+  "fixtureBoundary": {
+    "serviceWorkerControlled": true,
+    "allObservedResponsesFromServiceWorker": true,
+    "externalApiOrigins": [],
+    "realBackendRequestSent": false,
+    "realBackendMutationSent": false
+  },
+  "measurements": {
+    "totalFlowMs": 1150,
+    "adminRequestCount": 3,
+    "adminResponseCount": 3,
+    "operationResponseCounts": {
+      "getAdminOverview": 1,
+      "getAdminFunnel": 1,
+      "listAdminAbTests": 1
+    },
+    "writeRequestCount": 0,
+    "unexpectedAdminRequestCount": 0,
+    "authRefreshRequestCount": 0,
+    "pageErrors": [],
+    "externalApiOriginCount": 0
+  },
+  "contract": {
+    "operationPaths": {
+      "getAdminOverview": "/api/admin/overview",
+      "getAdminFunnel": "/api/admin/analytics/funnel",
+      "listAdminAbTests": "/api/admin/analytics/ab-tests"
+    },
+    "declared403OperationIds": [
+      "getAdminAbTest",
+      "getAdminFunnel",
+      "getAdminOverview",
+      "listAdminAbTests",
+      "updateAdminFeatureFlag"
+    ],
+    "omittedOperations": {
+      "getAdminAbTest": "No current detail route/link exposes the operation in this scenario.",
+      "updateAdminFeatureFlag": "No current UI form; current preview persona only has admin:read."
+    }
+  },
+  "sourceHashes": {
+    "docs/architecture/production-readiness/evidence/A06/run-admin-forbidden-browser-check.mjs": "5ac022d1d49364cb9e47e71c5b81ccaa8ecc0e6aa90357cc9539d8ba2057fe5b",
+    "src/app/routeConfig.ts": "675ea95ec4831b9d0caf1cbf68524efaebda8ed9b970b5dad129bdd55f28bac9",
+    "src/dev/PreviewControls.tsx": "a318fb182dda24c9b8d2103ae4b40eeecb7c3eded57332aad3c5bc8a1836a54c",
+    "src/dev/mocks/auth-handlers.test.ts": "44d7dfadc244463193772e246250f8bae8cc7b3dc442bab9c49010633e13c550",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/handlers.ts": "9d1ea085bab944b0bd0e59a665222113cb7bb661bbcd2408f09c6adf08cd3ea9",
+    "src/dev/mocks/personas.ts": "6189b9cbfb9765f5c442c52a089d30b5be171170fe054ef6bf2faffbbb53dccd",
+    "src/dev/mocks/preview-scenario-handler.ts": "1b05e3e420b1df43de6d2e37533d4d8dbcd203fedb70ca59a65a4a62179396f5",
+    "src/dev/mocks/scenario-runtime.ts": "446d43808b478a1eaca07faa29d690c49c8e7ffb21fc1f12d2de2feb524e2e50",
+    "contracts/openapi/admin.yaml": "0cc369702fda3ad34cb6819700c3690792ec192c444dfe021ffc7230c47beee6",
+    "src/features/admin/api/admin-api.ts": "f678ef571025fcb4f2b8ed7703b86b94de4afa9f47f309f85959313784f68dd0",
+    "src/features/admin/model/admin-queries.ts": "86e1b4fee2bfb673ab96731d5db555b4d4820003e77b16647bd44dcbdd942bee",
+    "src/features/admin/routes.ts": "25e80e63ad7a74b3badfdd65e7f9018980fb4bce249c56ab700f2135598d423a",
+    "src/features/admin/pages/AdminOverviewContractPage.tsx": "e484004753ca52b4f23fa45f47f9fd9fa1e6fde128f28c51714ad8cb08445bf1",
+    "src/features/admin/pages/AdminFunnelContractPage.tsx": "2be38f9729a13d3ce13e960ebcfb7e44f258eca9ff56bbd9bf2571b5dfdae74f",
+    "src/features/admin/pages/AdminAbTestsContractPage.tsx": "428382dd3c8f0f6262451b6a606720fa25a9b8a9d4526e9db5411d2ac56613e2",
+    "src/features/admin/pages/AdminContractPages.test.tsx": "ae5c74e4bb969cf34994f347e5682180557f3e2a97f5fde44691c418c33bd506"
+  },
+  "limitations": "The browser used local MSW preview fixtures. This evidence does not establish backend authorization, persistence, staging behavior or user acceptance."
+}

@@ -44,21 +44,17 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
         componentStack: errorInfo.componentStack,
       },
     });
-    console.error(
-      `[ErrorBoundary${this.props.section ? ` — ${this.props.section}` : ''}]`,
-      error,
-      errorInfo,
-    );
+    if (env.isDev) {
+      console.error(
+        `[ErrorBoundary${this.props.section ? ` — ${this.props.section}` : ''}]`,
+        error,
+        errorInfo,
+      );
+    }
   }
 
   handleRetry = () => {
     this.setState({ hasError: false, error: null, errorInfo: null, showDetails: false });
-  };
-
-  handleGoHome = () => {
-    this.setState({ hasError: false, error: null, errorInfo: null, showDetails: false });
-    // With memory router, we can't use window.location — just reset state
-    // and let the parent re-render. Navigation handled by retry.
   };
 
   render() {
@@ -138,8 +134,9 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
             <RefreshCw size={16} />
             Thử lại
           </button>
-          <button
-            onClick={this.handleGoHome}
+          <a
+            href="/"
+            aria-label="Về trang chủ"
             className="h-12 px-5 rounded-2xl flex items-center justify-center gap-2 font-semibold text-sm"
             style={{
               background: 'var(--secondary)',
@@ -148,20 +145,22 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
             }}
           >
             <Home size={16} />
-          </button>
+          </a>
         </div>
 
         {/* Error details toggle */}
-        <button
-          onClick={() => this.setState({ showDetails: !showDetails })}
-          className="flex items-center gap-1.5 text-xs"
-          style={{ color: 'var(--muted-foreground)' }}
-        >
-          <Bug size={12} />
-          {showDetails ? 'Ẩn chi tiết' : 'Xem chi tiết lỗi'}
-        </button>
+        {env.isDev && (
+          <button
+            onClick={() => this.setState({ showDetails: !showDetails })}
+            className="flex items-center gap-1.5 text-xs"
+            style={{ color: 'var(--muted-foreground)' }}
+          >
+            <Bug size={12} />
+            {showDetails ? 'Ẩn chi tiết' : 'Xem chi tiết lỗi'}
+          </button>
+        )}
 
-        {showDetails && error && (
+        {env.isDev && showDetails && error && (
           <div
             className="w-full rounded-xl p-3 overflow-auto max-h-40"
             style={{ background: 'var(--secondary)', border: '1px solid var(--border)' }}

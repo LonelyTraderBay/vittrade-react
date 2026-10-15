@@ -25,11 +25,11 @@ const reasonLabels: Record<P2PBlacklistReason, string> = {
 };
 
 const reasonColors: Record<P2PBlacklistReason, string> = {
-  scam: '#EF4444',
-  unresponsive: '#F59E0B',
-  fake_payment: '#EF4444',
-  harassment: '#8B5CF6',
-  other: '#6B7280',
+  scam: 'var(--tr-error-text)',
+  unresponsive: 'var(--tr-warning-text)',
+  fake_payment: 'var(--tr-error-text)',
+  harassment: 'var(--tr-accent-text)',
+  other: 'var(--tr-text-3)',
 };
 
 const reasonIcons: Record<P2PBlacklistReason, typeof AlertTriangle> = {
@@ -109,7 +109,7 @@ export function P2PBlacklistPage() {
             disabled={!canManageBlacklist}
             aria-label="Thêm người dùng vào danh sách chặn"
             className="w-9 h-9 rounded-xl flex items-center justify-center"
-            style={{ background: 'rgba(239,68,68,0.1)', color: '#EF4444' }}
+            style={{ background: 'rgba(239,68,68,0.1)', color: 'var(--tr-error-text)' }}
           >
             <Plus size={16} />
           </button>
@@ -143,7 +143,7 @@ export function P2PBlacklistPage() {
 
         <TrCard className="p-4">
           <div className="flex items-center gap-3">
-            <UserX size={18} color="#EF4444" />
+            <UserX size={18} color="var(--tr-error-text)" />
             <div>
               <p style={{ color: colors.text1, fontSize: 14, fontWeight: 700 }}>
                 {query.data?.total ?? entries.length} người dùng
@@ -154,7 +154,7 @@ export function P2PBlacklistPage() {
         </TrCard>
 
         {!canManageBlacklist && (
-          <p role="alert" style={{ color: '#EF4444', fontSize: 12 }}>
+          <p role="alert" style={{ color: 'var(--tr-error-text)', fontSize: 12 }}>
             P2P blacklist write permission is required to manage blocked users.
           </p>
         )}
@@ -190,7 +190,7 @@ export function P2PBlacklistPage() {
         onClose={() => setRemoveTarget(null)}
         onConfirm={() => void remove()}
         variant="warning"
-        icon={<Trash2 size={24} color="#F59E0B" />}
+        icon={<Trash2 size={24} color="var(--tr-warning-text)" />}
         title="Bỏ chặn người dùng?"
         description={`Bạn sẽ cho phép ${removeTarget?.username ?? 'người dùng'} giao dịch P2P trở lại.`}
         confirmText={removeMutation.isPending ? 'Đang xử lý…' : 'Bỏ chặn'}
@@ -225,7 +225,7 @@ function BlacklistCard({
           <div className="flex items-center gap-2">
             <p style={{ color: colors.text1, fontSize: 13, fontWeight: 700 }}>{entry.username}</p>
             {entry.isVerified && (
-              <span style={{ color: '#10B981', fontSize: 10 }}>Đã xác minh</span>
+              <span style={{ color: 'var(--tr-success-text)', fontSize: 10 }}>Đã xác minh</span>
             )}
           </div>
           <p style={{ color, fontSize: 11, marginTop: 2 }}>{reasonLabels[entry.reason]}</p>
@@ -242,7 +242,7 @@ function BlacklistCard({
           disabled={!canWrite}
           aria-label={`Remove ${entry.username} from P2P blacklist`}
           className="p-2 rounded-lg"
-          style={{ color: '#F59E0B', background: 'rgba(245,158,11,0.1)' }}
+          style={{ color: 'var(--tr-warning-text)', background: 'rgba(245,158,11,0.1)' }}
         >
           <Trash2 size={14} />
         </button>

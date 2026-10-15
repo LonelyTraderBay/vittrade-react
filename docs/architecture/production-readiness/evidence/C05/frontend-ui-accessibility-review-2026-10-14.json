@@ -1,0 +1,449 @@
+{
+  "schemaVersion": 1,
+  "itemId": "C05.03",
+  "observedAt": "2026-10-13T17:26:20.916Z",
+  "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
+  "sourceState": "working tree dirty; source hashes bind the reviewed UI owners below",
+  "sourceHashes": {
+    "src/app/components/layout/AppLayout.tsx": "b1974fcd4d588ea5b4e3a9bcc7e7258b625613b65f28964f4cab5a7e5e24b153",
+    "src/app/components/layout/ProtectedRoute.tsx": "315f2c724d15bf74e75960d707e9d8183c30e4cddfb254e1698f158e48e32257",
+    "src/shared/ui/layout/Header.tsx": "2f37d6d3c826c7739adcdd5a6c8ef84f9882044a74afeb0d1c71208729fac1dc",
+    "src/dev/PreviewControls.tsx": "f721a320b315003eda715f41c8638dd8780b5c5f7ced56d372d61e5c0d105d12",
+    "src/features/p2p/components/P2PMarketplaceSections.tsx": "8c7c88f73c779e54098eb62f256a3cb24c639f05bca61822e5c308b48c442cc7",
+    "src/features/p2p/components/P2PHomeCards.tsx": "81244db7cc07437850af72abb285da095cba97b37ed0a86362ac21c4378e5026",
+    "src/features/admin/pages/AdminQueryErrorState.tsx": "1461358bd51a9e642d43a550ffce53442a244a9a58e80c9b6449fcacfd5a632e",
+    "src/features/admin/pages/AdminOverviewContractPage.tsx": "b4da4e1dac8fe73bec80a348477dfa885f8fbf7393b541b67ef722433c1012df",
+    "src/features/admin/pages/AdminFunnelContractPage.tsx": "6693ea453f592b5bde6a9d58518ba4794c28ab6e25c0223033d8e618ffe91f32",
+    "src/features/admin/pages/AdminAbTestsContractPage.tsx": "7bfe89c2aa81bcab0575a45c26792dedc464463ebb27054e32a32cae1617f5f2",
+    "src/features/arena/pages/ArenaDiscoveryPage.tsx": "08cbdbc389d3703bf513fd6f2c960f73285808f800b89270905f5197fefa3203",
+    "src/features/referral/pages/ReferralContractPage.tsx": "07d2e5acb996f74f515d3b94cfa2c9884c52582a1faf585191cca76632d4184a",
+    "src/features/earn/components/EarnFeatureComponents.tsx": "a8679519295db58fa170e0da91134e3cbcb2631c4e27ef043bc3f923f193cdde",
+    "src/features/wallet/pages/AssetDetailPage.tsx": "05adef531f017249f363ed8a726f7d5eb2b169aec5731d585d88ceb0fa64c98e",
+    "src/features/trading/pages/OrdersHistoryPage.tsx": "d0aa190976ea78e837bc740dee39cb46fd9dd5a9481dfa220658f0315fd949e9",
+    "src/features/trading/pages/ActiveCopiesContractPage.tsx": "8f2300f71ce427adc8a522f84af0db397217c006162d5055f868c028e06cc975",
+    "src/features/predictions/pages/PredictionContractPages.tsx": "fd5286100be4d77caadea77794a4483fc4fb759a21d316710c331bd7cf6b3662",
+    "src/features/discovery/pages/DiscoveryContractPages.tsx": "f7c8660a70f37a213c9efaf5f5ff8f6dd52746b7ac95f96175bba986e859b9bc",
+    "src/features/launchpad/pages/LaunchpadContractPages.tsx": "8531958d41fb697d7df4f20c28f47c4393c4047353e50f73e21af596debb2baa",
+    "src/features/support/pages/NewsContractPage.tsx": "ed7c265435ff546ed2b33e471d02270ba3af475c8bfad80588c625294101312c",
+    "src/app/pages/system/IntegrationPendingPage.tsx": "38c0ae40bd7830b52c1951bcfacf37f26705bfa7a22b6b41c1054696d7140376",
+    "src/features/auth/pages/AccountLockedPage.tsx": "df10ba3b3d44ecc121cffd4c9a0a9e788c2a77099291cbba59b13eb1ab47c7aa"
+  },
+  "verification": {
+    "environment": "Windows local Node 24.19.0, Vite at 127.0.0.1:4173, Playwright Chromium, local MSW fixtures and developer mock login; all non-local browser requests blocked.",
+    "command": "node ui-review-all-axe.cjs (14 responsive route cases; axe WCAG 2.0/2.1 A/AA; screenshot per route)",
+    "summary": {
+      "routes": 14,
+      "routeMismatches": [],
+      "horizontalOverflow": [],
+      "pageErrors": 0,
+      "axeViolations": 0,
+      "routesWithExactlyOneH1": 14,
+      "keyboardFocus": {
+        "tag": "BUTTON",
+        "aria": null,
+        "text": "Thị trường",
+        "outline": "solid"
+      }
+    },
+    "previewClearanceAtP2PMobile": {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "scrollAreaBottom": 712,
+      "warningTop": 719.5,
+      "clearancePx": 7.5,
+      "overlap": false
+    },
+    "routes": [
+      {
+        "requestedRoute": "/w/home",
+        "observedPath": "/home",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "headingCount": 1,
+        "headings": [
+          "Thị trường"
+        ],
+        "horizontalOverflow": false,
+        "pageErrorCount": 0,
+        "axeViolations": [],
+        "mockApiResponses": [
+          {
+            "status": 401,
+            "path": "/api/auth/session"
+          },
+          {
+            "status": 200,
+            "path": "/api/auth/login"
+          },
+          {
+            "status": 200,
+            "path": "/api/market/pairs"
+          },
+          {
+            "status": 200,
+            "path": "/api/market/watchlist"
+          }
+        ],
+        "screenshot": {
+          "path": "C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\10\\14\\01a13394-3caa-7930-a58f-e3e6c61b066f\\vittrade-audit\\ui-review-accessibility-final-20261014-v8\\01-home-390.png",
+          "sha256": "77dabb3f60e5c580dbcc6affcb8730fe84b67a5b9ffca5f117e2771cf2ced61f"
+        }
+      },
+      {
+        "requestedRoute": "/w/markets/overview",
+        "observedPath": "/w/markets/overview",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "headingCount": 1,
+        "headings": [
+          "Tổng quan thị trường"
+        ],
+        "horizontalOverflow": false,
+        "pageErrorCount": 0,
+        "axeViolations": [],
+        "mockApiResponses": [
+          {
+            "status": 200,
+            "path": "/api/market/overview"
+          }
+        ],
+        "screenshot": {
+          "path": "C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\10\\14\\01a13394-3caa-7930-a58f-e3e6c61b066f\\vittrade-audit\\ui-review-accessibility-final-20261014-v8\\02-w_markets_overview-1440.png",
+          "sha256": "a60f86454782b0b5a247949cbc9d6f5f911cc2154c9374ad5d0b90a82bc25e59"
+        }
+      },
+      {
+        "requestedRoute": "/w/earn/savings/dca",
+        "observedPath": "/earn/savings/dca",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "headingCount": 1,
+        "headings": [
+          "Savings DCA"
+        ],
+        "horizontalOverflow": false,
+        "pageErrorCount": 0,
+        "axeViolations": [],
+        "mockApiResponses": [
+          {
+            "status": 200,
+            "path": "/api/dca/snapshot"
+          }
+        ],
+        "screenshot": {
+          "path": "C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\10\\14\\01a13394-3caa-7930-a58f-e3e6c61b066f\\vittrade-audit\\ui-review-accessibility-final-20261014-v8\\03-earn_savings_dca-390.png",
+          "sha256": "1d5760556ffaef3559f608cc1ebe3f94cea7e299c953d19a442c62bd1ec69586"
+        }
+      },
+      {
+        "requestedRoute": "/w/p2p",
+        "observedPath": "/p2p",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "headingCount": 1,
+        "headings": [
+          "P2P"
+        ],
+        "horizontalOverflow": false,
+        "pageErrorCount": 0,
+        "axeViolations": [],
+        "mockApiResponses": [
+          {
+            "status": 200,
+            "path": "/api/p2p/ads"
+          },
+          {
+            "status": 200,
+            "path": "/api/p2p/overview"
+          }
+        ],
+        "screenshot": {
+          "path": "C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\10\\14\\01a13394-3caa-7930-a58f-e3e6c61b066f\\vittrade-audit\\ui-review-accessibility-final-20261014-v8\\04-p2p-390.png",
+          "sha256": "92c34630579639077afc627c3432c18a69bec3cd69ecbbdabde6bb5e970de0ab"
+        }
+      },
+      {
+        "requestedRoute": "/w/p2p/chat/p2p001",
+        "observedPath": "/t/p2p/chat/p2p001",
+        "viewport": {
+          "width": 768,
+          "height": 1024
+        },
+        "headingCount": 1,
+        "headings": [
+          "Cuộc trò chuyện P2P với CryptoKing_VN"
+        ],
+        "horizontalOverflow": false,
+        "pageErrorCount": 0,
+        "axeViolations": [],
+        "mockApiResponses": [
+          {
+            "status": 200,
+            "path": "/api/p2p/orders/p2p001/chat"
+          },
+          {
+            "status": 200,
+            "path": "/api/p2p/orders/p2p001"
+          }
+        ],
+        "screenshot": {
+          "path": "C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\10\\14\\01a13394-3caa-7930-a58f-e3e6c61b066f\\vittrade-audit\\ui-review-accessibility-final-20261014-v8\\05-t_p2p_chat_p2p001-768.png",
+          "sha256": "6463139b6b43068c4afb306554a23b5ec96d0551f009d99e732997b4f5b84787"
+        }
+      },
+      {
+        "requestedRoute": "/w/wallet/asset/btc",
+        "observedPath": "/wallet/asset/btc",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "headingCount": 1,
+        "headings": [
+          "BTC"
+        ],
+        "horizontalOverflow": false,
+        "pageErrorCount": 0,
+        "axeViolations": [],
+        "mockApiResponses": [
+          {
+            "status": 200,
+            "path": "/api/wallet/assets"
+          },
+          {
+            "status": 200,
+            "path": "/api/market/pairs"
+          },
+          {
+            "status": 200,
+            "path": "/api/wallet/transactions"
+          }
+        ],
+        "screenshot": {
+          "path": "C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\10\\14\\01a13394-3caa-7930-a58f-e3e6c61b066f\\vittrade-audit\\ui-review-accessibility-final-20261014-v8\\06-wallet_asset_btc-390.png",
+          "sha256": "80f3d05f79423738399cff49b242db6e86ffcbb7cd7ef2552298cba77c84ea1c"
+        }
+      },
+      {
+        "requestedRoute": "/w/trade/orders-history",
+        "observedPath": "/t/trade/orders-history",
+        "viewport": {
+          "width": 768,
+          "height": 1024
+        },
+        "headingCount": 1,
+        "headings": [
+          "Lịch sử lệnh"
+        ],
+        "horizontalOverflow": false,
+        "pageErrorCount": 0,
+        "axeViolations": [],
+        "mockApiResponses": [
+          {
+            "status": 200,
+            "path": "/api/trading/orders"
+          }
+        ],
+        "screenshot": {
+          "path": "C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\10\\14\\01a13394-3caa-7930-a58f-e3e6c61b066f\\vittrade-audit\\ui-review-accessibility-final-20261014-v8\\07-t_trade_orders-history-768.png",
+          "sha256": "43f4e18a345f4b24ce46e2bc0c82db9bc109834505adea1a0acea8ab5888bbcc"
+        }
+      },
+      {
+        "requestedRoute": "/w/trade/copy-trading/active",
+        "observedPath": "/w/trade/copy-trading/active",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "headingCount": 1,
+        "headings": [
+          "Copy đang chạy"
+        ],
+        "horizontalOverflow": false,
+        "pageErrorCount": 0,
+        "axeViolations": [],
+        "mockApiResponses": [
+          {
+            "status": 200,
+            "path": "/api/trading/copy/relationships"
+          }
+        ],
+        "screenshot": {
+          "path": "C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\10\\14\\01a13394-3caa-7930-a58f-e3e6c61b066f\\vittrade-audit\\ui-review-accessibility-final-20261014-v8\\08-w_trade_copy-trading_active-1440.png",
+          "sha256": "4b003fecb4399f9e299d54d369f2f3b68742f0de1c9ae7a68f06b230ce4b0b1e"
+        }
+      },
+      {
+        "requestedRoute": "/w/profile",
+        "observedPath": "/t/profile",
+        "viewport": {
+          "width": 768,
+          "height": 1024
+        },
+        "headingCount": 1,
+        "headings": [
+          "Profile"
+        ],
+        "horizontalOverflow": false,
+        "pageErrorCount": 0,
+        "axeViolations": [],
+        "mockApiResponses": [
+          {
+            "status": 200,
+            "path": "/api/profile"
+          }
+        ],
+        "screenshot": {
+          "path": "C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\10\\14\\01a13394-3caa-7930-a58f-e3e6c61b066f\\vittrade-audit\\ui-review-accessibility-final-20261014-v8\\09-t_profile-768.png",
+          "sha256": "e72ba7ef10a1046d044450d5fbf7a1c32f6f63e0e9c56c679e8444c3a911f52e"
+        }
+      },
+      {
+        "requestedRoute": "/w/support/help",
+        "observedPath": "/support/help",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "headingCount": 1,
+        "headings": [
+          "Trung tâm trợ giúp"
+        ],
+        "horizontalOverflow": false,
+        "pageErrorCount": 0,
+        "axeViolations": [],
+        "mockApiResponses": [
+          {
+            "status": 200,
+            "path": "/api/support/help"
+          }
+        ],
+        "screenshot": {
+          "path": "C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\10\\14\\01a13394-3caa-7930-a58f-e3e6c61b066f\\vittrade-audit\\ui-review-accessibility-final-20261014-v8\\10-support_help-390.png",
+          "sha256": "10e4e2b48d936bcc01ef1cca55db9d0a3a7347c351ba9fbd0c264001e33a8bfd"
+        }
+      },
+      {
+        "requestedRoute": "/w/arena",
+        "observedPath": "/w/arena",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "headingCount": 1,
+        "headings": [
+          "Open Arena"
+        ],
+        "horizontalOverflow": false,
+        "pageErrorCount": 0,
+        "axeViolations": [],
+        "mockApiResponses": [
+          {
+            "status": 200,
+            "path": "/api/arena/discovery"
+          }
+        ],
+        "screenshot": {
+          "path": "C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\10\\14\\01a13394-3caa-7930-a58f-e3e6c61b066f\\vittrade-audit\\ui-review-accessibility-final-20261014-v8\\11-w_arena-1440.png",
+          "sha256": "7fc50d2bacfc0e82d4415e5b004e52f31190953164fd9c85197217659ce18102"
+        }
+      },
+      {
+        "requestedRoute": "/w/admin",
+        "observedPath": "/w/admin",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "headingCount": 1,
+        "headings": [
+          "Không có quyền truy cập"
+        ],
+        "horizontalOverflow": false,
+        "pageErrorCount": 0,
+        "axeViolations": [],
+        "mockApiResponses": [],
+        "screenshot": {
+          "path": "C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\10\\14\\01a13394-3caa-7930-a58f-e3e6c61b066f\\vittrade-audit\\ui-review-accessibility-final-20261014-v8\\12-w_admin-1440.png",
+          "sha256": "3c2ea308a17bdff73c8be6ada7bfc6e66cf933b8d722aa9b4917f41efccfb4af"
+        }
+      },
+      {
+        "requestedRoute": "/w/referral",
+        "observedPath": "/t/referral",
+        "viewport": {
+          "width": 768,
+          "height": 1024
+        },
+        "headingCount": 1,
+        "headings": [
+          "Referral"
+        ],
+        "horizontalOverflow": false,
+        "pageErrorCount": 0,
+        "axeViolations": [],
+        "mockApiResponses": [
+          {
+            "status": 200,
+            "path": "/api/referral/overview"
+          }
+        ],
+        "screenshot": {
+          "path": "C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\10\\14\\01a13394-3caa-7930-a58f-e3e6c61b066f\\vittrade-audit\\ui-review-accessibility-final-20261014-v8\\13-t_referral-768.png",
+          "sha256": "7487f1e8f7a977f8624c16a7949e1d151c73d535daa7258584600c9a0011afd6"
+        }
+      },
+      {
+        "requestedRoute": "/w/earn/savings/portfolio",
+        "observedPath": "/earn/savings/portfolio",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "headingCount": 1,
+        "headings": [
+          "Danh mục tiết kiệm"
+        ],
+        "horizontalOverflow": false,
+        "pageErrorCount": 0,
+        "axeViolations": [],
+        "mockApiResponses": [
+          {
+            "status": 200,
+            "path": "/api/earn/snapshot"
+          }
+        ],
+        "screenshot": {
+          "path": "C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\10\\14\\01a13394-3caa-7930-a58f-e3e6c61b066f\\vittrade-audit\\ui-review-accessibility-final-20261014-v8\\14-earn_savings_portfolio-390.png",
+          "sha256": "539820e690220d89bd601bd182e892ba5510fc7de69d1852559f764fefec89e3"
+        }
+      }
+    ]
+  },
+  "browserReport": {
+    "path": "C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\10\\14\\01a13394-3caa-7930-a58f-e3e6c61b066f\\vittrade-audit\\ui-review-accessibility-final-20261014-v8\\ui-review-corrected.json",
+    "sha256": "4a5ff21377bb183a64d7626da32c212cab94d863ee10666d075d838ee6bb146c"
+  },
+  "scanner": {
+    "path": "C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\10\\14\\01a13394-3caa-7930-a58f-e3e6c61b066f\\vittrade-audit\\ui-review-accessibility-final-20261014-v8\\ui-review-all-axe.cjs",
+    "sha256": "1d062f10b7ac1020475caa539c7321ca00db74592f683360667380c060c37bea"
+  },
+  "actual": "14/14 sampled routes matched the expected shell path; all have exactly one H1, no horizontal overflow or uncaught page errors, and zero axe violations. The first Tab stop retained a solid visible outline. The P2P mobile mock warning is separated from the scroll viewport by 7.5px and no longer covers the first offer.",
+  "limits": [
+    "This is a 14-route local UI sample, not a 428-route acceptance or complete design review.",
+    "The app used local mock/MSW behavior; initial local session lookup returned the expected 401 before mock login. No backend, staging, real account or UAT behavior was tested.",
+    "External font requests were intentionally blocked, so deployed font delivery was not verified.",
+    "The scanner records desktop/tablet/phone screenshots; route-level visual acceptance beyond this sample remains open."
+  ]
+}

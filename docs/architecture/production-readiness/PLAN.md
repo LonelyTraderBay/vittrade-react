@@ -2,7 +2,644 @@
 
 Ngày lập: **27/09/2026**. Mốc mã nguồn được đo: `41869d7d6080d1508353120bd15d482dd3d4bb91`, nhánh `codex/vittrade-architecture-completion`.
 
-## Hướng dẫn điều hành và số đo hiện hành — 02/10/2026
+<a id="khac-phuc-audit-20261013"></a>
+
+## Kế hoạch khắc phục P0/P1/P2 — audit 13/10/2026
+
+Đây là lộ trình khắc phục cho source `db9c9064fa3ba79bd76fb7acb1023d90486b6cbf`,
+nhánh `main`, theo audit ở phiên hiện tại. Ở bước lập kế hoạch ban đầu, phạm vi
+chỉ gồm `PLAN.md`/`TRACKING.json`; phần triển khai được giao sau đó và ghi bên
+dưới. Quyền commit/push/deploy, gửi yêu cầu tài chính, thay quyền GitHub hoặc xóa
+thư mục source không được suy ra từ nhiệm vụ khắc phục frontend.
+
+Giữ 38 task/205 step và các dependency đang có. Mã `P0-FE-01`… bên dưới là mã
+lát cắt trong `TRACKING.executionPlan.remediationPlan.items`, không phải task hay
+sổ tiến độ mới. Trạng thái chỉ thuộc các task/step hiện có; mở lại bước có bằng
+chứng hết hiệu lực và giữ lịch sử hoàn tất trước đó. Nguồn căn cứ là
+`EV-20261013-002`, quyết định phạm vi là `DECISION-20261013-002`; checkpoint mới
+không tự cấp quyền triển khai code hoặc phê duyệt contract backend.
+
+### Triển khai từ 13/10/2026 — theo yêu cầu mới
+
+Người dùng đã giao thực hiện roadmap; giới hạn chỉ lập kế hoạch ở phiên trước
+được giữ làm lịch sử. Người dùng xác nhận **chưa có backend/staging**; các mục
+cần owner/host/provider/SLO vẫn blocked, tiếp tục các phần frontend độc lập.
+
+P0-FE-01 đã kiểm chứng cục bộ: **81/81 test trên 5 file**, typecheck, lint owner
+và contract gate pass. Trước sửa có **4 test đỏ** tái hiện phân loại lỗi submit
+và verify lặp. Xem [evidence P0](evidence/U04/frontend-withdrawal-failure-boundary-2026-10-13.json).
+Không đổi API hoặc enum receipt; không tự retry. U04/C03 giữ mở cho phần ngoài
+phạm vi này và backend contract.
+
+| Lát cắt | Kết quả frontend hiện tại | Điều kiện còn mở |
+| --- | --- | --- |
+| P0-FE-01 | Tách verify/submit, khóa submit đồng bộ, giữ key khi chưa có receipt hợp lệ; các receipt pending/failed vẫn theo contract | Lost-response lookup/replay cần P0-BE-01 |
+| P1-FE-01 | Badge ẩn ở Auth, nền opaque theo theme; chuyển shell giữ query/hash và chặn resize khi form chưa lưu; selector preview không bị coi là form nghiệp vụ. ResponsiveShell giữ một cây Outlet ổn định qua breakpoint | Ba profile trên source cuối đã pass; review UI rộng hơn và UAT vẫn pending |
+| P1-FE-02 | Generator: 130 page file/428 route; giữ AccountLocked identity; đối chiếu từng Git blob và bảo toàn catalogue history | 181 source record cũ + inventory generator được xác minh theo commit/blob đúng path; 10 source test/helper mới đã đăng ký; `check-tracking` và inventory check exit 0, baseline không đổi |
+| P1-FE-03 | 81/81 sidecar đã chạy trên HEAD `0bdab349c2863008984c89366ba71f02b094a44a` và hash working thực; generator xác nhận 81/106 row current:38 full/43 representative,88/154 operation,0 stale; UI index428 route/1.465 URL registration/1.396 URL duy nhất | 25 row thiếu contract; aggregate runtime và URL parity vẫn historical; review UI rộng/backend/UAT chưa hoàn tất |
+| P1-FE-04 | CI giữ ba profile; thêm source-ledger gate, Git history và upload report/coverage/trace/manifest khi pass hoặc fail, SHA/attempt/digest/retention rõ | Node 22/Ubuntu hosted run và upload/download chưa chạy; không đóng B07 từ local Windows/Node 24 |
+| P1-FE-05 | Chỉ đưa trường cấu trúc có giới hạn qua telemetry seam; loại message/stack/cause/body/URL/nested payload; cô lập lỗi sink đồng bộ và bất đồng bộ | Provider/privacy owner, bootstrap wiring, delivery/alert staging còn blocked |
+| P2-FE-01 | Đồng bộ ARCHITECTURE, PROJECT_CONTEXT và UI runbook; output matrix/UI index sinh bằng owner generator | Backend/deploy/performance/owner handoff chờ đầu vào; giữ 39 thư mục source rỗng, không tự xóa |
+
+Snapshot kiểm chứng đầu đợt đã chạy toàn bộ **337 file/3.087 test**, coverage S/B/F/L
+**98,44/96,84/98,18/98,96%**. Build production, mock exclusion và bundle budget
+pass, 14 static gate pass. E2E chuẩn **59 pass/4 skip có sẵn**, Auth API
+**34/34**, Auth MSW **41/41**. Kết quả là local Windows/Node 24/Chromium với
+fixture/MSW; build dùng reserved `.test` origins. Native Node/Vite startup crash
+được giữ trong log; lần chạy lại nguyên profile pass.
+
+Auth MSW cuối còn tái hiện mất draft ở Responsive trong lúc full-page capture:
+diagnostic 3/3 thấy viewport `1024×900 → 1×1 → 1024×900` và input bị remount.
+Hai regression owner đỏ trước sửa; sau giữ ancestry của Outlet/Suspense ổn định,
+**44/44 test owner** và **3/3 lượt đăng ký full-page** pass, assertion giữ nguyên.
+Xem [evidence state retention](evidence/C05/frontend-responsive-state-retention-2026-10-13.json).
+Checkpoint và evidence cuối ghi terminal result; C03.05 vẫn giữ mục tiêu coverage
+100/100/100/100, C05.03 còn review toàn bộ scope, backend 0/154 và UAT 0/128.
+
+### Tiếp tục sau kiểm chứng — 13/10/2026
+
+Ba commit local P0/P1/P2 trên nhánh `codex/frontend-readiness-remediation-20261013`
+đã tạo Git blob thật cho 17 path; [checker toàn sổ](evidence/A08/source-ledger-pass-2026-10-13.json)
+exit 0. A08.01/A08.05 hoàn tất; không sửa checker/baseline/ngưỡng. Browser evidence
+giữ HEAD lúc quan sát: sau commit mới, 81 report cũ trở thành historical dù các
+input hash còn khớp. Chạy lại trên source commit cuối sau lane coverage; không
+gán HEAD mới cho report cũ. Chưa push/PR/CI hosted hoặc chứng nhận backend/UAT.
+
+### Kiểm chứng runtime trên source tài chính — 13/10/2026
+
+Revision local `2a6d8fe4591c52a3b8d795a17aede48ca418907e`: build production mới và mock/bundle gates pass,
+222 output/220 JS; browser chuẩn **59 pass/4 skip có sẵn**, Auth API **34/34**,
+Auth MSW **41/41**. Mọi run giữ snapshot trước/sau khớp và child đã đóng.
+Xem [evidence runtime](evidence/C03/frontend-financial-runtime-2026-10-13.json).
+Các lỗi tổng hợp báo cáo/khóa artifact được giữ riêng; không hạ assertion.
+Coverage100, refresh81 scenario strict-HEAD, review UI rộng và hosted/staging
+vẫn chưa hoàn tất.
+
+### Kiểm chứng phục hồi đọc, refresh và điều hướng — 13/10/2026
+
+Bổ sung **16 file test**, không đổi source ứng dụng: loading/offline Web shell,
+tên tài khoản, form không có message, refresh khi list rỗng, cache feature flag
+sau kết quả xác nhận, Market filter/refresh/watchlist,14 owner đọc dữ liệu và
+cấu hình/điều hướng Copy/Auth. Full **351 file/3310 test**,
+**0 skip**, **14/14 gate** pass. Coverage S/B/F/L
+**99.35/98.2/99.64/99.65%**;
+**351/408 file đủ100, 57 file còn gap**.
+[Evidence và raw logs](evidence/C03/frontend-owner-feedback-2026-10-13.json)
+tách lỗi fixture ban đầu khỏi lỗi sản phẩm; không giảm guard, denominator hoặc
+ngưỡng. Tiếp tục counter còn thiếu và lỗi owner có bằng chứng; backend/staging,
+UAT, hosted runtime và aggregate100 vẫn mở.
+
+### Kiểm tra cache và cấu hình flag — 13/10/2026
+
+Sửa **21 ca lỗi đã tái hiện** ở Coachmark/FeatureFlags: validate JSON theo DTO,
+chỉ đọc key thuộc object, từ chối HTTP lỗi trước khi thay state. Giữ hành vi
+xóa cache hết hạn, ISO Date và metadata hợp lệ; không bật provider/API mới.
+Full **351 file/3333 test**, **0 skip**,
+**14/14 gate** pass. Coverage S/B/F/L **99.35/98.2/99.64/99.65%**;
+**351/408 file đủ100, 57 file còn gap**.
+[Evidence và raw logs](evidence/C03/frontend-cache-shape-2026-10-13.json).
+Giữ tiêu chí aggregate100 và các mục backend/staging/UAT đang mở.
+
+### Kết quả kiểm chứng nguồn cuối và runner — 13/10/2026
+
+HEAD local `0bdab349c2863008984c89366ba71f02b094a44a`; source ứng dụng giữ nguyên sau hai commit owner cuối.
+Tám runner được sửa để chờ UI/đọc dữ liệu thực sự sẵn sàng; giữ nguyên assertion.
+Hai batch fail **79/81** và raw logs được giữ; batch cuối **81/81 pass**,
+source trước/sau khớp, **3.231 file lịch sử nguyên hash**. Generator xác nhận
+**81/106 row current (38 full/43 representative),88/154 operation,0 stale**.
+Build cuối **222 output/220 JS**, mock exclusion và bundle budget pass.
+Ba profile trên cùng source ứng dụng: **59 pass/4 skip có sẵn;34/34;41/41**;
+bằng chứng giữ fingerprint lúc quan sát, không gán lại fingerprint lịch sử.
+Full suite gần nhất **351 file/3.344 test,0 skip**, **14 gate pass**;
+coverage S/B/F/L **99,49/98,27/100/99,78%**, **353/408 file đủ100**.
+[Evidence nguồn cuối và giới hạn](evidence/B10/frontend-current-final-review-2026-10-13.json).
+
+Tại checkpoint ngày 13/10, còn **55 file gap coverage**. Phép đo full-suite
+iteration 55 ngày 14/10 bên dưới đã đưa coverage counter của mọi measurable file
+đạt đủ 100%; mốc cũ được giữ làm lịch sử. Review UI rộng C05.03 và nghiệm thu
+người dùng vẫn chưa hoàn tất. Phần cần đầu vào bên ngoài: **25 row thiếu
+contract**, backend/staging **0/154**, UAT **0/128**, CI hosted/governance và
+telemetry/provider/SLO. Theo xác nhận của người dùng, backend/staging vẫn
+blocked; chưa tuyên bố dự án hoặc production readiness hoàn tất.
+
+### Kiểm chứng runtime sau sửa owner — 13/10/2026
+
+Revision local `0bdab349c2863008984c89366ba71f02b094a44a`: build production mới và mock/bundle gates pass,
+222 output/220 JS; browser chuẩn **59 pass/4 skip có sẵn**, Auth API **34/34**,
+Auth MSW **41/41**. Mọi run giữ snapshot trước/sau khớp và child đã đóng.
+Xem [evidence runtime](evidence/C03/frontend-current-runtime-2026-10-13.json).
+Giữ toàn bộ log/manifest và lịch sử; không hạ assertion hoặc thêm skip.
+Coverage100, refresh81 scenario strict-HEAD, review UI rộng và hosted/staging
+vẫn chưa hoàn tất.
+
+### Lifecycle stream, tìm kiếm và số liệu minh họa — 13/10/2026
+
+Sửa **4 ca lỗi đã tái hiện**: socket cũ/sau dispose vẫn phát callback, blacklist
+làm mất ô nhập sau ký tự đầu và mô tả lợi nhuận không khớp số hiển thị.
+Giữ đóng socket khi cleanup, focus khi request lọc trả chậm, và chỉ nêu chi phí
+giả định trong minh họa. Thêm kiểm chứng điều hướng Arena/P2P, nhập giá/OCO
+và tooltip/axis Recharts thật. **351 file/3344 test**,
+**0 skip**, **14/14 gate** pass; coverage S/B/F/L **99.49/98.27/100/99.78%**;
+**353/408 file đủ100, 55 file còn gap**.
+[Evidence và raw logs](evidence/C03/frontend-owner-lifecycle-2026-10-13.json).
+Giữ ngưỡng, guard, denominator và trạng thái backend/staging/UAT đang mở.
+
+### Riêng tư lỗi ở service và storage — 13/10/2026
+
+Đã tái hiện **10 test đỏ** ở release; sửa **7 owner** với **22 catch path** qua
+telemetry đã lọc, chặn debug log ngoài development và bỏ user ID khỏi warning.
+Giữ hành vi fallback, trạng thái bộ nhớ, consent và queue; không bật transport
+analytics khi chưa có contract/provider. Kiểm chứng **87/87 test liên quan**;
+full **349 file/3259 test**, **0 skip**, **14/14 gate** pass.
+Coverage S/B/F/L **98.89/97.78/98.63/99.31%**;
+**339/408 file đủ100, 69 file còn gap**.
+[Evidence và raw logs](evidence/C03/frontend-service-diagnostics-2026-10-13.json)
+giữ riêng lỗi import/assertion harness và gate đã sửa. C03.05, backend/staging,
+UAT và hosted runtime tiếp tục mở; provenance source được đối chiếu sau commit.
+
+### Lưu trạng thái, bàn phím và riêng tư khi lỗi — 13/10/2026
+
+Đã tái hiện **21 ca lỗi trước sửa**: mất functional update, stale dữ liệu
+khi tab khác xóa/clear, nhầm Storage area, focus tab/Enter/Space, thiếu owner
+form, liên kết phục hồi và thông báo/log lỗi thô ngoài development.
+Giữ telemetry qua lớp lọc hiện có; runtime báo lỗi chung trong release.
+
+Kiểm chứng **348/348 file, 3244/3244 test**,
+**0 skip**, **14/14 gate** pass. Coverage S/B/F/L
+**98.89/97.78/98.63/99.3%**;
+**339/408 file đủ100, 69 file còn gap**.
+[Evidence và raw logs](evidence/C03/frontend-shared-control-failure-boundaries-2026-10-13.json)
+giữ riêng lỗi harness và static gate đã sửa. Tiếp tục các nhánh còn thiếu;
+không bỏ guard hoặc giảm tiêu chí. Source commit/provenance, runtime browser
+trên source cuối, backend/staging và hosted Node22/Ubuntu vẫn tách riêng.
+
+### Sửa thao tác tài chính và phản hồi — 13/10/2026
+
+Đã tái hiện **52 ca lỗi trước sửa** ở P2P, Earn, DCA và chuyển đổi số dư nhỏ.
+Sửa tại owner: khóa gửi đồng bộ, giữ key cho cùng yêu cầu chưa xác nhận,
+đóng băng input khi chờ và kiểm tra ID/tài sản của phản hồi. Không báo đã
+thanh toán/release/pause/completed khi receipt chưa xác nhận; Dust hiển thị
+số tiền từ receipt thay cho quote. Không tự gửi lại, không đổi contract.
+
+Source cuối: **346/346 file, 3189/3189 test**,
+14/14 static gate pass. Coverage S/B/F/L
+**98.7/97.2/98.46/99.15%**;
+**329/408 file đủ100, 79 file còn gap**.
+Xem [evidence financial](evidence/C03/frontend-financial-write-boundaries-2026-10-13.json).
+Các lỗi harness và gate trung gian được giữ riêng; chỉ ca đỏ đúng hợp đồng
+được tính. Giữ budget0 warning và600 dòng. Durable reconciliation/replay,
+backend/staging, hosted Node22/Ubuntu và UAT chưa được chứng minh.
+
+### Sửa ID trong URL — 13/10/2026
+
+Đã tái hiện 4 ca sai URL từ ID hợp lệ theo schema; sửa52 dòng điều hướng
+ở39 owner bằng encodeURIComponent tại ranh giới URL. Bảy ca hồi quy giữ
+ID nguyên vẹn qua path/query, useParams và click/Enter/Space. Source cuối:
+**341/341 file, 3137/3137 test**,14/14 gate pass.
+File test Prediction được tách để giữ giới hạn600 dòng; không hạ gate.
+Coverage S/B/F/L **98.7/97.16/98.45/99.15%**,
+**332/408 file đủ100;76 file còn gap**.
+Xem [evidence điều hướng](evidence/C03/frontend-resource-navigation-2026-10-13.json).
+Source provenance và browser/build trên source cuối còn phải kiểm riêng;
+backend/staging/UAT và mục tiêu100 toàn bộ vẫn mở.
+
+### Sửa failure boundary tại owner — 13/10/2026
+
+C03.02/C03.03/C03.05: đã tái hiện **19 assertion đỏ** trước sửa ở hủy lệnh,
+Earn/Prediction gửi trùng, receipt Earn pending, refresh/timer và URL boundary.
+Sửa tại owner, giữ key của cùng intent khi mất phản hồi và không tự retry; dùng
+receipt/status hiện có. P2P MFA thêm kiểm thử quyền tại callback của owner.
+Source cuối của lát cắt: **340 file/3130 test pass**, 14/14 static gate pass;
+coverage S/B/F/L **98.7/97.16/98.45/99.15%**,
+**332/408 file** đủ bốn chỉ số 100%; **76 file còn gap**, C03.05 vẫn mở.
+Xem [evidence owner](evidence/C03/frontend-owner-failure-boundaries-2026-10-13.json)
+và raw report/manifests; các run trước commit giữ HEAD/hash thực tế. Durable
+reconciliation/replay cần backend, hosted Node22/Ubuntu và UAT còn blocked.
+Tiếp theo: blob proof riêng từng file, build/browser trên commit source cuối,
+regenerate matrix/UI index rồi cập nhật checkpoint.
+
+### Rà lại phát hiện UI lịch sử — 13/10/2026
+
+Hai ảnh Wallet overview/history trong lượt browser 13/10 chọn đúng “Ví”;
+“Trang chủ” không có marker current. Badge Web nằm trên cảnh báo dữ liệu mô phỏng
+và không che nội dung cảnh báo ở viewport 1440×900. Source/test owner và các hash
+khai báo trong sidecar đã đối chiếu; không cần sửa application source cho hai
+phát hiện cũ này. Đây là review hai ảnh local/MSW, không phải review toàn bộ route
+hoặc nghiệm thu người dùng. Xem [evidence review](evidence/C05/frontend-historical-finding-review-2026-10-13.json).
+C05.03 vẫn mở; ba profile source cuối đã pass, không còn pending như ghi ở
+evidence focused trước đó.
+
+### Căn cứ và ranh giới bằng chứng
+
+| Phạm vi | Audit tại SHA nêu trên | Hệ quả |
+| --- | --- | --- |
+| Source và kiến trúc | 3.383 file tracked của bản sao khớp từng byte; 880 file trong `src`; 15/15 feature có public API; 911 module/5.018 dependency, 0 vi phạm | Giữ kiến trúc `app → features → shared`; sửa tại owner và consumer trực tiếp, không viết lại cấu trúc |
+| Inventory | Tính từ source: 130 page file/428 khai báo route; output lưu: 129/427 | Mở lại A08.01/A08.05; chưa regenerate output trong phiên docs-only |
+| Kiểm chứng frontend | 336/336 file, 3.069/3.069 test; S/B/F/L 98,41/96,83/98,12/98,95%; typecheck/lint/format/build/mock/bundle pass | Kết quả local Windows/Node 24.19.0; build dùng endpoint `.test`, không phải deployment hay bằng chứng backend |
+| Browser và CI | Staging-build intercept: 59 pass/4 skip; Auth API: 33 pass/1 fail; Auth MSW: 38 pass/3 fail; [CI #50](https://github.com/LonelyTraderBay/vittrade-react/actions/runs/38296422991) đúng SHA fail tại Auth API | Bốn lỗi browser có owner chung ở badge `PlatformSwitcher`; những CI gate sau lỗi bị skip, phải chạy lại đủ trên Node 22/Ubuntu |
+| Tính mới của evidence | Checker sổ: 70 lỗi; A06 tính lại: 0/106 row current-head, 81/81 sidecar lệch source hash | Giữ evidence cũ là lịch sử; sinh metadata không biến browser evidence thành fresh |
+| Phát hành | Certified 0 page; backend verified 0/154; user acceptance 0/128; branch-protection read trả 403 | Chưa đạt M4; không suy 403 thành không có branch protection hoặc ghi user đã duyệt |
+
+Các số trên là snapshot audit trước lần sửa tài liệu này; không phải kết quả vừa
+chạy lại runtime khi lập kế hoạch. `integration-pending` là trạng thái chứng nhận,
+không có nghĩa mọi page đều thiếu implementation. Mẫu số page-file, URL, page
+record và acceptance scope khác nhau; phải tính lại từng loại sau reconciliation.
+
+### Phạm vi frontend được giao triển khai
+
+| ID / ưu tiên | Task/step hiện có | Phạm vi và tiêu chí nghiệm thu |
+| --- | --- | --- |
+| P0-FE-01 | U04.02–U04.05, C03.02–C03.03 | Tách lỗi xác minh OTP khỏi lỗi gửi rút tiền tại `WithdrawPage.verifyAndSubmit`; timeout/network sau verify không được báo OTP sai. Không báo thành công khi thiếu receipt; giữ request/idempotency key của cùng intent, không tự gửi lại hoặc đổi enum/API. Kiểm thử verify fail, submit fail/timeout, pending/failed receipt và double submit. Lookup/replay sau mất phản hồi thuộc P0-BE-01 |
+| P1-FE-01 | C01.02–C01.03, C05.03, U01.04–U01.05 | Sửa badge dùng chung trong `RootLayout`/`PlatformSwitcher` theo kỳ vọng Auth: nhãn `Web` không xuất hiện trên form đăng ký. Giữ logic chuyển shell, URL/query/hash và dữ liệu form. Badge nếu được hiển thị phải đọc được trên nền thực tế light/dark, kể cả preview overlay. Bốn case đang đỏ phải xanh ở cả ba profile, không xóa assertion, bỏ route/state hoặc thêm skip để che lỗi |
+| P1-FE-02 | A08.01, A08.05, B10.02–B10.03 | Đối chiếu owner/page/export/route, gồm `AccountLockedPage` và route mới; cập nhật bằng generator chuẩn, giữ identity và lịch sử retired. Tại lần triển khai này, reconcile 181 source pointer sai, đăng ký 10 source path thiếu record, và cập nhật pointer inventory theo commit riêng chứa generator output; không bulk-rebaseline, đổi baseline/checker hoặc điền hash hiện tại vào lịch sử. Inventory check và checker phải exit 0 khi đóng lát cắt |
+| P1-FE-03 | A06.03, C05.01, C05.03 | Sau khi source fix ổn định, chạy lại các scenario áp dụng trên đúng revision/hash, giữ 81 sidecar cũ nguyên bytes. Báo fresh/full/representative, operation coverage và contract-blocked riêng; chỉ cập nhật matrix/UI index bằng generator sau browser run. Không yêu cầu các case thiếu contract phải xanh bằng response tự bịa; không đóng toàn A06.03 khi còn blocker |
+| P1-FE-04 | B07.02–B07.03, B07.05 | Kiểm CI hiện tại với đủ ba Playwright profile, inventory/tracking/contract gates, build/mock/bundle và failure propagation. Lưu report/coverage/trace/artifact theo SHA, kể cả khi fail. Sau P1-FE-01/P1-FE-02, chạy Node 22/Ubuntu đúng commit và lưu run/job/artifact. Quyền push hoặc dispatch phải theo nhiệm vụ Git được giao riêng; chưa có run là chưa xác minh |
+| P1-FE-05 | B04.01–B04.03 | Chuẩn bị schema và test cho seam telemetry hiện có: redaction password/token/KYC, release/request correlation, giới hạn metadata, lỗi sink không phá auth/giao dịch. Có thể kiểm bằng sink test cục bộ; việc chọn provider và wiring sink thật chờ P1-BE-02. Không coi `noopSink` hoặc sink giả là bằng chứng delivery/alert |
+| P2-FE-01 | B10.01–B10.04 | Đồng bộ narrative kiến trúc/runbook với source cuối bằng link về owner. 39 thư mục source không chứa file trên máy là cleanup tùy chọn: kiểm ownership, symlink/junction, consumers và trạng thái thật trước khi đề nghị xóa; không suy Git ignored/tuổi/kích thước thành quyền xóa. Giữ source/test/fixture/evidence/worktree; không đổi kiến trúc chỉ để làm folder gọn |
+
+Owner và file phải đọc trước triển khai: [WithdrawPage](../../../src/features/wallet/pages/WithdrawPage.tsx),
+[wallet adapter](../../../src/features/wallet/api/wallet-api.ts),
+[wallet queries](../../../src/features/wallet/model/wallet-queries.ts),
+[withdrawal owner tests](../../../src/features/wallet/pages/WithdrawPage.test.tsx),
+[RootLayout](../../../src/app/components/layout/RootLayout.tsx),
+[PlatformSwitcher](../../../src/app/components/layout/PlatformSwitcher.tsx),
+[Auth API browser test](../../../tests/e2e/auth-registration-mfa-setup.spec.ts),
+[CI](../../../.github/workflows/ci.yml),
+[inventory generator](../../../scripts/generate-architecture-inventory.mjs),
+[checker](check-tracking.mjs) và
+[telemetry seam](../../../src/shared/telemetry/telemetry.ts).
+`TRACKING.files[].executionScope.stepIds` vẫn là mapping chuẩn cho mọi file dự
+kiến bị ảnh hưởng; rà consumer trực tiếp trước khi ghi, không coi danh sách này
+là danh sách bắt buộc sửa toàn bộ.
+
+### Phần cần backend, staging hoặc quyết định vận hành
+
+| ID / ưu tiên | Task/step hiện có | Đầu vào thiếu và điều kiện đóng |
+| --- | --- | --- |
+| P0-BE-01 | B01.01–B01.05, U03.02, U04.02, U05.02, B06.01 | API/security owner xác nhận lost-response lookup/correlation, cùng key replay/conflict, atomicity, retention và quyền actor/resource cho Wallet/Trading/P2P/Earn/Predictions. Review 23 P2P permission candidate `draft_frontend`; quyết định HTTP 401/403 theo contract thật. Có owner/version và test backend cùng-key/different-payload, duplicate/concurrent, mất phản hồi và restart. Không thêm server status `unknown` chỉ để mô phỏng transport ambiguity |
+| P1-BE-01 | B02.01, B02.03–B02.05, B06.02–B06.04 | Cấp host HTTPS, API/backend version và môi trường test; API/security/hosting owner chốt cookie flags, session/OTP lifecycle, CSRF/origin/CORS, CSP/cache/rewrite và nguồn cấu hình. Negative auth/permission, refresh/logout, endpoint failure phải có evidence từ host/backend thật; không dùng `.test`/`.invalid` thay proof |
+| P1-BE-02 | B04.01, B04.04–B04.05 | Ops/privacy owner duyệt provider, schema/redaction/retention, sampling và nơi nhận; sau đó frontend wiring một lần ở bootstrap. Gửi controlled staging error, xác nhận dashboard/alert nhận đúng release/request context và owner triage; sink outage không làm hỏng nghiệp vụ |
+| P1-BE-03 | B05.01–B05.05, C05.04–C05.05 | Có account/persona/quyền test, backend version, HTTPS staging và release scope. Kiểm từng page/operation trong scope, đăng ký staging evidence đúng source inputs rồi mới certify. UI kỹ thuật, phản hồi người dùng và backend verification là ba trạng thái riêng; baseline 0/128 và 0/154 giữ nguyên tới khi có evidence tương ứng |
+| P2-BE-01 | B03.01–B03.05 | Product/API owner chốt yêu cầu freshness và chọn polling hoặc stream; nếu stream cần protocol/sequence/replay/snapshot/gap và account/pair scope. Frontend chỉ nối transport sau contract; kiểm duplicate/out-of-order/reconnect/unsubscribe/logout và stale recovery trên staging, không suy export `connectMarketStream` thành realtime đã hoạt động |
+| P2-BE-02 | B08.01–B08.05, B09.05 | Product/Ops owner chốt route/device/network/load, SLO và sample/window; đo lab trên staging/backend thật, chuẩn bị RUM/alert. Không tự gán tải/SLA hoặc lấy per-chunk budget/local MSW timing làm performance production. Chưa có traffic production thì ghi not measured và thu dữ liệu sau rollout giới hạn đã được giao |
+| P2-OPS-01 | B07.04, B09.01–B09.05, B10.05 | Người có quyền đọc/cấu hình repo xác minh required checks/review/CODEOWNERS bằng nguồn thật và negative path; không tự đổi quyền. Release owner chốt artifact digest/source/backend/config versions, rollback compatibility và rehearsal trên staging; deploy chỉ sau ủy quyền cụ thể. M4 chưa đóng khi các gate bắt buộc còn thiếu |
+
+Các mục P2-BE/P2-OPS vẫn là điều kiện phát hành trong phạm vi tương ứng; P2 không
+đồng nghĩa được phép bỏ qua trước M4. Chỉ vệ sinh thư mục ở P2-FE-01 là tùy chọn.
+Frontend có thể chuẩn bị mapping/test/runbook độc lập trong khi chờ đầu vào;
+không gọi phần dependent là done, không gán người/đội/backend URL chưa được xác nhận.
+
+### Thứ tự, kiểm chứng và bàn giao
+
+1. Trước sửa code: xác minh Git/dirty scope, dependency/toolchain Node 22 và
+   baseline gate; checkout audit hiện thiếu một số dependency cục bộ nên dùng
+   bản sao cô lập hoặc sửa môi trường trong nhiệm vụ được giao, không chạy
+   `npm ci` lên dependency dùng chung chỉ vì lệnh check không tìm thấy công cụ.
+2. Frontend: P0-FE-01 → P1-FE-01 → P1-FE-02 → P1-FE-04. Mỗi lát cắt có
+   owner regression và diff review riêng. P1-FE-03 theo sau source đã ổn định;
+   P1-FE-05 có thể chuẩn bị độc lập, wiring thật chờ quyết định sink.
+3. P0-BE-01 được ưu tiên lấy quyết định song hành về mặt công việc; chưa có
+   contract thì giữ các case unknown/duplicate/auth thiếu response blocked.
+   P1-BE-01/P1-BE-02 mở điều kiện cho P1-BE-03; B05/B06/B07/B08/C05 phải đủ
+   bằng chứng trong release scope trước B09/B10/M4.
+4. Giữ các `dependsOn` hiện có là điều kiện **đóng** task. Bắt đầu được lát cắt
+   độc lập không có nghĩa được đóng task cha trước dependency. C03.05 coverage
+   aggregate 100 vẫn mở, giữ checkpoint cũ làm lịch sử và tiếp tục sau blocker
+   correctness/gate; không đổi denominator/ngưỡng hoặc coi coverage 100 là thay M4.
+5. Lệnh frontend lấy từ manifest: `npm.cmd run typecheck`, `lint`, `lint:check`,
+   `format:check`, `architecture:check`, `architecture:inventory:check`,
+   `contracts:check`, `security:check`, `env:check`, `production-routes:check`,
+   `production-mock-imports:check`; focused owner tests và cả ba `test:e2e`
+   profile trong CI; `build`, `production-mocks:check`, `bundle:check` cùng
+   `node docs/architecture/production-readiness/check-tracking.mjs`.
+   Full coverage/CI chạy trên source cuối theo rủi ro; runtime checks chưa chạy
+   trong phiên lập kế hoạch này không được ghi pass mới.
+6. Bàn giao từng lát cắt bằng task/step, source revision + hash, command/env,
+   expected/actual, failure/skip/blocker và nextAction trong sổ. Dừng process
+   thuộc công việc, cleanup theo workflow; chỉ dùng dry-run khi yêu cầu giới hạn
+   toàn bộ thao tác ở chế độ chỉ đọc. Giữ output/evidence/source được bảo vệ và
+   không xóa thư mục source rỗng trong phiên lập kế hoạch.
+
+<a id="frontend-ui-ux-ds-migration-20261015"></a>
+
+### C06 — Lộ trình chuẩn hóa UI/UX và Design System — 15/10/2026
+
+**Trạng thái:** người dùng đã ủy quyền thực thi ngày 15/10/2026; tiến độ từng bước
+được ghi duy nhất trong [TRACKING.json](TRACKING.json). C06 bổ sung vào roadmap
+hiện hành, không thay C01/C03/C05, các task feature U01–U15 hoặc checkpoint B07.
+Mỗi step phải gắn file bằng `files[].executionScope.stepIds`, có evidence/checkpoint
+và qua `check-tracking.mjs` trước khi được coi là hoàn tất.
+
+**Mốc đọc thực tế:** HEAD `074ed3bedfbbcac9e7c31697911ebf234845f0ad`, nhánh
+`codex/frontend-readiness-remediation-20261013`. Worktree có **54 path** sửa đổi
+chưa commit (51 tracked, 3 untracked; 920 insertions/571 deletions); các thay đổi
+đó không thuộc commit lập kế hoạch này trừ khi được đối chiếu, nhận diện đúng
+task và được kiểm tra riêng. Inventory trong worktree hiện báo **130 page files,
+428 route declarations, 149 components, 0 data modules, 32 services, 28 mocks**;
+`docs/architecture/page-inventory.json` cũng đang dirty, vì vậy đây là số đo của
+worktree hiện tại, chưa phải baseline bất biến của một commit sạch. Trước C06.01
+phải chạy generator/check trên source được chọn, lưu revision/hash và đóng băng
+mẫu số; không dùng lại số snapshot nếu source đổi.
+
+`node docs/architecture/production-readiness/check-tracking.mjs` đã được chạy
+trên worktree này và **FAIL** (exit 1): 53 file có `current source differs from
+cataloguedSourceHead`; report có `sourceHead=074ed3bedfbbcac9e7c31697911ebf234845f0ad`,
+38 task/205 step, 130 page, 428 route declaration. Đây là mismatch giữa code
+đang dirty và provenance ledger; không tự cập nhật hash để làm xanh. C06.01 phải
+đối chiếu owner của các path, dùng checkout sạch/cô lập ở revision được chọn hoặc
+hoàn thành từng lát cắt có scope rồi cập nhật provenance; các bước phụ thuộc
+tracker chỉ được bắt đầu khi checker pass. Giữ nguyên toàn bộ WIP và evidence.
+
+**Baseline thực thi C06.01:** detached worktree sạch ở
+`19593f88d4f8bdc0e4d9c09eb6b9489ffdac0734` (commit chỉ đăng ký kế hoạch trên
+cùng nhánh). Ma trận inventory/route đối chiếu tại
+`evidence/C06/c06-01-route-matrix-2026-10-15-19593f88.json`: 130 active page
+source, 428/428 active route declaration khớp inventory, 1.465 URL registration,
+1.396 URL duy nhất; runtime route rows trong bước baseline là **0/428**.
+
+#### Finding được dùng để điều khiển thứ tự
+
+| ID / ưu tiên | Bằng chứng hiện có | Tác động và điều kiện | Owner sửa trước khi rollout | Rủi ro / độ chắc chắn |
+| --- | --- | --- | --- | --- |
+| UI-01 / P1 | `src/shared/ui/BottomSheetV2.tsx` (focus/keyboard lifecycle) và test owner; file source/test đang dirty | Khi mở/đóng sheet, focus và phím thoát phải theo đúng vòng đời; không đóng từ diff chưa commit hay một test đơn lẻ | BottomSheet primitive + regression test + consumer flow | Có thể ảnh hưởng nhiều sheet; source diff cần review. Finding đã được nêu trong audit, nghiệm thu lại trên HEAD mới; **trung bình-cao** |
+| UI-02 / P1 | `src/features/market/components/MarketItem.tsx` và test owner; dùng CTA trong hàng; các file đang dirty | Trong theme/viewport áp dụng, hành động hàng thị trường phải đọc được và có focus-visible rõ; contrast được đo trên computed colors | Token/CTA owner và MarketItem consumer cùng lát cắt | Đổi nền/màu có thể ảnh hưởng thương hiệu; giữ nguyên business action; **cao nếu contrast dưới ngưỡng, cần đo lại** |
+| UI-03 / P1 | `src/features/wallet/pages/WithdrawPage.tsx`, `WithdrawSections.tsx`, owner tests; các file đang dirty | Lỗi validation/submit trong luồng rút tiền phải gắn với field và giữ draft; pending/failed/unknown không được đánh đồng | Wallet form và shared error/feedback contract | Không đổi payload, precision, permission, idempotency hoặc receipt semantics; **cao về tác động, trạng thái hiện tại cần xác minh** |
+| UI-04 / P1 | `MarketItem` row action và keyboard regression tests; `src/features/market/components/MarketItem.test.tsx` đang dirty | Người dùng bàn phím phải tới và kích hoạt các hành động giống hành vi pointer; không biến cả hàng thành một control lồng control | Market row pattern và consumer tests | Đổi semantics có thể làm đổi interaction; **trung bình-cao** |
+| UI-05 / P2 | `guidelines/Guidelines.md` ở HEAD có mô tả đường dẫn/layout cũ; worktree dirty hiện thêm hợp đồng Layout mục 21 và test `page-layout-contract.test.ts` chưa tracked | Tài liệu và code có thể lệch; bản sửa đang có chưa được commit nên chưa là baseline đã duyệt | Nguồn Guidelines hiện hành và `src/shared/ui/layout/` | Không tạo tài liệu chuẩn cạnh tranh; xác minh diff, link, test và approval trước khi lấy làm chuẩn; **cao rằng có khác biệt HEAD/worktree** |
+| UI-06 / P2 | `src/styles/theme.css:304,370,405,530`; `src/shared/theme/button.ts`; `src/shared/ui/InputField.tsx:50,161`; `src/shared/hooks/useThemeColors.ts` | CSS theme, TypeScript config và consumer có các đường biểu diễn khác nhau; InputField tự dùng `#EF4444` dù có `--input-border-error`. `--primary` và `--tr-primary` khác giá trị trong `.light`, nhưng chưa được gộp vì cần xác minh khác ý nghĩa | Theme token owner + adapter + các consumer được tìm thấy bằng import graph | Gộp nhầm token có thể đổi CTA/market colors diện rộng; giữ màu hiện tại tới khi mapping được chứng minh; **cao về duplication, trung bình về mapping** |
+| UI-07 / P2 | `src/shared/ui/button.tsx`, `CTAButton.tsx`, `IconButton.tsx`; `InputField.tsx`/`TrInput.tsx`; `TrCard.tsx` nhận `className`/`style`; có nhiều consumer thật | Có các API giao nhau nhưng khác mục đích có thể hợp lệ; thiếu catalog/contract làm người viết trang khó chọn đúng API | Primitive API và catalog trong nguồn hướng dẫn hiện hành | Không hợp nhất theo số import hoặc hình thức; giữ native controls đúng ngữ cảnh; **trung bình** |
+| UI-08 / P2 | `src/shared/theme/density.ts`; `PageContent.tsx`; `src/shared/theme/legacyTypography.ts` được dùng bởi `MarketListSections.tsx`, `OCOOrderForm.tsx`; `φSpace` được dùng bởi `P2PFraudPreventionPage.tsx` và dev legacy | Nhiều thang/value owner cùng tồn tại; Web density và phone/tool density có thể là khác biệt nghiệp vụ hợp lệ | Token/layout owner sau khi lập consumer ledger | Xóa API chỉ sau cả static/dynamic consumer proof; **cao về các vị trí đã thấy, chưa đủ điều kiện retire** |
+| UI-09 / P2 | `src/shared/theme/ThemeContext.tsx:5,15`; z-index tại `src/styles/theme.css:805,1302,1314`, `src/shared/ui/ThemedToaster.tsx:36,46`, `src/app/components/layout/PlatformSwitcher.tsx:165`; `/dev/design-system` và `/dev/showcase` hiện trỏ placeholder trong `src/app/routes.ts` | Theme class khởi tạo qua effect và z-index lớn là điểm cần runtime review; chưa có bằng chứng chắc chắn về nháy theme hoặc overlay che nhau. Catalog route chưa phải catalog component | Theme/overlay owner và trang đại diện | Không nâng z-index hoặc thêm provider theo phỏng đoán; **giả thuyết runtime cần xác minh** |
+| UI-10 / P2 | Baseline sạch `19593f88d4f8bdc0e4d9c09eb6b9489ffdac0734`: generated inventory có 130 page file; `TRACKING.pages` có 331 record gồm đúng 130 `active` source path tồn tại và 201 `planned` source path chưa tồn tại. Trong 201 record planned đó, 200 liên kết tới 203 route rows. `check-tracking.mjs` không yêu cầu source file tồn tại cho record `planned`; đây là trạng thái hợp lệ của ledger, không phải 201 implementation bị thiếu | Scope UI có nguy cơ đếm nhầm trang dự kiến thành consumer đã triển khai hoặc bỏ route có alias. Chưa đủ bằng chứng để chuyển 201 planned record thành active/retired; đối chiếu route target, placeholder, source history và owner trước | C06.01/C06.13: tracker/inventory owner cùng route registry owner | Không bulk retire hoặc tạo 201 page mới. C06 đo 130 active page source và toàn bộ 428 active route declarations; **độ chắc chắn cao về số đo, lifecycle tương lai chưa xác minh** |
+
+Các status tổng quát trong bảng là độ chắc chắn của finding, không thay thế trạng
+thái `todo/in_progress/blocked/done` của tracker. Không nâng một phát hiện heuristic
+thành dữ liệu usability test. Không kết luận “unused” từ một lần `rg`.
+
+#### Quy ước phạm vi và bất biến
+
+1. Phạm vi là toàn bộ frontend và UI packages được inventory ghi nhận, gồm route
+   alias, route ẩn theo quyền/flag, dev preview được ship trong source và mọi shell
+   hiện có (`/`, `/t`, `/w`, `/r`). Nhóm riêng theo phone/tablet/Web hoặc module
+   được giữ density, navigation và pattern riêng khi chúng phản ánh nghiệp vụ;
+   chỉ contract chung về cùng role/hành vi mới phải thống nhất.
+2. Inventory **130/428/149** là mốc worktree tạm. C06.01 phải tái tạo inventory
+   từ source, rà route declaration, lazy/import registry, permission, flag, alias,
+   dynamic ID và package; đối chiếu generator với route tests. Không bỏ route ẩn
+   vì không xuất hiện ở menu. Mỗi route có page owner, shell, pattern, role/theme/
+   locale áp dụng và trạng thái chứng nhận; ghi `N/A` cùng lý do thay vì để trống.
+3. Bảo toàn API, permission model, calculations, currency/number precision,
+   formatter/timezone, request/idempotency keys, lỗi pending/failed/unknown và
+   backend contract. UI disable không thay server authorization. Mock/local chỉ
+   chứng minh frontend contract; không chứng minh backend, staging hoặc user
+   acceptance.
+4. Không đổi brand, font, icon family, theme mặc định hay ý nghĩa màu đã duyệt.
+   Token refactor phải giữ computed output nếu không có quyết định visual riêng;
+   khác biệt thị giác cần ảnh before/after, chủ đích, ảnh hưởng route và approval
+   theo cơ chế review hiện có. Không thêm Storybook, thư viện hoặc pipeline token
+   nếu công cụ hiện có đáp ứng acceptance.
+5. Không cấm CSS cục bộ, inline/dynamic style, native HTML, primitive value hoặc
+   component nghiệp vụ. Chỉ ghi ngoại lệ khi giá trị có role đặc thù/động; ngoại
+   lệ phải có path/consumer, lý do, người hoặc nhóm duyệt theo cơ chế sẵn có, test,
+   phạm vi và điều kiện xem xét lại. Không tự bịa owner.
+
+#### **C06.01** — đóng băng baseline, scope và tracker
+
+- **Mục tiêu:** thiết lập mẫu số và provenance sạch trước khi sửa; không nhập 54
+  path dirty hiện có vào migration nếu chưa xác minh ownership và kết quả. Đối
+  chiếu riêng 331 page records trong TRACKING với 130 page files do inventory
+  generator xác nhận: 130 record có lifecycle `active` và source path tồn tại;
+  201 record lifecycle `planned` có source path chưa tồn tại. Trong nhóm planned,
+  200 record liên kết tới 203 route rows. Không tự chuyển lifecycle, retire, tạo
+  source page hoặc tính planned record là UI đã triển khai.
+- **Đọc:** `AGENTS.md`, `AI_RULES.md` theo yêu cầu repo, `ARCHITECTURE.md`,
+  `guidelines/Guidelines.md`, `docs/ai/WORKFLOW.md`, PLAN/TRACKING, `package.json`,
+  `.nvmrc`, `.github/workflows/ci.yml`, inventory, route registry, `src/styles`,
+  `src/shared/theme`, `src/shared/ui`, page-layout tests và test configuration.
+- **Làm:** capture HEAD/branch/staged+unstaged/untracked; phân loại mọi dirty path
+  theo owner/task; chạy inventory/checker hiện có; lập matrix route × shell ×
+  template × state × viewport × theme/locale/role; ghi phần không hỗ trợ runtime.
+  Thêm task `C06` vào TRACKING với 15 step này, mỗi step có dependency, owner role
+  theo source sẵn có, file scope, acceptance, commands, status và `nextAction`.
+  Gắn file từng bước qua canonical `executionScope.stepIds`, không liệt kê cả repo
+  cho mọi step; cập nhật execution plan/item và checker theo schema đang dùng.
+- **Done khi:** inventory count/hash khớp generator trên SHA đã chọn; route tổng
+  khớp test/generator hoặc sai lệch được giải thích; mọi file dirty được bảo toàn;
+  tracker có C06 và checker exit 0; matrix ghi đủ 428 route declaration, shell,
+  implementation/template, state, viewport, theme, locale và role; từng ô chưa
+  kiểm chứng có trạng thái, owner-step và lý do cụ thể. Ghi riêng 130 source page
+  files, 331 ledger page records (trong đó 201 source path chưa tồn tại) và phạm vi
+  runtime thực tế; không dùng tỷ lệ ước đoán.
+- **Kiểm tra:** `npm.cmd run architecture:inventory:check`,
+  `node docs/architecture/production-readiness/check-tracking.mjs`, các route
+  inventory tests và `git diff --check`. Chạy read-only, không regenerate baseline
+  lịch sử và không ghi hash HEAD mới vào evidence cũ.
+- **Rollback:** revert riêng commit baseline/tracker; giữ nguyên evidence lịch sử
+  và mọi source dirty không thuộc task.
+
+#### C06.02–C06.06 — P1: bảo vệ tương tác và chốt contract nhỏ
+
+| Step | Thay đổi tối thiểu và owner | Kiểm chứng bắt buộc trước khi commit | Điều kiện đóng / rollback |
+| --- | --- | --- | --- |
+| **C06.02** / UI-01 | Review `BottomSheetV2` focus entry, trap/keyboard theo primitive, escape/cancel, close, focus return, scroll lock và background interaction. Giữ API nếu không cần đổi; cùng commit component + tests trực tiếp + consumers bị ảnh hưởng | Focused Vitest trước/sau; Playwright keyboard với open, Tab/Shift+Tab, Escape, close button, focus restore; viewport phone/tablet/Web áp dụng; light/dark; inspect actual focus order và computed style | Mọi nhánh mở/đóng áp dụng có assertion; không regress body scroll/submit; revert nguyên lát cắt component + tests nếu bất kỳ gate nào fail |
+| **C06.03** / UI-02 | Đo foreground/background computed colors cho action quan trọng trong `MarketItem` và các CTA cùng semantic role. Tách text thường/lớn và non-text indicator; map tới token/API, không chọn màu theo cảm giác | Tính contrast đúng cặp và trạng thái light/dark; focused component tests + route `/w/markets` browser; keyboard focus, selected/disabled/loading khi áp dụng; ảnh before/after nếu đổi visual | Text thường ≥4.5:1, text lớn theo định nghĩa WCAG ≥3:1; ngưỡng non-text theo tiêu chí áp dụng, không dùng ngưỡng chữ cho mọi phần; không thêm màu brand mới. Revert token+consumer cùng commit nếu mapping đổi ngoài dự kiến |
+| **C06.04** / UI-03 | Review `WithdrawPage`/`WithdrawSections` form validation, inline association, submit/loading, server error, preserved draft và retry boundary. Sửa field owner trước shared feedback; giữ payload/precision/idempotency/receipt semantics | Wallet focused tests cho valid/invalid, server rejection, double-submit, pending/failed/unknown, cancel/confirmation; browser mock chỉ ghi frontend proof; keyboard/focus/error announcement; không dùng production account/data | Không mất dữ liệu nhập khi lỗi; lỗi gắn field/form và có bước tiếp theo; không báo success giả; route `/w/wallet/withdraw` và alias áp dụng pass. Rollback không đổi contract API |
+| **C06.05** / UI-04 | Kiểm `MarketItem` row semantics, nested action, tab order, accessible name, enter/space, pointer parity; dùng `<button>`/`<a>` phù hợp, không thêm ARIA thay behavior | Owner tests + keyboard browser trên `/w/markets` và phone/tablet aliases; row click/action click không double-fire; 0 nested interactive controls invalid; audit focus order | Hành động row dùng được không hover; không đổi navigation/trade business behavior. Revert row+test cùng lát cắt |
+| **C06.06** / UI-05–07 | Chốt guideline ownership/path, token/density/gutter mapping và catalog component thực có. So sánh Git HEAD với working-tree draft ở `guidelines/Guidelines.md`; rà Section 21, `PageContent`, `page-layout-contract.test.ts`; không ghi đè dirty docs/tests. Catalog ghi API/variants/states/consumers/tests, không tạo catalog framework mới | Link/line/code path kiểm được; checker; consumer inventory; proposal token mapping table có `current`, `proposed`, semantic role, theme, affected consumers, visual-diff yes/no, test. Review route exceptions và browser evidence chưa được áp dụng | Không có quyết định brand chưa duyệt; value cũ/new khác nhau phải có người duyệt theo cơ chế hiện hành. Nếu chỉ map alias giữ computed output, kiểm chứng pixel/style equality. Revert docs contract đơn lẻ nếu link hoặc contract mâu thuẫn |
+
+Thêm một việc P1 trong C06.02 nếu kiểm tra lại xác nhận default UI tiếng Việt nhưng
+`index.html` còn `lang="en"`: xác định locale ownership/dynamic update trước; cập
+nhật `lang` theo locale thật và test đổi locale nếu hỗ trợ. Không thêm hệ i18n hoặc
+locale mới. Kiểm tra font glyph/dấu tiếng Việt bằng font thật. Đây là vấn đề
+accessibility/nội dung, không được coi test contrast thay thế.
+
+#### C06.07–C06.10 — P2: token source, primitive API và layout contract
+
+| Step | Owner/source dự kiến (phải xác minh consumers trước sửa) | Acceptance và kiểm tra |
+| --- | --- | --- |
+| **C06.07** Token/theme | `src/styles/theme.css` (CSS variables và `@theme inline`), `src/shared/hooks/useThemeColors.ts`, `src/shared/theme/button.ts`, theme/radii/typography/density modules; CSS/SVG/chart/portal consumers. `src/shared/theme/golden.ts` không tồn tại tại baseline; không tạo/giả định module này. | Lập mapping primitive → semantic → optional component token cho color/state/surface/text/border, spacing, typography, sizing, radius, shadow/elevation, opacity, motion, z-index, breakpoint/container/density. Gắn light/dark đầy đủ; kiểm alias/cycle/fallback. Không tạo bản TS/CSS độc lập; giữ adapter nếu consumer cần. Thay literal lỗi/error bằng `--input-border-error` chỉ khi computed color giữ nguyên. Rà theme bootstrap/flicker bằng browser trước khi sửa. Chạy token contract tests, CSS/theme consumers, route screenshot light/dark |
+| **C06.08** Primitives | `src/shared/ui/button.tsx`, `CTAButton.tsx`, `IconButton.tsx`, `InputField.tsx`, `TrInput.tsx`, `TrCard.tsx`, dialog/sheet/toast, table/menu/tab implementations | Chọn canonical owner theo semantic behavior, keyboard, accessible name, focus, async/disabled/readonly và consumer cost. Tách variant public lặp lại khỏi style xuyên tầng; `className/style` chỉ được giữ nếu có contract phù hợp. Không gom `TrInput`/`InputField` hay native button theo hình thức. Consumer count và import graph được tính lại trước/sau; focused tests và ít nhất một page integration cho mỗi changed primitive |
+| **C06.09** Layout | `src/shared/ui/layout/{PageLayout,PageContent,Header}.tsx`, app shells ở `src/app/components/layout/`; current draft `guidelines/Guidelines.md` mục 21 là evidence cần đối chiếu, không tự coi đã duyệt | Chốt ownership của page gutter/max-width, header/content gap, section, card, form fields, toolbar, table cells, dialog/action groups; parent sở hữu group gap, child sở hữu internal component padding. Kiểm double spacing, fixed-height clipping, margin âm, empty spacer, scroll/sticky/overflow/portal stacking. Retain phone/tablet/Web densities. Có tests contract cho layout và route integration; exception ghi owner/lý do/test/review date |
+| **C06.10** Guardrails | Checker/tests/CI hiện có; nếu cần script mới, owner và denominator xác định trước | Bổ sung “không thêm vi phạm mới” cho changed paths trước; chỉ sau khi baseline đo được mới lập migration giảm. Guardrail có thể bắt: primitive hardcode colors, semantic token cycle/missing theme, import legacy mới, public boundary. Allowlist phải hẹp, có expiry/owner/exception, không cho wildcard. Test false-positive trên tất cả frontend source; không làm CI đỏ vì backlog cũ |
+
+Mapping proposal ban đầu (mọi tên/giá trị mới là **PROPOSED**, cần được chấp
+thuận trước khi thành public contract): `src/styles/theme.css` tiếp tục là owner
+CSS theme/foundation hiện hữu; semantic CSS variables là giá trị runtime duy nhất;
+`useThemeColors` và Tailwind `@theme inline` là adapter được kiểm tra, không phải
+nguồn số thứ hai. `button.ts` chỉ giữ component token nếu contract gradient có
+consumer và lý do; nếu không, dùng CSS semantic/component property. Giữ `--primary`
+và `--tr-primary` riêng cho tới khi role được xác nhận—không gộp vì trùng tên gần
+hay chọn mã màu đẹp hơn. `density.ts` tiếp tục mô hình density có tên; hợp nhất
+`PageContent` numeric gap và density presets chỉ sau đo layout/consumers, không
+ép Web và phone cùng density. Typography là bộ role đầy đủ (family/size/weight/
+line-height/letter-spacing), còn heading semantic do page quyết định. Không sửa
+SVG/chart/library color trong đợt token tổng hợp nếu chưa có owner mapping.
+
+#### C06.11–C06.12 — P1: pilot có thể rollback độc lập
+
+| Pilot | Routes/consumers | Kiểm chứng và giữ nguyên |
+| --- | --- | --- |
+| **C06.11** Market list | `/w/markets`, `/t/markets`, phone alias nếu registry hiện hành xác nhận; `MarketItem`, list sections, search/filter/sort/empty/loading/error, route Back | Inventory alias từ `src/app/routes.ts` và generated inventory; kiểm keyboard/pointer, focus, filtering, sort, pagination nếu có, Back giữ filter/context, data dài/empty/error, light/dark và mỗi phía breakpoint thực tế trong CSS/config. Visual snapshot ổn định fixture/time/locale/font/viewport; không mask row/action. So consumer trước/sau. Market streaming/backend thật là gate riêng |
+| **C06.12** Wallet withdrawal | `/w/wallet/withdraw` và shell aliases được route registry xác nhận; `WithdrawPage`, form fields, confirmation/error feedback | Kiểm invalid/valid/cancel/confirm/pending/fail/unknown/permission, double-submit, preserved draft, error association, focus, touch/keyboard, keyboard viewport/scroll. Mock chỉ chứng minh UI contract; không gửi giao dịch thật. Giữ calculation/precision/request key/API/authorization unchanged. Kết quả visual đổi phải được review |
+
+Mỗi pilot là commit riêng cho mỗi pattern. Không đưa shared primitive vào pilot
+nếu nó chưa qua C06.07–C06.10; adapter tạm thời phải testable, có đường xóa và
+không trở thành chuẩn thứ hai lâu dài. Consumer ngoài pilot được chạy regression
+trên file thực tế, không chỉ snapshot của trang thí điểm.
+
+#### C06.13–C06.14 — rollout theo inventory và ngoại lệ
+
+**C06.13** quản lý rollout cho 130 page source files đang tồn tại và toàn bộ 428
+route declarations; các page record khác trong TRACKING được đối chiếu riêng theo
+trạng thái route/placeholder, không mặc định là source hiện hữu.
+
+1. Sau hai pilot, nhóm route từ 130 page files/428 declarations theo component,
+   shell, interaction và density; phân nhóm từ inventory/source, không theo tên
+   sản phẩm đơn thuần. Thứ tự: Auth/Wallet form; P2P/Earn form; Market/Profile/
+   Support list/detail; Trading/order; dashboard/chart. Chỉ xử lý nhóm tồn tại
+   trong inventory. Mỗi nhóm có danh sách route/page/file/role/theme/locale/state,
+   baseline screenshot, test owner và rollback commit.
+2. Với từng nhóm, đếm eligible consumers trước khi sửa; chuyển đúng semantics/API
+   sang canonical component/layout, test state matrix áp dụng, kiểm route runtime
+   và side effects của shared CSS. Không bulk replace token hoặc class bằng regex.
+   Thay đổi nhiều product/shell trong một nhóm chỉ khi cùng hợp đồng và cùng cổng
+   rollback; nếu khác nhau thì chia commit/step.
+3. **C06.14** — Ngoại lệ nghiệp vụ/mật độ/immersive/chart/auth/developer preview ghi đúng nơi
+   policy hiện hành chỉ định. Không ép dashboard dày đặc như form, không ép Web
+   desktop như phone, không xóa quyền native/dynamic style. Nếu owner duyệt visual
+   change, lưu decision/evidence; nếu chưa rõ mà có thể giữ hình thức cũ, giữ cũ.
+4. Đóng nhóm chỉ khi mỗi eligible route có mapping tới owner component/layout,
+   consumer count reconcile; test pass trên đúng SHA; toàn bộ exception có lý do;
+   không tăng số vi phạm hardcode/import legacy trên baseline; route/state chưa
+   chạy được ghi `blocked` hoặc `N/A` hợp lệ, không tính vào numerator như pass.
+
+#### **C06.15** — retire legacy và nghiệm thu 100% trong phạm vi đã khóa
+
+- Trước xóa alias/token/component, dùng static import graph, re-export/barrel,
+  dynamic import/registry/route/flag lookup, test/story/demo/dev, CSS selector,
+  runtime route trace và lịch sử cần giữ để xác nhận **0 consumer**. Thử cấm import
+  mới trước; migrate từng owner; alias chỉ giữ trong thời hạn có ngày/kế hoạch
+  xóa. Nếu dynamic usage chưa thể xác minh, giữ API và task `blocked`, không xóa.
+- “100%” chỉ có nghĩa đạt đủ acceptance của **scope và revision đã khóa**, không
+  có nghĩa app không còn lỗi hoặc tự động đạt WCAG/production. Đóng C06 khi:
+  inventory route/file được tái tạo, 428/428 route declarations (hoặc mẫu số mới
+  được giải thích) gắn owner/pattern và status; 100% cell áp dụng trong matrix
+  được test/quan sát hoặc ghi N/A có lý do; eligible shared consumers trong scope
+  có owner contract; baseline violation không tăng và từng legacy item đã migrate,
+  có exception được duyệt, hoặc được chứng minh không dùng; critical journeys
+  pass; test local và GitHub required checks pass trên SHA cuối; UI visual review
+  được ghi nhận; mọi điều kiện chưa kiểm được còn open và C06 không được đóng.
+- WCAG 2.2 AA là mục tiêu theo tiêu chí áp dụng: contrast chữ thường 4.5:1, chữ
+  lớn 3:1; target 2.5.8 tối thiểu 24×24 CSS px với ngoại lệ đúng tiêu chí; keyboard,
+  focus, labels, error announcements, reflow/zoom, reduced motion và modal pattern
+  được kiểm thủ công + tự động phù hợp. “Axe 0 violations” không đủ để tuyên bố
+  đạt WCAG; lưu tiêu chí kiểm tra thủ công, browser/AT chưa test và giới hạn.
+- Chỉ công bố tỷ lệ có tử số/mẫu số, revision, nhóm áp dụng, loại kiểm chứng và
+  danh sách N/A/blocked. Báo riêng technical conformance, UI review, user
+  acceptance, backend/staging, GitHub CI và production certification; không gộp.
+
+#### Cổng kiểm chứng trước khi chuyển bước
+
+Mỗi C06 step chạy theo vòng lặp và **không bắt đầu step phụ thuộc trước khi
+acceptance của dependency pass**:
+
+1. Đọc lại task/decision/checkpoint trong PLAN/TRACKING; xác minh SHA/branch,
+   dirty/staged/untracked, file ownership, diff và scope. So current source với
+   evidence/commit trước; nếu worktree có chỉnh sửa liên quan của người khác, giữ
+   nguyên, cô lập phần task trong worktree/index an toàn hoặc chỉ nhận phần có thể
+   phân định bằng chứng. Không reset/checkout/clean để làm sạch.
+2. Đo baseline trước: route/consumer count, state, computed styles, keyboard/ARIA,
+   screenshots, failures và source hash theo phạm vi. Ghi exact command/environment,
+   expected/actual. Test đỏ phải tái hiện trước khi sửa nếu finding là behavior;
+   không tạo regression test chỉ lặp code.
+3. Sửa tại owner nhỏ nhất, giữ nguyên public/business contract. Chạy focused unit/
+   component/interaction tests, typecheck/lint/architecture checks áp dụng. Mở
+   browser local cho page integration với mock fixture an toàn; đo computed style,
+   focus/keyboard/scroll/overflow và các trạng thái thực. Ghi rõ local/MSW, không
+   gọi nó backend evidence.
+4. Chạy regression của shared consumers ngoài pilot và kiểm tra light/dark,
+   viewport hai phía breakpoint, locale/role áp dụng. Visual test dùng fixture,
+   data/time/font/animation/viewport ổn định; baseline chỉ cập nhật khi change có
+   chủ đích được review. Không che/mask vùng cần kiểm.
+5. Cập nhật tests/docs/tracker/evidence cùng public contract. Chạy check-tracking,
+   inventory check, `git diff --check`; kiểm tra lại change scope và không có
+   secret/PII trong report. Chỉ step có evidence trên đúng source hash mới `done`.
+6. Chỉ khi các cổng phù hợp pass, chuyển step kế tiếp; `FAIL`, `BLOCKED`, `NOT RUN`
+   khác `PASS`. Không bỏ qua gate bằng skip, hạ assertion, đổi threshold,
+   rebaseline lịch sử hoặc nói “100%” dựa trên mẫu.
+
+#### Commit, push và GitHub gate cho từng lát cắt
+
+Người dùng đã yêu cầu tự commit/push từng công việc hoàn thành, tách theo thứ tự
+ưu tiên và ghi chú tiếng Việt. Áp dụng trong C06 như sau; không mở rộng thành
+quyền deploy hoặc quyền commit thay đổi ngoài migration:
+
+1. Một commit cho một C06 step hoặc một nhóm trực tiếp không thể tách mà vẫn giữ
+   invariant; thứ tự dependency trước consumer. Không dồn nhiều priority/task vào
+   một commit. Subject tiếng Việt, scope rõ, ví dụ `fix(a11y): giữ focus cho
+   bottom sheet` hoặc `fix(ui): chuẩn hóa action của danh sách thị trường`.
+2. Trước staging, liệt kê path thuộc step và path dirty ngoài scope. Stage path cụ
+   thể; đọc staged diff/stat và `git diff --cached --check`. Không stage `git add
+   -A`, không commit 54 path đang dirty theo baseline trừ khi từng path được chứng
+   minh thuộc chính step, test pass và có record owner. Nếu index đã có staged
+   work không thuộc step, giữ nguyên và dùng index/worktree isolation hoặc dừng
+   commit task này an toàn; không reset index người khác.
+3. Commit chỉ sau local acceptance pass. Tôn trọng hooks, ký commit/DCO và branch
+   policy hiện có; không bỏ qua hook/check hoặc force push. Push fast-forward lên
+   nhánh task đã xác định; không push thẳng `main` trừ khi quy trình repo yêu cầu
+   và có thẩm quyền. Mỗi commit có SHA riêng, file list, subject tiếng Việt và
+   local verification trong TRACKING/evidence.
+4. `.github/workflows/ci.yml:3–5` hiện chỉ chạy `push` trên `main` và chạy trên
+   `pull_request`; push branch feature một mình không bảo đảm GitHub CI chạy.
+   Trước C06, xác định PR theo quy trình repo. Nếu cần PR để trigger required
+   checks thì tạo/cập nhật PR draft theo quy trình của branch, không coi upload
+   thành công là CI pass. Kiểm tra exact head SHA, mọi required job conclusion,
+   test artifact/report và workflow còn chạy; dùng GitHub status API/`gh` hiện có.
+   Lưu run ID, SHA, jobs, conclusion, artifacts và enforcement evidence. Không suy
+   branch protection từ quyền push hoặc HTTP 403.
+5. Sau từng commit: push, chờ required checks terminal, ghi PASS/FAIL/SKIPPED/
+   BLOCKED trên exact SHA rồi mới sang step phụ thuộc. CI lỗi: sửa trong cùng
+   task bằng commit sửa riêng, push và chờ lại. GitHub unavailable/required check
+   không cấu hình/quyền thiếu: giữ commit, ghi blocker; không giả pass, không
+   chuyển dependency. Việc độc lập không phụ thuộc được tiếp tục. Không auto deploy.
+
+#### Nhất quán khi người dùng yêu cầu kiểm tra lại
+
+- ID/criteria giữ ổn định: C06 và C06.01–C06.15 trong tracker; finding IDs UI-01…
+  UI-09; mỗi completion gắn SHA, paths, owner, command/env, số đo tử/mẫu, report
+  path/hash, local state và exact GitHub run/status. Không đổi ID để che failure.
+- Mỗi lần được hỏi “đã hoàn tất chưa” hoặc “kiểm tra lại”, AI phải đọc HEAD,
+  worktree, `TRACKING.json` và evidence đúng SHA; chạy checker, xác minh remote
+  commit/check còn đúng revision. Không lấy câu trả lời cũ hoặc ghi chú trong
+  PLAN làm bằng chứng mới. Source/evidence không đổi thì trạng thái phải giữ
+  nguyên; thay đổi thì tính lại cùng mẫu số và ghi revision mới, không sửa lịch sử.
+- `TRACKING.json` là trạng thái duy nhất; PLAN là tiêu chí/thứ tự; source/test là
+  implementation; evidence ghi kết quả. Không chép status vào hướng dẫn thứ hai.
+  Nếu code, Guidelines, tracker, CI hoặc evidence mâu thuẫn, ghi conflict và sửa
+  tại owner trước khi đóng; không âm thầm chọn nguồn thuận tiện.
+
+#### Thứ tự khởi động
+
+1. C06.01: khóa baseline/tracker và phân loại 54 path dirty.
+2. C06.02 → C06.05: UI-01…UI-04; từng step có regression, commit tiếng Việt,
+   push và GitHub gate trước step kế.
+3. C06.06: chốt guideline/token/density/catalog; giữ nguyên brand/theme và các
+   bản sửa dirty chưa được duyệt.
+4. C06.07 → C06.10: token/theme → primitive → layout → guardrail.
+5. C06.11 → C06.12: pilot Market rồi Withdrawal (hoặc đảo chỉ khi dependency và
+   measured risk trong tracker chứng minh cần); không đổi business contract.
+6. C06.13 → C06.14: rollout theo nhóm có thật trong inventory; C06.15 retire
+   legacy sau consumer proof và toàn bộ acceptance.
+
+Nếu dependency không đạt, ghi lỗi và xử lý tại owner; không dừng toàn bộ roadmap
+để hỏi lại từng task, nhưng không đi qua cổng bắt buộc. Chỉ cần người dùng/quyền
+repo khi một quyết định visual/ownership hoặc external gate không thể suy ra từ
+code, policy và quyền đã cấp; tiếp tục những phần độc lập trong phạm vi an toàn.
+
+## Snapshot điều hành và số đo 02–03/10/2026 — lịch sử
+
+Phần dưới và các nhật ký theo ngày là lịch sử ở revision được ghi; kế hoạch
+khắc phục hiện hành nằm ở mục 13/10 phía trên và checkpoint trong TRACKING.
 
 Đây là roadmap thực thi theo gói và từng bước để đưa frontend tới các điều kiện phát hành M1–M4 ở Mục 1. Kế hoạch không phải chứng nhận sản phẩm đã sẵn sàng. Dùng Mục 9 cho yêu cầu/điều kiện của từng task, Mục 13 cho thứ tự và quy trình theo file, [TRACKING.json](TRACKING.json) làm nguồn trạng thái duy nhất, [SCOPE.md](SCOPE.md) để tra cứu danh mục, và [WORKFLOW.md](../../ai/WORKFLOW.md) để tiếp nhận/làm/kiểm/chốt từng bước.
 
@@ -1071,6 +1708,10 @@ Không mất trang do inventory chỉ đếm file hoặc route không có pageTa
 
 Giữ vertical slice hiện tại; bổ sung checks cho khoảng trống metadata đã quan sát.
 
+**Follow-up 13/10/2026:** A08.01 và A08.05 mở lại cho inventory/source hiện tại
+theo [P1-FE-02](#khac-phuc-audit-20261013). Các kết quả hoàn tất ngày 29/09 dưới
+đây được giữ làm lịch sử, chưa thay kết quả inventory/checker đang thất bại.
+
 **Phụ thuộc khi đóng:** A01. **Theo dõi:** `tasks[id=A08]` trong TRACKING.json.
 
 **Hiện có — điểm đọc/sửa:** [.dependency-cruiser.cjs](../../../.dependency-cruiser.cjs), [ARCHITECTURE.md](../../../ARCHITECTURE.md), [contracts/README.md](../../../contracts/README.md), [contracts/openapi/p2p.yaml](../../../contracts/openapi/p2p.yaml), [scripts/check-env-boundary.mjs](../../../scripts/check-env-boundary.mjs), [scripts/check-openapi-contracts.mjs](../../../scripts/check-openapi-contracts.mjs), [scripts/check-security-boundaries.mjs](../../../scripts/check-security-boundaries.mjs).
@@ -1476,6 +2117,10 @@ Dùng số đo tái lập để quyết định tối ưu, giữ riêng lab mock
 
 ### C03 — Kiểm thử theo invariant và sức phát hiện lỗi
 
+**Follow-up 13/10/2026:** C03.02/C03.03 mở lại cho phân loại lỗi OTP/submit rút
+tiền ở [P0-FE-01](#khac-phuc-audit-20261013). C03.05 giữ in_progress và mục tiêu
+coverage cũ; các kết quả hoàn tất trước đây giữ nguyên phạm vi/lịch sử.
+
 Tăng độ tin cậy ở luồng rủi ro; không chỉ làm đẹp coverage.
 
 **Phụ thuộc khi đóng:** A02, A03, A04. **Theo dõi:** `tasks[id=C03]` trong TRACKING.json.
@@ -1517,6 +2162,10 @@ Preview vẫn đầy đủ nhưng artifact phát hành không mang dữ liệu/d
 <a id="c05"></a>
 
 ### C05 — Gói nghiệm thu UI cho người dùng
+
+**Follow-up 13/10/2026:** C05.01/C05.03 mở lại để cập nhật index sau inventory
+và sửa badge/contrast dùng chung theo [P1-FE-01/P1-FE-03](#khac-phuc-audit-20261013).
+Smoke C05.02 cũ được giữ làm lịch sử; không nâng userAcceptance/backend status.
 
 Bàn giao cách chạy và kiểm tra thực tế, có trạng thái từng trang rõ ràng.
 
@@ -1671,6 +2320,11 @@ Xác minh các rủi ro có đường đi thật; không coi npm audit sạch l�
 <a id="b07"></a>
 
 ### B07 — CI đúng toolchain, bằng chứng và chính sách Git
+
+**Follow-up 13/10/2026:** B07.02–B07.05 mở lại theo
+[P1-FE-04/P2-OPS-01](#khac-phuc-audit-20261013); B07.04 blocked do API đọc branch
+protection trả 403. Run #50 ở source audit thất bại, còn các run xanh ở SHA cũ
+bên dưới là lịch sử. B07.01 giữ bằng chứng toolchain; chưa coi toàn CI hiện tại đạt.
 
 Lặp lại gates trên môi trường chuẩn tại revision phát hành; giữ artifact để review.
 
@@ -3791,3 +4445,197 @@ G5 trên candidate này exit 1 với **11 lỗi provenance source chưa commit**
 Trên source P1 với Node 22.23.3: full coverage **335/335 files, 3.027/3.027 tests**, S/B/F/L **98,42/96,82/98,11/98,96**, ngưỡng giữ nguyên; E2E **59 pass, 4 skip development hiện hành**, không thêm skip. Typecheck/lint/format, kiến trúc/inventory, contracts/security/env, audit **0 vulnerabilities**, license **552 packages**, production build/mock/bundle gates pass. Run mới ghi owner/child đóng và snapshot source trước/sau khớp; giữ manifest/coverage/report, thu hồi cache/output hết sử dụng.
 
 P2 ghi hồ sơ và archive gzip đã giải nén đối chiếu từng byte; kiểm lại G5/diff trước commit. Remote/CI của SHA cuối chưa có tại thời điểm ghi: chỉ push chuỗi đã kiểm sau P2 rồi xác minh GitHub đúng SHA. Các nguồn thực thi không đổi sau P1; build/artifact trên SHA metadata cuối được kiểm riêng. Không deploy/merge worktree hoặc nâng trạng thái backend/UAT/coverage aggregate 100.
+
+### C03.05 follow-up — iteration 53, coverage closure and wide UI review — 2026-10-14
+
+[EV-20261014-001](evidence/C03/c03-05-coverage-aggregate-closure-iteration-53-2026-10-14.json)
+đóng mục tiêu đo counter C03.05 trên working tree local: full Vitest/V8 pass
+**360/360 test files, 3.451/3.451 tests, 0 failed/skipped**. Report có 440
+entries: **408/408 measurable source files đạt đủ counter**, **0 file measurable
+còn gap**, 32 entry không có executable counter. Aggregate S/B/F/L lần lượt là
+**12.426/12.426, 10.239/10.239, 3.970/3.970, 11.487/11.487 (100%)**. Không
+đổi threshold, exclusion hay denominator. App và Node TypeScript checks, scoped
+Prettier, EOL preflight và lint pass; ESLint còn hai warning có sẵn tại
+`TrInput.tsx:158,165`. Build release qua runner dừng trước bundle vì thiếu
+`VITE_API_BASE_URL` và `VITE_WS_URL`; không tự điền endpoint.
+
+[EV-20261014-002](evidence/C05/c05-03-wide-ui-a11y-review-2026-10-14.json)
+ghi nhận quét Chromium desktop **372 route dark + 372 route light** ở 1440×900,
+Vite/MSW cục bộ: cả hai theme có **0 route mismatch, 0 not-found, 0 horizontal
+overflow, 0 page error và 0 axe violation node**. Đây là kiểm tra kỹ thuật trên
+local mock, không phải screenshot-baseline review hoặc nghiệm thu người dùng.
+Các report vẫn ghi 35/34 console errors do mock trả 404/503; mỗi theme cũng chặn
+375 lần thử tải Google Fonts/ảnh Cryptologos. Giữ nguyên và theo dõi các endpoint
+fixture/asset này thay vì xem 0 axe node là xác nhận toàn bộ UI. C05.03 và UI
+acceptance **0/128** tiếp tục mở; A06 còn **25/106** contract-dependent scenarios.
+
+C03.05 counter gate đã đạt; task C03 và readiness toàn dự án chưa đóng. Backend/
+staging **0/154**, production và UAT chưa xác minh; hosted Node22/Ubuntu,
+artifact/governance enforcement, telemetry owner và SLO còn chờ. Xem evidence
+JSON để biết run ID, SHA-256, local error paths và phạm vi chính xác.
+
+Kiểm tra ledger sau ghi nhận [EV-20261014-003](evidence/C03/repo-ledger-validation-iteration-53-2026-10-14.json): `git diff --check` và EOL preflight pass. `check-tracking.mjs` lần lượt báo 186, 187 và 188 trong các revision ledger trung gian; sau khi thêm đúng ba evidence files vào `files[]` và liên kết change IDs, lần đo mới nhất còn **184 lỗi**, exit **1**. Các lỗi hiển thị là source hiện tại khác `cataloguedSourceHead`; không bulk-rebaseline hoặc đổi hash lịch sử. Vì required repo gate vẫn đỏ, C03.05 giữ `in_progress` dù counter target đã đo 100%. Prettier cho JSON tài liệu chưa xác minh được vì thư mục package local không có entrypoint `prettier.cjs`; không cài dependency để vượt giới hạn môi trường.
+
+### C05.03 follow-up — DCA mobile rendering correction and coverage rerun — 2026-10-14
+
+Ảnh responsive lưu ở iteration 53 cho thấy hai lỗi cục bộ trên `/w/earn/savings/dca` tại 390×844: màn hình in nguyên URL `coinIcon` từ API vào chip token, và số **3.027.250.000** bị cắt trong hàng ba metric cố định. Đã sửa owner để ảnh được render như nội dung trang trí với fallback về mã coin khi URL rỗng/không phải ảnh/tải lỗi; metric có thể wrap và giữ nguyên đầy đủ con số. Regression test kiểm tra remote-image error, icon rỗng và giá trị lớn.
+
+[EV-20261014-004](evidence/C03/c03-05-coverage-rerun-after-dca-ui-fix-iteration-54-2026-10-14.json) xác nhận full Vitest/V8 chạy sau thay đổi: **360/360 file, 3.454/3.454 test, 0 failed/skipped**; **408/408 file measurable đủ counter, 0 gap, 32 entry không có counter**. S/B/F/L lần lượt **12.433/12.433, 10.244/10.244, 3.972/3.972, 11.494/11.494 (100%)**; threshold và denominator không đổi. Hai TypeScript project pass; ESLint pass với **0 lỗi, 2 warning hiện có** tại `TrInput.tsx:158,165`.
+
+[EV-20261014-005](evidence/C05/c05-03-dca-mobile-rendering-fix-iteration-54-2026-10-14.json) xác nhận ở Chromium local/MSW: cả ba giá trị metric đều vừa trong 84 px content width; document vẫn rộng 390 px; URL icon không xuất hiện dưới dạng text; page/console error **0** và `/api/dca/snapshot` trả **200**. Lượt axe sau sửa **NOT RUN** vì package `@axe-core/playwright` không có trong `node_modules`; không cài dependency. Browser capture ghi URL icon external trong `currentSrc` nhưng không thấy request event; có thể cache đã phục vụ ảnh, vì vậy ảnh không chứng minh offline fallback. Fallback có test bằng image-error event. Screenshot/review JSON được lưu ngoài repo và hash ghi trong evidence.
+
+Đã xem bằng mắt đủ **14 ảnh đại diện** từ bộ responsive review hiện có; DCA là finding frontend mới được tái hiện trong ảnh. Phần còn lại trong mẫu này không cho thấy lỗi cùng mức độ rõ ràng; đây không phải review hình ảnh đủ **128** trang. Wide route scan 372×2 dark/light là số đo kỹ thuật của iteration 53, không được coi là screenshot review hoặc nghiệm thu C05.03. UI acceptance vẫn **0/128**; C05.03 và C03.05 tiếp tục `in_progress`; backend/staging, production, hosted CI và user acceptance vẫn tách biệt.
+
+### Iteration 55 — responsive shell, route equivalence and final coverage rerun — 2026-10-14
+
+Đã sửa PlatformSwitcher để chỉ đổi shell khi hai route resolve về cùng component thực tế; route Web-only và các route `/w/trade/copy`, `/w/trade/orders`, `/w/trade/analytics` giữ đúng trang. WebShell ở viewport hẹp ẩn sidebar/command bar, hiển thị status bar + BottomNav và giữ khoảng đệm cho full-bleed. Tablet scan ban đầu bắt được 2 React style-conflict warnings; thay `paddingBottom` inline bằng `pb-24` loại cảnh báo mà không đổi clearance. Route-equivalence tests và WebShell regression test được cập nhật.
+
+[EV-20261014-006](evidence/C03/c03-05-full-coverage-iteration-55-2026-10-14.json) chạy full Vitest/V8 sau thay đổi cuối: **360/360 files, 3.462/3.462 tests, 0 failed/skipped**; **408/408 measurable files đủ counter, 0 gap, 32 entries không có executable counter**. S/B/F/L là **12.441/12.441, 10.265/10.265, 3.972/3.972, 11.500/11.500 (100%)**; threshold/mẫu số giữ nguyên; source không đổi trong run. Hai TypeScript project pass. ESLint pass **0 lỗi, 2 warning có sẵn** tại `TrInput.tsx:158,165`; Prettier chưa chạy vì package entrypoint không có trong local `node_modules`, không cài dependency.
+
+[EV-20261014-007](evidence/C05/c05-03-responsive-route-review-iteration-55-2026-10-14.json) ghi nhận Chromium local/MSW ở **390×844** và **900×900**, mỗi viewport **372 routes**: cả hai có **0 not-found, 0 document horizontal overflow, 0 page error, 0 fixed collision**. Có **328 pathname changes** do shell remapping; route tests đối chiếu renderer identity, còn 44 route giữ Web path. Sau style fix, console errors là **19** ở mỗi viewport: 10 API fixture 404 và 9 mock-source 503; mỗi scan chặn 3 external requests. Báo cáo giữ **15 mobile / 36 tablet hidden-overflow candidates** để phân loại; mẫu ảnh cho thấy ellipsis địa chỉ/nhãn và `sr-only`, nhưng mẫu này không thay nghiệm thu 128 trang. Probe có fixture xác nhận `/w/trade/analytics` ở 390px có `padding-bottom:96px`, nav hiển thị, rộng tài liệu 390px và không có page/console/external error. Axe **NOT RUN** vì `@axe-core/playwright` vắng mặt.
+
+[EV-20261014-008](evidence/C03/c03-05-production-build-environment-blocker-iteration-55-2026-10-14.json) ghi nhận build production exit 1 ở bước load Vite config vì thiếu `VITE_API_BASE_URL` và `VITE_WS_URL`; không có bundle, không dùng endpoint giả. `check-tracking` trước cập nhật ledger báo 191 lỗi provenance `current source differs from cataloguedSourceHead`; giữ nguyên mốc Git/hash cũ, không bulk-rebaseline. Kết quả checker, `git diff --check` và EOL sau cập nhật được ghi trong validation của `SESSION-20261014-002`.
+
+C03.05 giữ `in_progress` dù aggregate local counters đã đạt 100%: canonical
+ledger gate đã pass ở cập nhật 14/10 bên dưới, nhưng production build vẫn chưa
+thể chạy vì thiếu endpoint production được cấp (`VITE_API_BASE_URL`,
+`VITE_WS_URL`). C05.03 giữ `in_progress`: formal UI acceptance **0/128**, axe
+chưa chạy; 15 mobile và 36 tablet hidden-overflow candidates đã được phân loại,
+nhưng chỉ 14 ảnh đại diện được review bằng mắt. Backend/staging **0/154**, UAT
+**0/128**, 25/106 scenario contract-dependent, hosted CI/governance,
+telemetry/SLO và production certification vẫn blocked/unverified.
+
+
+#### Iteration 55 follow-up — responsive overflow-candidate source triage
+
+[EV-20261014-009](evidence/C05/c05-03-overflow-candidate-triage-iteration-55-2026-10-14.json) đối chiếu đủ **15/15 mobile** và **36/36 tablet** `hiddenOverflow` entries từ report iteration 55. Mobile gồm 8 nhãn địa chỉ có `truncate` và nút sao chép, 4 phần tử `sr-only`/`sm:not-sr-only` mang nhãn tìm kiếm/2FA/chat, 1 đường dẫn dài ở Route Checker dev-only được cấu hình ellipsis, 1 tên Market Movers trong hàng gọn và 1 subtitle Wallet theo Header block-truncate. Toàn bộ 36 mục tablet là wrapper main-area `overflow-hidden` của WebShell với vùng cuộn dọc lồng riêng. Không còn candidate nào chưa phân loại theo source. Kết quả này **không thay screenshot review từng trang, axe, hoặc nghiệm thu người dùng**; UI acceptance vẫn **0/128**, axe chưa chạy.
+
+### Cập nhật ledger và inventory sau đối chiếu Git blob — 14/10/2026
+
+Đối chiếu theo từng path đã xác minh **181 source catalogue record hiện hữu**
+và đăng ký **10 source test/helper mới**; mỗi fingerprint hiện tại được tính từ
+Git blob trong commit riêng gần nhất của đúng path. Catalogue history và
+baseline toàn cục được giữ nguyên. Canonical `check-tracking.mjs` thoát **0**
+(`errorCount=0`), còn `generate-architecture-inventory.mjs --check` pass sau
+khi generator cập nhật index: **130 trang, 428 route, 149 component, 32 service,
+28 mock**. [EV-20261014-010](evidence/C03/source-catalogue-reconciliation-2026-10-14.json)
+ghi provenance; [EV-20261014-011](evidence/C03/source-catalogue-and-inventory-final-check-2026-10-14.json)
+ghi kết quả gate sau self-audit.
+
+Coverage EV-20261014-006 là snapshot tại thời điểm EV-20261014-011. Sau khi
+sửa dependency thừa ở `TrInput.tsx` bằng commit `77fc8f6e`, EV-006 không còn là
+phép đo source mới nhất; phép đo full-suite mới trên cùng nội dung source đã
+commit được ghi ở Iteration 56 / EV-20261014-012.
+
+Không mở rộng kết luận UI từ route scan thành nghiệm thu: iteration 55 đo 372
+route ở mobile và 372 route ở tablet; 0 not-found, document overflow, page error
+và fixed collision. Các fixture API 404/503 và request font/logo bị chặn vẫn
+cần phân loại theo môi trường; axe chưa chạy do thiếu `@axe-core/playwright`.
+Review ảnh bằng mắt hiện có 14/128 trang; UI acceptance **0/128**. Production
+build thiếu `VITE_API_BASE_URL`/`VITE_WS_URL`; backend/staging **0/154**, 25/106
+scenario contract-dependent, UAT **0/128**, hosted Node22/Ubuntu CI và
+telemetry/SLO tiếp tục chưa xác minh hoặc blocked. Không dùng các gate local này
+để tuyên bố 100% frontend acceptance hay production readiness.
+
+### Iteration 56 — sửa lint-warning budget và đo lại full coverage — 14/10/2026
+
+GitHub Actions run #51 trên SHA `0317c2c6ad8192a9f6d6228c39b6075328e6c7c2`
+dừng tại `Lint warning budget`: 2 cảnh báo `react-hooks/exhaustive-deps` vượt
+budget 0. Typecheck và lint pass nhưng các bước phụ thuộc bị skip. Nguyên nhân
+được xác nhận trong `src/shared/ui/TrInput.tsx`: hai callback format/parse không
+còn đọc `numeric` nhưng vẫn giữ dependency này. Commit P1
+`77fc8f6e05c66986a2dd992f87b18257425d411f` chỉ bỏ hai dependency thừa, không đổi
+logic input hoặc hạ budget.
+
+[EV-20261014-012](evidence/C03/c03-05-full-coverage-after-trinput-lint-fix-iteration-56-2026-10-14.json)
+chạy lại full Vitest/V8 trên nội dung source sau fix: **360/360 file,
+3.462/3.462 test, 0 fail/skip**; **408/408 measurable source file đủ S/B/F/L,
+0 gap**, 32 entry không có executable counter. Counter là **12.441/12.441
+statements, 10.265/10.265 branches, 3.972/3.972 functions, 11.500/11.500 lines
+(100%)**. Threshold/mẫu số không đổi. So khớp độc lập **905/905 source path**
+với manifest; hash TrInput trong run trùng SHA-256 của Git blob commit P1.
+
+TrInput focused **5/5**, hai TypeScript project pass, full ESLint **0 lỗi/0
+warning**, lint-warning budget pass **0/0**. EV-20261014-013 giữ run #51 thất bại
+trên SHA cũ; GitHub rerun Node22/Ubuntu trên SHA cuối mới vẫn là điều kiện mở,
+không được coi run #51 là xanh.
+
+Sau khi ghi evidence và catalogue, `check-tracking.mjs` exit **0** với
+`errorCount=0`; architecture inventory `--check` pass (**130 trang, 428 route,
+149 component, 32 service, 28 mock**); EOL gate pass trên **4.160 path**
+(2.057 LF, 0 thiếu line terminator, 2.100 non-text được giữ, 3 CRLF được bảo
+vệ); `git diff --check` và parse JSON pass. Kết quả này là consistency/provenance
+local, không thay lần check cuối sau self-audit hoặc GitHub workflow.
+
+Coverage đầy đủ không thay UI acceptance: C05.03 vẫn **0/128 accepted**, hiện đã
+review bằng mắt **14/128** ảnh. Route/state review còn lại, axe và phân loại
+fixture 404/503, asset bị chặn là việc riêng. Backend/staging vẫn **0/154** theo
+xác nhận thiếu đầu vào; 25/106 scenario cần contract owner, UAT **0/128**.
+Production bundle vẫn cần endpoint được duyệt; không tự đặt URL.
+
+
+### Iteration 57 — chuẩn hóa Prettier theo gate CI và chạy lại full coverage — 2026-10-14
+
+GitHub Actions run #52 trên SHA `9133dc78f215f1862bfbb68b14607add758dcff2` xác nhận typecheck, lint và lint-warning budget 0 đều pass, sau đó `format:check` fail trên đúng ba file `src/app/components/layout/PlatformSwitcher.test.tsx`, `src/features/dca/pages/SavingsDCAContractPage.test.tsx`, `src/shared/ui/TrInput.tsx`. Tests, coverage, E2E, policy, build và artifact steps phía sau bị skip. Không dùng run này làm bằng chứng CI xanh.
+
+Commit P2 `eacd039fddb797cc73c45e3596c0d0ec6e66cc32` áp dụng đúng Prettier 3.9.8 theo lockfile trên ba file đó. TypeScript app/node, ESLint, warning budget và toàn phạm vi `format:check` đều pass trên local. Full Vitest/V8 run `2026-10-14T02-04-09-819Z-vitest-81f8d835-dc7c-4844-9518-be97d8ca7ce1` pass **360/360 file, 3.462/3.462 test, 0 fail/skip**; **408/408 measurable source file đủ counter, 0 gap, 32 entry không có executable counter**. S/B/F/L: **12.441/12.441, 10.265/10.265, 3.972/3.972, 11.500/11.500 (100%)**; threshold/mẫu số không đổi. Snapshot source không đổi trong run; **905/905** tracked `src/` hash khớp và ba file format được đối chiếu với Git blob của commit P2.
+
+Run #52 không chạy tests/coverage hoặc các gate production phía sau vì dừng tại formatter. Workflow mới trên SHA được push sau sửa vẫn là điều kiện mở; C05.03 tiếp tục **0/128 accepted** (14/128 ảnh đã review), route/state review và axe trên source hiện hành còn mở. Backend/staging **0/154**, 25/106 scenario cần owner contract, UAT **0/128**, production endpoint và telemetry/SLO tiếp tục blocked/unverified theo xác nhận thiếu đầu vào.
+
+
+Kiểm tra local sau khi ghi ledger cho Iteration 57: `check-tracking.mjs` exit 0, `errorCount=0` (38 task, 205 step); architecture inventory `--check` pass (130 trang, 428 route, 149 component, 32 service, 28 mock); Git EOL và `git diff --check` đều pass. Workflow trên SHA cuối, kiểm tra artifact và governance vẫn chờ GitHub.
+
+
+### Iteration 58 — sửa tương phản P2P, đồng bộ E2E và rà soát axe — 2026-10-14
+
+P1 commit `5f6fcfddb05a692dc7e301a5e9b0fb1d27744e4a` bỏ animation opacity làm chữ offer card P2P giảm tương phản ngay lúc render; giữ chuyển động theo trục dọc. Regression test tái hiện trạng thái lỗi trước sửa, sau sửa focused test đạt **6/6**. Axe focused trên `/w/p2p` dark ghi nhận **16** node contrast nghiêm trọng trước sửa và **0** ở lần đo sau sửa lúc khoảng 200 ms lẫn sau khi trang ổn định khoảng 2 giây. Full V8 run `2026-10-14T02-26-15-529Z-vitest-acc9fb6b-4b03-4d8c-a99d-70dcca22ddc0` đạt **360/360 file, 3.463/3.463 test, 0 fail/skip**; **408/408** file source đo được đủ counter, **0 gap**, 32 entry không có executable counter. Statements/branches/functions/lines lần lượt **12.441/12.441, 10.265/10.265, 3.972/3.972, 11.500/11.500**; không đổi threshold/mẫu số. TypeScript app/node, ESLint **0/0**, lint-warning budget **0/0**, Prettier 3.9.8 đều pass.
+
+P1 commit `6b335a20acb9dfaef1b269ca5c2aefd1a9550ef1` sửa E2E selector QR theo role/name đang được UI cung cấp. Run #53 trên SHA cũ `07e40d2534559744f0915f8884227b70de6513b6` thất bại ở locator này (**58 pass, 1 fail, 4 skip**), nên các gate phụ thuộc bị skip. Local Playwright sau sửa đạt **59 pass, 0 fail, 4 skip cấu hình**; skip không được tính là pass. Run GitHub trên SHA mới sau push vẫn là điều kiện B07.02.
+
+Axe local Chromium hoàn thành **754/754** lượt trên **372 route** ở developer/admin/MFA và dark/light: **0 violation được phát hiện, 0 page error, 0 harness error**. Kết quả có **3.318** node color-contrast và **18** node aria-prohibited-attr ở trạng thái incomplete; bốn route Trade không có h1 tại snapshot chờ 200 ms là ứng viên review trạng thái chưa settle, không kết luận là lỗi render đã xác nhận. Body text không được đưa vào artifact trong repo. Đây không phải WCAG certification hay nghiệm thu người dùng. C05.03 vẫn review ảnh **14/128**, formal acceptance **0/128**; backend/staging **0/154**, 25/106 scenario cần contract owner, UAT **0/128**. API/security owner, host HTTPS/backend version, tài khoản test, production endpoints, telemetry/privacy owner và SLO chưa có; các mục đó tiếp tục blocked.
+
+Local repository checks after recording iteration 58: `check-tracking.mjs` exit **0**, errorCount **0** (38 task/205 step); architecture inventory `--check` pass (**130 page/428 route/149 component/0 data module/32 service/28 mock**); Git EOL pass (**4.164 path, 0 thiếu terminator**); JSON parse và `git diff --check` pass. [EV-20261014-022](evidence/C03/c03-05-ledger-final-gates-iteration-58-2026-10-14.json). Đây là kiểm tra consistency local, không đóng hosted CI, UI acceptance hay backend/staging.
+
+
+### Iteration 59 — sửa lỗi Auth phát hiện trên CI và xác nhận full coverage — 2026-10-14
+
+GitHub Actions run [#54](https://github.com/LonelyTraderBay/vittrade-react/actions/runs/38505057275) chạy trên SHA cũ `ff7002a1bd6dbbd82f7d870d656dbb829e5b2ec5` và thất bại tại Auth API profile: **31/34 pass, 3 fail**; các gate phía sau bị skip. Ba lỗi được truy nguyên: Web 2FA step number bị đo ở **2,289:1** khi nền đang chuyển màu; kiểm thử Session Expired và Account Locked còn kỳ vọng token cũ `#6b7280` thay vì `#344054`; nút Back của Account Locked chịu global transition khiến axe bắt màu chuyển tiếp **4,16:1**.
+
+P1 commit `ef3fb92f4db679cf58ab5ba824f088d19ea01c71` sửa các nguyên nhân này: giữ animation `border-color` nhưng không nội suy background của Web 2FA, giới hạn transition nút Back vào `transform`, và cập nhật hai kỳ vọng màu test theo token hiện hành. Không hạ ngưỡng tương phản/axe. Chromium local đạt focused **3/3**, Account Locked axe pass đủ bốn tổ hợp theme/viewport, và toàn Auth API profile đạt **34/34, 0 skip/fail**. Manifest run xác nhận source không đổi; ba file có SHA-256 trùng bytes hiện tại và Git blob trong P1 commit. Bằng chứng GitHub mới trên SHA sau push còn pending. Xem [EV-023](evidence/B07/b07-02-auth-api-contrast-run54-iteration-59-2026-10-14.json) và [EV-025](evidence/C05/c05-03-auth-theme-contrast-iteration-59-2026-10-14.json).
+
+Full V8 command `npm.cmd run test:coverage -- --reporter=dot` pass **360/360 file, 3.463/3.463 test, 0 failed/skipped**. Coverage report có **440 entry: 408 file đo được, cả 408 không gap; 32 entry không có executable counter**. Statements/branches/functions/lines: **12.441/12.441, 10.265/10.265, 3.972/3.972, 11.500/11.500 (100%)**; giữ nguyên threshold và mẫu số. Một lần chạy đầy đủ trước đó gặp hai timeout 15 giây ở test không liên quan (3.461/3.463); hai file chạy riêng pass 15/15 và 5/5, sau đó chạy lại nguyên lệnh không nới timeout hay bỏ assertion và pass. Snapshot run mới ở HEAD P1; ba hash Auth khớp manifest. Xem [EV-024](evidence/C03/c03-05-full-coverage-iteration-59-2026-10-14.json).
+
+Trên cùng nội dung code P1, typecheck, ESLint **0 lỗi/0 warning**, warning budget **0/0**, Prettier check và `git diff --check` pass theo hồ sơ local. Đây chưa phải bằng chứng hosted. B07.02 tiếp tục in progress tới khi workflow mới trên pushed SHA, artifact integrity và governance được kiểm tra. C03.05 vẫn in progress; C05.03 mới review **14/128 ảnh**, formal UI acceptance **0/128**, với **3.318 contrast** và **18 aria** evaluations incomplete cùng bốn Trade h1 snapshot chưa settle. Backend/staging **0/154**, 25/106 contract-dependent scenarios và UAT **0/128** giữ blocked do thiếu owner, host/API, test access, endpoint, telemetry/privacy owner và SLO; production build vẫn cần endpoint được duyệt. Iteration này không chứng nhận frontend 100%, staging hay production.
+
+The inventory gate initially found one stale derived measurement: WebAccountLockedPage grew from 159 to 160 lines. The official generator refreshed only that line-count field; summary remains 130 pages, 428 routes, 149 components, 0 data modules, 32 services and 28 mocks. The generated inventory change is isolated in P2 commit 6add49bc2b330469cda495dc1066b4d4a1e406db.
+
+
+Pre-self-audit repository gates for Iteration 59: canonical tracker checker exit 0/errorCount 0 (38 tasks/205 steps); generated inventory check pass at 130 pages/428 routes/149 components/0 data modules/32 services/28 mocks; EOL check pass on 4168 paths with 0 missing terminators; JSON parsing and git diff --check pass. These are local consistency checks. The final post-self-audit tracker result is kept in the external session manifest. See [EV-026](evidence/C03/c03-05-ledger-final-gates-iteration-59-2026-10-14.json).
+
+
+### Iteration 61 — hoàn tất lượt coverage, sửa tiêu đề truy cập và ổn định E2E — 2026-10-14
+
+Các commit frontend được tách theo phạm vi và phụ thuộc: b1d39145 sửa dấu điều hướng hiện hành; d28f0541 tăng độ tin cậy runner rà soát UI; 6067e255 hiển thị breadcrumb Tin tức trên Web; 8c977839 giữ h1 có ngữ cảnh khi Trade/Copy ở trạng thái lỗi dữ liệu. Quét rộng sau sửa, trên source SHA 8c977839, hoàn thành 376/376 route ở light và 376/376 ở dark. Hai report đều có 0 route mismatch, not-found, document overflow, page error, loading-not-settled, h1 thiếu và Axe violation node.
+
+[EV-20261014-029](evidence/C05/c05-03-wide-ui-a11y-iteration-61-2026-10-14.json) giữ report/hash từng theme. Axe còn 3.357 evaluation incomplete (3.339 contrast, 18 prohibited-ARIA); đây không phải pass và C05.03 vẫn mở. Mỗi theme ghi 20 response 404 và 33 response 503 từ local fixture/MSW, cùng request asset ngoài bị runner chặn; không quy các response này cho backend. Screenshot mục tiêu trên hồ sơ/news ở Web và News tablet được ghi tại [EV-20261014-030](evidence/C05/c05-03-navigation-screenshots-iteration-61-2026-10-14.json); số trang trong baseline review giữ 14/128, acceptance chính thức 0/128.
+
+P1 57acaaa9 cô lập hai host Google Fonts ở riêng ca E2E đăng nhập Web, không đổi timeout, chờ load, Auth fixture hoặc assertions. Lần full E2E đầu trên nội dung trước fix có 59 pass/1 fail/4 skip cấu hình vì navigation vượt 30 giây; ca tập trung sau fix 1/1, lượt cuối 60 pass/0 fail/4 skip. Bằng chứng là [EV-20261014-027](evidence/B07/b07-02-e2e-local-final-iteration-61-2026-10-14.json). Đây là local production-mode bundle với route fixtures, không phải staging.
+
+Full Vitest/V8 trên nội dung tương ứng commit test 57acaaa9 đạt 360/360 file, 3.471/3.471 test, 0 skip/fail; 408/408 file đo được không gap, 32 entry không có executable counter; S/B/F/L lần lượt 12.445/12.445, 10.286/10.286, 3.973/3.973, 11.511/11.511 (100%), giữ nguyên threshold/denominator. Manifest ghi 905/905 src hash; hash file E2E trong snapshot trùng blob commit test. Xem [EV-20261014-028](evidence/C03/c03-05-full-coverage-iteration-61-2026-10-14.json).
+
+Typecheck app/Node, full ESLint, warning budget 0/0, Prettier trên source/E2E, dependency architecture (936 module/5.284 dependency) và architecture inventory 130/428/149/0/32/28 đều pass local. Các check này chưa thay hosted workflow trên SHA đã push.
+
+C03.05, C05.03 và B07.02 tiếp tục in_progress tới khi hosted CI/artifact/governance và các tiêu chí UI còn mở có bằng chứng. Screenshot baseline vẫn 14/128, acceptance 0/128; axe incomplete 3.357; contract-dependent 25/106; backend/staging 0/154, UAT 0/128. Production endpoint/config, API/security owner, host/version, test account, telemetry/privacy owner và SLO chưa được cung cấp; giữ các mục backend/staging blocked, không tuyên bố frontend hoặc production readiness 100%.
+
+
+### Iteration 62 — sửa ngữ nghĩa/tương phản, quét lại UI và chốt coverage — 2026-10-14
+
+Các thay đổi frontend được giữ thành hai commit theo thứ tự: `c4cdd6a3` bổ sung semantics cho nhóm/list/pressed state; `d3c8a578` sửa các màu và bề mặt có rủi ro tương phản trên Web/Tablet, P2P, profile, referral, trading và wallet. Regression tests khóa semantics và các token WCAG AA. Architecture inventory được generator đồng bộ riêng ở commit `0c86ed92`. Không hạ threshold, đổi denominator, xóa assertion hay thêm skip.
+
+Full Vitest/V8 `2026-10-14T08-08-04-217Z-vitest-270e432d-cf6b-4dd8-9abc-5230ccde5ef4` đạt **362/362 file test, 3.477/3.477 test, 0 fail/skip**. Có **440 entry**, trong đó **408/408 file đo được không có gap**, 32 entry không có executable counter và không được tính là file covered. Statements/branches/functions/lines là **12.447/12.447, 10.282/10.282, 3.973/3.973, 11.513/11.513 (100%)**. Giữ nguyên ngưỡng/mẫu số. Manifest snapshot gồm 1.141 file và hash của cả 1.141 file khớp nội dung hiện tại sau khi commit source. [EV-20261014-032](evidence/C03/c03-05-full-coverage-iteration-62-2026-10-14.json).
+
+Quét Chromium local trên **376/376 route light** và **376/376 route dark**; không có mismatch, not-found, overflow, page error, loading chưa settle hay Axe violation node. Axe còn **1.655/1.656 color-contrast evaluations incomplete**, gồm nội dung quá ngắn/non-BMP, gradient/pseudo-content và vùng overlap; chúng không phải pass hay violation đã xác nhận. Mỗi theme cũng ghi **33 response 503 + 20 response 404** từ local fixture và request asset ngoài bị chặn; không quy các lỗi đó cho backend. Báo cáo được chạy trước lần Prettier-only trên bốn file; sau đó full suite coverage chạy trên bytes cuối, vì vậy không gắn nhãn report là exact post-format source scan. [EV-20261014-033](evidence/C05/c05-03-wide-ui-a11y-iteration-62-2026-10-14.json).
+
+Hai lần thử full Playwright sau chỉnh sửa đều in tiến độ ca test nhưng không tạo summary/exit/child-close; manifest còn `running`, `childClosed=false`, nên đây là **gate chưa hoàn tất**, không được tính là xanh và cũng chưa quy thành lỗi ứng dụng. Artifact được giữ nguyên để chẩn đoán. Run local iteration 61 là lịch sử, không thay thế kết quả đúng revision này. [EV-20261014-034](evidence/B07/b07-02-local-e2e-runner-incomplete-iteration-62-2026-10-14.json).
+
+C05.03 vẫn mở: baseline review **14/128**, formal user acceptance **0/128**. Các screenshot tự động không có source revision/hash đầy đủ không được dùng thay người duyệt. Backend/staging tiếp tục blocked theo xác nhận chưa có API/security owner, HTTPS host/backend version, test account có quyền, endpoint production đã duyệt, telemetry/privacy owner và SLO; backend **0/154**, 25/106 scenario cần contract owner, UAT **0/128**. B05 và C05.04/C05.05 giữ blocked. Iteration này chứng minh các gate frontend/local đã đo, không chứng nhận toàn frontend 100%, production hay Enterprise-Grade.
