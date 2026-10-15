@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
+import postcss from 'postcss';
 import { renderHook, renderWithProviders, screen } from '@/test/test-utils';
 import { ALPHA, CRYPTO_COLORS, OPACITY, SEMANTIC_COLORS, withAlpha } from './colors';
 import { ICON_CONTAINER, ICON_SIZE, ICON_STROKE } from './icons';
@@ -34,8 +35,99 @@ import { FONT_SCALE, FONT_WEIGHT, LETTER_SPACING, LINE_HEIGHT } from './legacyTy
 import * as CoreTheme from './index';
 import { ThemeProvider } from './ThemeContext';
 import { useTheme } from './useTheme';
+import { useThemeColors } from '@/shared/hooks/useThemeColors';
 
 const themeCss = readFileSync(resolve(process.cwd(), 'src/styles/theme.css'), 'utf8');
+const indexHtml = readFileSync(resolve(process.cwd(), 'index.html'), 'utf8');
+const themeRoot = postcss.parse(themeCss);
+
+type CssVariableReference = { name: string; fallback?: string };
+
+function cssVariableReferences(value: string): CssVariableReference[] {
+  const references: CssVariableReference[] = [];
+  const functionStart = /\bvar\s*\(/gi;
+
+  while (functionStart.exec(value)) {
+    let depth = 1;
+    let end = functionStart.lastIndex;
+    for (; end < value.length && depth > 0; end += 1) {
+      if (value[end] === '(') depth += 1;
+      if (value[end] === ')') depth -= 1;
+    }
+    if (depth !== 0) throw new Error(`Unclosed var() in CSS value: ${value}`);
+
+    const body = value.slice(functionStart.lastIndex, end - 1);
+    let nestedDepth = 0;
+    let comma = -1;
+    for (let index = 0; index < body.length; index += 1) {
+      if (body[index] === '(') nestedDepth += 1;
+      if (body[index] === ')') nestedDepth -= 1;
+      if (body[index] === ',' && nestedDepth === 0) {
+        comma = index;
+        break;
+      }
+    }
+
+    const name = body.slice(0, comma < 0 ? body.length : comma).trim();
+    if (!name.startsWith('--')) throw new Error(`Invalid CSS variable reference: var(${body})`);
+    references.push({
+      name,
+      ...(comma >= 0 ? { fallback: body.slice(comma + 1).trim() } : {}),
+    });
+    functionStart.lastIndex = end;
+  }
+
+  return references;
+}
+
+function themeVariables(selector: string) {
+  const variables = new Map<string, string>();
+  themeRoot.walkRules((rule) => {
+    if (rule.selector !== selector) return;
+    rule.walkDecls((declaration) => {
+      if (declaration.prop.startsWith('--')) {
+        variables.set(declaration.prop, declaration.value);
+      }
+    });
+  });
+  return variables;
+}
+
+function hasVariableCycle(variables: Map<string, string>) {
+  const visited = new Set<string>();
+  const visiting = new Set<string>();
+
+  const visit = (name: string): boolean => {
+    if (visiting.has(name)) return true;
+    if (visited.has(name)) return false;
+    visiting.add(name);
+    for (const reference of cssVariableReferences(variables.get(name) ?? '')) {
+      if (variables.has(reference.name) && visit(reference.name)) return true;
+    }
+    visiting.delete(name);
+    visited.add(name);
+    return false;
+  };
+
+  return [...variables.keys()].some(visit);
+}
+
+function cssValueResolves(
+  value: string,
+  variables: Map<string, string>,
+  stack = new Set<string>(),
+): boolean {
+  return cssVariableReferences(value).every((reference) => {
+    if (variables.has(reference.name)) {
+      if (stack.has(reference.name)) return false;
+      const nextStack = new Set(stack).add(reference.name);
+      return cssValueResolves(variables.get(reference.name) ?? '', variables, nextStack);
+    }
+    return (
+      reference.fallback !== undefined && cssValueResolves(reference.fallback, variables, stack)
+    );
+  });
+}
 
 function themeBlock(selector: string) {
   const match = themeCss.match(new RegExp(`${selector}\\s*\\{([^}]+)\\}`));
@@ -77,6 +169,68 @@ function contrastRatio(foreground: string, background: string) {
 }
 
 describe('shared theme token contracts', () => {
+  it('bootstraps the document with the supported locale and ThemeProvider default', () => {
+    const htmlTag = indexHtml.match(/<html\b([^>]*)>/i)?.[1] ?? '';
+    expect(htmlTag).toMatch(/\blang=["']vi["']/i);
+    expect(htmlTag).toMatch(/\bclass=["']light["']/i);
+  });
+
+  it('resolves token aliases without missing references or cycles in every theme', () => {
+    const base = themeVariables(':root');
+    const inlineThemeValues: string[] = [];
+    themeRoot.walkAtRules('theme', (atRule) => {
+      if (atRule.params.trim() !== 'inline') return;
+      atRule.walkDecls((declaration) => {
+        if (declaration.prop.startsWith('--')) inlineThemeValues.push(declaration.value);
+      });
+    });
+
+    const contexts = [
+      { name: 'root', variables: base },
+      { name: 'dark', variables: new Map([...base, ...themeVariables('.dark')]) },
+      { name: 'light', variables: new Map([...base, ...themeVariables('.light')]) },
+    ];
+
+    for (const context of contexts) {
+      expect(hasVariableCycle(context.variables), `${context.name} theme has a token cycle`).toBe(
+        false,
+      );
+      for (const [name, value] of context.variables) {
+        expect(cssValueResolves(value, context.variables), `${context.name} ${name}`).toBe(true);
+      }
+      for (const value of inlineThemeValues) {
+        expect(cssValueResolves(value, context.variables), `${context.name} @theme inline`).toBe(
+          true,
+        );
+      }
+    }
+
+    const colorReferences = Object.values(useThemeColors()).map(
+      (value) => value.match(/^var\((--[^),\s]+)\)$/)?.[1],
+    );
+    expect(colorReferences.length).toBeGreaterThan(0);
+    for (const name of colorReferences) {
+      expect(name).toBeDefined();
+      expect(
+        contexts.every(({ variables }) => variables.has(name ?? '')),
+        name ?? 'invalid useThemeColors value',
+      ).toBe(true);
+    }
+  });
+
+  it('uses CSS fallbacks for missing aliases and rejects cyclic token graphs', () => {
+    const stable = new Map([['--known', '#fff']]);
+    expect(cssValueResolves('var(--missing, var(--known))', stable)).toBe(true);
+    expect(cssValueResolves('var(--missing)', stable)).toBe(false);
+
+    const cyclic = new Map([
+      ['--cycle-a', 'var(--cycle-b)'],
+      ['--cycle-b', 'var(--cycle-a)'],
+    ]);
+    expect(hasVariableCycle(cyclic)).toBe(true);
+    expect(cssValueResolves('var(--cycle-a)', cyclic)).toBe(false);
+  });
+
   it('keeps muted portfolio text at WCAG AA contrast across dark and light hero gradients', () => {
     for (const block of [themeBlock(':root'), themeBlock('\\.light')]) {
       const foreground = themeColor(block, 'tr-portfolio-text-muted');
