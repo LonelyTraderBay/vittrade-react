@@ -351,7 +351,11 @@ describe('Savings DCA contract page', () => {
     await user.click(await screen.findByRole('button', { name: 'Xác nhận hủy' }));
     expect(await screen.findByRole('alert')).toHaveTextContent('Unable to cancel the DCA plan.');
 
+    await waitFor(() =>
+      expect(screen.queryByRole('dialog', { name: 'Hủy kế hoạch DCA?' })).not.toBeInTheDocument(),
+    );
     await user.click(screen.getByRole('button', { name: 'Cancel' }));
+    await screen.findByRole('dialog', { name: 'Hủy kế hoạch DCA?' });
     await user.click(await screen.findByRole('button', { name: 'Xác nhận hủy' }));
     await waitFor(() => expect(attempts).toBe(2));
     expect(keys[0]).toMatch(/^dca-cancel-plan-1-/);
