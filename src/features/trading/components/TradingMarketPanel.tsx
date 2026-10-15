@@ -43,6 +43,7 @@ export function TradingMarketPanel({
   const { hapticSelection } = useHaptic();
   return (
     <>
+      <h1 className="sr-only">Giao dịch {pair.symbol}</h1>
       {/* ═══ Row 1: Pair Selector + Live Price ═══ */}
       <div className="flex items-center justify-between px-5 pt-3 pb-2">
         <button
@@ -53,7 +54,7 @@ export function TradingMarketPanel({
             className="w-8 h-8 rounded-full flex items-center justify-center"
             style={{ background: pair.logoColor + '22' }}
           >
-            <span style={{ color: pair.logoColor, fontSize: φ.xs, fontWeight: 700 }}>
+            <span style={{ color: c.text1, fontSize: φ.xs, fontWeight: 700 }}>
               {pair.baseAsset.slice(0, 3)}
             </span>
           </div>
@@ -68,12 +69,12 @@ export function TradingMarketPanel({
             style={{
               color:
                 flash === 'up'
-                  ? '#10B981'
+                  ? c.successText
                   : flash === 'down'
-                    ? '#EF4444'
+                    ? c.errorText
                     : isPositive
-                      ? '#10B981'
-                      : '#EF4444',
+                      ? c.successText
+                      : c.errorText,
               fontSize: φ.md,
               fontWeight: 700,
               fontFamily: 'monospace',
@@ -85,7 +86,7 @@ export function TradingMarketPanel({
           </p>
           <p
             style={{
-              color: isPositive ? '#10B981' : '#EF4444',
+              color: isPositive ? c.successText : c.errorText,
               fontSize: φ.xs,
               fontFamily: 'monospace',
             }}
@@ -105,7 +106,7 @@ export function TradingMarketPanel({
           className="flex items-center gap-1.5 px-3 py-2 rounded-lg hover-chip shrink-0"
           style={{ background: c.surface2, border: `1px solid ${c.borderSolid}` }}
         >
-          <ArrowLeftRight size={φIcon.sm} color="#10B981" />
+          <ArrowLeftRight size={φIcon.sm} color={c.successText} />
           <span style={{ color: c.text2, fontSize: φ.xs, fontWeight: 600 }}>Convert</span>
         </button>
         <button
@@ -115,11 +116,13 @@ export function TradingMarketPanel({
           className="flex items-center gap-1.5 px-3 py-2 rounded-lg hover-chip shrink-0"
           style={{ background: 'rgba(139,92,246,0.08)', border: '1px solid rgba(139,92,246,0.18)' }}
         >
-          <Repeat size={φIcon.sm} color="#8B5CF6" />
-          <span style={{ color: '#8B5CF6', fontSize: φ.xs, fontWeight: 600 }}>Mua định kỳ</span>
+          <Repeat size={φIcon.sm} color="var(--tr-accent-text)" />
+          <span style={{ color: 'var(--tr-accent-text)', fontSize: φ.xs, fontWeight: 600 }}>
+            Mua định kỳ
+          </span>
         </button>
         <button
-          onClick={() => navigate(`${routePrefix}/trade/${pair.id}/futures`)}
+          onClick={() => navigate(`${routePrefix}/trade/${encodeURIComponent(pair.id)}/futures`)}
           className="flex items-center gap-1.5 px-3 py-2 rounded-lg hover-chip shrink-0"
           style={{ background: c.surface2, border: `1px solid ${c.borderSolid}` }}
         >

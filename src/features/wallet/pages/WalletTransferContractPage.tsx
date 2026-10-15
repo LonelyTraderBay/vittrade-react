@@ -35,6 +35,7 @@ export function WalletTransferContractPage() {
   const [validationError, setValidationError] = useState('');
   const [receipt, setReceipt] = useState<WalletTransferReceipt>();
   const transferAttempt = useRef<{ signature: string; key: string } | null>(null);
+  const transferInFlight = useRef(false);
 
   const accounts = accountsQuery.data?.items ?? [];
   const assets = useMemo(() => assetsQuery.data?.items ?? [], [assetsQuery.data?.items]);
@@ -111,6 +112,7 @@ export function WalletTransferContractPage() {
     receipt.amount === amountValue;
 
   const submitTransfer = async () => {
+    if (!canWriteWallet || samePendingTransfer || transferInFlight.current) return;
     const nextError = validateWalletTransfer({
       fromWallet,
       toWallet,
@@ -121,21 +123,22 @@ export function WalletTransferContractPage() {
     setValidationError(nextError);
     if (nextError) return;
 
-    const request = {
-      fromWallet,
-      toWallet,
-      asset: selectedAsset.symbol,
-      amount: amountValue,
-    };
-    const signature = JSON.stringify(request);
-    if (transferAttempt.current?.signature !== signature) {
-      transferAttempt.current = {
-        signature,
-        key: `wallet-transfer-${crypto.randomUUID()}`,
-      };
-    }
-
+    transferInFlight.current = true;
     try {
+      const request = {
+        fromWallet,
+        toWallet,
+        asset: selectedAsset.symbol,
+        amount: amountValue,
+      };
+      const signature = JSON.stringify(request);
+      if (transferAttempt.current?.signature !== signature) {
+        transferAttempt.current = {
+          signature,
+          key: `wallet-transfer-${crypto.randomUUID()}`,
+        };
+      }
+
       const result = await transferMutation.mutateAsync({
         request,
         idempotencyKey: transferAttempt.current.key,
@@ -147,6 +150,8 @@ export function WalletTransferContractPage() {
       }
     } catch {
       setValidationError('The transfer could not be completed. Please try again.');
+    } finally {
+      transferInFlight.current = false;
     }
   };
 
@@ -191,10 +196,12 @@ export function WalletTransferContractPage() {
               options={accounts}
               exclude={toWallet}
               onChange={setFromWallet}
+              disabled={submitting}
             />
             <button
               type="button"
               aria-label="Swap wallets"
+              disabled={submitting}
               className="mx-auto flex h-10 w-10 items-center justify-center rounded-full"
               style={{ background: colors.primary, color: '#fff' }}
               onClick={() => {
@@ -211,6 +218,7 @@ export function WalletTransferContractPage() {
               options={accounts}
               exclude={fromWallet}
               onChange={setToWallet}
+              disabled={submitting}
             />
           </div>
         </TrCard>
@@ -227,6 +235,7 @@ export function WalletTransferContractPage() {
             id="transfer-asset"
             value={selectedAsset.symbol}
             onChange={(event) => setAssetSymbol(event.target.value)}
+            disabled={submitting}
             className="mb-4 w-full rounded-xl px-3 py-3 text-sm outline-none"
             style={{ background: colors.surface2, color: colors.text1 }}
           >
@@ -246,6 +255,7 @@ export function WalletTransferContractPage() {
               className="text-xs font-semibold"
               style={{ color: colors.primary }}
               onClick={() => setAmount(String(available))}
+              disabled={submitting}
             >
               Max {fmtAmount(available)}
             </button>
@@ -255,6 +265,7 @@ export function WalletTransferContractPage() {
               id="transfer-amount"
               data-testid="wallet-transfer-amount"
               aria-label="Transfer amount"
+              disabled={submitting}
               type="number"
               min="0"
               step="any"
@@ -289,7 +300,7 @@ export function WalletTransferContractPage() {
         </div>
 
         {validationError && (
-          <p role="alert" className="text-sm" style={{ color: '#EF4444' }}>
+          <p role="alert" className="text-sm" style={{ color: 'var(--tr-error-text)' }}>
             {validationError}
           </p>
         )}
@@ -301,7 +312,7 @@ export function WalletTransferContractPage() {
         )}
 
         {!canWriteWallet && (
-          <p role="alert" className="text-sm" style={{ color: '#EF4444' }}>
+          <p role="alert" className="text-sm" style={{ color: 'var(--tr-error-text)' }}>
             Wallet transfer permission is required to move funds.
           </p>
         )}
@@ -334,12 +345,14 @@ function WalletSelect({
   options,
   exclude,
   onChange,
+  disabled,
 }: {
   label: string;
   value: WalletAccountId;
   options: Array<{ id: WalletAccountId; name: string; balanceUsd: number }>;
   exclude: WalletAccountId;
   onChange: (value: WalletAccountId) => void;
+  disabled: boolean;
 }) {
   const colors = useThemeColors();
   return (
@@ -347,6 +360,7 @@ function WalletSelect({
       {label}
       <select
         aria-label={label}
+        disabled={disabled}
         value={value}
         onChange={(event) => onChange(event.target.value as WalletAccountId)}
         className="mt-2 w-full rounded-xl px-3 py-3 text-sm outline-none"

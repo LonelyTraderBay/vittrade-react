@@ -120,6 +120,10 @@ describe('DCACreatePlanSheet', () => {
       />,
     );
     expect(screen.getByRole('button', { name: 'Đang tạo...' })).toBeDisabled();
+    expect(screen.getByPlaceholderText('500.000')).toBeDisabled();
+    expect(screen.getByRole('button', { name: /Solana/ })).toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Hàng ngày' })).toBeDisabled();
+    expect(screen.getByRole('button', { name: '100.000' })).toBeDisabled();
     await user.click(screen.getByRole('button', { name: 'Đóng' }));
     expect(onClose).toHaveBeenCalledOnce();
   });

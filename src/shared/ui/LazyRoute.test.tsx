@@ -7,10 +7,33 @@ vi.mock('@/shared/telemetry/telemetry', () => ({
   captureException: vi.fn(),
 }));
 
+const { runtimeEnv } = vi.hoisted(() => ({ runtimeEnv: { isDev: true, releaseVersion: 'test' } }));
+vi.mock('@/shared/config/env', () => ({ env: runtimeEnv }));
+
 describe('LazyRoute', () => {
   afterEach(() => {
+    runtimeEnv.isDev = true;
+    vi.mocked(captureException).mockClear();
     vi.useRealTimers();
     vi.restoreAllMocks();
+  });
+
+  it('does not log a raw lazy render failure outside development', async () => {
+    runtimeEnv.isDev = false;
+    const BrokenPage = () => {
+      throw new Error('password=private-token');
+    };
+    const Route = lazyRoute(async () => ({ default: BrokenPage }));
+    const log = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    render(<Route />);
+    expect(await screen.findByText('Không tải được trang')).toBeInTheDocument();
+    expect(screen.queryByText(/private-token/)).not.toBeInTheDocument();
+    expect(captureException).toHaveBeenCalled();
+    expect(
+      log.mock.calls.filter(
+        ([first]) => typeof first === 'string' && first.startsWith('[LazyRoute]'),
+      ),
+    ).toHaveLength(0);
   });
 
   it('shows loading and failure states, then retries the failed module on user request', async () => {

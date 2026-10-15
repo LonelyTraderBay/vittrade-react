@@ -1,0 +1,91 @@
+{
+  "observedAt": "2026-10-13T14:46:37.463Z",
+  "sourceHead": "bda9e2b0370bed45b0646bda86fcfab295950273",
+  "branch": "codex/frontend-readiness-remediation-20261013",
+  "commits": [
+    {
+      "priority": "P1",
+      "head": "bda9e2b0370bed45b0646bda86fcfab295950273",
+      "parent": "3ffe8605ac08391a13c30f22a1b0981640bfe35f",
+      "message": "P1: validate cache cấu hình flag và cô lập key kế thừa"
+    }
+  ],
+  "proofs": [
+    {
+      "path": "src/app/__tests__/service-diagnostics.test.tsx",
+      "blobId": "264a4b7f3b79914b2f611a16d16d6d22dd102ad0",
+      "filteredBlobId": "264a4b7f3b79914b2f611a16d16d6d22dd102ad0",
+      "committedSha256": "7b8aa6bef6e33c7abec3ca52bd2dc2a6af22c7bb0fc8626e57a408ac52e6eff5",
+      "workingSha256": "7b8aa6bef6e33c7abec3ca52bd2dc2a6af22c7bb0fc8626e57a408ac52e6eff5",
+      "sourceHead": "bda9e2b0370bed45b0646bda86fcfab295950273",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "511e003798d76c70178ff2551752d4c86436a95a",
+        "sha256": "1eb7dbbcf2f77bcf3ed8acf49ca4ac83ec2e573597ea30bd715cf6974e0a5a15"
+      },
+      "currentFilteredBlobId": "264a4b7f3b79914b2f611a16d16d6d22dd102ad0"
+    },
+    {
+      "path": "src/app/services/CoachmarkService.test.ts",
+      "blobId": "6b516d3971a9e67c9bb1cc6c073bd6f24adc4c36",
+      "filteredBlobId": "6b516d3971a9e67c9bb1cc6c073bd6f24adc4c36",
+      "committedSha256": "390ee4cd5167a1b64e7c44f0f466a266b997ba94be3dbb996d948567132a0a3f",
+      "workingSha256": "390ee4cd5167a1b64e7c44f0f466a266b997ba94be3dbb996d948567132a0a3f",
+      "sourceHead": "bda9e2b0370bed45b0646bda86fcfab295950273",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
+        "sha256": "085915d018f746d94d85eb7406019f8ae675cf4aee2f52543bdcfd2efd21a4ac"
+      },
+      "currentFilteredBlobId": "6b516d3971a9e67c9bb1cc6c073bd6f24adc4c36"
+    },
+    {
+      "path": "src/app/services/CoachmarkService.ts",
+      "blobId": "7a0b9af721d0c711156ad0ab94617b041b7b2514",
+      "filteredBlobId": "7a0b9af721d0c711156ad0ab94617b041b7b2514",
+      "committedSha256": "83ade1748550219a8ba99655384554698f0a6e43c065e9407ffdf29625a60c16",
+      "workingSha256": "83ade1748550219a8ba99655384554698f0a6e43c065e9407ffdf29625a60c16",
+      "sourceHead": "bda9e2b0370bed45b0646bda86fcfab295950273",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "511e003798d76c70178ff2551752d4c86436a95a",
+        "sha256": "7659d8e9faaa405875ada5d0c5b1d6e16378877b0cb6e1650cb0fcf78cefed7c"
+      },
+      "currentFilteredBlobId": "7a0b9af721d0c711156ad0ab94617b041b7b2514"
+    },
+    {
+      "path": "src/app/services/FeatureFlagService.test.ts",
+      "blobId": "958b85583739951db91f28fb5cf84b8dcf35677c",
+      "filteredBlobId": "958b85583739951db91f28fb5cf84b8dcf35677c",
+      "committedSha256": "7cb2bf2630e536131777183b4bbacd9577e0d03b2dd75831db6a66d652f2ac33",
+      "workingSha256": "7cb2bf2630e536131777183b4bbacd9577e0d03b2dd75831db6a66d652f2ac33",
+      "sourceHead": "bda9e2b0370bed45b0646bda86fcfab295950273",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
+        "sha256": "acc844573e8f7df16695527ccd9d8fcdfe31dd407498f08aeabc8f130f5d3e7b"
+      },
+      "currentFilteredBlobId": "958b85583739951db91f28fb5cf84b8dcf35677c"
+    },
+    {
+      "path": "src/app/services/FeatureFlagService.ts",
+      "blobId": "3fe916ea46df675c2bdc243158b26cb05c617cf8",
+      "filteredBlobId": "3fe916ea46df675c2bdc243158b26cb05c617cf8",
+      "committedSha256": "59f9b6d63fc5091aaf9ccc009e3340c76d6dcf97660b162bdb0b6d8e3435e588",
+      "workingSha256": "59f9b6d63fc5091aaf9ccc009e3340c76d6dcf97660b162bdb0b6d8e3435e588",
+      "sourceHead": "bda9e2b0370bed45b0646bda86fcfab295950273",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "511e003798d76c70178ff2551752d4c86436a95a",
+        "sha256": "9446b135a1d197f3d84164d088c64beb7624f66cf5292e47f70b6a7298c2165a"
+      },
+      "currentFilteredBlobId": "3fe916ea46df675c2bdc243158b26cb05c617cf8"
+    }
+  ],
+  "limits": [
+    "5 actual local source/test/inventory blobs only. No push, PR, hosted CI or deployment.",
+    "Pre-commit runtime evidence retains the HEAD it actually observed; exact bytes match these actual committed objects after Git filtering.",
+    "Current strict-HEAD browser/build evidence must run on this final source commit.",
+    "Original baseline, catalogue history and backend/UAT/coverage criteria are preserved."
+  ]
+}

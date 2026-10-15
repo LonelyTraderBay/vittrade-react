@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-13T06:08:04.670Z",
+  "sourceHead": "db9c9064fa3ba79bd76fb7acb1023d90486b6cbf",
+  "branch": "",
+  "origin": "http://127.0.0.1:4193",
+  "browser": "Chromium via Playwright",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "scenario": {
+    "id": "arena.empty",
+    "domain": "arena",
+    "state": "empty",
+    "status": "passed",
+    "persona": "arena",
+    "role": "user",
+    "permissions": ["arena:join"],
+    "routes": ["/w/arena"],
+    "operationIds": ["getArenaDiscovery"],
+    "observedOperationIds": ["getArenaDiscovery"],
+    "operationRequestCounts": {
+      "getArenaDiscovery": 1
+    },
+    "requests": [
+      {
+        "operationId": "getArenaDiscovery",
+        "method": "GET",
+        "path": "/api/arena/discovery"
+      }
+    ],
+    "responses": [
+      {
+        "operationId": "getArenaDiscovery",
+        "method": "GET",
+        "path": "/api/arena/discovery",
+        "status": 200,
+        "fromServiceWorker": true
+      }
+    ],
+    "payload": {
+      "modes": [],
+      "challenges": []
+    },
+    "emptyChallengeStateVisible": true,
+    "emptyModeStateVisible": true,
+    "modeTabSelected": true,
+    "challengeOpenActionCount": 0,
+    "joinActionCount": 0,
+    "joinFailureCopyCount": 0,
+    "unexpectedArenaRequestCount": 0,
+    "financialApiRequestCount": 0,
+    "writeRequestCount": 0,
+    "finalRoute": "/w/arena",
+    "elapsedMs": 928,
+    "screenshots": {
+      "challenges": "preview-arena-empty-challenges-202610130608046.png",
+      "modes": "preview-arena-empty-modes-202610130608046.png"
+    },
+    "routeAvailability": "The local Vite development route maps /w/arena to ArenaDiscoveryPage; src/app/routes.ts selects IntegrationPendingPage when isDevelopmentBuild is false.",
+    "note": "Chromium received a contract-shaped empty Arena discovery from local MSW and rendered explicit empty states for both Challenge and Mode. No challenge/detail/join action, mutation, wallet/trading API or other Arena request was sent. The route is wired only in Vite development; production uses IntegrationPendingPage."
+  },
+  "fixtureBoundary": {
+    "serviceWorkerControlled": true,
+    "allObservedResponsesFromServiceWorker": true,
+    "externalApiOrigins": [],
+    "realBackendRequestSent": false,
+    "realBackendMutationSent": false
+  },
+  "measurements": {
+    "totalFlowMs": 928,
+    "arenaRequestCount": 1,
+    "arenaResponseCount": 1,
+    "operationResponseCounts": {
+      "getArenaDiscovery": 1
+    },
+    "writeRequestCount": 0,
+    "unexpectedArenaRequestCount": 0,
+    "financialApiRequestCount": 0,
+    "pageErrors": [],
+    "externalApiOriginCount": 0
+  },
+  "contract": {
+    "operationId": "getArenaDiscovery",
+    "declaredSuccessResponses": ["200"],
+    "requiredResponseFields": ["modes", "challenges"],
+    "emptyCollectionsAllowed": true
+  },
+  "sourceHashes": {
+    "docs/architecture/production-readiness/evidence/A06/run-arena-empty-browser-check.mjs": "3403ee06306b32eca9e3a4b0b78b9f56f7ef9e5911b228248678f38471fcfcb2",
+    "src/app/routes.ts": "c93a80e123fd95c3abd246aeb00589a51f5ff4560e794e87f70f7ff96248c0d5",
+    "src/app/routeConfig.ts": "675ea95ec4831b9d0caf1cbf68524efaebda8ed9b970b5dad129bdd55f28bac9",
+    "src/dev/PreviewControls.tsx": "a318fb182dda24c9b8d2103ae4b40eeecb7c3eded57332aad3c5bc8a1836a54c",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/handlers.ts": "9d1ea085bab944b0bd0e59a665222113cb7bb661bbcd2408f09c6adf08cd3ea9",
+    "src/dev/mocks/personas.ts": "6189b9cbfb9765f5c442c52a089d30b5be171170fe054ef6bf2faffbbb53dccd",
+    "src/dev/mocks/preview-scenario-handler.ts": "1b05e3e420b1df43de6d2e37533d4d8dbcd203fedb70ca59a65a4a62179396f5",
+    "src/dev/mocks/scenario-runtime.ts": "446d43808b478a1eaca07faa29d690c49c8e7ffb21fc1f12d2de2feb524e2e50",
+    "contracts/openapi/arena.yaml": "30f0f57dfd35eec65c9afca06bd9f79f2d0f42a4a678c18e09dc669d32641157",
+    "src/features/arena/api/arena-api.ts": "c9fce3b8cc271937f5c2aecf4becba0e3520fce0c599cb7e7255a553f40a74d2",
+    "src/features/arena/model/arena-queries.ts": "fa315df1a85d6071db4dd8490e96ad2c31314b32f242996b76a0612c8b76a34d",
+    "src/features/arena/pages/ArenaDiscoveryPage.tsx": "07430fdbd638e510e117c0256d9a0e8aec37614855731b7273d3b939a87dae66",
+    "src/features/arena/pages/ArenaDiscoveryPage.test.tsx": "ab7468c2e8946cb4e8b2115335461d1ab3cf321d3f2593af90d7d92e1f9f8967"
+  },
+  "limitations": "This run used the local Vite development server and MSW fixtures; routes.ts selects IntegrationPendingPage when isDevelopmentBuild is false, so it does not verify the production Arena route. It does not establish backend authorization, persistence, staging behavior or user acceptance."
+}

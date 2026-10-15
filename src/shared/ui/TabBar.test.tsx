@@ -3,6 +3,29 @@ import { describe, expect, it, vi } from 'vitest';
 import { TabBar } from './TabBar';
 
 describe('TabBar', () => {
+  it.each(['underline', 'pill', 'segment'] as const)(
+    'moves keyboard focus with selection for %s tabs',
+    (variant) => {
+      const onChange = vi.fn();
+      render(
+        <TabBar
+          variant={variant}
+          tabs={['first', 'second']}
+          active="first"
+          onChange={onChange}
+          bordered={false}
+        />,
+      );
+      const [first, second] = screen.getAllByRole('tab');
+      first.focus();
+      fireEvent.keyDown(first, { key: 'ArrowRight' });
+      expect(onChange).toHaveBeenLastCalledWith('second');
+      expect(second).toHaveFocus();
+      fireEvent.keyDown(second, { key: 'Escape' });
+      expect(onChange).toHaveBeenCalledTimes(1);
+    },
+  );
+
   it('exposes the selected tab and wraps keyboard navigation in both directions', () => {
     const onChange = vi.fn();
     const { rerender } = render(

@@ -15,35 +15,40 @@ assert.ok(
 assert.equal(previewUrl.pathname, '/', 'PREVIEW_BASE_URL must be an origin without a path.');
 const origin = previewUrl.origin;
 const evidenceDate = new Date().toISOString().slice(0, 10);
+const evidenceArtifactRunId = process.env.EVIDENCE_RUN_SUFFIX ?? String(Date.now());
+assert.match(evidenceArtifactRunId, /^[a-z0-9-]+$/i, 'Evidence run ID must be filename-safe.');
 const evidenceDirectory = path.dirname(fileURLToPath(import.meta.url));
 const reportPath = path.join(
   evidenceDirectory,
-  `trading-success-browser-check-${evidenceDate}.json`,
+  `trading-success-browser-check-${evidenceDate}-${evidenceArtifactRunId}.json`,
 );
 const screenshotPaths = {
   frontendStatus: path.join(
     evidenceDirectory,
-    `preview-trading-success-status-${evidenceDate}.png`,
+    `preview-trading-success-status-${evidenceDate}-${evidenceArtifactRunId}.png`,
   ),
   copyRelationship: path.join(
     evidenceDirectory,
-    `preview-trading-success-copy-${evidenceDate}.png`,
+    `preview-trading-success-copy-${evidenceDate}-${evidenceArtifactRunId}.png`,
   ),
   orderReceipt: path.join(
     evidenceDirectory,
-    `preview-trading-success-order-receipt-${evidenceDate}.png`,
+    `preview-trading-success-order-receipt-${evidenceDate}-${evidenceArtifactRunId}.png`,
   ),
   positionsUnavailable: path.join(
     evidenceDirectory,
-    `preview-trading-success-positions-unavailable-${evidenceDate}.png`,
+    `preview-trading-success-positions-unavailable-${evidenceDate}-${evidenceArtifactRunId}.png`,
   ),
-  analytics: path.join(evidenceDirectory, `preview-trading-success-analytics-${evidenceDate}.png`),
+  analytics: path.join(evidenceDirectory, `preview-trading-success-analytics-${evidenceDate}-${evidenceArtifactRunId}.png`),
   orderHistory: path.join(
     evidenceDirectory,
-    `preview-trading-success-order-history-${evidenceDate}.png`,
+    `preview-trading-success-order-history-${evidenceDate}-${evidenceArtifactRunId}.png`,
   ),
 };
 const sourceFiles = [
+  'src/app/contexts/AppContext.tsx',
+  'src/features/market/model/market-queries.ts',
+  'src/features/market/pages/MarketHomePage.tsx',
   'contracts/openapi/trading.yaml',
   'src/app/routeConfig.ts',
   'src/app/routes.ts',
@@ -154,6 +159,7 @@ try {
   await page.getByLabel('Tài khoản xem trước').selectOption('developer');
   await page.getByRole('button', { name: 'Áp dụng tài khoản' }).click();
   await page.waitForURL('**/w/home');
+  await page.getByText('Dữ liệu market contract', { exact: true }).waitFor();
   await page.getByLabel('Miền API').selectOption('trading');
   await page.getByLabel('Trạng thái phản hồi').selectOption('success');
   await page.getByRole('button', { name: 'Áp dụng trạng thái API' }).click();

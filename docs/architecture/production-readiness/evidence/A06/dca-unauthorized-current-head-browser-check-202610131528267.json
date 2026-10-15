@@ -1,0 +1,261 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-13T15:28:26.741Z",
+  "observedAt": "2026-10-13T15:28:27.653Z",
+  "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
+  "origin": "http://127.0.0.1:4193",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "fixtureBoundary": {
+    "serviceWorkerControlled": true,
+    "allObservedResponsesFromServiceWorker": true,
+    "externalApiOrigins": [],
+    "realBackendRequestSent": false
+  },
+  "sourceHashes": {
+    "contracts/openapi/auth.yaml": "cceb23c9745d716a14cc9db823afee87e8e0ebea642426e12c41524351eaab83",
+    "contracts/openapi/dca.yaml": "105ad6cbe91891cf20336ac20cd26485c22c3dbd26055d1a4dcc4d0a45bf5b5d",
+    "docs/architecture/production-readiness/evidence/A06/operation-mock-map-2026-09-28.json": "22daaea2c44da7e384507fbcd118f72aea0f18bf59e65aa025e8309eef01d320",
+    "docs/architecture/production-readiness/evidence/A06/run-dca-unauthorized-current-head-browser-check.mjs": "c568c31e5629f77bcc25068b351d4f42be4b0d92d1a4184cc74942488f70be86",
+    "src/app/components/layout/ProtectedRoute.tsx": "c5cb74de4707d257a40f4782ea7c7c177ce3b8bd2de4f4cccb5e4450c9f4c5d4",
+    "src/app/routeConfig.ts": "675ea95ec4831b9d0caf1cbf68524efaebda8ed9b970b5dad129bdd55f28bac9",
+    "src/dev/PreviewControls.tsx": "a318fb182dda24c9b8d2103ae4b40eeecb7c3eded57332aad3c5bc8a1836a54c",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/handlers.ts": "9d1ea085bab944b0bd0e59a665222113cb7bb661bbcd2408f09c6adf08cd3ea9",
+    "src/dev/mocks/personas.ts": "6189b9cbfb9765f5c442c52a089d30b5be171170fe054ef6bf2faffbbb53dccd",
+    "src/dev/mocks/preview-scenario-handler.ts": "1b05e3e420b1df43de6d2e37533d4d8dbcd203fedb70ca59a65a4a62179396f5",
+    "src/dev/mocks/scenario-runtime.ts": "446d43808b478a1eaca07faa29d690c49c8e7ffb21fc1f12d2de2feb524e2e50",
+    "src/features/auth/api/auth-api.ts": "e3733bea27f15fb63c15d04541c3dbbcf3dd619f30e650907ba8923893855b1a",
+    "src/features/auth/pages/WebLoginPage.tsx": "740142c311aa06792d3c504d0a6268c7c8ec59bc4b7203de156ba48c9acbf029",
+    "src/features/dca/api/dca-api.ts": "1996035be7006131b29baed130c1ebb52c5cd5535f34def0fc61c57d94df1aa3",
+    "src/features/dca/model/dca-queries.ts": "73a9680a7b246dea4141e06682e3eb8557799682445c9e53cc5e4cbdee7a1d65",
+    "src/features/dca/pages/DCAMainPage.tsx": "ef64c908f7a27a6d0d4a698d2b9ec978ab4c494dd19cd0d694c308f6c1b222e9",
+    "src/shared/api/http-client.ts": "12a04035eac23a2999f8c7a76aafa32966585402c06d98f451ef33eb8601cf42",
+    "src/shared/session/AuthContext.tsx": "b95d134413d28d85278553b752a4d6738857ed7785ea53d7a0e441db61b310f2"
+  },
+  "scenario": {
+    "id": "dca.unauthorized",
+    "domain": "dca",
+    "state": "unauthorized",
+    "status": "passed",
+    "observedAt": "2026-10-13T15:28:27.653Z",
+    "persona": "dca (local MSW fixture)",
+    "role": "user",
+    "permissions": ["dca:read", "dca:write"],
+    "route": "/w/dca",
+    "finalRoute": "/auth/login",
+    "operationIds": [
+      "getDCAAdvancedOverview",
+      "getDCASnapshot",
+      "createDCAPlan",
+      "updateDCAPlan",
+      "deleteDCAPlan"
+    ],
+    "observedOperationIds": ["getDCASnapshot"],
+    "operationRequestCounts": {
+      "getDCAAdvancedOverview": 0,
+      "getDCASnapshot": 1,
+      "createDCAPlan": 0,
+      "updateDCAPlan": 0,
+      "deleteDCAPlan": 0
+    },
+    "requests": [
+      {
+        "operationId": "getSession",
+        "method": "GET",
+        "path": "/api/auth/session",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "login",
+        "method": "POST",
+        "path": "/api/auth/login",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "getMarketWatchlist",
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "getDCASnapshot",
+        "method": "GET",
+        "path": "/api/dca/snapshot",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "refreshSession",
+        "method": "POST",
+        "path": "/api/auth/refresh",
+        "resourceType": "fetch"
+      }
+    ],
+    "responses": [
+      {
+        "operationId": "getSession",
+        "method": "GET",
+        "path": "/api/auth/session",
+        "status": 401,
+        "fromServiceWorker": true,
+        "elapsedMs": 14
+      },
+      {
+        "operationId": "login",
+        "method": "POST",
+        "path": "/api/auth/login",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 6
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 4
+      },
+      {
+        "operationId": "getMarketWatchlist",
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 4
+      },
+      {
+        "operationId": "getDCASnapshot",
+        "method": "GET",
+        "path": "/api/dca/snapshot",
+        "status": 401,
+        "fromServiceWorker": true,
+        "elapsedMs": 3
+      },
+      {
+        "operationId": "refreshSession",
+        "method": "POST",
+        "path": "/api/auth/refresh",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 5
+      }
+    ],
+    "initialSessionResponse": {
+      "status": 401,
+      "fromServiceWorker": true
+    },
+    "loginResponse": {
+      "status": 200,
+      "fromServiceWorker": true
+    },
+    "dcaSnapshotResponse": {
+      "status": 401,
+      "fromServiceWorker": true
+    },
+    "scenarioSelected": true,
+    "loginFormVisible": true,
+    "protectedContentVisible": false,
+    "externalApiOrigins": [],
+    "externalAssetOrigins": ["https://fonts.googleapis.com", "https://fonts.gstatic.com"],
+    "externalResourceOrigins": [],
+    "externalRequests": [
+      {
+        "origin": "https://fonts.googleapis.com",
+        "path": "/css2",
+        "method": "GET",
+        "resourceType": "stylesheet"
+      },
+      {
+        "origin": "https://fonts.gstatic.com",
+        "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG81Rb0.woff2",
+        "method": "GET",
+        "resourceType": "font"
+      },
+      {
+        "origin": "https://fonts.gstatic.com",
+        "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw3BXo.woff2",
+        "method": "GET",
+        "resourceType": "font"
+      },
+      {
+        "origin": "https://fonts.gstatic.com",
+        "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW81Rb0.woff2",
+        "method": "GET",
+        "resourceType": "font"
+      },
+      {
+        "origin": "https://fonts.gstatic.com",
+        "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HTEJm81Rb0.woff2",
+        "method": "GET",
+        "resourceType": "font"
+      },
+      {
+        "origin": "https://fonts.gstatic.com",
+        "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw4BXoKZA.woff2",
+        "method": "GET",
+        "resourceType": "font"
+      },
+      {
+        "origin": "https://fonts.gstatic.com",
+        "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW86Rb0bcw.woff2",
+        "method": "GET",
+        "resourceType": "font"
+      },
+      {
+        "origin": "https://fonts.gstatic.com",
+        "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw5BXoKZA.woff2",
+        "method": "GET",
+        "resourceType": "font"
+      },
+      {
+        "origin": "https://fonts.gstatic.com",
+        "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW87Rb0bcw.woff2",
+        "method": "GET",
+        "resourceType": "font"
+      },
+      {
+        "origin": "https://fonts.gstatic.com",
+        "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG87Rb0bcw.woff2",
+        "method": "GET",
+        "resourceType": "font"
+      },
+      {
+        "origin": "https://fonts.gstatic.com",
+        "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG86Rb0bcw.woff2",
+        "method": "GET",
+        "resourceType": "font"
+      },
+      {
+        "origin": "https://fonts.gstatic.com",
+        "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HTEJm86Rb0bcw.woff2",
+        "method": "GET",
+        "resourceType": "font"
+      },
+      {
+        "origin": "https://fonts.gstatic.com",
+        "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HTEJm87Rb0bcw.woff2",
+        "method": "GET",
+        "resourceType": "font"
+      }
+    ],
+    "pageErrors": [],
+    "elapsedMs": 795,
+    "screenshots": ["preview-dca-unauthorized-current-head-202610131528267.png"],
+    "failures": [],
+    "knownContractLimitations": [
+      "Only GET /dca/snapshot is used here; PATCH and DELETE do not declare 401.",
+      "The shared local auth refresh handler returns 401 although the Auth OpenAPI refresh operation declares only 200/null; do not treat that refresh response as DCA contract evidence.",
+      "At /w/dca, the shell heading still reads Dashboard and the sidebar highlights Trang chủ; resolve the active-navigation mapping before UI acceptance."
+    ],
+    "note": "Only GET /dca/snapshot, which declares 401, is the DCA operation tested here. Redirect behavior is local MSW evidence; any Auth refresh response must be evaluated separately against contracts/openapi/auth.yaml. No backend permission enforcement, staging or production authorization is certified."
+  }
+}

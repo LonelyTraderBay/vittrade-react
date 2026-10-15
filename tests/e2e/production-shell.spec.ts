@@ -17,6 +17,148 @@ test.describe('production shell smoke', () => {
     accessToken: 'production-route-e2e-token',
   };
 
+  const p2pSecuritySession = {
+    user: {
+      id: 'e2e-bottom-sheet-user',
+      email: 'bottom-sheet@example.test',
+      fullName: 'Bottom Sheet E2E User',
+      roles: ['user'],
+      permissions: ['p2p:read', 'p2p:write', 'p2p:security:write'],
+      kycStatus: 'verified',
+      kycLevel: 2,
+      accountStatus: 'active',
+    },
+    accessTokenExpiresAt: '2099-01-01T00:00:00.000Z',
+    accessToken: 'bottom-sheet-e2e-token',
+  };
+
+  const p2pSecuritySettings = {
+    methods: [
+      {
+        id: '2fa_sms',
+        label: 'SMS',
+        description: 'Mã xác thực qua SMS',
+        enabled: true,
+        isPrimary: true,
+        setupRequired: false,
+        color: '#3B82F6',
+      },
+    ],
+    thresholds: [
+      {
+        id: 'release',
+        label: 'Release order',
+        description: 'Yêu cầu 2FA khi release',
+        value: 1_000,
+        unit: 'USDT',
+        enabled: true,
+      },
+    ],
+  };
+
+  test('keeps BottomSheetV2 keyboard focus and return behavior across shells and themes', async ({
+    page,
+  }) => {
+    const cases = [
+      { shell: 'phone', path: '/r/p2p/security/2fa', width: 390, height: 844 },
+      { shell: 'tablet', path: '/r/p2p/security/2fa', width: 820, height: 1_180 },
+      { shell: 'web', path: '/w/p2p/security/2fa', width: 1_280, height: 900 },
+    ];
+    const observations: Array<Record<string, unknown>> = [];
+
+    await page.route('**/auth/session', (route) => route.fulfill({ json: p2pSecuritySession }));
+    await page.route('**/p2p/security/2fa/settings**', (route) =>
+      route.fulfill({ json: p2pSecuritySettings }),
+    );
+
+    for (const viewport of cases) {
+      for (const theme of ['light', 'dark'] as const) {
+        await page.setViewportSize({ width: viewport.width, height: viewport.height });
+        await page.goto(viewport.path);
+        await expect(page.getByText('Release order', { exact: true })).toBeVisible();
+        await page.evaluate((mode) => {
+          document.documentElement.classList.remove('dark', 'light');
+          document.documentElement.classList.add(mode);
+        }, theme);
+        expect(
+          await page.locator('html').evaluate((node, mode) => node.classList.contains(mode), theme),
+        ).toBe(true);
+
+        const editButton = page.getByRole('button', { name: 'Sửa', exact: true });
+        await editButton.click();
+        const dialog = page.getByRole('dialog', { name: 'Chỉnh threshold' });
+        await expect(dialog).toBeVisible();
+        await expect(dialog).toBeFocused();
+        await expect
+          .poll(() => page.locator('body').evaluate((body) => body.style.overflow))
+          .toBe('hidden');
+
+        await page.keyboard.press('Tab');
+        const closeButton = page.getByRole('button', { name: 'Đóng' });
+        await expect(closeButton).toBeFocused();
+        const focusStyle = await closeButton.evaluate((element) => {
+          const style = getComputedStyle(element);
+          const rect = element.getBoundingClientRect();
+          return {
+            outlineColor: style.outlineColor,
+            outlineStyle: style.outlineStyle,
+            outlineWidth: style.outlineWidth,
+            targetWidth: rect.width,
+            targetHeight: rect.height,
+          };
+        });
+        expect(focusStyle.outlineStyle).not.toBe('none');
+        expect(Number.parseFloat(focusStyle.outlineWidth)).toBeGreaterThanOrEqual(2);
+        expect(focusStyle.targetWidth).toBeGreaterThanOrEqual(44);
+        expect(focusStyle.targetHeight).toBeGreaterThanOrEqual(44);
+
+        await page.keyboard.press('Tab');
+        const thresholdInput = page.getByRole('spinbutton', { name: 'Giá trị threshold' });
+        await expect(thresholdInput).toBeFocused();
+        await page.keyboard.press('Tab');
+        const saveButton = page.getByRole('button', { name: 'Lưu thay đổi' });
+        await expect(saveButton).toBeFocused();
+        await page.keyboard.press('Tab');
+        await expect(closeButton).toBeFocused();
+        await page.keyboard.press('Shift+Tab');
+        await expect(saveButton).toBeFocused();
+
+        observations.push({
+          shell: viewport.shell,
+          route: viewport.path,
+          viewport: `${viewport.width}x${viewport.height}`,
+          theme,
+          focusStyle,
+          focusedOrder: ['dialog', 'close', 'threshold', 'save', 'close', 'save'],
+        });
+
+        await page.keyboard.press('Escape');
+        await expect(dialog, `Escape failed for ${viewport.shell}/${theme}`).toHaveCount(0);
+        await expect(editButton).toBeFocused();
+        await expect
+          .poll(() => page.locator('body').evaluate((body) => body.style.overflow))
+          .toBe('');
+
+        await editButton.click();
+        await expect(dialog).toBeVisible();
+        await expect
+          .poll(() => page.locator('body').evaluate((body) => body.style.overflow))
+          .toBe('hidden');
+        await page.getByRole('button', { name: 'Đóng' }).click();
+        await expect(dialog).toHaveCount(0);
+        await expect(editButton).toBeFocused();
+        await expect
+          .poll(() => page.locator('body').evaluate((body) => body.style.overflow))
+          .toBe('');
+      }
+    }
+
+    await test.info().attach('bottom-sheet-focus-observations.json', {
+      body: JSON.stringify(observations, null, 2),
+      contentType: 'application/json',
+    });
+  });
+
   test('redirects the public root to the market home shell', async ({ page }) => {
     await page.goto('/');
     await expect(page).toHaveURL(/\/home$/);
@@ -597,5 +739,23 @@ test.describe('production shell smoke', () => {
     );
 
     expect(seriousViolations, JSON.stringify(seriousViolations, null, 2)).toEqual([]);
+  });
+
+  test('expanded tablet navigation keeps the active news label at WCAG AA contrast', async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 768, height: 900 });
+    await page.route('**/auth/session', (route) => route.fulfill({ json: authenticatedSession }));
+    await page.goto('/t/news');
+
+    await expect(page.getByRole('heading', { name: 'Tin tức' })).toBeVisible();
+    await page.getByRole('button', { name: 'Mở rộng' }).click();
+
+    const results = await new AxeBuilder({ page })
+      .withRules(['color-contrast'])
+      .include('button[aria-label="Tin tức"] span')
+      .analyze();
+
+    expect(results.violations, JSON.stringify(results.violations, null, 2)).toEqual([]);
   });
 });

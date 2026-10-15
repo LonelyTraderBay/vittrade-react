@@ -1,0 +1,119 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-10-14T07:55:51.478Z",
+  "sourceHead": "9a2b4cfddcf0c9de0cdb27071fc13c78598ec8d3",
+  "kind": "local_wide_route_a11y_scan",
+  "environment": "Windows local Chromium; viewport 1440x900; developer, MFA and admin personas; light and dark themes; local Vite/MSW fixtures; non-loopback requests blocked; no backend/staging.",
+  "sourceProvenance": {
+    "reportSourceState": "dirty working tree",
+    "dirtyFileHashes": 41,
+    "sourceFilesAtScan": 40,
+    "sourceHashesStillByteIdentical": "36/40",
+    "filesFormattedAfterScan": [
+      "src/features/wallet/pages/AssetDetailPage.test.tsx",
+      "src/features/wallet/pages/AssetDetailPage.tsx",
+      "src/features/wallet/pages/DustConverterPage.tsx",
+      "src/shared/ui/auth/WebAuthBrandPanel.tsx"
+    ],
+    "postScanChanges": "Only the four listed source files received Prettier formatting; page-inventory.json was regenerated. The full coverage suite then passed against the final source bytes."
+  },
+  "reports": [
+    {
+      "theme": "light",
+      "path": "C:/Users/Joker-PC/.codex/visualizations/2026/10/14/01a13394-3caa-7930-a58f-e3e6c61b066f/vittrade-audit/ui-a11y-iteration-62-final-light/ui-a11y-wide-report.json",
+      "bytes": 2328076,
+      "sha256": "b4cebf6f6f47fe4afd7f8ea7ea71e40d3fc3901c869dbd3028db25160622130d",
+      "observedAt": "2026-10-14T07:50:53.120Z",
+      "routes": "376/376",
+      "personas": {
+        "developer/light": 371,
+        "mfa/light": 1,
+        "admin/light": 4
+      },
+      "axeRouteChecks": 374,
+      "axeViolationNodes": 0,
+      "axeIncompleteColorContrastNodes": 1655,
+      "routeMismatches": 0,
+      "notFoundRoutes": 0,
+      "horizontalOverflowRoutes": 0,
+      "pageErrors": 0,
+      "loadingNotSettledRoutes": 0,
+      "consoleErrors": {
+        "total": 728,
+        "blockedExternalRequests": 675,
+        "fixture503": 33,
+        "fixture404": 20
+      },
+      "blockedExternalHosts": {
+        "fonts.googleapis.com": 376,
+        "cryptologos.cc": 6,
+        "ui-avatars.com": 293
+      }
+    },
+    {
+      "theme": "dark",
+      "path": "C:/Users/Joker-PC/.codex/visualizations/2026/10/14/01a13394-3caa-7930-a58f-e3e6c61b066f/vittrade-audit/ui-a11y-iteration-62-final-dark/ui-a11y-wide-report.json",
+      "bytes": 2327997,
+      "sha256": "ddfbfef41c47f44979cee5a4b36731d8aadcaa1935e2324075c7008211a065e6",
+      "observedAt": "2026-10-14T07:55:51.478Z",
+      "routes": "376/376",
+      "personas": {
+        "developer/dark": 371,
+        "mfa/dark": 1,
+        "admin/dark": 4
+      },
+      "axeRouteChecks": 374,
+      "axeViolationNodes": 0,
+      "axeIncompleteColorContrastNodes": 1656,
+      "routeMismatches": 0,
+      "notFoundRoutes": 0,
+      "horizontalOverflowRoutes": 0,
+      "pageErrors": 0,
+      "loadingNotSettledRoutes": 0,
+      "consoleErrors": {
+        "total": 725,
+        "blockedExternalRequests": 672,
+        "fixture503": 33,
+        "fixture404": 20
+      },
+      "blockedExternalHosts": {
+        "fonts.googleapis.com": 376,
+        "cryptologos.cc": 6,
+        "ui-avatars.com": 290
+      }
+    }
+  ],
+  "incompleteEvaluationBreakdown": {
+    "light": {
+      "shortTextContent": 748,
+      "nonBmpOnlyContent": 369,
+      "backgroundGradient": 526,
+      "pseudoContent": 1,
+      "partiallyObscuring": 3,
+      "partiallyObscured": 4,
+      "backgroundOverlap": 4
+    },
+    "dark": {
+      "shortTextContent": 748,
+      "nonBmpOnlyContent": 369,
+      "backgroundGradient": 528,
+      "pseudoContent": 1,
+      "partiallyObscuring": 3,
+      "partiallyObscured": 4,
+      "backgroundOverlap": 3
+    }
+  },
+  "acceptanceState": {
+    "screenshotBaselineReviewed": "14/128",
+    "formalUserAcceptance": "0/128",
+    "axeIncompleteIsPass": false
+  },
+  "expected": "All declared UI routes are visited in both themes; report route state, detected violations, incomplete checks and local fixture/external-request errors separately.",
+  "actual": "The scan completed 376/376 routes in each theme, with zero measured route mismatch, not-found, overflow, page error, unsettled loading or Axe violation node. Axe could not determine contrast for the listed short-text, non-BMP, gradient, pseudo-content and overlap cases; these remain incomplete, not passes. All 404/503 responses came from local test fixtures, and blocked requests were external resources.",
+  "result": "pass",
+  "limitations": [
+    "The scan was run before four source files were formatting-normalized; it is not represented as an exact post-format source-hash run.",
+    "Automated route/Axe scans do not replace page-specific visual and interaction review or user acceptance. The existing accepted count remains 0/128.",
+    "No backend, staging, production endpoint, authorized user account or UAT was exercised."
+  ]
+}

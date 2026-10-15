@@ -1,7 +1,7 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { fireEvent, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Route, Routes } from 'react-router';
 import { renderWithProviders } from '@/test/test-utils';
@@ -130,7 +130,16 @@ describe('P2P order action feature pages', () => {
     );
 
     expect(await screen.findByText('P2P-001')).toBeInTheDocument();
+    const rating = screen.getByRole('group', { name: 'Chọn số sao' });
+    expect(within(rating).getByRole('button', { name: '1 sao' })).toHaveAttribute(
+      'aria-pressed',
+      'false',
+    );
     await userEvent.click(screen.getByRole('button', { name: '5 sao' }));
+    expect(within(rating).getByRole('button', { name: '5 sao' })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    );
     await userEvent.type(screen.getByRole('textbox', { name: 'Nhận xét' }), 'Giao dịch tốt');
     await userEvent.click(screen.getByRole('button', { name: 'Gửi đánh giá' }));
 
@@ -162,6 +171,45 @@ describe('P2P order action feature pages', () => {
 
     await waitFor(() => expect(submitPaymentProof).toHaveBeenCalledTimes(1));
     expect(submitPaymentProof.mock.calls[0]?.[1].files[0]?.name).toBe('receipt.png');
+  });
+
+  it('keeps the submitted proof selection stable while the request is pending', async () => {
+    let resolveProof!: (result: Awaited<ReturnType<typeof p2pApi.submitPaymentProof>>) => void;
+    const pendingProof = new Promise<Awaited<ReturnType<typeof p2pApi.submitPaymentProof>>>(
+      (resolve) => {
+        resolveProof = resolve;
+      },
+    );
+    const submitPaymentProof = vi.spyOn(p2pApi, 'submitPaymentProof').mockReturnValue(pendingProof);
+    server.use(http.get('*/p2p/orders/order-1', () => HttpResponse.json(order)));
+
+    renderWithProviders(
+      <Routes>
+        <Route path="/p2p/order/:orderId/proof" element={<P2POrderProofContractPage />} />
+      </Routes>,
+      {
+        routerProps: { initialEntries: ['/p2p/order/order-1/proof'] },
+        authAdapter: authAdapterWithPermissions(['market:read', 'p2p:read', 'p2p:payment-proof']),
+      },
+    );
+
+    expect(await screen.findByText('P2P-001')).toBeInTheDocument();
+    const input = document.getElementById('p2p-payment-proof') as HTMLInputElement;
+    const submittedFile = new window.File(['first'], 'first.png', { type: 'image/png' });
+    fireEvent.change(input, { target: { files: [submittedFile] } });
+    await userEvent.click(screen.getByRole('button', { name: 'Gửi bằng chứng' }));
+    await waitFor(() => expect(submitPaymentProof).toHaveBeenCalledOnce());
+
+    const laterFile = new window.File(['later'], 'later.png', { type: 'image/png' });
+    fireEvent.change(input, { target: { files: [laterFile] } });
+    expect(screen.getByText('first.png')).toBeInTheDocument();
+    expect(screen.queryByText('later.png')).not.toBeInTheDocument();
+    expect(submitPaymentProof.mock.calls[0]?.[1].files).toEqual([submittedFile]);
+
+    await act(async () => {
+      resolveProof({ ...order, paymentProof: ['first.png'] });
+      await pendingProof;
+    });
   });
 
   it('exposes a retry action when the order query fails', async () => {

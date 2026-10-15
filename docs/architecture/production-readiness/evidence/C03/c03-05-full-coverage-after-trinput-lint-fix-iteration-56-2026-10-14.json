@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "itemId": "C03.05",
+  "observedAt": "2026-10-14T01:36:07.268Z",
+  "sourceHead": "0317c2c6ad8192a9f6d6228c39b6075328e6c7c2",
+  "sourceState": "Dirty working tree during the run; TrInput source hash was later committed unchanged in the path-specific P1 commit. Runner snapshot remained unchanged and its child closed normally.",
+  "dirtyFileHashes": {
+    "src/shared/ui/TrInput.tsx": "0f0dfbb837e98e7d226032668f4da12781408d7c7fe6616d45cf215e19730616"
+  },
+  "verification": {
+    "environment": "Windows local; bundled Node v24.19.0; Vitest 4.1.11; V8 coverage; no backend or staging access.",
+    "command": "node scripts/run-with-artifacts.mjs vitest run --coverage",
+    "runId": "2026-10-14T01-36-07-268Z-vitest-23e32066-bb67-4e58-8aff-98c60ed9b629",
+    "exitCode": 0,
+    "sourceUnchangedDuringRun": true,
+    "childClosed": true,
+    "currentSourceSnapshot": {
+      "trackedSourcePaths": 905,
+      "matchedCurrentPaths": 905,
+      "mismatches": 0
+    },
+    "summary": {
+      "testFilesPassed": 360,
+      "testFilesTotal": 360,
+      "testsPassed": 3462,
+      "testsTotal": 3462,
+      "failed": 0,
+      "skipped": 0,
+      "coverageSourceEntries": 440,
+      "measurableFiles": 408,
+      "measurableFilesFullyCovered": 408,
+      "measurableFilesWithGaps": 0,
+      "entriesWithoutExecutableCounters": 32,
+      "statements": { "covered": 12441, "total": 12441, "percent": 100 },
+      "branches": { "covered": 10265, "total": 10265, "percent": 100 },
+      "functions": { "covered": 3972, "total": 3972, "percent": 100 },
+      "lines": { "covered": 11500, "total": 11500, "percent": 100 }
+    },
+    "thresholdsOrDenominatorChanged": false,
+    "coverageReport": {
+      "path": ".artifacts/runs/2026-10-14T01-36-07-268Z-vitest-23e32066-bb67-4e58-8aff-98c60ed9b629/coverage/coverage-final.json",
+      "sha256": "964c3dbaa246bdd78bdde1c501115301bdca4e7839a3563d7e4a21b665364927"
+    },
+    "runManifest": {
+      "path": ".artifacts/runs/2026-10-14T01-36-07-268Z-vitest-23e32066-bb67-4e58-8aff-98c60ed9b629/run.json",
+      "sha256": "3d988dec145a5522e6b72b599699a2ebacaeead435cb926258d0b0d5be661a41"
+    },
+    "sourceProvenance": {
+      "path": "src/shared/ui/TrInput.tsx",
+      "pathCommit": "77fc8f6e05c66986a2dd992f87b18257425d411f",
+      "gitBlob": "759cfe800618c650af6b404a7ecadc9b12b9ea93",
+      "gitBlobSha256": "0f0dfbb837e98e7d226032668f4da12781408d7c7fe6616d45cf215e19730616",
+      "currentFileSha256": "0f0dfbb837e98e7d226032668f4da12781408d7c7fe6616d45cf215e19730616",
+      "runSnapshotSha256": "0f0dfbb837e98e7d226032668f4da12781408d7c7fe6616d45cf215e19730616"
+    },
+    "localGates": {
+      "focusedTrInput": { "passedTestFiles": 1, "passedTests": 5, "exitCode": 0 },
+      "appTypecheck": { "command": "node node_modules/typescript/bin/tsc --noEmit -p tsconfig.json", "exitCode": 0 },
+      "nodeTypecheck": { "command": "node node_modules/typescript/bin/tsc --noEmit -p tsconfig.node.json", "exitCode": 0 },
+      "eslint": { "command": "node node_modules/eslint/bin/eslint.js .", "exitCode": 0, "errors": 0, "warnings": 0 },
+      "lintWarningBudget": { "command": "node scripts/check-lint-budget.mjs", "exitCode": 0, "errors": 0, "warnings": 0, "budget": 0 }
+    },
+    "priorHostedRun": {
+      "id": 38496168550,
+      "runNumber": 51,
+      "url": "https://github.com/LonelyTraderBay/vittrade-react/actions/runs/38496168550",
+      "headSha": "0317c2c6ad8192a9f6d6228c39b6075328e6c7c2",
+      "conclusion": "failure",
+      "failedStep": "Lint warning budget",
+      "observed": "Two react-hooks/exhaustive-deps warnings exceeded the zero-warning budget. Typecheck and lint passed; dependent steps were skipped.",
+      "fixCommit": "77fc8f6e05c66986a2dd992f87b18257425d411f",
+      "rerunOnFinalSha": "pending"
+    }
+  },
+  "result": "pass",
+  "artifact": ".artifacts/runs/2026-10-14T01-36-07-268Z-vitest-23e32066-bb67-4e58-8aff-98c60ed9b629/run.json; https://github.com/LonelyTraderBay/vittrade-react/actions/runs/38496168550",
+  "notes": "Local suite, exact per-file coverage counters, TrInput fix and source provenance only. Exact-final-SHA hosted CI, format/build workflow, UI acceptance, backend/staging, production and UAT are not certified by this evidence."
+}

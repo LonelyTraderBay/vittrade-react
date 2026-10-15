@@ -6,7 +6,9 @@ import userEvent from '@testing-library/user-event';
 import { toast } from 'sonner';
 import { renderWithProviders } from '@/test/test-utils';
 import { testAuthAdapter } from '@/test/auth-test-adapter';
+import { invokeStaleReactHandler } from '@/test/invoke-stale-react-handler';
 import type { AuthAdapter } from '@/shared/session/AuthContext';
+import { profileApi } from '../api/profile-api';
 import { DeviceManagementContractPage } from './DeviceManagementContractPage';
 
 vi.mock('sonner', () => ({
@@ -49,6 +51,7 @@ const remoteDevice = {
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
 afterEach(() => {
   server.resetHandlers();
+  vi.restoreAllMocks();
   vi.clearAllMocks();
 });
 afterAll(() => server.close());
@@ -71,6 +74,42 @@ function installDeviceHandler(items: Array<typeof currentDevice | typeof remoteD
 }
 
 describe('DeviceManagementContractPage', () => {
+  it('keeps device trust controls read-only without profile security permission', async () => {
+    let writeCalls = 0;
+    installDeviceHandler([currentDevice, remoteDevice]);
+    server.use(
+      http.patch('*/profile/devices/:deviceId/trust', () => {
+        writeCalls += 1;
+        return HttpResponse.json({ item: remoteDevice });
+      }),
+      http.post('*/profile/devices/:deviceId/revoke', () => {
+        writeCalls += 1;
+        return new HttpResponse(null, { status: 204 });
+      }),
+    );
+    const readOnlyAdapter: AuthAdapter = {
+      ...testAuthAdapter,
+      initialSession: {
+        ...testAuthAdapter.initialSession!,
+        user: { ...testAuthAdapter.initialSession!.user, permissions: ['profile:read'] },
+      },
+    };
+
+    renderWithProviders(<DeviceManagementContractPage />, { authAdapter: readOnlyAdapter });
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'Profile security permission is required to manage trusted devices.',
+    );
+    const trust = screen.getByRole('button', { name: 'Tin cậy' });
+    const revoke = screen.getByRole('button', { name: 'Thu hồi' });
+    expect(trust).toBeDisabled();
+    expect(revoke).toBeDisabled();
+    invokeStaleReactHandler(trust, 'onClick');
+    invokeStaleReactHandler(revoke, 'onClick');
+    expect(writeCalls).toBe(0);
+    expect(screen.queryByRole('button', { name: 'Thiết bị hiện tại' })).not.toBeInTheDocument();
+  });
+
   it('updates trust and revokes a remote device with idempotent requests', async () => {
     const items = [currentDevice, remoteDevice];
     let trustBody: unknown;
@@ -113,6 +152,56 @@ describe('DeviceManagementContractPage', () => {
     expect(revokeIdempotencyKey).toMatch(/^profile-device-revoke-/);
     expect(screen.queryByText('Remote Safari')).not.toBeInTheDocument();
     expect(screen.getByText('Current Chrome')).toBeVisible();
+  });
+
+  it('removes trust from a previously trusted remote device', async () => {
+    const trustedDevice = { ...remoteDevice, isTrusted: true };
+    const devices = [trustedDevice];
+    let trustBody: unknown;
+    installDeviceHandler(devices);
+    server.use(
+      http.patch('*/profile/devices/device-remote/trust', async ({ request }) => {
+        trustBody = await request.json();
+        devices[0] = { ...trustedDevice, isTrusted: false };
+        return HttpResponse.json({ item: devices[0] });
+      }),
+    );
+    renderWithProviders(<DeviceManagementContractPage />, { authAdapter: writeAdapter() });
+
+    const user = userEvent.setup();
+    await user.click(await screen.findByRole('button', { name: 'Bỏ tin cậy' }));
+
+    await waitFor(() =>
+      expect(toast.success).toHaveBeenCalledWith('Đã bỏ tin cậy thiết bị.', { duration: 1500 }),
+    );
+    expect(trustBody).toEqual({ trusted: false });
+    expect(screen.getByText('Chưa tin cậy')).toBeVisible();
+  });
+
+  it('uses safe trust feedback when the adapter rejects with a non-Error value', async () => {
+    installDeviceHandler([currentDevice, remoteDevice]);
+    vi.spyOn(profileApi, 'setDeviceTrust').mockRejectedValueOnce('opaque adapter failure');
+
+    renderWithProviders(<DeviceManagementContractPage />, { authAdapter: writeAdapter() });
+    await userEvent.click(await screen.findByRole('button', { name: 'Tin cậy' }));
+
+    await waitFor(() =>
+      expect(toast.error).toHaveBeenCalledWith('Không thể cập nhật trạng thái thiết bị.', {
+        duration: 2000,
+      }),
+    );
+  });
+
+  it('uses safe revoke feedback when the adapter rejects with a non-Error value', async () => {
+    installDeviceHandler([currentDevice, remoteDevice]);
+    vi.spyOn(profileApi, 'revokeDevice').mockRejectedValueOnce('opaque adapter failure');
+
+    renderWithProviders(<DeviceManagementContractPage />, { authAdapter: writeAdapter() });
+    await userEvent.click(await screen.findByRole('button', { name: 'Thu hồi' }));
+
+    await waitFor(() =>
+      expect(toast.error).toHaveBeenCalledWith('Không thể thu hồi thiết bị.', { duration: 2000 }),
+    );
   });
 
   it('shows an explicit empty state when no devices are registered', async () => {

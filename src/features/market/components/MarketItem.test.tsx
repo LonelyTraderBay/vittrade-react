@@ -89,42 +89,42 @@ describe('MarketItem', () => {
   });
 
   describe('Positive vs Negative Change', () => {
-    it('should render positive change in green', () => {
+    it('should use the semantic success text color for positive change', () => {
       renderWithProviders(<MarketItem pair={mockPair} />);
 
       const changeElement = screen.getByText('+2.50%');
-      expect(changeElement).toHaveStyle({ color: '#10B981' });
+      expect(changeElement).toHaveStyle({ color: 'var(--tr-success-text)' });
     });
 
-    it('should render negative change in red', () => {
+    it('should use the semantic error text color for negative change', () => {
       renderWithProviders(<MarketItem pair={mockPairNegative} />);
 
       const changeElement = screen.getByText('-1.50%');
-      expect(changeElement).toHaveStyle({ color: '#EF4444' });
+      expect(changeElement).toHaveStyle({ color: 'var(--tr-error-text)' });
     });
 
-    it('should render zero change as positive', () => {
+    it('should use the semantic success text color when change is zero', () => {
       const zeroPair = { ...mockPair, change24h: 0 };
       renderWithProviders(<MarketItem pair={zeroPair} />);
 
       const changeElement = screen.getByText('0.00%');
-      expect(changeElement).toHaveStyle({ color: '#10B981' });
+      expect(changeElement).toHaveStyle({ color: 'var(--tr-success-text)' });
     });
   });
 
   describe('Logo Styling', () => {
-    it('should use logoColor for Bitcoin', () => {
+    it('should keep logo text legible against the colored logo background', () => {
       renderWithProviders(<MarketItem pair={mockPair} />);
 
       const logoText = screen.getByText('Bit');
-      expect(logoText).toHaveStyle({ color: '#F7931A' });
+      expect(logoText).toHaveStyle({ color: 'var(--tr-text-1)' });
     });
 
-    it('should use logoColor for Ethereum', () => {
+    it('should keep Ethereum logo text legible against its colored background', () => {
       renderWithProviders(<MarketItem pair={mockPairNegative} />);
 
       const logoText = screen.getByText('Eth');
-      expect(logoText).toHaveStyle({ color: '#627EEA' });
+      expect(logoText).toHaveStyle({ color: 'var(--tr-text-1)' });
     });
 
     it('should abbreviate base asset to 3 characters', () => {
@@ -136,6 +136,28 @@ describe('MarketItem', () => {
   });
 
   describe('Navigation', () => {
+    it.each(['click', 'Enter', 'Space'])(
+      'keeps a resource ID in one URL segment for %s',
+      async (action) => {
+        const id = 'pair/a?b#c%';
+        const user = userEvent.setup();
+        renderWithProviders(<MarketItem pair={{ ...mockPair, id }} />);
+        const row = screen.getByRole('button', { name: /BTCUSDT/ });
+        if (action === 'click') await user.click(row);
+        else {
+          row.focus();
+          await user.keyboard(action === 'Enter' ? '{Enter}' : ' ');
+        }
+        expect(mockNavigate).toHaveBeenCalledTimes(1);
+        const route = mockNavigate.mock.calls[0][0] as string;
+        const url = new URL(route, 'https://frontend.test');
+        expect(url.search).toBe('');
+        expect(url.hash).toBe('');
+        expect(url.pathname).toBe('/pair/' + encodeURIComponent(id));
+        expect(decodeURIComponent(url.pathname.split('/').at(-1)!)).toBe(id);
+      },
+    );
+
     it('should navigate on click', async () => {
       const user = userEvent.setup();
       renderWithProviders(<MarketItem pair={mockPair} />);
@@ -250,7 +272,24 @@ describe('MarketItem', () => {
         <MarketItem pair={mockPair} isFavorite onFavoriteToggle={onFavoriteToggle} />,
       );
 
-      expect(screen.getByLabelText('Bỏ yêu thích')).toBeInTheDocument();
+      const favoriteButton = screen.getByLabelText('Bỏ yêu thích');
+      const star = favoriteButton.querySelector('svg');
+      expect(favoriteButton).toBeInTheDocument();
+      expect(star).toHaveAttribute('fill', 'var(--tr-primary)');
+      expect(star).toHaveAttribute('stroke', 'var(--tr-primary)');
+    });
+
+    it('keeps a disabled favorite action unavailable to pointer activation', async () => {
+      const user = userEvent.setup();
+      const onFavoriteToggle = vi.fn();
+      renderWithProviders(
+        <MarketItem pair={mockPair} onFavoriteToggle={onFavoriteToggle} favoriteDisabled />,
+      );
+
+      const favoriteButton = screen.getByLabelText('Thêm vào yêu thích');
+      expect(favoriteButton).toBeDisabled();
+      await user.click(favoriteButton);
+      expect(onFavoriteToggle).not.toHaveBeenCalled();
     });
 
     it('should show unfilled star for non-favorite pairs', () => {
@@ -298,6 +337,19 @@ describe('MarketItem', () => {
 
       const star = screen.getByLabelText('Thêm vào yêu thích');
       expect(star).toBeInstanceOf(HTMLButtonElement);
+    });
+
+    it('should reach the favorite action with keyboard tab navigation', async () => {
+      const user = userEvent.setup();
+      const onFavoriteToggle = vi.fn();
+      renderWithProviders(<MarketItem pair={mockPair} onFavoriteToggle={onFavoriteToggle} />);
+
+      const row = screen.getByRole('button', { name: 'BTCUSDT — 45,000.00' });
+      const favorite = screen.getByLabelText('Thêm vào yêu thích');
+      await user.tab();
+      expect(row).toHaveFocus();
+      await user.tab();
+      expect(favorite).toHaveFocus();
     });
   });
 

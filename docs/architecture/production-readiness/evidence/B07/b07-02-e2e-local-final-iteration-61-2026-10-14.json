@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-10-14T05:51:18.265Z",
+  "sourceHead": "57acaaa95f48a097258553c5d8a5e0455d2706dd",
+  "kind": "local_playwright_production_mode_api_contract_fixtures",
+  "command": "npm.cmd run test:e2e",
+  "environment": "Windows local Chromium, production-mode Vite preview, Playwright 1 worker, local page.route API fixtures, no backend/staging.",
+  "priorFailure": {
+    "run": {
+      "path": "C:/Users/Joker-PC/Documents/Projects/vittrade-react/.artifacts/runs/2026-10-14T05-42-21-900Z-playwright-d7a10d35-3a68-47c9-b755-f90eda8fe4f0/run.json",
+      "bytes": 287655,
+      "sha256": "344d13df2feef6a02b9db484691bba12e7c8141bea139f1939008d3428f32a43",
+      "id": "2026-10-14T05-42-21-900Z-playwright-d7a10d35-3a68-47c9-b755-f90eda8fe4f0",
+      "status": "failed",
+      "exitCode": 1,
+      "manifestHead": "8c977839141d6997b9c150a5846b820961344fd9",
+      "finishedAt": "2026-10-14T05:46:50.154Z",
+      "sourceUnchanged": true,
+      "childClosed": true,
+      "authSessionSpecSnapshotHash": "162a0a1fc60ad84df91e5f477d4ec6008c5b3bc1df642293a2cbade42ef9b6a3"
+    },
+    "observed": "59 passed, 1 failed, 4 configured skips. Web login page.goto waited for load and exceeded the unchanged 30-second timeout. Error context identifies the exact route and call; app CSS imports Google Fonts. This supports external font loading as a nondeterministic load dependency, but the failed request itself was not captured in the error context.",
+    "errorContext": {
+      "path": "C:/Users/Joker-PC/Documents/Projects/vittrade-react/.artifacts/runs/2026-10-14T05-42-21-900Z-playwright-d7a10d35-3a68-47c9-b755-f90eda8fe4f0/test-results/auth-session-auth-session--e4742-uthenticated-session-exists-chromium/error-context.md",
+      "bytes": 9894,
+      "sha256": "fdd779de50ee26d5589ef9616c255692ca9ec9b5cac2cc249f989f3fa32a9273"
+    }
+  },
+  "remediation": {
+    "commit": "57acaaa95f48a097258553c5d8a5e0455d2706dd",
+    "change": "The Web-login E2E case aborts requests only to fonts.googleapis.com and fonts.gstatic.com. It keeps waitUntil=load, the configured 30-second timeout, local Auth fixtures and all behavior assertions unchanged.",
+    "focusedRun": {
+      "path": "C:/Users/Joker-PC/Documents/Projects/vittrade-react/.artifacts/runs/2026-10-14T05-47-55-981Z-playwright-920b1cb2-7c47-4fe0-9f79-fe71800c9fcd/run.json",
+      "bytes": 287756,
+      "sha256": "2550b54d1eb678e74cfac7159fc7517a93c34ad24f72310dbdde0360baed65d1",
+      "id": "2026-10-14T05-47-55-981Z-playwright-920b1cb2-7c47-4fe0-9f79-fe71800c9fcd",
+      "status": "passed",
+      "exitCode": 0,
+      "manifestHead": "8c977839141d6997b9c150a5846b820961344fd9",
+      "finishedAt": "2026-10-14T05:48:24.595Z",
+      "sourceUnchanged": true,
+      "childClosed": true,
+      "authSessionSpecSnapshotHash": "775d0f30d3f5061c4cb154ffa6c7d60c27dac2b26ac3c971028a00e7ec54d93c"
+    },
+    "focusedResult": "1/1 pass; test body 2.3 seconds; runner exit 0."
+  },
+  "finalRun": {
+    "path": "C:/Users/Joker-PC/Documents/Projects/vittrade-react/.artifacts/runs/2026-10-14T05-49-57-090Z-playwright-d2be4242-268a-46a6-9c79-77a87afba852/run.json",
+    "bytes": 287655,
+    "sha256": "e5e4deaf0058a0a06afefb345ade585afa51a76a81c3d945e595ba45a71756b6",
+    "id": "2026-10-14T05-49-57-090Z-playwright-d2be4242-268a-46a6-9c79-77a87afba852",
+    "status": "passed",
+    "exitCode": 0,
+    "manifestHead": "8c977839141d6997b9c150a5846b820961344fd9",
+    "finishedAt": "2026-10-14T05:51:18.265Z",
+    "sourceUnchanged": true,
+    "childClosed": true,
+    "authSessionSpecSnapshotHash": "775d0f30d3f5061c4cb154ffa6c7d60c27dac2b26ac3c971028a00e7ec54d93c"
+  },
+  "finalResult": {
+    "tests": 64,
+    "passed": 60,
+    "failed": 0,
+    "configuredSkipped": 4,
+    "exitCode": 0,
+    "wallDuration": "1.2 minutes",
+    "cleanup": {
+      "files": 222,
+      "logicalBytes": 2717916,
+      "errors": 0
+    }
+  },
+  "expected": "The local fixture-backed production-mode E2E suite completes without failure and retains configured skips and assertions.",
+  "actual": "Final full run: 60 passed, 0 failed and 4 configured skips. The formerly failing Web-login case passed. One external DNS error was logged later by another asset request; it did not fail a test. Local fixtures do not contact backend/staging.",
+  "result": "pass",
+  "limitations": [
+    "A locally fixture-backed Chromium suite is not backend/staging/UAT or GitHub Actions evidence.",
+    "Four configured skips remain skips and are not reported as pass.",
+    "Hosted exact-SHA workflow and artifact/governance checks are pending push."
+  ]
+}

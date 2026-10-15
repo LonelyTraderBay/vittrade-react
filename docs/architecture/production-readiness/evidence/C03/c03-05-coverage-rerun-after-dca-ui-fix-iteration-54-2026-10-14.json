@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "itemId": "C03.05",
+  "observedAt": "2026-10-13T21:59:18.081Z",
+  "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
+  "sourceState": "dirty working tree; source hashes bind the DCA page and owner test",
+  "dirtyFileHashes": {
+    "src/features/dca/pages/SavingsDCAContractPage.tsx": "fd86668ebdf523604995a8e6bd174909c0e375f27980c348f7ad5af67a8e7d6",
+    "src/features/dca/pages/SavingsDCAContractPage.test.tsx": "b8890a583dd030781512985c7eed0107e080392edcb1795333ab372e7345f53b"
+  },
+  "verification": {
+    "environment": "Windows local checkout, Node 24.19.0, Vitest 4.1.11 with V8 coverage.",
+    "command": "node scripts/run-with-artifacts.mjs vitest run --coverage (invoked with the bundled Node runtime)",
+    "runId": "2026-10-13T21-58-21-819Z-vitest-1a87a697-9045-4be7-b62f-5521b89e139c",
+    "exitCode": 0,
+    "sourceUnchangedDuringRun": true,
+    "summary": {
+      "testFilesPassed": 360,
+      "testFilesTotal": 360,
+      "testsPassed": 3454,
+      "testsTotal": 3454,
+      "failed": 0,
+      "skipped": 0,
+      "measurableFiles": 408,
+      "measurableFilesFullyCovered": 408,
+      "measurableFilesWithGaps": 0,
+      "entriesWithoutExecutableCounters": 32,
+      "statements": { "covered": 12433, "total": 12433, "percent": 100 },
+      "branches": { "covered": 10244, "total": 10244, "percent": 100 },
+      "functions": { "covered": 3972, "total": 3972, "percent": 100 },
+      "lines": { "covered": 11494, "total": 11494, "percent": 100 }
+    },
+    "thresholdsOrDenominatorChanged": false,
+    "coverageReport": {
+      "path": ".artifacts/runs/2026-10-13T21-58-21-819Z-vitest-1a87a697-9045-4be7-b62f-5521b89e139c/coverage/coverage-final.json",
+      "sha256": "399d122f9278fd3861a5b36361528e47bcaf5a0eb9063a6814f8feee2e0404da"
+    }
+  },
+  "result": "pass",
+  "artifact": ".artifacts/runs/2026-10-13T21-58-21-819Z-vitest-1a87a697-9045-4be7-b62f-5521b89e139c/run.json",
+  "notes": "The local aggregate counter target remains 100/100/100/100 after the DCA UI correction. C03.05 remains in_progress because the required check-tracking gate still fails; this evidence does not certify hosted CI, backend/staging, production, or user acceptance."
+}

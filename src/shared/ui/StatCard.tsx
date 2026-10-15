@@ -106,18 +106,6 @@ export function StatCard({
   const c = useThemeColors();
   const config = SIZE_CONFIG[size];
 
-  // Get trend color
-  const getTrendColor = (): string => {
-    switch (trend) {
-      case 'up':
-        return '#10B981';
-      case 'down':
-        return '#EF4444';
-      default:
-        return c.text2;
-    }
-  };
-
   // Get value color
   const getValueColor = (): string => {
     if (valueColor) return valueColor;
@@ -181,9 +169,9 @@ export function StatCard({
           {trend && trend !== 'neutral' && (
             <div className="flex items-center">
               {trend === 'up' ? (
-                <TrendingUp size={config.iconSize} color={getTrendColor()} />
+                <TrendingUp size={config.iconSize} color="#10B981" />
               ) : (
-                <TrendingDown size={config.iconSize} color={getTrendColor()} />
+                <TrendingDown size={config.iconSize} color="#EF4444" />
               )}
             </div>
           )}

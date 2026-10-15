@@ -1,7 +1,7 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { screen } from '@testing-library/react';
+import { screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import type { AuthAdapter } from '@/shared/session/AuthContext';
 import { renderWithProviders } from '@/test/test-utils';
@@ -62,9 +62,19 @@ describe('Portfolio analytics contract page', () => {
     expect(await screen.findByText('Portfolio summary')).toBeInTheDocument();
     expect(screen.getByText('Performance history')).toBeInTheDocument();
     expect(screen.getByText('BTC')).toBeInTheDocument();
+    const periods = screen.getByRole('group', { name: 'Analytics period' });
+    expect(within(periods).getByRole('button', { name: '1M' })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    );
 
     await userEvent.click(screen.getByRole('button', { name: '3M' }));
     expect(await screen.findByText('Period 3M')).toBeInTheDocument();
+    expect(
+      within(screen.getByRole('group', { name: 'Analytics period' })).getByRole('button', {
+        name: '3M',
+      }),
+    ).toHaveAttribute('aria-pressed', 'true');
   });
 
   it('refetches after a contract permission error through the shared error state', async () => {
