@@ -253,6 +253,7 @@ export function WebAuthFormShell({ children, textColor }: WebAuthFormShellProps)
       className="flex-1 flex items-start justify-center"
       style={{
         padding: '40px 32px',
+        minWidth: 0,
         minHeight: '100vh',
         overflowY: 'auto',
       }}
