@@ -287,6 +287,7 @@ describe('DCAMainPage additional coverage', () => {
     );
 
     await user.click(await screen.findByRole('button', { name: 'Xóa kế hoạch' }));
+    const deleteDialog = await screen.findByRole('dialog', { name: 'Xác nhận xóa' });
     await screen.findByRole('button', { name: /^Xóa$/ });
     permissions = [];
     await waitFor(() => expect(refreshSession).toBeDefined());
@@ -299,11 +300,16 @@ describe('DCAMainPage additional coverage', () => {
     await user.click(screen.getByRole('button', { name: /^Xóa$/ }));
 
     expect(deleteRequests).toBe(0);
+    await user.click(within(deleteDialog).getByRole('button', { name: 'Hủy' }));
+    await waitFor(() =>
+      expect(screen.queryByRole('dialog', { name: 'Xác nhận xóa' })).not.toBeInTheDocument(),
+    );
   });
 
   it('supports the legacy coin query deep link without rewriting the URL', async () => {
     const trackDeepLink = vi.fn();
     const trackAssetCreateSheetOpened = vi.fn();
+    const user = userEvent.setup();
     server.use(http.get('*/dca/snapshot', () => HttpResponse.json(snapshot)));
 
     renderWithProviders(
@@ -324,9 +330,16 @@ describe('DCAMainPage additional coverage', () => {
       { routerProps: { initialEntries: ['/w/wallet/dca?coin=eth'] } },
     );
 
-    expect(await screen.findByText('Tạo Kế Hoạch DCA Mới')).toBeInTheDocument();
+    const createDialog = await screen.findByRole('dialog', { name: 'Tạo Kế Hoạch DCA Mới' });
+    expect(createDialog).toBeInTheDocument();
     expect(screen.getByTestId('route-search')).toHaveTextContent('?coin=eth');
     expect(trackDeepLink).toHaveBeenCalledWith('ETH', true);
     expect(trackAssetCreateSheetOpened).toHaveBeenCalledTimes(1);
+    await user.click(within(createDialog).getByRole('button', { name: 'Đóng' }));
+    await waitFor(() =>
+      expect(
+        screen.queryByRole('dialog', { name: 'Tạo Kế Hoạch DCA Mới' }),
+      ).not.toBeInTheDocument(),
+    );
   });
 });
