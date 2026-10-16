@@ -5,6 +5,7 @@ import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { useRoutePrefix } from '@/shared/navigation/useRoutePrefix';
 import { Breadcrumb } from '@/shared/ui/Breadcrumb';
 import type { LucideIcon } from 'lucide-react';
+import { pageInlineGutterStyle } from './pageGutter';
 
 /**
  * ══════════════════════════════════════════════════════════
@@ -12,7 +13,7 @@ import type { LucideIcon } from 'lucide-react';
  * ══════════════════════════════════════════════════════════
  *
  *  Height: 52pt (iOS standard 44pt + 8pt breathing room)
- *  Padding: 20px horizontal (device standard)
+ *  Horizontal gutter: inherited from the app shell (20px standalone fallback)
  *  Title: 17px weight 600 — iOS nav bar exception (not in φ scale)
  *
  *  ┌──────────────────────────────────────────────────┐
@@ -251,9 +252,10 @@ export function Header({
     return (
       <div className="contents">
         <div
-          className={`flex ${hasSubtitle ? 'items-start' : 'items-center'} gap-3 px-5 shrink-0`}
+          className={`flex ${hasSubtitle ? 'items-start' : 'items-center'} gap-3 shrink-0`}
           style={{
             ...barStyle,
+            ...pageInlineGutterStyle(),
             minHeight: 52,
             paddingTop: hasSubtitle ? 8 : 0,
             paddingBottom: hasSubtitle ? 8 : 0,
@@ -317,12 +319,13 @@ export function Header({
   return (
     <div className="contents">
       <div
-        className={`flex ${hasSubtitle ? 'items-start' : 'items-center'} justify-between px-5 shrink-0`}
+        className={`flex ${hasSubtitle ? 'items-start' : 'items-center'} justify-between shrink-0`}
         style={{
           minHeight: 52,
           paddingTop: hasSubtitle ? 8 : 0,
           paddingBottom: hasSubtitle ? 8 : 0,
           ...barStyle,
+          ...pageInlineGutterStyle(),
         }}
       >
         {/* Left */}

@@ -159,6 +159,120 @@ test.describe('production shell smoke', () => {
     });
   });
 
+  test('measures one computed page gutter across phone, tablet and Web shell routes', async ({
+    page,
+  }) => {
+    const cases = [
+      {
+        shell: 'phone',
+        path: '/p2p/security/2fa',
+        width: 390,
+        shellPadding: 0,
+        pagePadding: 20,
+        readyText: 'Release order',
+      },
+      {
+        shell: 'responsive phone',
+        path: '/r/p2p/security/2fa',
+        width: 390,
+        shellPadding: 0,
+        pagePadding: 20,
+        readyText: 'Release order',
+      },
+      {
+        shell: 'responsive tablet',
+        path: '/r/p2p/security/2fa',
+        width: 900,
+        shellPadding: 16,
+        pagePadding: 0,
+        readyText: 'Release order',
+      },
+      {
+        shell: 'tablet',
+        path: '/t/p2p/security/2fa',
+        width: 900,
+        shellPadding: 24,
+        pagePadding: 0,
+        readyText: 'Release order',
+      },
+      {
+        shell: 'Web narrow',
+        path: '/w/address-book',
+        width: 390,
+        shellPadding: 16,
+        pagePadding: 0,
+        readyText: 'Sổ địa chỉ',
+      },
+      {
+        shell: 'Web desktop',
+        path: '/w/p2p/security/2fa',
+        width: 1280,
+        shellPadding: 32,
+        pagePadding: 0,
+        readyText: 'Release order',
+      },
+    ];
+
+    let activeSession = p2pSecuritySession;
+    await page.route('**/auth/session', (route) => route.fulfill({ json: activeSession }));
+    await page.route('**/p2p/security/2fa/settings**', (route) =>
+      route.fulfill({ json: p2pSecuritySettings }),
+    );
+    await page.route('**/wallet/address-book**', (route) =>
+      route.fulfill({ json: { items: [], total: 0, whitelistEnabled: false } }),
+    );
+
+    const measurements: Array<Record<string, unknown>> = [];
+    for (const shellCase of cases) {
+      activeSession =
+        shellCase.path === '/w/address-book' ? authenticatedSession : p2pSecuritySession;
+      await page.setViewportSize({ width: shellCase.width, height: 900 });
+      await page.goto(shellCase.path);
+      await expect(page.getByText(shellCase.readyText, { exact: true })).toBeVisible();
+
+      const measurement = await page.getByRole('main').evaluate((main) => {
+        const content = Array.from(main.children).find(
+          (child) => child.classList.contains('flex') && child.classList.contains('flex-col'),
+        ) as HTMLElement | undefined;
+        const header = main.querySelector(':scope > .contents > div') as HTMLElement | null;
+        if (!content || !header?.parentElement) throw new Error('Page layout primitives not found');
+
+        let gutterOwner: HTMLElement | null = content;
+        while (gutterOwner && !gutterOwner.style.getPropertyValue('--tr-page-inline-gutter')) {
+          gutterOwner = gutterOwner.parentElement;
+        }
+        const pageStyle = getComputedStyle(content);
+        const headerStyle = getComputedStyle(header);
+        const shellStyle = gutterOwner ? getComputedStyle(gutterOwner) : null;
+        return {
+          pagePaddingLeft: Number.parseFloat(pageStyle.paddingLeft),
+          headerPaddingLeft: Number.parseFloat(headerStyle.paddingLeft),
+          shellPaddingLeft: shellStyle ? Number.parseFloat(shellStyle.paddingLeft) : 0,
+          gutterOwner: gutterOwner?.style.getPropertyValue('--tr-page-inline-gutter').trim() ?? '',
+          pageContentStart:
+            content.getBoundingClientRect().left + Number.parseFloat(pageStyle.paddingLeft),
+          headerContentStart:
+            header.getBoundingClientRect().left + Number.parseFloat(headerStyle.paddingLeft),
+        };
+      });
+
+      expect(measurement.shellPaddingLeft, shellCase.shell).toBe(shellCase.shellPadding);
+      expect(measurement.pagePaddingLeft, shellCase.shell).toBe(shellCase.pagePadding);
+      expect(measurement.headerPaddingLeft, shellCase.shell).toBe(shellCase.pagePadding);
+      expect(measurement.gutterOwner, shellCase.shell).toBe(shellCase.shellPadding ? '0px' : '');
+      expect(
+        Math.abs(Number(measurement.pageContentStart) - Number(measurement.headerContentStart)),
+        `${shellCase.shell} content/header alignment`,
+      ).toBeLessThan(0.5);
+      measurements.push({ ...shellCase, ...measurement });
+    }
+
+    await test.info().attach('page-gutter-layout-measurements.json', {
+      body: JSON.stringify(measurements, null, 2),
+      contentType: 'application/json',
+    });
+  });
+
   test('redirects the public root to the market home shell', async ({ page }) => {
     await page.goto('/');
     await expect(page).toHaveURL(/\/home$/);

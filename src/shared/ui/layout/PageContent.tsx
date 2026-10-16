@@ -1,6 +1,7 @@
 import React from 'react';
 import { SectionHeader, type SectionHeaderVariant } from '@/shared/ui/SectionHeader';
 import { type VitDensity } from '@/shared/theme/density';
+import { pageInlineGutterStyle } from './pageGutter';
 
 /**
  * ══════════════════════════════════════════════════════════════
@@ -13,12 +14,12 @@ import { type VitDensity } from '@/shared/theme/density';
  *
  *  SPACING CONTRACT (Guidelines §21.6 — current PageContent presets):
  *  ─────────────────────────────────────────────────────────────
- *  Horizontal padding: 20px (device standard, matching Header px-5)
+ *  Horizontal padding: shell-owned when a shell provides one; otherwise 20px
  *  Vertical padding presets:
  *    "compact" — pt-2 pb-0 (8px top at 16px root) — lists, dense content
  *    "default" — pt-3 pb-0 (12px top) — standard pages
  *    "relaxed" — pt-4 pb-0 (16px top) — forms, settings
- *    "none"    — no vertical padding — horizontal px-5 remains unless fullBleed
+ *    "none"    — no vertical padding — horizontal page gutter remains unless fullBleed
  *
  *  Gap presets (between child sections):
  *    "tight"   — 8px  — compact lists, dense cards
@@ -130,14 +131,13 @@ export function PageContent({
   const resolvedGap = gapProp ?? (density ? DENSITY_GAP_MAP[density] : 'default');
   const gapValue = typeof resolvedGap === 'number' ? resolvedGap : GAP_MAP[resolvedGap];
   const paddingClass = PADDING_MAP[resolvedPadding];
-  const hPadding = fullBleed ? '' : 'px-5';
-
   return (
     <div
-      className={['flex flex-col', hPadding, paddingClass, grow ? 'flex-1' : '', className]
+      className={['flex flex-col', paddingClass, grow ? 'flex-1' : '', className]
         .filter(Boolean)
         .join(' ')}
       style={{
+        ...pageInlineGutterStyle(fullBleed),
         gap: gapValue,
         minHeight: grow ? 0 : undefined,
         ...style,

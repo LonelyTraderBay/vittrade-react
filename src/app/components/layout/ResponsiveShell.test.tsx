@@ -5,6 +5,7 @@ import { Route, Routes } from 'react-router';
 import { renderWithProviders } from '@/test/test-utils';
 import { UIContext } from '../../contexts/ui-context';
 import { ResponsiveAppLayout } from './ResponsiveShell';
+import { PageContent } from '@/shared/ui/layout/PageContent';
 
 const originalWidth = window.innerWidth;
 
@@ -42,6 +43,40 @@ afterEach(() => {
 });
 
 describe('ResponsiveAppLayout', () => {
+  it.each([
+    { width: 1280, desktopMode: 'adaptive' as const, padding: '0px 24px', owner: '0px' },
+    { width: 900, desktopMode: 'adaptive' as const, padding: '0px 16px', owner: '0px' },
+    { width: 390, desktopMode: 'adaptive' as const, padding: '', owner: '' },
+    { width: 1280, desktopMode: 'centered' as const, padding: '', owner: '' },
+  ])(
+    'uses one gutter owner at $width px in $desktopMode mode',
+    ({ width, desktopMode, padding, owner }) => {
+      setWidth(width);
+      renderWithProviders(
+        <Routes>
+          <Route element={<ResponsiveAppLayout desktopMode={desktopMode} />}>
+            <Route
+              path="/r/layout"
+              element={
+                <PageContent className="responsive-gutter-probe">
+                  <p>Responsive page content</p>
+                </PageContent>
+              }
+            />
+          </Route>
+        </Routes>,
+        { routerProps: { initialEntries: ['/r/layout'] } },
+      );
+
+      const pageContent = screen.getByText('Responsive page content').parentElement;
+      const shellContent = pageContent?.parentElement;
+
+      expect(shellContent?.style.padding).toBe(padding);
+      expect(shellContent?.style.getPropertyValue('--tr-page-inline-gutter')).toBe(owner);
+      expect(pageContent?.style.paddingInline).toBe('var(--tr-page-inline-gutter, 20px)');
+    },
+  );
+
   it.each(['adaptive', 'centered'] as const)(
     'preserves the route form and DOM identity across breakpoint changes in %s mode',
     (desktopMode) => {

@@ -35,7 +35,10 @@ describe('layout and refresh feedback', () => {
         <span>Content</span>
       </PageContent>,
     );
-    expect(screen.getByText('Content').parentElement).toHaveClass('pt-4', 'px-5');
+    expect(screen.getByText('Content').parentElement).toHaveClass('pt-4');
+    expect(screen.getByText('Content').parentElement).toHaveStyle({
+      paddingInline: 'var(--tr-page-inline-gutter, 20px)',
+    });
     expect(screen.getByText('Content').parentElement).toHaveStyle({ gap: '24px' });
   });
 

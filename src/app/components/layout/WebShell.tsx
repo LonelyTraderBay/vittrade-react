@@ -16,6 +16,7 @@ import {
   WEB_CONTENT_PADDING,
   isFullBleedRoute,
 } from './webConstants';
+import { SHELL_PAGE_GUTTER_OWNER_STYLE } from '@/shared/ui/layout/pageGutter';
 
 /**
  * ══════════════════════════════════════════════════════════
@@ -161,6 +162,7 @@ export function WebShell() {
               /* Standard: centered with maxWidth + padding */
               <div
                 style={{
+                  ...SHELL_PAGE_GUTTER_OWNER_STYLE,
                   maxWidth: WEB_CONTENT_MAX_WIDTH,
                   margin: '0 auto',
                   padding: `0 ${isMobile ? 16 : WEB_CONTENT_PADDING}px`,

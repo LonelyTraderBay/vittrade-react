@@ -6,6 +6,7 @@ import { StatusBar } from './StatusBar';
 import { useBreakpoint } from '../../hooks/useBreakpoint';
 import { useUI } from '../../hooks/useUI';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
+import { SHELL_PAGE_GUTTER_OWNER_STYLE } from '@/shared/ui/layout/pageGutter';
 
 /** Suspense Fallback for lazy-loaded responsive pages */
 function PageLoadingFallback() {
@@ -129,6 +130,7 @@ export function ResponsiveAppLayout({ desktopMode = 'adaptive' }: ResponsiveShel
         >
           <div
             style={{
+              ...(adaptiveDesktop || isTablet ? SHELL_PAGE_GUTTER_OWNER_STYLE : {}),
               maxWidth: adaptiveDesktop ? 1200 : isTablet ? 720 : undefined,
               margin: '0 auto',
               padding: adaptiveDesktop ? '0 24px' : isTablet ? '0 16px' : undefined,

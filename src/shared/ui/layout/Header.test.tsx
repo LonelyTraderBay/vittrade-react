@@ -14,6 +14,18 @@ afterEach(() => {
 });
 
 describe('Header', () => {
+  it.each(['page', 'standard'] as const)(
+    '%s variant uses the shared shell-owned gutter contract',
+    (variant) => {
+      const { container } = renderWithProviders(<Header variant={variant} title="Layout" />);
+      const bar = container.querySelector('.contents > div');
+
+      expect((bar as HTMLDivElement).style.paddingInline).toBe(
+        'var(--tr-page-inline-gutter, 20px)',
+      );
+    },
+  );
+
   it('renders the page title without a blank action placeholder by default', () => {
     const { container } = renderWithProviders(<Header title="P2P" subtitle="Giao dịch" />);
 
