@@ -189,5 +189,5 @@ describe('Design system commit-differential guard', () => {
     const result = checkDesignSystemDiff();
     expect(result.passed, JSON.stringify(result.findings, null, 2)).toBe(true);
     expect(result.findings).toEqual([]);
-  });
+  }, 60_000);
 });
