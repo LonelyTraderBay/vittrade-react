@@ -78,17 +78,17 @@ export function P2PMerchantProfilePage() {
                 <p style={{ color: colors.text1, fontSize: 15, fontWeight: 700 }}>
                   {merchant.name}
                 </p>
-                {merchant.kycVerified && <Shield size={14} color="#3B82F6" />}
+                {merchant.kycVerified && <Shield size={14} color="var(--tr-link)" />}
               </div>
               <div className="flex items-center gap-1 mt-1">
                 {Array.from({ length: merchant.level }).map((_, index) => (
-                  <Star key={index} size={11} color="#F59E0B" fill="#F59E0B" />
+                  <Star key={index} size={11} color="var(--tr-warning-text)" fill="#F59E0B" />
                 ))}
                 <span style={{ color: colors.text3, fontSize: 10 }}>Lv.{merchant.level}</span>
               </div>
               <p
                 style={{
-                  color: merchant.isOnline ? '#10B981' : colors.text3,
+                  color: merchant.isOnline ? 'var(--tr-success-text)' : colors.text3,
                   fontSize: 10,
                   marginTop: 4,
                 }}
@@ -100,12 +100,12 @@ export function P2PMerchantProfilePage() {
           <div className="flex gap-2 mt-4">
             <button
               type="button"
-              onClick={() => navigate(`${prefix}/p2p/report/${merchant.id}`)}
+              onClick={() => navigate(`${prefix}/p2p/report/${encodeURIComponent(merchant.id)}`)}
               aria-label="Report P2P merchant"
               className="flex-1 rounded-xl py-2.5 flex items-center justify-center gap-2"
               style={{
                 background: 'rgba(239,68,68,0.08)',
-                color: '#EF4444',
+                color: 'var(--tr-error-text)',
                 fontSize: 12,
                 fontWeight: 700,
               }}
@@ -129,17 +129,20 @@ export function P2PMerchantProfilePage() {
             </button>
           </div>
           {blockMutation.isError && (
-            <p role="alert" style={{ color: '#EF4444', fontSize: 11, marginTop: 8 }}>
+            <p role="alert" style={{ color: 'var(--tr-error-text)', fontSize: 11, marginTop: 8 }}>
               Không thể chặn merchant. Vui lòng thử lại.
             </p>
           )}
           {!canManageBlacklist && (
-            <p role="alert" style={{ color: '#EF4444', fontSize: 11, marginTop: 8 }}>
+            <p role="alert" style={{ color: 'var(--tr-error-text)', fontSize: 11, marginTop: 8 }}>
               P2P blacklist write permission is required to block a merchant.
             </p>
           )}
           {blockMutation.isSuccess && (
-            <p role="status" style={{ color: '#10B981', fontSize: 11, marginTop: 8 }}>
+            <p
+              role="status"
+              style={{ color: 'var(--tr-success-text)', fontSize: 11, marginTop: 8 }}
+            >
               Đã chặn merchant khỏi giao dịch mới.
             </p>
           )}
@@ -150,25 +153,25 @@ export function P2PMerchantProfilePage() {
             label="Tỷ lệ hoàn tất"
             value={`${merchant.completionRate}%`}
             icon={CheckCircle}
-            color="#10B981"
+            color="var(--tr-success-text)"
           />
           <Stat
             label="Tổng giao dịch"
             value={merchant.totalTrades.toLocaleString('vi-VN')}
             icon={TrendingUp}
-            color="#3B82F6"
+            color="var(--tr-link)"
           />
           <Stat
             label="Thời gian release"
             value={merchant.avgReleaseTime}
             icon={Clock3}
-            color="#F59E0B"
+            color="var(--tr-warning-text)"
           />
           <Stat
             label="Tham gia"
             value={new Date(merchant.joinDate).toLocaleDateString('vi-VN')}
             icon={Calendar}
-            color="#8B5CF6"
+            color="var(--tr-accent)"
           />
         </div>
 
@@ -197,7 +200,7 @@ export function P2PMerchantProfilePage() {
                 <div className="flex items-center justify-between">
                   <span
                     style={{
-                      color: ad.type === 'sell' ? '#EF4444' : '#10B981',
+                      color: ad.type === 'sell' ? 'var(--tr-error-text)' : 'var(--tr-success-text)',
                       fontSize: 11,
                       fontWeight: 700,
                     }}
@@ -220,7 +223,7 @@ export function P2PMerchantProfilePage() {
                   <span style={{ color: colors.text1, fontSize: 12, fontWeight: 700 }}>
                     {review.fromUser}
                   </span>
-                  <span style={{ color: '#F59E0B', fontSize: 12 }}>
+                  <span style={{ color: 'var(--tr-warning-text)', fontSize: 12 }}>
                     {'★'.repeat(review.rating)}
                   </span>
                 </div>

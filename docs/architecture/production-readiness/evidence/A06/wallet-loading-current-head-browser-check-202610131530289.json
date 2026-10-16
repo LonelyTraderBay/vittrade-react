@@ -1,0 +1,296 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-13T15:30:28.997Z",
+  "observedAt": "2026-10-13T15:30:34.098Z",
+  "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
+  "origin": "http://127.0.0.1:4193",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "fixtureBoundary": {
+    "serviceWorkerControlled": true,
+    "allWalletResponsesFromServiceWorker": true,
+    "externalApiOrigins": [],
+    "realBackendRequestSent": false,
+    "walletWriteRequestCount": 0
+  },
+  "sourceHashes": {
+    "contracts/openapi/wallet.yaml": "a7b2e6fbdf62f2e6a789de25e712767d79014355870e86a87c8e809938f9e7b7",
+    "docs/architecture/production-readiness/evidence/A06/operation-mock-map-2026-09-28.json": "22daaea2c44da7e384507fbcd118f72aea0f18bf59e65aa025e8309eef01d320",
+    "docs/architecture/production-readiness/evidence/A06/run-wallet-loading-current-head-browser-check.mjs": "16f8420914a9f83631c2f76dd083d66d8054c83302be382a89b41826236e370a",
+    "src/app/routeConfig.ts": "675ea95ec4831b9d0caf1cbf68524efaebda8ed9b970b5dad129bdd55f28bac9",
+    "src/app/routes.ts": "c93a80e123fd95c3abd246aeb00589a51f5ff4560e794e87f70f7ff96248c0d5",
+    "src/app/routes/walletProfileProtectedRoutes.ts": "279cb168d99cef06c18fd8348f4961c3378f6672d33a90bd23ace71dd2dc05ab",
+    "src/dev/PreviewControls.tsx": "a318fb182dda24c9b8d2103ae4b40eeecb7c3eded57332aad3c5bc8a1836a54c",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/handlers.ts": "9d1ea085bab944b0bd0e59a665222113cb7bb661bbcd2408f09c6adf08cd3ea9",
+    "src/dev/mocks/personas.ts": "6189b9cbfb9765f5c442c52a089d30b5be171170fe054ef6bf2faffbbb53dccd",
+    "src/dev/mocks/preview-scenario-handler.ts": "1b05e3e420b1df43de6d2e37533d4d8dbcd203fedb70ca59a65a4a62179396f5",
+    "src/dev/mocks/scenario-runtime.ts": "446d43808b478a1eaca07faa29d690c49c8e7ffb21fc1f12d2de2feb524e2e50",
+    "src/dev/mocks/trading-fixtures.ts": "b082e4bc4094a4d7b36f41897ce9b27ea4c487fd3bf714622baf2f91fe2153cf",
+    "src/features/wallet/api/wallet-api.ts": "5eb1ae4a94dbfe0fd581227623bfc4ec474996a46c85b26503786466b56de752",
+    "src/features/wallet/components/WalletTransactionHistoryComponents.tsx": "0103e32ec1f8b9235cb394ca2d4c8de10f9e13c66e4aacfc430a3cceeb83d8ce",
+    "src/features/wallet/model/wallet-history.ts": "0cb86d751c3a996a16ea6c5dc53a77913ae1c3074845dd8a7543911d5fa0cda0",
+    "src/features/wallet/model/wallet-queries.ts": "28d7b8b808a1162f25ab3e6da9ee2684652ccd5da92d6612b308f85449efbd80",
+    "src/features/wallet/model/wallet-types.ts": "c31f657e91c0976ae6250a1a918f89003e6a5f0147e92f915775fdf3716c39f0",
+    "src/features/wallet/pages/WalletOverviewContractPage.tsx": "7f5328675ac30690708e8ff0b41baae48b830ab606932927233adb2c63c11bd9",
+    "src/features/wallet/pages/WalletTransactionHistoryContractPage.tsx": "c547490ad5d88cb9d6997e04a9904147b5c78c4d101b218202a6ffd650344b5b",
+    "src/shared/session/AuthContext.tsx": "b95d134413d28d85278553b752a4d6738857ed7785ea53d7a0e441db61b310f2",
+    "src/shared/session/useAuth.ts": "65d58cfe61d4618a1849da066ecd4d6ae7c94c036af7361a91a1383a6b383e0b"
+  },
+  "scenario": {
+    "id": "wallet.loading",
+    "domain": "wallet",
+    "state": "loading",
+    "status": "passed",
+    "observedAt": "2026-10-13T15:30:34.098Z",
+    "persona": "developer (local MSW fixture)",
+    "role": "developer",
+    "permissions": [
+      "market:read",
+      "trading:write",
+      "wallet:read",
+      "trade:read",
+      "earn:write",
+      "p2p:write",
+      "predictions:trade",
+      "profile:read",
+      "profile:write",
+      "profile:security:write"
+    ],
+    "route": "/w/wallet",
+    "finalRoute": "/w/wallet/history",
+    "operationIds": ["getWalletAssets", "getWalletTransactions"],
+    "observedOperationIds": ["getWalletAssets", "getWalletTransactions"],
+    "operationRequestCounts": {
+      "getWalletAssets": 1,
+      "getWalletTransactions": 2
+    },
+    "requests": [
+      {
+        "operationId": null,
+        "method": "GET",
+        "path": "/api/auth/session",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": null,
+        "method": "POST",
+        "path": "/api/auth/login",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": null,
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": null,
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "getWalletAssets",
+        "method": "GET",
+        "path": "/api/wallet/assets",
+        "resourceType": "fetch",
+        "query": {}
+      },
+      {
+        "operationId": "getWalletTransactions",
+        "method": "GET",
+        "path": "/api/wallet/transactions",
+        "resourceType": "fetch",
+        "query": {
+          "limit": "10"
+        }
+      },
+      {
+        "operationId": "getWalletTransactions",
+        "method": "GET",
+        "path": "/api/wallet/transactions",
+        "resourceType": "fetch",
+        "query": {
+          "limit": "50"
+        }
+      }
+    ],
+    "responses": [
+      {
+        "operationId": null,
+        "method": "GET",
+        "path": "/api/auth/session",
+        "status": 401,
+        "fromServiceWorker": true,
+        "elapsedMs": 11
+      },
+      {
+        "operationId": null,
+        "method": "POST",
+        "path": "/api/auth/login",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 10
+      },
+      {
+        "operationId": null,
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 4
+      },
+      {
+        "operationId": null,
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 5
+      },
+      {
+        "operationId": "getWalletAssets",
+        "method": "GET",
+        "path": "/api/wallet/assets",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 2009
+      },
+      {
+        "operationId": "getWalletTransactions",
+        "method": "GET",
+        "path": "/api/wallet/transactions",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 2010
+      },
+      {
+        "operationId": "getWalletTransactions",
+        "method": "GET",
+        "path": "/api/wallet/transactions",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 2019
+      }
+    ],
+    "initialSessionResponse": {
+      "status": 401,
+      "fromServiceWorker": true
+    },
+    "loginResponse": {
+      "status": 200,
+      "fromServiceWorker": true
+    },
+    "selectedScenario": "wallet.loading",
+    "walletEvidence": {
+      "requestCount": 3,
+      "responseCount": 3,
+      "writeRequestCount": 0,
+      "pendingRequestCount": 0,
+      "allResponsesFromServiceWorker": true,
+      "assetCount": 2,
+      "assetTotalUsd": 16754.32,
+      "overviewTransactionCount": 6,
+      "historyTransactionCount": 6,
+      "overviewDataVisible": true,
+      "historyDataVisible": true,
+      "overviewLoadingVisible": true,
+      "historyLoadingVisible": true,
+      "overviewPendingRequestCount": 2,
+      "historyPendingRequestCount": 1,
+      "overviewLoadingToResponseMs": 2066,
+      "historyLoadingToResponseMs": 2143,
+      "readOnlyActions": {
+        "depositVisible": true,
+        "transactionHistoryVisible": true,
+        "withdrawHidden": true,
+        "transferHidden": true
+      },
+      "elapsedMs": 4223
+    },
+    "externalApiOrigins": [],
+    "externalAssetOrigins": ["https://fonts.googleapis.com", "https://fonts.gstatic.com"],
+    "externalResourceOrigins": [],
+    "externalRequests": [
+      {
+        "origin": "https://fonts.googleapis.com",
+        "path": "/css2",
+        "method": "GET",
+        "resourceType": "stylesheet"
+      },
+      {
+        "origin": "https://fonts.gstatic.com",
+        "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG81Rb0.woff2",
+        "method": "GET",
+        "resourceType": "font"
+      },
+      {
+        "origin": "https://fonts.gstatic.com",
+        "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HTEJm81Rb0.woff2",
+        "method": "GET",
+        "resourceType": "font"
+      },
+      {
+        "origin": "https://fonts.gstatic.com",
+        "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW81Rb0.woff2",
+        "method": "GET",
+        "resourceType": "font"
+      },
+      {
+        "origin": "https://fonts.gstatic.com",
+        "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw3BXo.woff2",
+        "method": "GET",
+        "resourceType": "font"
+      },
+      {
+        "origin": "https://fonts.gstatic.com",
+        "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw4BXoKZA.woff2",
+        "method": "GET",
+        "resourceType": "font"
+      },
+      {
+        "origin": "https://fonts.gstatic.com",
+        "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw5BXoKZA.woff2",
+        "method": "GET",
+        "resourceType": "font"
+      },
+      {
+        "origin": "https://fonts.gstatic.com",
+        "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG86Rb0bcw.woff2",
+        "method": "GET",
+        "resourceType": "font"
+      },
+      {
+        "origin": "https://fonts.gstatic.com",
+        "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW86Rb0bcw.woff2",
+        "method": "GET",
+        "resourceType": "font"
+      },
+      {
+        "origin": "https://fonts.gstatic.com",
+        "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW87Rb0bcw.woff2",
+        "method": "GET",
+        "resourceType": "font"
+      },
+      {
+        "origin": "https://fonts.gstatic.com",
+        "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG87Rb0bcw.woff2",
+        "method": "GET",
+        "resourceType": "font"
+      }
+    ],
+    "pageErrors": [],
+    "elapsedMs": 4991,
+    "screenshots": [
+      "preview-wallet-loading-overview-pending-202610131530289.png",
+      "preview-wallet-loading-overview-resolved-202610131530289.png",
+      "preview-wallet-loading-history-pending-202610131530289.png",
+      "preview-wallet-loading-history-resolved-202610131530289.png"
+    ],
+    "failures": [],
+    "note": "Local Chromium/Vite/MSW Wallet loading scenario. The loading fixture delays both overview GETs and the history GET while each page renders its loading UI; no false empty state or cached success data is shown before response. After resolve, the developer fixture renders two assets ($16,754.32 total) and six transactions. Only getWalletAssets and getWalletTransactions were called (three GET requests across two routes); no Wallet mutation was sent. The measured delay is local MSW configuration, not backend latency. This does not establish backend/staging behavior, authorization, production availability or user acceptance."
+  }
+}

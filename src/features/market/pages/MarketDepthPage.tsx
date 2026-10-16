@@ -141,9 +141,9 @@ export function MarketDepthPage() {
                 ${fmtPrice(pair.price)}
               </p>
               <button
-                onClick={() => navigate(`${prefix}/trade/${pair.id}`)}
+                onClick={() => navigate(`${prefix}/trade/${encodeURIComponent(pair.id)}`)}
                 className="mt-1 rounded-lg px-3 py-1.5 text-xs font-semibold"
-                style={{ background: '#3B82F6', color: '#fff' }}
+                style={{ background: colors.info, color: 'var(--tr-text-on-color)' }}
               >
                 Giao dịch
               </button>
@@ -153,7 +153,7 @@ export function MarketDepthPage() {
 
         {tab === 'whales' ? (
           <TrCard className="p-5">
-            <AlertTriangle size={20} color="#F59E0B" />
+            <AlertTriangle size={20} color={colors.warningText} />
             <p className="mt-3" style={{ color: colors.text1, fontWeight: 700 }}>
               Whale alert contract chưa khả dụng
             </p>
@@ -177,14 +177,14 @@ export function MarketDepthPage() {
                 value={fmtCompact(bidDepth.at(-1)?.total ?? 0)}
                 sub={pair.baseAsset}
                 colors={colors}
-                color="#10B981"
+                color={colors.successText}
               />
               <Metric
                 label="Ask depth"
                 value={fmtCompact(askDepth.at(-1)?.total ?? 0)}
                 sub={pair.baseAsset}
                 colors={colors}
-                color="#EF4444"
+                color={colors.errorText}
               />
             </div>
             <TrCard className="p-4">
@@ -203,7 +203,7 @@ export function MarketDepthPage() {
                       key={`ask-${row.price}`}
                       row={row}
                       maxDepth={maxDepth}
-                      color="#EF4444"
+                      color={colors.errorText}
                       colors={colors}
                     />
                   ))}
@@ -226,7 +226,7 @@ export function MarketDepthPage() {
                     key={`bid-${row.price}`}
                     row={row}
                     maxDepth={maxDepth}
-                    color="#10B981"
+                    color={colors.successText}
                     colors={colors}
                   />
                 ))}
@@ -350,7 +350,7 @@ function OrderBookTable({
           key={`ask-${row.price}`}
           row={{ ...row, total: row.total }}
           maxDepth={maxDepth}
-          color="#EF4444"
+          color={colors.errorText}
           colors={colors}
         />
       ))}
@@ -365,7 +365,7 @@ function OrderBookTable({
           key={`bid-${row.price}`}
           row={{ ...row, total: row.total }}
           maxDepth={maxDepth}
-          color="#10B981"
+          color={colors.successText}
           colors={colors}
         />
       ))}

@@ -373,7 +373,7 @@ export function P2PCreateAdConfirmation({
             onClick={onConfirm}
             disabled={!canWriteAds || pending}
             className="flex-1 rounded-lg px-3 py-2 font-semibold"
-            style={{ background: colors.primary, color: '#fff' }}
+            style={{ background: colors.primary, color: 'var(--tr-text-on-color)' }}
           >
             {pending ? 'Đang đăng…' : 'Xác nhận đăng'}
           </button>
@@ -420,7 +420,7 @@ function ChoiceButton({
       className="rounded-lg px-3 py-2 text-sm font-semibold"
       style={{
         background: active ? colors.primary : colors.surface2,
-        color: active ? '#fff' : colors.text2,
+        color: active ? 'var(--tr-text-on-color)' : colors.text2,
       }}
     >
       {children}

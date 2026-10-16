@@ -160,6 +160,7 @@ export function IconButton({
 
   return (
     <button
+      type="button"
       onClick={handleClick}
       disabled={disabled || loading}
       aria-label={ariaLabel || label}

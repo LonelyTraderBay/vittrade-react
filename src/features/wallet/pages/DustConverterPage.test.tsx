@@ -114,6 +114,11 @@ describe('DustConverterPage', () => {
     expect(idempotencyKey).toEqual(expect.any(String));
 
     await userEvent.click(screen.getByRole('button', { name: 'Hoàn tất' }));
+    await waitFor(() =>
+      expect(
+        screen.queryByRole('dialog', { name: 'Chuyển đổi thành công!' }),
+      ).not.toBeInTheDocument(),
+    );
     expect(screen.getByRole('button', { name: 'Chọn tài sản để chuyển đổi' })).toBeDisabled();
 
     await userEvent.click(screen.getByRole('button', { name: 'Chọn tất cả' }));
@@ -325,6 +330,9 @@ describe('DustConverterPage', () => {
     expect(screen.getAllByText('USDT', { selector: 'p' })).toHaveLength(1);
     expect(screen.queryByText('LOCKED')).not.toBeInTheDocument();
     expect(screen.getByText('Dust tìm thấy').previousElementSibling).toHaveTextContent('1');
+    expect(screen.getByText('Dust tìm thấy').previousElementSibling).toHaveStyle({
+      color: 'var(--tr-text-1)',
+    });
 
     await user.click(screen.getByRole('button', { name: /BNB/ }));
     expect(screen.getAllByText('USDT', { selector: 'p' })).toHaveLength(2);

@@ -15,7 +15,7 @@ export default function App() {
   // Report unhandled failures without suppressing the browser's diagnostics.
   useEffect(() => {
     const handleError = (event: ErrorEvent) => {
-      console.error('[App] Unhandled error:', event.error);
+      if (env.isDev) console.error('[App] Unhandled error:', event.error);
       captureException(event.error ?? new Error(event.message), {
         area: 'app',
         operation: 'unhandled-error',
@@ -24,7 +24,7 @@ export default function App() {
     };
 
     const handleRejection = (event: PromiseRejectionEvent) => {
-      console.error('[App] Unhandled promise rejection:', event.reason);
+      if (env.isDev) console.error('[App] Unhandled promise rejection:', event.reason);
       captureException(event.reason, {
         area: 'app',
         operation: 'unhandled-rejection',

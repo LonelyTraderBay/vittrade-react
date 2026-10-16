@@ -129,7 +129,7 @@ export function MarketListHeader({
           className="flex min-h-9 items-center gap-1 rounded-xl px-2 py-1"
           style={{
             background: sort !== 'default' ? 'rgba(59,130,246,0.2)' : 'transparent',
-            color: sort !== 'default' ? '#3B82F6' : c.text3,
+            color: sort !== 'default' ? c.link : c.text3,
           }}
         >
           <SlidersHorizontal size={14} />
@@ -254,12 +254,14 @@ export function MarketTopMovers({
         <MoverCard
           title="Tăng mạnh"
           color="#10B981"
+          textColor={c.successText}
           icon={<TrendingUp size={14} />}
           items={gainers}
         />
         <MoverCard
           title="Giảm mạnh"
           color="#EF4444"
+          textColor={c.errorText}
           icon={<TrendingDown size={14} />}
           items={losers}
         />
@@ -292,11 +294,13 @@ export function MarketTopMovers({
 function MoverCard({
   title,
   color,
+  textColor,
   icon,
   items,
 }: {
   title: string;
   color: string;
+  textColor: string;
   icon: ReactNode;
   items: MarketPair[];
 }) {
@@ -305,7 +309,9 @@ function MoverCard({
     <TrCard className="p-3" accentBorder={`${color}26`}>
       <div className="mb-2 flex items-center gap-2">
         <span style={{ color }}>{icon}</span>
-        <span style={{ color, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold }}>
+        <span
+          style={{ color: textColor, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold }}
+        >
           {title}
         </span>
       </div>
@@ -316,7 +322,9 @@ function MoverCard({
           >
             {pair.baseAsset}
           </span>
-          <span style={{ color, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold }}>
+          <span
+            style={{ color: textColor, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold }}
+          >
             {fmtPct(pair.change24h)}
           </span>
         </div>

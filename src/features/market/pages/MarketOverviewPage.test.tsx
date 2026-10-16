@@ -86,11 +86,53 @@ function LocationProbe() {
     <output data-testid="route-location">
       {location.pathname}
       {location.search}
+      {location.hash}
     </output>
   );
 }
 
 describe('MarketOverviewPage', () => {
+  it.each(['pair', 'sector'] as const)(
+    'preserves a %s identifier instead of treating it as URL syntax',
+    (kind) => {
+      const id = 'resource/a?b#c%&other=x';
+      useMarketOverviewQuery.mockReturnValue(
+        queryState({
+          data: {
+            ...overview,
+            topGainers: [{ ...overview.topGainers[0], id }],
+            sectors: [{ ...overview.sectors[0], id }],
+          },
+        }),
+      );
+      renderWithProviders(
+        <>
+          <MarketOverviewPage />
+          <LocationProbe />
+        </>,
+        {
+          routerProps: { initialEntries: ['/t/markets/overview'] },
+        },
+      );
+      fireEvent.click(
+        kind === 'pair'
+          ? screen.getByRole('button', { name: /BTC.*\+/ })
+          : screen.getByText('Layer 1'),
+      );
+      const route = screen.getByTestId('route-location').textContent!;
+      const url = new URL(route, 'https://frontend.test');
+      expect(url.hash).toBe('');
+      if (kind === 'pair') {
+        expect(url.search).toBe('');
+        expect(url.pathname).toBe(`/t/pair/${encodeURIComponent(id)}`);
+        expect(decodeURIComponent(url.pathname.split('/').at(-1)!)).toBe(id);
+      } else {
+        expect(url.pathname).toBe('/t/markets/sectors');
+        expect([...url.searchParams.entries()]).toEqual([['id', id]]);
+      }
+    },
+  );
+
   beforeEach(() => {
     useMarketOverviewQuery.mockReset();
   });
@@ -162,11 +204,69 @@ describe('MarketOverviewPage', () => {
 
     renderWithProviders(<MarketOverviewPage />);
 
-    expect(screen.getByText('+1.25%')).toHaveStyle({ color: 'rgb(16, 185, 129)' });
+    expect(screen.getByText('+1.25%')).toHaveStyle({ color: 'var(--tr-success-text)' });
     expect(screen.getByText('0 ATH mới')).toBeInTheDocument();
     expect(screen.getByText('0 giảm >10%')).toBeInTheDocument();
     expect(screen.queryByText('Layer 1')).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: /làm mới/i }));
     expect(refetch).toHaveBeenCalledOnce();
+  });
+
+  it('keeps the tablet shell for discovery shortcuts and losing-pair navigation', () => {
+    useMarketOverviewQuery.mockReturnValue(
+      queryState({
+        data: {
+          ...overview,
+          topLosers: [{ ...overview.topGainers[0], id: 'ETH-USDT', symbol: 'ETH', change24h: -4 }],
+        },
+      }),
+    );
+    renderWithProviders(
+      <>
+        <MarketOverviewPage />
+        <LocationProbe />
+      </>,
+      { routerProps: { initialEntries: ['/t/markets/overview'] } },
+    );
+
+    for (const [label, route] of [
+      ['Biến động', '/t/markets/movers'],
+      ['Ngành', '/t/markets/sectors'],
+      ['Heatmap', '/t/markets/heatmap'],
+      ['Tăng mạnh', '/t/markets/movers'],
+      ['Giảm mạnh', '/t/markets/movers'],
+      ['Xem tất cả ngành', '/t/markets/sectors'],
+    ]) {
+      fireEvent.click(screen.getByRole('button', { name: label }));
+      expect(screen.getByTestId('route-location')).toHaveTextContent(route);
+    }
+    fireEvent.click(screen.getByRole('button', { name: /ETH.*-4/ }));
+    expect(screen.getByTestId('route-location')).toHaveTextContent('/t/pair/ETH-USDT');
+  });
+
+  it('ranks the top five sectors without mutating the received market snapshot', () => {
+    const sectors = Array.from({ length: 6 }, (_, index) => ({
+      ...overview.sectors[0],
+      id: `sector-${index}`,
+      nameVi: `Sector ${index}`,
+      change24h: index,
+    }));
+    useMarketOverviewQuery.mockReturnValue(queryState({ data: { ...overview, sectors } }));
+    renderWithProviders(<MarketOverviewPage />);
+
+    const renderedSectors = screen.getAllByRole('button', { name: /Sector \d/ });
+    expect(renderedSectors).toHaveLength(5);
+    for (const [index, button] of renderedSectors.entries()) {
+      expect(button).toHaveTextContent(`Sector ${5 - index}`);
+    }
+    expect(screen.queryByText('Sector 0')).not.toBeInTheDocument();
+    expect(sectors.map((sector) => sector.id)).toEqual([
+      'sector-0',
+      'sector-1',
+      'sector-2',
+      'sector-3',
+      'sector-4',
+      'sector-5',
+    ]);
   });
 });

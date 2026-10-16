@@ -49,6 +49,7 @@ export function useInfiniteScroll<T>({
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const observerRef = useRef<IntersectionObserver | null>(null);
   const loadingRef = useRef(false);
+  const loadTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const dataLengthRef = useRef(data.length);
   dataLengthRef.current = data.length;
 
@@ -67,7 +68,13 @@ export function useInfiniteScroll<T>({
       setIsInitialLoading(false);
     }, loadDelay);
 
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+      if (loadTimerRef.current !== null) {
+        clearTimeout(loadTimerRef.current);
+        loadTimerRef.current = null;
+      }
+    };
   }, [resetKey, pageSize, loadDelay]);
 
   useEffect(() => {
@@ -84,7 +91,8 @@ export function useInfiniteScroll<T>({
     loadingRef.current = true;
     setIsLoadingMore(true);
 
-    setTimeout(() => {
+    loadTimerRef.current = setTimeout(() => {
+      loadTimerRef.current = null;
       setVisibleCount((prev) => Math.min(prev + pageSize, dataLengthRef.current));
       setIsLoadingMore(false);
       loadingRef.current = false;

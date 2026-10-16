@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-10-14T08:09:07.304Z",
+  "sourceHead": "9a2b4cfddcf0c9de0cdb27071fc13c78598ec8d3",
+  "kind": "vitest_v8_full_suite",
+  "environment": "Windows local; Node v24.19.0; repository production-readiness runner; no backend/staging.",
+  "run": {
+    "id": "2026-10-14T08-08-04-217Z-vitest-270e432d-cf6b-4dd8-9abc-5230ccde5ef4",
+    "command": "npm.cmd run test:coverage -- --reporter=dot",
+    "exitCode": 0,
+    "status": "passed",
+    "childClosed": true,
+    "sourceUnchanged": true,
+    "snapshotFiles": 1141,
+    "snapshotFilesMatchingCurrentCommittedContent": "1141/1141"
+  },
+  "suite": {
+    "testFiles": "362/362",
+    "tests": "3477/3477",
+    "failed": 0,
+    "skipped": 0
+  },
+  "coverage": {
+    "reportPath": ".artifacts/runs/2026-10-14T08-08-04-217Z-vitest-270e432d-cf6b-4dd8-9abc-5230ccde5ef4/coverage/coverage-final.json",
+    "bytes": 3829815,
+    "sha256": "8e1250be27fe040b2db26975f32a08d39ef4a505253c1082501bc863426f765f",
+    "entries": 440,
+    "measurableFiles": 408,
+    "measurableFilesWithoutGaps": 408,
+    "filesWithGaps": 0,
+    "filesWithoutExecutableCounters": 32,
+    "counters": {
+      "statements": "12447/12447 (100%)",
+      "branches": "10282/10282 (100%)",
+      "functions": "3973/3973 (100%)",
+      "lines": "11513/11513 (100%)"
+    },
+    "thresholdOrDenominatorChanged": false
+  },
+  "expected": "Full configured Vitest suite passes and all measurable V8 counters remain gap-free without changing thresholds or denominator.",
+  "actual": "362/362 test files and 3477/3477 tests passed with no skips. All 408 measurable coverage entries have no gaps; 32 entries have no executable counters. Statements, branches, functions and lines are 100%. The runner manifest recorded 1141 source-snapshot hashes, all byte-matching the current committed content after the source commits.",
+  "result": "pass",
+  "limitations": [
+    "This is local test/coverage evidence; it does not prove hosted CI, backend/staging, UAT, production behavior or user acceptance.",
+    "The run manifest HEAD was the base commit because the source fixes were in the working tree during this run. Current content was independently compared against all 1141 run-snapshot hashes; no mismatch was found.",
+    "The 32 files with no executable counters are excluded from measurable-file coverage and are not described as covered."
+  ]
+}

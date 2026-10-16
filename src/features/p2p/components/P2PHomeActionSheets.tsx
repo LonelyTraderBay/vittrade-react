@@ -84,7 +84,7 @@ export function ContextMenuSheet({
       label: 'Báo cáo offer',
       color: c.sell,
       action: () => {
-        navigate(`${prefix}/p2p/report/${ad.merchantId}`);
+        navigate(`${prefix}/p2p/report/${encodeURIComponent(ad.merchantId)}`);
       },
     },
   ];

@@ -19,19 +19,21 @@ assert.equal(origin.pathname, '/', 'PREVIEW_BASE_URL must be an origin without a
 const originUrl = origin.origin;
 const checkedAt = new Date().toISOString();
 const date = checkedAt.slice(0, 10);
+const evidenceArtifactRunId = process.env.EVIDENCE_RUN_SUFFIX ?? String(Date.now());
+assert.match(evidenceArtifactRunId, /^[a-z0-9-]+$/i, 'Evidence run ID must be filename-safe.');
 const suffix = process.env.EVIDENCE_RUN_SUFFIX || 'contract-scoped';
 assert.match(suffix, /^[a-z0-9-]+$/i, 'Evidence run suffix must be alphanumeric or hyphenated.');
 const eventsScreenshotPath = path.join(
   evidenceDirectory,
-  `preview-predictions-unauthorized-events-${date}-${suffix}.png`,
+  `preview-predictions-unauthorized-events-${date}-${evidenceArtifactRunId}-${suffix}.png`,
 );
 const portfolioScreenshotPath = path.join(
   evidenceDirectory,
-  `preview-predictions-unauthorized-portfolio-${date}-${suffix}.png`,
+  `preview-predictions-unauthorized-portfolio-${date}-${evidenceArtifactRunId}-${suffix}.png`,
 );
 const reportPath = path.join(
   evidenceDirectory,
-  `predictions-unauthorized-browser-check-${date}-${suffix}.json`,
+  `predictions-unauthorized-browser-check-${date}-${evidenceArtifactRunId}-${suffix}.json`,
 );
 
 const sourceFiles = [

@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "commandOrSteps": "Inspect GitHub Actions run #54 for SHA ff7002a1bd6dbbd82f7d870d656dbb829e5b2ec5; run focused Auth E2E; run npm.cmd run test:e2e -- --config playwright.auth-api.config.ts.",
+  "environment": "GitHub Actions PR workflow on old SHA ff7002a1bd6dbbd82f7d870d656dbb829e5b2ec5; Windows local Node v24.19.0/Chromium; no backend or staging.",
+  "expected": "Correct the Auth theme-transition/contrast failures from run #54 without relaxing WCAG assertions; pass the complete configured Auth API browser profile on source bytes matching the P1 commit.",
+  "actual": "Run #54 failed 3/34 Auth API cases (31 passed) on the old SHA: Web 2FA transitional contrast 2.289:1; Session Expired and Account Locked tests asserted stale #6b7280 instead of current #344054; Account Locked axe also observed 4.16:1 on a transitional back-button color. P1 ef3fb92 narrows the step transition to border-color, scopes the locked-page button transition to transform, and updates the two stale expected colors. Focused regression: 3/3 pass; Account Locked axe passes all four theme/viewport combinations; full Auth API profile: 34/34 pass, 0 failed/skipped. New exact-SHA hosted result pending push.",
+  "result": "pass",
+  "limitations": "Run #54 is historical and remains failed. Local run manifests report passed/exitCode 0/sourceUnchanged true; all three changed-file hashes match current bytes and P1 Git blobs."
+}

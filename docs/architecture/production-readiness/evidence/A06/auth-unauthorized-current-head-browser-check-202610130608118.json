@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-13T06:08:11.892Z",
+  "sourceHead": "db9c9064fa3ba79bd76fb7acb1023d90486b6cbf",
+  "branch": "",
+  "origin": "http://127.0.0.1:4193",
+  "browser": "Chromium via Playwright",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "scenario": {
+    "id": "auth.unauthorized",
+    "domain": "auth",
+    "state": "unauthorized",
+    "status": "passed",
+    "persona": "guest (no authenticated session)",
+    "role": "unauthenticated",
+    "permissions": [],
+    "operationIds": [
+      "register",
+      "login",
+      "verifyLoginMfaChallenge",
+      "getSession",
+      "refreshSession",
+      "logout",
+      "verifyMfa",
+      "confirmMfaSetup",
+      "beginMfaSetup",
+      "requestPasswordResetCode",
+      "verifyCurrentPassword",
+      "changePassword",
+      "verifyPasswordResetCode",
+      "confirmPasswordReset"
+    ],
+    "observedOperationIds": ["getSession"],
+    "operationRequestCounts": {
+      "getSession": 1
+    },
+    "requests": [
+      {
+        "method": "GET",
+        "path": "/api/auth/session"
+      }
+    ],
+    "responses": [
+      {
+        "method": "GET",
+        "path": "/api/auth/session",
+        "status": 401,
+        "fromServiceWorker": true
+      }
+    ],
+    "bootstrapSessionResponse": {
+      "status": 401,
+      "fromServiceWorker": true
+    },
+    "unauthorizedSessionResponse": {
+      "status": 401,
+      "fromServiceWorker": true
+    },
+    "protectedRoute": "/w/trade/positions",
+    "finalRoute": "/auth/login",
+    "redirectedToLogin": true,
+    "loginFormVisible": true,
+    "protectedContentVisible": false,
+    "loginErrorVisible": false,
+    "writeRequestCount": 0,
+    "financialApiRequestCount": 0,
+    "elapsedMs": 1146,
+    "externalApiOrigins": [],
+    "pageErrors": [],
+    "screenshots": ["preview-auth-unauthorized-current-head-202610130608118.png"],
+    "note": "The browser used getSession 401, which the Auth OpenAPI explicitly declares. The guest was redirected to login without protected content or an erroneous login-submission alert. Only getSession among 14 Auth operations was observed. All traffic was local MSW; backend/session-cookie behavior, staging, production and user acceptance are unverified."
+  },
+  "fixtureBoundary": {
+    "serviceWorkerControlled": true,
+    "allObservedResponsesFromServiceWorker": true,
+    "externalApiOrigins": [],
+    "realBackendRequestSent": false,
+    "realBackendMutationSent": false
+  },
+  "measurements": {
+    "totalFlowMs": 1148,
+    "apiRequestCount": 2,
+    "apiResponseCount": 2,
+    "unauthorizedScenarioRequestCount": 1,
+    "unauthorizedScenarioResponseCount": 1,
+    "writeRequestCount": 0,
+    "financialApiRequestCount": 0,
+    "externalApiOriginCount": 0,
+    "pageErrors": []
+  },
+  "contract": {
+    "operationId": "getSession",
+    "declaredResponses": ["200", "401"],
+    "observedStatus": 401
+  },
+  "sourceHashes": {
+    "contracts/openapi/auth.yaml": "cceb23c9745d716a14cc9db823afee87e8e0ebea642426e12c41524351eaab83",
+    "docs/architecture/production-readiness/evidence/A06/run-auth-unauthorized-current-head-browser-check.mjs": "3f20063aa141b44f365b0d2ed339120fa3d31c659ce88abd2c35b20e40ed1a20",
+    "src/app/components/layout/ProtectedRoute.tsx": "c5cb74de4707d257a40f4782ea7c7c177ce3b8bd2de4f4cccb5e4450c9f4c5d4",
+    "src/app/contexts/AuthContext.tsx": "ed4902f682cbb4c11081acb1e87cfd2195fa0d06570ef1473ef962181b0d54b3",
+    "src/app/routes.ts": "c93a80e123fd95c3abd246aeb00589a51f5ff4560e794e87f70f7ff96248c0d5",
+    "src/dev/PreviewControls.tsx": "a318fb182dda24c9b8d2103ae4b40eeecb7c3eded57332aad3c5bc8a1836a54c",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/handlers.ts": "9d1ea085bab944b0bd0e59a665222113cb7bb661bbcd2408f09c6adf08cd3ea9",
+    "src/dev/mocks/preview-scenario-handler.ts": "1b05e3e420b1df43de6d2e37533d4d8dbcd203fedb70ca59a65a4a62179396f5",
+    "src/dev/mocks/scenario-runtime.ts": "446d43808b478a1eaca07faa29d690c49c8e7ffb21fc1f12d2de2feb524e2e50",
+    "src/features/auth/api/auth-api.ts": "e3733bea27f15fb63c15d04541c3dbbcf3dd619f30e650907ba8923893855b1a",
+    "src/features/auth/pages/WebLoginPage.tsx": "740142c311aa06792d3c504d0a6268c7c8ec59bc4b7203de156ba48c9acbf029",
+    "src/shared/api/http-client.ts": "12a04035eac23a2999f8c7a76aafa32966585402c06d98f451ef33eb8601cf42",
+    "src/shared/api/query-client.ts": "b2b0e5fe60f7ade24017f12859fa1b68bd2de143868c42e37df51a71ee259ac2",
+    "src/shared/session/AuthContext.tsx": "b95d134413d28d85278553b752a4d6738857ed7785ea53d7a0e441db61b310f2"
+  },
+  "limitations": "This run used local Vite development and MSW. It does not establish backend authorization/session persistence, cookie behavior, staging, production or user acceptance."
+}

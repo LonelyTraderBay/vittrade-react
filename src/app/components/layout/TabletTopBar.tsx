@@ -2,6 +2,7 @@ import React from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { Search, Bell, ChevronRight } from 'lucide-react';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
+import { WEB_AVATAR_GRADIENT } from '@/shared/theme/webTokens';
 import { useUI } from '../../hooks/useUI';
 
 /**
@@ -156,7 +157,7 @@ export function TabletTopBar() {
           style={{
             width: 40,
             height: 40,
-            background: 'linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%)',
+            background: WEB_AVATAR_GRADIENT,
           }}
         >
           <span style={{ color: '#fff', fontSize: 14, fontWeight: 700 }}>V</span>

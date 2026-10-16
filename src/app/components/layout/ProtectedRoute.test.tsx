@@ -106,6 +106,9 @@ describe('ProtectedRoute', () => {
     renderRoute(session, '/trade', [], ['trade:write']);
 
     expect(screen.getByRole('alert')).toHaveTextContent('Bạn không có quyền truy cập');
+    expect(
+      screen.getByRole('heading', { level: 1, name: 'Không có quyền truy cập' }),
+    ).toBeInTheDocument();
     expect(screen.queryByText('protected')).not.toBeInTheDocument();
   });
   it('redirects responsive routes to the responsive login path and preserves the destination', () => {

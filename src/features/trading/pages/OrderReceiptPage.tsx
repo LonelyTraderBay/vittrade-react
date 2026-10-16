@@ -118,8 +118,8 @@ export function OrderReceiptPage() {
               className="flex items-center gap-1 px-2 py-1 rounded-lg"
               style={{ background: 'rgba(59,130,246,0.08)' }}
             >
-              <Clock size={11} color="#3B82F6" />
-              <span style={{ color: '#3B82F6', fontSize: 11, fontWeight: 600 }}>
+              <Clock size={11} color="var(--tr-link)" />
+              <span style={{ color: 'var(--tr-link)', fontSize: 11, fontWeight: 600 }}>
                 {ORDER_STATUS_LABEL[order.status]}
               </span>
             </div>
@@ -156,10 +156,14 @@ export function OrderReceiptPage() {
               </p>
               <div className="flex gap-3">
                 {order.tpPrice && (
-                  <RiskPrice label="Take Profit" price={order.tpPrice} color="#10B981" />
+                  <RiskPrice
+                    label="Take Profit"
+                    price={order.tpPrice}
+                    color="var(--tr-success-text)"
+                  />
                 )}
                 {order.slPrice && (
-                  <RiskPrice label="Stop Loss" price={order.slPrice} color="#EF4444" />
+                  <RiskPrice label="Stop Loss" price={order.slPrice} color="var(--tr-error-text)" />
                 )}
               </div>
             </div>
@@ -170,8 +174,8 @@ export function OrderReceiptPage() {
           className="mx-5 flex items-start gap-2 rounded-xl px-3 py-2.5"
           style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.15)' }}
         >
-          <AlertTriangle size={13} color="#F59E0B" className="shrink-0 mt-0.5" />
-          <p style={{ color: '#F59E0B', fontSize: 11, lineHeight: 1.5 }}>
+          <AlertTriangle size={13} color="var(--tr-warning-text)" className="shrink-0 mt-0.5" />
+          <p style={{ color: 'var(--tr-warning-text)', fontSize: 11, lineHeight: 1.5 }}>
             Lệnh có thể khớp một phần hoặc bị hủy nếu giá thay đổi nhanh. Trạng thái hiển thị theo
             phản hồi của máy chủ.
           </p>

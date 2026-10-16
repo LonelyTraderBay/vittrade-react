@@ -42,8 +42,37 @@ function queryState(overrides: Record<string, unknown> = {}) {
 }
 
 describe('TokenUnlockSchedulePage', () => {
+  it('distinguishes an estimated schedule from a confirmed unlock', () => {
+    useMarketTokenUnlocksQuery.mockReturnValue(
+      queryState({
+        data: {
+          ...response,
+          items: [{ ...response.items[0], status: 'estimated' }],
+        },
+      }),
+    );
+    renderWithProviders(<TokenUnlockSchedulePage />);
+    expect(screen.getByText('Ước tính')).toBeInTheDocument();
+    expect(screen.queryByText('Đã xác nhận')).not.toBeInTheDocument();
+    expect(screen.getByText('92,650,000 ARB')).toBeInTheDocument();
+  });
   beforeEach(() => {
     useMarketTokenUnlocksQuery.mockReset();
+  });
+
+  it('permits refresh after settlement and blocks it while the next request is pending', () => {
+    const refetch = vi.fn();
+    useMarketTokenUnlocksQuery.mockReturnValue(queryState({ refetch }));
+    const { rerender } = renderWithProviders(<TokenUnlockSchedulePage />);
+    const refresh = screen.getByRole('button', { name: 'Làm mới lịch mở khóa' });
+    fireEvent.click(refresh);
+    expect(refetch).toHaveBeenCalledOnce();
+    useMarketTokenUnlocksQuery.mockReturnValue(queryState({ refetch, isFetching: true }));
+    rerender(<TokenUnlockSchedulePage />);
+    expect(refresh).toBeDisabled();
+    expect(refresh.querySelector('svg')).toHaveClass('animate-spin');
+    fireEvent.click(refresh);
+    expect(refetch).toHaveBeenCalledOnce();
   });
 
   it('shows loading and offers retry after an unavailable source', () => {

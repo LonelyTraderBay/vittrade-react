@@ -43,6 +43,7 @@ function removeItem(area: StorageArea, key: string): boolean {
 /** Safe, non-credential browser persistence for UI preferences and drafts. */
 export const browserStorage = {
   local: {
+    isStorageArea: (storage: Storage) => resolveStorage('local') === storage,
     getItem: (key: string) => getItem('local', key),
     setItem: (key: string, value: string) => setItem('local', key, value),
     removeItem: (key: string) => removeItem('local', key),

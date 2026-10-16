@@ -37,6 +37,32 @@ describe('MarketCorrelationPairsPage', () => {
     useMarketCorrelationsQuery.mockReset();
   });
 
+  it('keeps neutral coefficients distinct, restores positive ordering and blocks duplicate refresh', () => {
+    const refetch = vi.fn();
+    const data = {
+      ...response,
+      items: [
+        ...response.items,
+        { assetA: 'ETH', assetB: 'SOL', coefficient: 0, observations: 168 },
+      ],
+    };
+    useMarketCorrelationsQuery.mockReturnValue(queryState({ data, refetch }));
+    const { rerender } = renderWithProviders(<MarketCorrelationPairsPage />);
+    expect(screen.getByText(/Gần trung tính/)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Âm nhất' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Dương nhất' }));
+    expect(screen.getAllByLabelText(/^Hệ số tương quan/)[0]).toHaveTextContent('0.82');
+    const refresh = screen.getByRole('button', { name: 'Làm mới tương quan' });
+    fireEvent.click(refresh);
+    expect(refetch).toHaveBeenCalledOnce();
+    useMarketCorrelationsQuery.mockReturnValue(queryState({ data, refetch, isFetching: true }));
+    rerender(<MarketCorrelationPairsPage />);
+    expect(refresh).toBeDisabled();
+    expect(refresh.querySelector('svg')).toHaveClass('animate-spin');
+    fireEvent.click(refresh);
+    expect(refetch).toHaveBeenCalledOnce();
+  });
+
   it('shows loading and lets the user retry after a source failure', () => {
     useMarketCorrelationsQuery.mockReturnValue(queryState({ isPending: true }));
     const { rerender } = renderWithProviders(<MarketCorrelationPairsPage />);
