@@ -1,0 +1,411 @@
+{
+  "observedAt": "2026-10-13T13:49:03.734Z",
+  "sourceHead": "cf07c54809b248871d59a41627fbaf138b8383d3",
+  "branch": "codex/frontend-readiness-remediation-20261013",
+  "commits": [
+    {
+      "priority": "P0",
+      "head": "ffdf7ec46b16646cfba468897b5a7255202c9ab7",
+      "parent": "2a6d8fe4591c52a3b8d795a17aede48ca418907e",
+      "message": "P0: giữ riêng tư lỗi release và phục hồi đúng trang chủ"
+    },
+    {
+      "priority": "P1",
+      "head": "075517d81f235e6096c09946a2383442a590cd26",
+      "parent": "ffdf7ec46b16646cfba468897b5a7255202c9ab7",
+      "message": "P1: sửa lưu trạng thái đồng bộ focus và owner form"
+    },
+    {
+      "priority": "P2",
+      "head": "cf07c54809b248871d59a41627fbaf138b8383d3",
+      "parent": "075517d81f235e6096c09946a2383442a590cd26",
+      "message": "P2: kiểm chứng nhánh cuộn layout loading và cấu hình"
+    }
+  ],
+  "proofs": [
+    {
+      "path": "src/app/App.tsx",
+      "blobId": "324f75b2bfe61535a477d533d4a7ccf35e2e52c5",
+      "filteredBlobId": "324f75b2bfe61535a477d533d4a7ccf35e2e52c5",
+      "committedSha256": "f48c6369ae07f5b52f237514101a42bb0c8150bfd03b59896e18f1666a1958b8",
+      "workingSha256": "f48c6369ae07f5b52f237514101a42bb0c8150bfd03b59896e18f1666a1958b8",
+      "sourceHead": "ffdf7ec46b16646cfba468897b5a7255202c9ab7",
+      "priority": "P0",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "55882d23aff913e5ad89d511b52f9108780f1fcc32137758d688ba6c654d254a"
+      },
+      "currentFilteredBlobId": "324f75b2bfe61535a477d533d4a7ccf35e2e52c5"
+    },
+    {
+      "path": "src/app/__tests__/App.test.tsx",
+      "blobId": "22971d562d21c71df1fb389a9fd41fe0cae2b786",
+      "filteredBlobId": "22971d562d21c71df1fb389a9fd41fe0cae2b786",
+      "committedSha256": "097ee473f2999a8327f2987ff76f7f5b02a32e4367be76bf45f442a57c0a2d7e",
+      "workingSha256": "097ee473f2999a8327f2987ff76f7f5b02a32e4367be76bf45f442a57c0a2d7e",
+      "sourceHead": "ffdf7ec46b16646cfba468897b5a7255202c9ab7",
+      "priority": "P0",
+      "previous": {
+        "sourceHead": "eee2cf56ffa31103e14809a4e77cd145089ec5c8",
+        "sha256": "d7c6eaa338dbee1da363dd862b4b0df14f6686f95ff5bef4bbc38bd1b9c714fe"
+      },
+      "currentFilteredBlobId": "22971d562d21c71df1fb389a9fd41fe0cae2b786"
+    },
+    {
+      "path": "src/app/components/mobile/ErrorBoundary.tsx",
+      "blobId": "cd918ddd234c63837a50ea861e9ce8142032528b",
+      "filteredBlobId": "cd918ddd234c63837a50ea861e9ce8142032528b",
+      "committedSha256": "39c014a9a6ec0ae35329a348221c4ee02a296009581677ced1ea3e8d21948328",
+      "workingSha256": "39c014a9a6ec0ae35329a348221c4ee02a296009581677ced1ea3e8d21948328",
+      "sourceHead": "ffdf7ec46b16646cfba468897b5a7255202c9ab7",
+      "priority": "P0",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "354c35bdfbe486d5f9847803e235e8c71270c5fd819183121254342273387d8d"
+      },
+      "currentFilteredBlobId": "cd918ddd234c63837a50ea861e9ce8142032528b"
+    },
+    {
+      "path": "src/app/components/mobile/ErrorBoundary.test.tsx",
+      "blobId": "4b3e083752dbd7586e67b30d20b235a7d2f88ce6",
+      "filteredBlobId": "4b3e083752dbd7586e67b30d20b235a7d2f88ce6",
+      "committedSha256": "d672b6eba3766212d2c687ee6c032b4ad6b8cf5c2b91828204c5124798cdc99e",
+      "workingSha256": "d672b6eba3766212d2c687ee6c032b4ad6b8cf5c2b91828204c5124798cdc99e",
+      "sourceHead": "ffdf7ec46b16646cfba468897b5a7255202c9ab7",
+      "priority": "P0",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "3fe41e4d8bb829a2b5a7f3877238c8b4eefd260da971fe2124c87f183d6fb655"
+      },
+      "currentFilteredBlobId": "4b3e083752dbd7586e67b30d20b235a7d2f88ce6"
+    },
+    {
+      "path": "src/app/routes/RouteErrorBoundary.tsx",
+      "blobId": "dbf54877ac864184bd25c9abb95d1796f1e7eec0",
+      "filteredBlobId": "dbf54877ac864184bd25c9abb95d1796f1e7eec0",
+      "committedSha256": "ef0016b8ebd5e35c38a9323126d3da5d126b1474a650daf958138938deb09bc5",
+      "workingSha256": "ef0016b8ebd5e35c38a9323126d3da5d126b1474a650daf958138938deb09bc5",
+      "sourceHead": "ffdf7ec46b16646cfba468897b5a7255202c9ab7",
+      "priority": "P0",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "005f3cd1e521dfdbae3773062248f0838fde1e795e4ab485ed7110b87dcfacde"
+      },
+      "currentFilteredBlobId": "dbf54877ac864184bd25c9abb95d1796f1e7eec0"
+    },
+    {
+      "path": "src/app/routes/RouteErrorBoundary.test.tsx",
+      "blobId": "f1b6ddeef39a1c2c192f64079fb3b875e8a4377d",
+      "filteredBlobId": "f1b6ddeef39a1c2c192f64079fb3b875e8a4377d",
+      "committedSha256": "4a74c2c01050cc847434282eb986ada02475fe56a7438aad27db05b48b835c14",
+      "workingSha256": "4a74c2c01050cc847434282eb986ada02475fe56a7438aad27db05b48b835c14",
+      "sourceHead": "ffdf7ec46b16646cfba468897b5a7255202c9ab7",
+      "priority": "P0",
+      "previous": {
+        "sourceHead": null,
+        "sha256": null
+      },
+      "currentFilteredBlobId": "f1b6ddeef39a1c2c192f64079fb3b875e8a4377d"
+    },
+    {
+      "path": "src/shared/ui/LazyRoute.tsx",
+      "blobId": "a6082ae287fce6956f5517c2be57f634074e83a6",
+      "filteredBlobId": "a6082ae287fce6956f5517c2be57f634074e83a6",
+      "committedSha256": "ac7814c0cdbcaf839274b77f370ca47305cb21a52f5a8acb5ff6a5455c8b6a75",
+      "workingSha256": "ac7814c0cdbcaf839274b77f370ca47305cb21a52f5a8acb5ff6a5455c8b6a75",
+      "sourceHead": "ffdf7ec46b16646cfba468897b5a7255202c9ab7",
+      "priority": "P0",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "d7c01bc80452246531b40df381562c40eb4dca311aab90d6b7c54f217d1ec468"
+      },
+      "currentFilteredBlobId": "a6082ae287fce6956f5517c2be57f634074e83a6"
+    },
+    {
+      "path": "src/shared/ui/LazyRoute.test.tsx",
+      "blobId": "15a1d530429ba0bea80faa118efb71e839d370c0",
+      "filteredBlobId": "15a1d530429ba0bea80faa118efb71e839d370c0",
+      "committedSha256": "4d955b3efb1f82899d3e2409fb769f894c5b79a28a99580441641978f91d6ec4",
+      "workingSha256": "4d955b3efb1f82899d3e2409fb769f894c5b79a28a99580441641978f91d6ec4",
+      "sourceHead": "ffdf7ec46b16646cfba468897b5a7255202c9ab7",
+      "priority": "P0",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "48d73aa07ee47cc787803100ae6482e2f5ef4208eb50bc90eaaeae1f7eaef09a"
+      },
+      "currentFilteredBlobId": "15a1d530429ba0bea80faa118efb71e839d370c0"
+    },
+    {
+      "path": "src/app/hooks/useLocalStorage.ts",
+      "blobId": "7722f7d9dec2e6fc3c86e6e244cfc912b080a0a4",
+      "filteredBlobId": "7722f7d9dec2e6fc3c86e6e244cfc912b080a0a4",
+      "committedSha256": "2d0d4d641dbc1410ed22863d0c210c9cf6938134e3ab41e9b0d2c36f50592e8d",
+      "workingSha256": "2d0d4d641dbc1410ed22863d0c210c9cf6938134e3ab41e9b0d2c36f50592e8d",
+      "sourceHead": "075517d81f235e6096c09946a2383442a590cd26",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "a95b528680e126b37c36ad3c5e591ffee54b8e971def7172fe596d50000ba6b4"
+      },
+      "currentFilteredBlobId": "7722f7d9dec2e6fc3c86e6e244cfc912b080a0a4"
+    },
+    {
+      "path": "src/app/hooks/useLocalStorage.test.tsx",
+      "blobId": "77895d075c4ab2014492fc2e3ec138ebbd638fe8",
+      "filteredBlobId": "77895d075c4ab2014492fc2e3ec138ebbd638fe8",
+      "committedSha256": "92abff0a607556509ecf646753e94319d89436a860355855aa74049817b7d52a",
+      "workingSha256": "92abff0a607556509ecf646753e94319d89436a860355855aa74049817b7d52a",
+      "sourceHead": "075517d81f235e6096c09946a2383442a590cd26",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "da0323ea43def6452bb419ee357e2820642b5117a7e0cd655a33796880d3971c"
+      },
+      "currentFilteredBlobId": "77895d075c4ab2014492fc2e3ec138ebbd638fe8"
+    },
+    {
+      "path": "src/shared/lib/browser-storage.ts",
+      "blobId": "ee123266fae7b8355b365001f83240ca1fa5fd83",
+      "filteredBlobId": "ee123266fae7b8355b365001f83240ca1fa5fd83",
+      "committedSha256": "aeb57b98aad498b5ab8a248a2382c615a5a421fd01f92e71b2a7aa4daa441b8c",
+      "workingSha256": "aeb57b98aad498b5ab8a248a2382c615a5a421fd01f92e71b2a7aa4daa441b8c",
+      "sourceHead": "075517d81f235e6096c09946a2383442a590cd26",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "eb1d8510fe05f5b789b1897729147dd7a320e60e4aa4a85a03a83fa7a72d3f8a"
+      },
+      "currentFilteredBlobId": "ee123266fae7b8355b365001f83240ca1fa5fd83"
+    },
+    {
+      "path": "src/shared/lib/browser-storage.test.ts",
+      "blobId": "41b21f4fa1ca845d66e5de746edc938b919e288b",
+      "filteredBlobId": "41b21f4fa1ca845d66e5de746edc938b919e288b",
+      "committedSha256": "91f18307ff60ea946ff855e5fadfb4d08a9b0277783ce565d5470960c76273cd",
+      "workingSha256": "91f18307ff60ea946ff855e5fadfb4d08a9b0277783ce565d5470960c76273cd",
+      "sourceHead": "075517d81f235e6096c09946a2383442a590cd26",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "7aad715a493cfc1474cc489ee01bfbae770b6a14",
+        "sha256": "a56575b4b3f102ed5a6e4a23355ffa71ff7818f947224ce3d876a551e5ba3683"
+      },
+      "currentFilteredBlobId": "41b21f4fa1ca845d66e5de746edc938b919e288b"
+    },
+    {
+      "path": "src/shared/ui/TabBar.tsx",
+      "blobId": "45a27bb8589abca7116dd5e450dc31ed317a6f0b",
+      "filteredBlobId": "45a27bb8589abca7116dd5e450dc31ed317a6f0b",
+      "committedSha256": "97d0b5cfabdb77e6713cafc5c17c7e88c8ed606be3bfbe8a81a88b8b3db87511",
+      "workingSha256": "97d0b5cfabdb77e6713cafc5c17c7e88c8ed606be3bfbe8a81a88b8b3db87511",
+      "sourceHead": "075517d81f235e6096c09946a2383442a590cd26",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "9471badb3f584f763f788abd8e0fa9dc38902d4def89f291f05d77de5c2a01aa"
+      },
+      "currentFilteredBlobId": "45a27bb8589abca7116dd5e450dc31ed317a6f0b"
+    },
+    {
+      "path": "src/shared/ui/TabBar.test.tsx",
+      "blobId": "049bc943ae849c7210c072ba1dee7e8fb0f64594",
+      "filteredBlobId": "049bc943ae849c7210c072ba1dee7e8fb0f64594",
+      "committedSha256": "411abcd25b333fcc61b4f1df05e378eaf5a07b1b41b1cecca986e44f19ccd3ee",
+      "workingSha256": "411abcd25b333fcc61b4f1df05e378eaf5a07b1b41b1cecca986e44f19ccd3ee",
+      "sourceHead": "075517d81f235e6096c09946a2383442a590cd26",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "f7fae1258af150ccfcf4048fd92c95e808947937fd1f2d0168e8dc205aacae2b"
+      },
+      "currentFilteredBlobId": "049bc943ae849c7210c072ba1dee7e8fb0f64594"
+    },
+    {
+      "path": "src/shared/ui/InputField.tsx",
+      "blobId": "9c4f0f7f7305e88323d3e808015bad3bbc87f3cd",
+      "filteredBlobId": "9c4f0f7f7305e88323d3e808015bad3bbc87f3cd",
+      "committedSha256": "38c7c43874edd2b8d5aa03c2929c1b2ddf369254168ec15b8e4f88e3bb9f4264",
+      "workingSha256": "38c7c43874edd2b8d5aa03c2929c1b2ddf369254168ec15b8e4f88e3bb9f4264",
+      "sourceHead": "075517d81f235e6096c09946a2383442a590cd26",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "db9c9064fa3ba79bd76fb7acb1023d90486b6cbf",
+        "sha256": "6ff4a3adcd0bda27f5ba3d616bddf1467d85dcaa62fa08cbd54fe5988e5a23fd"
+      },
+      "currentFilteredBlobId": "9c4f0f7f7305e88323d3e808015bad3bbc87f3cd"
+    },
+    {
+      "path": "src/shared/ui/InputField.test.tsx",
+      "blobId": "49cdcd74d3ec504f86142505f534b3ca0621bd71",
+      "filteredBlobId": "49cdcd74d3ec504f86142505f534b3ca0621bd71",
+      "committedSha256": "a46ac96a96e1fbac586f0ebe2ee69a56f764a11cfd11000d30e344422f26817e",
+      "workingSha256": "a46ac96a96e1fbac586f0ebe2ee69a56f764a11cfd11000d30e344422f26817e",
+      "sourceHead": "075517d81f235e6096c09946a2383442a590cd26",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "db9c9064fa3ba79bd76fb7acb1023d90486b6cbf",
+        "sha256": "347f0656b9a5cf375f4f8506f7a9b18053999088bbf5605a0924655a4ce71a66"
+      },
+      "currentFilteredBlobId": "49cdcd74d3ec504f86142505f534b3ca0621bd71"
+    },
+    {
+      "path": "src/shared/ui/form.tsx",
+      "blobId": "53aa59ce82918f61ded170c47894ba3a503fefee",
+      "filteredBlobId": "53aa59ce82918f61ded170c47894ba3a503fefee",
+      "committedSha256": "8409fb42ac825052412c5437379401f8b54a097076c14e5979ae4eadb1ce4e45",
+      "workingSha256": "8409fb42ac825052412c5437379401f8b54a097076c14e5979ae4eadb1ce4e45",
+      "sourceHead": "075517d81f235e6096c09946a2383442a590cd26",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "030c9b3000cd609bc8d69b63ee0a4f178ec576c0df464d0a12bee86da34eafea"
+      },
+      "currentFilteredBlobId": "53aa59ce82918f61ded170c47894ba3a503fefee"
+    },
+    {
+      "path": "src/shared/ui/form.test.tsx",
+      "blobId": "806912b1080b705dc979fd9951c224267eb55b8d",
+      "filteredBlobId": "806912b1080b705dc979fd9951c224267eb55b8d",
+      "committedSha256": "d7923080f9cffa9df8e4c7b2928ddedd95111c38a469576815df8b112a66e628",
+      "workingSha256": "d7923080f9cffa9df8e4c7b2928ddedd95111c38a469576815df8b112a66e628",
+      "sourceHead": "075517d81f235e6096c09946a2383442a590cd26",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "828bba2cb429d7290e634c27531d4d7c7e688cbd773bb760e252958013aba50b"
+      },
+      "currentFilteredBlobId": "806912b1080b705dc979fd9951c224267eb55b8d"
+    },
+    {
+      "path": "src/app/__tests__/SectionHeader.test.tsx",
+      "blobId": "eb508a12ff273cc8322d25c4e96610e6af99aa95",
+      "filteredBlobId": "eb508a12ff273cc8322d25c4e96610e6af99aa95",
+      "committedSha256": "71aba133a88feeba223e833f311ef356bc881819946ee04b91766e6756a8713e",
+      "workingSha256": "71aba133a88feeba223e833f311ef356bc881819946ee04b91766e6756a8713e",
+      "sourceHead": "cf07c54809b248871d59a41627fbaf138b8383d3",
+      "priority": "P2",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "ccd83b868023faf6fe0cba153d5877a44f302a94cb374a5d0c9497aba259c6e7"
+      },
+      "currentFilteredBlobId": "eb508a12ff273cc8322d25c4e96610e6af99aa95"
+    },
+    {
+      "path": "src/app/__tests__/StatCard.test.tsx",
+      "blobId": "b84ebe2631a916d8559a8b1c302d58427813c388",
+      "filteredBlobId": "b84ebe2631a916d8559a8b1c302d58427813c388",
+      "committedSha256": "a4618696f746623f00c76c2e96c86fc0945de95b9c96cb1171b3ef19358fa087",
+      "workingSha256": "a4618696f746623f00c76c2e96c86fc0945de95b9c96cb1171b3ef19358fa087",
+      "sourceHead": "cf07c54809b248871d59a41627fbaf138b8383d3",
+      "priority": "P2",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "ec759c5eb657d528c62357bbecf9365a1f1d62747d8df6c5e76c8c109bae1832"
+      },
+      "currentFilteredBlobId": "b84ebe2631a916d8559a8b1c302d58427813c388"
+    },
+    {
+      "path": "src/app/hooks/browser-interaction-hooks.test.tsx",
+      "blobId": "b3432a66e7f8c6274d913c3463274a94d316da68",
+      "filteredBlobId": "b3432a66e7f8c6274d913c3463274a94d316da68",
+      "committedSha256": "afcfb05c6eb18189bf503a6e5aef863b8374e333005fd378abe1401f0fd8fc4c",
+      "workingSha256": "afcfb05c6eb18189bf503a6e5aef863b8374e333005fd378abe1401f0fd8fc4c",
+      "sourceHead": "cf07c54809b248871d59a41627fbaf138b8383d3",
+      "priority": "P2",
+      "previous": {
+        "sourceHead": "1d229589773417193f0de0613f0a74422cb4ae01",
+        "sha256": "a42032b7c0987fdad1de405d5fe03c92535c17b3c44122626f5a30ada01b43f5"
+      },
+      "currentFilteredBlobId": "b3432a66e7f8c6274d913c3463274a94d316da68"
+    },
+    {
+      "path": "src/shared/config/env.test.ts",
+      "blobId": "63a033f5e354971b4ffdd1fcbbea49986d337f15",
+      "filteredBlobId": "63a033f5e354971b4ffdd1fcbbea49986d337f15",
+      "committedSha256": "432709833a72763d6121f55965b2cdddeb28366f3bc36a7784ecbd1d24cbdbea",
+      "workingSha256": "432709833a72763d6121f55965b2cdddeb28366f3bc36a7784ecbd1d24cbdbea",
+      "sourceHead": "cf07c54809b248871d59a41627fbaf138b8383d3",
+      "priority": "P2",
+      "previous": {
+        "sourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+        "sha256": "c5e70b246f8894257795ee3f4c70c060025905c2ad4aa7efa813f91e91779667"
+      },
+      "currentFilteredBlobId": "63a033f5e354971b4ffdd1fcbbea49986d337f15"
+    },
+    {
+      "path": "src/shared/telemetry/telemetry.test.ts",
+      "blobId": "ebcb37e990fa110893e57d3fc28adf8c59251fcf",
+      "filteredBlobId": "ebcb37e990fa110893e57d3fc28adf8c59251fcf",
+      "committedSha256": "25298b710dbc0bca2edff030355b542769d0a8daa48a14ca0b65b3d105551c59",
+      "workingSha256": "25298b710dbc0bca2edff030355b542769d0a8daa48a14ca0b65b3d105551c59",
+      "sourceHead": "cf07c54809b248871d59a41627fbaf138b8383d3",
+      "priority": "P2",
+      "previous": {
+        "sourceHead": "eee2cf56ffa31103e14809a4e77cd145089ec5c8",
+        "sha256": "13a10a521b5146aa689d4d3b9ec6f2d7076d1ba0b8406075b1ae965874d1241b"
+      },
+      "currentFilteredBlobId": "ebcb37e990fa110893e57d3fc28adf8c59251fcf"
+    },
+    {
+      "path": "src/shared/ui/PullToRefresh.test.tsx",
+      "blobId": "cec1c9a4fdaf90fb671ede4b66ea6233278f91ed",
+      "filteredBlobId": "cec1c9a4fdaf90fb671ede4b66ea6233278f91ed",
+      "committedSha256": "78d9df87c923ae24bca1f874a31200b8d3b0704d240d0b28dfd0bdc8b53d783d",
+      "workingSha256": "78d9df87c923ae24bca1f874a31200b8d3b0704d240d0b28dfd0bdc8b53d783d",
+      "sourceHead": "cf07c54809b248871d59a41627fbaf138b8383d3",
+      "priority": "P2",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "f303d2319c7bf6e8532f427e7b8cc7b3ab4eb6dbc31e2a8bfce142f98e4613d0"
+      },
+      "currentFilteredBlobId": "cec1c9a4fdaf90fb671ede4b66ea6233278f91ed"
+    },
+    {
+      "path": "src/shared/ui/TrCard.test.tsx",
+      "blobId": "46d14054afec7a688f5c25cc9e796f8bb3549e01",
+      "filteredBlobId": "46d14054afec7a688f5c25cc9e796f8bb3549e01",
+      "committedSha256": "303555a988aa05ecdded59740655c86e7525bb39314518bab1a841cb90a2a10a",
+      "workingSha256": "303555a988aa05ecdded59740655c86e7525bb39314518bab1a841cb90a2a10a",
+      "sourceHead": "cf07c54809b248871d59a41627fbaf138b8383d3",
+      "priority": "P2",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "2d5e68ae7d82d41a5d2f0d84045f503d18f944db92a30ea13413265641807d05"
+      },
+      "currentFilteredBlobId": "46d14054afec7a688f5c25cc9e796f8bb3549e01"
+    },
+    {
+      "path": "src/shared/ui/TrInput.test.tsx",
+      "blobId": "6811cd7a3401b0be069ebe4dda390cf643bb182e",
+      "filteredBlobId": "6811cd7a3401b0be069ebe4dda390cf643bb182e",
+      "committedSha256": "f6570f5bf7fece4c57363e474478ca55e034171ed2da147911403f28797926e0",
+      "workingSha256": "f6570f5bf7fece4c57363e474478ca55e034171ed2da147911403f28797926e0",
+      "sourceHead": "cf07c54809b248871d59a41627fbaf138b8383d3",
+      "priority": "P2",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "84aff9fd8125dd407532bfa57c2354a3751ad68d4ad767e5bdcb23c0d787f6f3"
+      },
+      "currentFilteredBlobId": "6811cd7a3401b0be069ebe4dda390cf643bb182e"
+    },
+    {
+      "path": "src/shared/ui/layout-loading-primitives.test.tsx",
+      "blobId": "52146b170bd269c67c775bd6e68a2a2921b94ac7",
+      "filteredBlobId": "52146b170bd269c67c775bd6e68a2a2921b94ac7",
+      "committedSha256": "5d4d3b33d72d69bdb6f223201f0befc0cabeaa2a3ea1e141a1e936b31031ffdb",
+      "workingSha256": "5d4d3b33d72d69bdb6f223201f0befc0cabeaa2a3ea1e141a1e936b31031ffdb",
+      "sourceHead": "cf07c54809b248871d59a41627fbaf138b8383d3",
+      "priority": "P2",
+      "previous": {
+        "sourceHead": null,
+        "sha256": null
+      },
+      "currentFilteredBlobId": "52146b170bd269c67c775bd6e68a2a2921b94ac7"
+    }
+  ],
+  "limits": [
+    "27 actual local source/test/inventory blobs only. No push, PR, hosted CI or deployment.",
+    "Pre-commit runtime evidence retains the HEAD it actually observed; exact bytes match these actual committed objects after Git filtering.",
+    "Current strict-HEAD browser/build evidence must run on this final source commit.",
+    "Original baseline, catalogue history and backend/UAT/coverage criteria are preserved."
+  ]
+}

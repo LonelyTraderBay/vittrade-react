@@ -1,5 +1,5 @@
 import { QueryClientProvider } from '@tanstack/react-query';
-import { render, screen, waitFor } from '@testing-library/react';
+import { act, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createMemoryRouter, RouterProvider, useLocation } from 'react-router';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -76,6 +76,25 @@ describe('development mock preview controls', () => {
     queryClient.clear();
     resetDevMockRuntime();
     vi.unstubAllGlobals();
+    Object.defineProperty(window, 'innerWidth', { configurable: true, value: 1024 });
+  });
+
+  it('keeps the mock warning above the phone navigation chrome', async () => {
+    Object.defineProperty(window, 'innerWidth', { configurable: true, value: 390 });
+    const { router } = renderPreview();
+
+    await act(async () => {
+      await router.navigate('/home');
+    });
+
+    expect(screen.getByTestId('dev-preview-controls')).toHaveStyle({
+      bottom: 'calc(88px + env(safe-area-inset-bottom, 0px))',
+    });
+    expect(screen.getByRole('status', { name: 'Mock data warning' })).toHaveStyle({
+      width: 'fit-content',
+      padding: '5px 8px',
+    });
+    router.dispose();
   });
 
   it('shows the mock warning and switches persona through the auth adapter after clearing account data', async () => {

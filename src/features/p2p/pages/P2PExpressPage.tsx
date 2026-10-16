@@ -102,8 +102,12 @@ export function P2PExpressPage() {
               className="flex-1 rounded-xl py-3 font-bold text-sm"
               style={{
                 background:
-                  tradeType === type ? (type === 'buy' ? '#10B981' : '#EF4444') : 'transparent',
-                color: tradeType === type ? '#fff' : colors.text3,
+                  tradeType === type
+                    ? type === 'buy'
+                      ? 'var(--tr-buy)'
+                      : '#EF4444'
+                    : 'transparent',
+                color: tradeType === type ? 'var(--tr-text-on-color)' : colors.text3,
               }}
             >
               {type === 'buy' ? 'MUA NHANH' : 'BÁN NHANH'}
@@ -195,7 +199,10 @@ export function P2PExpressPage() {
             accentBorder={tradeType === 'buy' ? 'rgba(16,185,129,0.3)' : 'rgba(239,68,68,0.3)'}
           >
             <div className="flex items-center gap-2 mb-3">
-              <Zap size={16} color={tradeType === 'buy' ? '#10B981' : '#EF4444'} />
+              <Zap
+                size={16}
+                color={tradeType === 'buy' ? 'var(--tr-success-text)' : 'var(--tr-error-text)'}
+              />
               <span style={{ color: colors.text1, fontSize: 14, fontWeight: 700 }}>
                 Offer phù hợp nhất
               </span>
@@ -214,7 +221,7 @@ export function P2PExpressPage() {
               </p>
             </div>
             <div className="flex items-center gap-2 mt-3">
-              <ShieldCheck size={14} color="#10B981" />
+              <ShieldCheck size={14} color="var(--tr-success-text)" />
               <span style={{ color: colors.text2, fontSize: 11 }}>
                 {(fiatAmount / bestAd.price).toFixed(8)} {asset} dự kiến
               </span>
@@ -223,7 +230,7 @@ export function P2PExpressPage() {
         ) : (
           <TrCard className="p-4">
             <div className="flex items-start gap-2">
-              <Info size={15} color="#F59E0B" />
+              <Info size={15} color="var(--tr-warning-text)" />
               <p style={{ color: colors.text2, fontSize: 12 }}>
                 Chưa tìm thấy offer phù hợp với số tiền và bộ lọc hiện tại.
               </p>
@@ -237,8 +244,8 @@ export function P2PExpressPage() {
           onClick={goToConfirm}
           className="w-full rounded-xl py-3 font-bold"
           style={{
-            background: tradeType === 'buy' ? '#10B981' : '#EF4444',
-            color: '#fff',
+            background: tradeType === 'buy' ? 'var(--tr-buy)' : '#EF4444',
+            color: 'var(--tr-text-on-color)',
             opacity: !bestAd || fiatAmount <= 0 ? 0.5 : 1,
           }}
         >

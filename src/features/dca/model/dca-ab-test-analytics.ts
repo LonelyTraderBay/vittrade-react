@@ -8,6 +8,8 @@
  * @version 2.0 (Phase 2 - Sprint 2)
  */
 
+import { captureException } from '@/shared/telemetry/telemetry';
+import { env } from '@/shared/config/env';
 import { dcaAnalytics } from './dca-analytics-service';
 import type { ABTest, ABTestResults, VariantResults } from './dca-ab-test-definitions';
 import { browserStorage } from '@/shared/lib/browser-storage';
@@ -125,7 +127,7 @@ class ABTestAnalyticsService {
     // Get user's variant
     const variantId = this.getUserVariant(testId, userId);
     if (!variantId) {
-      console.warn(`[ABTestAnalytics] No variant found for user ${userId} in test ${testId}`);
+      console.warn('[ABTestAnalytics] No variant found; conversion skipped.');
       return;
     }
 
@@ -380,7 +382,8 @@ class ABTestAnalyticsService {
       };
       browserStorage.local.setItem('ab_test_analytics', JSON.stringify(data));
     } catch (error) {
-      console.error('[ABTestAnalytics] Failed to save:', error);
+      captureException(error, { area: 'dca-ab-test', operation: 'save-state' });
+      if (env.isDev) console.error('[ABTestAnalytics] Failed to save:', error);
     }
   }
 
@@ -403,7 +406,8 @@ class ABTestAnalyticsService {
         ]),
       );
     } catch (error) {
-      console.error('[ABTestAnalytics] Failed to load:', error);
+      captureException(error, { area: 'dca-ab-test', operation: 'load-state' });
+      if (env.isDev) console.error('[ABTestAnalytics] Failed to load:', error);
     }
   }
 

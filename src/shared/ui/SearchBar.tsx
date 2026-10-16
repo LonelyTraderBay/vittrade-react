@@ -175,6 +175,7 @@ export function SearchBar({
       {/* Back button (header variant) */}
       {variant === 'header' && onBack && (
         <button
+          type="button"
           onClick={onBack}
           className="shrink-0 flex items-center justify-center active:opacity-60"
           style={{ width: 36, height: 36, borderRadius: 10 }}
@@ -219,6 +220,7 @@ export function SearchBar({
         {/* Clear button */}
         {hasValue && !disabled && (
           <button
+            type="button"
             onClick={handleClear}
             className="shrink-0 flex items-center justify-center rounded-full active:opacity-60"
             style={{
@@ -236,6 +238,7 @@ export function SearchBar({
       {/* Filter toggle button */}
       {showFilter && !right && (
         <button
+          type="button"
           onClick={onFilterToggle}
           className="shrink-0 flex items-center justify-center"
           style={{

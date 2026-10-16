@@ -10,19 +10,19 @@
 import { describe, it, expect, vi } from 'vitest';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { useLocation } from 'react-router';
 import { renderWithProviders } from '@/test/test-utils';
 import { MarketItem } from './MarketItem';
 import type { MarketPair } from '../model/market-types';
 
-const mockNavigate = vi.fn();
-
-vi.mock('react-router', async () => {
-  const actual = await vi.importActual('react-router');
-  return {
-    ...actual,
-    useNavigate: () => mockNavigate,
-  };
-});
+function CurrentPath() {
+  const location = useLocation();
+  return (
+    <output data-testid="current-path">
+      {location.pathname + location.search + location.hash}
+    </output>
+  );
+}
 
 describe('MarketItem', () => {
   const mockPair: MarketPair = {
@@ -50,10 +50,6 @@ describe('MarketItem', () => {
     change24h: -1.5,
     logoColor: '#627EEA',
   };
-
-  beforeEach(() => {
-    mockNavigate.mockClear();
-  });
 
   describe('Basic Rendering', () => {
     it('should render pair information', () => {
@@ -89,42 +85,42 @@ describe('MarketItem', () => {
   });
 
   describe('Positive vs Negative Change', () => {
-    it('should render positive change in green', () => {
+    it('should use the semantic success text color for positive change', () => {
       renderWithProviders(<MarketItem pair={mockPair} />);
 
       const changeElement = screen.getByText('+2.50%');
-      expect(changeElement).toHaveStyle({ color: '#10B981' });
+      expect(changeElement).toHaveStyle({ color: 'var(--tr-success-text)' });
     });
 
-    it('should render negative change in red', () => {
+    it('should use the semantic error text color for negative change', () => {
       renderWithProviders(<MarketItem pair={mockPairNegative} />);
 
       const changeElement = screen.getByText('-1.50%');
-      expect(changeElement).toHaveStyle({ color: '#EF4444' });
+      expect(changeElement).toHaveStyle({ color: 'var(--tr-error-text)' });
     });
 
-    it('should render zero change as positive', () => {
+    it('should use the semantic success text color when change is zero', () => {
       const zeroPair = { ...mockPair, change24h: 0 };
       renderWithProviders(<MarketItem pair={zeroPair} />);
 
       const changeElement = screen.getByText('0.00%');
-      expect(changeElement).toHaveStyle({ color: '#10B981' });
+      expect(changeElement).toHaveStyle({ color: 'var(--tr-success-text)' });
     });
   });
 
   describe('Logo Styling', () => {
-    it('should use logoColor for Bitcoin', () => {
+    it('should keep logo text legible against the colored logo background', () => {
       renderWithProviders(<MarketItem pair={mockPair} />);
 
       const logoText = screen.getByText('Bit');
-      expect(logoText).toHaveStyle({ color: '#F7931A' });
+      expect(logoText).toHaveStyle({ color: 'var(--tr-text-1)' });
     });
 
-    it('should use logoColor for Ethereum', () => {
+    it('should keep Ethereum logo text legible against its colored background', () => {
       renderWithProviders(<MarketItem pair={mockPairNegative} />);
 
       const logoText = screen.getByText('Eth');
-      expect(logoText).toHaveStyle({ color: '#627EEA' });
+      expect(logoText).toHaveStyle({ color: 'var(--tr-text-1)' });
     });
 
     it('should abbreviate base asset to 3 characters', () => {
@@ -136,57 +132,102 @@ describe('MarketItem', () => {
   });
 
   describe('Navigation', () => {
+    it.each(['click', 'Enter'])('keeps a resource ID in one URL segment for %s', async (action) => {
+      const id = 'pair/a?b#c%';
+      const user = userEvent.setup();
+      renderWithProviders(
+        <>
+          <MarketItem pair={{ ...mockPair, id }} />
+          <CurrentPath />
+        </>,
+      );
+      const pairLink = screen.getByRole('link', { name: /BTCUSDT/ });
+      if (action === 'click') await user.click(pairLink);
+      else {
+        pairLink.focus();
+        await user.keyboard('{Enter}');
+      }
+      expect(screen.getByTestId('current-path')).toHaveTextContent(
+        '/pair/' + encodeURIComponent(id),
+      );
+    });
+
     it('should navigate on click', async () => {
       const user = userEvent.setup();
-      renderWithProviders(<MarketItem pair={mockPair} />);
+      renderWithProviders(
+        <>
+          <MarketItem pair={mockPair} />
+          <CurrentPath />
+        </>,
+      );
 
-      const row = screen.getByRole('button', { name: /BTCUSDT/ });
-      await user.click(row);
+      const pairLink = screen.getByRole('link', { name: /BTCUSDT/ });
+      await user.click(pairLink);
 
-      expect(mockNavigate).toHaveBeenCalledWith('/pair/BTCUSDT');
+      expect(screen.getByTestId('current-path')).toHaveTextContent('/pair/BTCUSDT');
     });
 
     it('should navigate on Enter key', async () => {
       const user = userEvent.setup();
-      renderWithProviders(<MarketItem pair={mockPair} />);
+      renderWithProviders(
+        <>
+          <MarketItem pair={mockPair} />
+          <CurrentPath />
+        </>,
+      );
 
-      const row = screen.getByRole('button', { name: /BTCUSDT/ });
-      row.focus();
+      const pairLink = screen.getByRole('link', { name: /BTCUSDT/ });
+      pairLink.focus();
       await user.keyboard('{Enter}');
 
-      expect(mockNavigate).toHaveBeenCalledWith('/pair/BTCUSDT');
+      expect(screen.getByTestId('current-path')).toHaveTextContent('/pair/BTCUSDT');
     });
 
-    it('should navigate on Space key', async () => {
+    it('keeps native link behavior when Space is pressed', async () => {
       const user = userEvent.setup();
-      renderWithProviders(<MarketItem pair={mockPair} />);
+      renderWithProviders(
+        <>
+          <MarketItem pair={mockPair} />
+          <CurrentPath />
+        </>,
+      );
 
-      const row = screen.getByRole('button', { name: /BTCUSDT/ });
-      row.focus();
+      const pairLink = screen.getByRole('link', { name: /BTCUSDT/ });
+      pairLink.focus();
       await user.keyboard(' ');
 
-      expect(mockNavigate).toHaveBeenCalledWith('/pair/BTCUSDT');
+      expect(screen.getByTestId('current-path')).toHaveTextContent('/');
     });
 
     it('should ignore keys that are not navigation keys', async () => {
       const user = userEvent.setup();
-      renderWithProviders(<MarketItem pair={mockPair} />);
+      renderWithProviders(
+        <>
+          <MarketItem pair={mockPair} />
+          <CurrentPath />
+        </>,
+      );
 
-      const row = screen.getByRole('button', { name: /BTCUSDT/ });
-      row.focus();
+      const pairLink = screen.getByRole('link', { name: /BTCUSDT/ });
+      pairLink.focus();
       await user.keyboard('{ArrowDown}');
 
-      expect(mockNavigate).not.toHaveBeenCalled();
+      expect(screen.getByTestId('current-path')).toHaveTextContent('/');
     });
 
     it('should use correct pair id in navigation', async () => {
       const user = userEvent.setup();
-      renderWithProviders(<MarketItem pair={mockPairNegative} />);
+      renderWithProviders(
+        <>
+          <MarketItem pair={mockPairNegative} />
+          <CurrentPath />
+        </>,
+      );
 
-      const row = screen.getByRole('button');
-      await user.click(row);
+      const pairLink = screen.getByRole('link');
+      await user.click(pairLink);
 
-      expect(mockNavigate).toHaveBeenCalledWith('/pair/ETHUSDT');
+      expect(screen.getByTestId('current-path')).toHaveTextContent('/pair/ETHUSDT');
     });
   });
 
@@ -196,7 +237,7 @@ describe('MarketItem', () => {
 
       // SparklineChart should be rendered
       // (we check by ensuring the data is used)
-      expect(screen.getByRole('button')).toBeInTheDocument();
+      expect(screen.getByRole('link')).toBeInTheDocument();
     });
 
     it('should hide sparkline when showSparkline is false', () => {
@@ -236,12 +277,18 @@ describe('MarketItem', () => {
     it('should not navigate when star is clicked', async () => {
       const user = userEvent.setup();
       const onFavoriteToggle = vi.fn();
-      renderWithProviders(<MarketItem pair={mockPair} onFavoriteToggle={onFavoriteToggle} />);
+      renderWithProviders(
+        <>
+          <MarketItem pair={mockPair} onFavoriteToggle={onFavoriteToggle} />
+          <CurrentPath />
+        </>,
+        { routerProps: { initialEntries: ['/markets'] } },
+      );
 
       const star = screen.getByLabelText('Thêm vào yêu thích');
       await user.click(star);
 
-      expect(mockNavigate).not.toHaveBeenCalled();
+      expect(screen.getByTestId('current-path')).toHaveTextContent('/markets');
     });
 
     it('should show filled star for favorite pairs', () => {
@@ -250,7 +297,24 @@ describe('MarketItem', () => {
         <MarketItem pair={mockPair} isFavorite onFavoriteToggle={onFavoriteToggle} />,
       );
 
-      expect(screen.getByLabelText('Bỏ yêu thích')).toBeInTheDocument();
+      const favoriteButton = screen.getByLabelText('Bỏ yêu thích');
+      const star = favoriteButton.querySelector('svg');
+      expect(favoriteButton).toBeInTheDocument();
+      expect(star).toHaveAttribute('fill', 'var(--tr-primary)');
+      expect(star).toHaveAttribute('stroke', 'var(--tr-primary)');
+    });
+
+    it('keeps a disabled favorite action unavailable to pointer activation', async () => {
+      const user = userEvent.setup();
+      const onFavoriteToggle = vi.fn();
+      renderWithProviders(
+        <MarketItem pair={mockPair} onFavoriteToggle={onFavoriteToggle} favoriteDisabled />,
+      );
+
+      const favoriteButton = screen.getByLabelText('Thêm vào yêu thích');
+      expect(favoriteButton).toBeDisabled();
+      await user.click(favoriteButton);
+      expect(onFavoriteToggle).not.toHaveBeenCalled();
     });
 
     it('should show unfilled star for non-favorite pairs', () => {
@@ -262,24 +326,20 @@ describe('MarketItem', () => {
   });
 
   describe('Accessibility', () => {
-    it('should have role button', () => {
+    it('uses a semantic link for pair navigation', () => {
       renderWithProviders(<MarketItem pair={mockPair} />);
 
-      expect(screen.getByRole('button')).toBeInTheDocument();
-    });
-
-    it('should have tabIndex 0', () => {
-      renderWithProviders(<MarketItem pair={mockPair} />);
-
-      const row = screen.getByRole('button');
-      expect(row).toHaveAttribute('tabIndex', '0');
+      expect(screen.getByRole('link', { name: 'BTCUSDT — 45,000.00' })).toHaveAttribute(
+        'href',
+        '/pair/BTCUSDT',
+      );
     });
 
     it('should be keyboard accessible', async () => {
       const user = userEvent.setup();
       renderWithProviders(<MarketItem pair={mockPair} />);
 
-      const row = screen.getByRole('button');
+      const row = screen.getByRole('link');
 
       // Should be focusable
       await user.tab();
@@ -289,7 +349,7 @@ describe('MarketItem', () => {
     it('should have descriptive aria-label with pair and price', () => {
       renderWithProviders(<MarketItem pair={mockPair} />);
 
-      expect(screen.getByLabelText('BTCUSDT — 45,000.00')).toBeInTheDocument();
+      expect(screen.getByRole('link', { name: 'BTCUSDT — 45,000.00' })).toBeInTheDocument();
     });
 
     it('should have proper star button aria-label', () => {
@@ -298,6 +358,33 @@ describe('MarketItem', () => {
 
       const star = screen.getByLabelText('Thêm vào yêu thích');
       expect(star).toBeInstanceOf(HTMLButtonElement);
+      expect(star).toHaveAttribute('aria-pressed', 'false');
+      expect(star.closest('a')).toBeNull();
+    });
+
+    it('should reach the favorite action with keyboard tab navigation', async () => {
+      const user = userEvent.setup();
+      const onFavoriteToggle = vi.fn();
+      renderWithProviders(<MarketItem pair={mockPair} onFavoriteToggle={onFavoriteToggle} />);
+
+      const row = screen.getByRole('link', { name: 'BTCUSDT — 45,000.00' });
+      const favorite = screen.getByLabelText('Thêm vào yêu thích');
+      await user.tab();
+      expect(row).toHaveFocus();
+      await user.tab();
+      expect(favorite).toHaveFocus();
+    });
+
+    it('exposes the favorite state as a pressed toggle button', () => {
+      const onFavoriteToggle = vi.fn();
+      renderWithProviders(
+        <MarketItem pair={mockPair} isFavorite onFavoriteToggle={onFavoriteToggle} />,
+      );
+
+      expect(screen.getByRole('button', { name: 'Bỏ yêu thích' })).toHaveAttribute(
+        'aria-pressed',
+        'true',
+      );
     });
   });
 
@@ -370,9 +457,6 @@ describe('MarketItem', () => {
 
       // Should toggle favorite
       expect(onFavoriteToggle).toHaveBeenCalledWith('BTCUSDT');
-
-      // Should not navigate
-      expect(mockNavigate).not.toHaveBeenCalled();
     });
 
     it('should support watchlist functionality', async () => {
@@ -439,21 +523,21 @@ describe('MarketItem', () => {
     it('should have active:opacity-70 class', () => {
       renderWithProviders(<MarketItem pair={mockPair} />);
 
-      const row = screen.getByRole('button');
+      const row = screen.getByRole('link');
       expect(row).toHaveClass('active:opacity-70');
     });
 
     it('should have cursor-pointer class', () => {
       renderWithProviders(<MarketItem pair={mockPair} />);
 
-      const row = screen.getByRole('button');
+      const row = screen.getByRole('link');
       expect(row).toHaveClass('cursor-pointer');
     });
 
     it('should have transition-opacity class', () => {
       renderWithProviders(<MarketItem pair={mockPair} />);
 
-      const row = screen.getByRole('button');
+      const row = screen.getByRole('link');
       expect(row).toHaveClass('transition-opacity');
     });
   });

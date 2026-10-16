@@ -17,6 +17,54 @@ function CurrentRoute() {
 }
 
 describe('WebLoginPage', () => {
+  it('uses the shared accessible primary CTA contract for login submission', () => {
+    renderWithProviders(<WebLoginPage />, {
+      routerProps: { initialEntries: ['/w/auth/login'] },
+      authAdapter: { ...testAuthAdapter, initialSession: null },
+    });
+
+    const submit = screen.getByTestId('auth-submit');
+    expect(submit).toHaveStyle({ color: 'rgb(17, 24, 39)' });
+    expect((submit as HTMLButtonElement).style.background).toContain('rgb(229, 138, 0)');
+    expect(submit).toHaveAttribute('aria-busy', 'false');
+  });
+
+  it('keeps failed demo initialization on login with retry available and safe feedback', async () => {
+    const user = userEvent.setup();
+    const login = vi.fn().mockRejectedValue(new Error('private adapter failure'));
+    renderWithProviders(
+      <>
+        <WebLoginPage />
+        <CurrentRoute />
+      </>,
+      {
+        routerProps: { initialEntries: ['/w/auth/login'] },
+        authAdapter: { ...testAuthAdapter, initialSession: null, login },
+      },
+    );
+    await user.click(screen.getByRole('button', { name: 'Trải nghiệm Demo' }));
+
+    expect(await screen.findByRole('alert')).toHaveTextContent('Không thể khởi tạo phiên demo.');
+    expect(screen.getByTestId('current-path')).toHaveTextContent('/w/auth/login');
+    expect(screen.queryByText('private adapter failure')).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Trải nghiệm Demo' })).toBeEnabled();
+    expect(login).toHaveBeenCalledTimes(1);
+  });
+
+  it('opens registration in the web authentication shell', () => {
+    renderWithProviders(
+      <>
+        <WebLoginPage />
+        <CurrentRoute />
+      </>,
+      {
+        routerProps: { initialEntries: ['/w/auth/login'] },
+        authAdapter: { ...testAuthAdapter, initialSession: null },
+      },
+    );
+    fireEvent.click(screen.getByRole('button', { name: 'Đăng ký ngay' }));
+    expect(screen.getByTestId('current-path')).toHaveTextContent('/w/auth/register');
+  });
   it('does not advertise social login without a configured provider contract', () => {
     renderWithProviders(<WebLoginPage />, {
       routerProps: { initialEntries: ['/w/auth/login'] },

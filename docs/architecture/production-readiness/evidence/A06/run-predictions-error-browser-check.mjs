@@ -16,6 +16,8 @@ assert.equal(origin.pathname, '/', 'PREVIEW_BASE_URL must be an origin without a
 const originUrl = origin.origin;
 const checkedAt = new Date().toISOString();
 const date = checkedAt.slice(0, 10);
+const evidenceArtifactRunId = process.env.EVIDENCE_RUN_SUFFIX ?? String(Date.now());
+assert.match(evidenceArtifactRunId, /^[a-z0-9-]+$/i, 'Evidence run ID must be filename-safe.');
 const scenarioOperationIds = [
   'listPredictionEvents',
   'getPredictionEvent',
@@ -79,10 +81,10 @@ const observations = {};
 const screenshotPaths = Object.fromEntries(
   pages.map(({ key }) => [
     key,
-    path.join(directory, `preview-predictions-error-${key}-fresh-${date}.png`),
+    path.join(directory, `preview-predictions-error-${key}-fresh-${date}-${evidenceArtifactRunId}.png`),
   ]),
 );
-const reportPath = path.join(directory, `predictions-error-browser-check-fresh-${date}.json`);
+const reportPath = path.join(directory, `predictions-error-browser-check-fresh-${date}-${evidenceArtifactRunId}.json`);
 const browser = await chromium.launch({ headless: true });
 const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
 const page = await context.newPage();

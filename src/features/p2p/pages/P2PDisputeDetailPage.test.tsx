@@ -1,14 +1,24 @@
-import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
-import { http, HttpResponse } from 'msw';
+import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
+import { http, HttpResponse, type DefaultBodyType } from 'msw';
 import { setupServer } from 'msw/node';
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { toast } from 'sonner';
 import { Route, Routes } from 'react-router';
 import { renderWithProviders } from '@/test/test-utils';
 import type { AuthAdapter } from '@/shared/session/AuthContext';
 import { testAuthAdapter } from '@/test/auth-test-adapter';
+import { invokeStaleReactHandler } from '@/test/invoke-stale-react-handler';
 import type { P2PDispute } from '../model/p2p-types';
 import { P2PDisputeDetailPage } from './P2PDisputeDetailPage';
+
+vi.mock('sonner', () => ({
+  toast: Object.assign(vi.fn(), {
+    success: vi.fn(),
+    error: vi.fn(),
+    warning: vi.fn(),
+  }),
+}));
 
 const server = setupServer();
 
@@ -45,6 +55,28 @@ function renderDetail(authAdapter: AuthAdapter = testAuthAdapter) {
 }
 
 describe('P2P dispute detail contract page', () => {
+  it('announces that dispute escalation is still processing before the server responds', async () => {
+    let resolveEscalation!: (response: HttpResponse<DefaultBodyType>) => void;
+    server.use(
+      http.get('*/p2p/disputes/dispute-1', () => HttpResponse.json(dispute)),
+      http.post(
+        '*/p2p/disputes/dispute-1/escalate',
+        () =>
+          new Promise<HttpResponse<DefaultBodyType>>((resolve) => {
+            resolveEscalation = resolve;
+          }),
+      ),
+    );
+    const user = userEvent.setup();
+    renderDetail();
+
+    await user.click(await screen.findByRole('button', { name: 'Escalate dispute' }));
+    expect(screen.getByText('Đang xử lý…')).toBeInTheDocument();
+
+    resolveEscalation(HttpResponse.json({ ...dispute, escalationLevel: 3 }));
+    expect(await screen.findByText(/3\/4/)).toBeInTheDocument();
+  });
+
   it('renders detail, sends a message and escalates with idempotency keys', async () => {
     const message = {
       sender: 'user' as const,
@@ -97,6 +129,84 @@ describe('P2P dispute detail contract page', () => {
 
     expect(await screen.findByText('Payment not confirmed')).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'Escalate dispute' })).not.toBeInTheDocument();
+  });
+
+  it('renders earlier timeline events and both support-message senders', async () => {
+    server.use(
+      http.get('*/p2p/disputes/dispute-1', () =>
+        HttpResponse.json({
+          ...dispute,
+          timeline: [
+            { time: '10:00', event: 'Dispute submitted' },
+            { time: '10:15', event: 'Evidence reviewed', detail: 'Receipt verified' },
+          ],
+          supportMessages: [
+            { sender: 'support', text: 'We are reviewing the transfer.', time: '10:10' },
+            { sender: 'user', text: 'I attached the bank receipt.', time: '10:12' },
+          ],
+        }),
+      ),
+    );
+
+    renderDetail();
+
+    expect(await screen.findByText('Evidence reviewed')).toBeInTheDocument();
+    expect(screen.getByText('10:00')).toBeInTheDocument();
+    expect(screen.getByText(/Receipt verified/)).toBeInTheDocument();
+    expect(screen.getByText('We are reviewing the transfer.')).toBeInTheDocument();
+    expect(screen.getByText('I attached the bank receipt.')).toBeInTheDocument();
+    expect(screen.getByText('Hỗ trợ · 10:10')).toBeInTheDocument();
+    expect(screen.getByText('Bạn · 10:12')).toBeInTheDocument();
+  });
+
+  it('keeps dispute details available and reports failed support actions', async () => {
+    server.use(
+      http.get('*/p2p/disputes/dispute-1', () => HttpResponse.json(dispute)),
+      http.post('*/p2p/disputes/dispute-1/messages', () =>
+        HttpResponse.json({ code: 'TEMPORARY_FAILURE' }, { status: 503 }),
+      ),
+      http.post('*/p2p/disputes/dispute-1/escalate', () =>
+        HttpResponse.json({ code: 'TEMPORARY_FAILURE' }, { status: 503 }),
+      ),
+    );
+    const user = userEvent.setup();
+
+    renderDetail();
+
+    await user.click(await screen.findByRole('button', { name: 'Escalate dispute' }));
+    await waitFor(() =>
+      expect(toast.error).toHaveBeenCalledWith('Không thể escalation tranh chấp.'),
+    );
+
+    await user.type(screen.getByRole('textbox', { name: 'Dispute support message' }), 'Need help');
+    await user.click(screen.getByRole('button', { name: 'Send dispute message' }));
+    await waitFor(() => expect(toast.error).toHaveBeenCalledWith('Không thể gửi tin nhắn.'));
+    expect(screen.getByRole('textbox', { name: 'Dispute support message' })).toHaveValue(
+      'Need help',
+    );
+  });
+
+  it('ignores a stale send callback when the trimmed message is empty', async () => {
+    let messageWrites = 0;
+    server.use(
+      http.get('*/p2p/disputes/dispute-1', () => HttpResponse.json(dispute)),
+      http.post('*/p2p/disputes/dispute-1/messages', () => {
+        messageWrites += 1;
+        return HttpResponse.json(dispute);
+      }),
+    );
+
+    const user = userEvent.setup();
+    renderDetail();
+    const message = await screen.findByRole('textbox', { name: 'Dispute support message' });
+    await user.type(message, '   ');
+    const send = screen.getByRole('button', { name: 'Send dispute message' });
+
+    expect(send).toBeDisabled();
+    invokeStaleReactHandler(send, 'onClick');
+
+    expect(messageWrites).toBe(0);
+    expect(message).toHaveValue('   ');
   });
 
   it('renders and retries the shared error state', async () => {

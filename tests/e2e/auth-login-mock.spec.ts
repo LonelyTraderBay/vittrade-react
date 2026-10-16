@@ -367,12 +367,35 @@ test('LoginPage shared shells pass light/dark Axe states @auth-login-mock', asyn
           await expect(page.getByText('Vui lòng nhập email.', { exact: true })).toBeVisible();
         }
         if (state === 'invalid-email-validation') {
-          await page.getByTestId('auth-email').fill('invalid-email');
+          const email = page.getByTestId('auth-email');
+          await email.fill('invalid-email');
           await page.getByTestId('auth-password').fill('Preview-123!');
           await page.getByTestId('auth-submit').click();
           await expect(
             page.getByText('Định dạng email không hợp lệ', { exact: true }),
           ).toBeVisible();
+          const tokenBorderColor = await email.evaluate((element) => {
+            const wrapper = element.parentElement;
+            if (!wrapper) throw new Error('Email input has no shared field wrapper.');
+
+            const probe = document.createElement('div');
+            probe.style.cssText =
+              'position: fixed; visibility: hidden; border-top: 1.5px solid var(--input-border-error)';
+            wrapper.append(probe);
+            const tokenBorderColor = getComputedStyle(probe).borderTopColor;
+            probe.remove();
+
+            return tokenBorderColor;
+          });
+          await expect
+            .poll(() =>
+              email.evaluate((element) => {
+                if (!element.parentElement)
+                  throw new Error('Email input has no shared field wrapper.');
+                return getComputedStyle(element.parentElement).borderTopColor;
+              }),
+            )
+            .toBe(tokenBorderColor);
         }
         if (state === 'invalid-credentials-401') {
           await page.getByTestId('auth-email').fill('mfa@vittrade.local');

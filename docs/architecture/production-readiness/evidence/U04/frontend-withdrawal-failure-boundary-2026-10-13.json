@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "itemId": "P0-FE-01",
+  "sourceHead": "db9c9064fa3ba79bd76fb7acb1023d90486b6cbf",
+  "sourceHashes": {
+    "src/features/wallet/pages/WithdrawPage.tsx": "c342d6c0d7f0ea7c2dc5fcf66ba4aa339d1a4af541131cf0ffe599ba63c6d0d8",
+    "src/features/wallet/pages/WithdrawPage.test.tsx": "32d4ef98adf9807045c130daf4b9b6439d034a997c4978869f6cf557ba4db6e4",
+    "src/features/wallet/components/WithdrawSections.tsx": "a9c4c535d7b38d3bb5e59667b3b2792ec072e841d3f24fec3f9f882d95389f37"
+  },
+  "observedAt": "2026-10-13T05:35:54.797Z",
+  "verification": {
+    "before": {
+      "manifest": "C:/Users/Joker-PC/AppData/Local/Temp/vittrade-audit-20261013-4fbe38e1be5449e5934e7489f3744b31/.artifacts/runs/2026-10-13T05-30-38-626Z-vitest-945293ee-ee53-4624-bd4f-fc2fd9ec3e10/run.json",
+      "manifestSha256": "7e5627ceb4637ef04656f627083b32ae65faf89d9fbd04e24b45421064961d29",
+      "files": 2,
+      "tests": 18,
+      "passed": 14,
+      "failed": 4
+    },
+    "after": {
+      "manifest": "C:/Users/Joker-PC/AppData/Local/Temp/vittrade-audit-20261013-4fbe38e1be5449e5934e7489f3744b31/.artifacts/runs/2026-10-13T05-31-58-918Z-vitest-e3b0e144-2e29-4810-9d67-f407c1e084ff/run.json",
+      "manifestSha256": "a21a6fed106b0f422f1fba9705bcddec43aaeb347b60a0b8fa82c49333a9f92a",
+      "sourceUnchanged": true,
+      "files": 5,
+      "tests": 81,
+      "passed": 81,
+      "failed": 0
+    },
+    "typecheck": "pass",
+    "focusedLint": "pass",
+    "contractGate": {
+      "contracts": 15,
+      "operations": 154,
+      "result": "pass"
+    }
+  },
+  "transitions": [
+    {
+      "id": "WDR-OTP-401",
+      "from": "verify",
+      "event": "declared MFA 401",
+      "to": "verify",
+      "effect": "invalid/expired code notification; zero withdrawal submit"
+    },
+    {
+      "id": "WDR-OTP-TRANSPORT",
+      "from": "verify",
+      "event": "verification transport failure",
+      "to": "verify",
+      "effect": "verification unavailable notification; zero withdrawal submit"
+    },
+    {
+      "id": "WDR-SUBMIT-UNCONFIRMED",
+      "from": "verify",
+      "event": "verified OTP then submit reject/timeout/invalid receipt",
+      "to": "verify",
+      "effect": "result unconfirmed; no success receipt or auto retry; retain intent key"
+    },
+    {
+      "id": "WDR-INFLIGHT-DUPLICATE",
+      "from": "verify",
+      "event": "repeat submit during verify or submit",
+      "to": "verify",
+      "effect": "ignore duplicate synchronously; edit intent disabled while pending"
+    },
+    {
+      "id": "WDR-PENDING",
+      "from": "verify",
+      "event": "valid pending receipt",
+      "to": "result",
+      "effect": "show request/transaction IDs and pending status"
+    },
+    {
+      "id": "WDR-FAILED",
+      "from": "verify",
+      "event": "valid failed receipt",
+      "to": "result",
+      "effect": "show failed receipt; do not claim success"
+    },
+    {
+      "id": "WDR-RETRY-KEY",
+      "from": "verify",
+      "event": "explicit user retry for unchanged challenge/intent",
+      "to": "result or verify",
+      "effect": "reuse key; server replay/lookup guarantee not asserted"
+    }
+  ],
+  "limits": [
+    "Local fixtures do not verify backend atomicity, actor ownership, server replay/lookup, staging or UAT.",
+    "No new backend status, automatic resend, provider or API contract was added.",
+    "Global source ledger requires individual actual Git provenance; dirty source is not rebaselined to HEAD."
+  ]
+}
