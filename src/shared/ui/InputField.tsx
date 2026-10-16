@@ -47,7 +47,7 @@ export function InputField({
 }: InputFieldProps) {
   const c = useThemeColors();
   const [focused, setFocused] = useState(false);
-  const borderColor = error ? '#EF4444' : focused ? c.primary : c.borderSolid;
+  const borderColor = error ? 'var(--input-border-error)' : focused ? c.primary : c.borderSolid;
   const focusShadow = focused ? `0 0 0 2px ${error ? c.text1 : 'rgba(229, 138, 0, 0.25)'}` : 'none';
   const inputId = id || (label ? `input-${label.replace(/\s+/g, '-').toLowerCase()}` : undefined);
   const helperId = helper && inputId ? `${inputId}-helper` : undefined;
@@ -158,7 +158,7 @@ export function InputWrapper({
 }: InputWrapperProps) {
   const c = useThemeColors();
   const [focused, setFocused] = useState(false);
-  const borderColor = error ? '#EF4444' : focused ? c.primary : c.borderSolid;
+  const borderColor = error ? 'var(--input-border-error)' : focused ? c.primary : c.borderSolid;
   const focusShadow = focused && !error ? '0 0 0 2px rgba(229, 138, 0, 0.25)' : 'none';
 
   return (

@@ -45,6 +45,9 @@ describe('InputField', () => {
       </InputWrapper>,
     );
     const wrapper = screen.getByText('Network').parentElement!;
+    expect(wrapper.getAttribute('style')).toContain(
+      'border: 1.5px solid var(--input-border-error)',
+    );
     expect(wrapper).not.toHaveAttribute('tabindex');
     fireEvent.focus(wrapper);
     expect(wrapper).toHaveStyle({ boxShadow: 'none' });
@@ -60,6 +63,9 @@ describe('InputField', () => {
     expect(input).toHaveAttribute('id', 'input-email-address');
     expect(input).toHaveAttribute('aria-invalid', 'true');
     expect(input).toHaveAttribute('aria-describedby', 'input-email-address-error');
+    expect(input.parentElement?.getAttribute('style')).toContain(
+      'border: 1.5px solid var(--input-border-error)',
+    );
     expect(screen.getByRole('alert')).toHaveTextContent('Enter a valid email');
   });
 

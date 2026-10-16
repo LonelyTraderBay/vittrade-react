@@ -113,6 +113,9 @@ describe('auth LoginPage', () => {
     expect(screen.getByText('Định dạng email không hợp lệ')).toBeInTheDocument();
     expect(email).toHaveAttribute('aria-invalid', 'true');
     expect(email).toHaveAttribute('aria-describedby', 'input-email-error');
+    expect(email.parentElement?.getAttribute('style')).toContain(
+      'border: 1.5px solid var(--input-border-error)',
+    );
     expect(login).not.toHaveBeenCalled();
 
     await user.clear(email);
