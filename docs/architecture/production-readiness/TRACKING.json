@@ -19271,9 +19271,12 @@
             "EV-20261016-076",
             "EV-20261016-077",
             "EV-20261016-078",
-            "EV-20261016-079"
+            "EV-20261016-079",
+            "EV-20261016-080",
+            "EV-20261016-081",
+            "EV-20261016-082"
           ],
-          "notes": "C06.08 is in progress. First scoped primitive contract: CTAButton defaults to type=\"button\"; explicit submit/button call sites are preserved. Static TypeScript AST found 53 JSX uses in 23 files and 9 form uses, all with explicit type. Focused component plus RegistrationForm tests passed 74/74 and local typecheck/lint/format passed (EV-069). Exact run #88 is the verified prerequisite (EV-068). CTAButton code and test are committed separately as 7e8aba6f18ff427694f184ec001a24915379988b. Exact source+ledger PR run #89 passed all 34/34 steps on 5ad8235093a018ee18ad12ffeadddcb278ea38d1; synthetic merge and artifact digest are verified (EV-20261016-070). Tracker-only closeout PR run #90 passed 34/34 steps on b0225b5c18beed2a0fd9a2511e78f25223332bce; synthetic merge and artifact digest are verified (EV-20261016-071). This two-commit CTAButton slice is complete; the next measured primitive may begin. Final cleanup completed with 0 deleted files/bytes; 18 protected/incomplete/current outputs retained by policy. InputField slice: AST measurement covered 549 project source files, 16 InputField JSX uses in 5 production modules, and 1 separate TrInput use. Replaced 2 identical #EF4444 error-border literals with the already-existing --input-border-error semantic token and removed 2 duplicate LoginPage overrides; computed color remains unchanged. Source commit 42899e4b418a6ff1b86f7aaed326a38997f05f5c. Local evidence EV-075 passes. Exact source-only CI run #93 (EV-074) passed test/browser steps but failed the readiness ledger on six stale file fingerprints; tracker update and exact run #94 plus tracker-only closeout #95 are required before the next primitive. Run #94 attempt 1 failed only at Coverage with no terminal Vitest summary; on unchanged exact source+ledger head, attempt 2 passed all 34/34 CI steps and the artifact digest is verified (EV-076/077). Coverage is measured at 99.93% lines, 99.91% statements, 99.94% functions and 99.81% branches; E2E 62 passed/4 configured skips, auth API/mock 75/75. Cause of attempt 1 remains unknown. The next closeout commit updates the canonical PLAN input-lock/re-audit protocol and its AI prompt pointer/authorization wording together with the tracker; exact PR run #95 and its artifact are required before another primitive. C06.08 remains in progress because more primitives remain. Local protocol/ledger verification passed (EV-078): check-tracking errorCount=0, PLAN/PROMPT Prettier and 7 content/link assertions pass; exact PR run #95 and subsequent primitives remain. Exact docs/tracker PR run #95 passed all 34/34 steps on source head 9f9495415e31db51da5de769eef17fc0925b6f5a (EV-079); artifact digest, synthetic merge and all six runner manifests verified. E2E had 4 configured skips. A tracker-only commit records EV-079 and must pass exact run #96 before the next primitive.",
+          "notes": "C06.08 is in progress. First scoped primitive contract: CTAButton defaults to type=\"button\"; explicit submit/button call sites are preserved. Static TypeScript AST found 53 JSX uses in 23 files and 9 form uses, all with explicit type. Focused component plus RegistrationForm tests passed 74/74 and local typecheck/lint/format passed (EV-069). Exact run #88 is the verified prerequisite (EV-068). CTAButton code and test are committed separately as 7e8aba6f18ff427694f184ec001a24915379988b. Exact source+ledger PR run #89 passed all 34/34 steps on 5ad8235093a018ee18ad12ffeadddcb278ea38d1; synthetic merge and artifact digest are verified (EV-20261016-070). Tracker-only closeout PR run #90 passed 34/34 steps on b0225b5c18beed2a0fd9a2511e78f25223332bce; synthetic merge and artifact digest are verified (EV-20261016-071). This two-commit CTAButton slice is complete; the next measured primitive may begin. Final cleanup completed with 0 deleted files/bytes; 18 protected/incomplete/current outputs retained by policy. InputField slice: AST measurement covered 549 project source files, 16 InputField JSX uses in 5 production modules, and 1 separate TrInput use. Replaced 2 identical #EF4444 error-border literals with the already-existing --input-border-error semantic token and removed 2 duplicate LoginPage overrides; computed color remains unchanged. Source commit 42899e4b418a6ff1b86f7aaed326a38997f05f5c. Local evidence EV-075 passes. Exact source-only CI run #93 (EV-074) passed test/browser steps but failed the readiness ledger on six stale file fingerprints; tracker update and exact run #94 plus tracker-only closeout #95 are required before the next primitive. Run #94 attempt 1 failed only at Coverage with no terminal Vitest summary; on unchanged exact source+ledger head, attempt 2 passed all 34/34 CI steps and the artifact digest is verified (EV-076/077). Coverage is measured at 99.93% lines, 99.91% statements, 99.94% functions and 99.81% branches; E2E 62 passed/4 configured skips, auth API/mock 75/75. Cause of attempt 1 remains unknown. The next closeout commit updates the canonical PLAN input-lock/re-audit protocol and its AI prompt pointer/authorization wording together with the tracker; exact PR run #95 and its artifact are required before another primitive. C06.08 remains in progress because more primitives remain. Local protocol/ledger verification passed (EV-078): check-tracking errorCount=0, PLAN/PROMPT Prettier and 7 content/link assertions pass; exact PR run #95 and subsequent primitives remain. Exact docs/tracker PR run #95 passed all 34/34 steps on source head 9f9495415e31db51da5de769eef17fc0925b6f5a (EV-079); artifact digest, synthetic merge and all six runner manifests verified. E2E had 4 configured skips. A tracker-only commit records EV-079 and must pass exact run #96 before the next primitive. Shared action-button sub-slice: source commit 3401ba6c667fd5cfe84bfc3e263fde24130d3438 sets type=button on shared action controls and makes generic Button safe by default. Measured AST: 22/26 direct and 4/4 dynamic sites missing type before; 0/26 and 0/4 after. Focused tests 86/86; 12 primitives affect 133 direct production importer modules. Exact #96 prerequisite passes; exact source+ledger #97 and tracker-closeout #98 are next required gates. The 428-row route matrix has 0 runtime-tested rows.",
           "execution": {
             "instructionsRef": "PLAN.md#frontend-ui-ux-ds-migration-20261015",
             "fileSelection": "files[].executionScope.stepIds includes C06.08",
@@ -19281,9 +19284,11 @@
             "localEvidenceIds": [
               "EV-20261016-069",
               "EV-20261016-075",
-              "EV-20261016-078"
+              "EV-20261016-078",
+              "EV-20261016-081",
+              "EV-20261016-082"
             ],
-            "prerequisiteGithubEvidenceId": "EV-20261016-073",
+            "prerequisiteGithubEvidenceId": "EV-20261016-080",
             "consumerInventory": {
               "sourceFilesScanned": 549,
               "CTAButtonConsumerFiles": 23,
@@ -19294,11 +19299,75 @@
               "InputFieldJsxInstances": 16,
               "TrInputJsxInstances": 1,
               "InputFieldErrorColorLiteralsRemoved": 2,
-              "LoginPageDuplicateErrorOverridesRemoved": 2
+              "LoginPageDuplicateErrorOverridesRemoved": 2,
+              "sharedUiProductionSourceFiles": 38,
+              "sharedUiDirectButtonElements": 26,
+              "sharedUiDirectButtonMissingTypeBefore": 22,
+              "sharedUiDirectButtonMissingTypeAfter": 0,
+              "sharedUiDynamicButtonRenderSites": 4,
+              "sharedUiDynamicButtonMissingTypeBefore": 4,
+              "sharedUiDynamicButtonMissingTypeAfter": 0,
+              "sharedActionPrimitiveFiles": 12,
+              "sharedActionPrimitiveUniqueProductionImporterModules": 133,
+              "routeRowsReconciled": 428,
+              "routeRuntimeRowsTestedInThisSlice": 0,
+              "focusedTestFiles": 11,
+              "focusedTests": 86
             },
-            "requiredNextGate": "Run #95 exact PR head 9f9495415e31db51da5de769eef17fc0925b6f5a đã PASS 34/34 và artifact digest xác minh (EV-079). Tracker closeout mới sẽ tạo SHA tiếp theo; chỉ bắt đầu primitive C06.08 kế tiếp sau exact PR run #96 trên SHA closeout cùng merge/artifact provenance PASS.",
-            "sourceCommit": "42899e4b418a6ff1b86f7aaed326a38997f05f5c",
-            "latestGithubEvidenceId": "EV-20261016-079"
+            "requiredNextGate": "Chỉ chuyển sang primitive C06.08 kế tiếp sau exact PR run #97 trên source+ledger SHA mới PASS đầy đủ, xác minh merge/artifact provenance; sau đó tracker-only closeout phải có exact PR run #98 PASS trên SHA closeout. Dùng số run thực tế nếu GitHub có run khác chen vào; không suy ra từ số dự kiến.",
+            "sourceCommit": "3401ba6c667fd5cfe84bfc3e263fde24130d3438",
+            "latestGithubEvidenceId": "EV-20261016-080",
+            "perPrimitiveImporterCounts": {
+              "BottomSheetV2": {
+                "production": 14,
+                "tests": 2
+              },
+              "ConfirmationDialog": {
+                "production": 4,
+                "tests": 1
+              },
+              "EmptyState": {
+                "production": 9,
+                "tests": 1
+              },
+              "ErrorState": {
+                "production": 97,
+                "tests": 1
+              },
+              "IconButton": {
+                "production": 0,
+                "tests": 2
+              },
+              "InfoRow": {
+                "production": 0,
+                "tests": 1
+              },
+              "LazyRoute": {
+                "production": 1,
+                "tests": 0
+              },
+              "SearchBar": {
+                "production": 1,
+                "tests": 1
+              },
+              "StatusPill": {
+                "production": 0,
+                "tests": 1
+              },
+              "TabBar": {
+                "production": 9,
+                "tests": 1
+              },
+              "Button": {
+                "production": 1,
+                "tests": 1
+              },
+              "Header": {
+                "production": 117,
+                "tests": 2
+              }
+            },
+            "perPrimitiveImporterScope": "Direct imports from the current dependency graph; counts are modules, not route runtime coverage."
           },
           "changeIds": [
             "CHANGE-20261016-078",
@@ -19316,7 +19385,31 @@
             "CHANGE-20261016-091",
             "CHANGE-20261016-092",
             "CHANGE-20261016-093",
-            "CHANGE-20261016-094"
+            "CHANGE-20261016-094",
+            "CHANGE-20261016-095",
+            "CHANGE-20261016-096",
+            "CHANGE-20261016-097",
+            "CHANGE-20261016-098",
+            "CHANGE-20261016-099",
+            "CHANGE-20261016-100",
+            "CHANGE-20261016-101",
+            "CHANGE-20261016-102",
+            "CHANGE-20261016-103",
+            "CHANGE-20261016-104",
+            "CHANGE-20261016-105",
+            "CHANGE-20261016-106",
+            "CHANGE-20261016-107",
+            "CHANGE-20261016-108",
+            "CHANGE-20261016-109",
+            "CHANGE-20261016-110",
+            "CHANGE-20261016-111",
+            "CHANGE-20261016-112",
+            "CHANGE-20261016-113",
+            "CHANGE-20261016-114",
+            "CHANGE-20261016-115",
+            "CHANGE-20261016-116",
+            "CHANGE-20261016-117",
+            "CHANGE-20261016-118"
           ]
         },
         {
@@ -20023,7 +20116,10 @@
         "EV-20261016-065",
         "EV-20261016-067",
         "EV-20261016-068",
-        "EV-20261016-069"
+        "EV-20261016-069",
+        "EV-20261016-080",
+        "EV-20261016-081",
+        "EV-20261016-082"
       ],
       "changeIds": [
         "CHANGE-20261015-001",
@@ -20099,7 +20195,31 @@
         "CHANGE-20261016-077",
         "CHANGE-20261016-078",
         "CHANGE-20261016-079",
-        "CHANGE-20261016-080"
+        "CHANGE-20261016-080",
+        "CHANGE-20261016-095",
+        "CHANGE-20261016-096",
+        "CHANGE-20261016-097",
+        "CHANGE-20261016-098",
+        "CHANGE-20261016-099",
+        "CHANGE-20261016-100",
+        "CHANGE-20261016-101",
+        "CHANGE-20261016-102",
+        "CHANGE-20261016-103",
+        "CHANGE-20261016-104",
+        "CHANGE-20261016-105",
+        "CHANGE-20261016-106",
+        "CHANGE-20261016-107",
+        "CHANGE-20261016-108",
+        "CHANGE-20261016-109",
+        "CHANGE-20261016-110",
+        "CHANGE-20261016-111",
+        "CHANGE-20261016-112",
+        "CHANGE-20261016-113",
+        "CHANGE-20261016-114",
+        "CHANGE-20261016-115",
+        "CHANGE-20261016-116",
+        "CHANGE-20261016-117",
+        "CHANGE-20261016-118"
       ],
       "blockers": [],
       "startedAt": "2026-10-15T01:47:05.375Z",
@@ -133030,7 +133150,7 @@
         "C06"
       ],
       "disposition": "changed",
-      "reason": "Register EV-013 full suite, MarketSentiment owner slice and DCA next target. EV-20261010-014 registers the DCA overlay full-suite slice and P2P next target. | EV-015 registers the full-suite counters, owner slice, evidence artifact and checkpoint. | EV-016 registers measured counters, scope and checkpoint. | EV-017 registers measured counters, scope and checkpoint. | EV-018 registers measured counters, scope and checkpoint. | EV-019 registers measured counters, scope and checkpoint. | EV-020 registers measured counters, scope and checkpoint. | EV-021 registers measured counters, scope and checkpoint. | EV-022 registers measured counters, scope and checkpoint. | EV-023 registers measured counters, owner scope, and checkpoint. | EV-024 registers measured counters, owner scope, and checkpoint. | EV-025 registers measured counters, owner scope, and checkpoint. | EV-026 maps the owner test to C03.05 and registers measured counters. | EV-027 maps the owner test to C03.05 and registers measured counters. | EV-028 maps the P2P create-ad owner test to C03.05 and registers measured counters. | EV-029 maps the Coachmark owner test to C03.05 and registers measured counters. | EV-030 maps the P2P achievements source and owner test to C03.05 and registers measured counters. | EV-031 maps the Trade Analytics owner test to C03.05 and registers measured counters. | EV-20261011-064 registers the current local full-suite report, exact dirty-status/mismatch inventory, and C03 checkpoint. | EV-20261011-065 records the P2P coverage iteration, full-suite counters, source change and next TabletTopBar checkpoint. | EV-20261011-066 records TabletTopBar owner coverage, full-suite counters, worktree-only test provenance and next SwipeBack checkpoint. | EV-20261011-067 records SwipeBack gesture coverage, source/test hashes, full-suite counters and PasswordChange next slice. | EV-20261011-068 records PasswordChangePage coverage, owner-test hash delta, full-suite counters and OrdersHistory next slice. | User-authorized unused-output retention EV-20261012-008; previous catalogue retained until reviewed Git delivery. | DECISION-20261013-002: docs-only remediation planning; no runtime source edited. | EV-20261014-001/002/003: record coverage, wide UI and checker evidence without rebasing dirty source provenance. | Iteration55 ledger payload records new coverage, responsive review and environment blocker evidence; self-audit change will be recorded after the actual payload snapshot. | EV-20261014-009: record source-based responsive candidate classification without changing source fingerprints. | CHANGE-20261014-036: preserve and audit the final overflow-triage payload. | Record exact post-audit gates and self-audit the inventory-pointer/evidence reconciliation. | EV-20261014-012–014: register full coverage, exact source provenance and hosted CI #51 result. | Iteration 62: ghi source hashes, coverage/UI/E2E evidence, blocker status và checkpoint. | C06.01: đăng ký 15-step scope, route/page matrix, local validation, và provenance audit. | C06.02 self-audit round 5: records exact-SHA CI regression/fix, local and hosted verification, preserves old file snapshots, and rebinds 11 actual source blobs to a29a255e. | EV-20261015-016 records exact pushed-SHA CI #62 success and verified downloaded artifact digest. | C06.03: ghi provenance, evidence và checkpoint theo exact commit; self-audit archive được lưu ngoài repository. | C06.03 closeout records both exact-SHA run #71 attempts and verified artifact digests (EV-20261015-034/035); attempt 1 failed one coverage test, attempt 2 passed 34/34; first-attempt cause remains unproven and no DCA code/test changed. C06.04 stays gated on run #72 for the resulting tracker SHA. | C06.05: Ghi nhận run #75 đã qua, kết quả kiểm thử local và cổng exact-SHA #76/#77. | C06.05: Run #76 exact PR head passed 34/34 with merge/tree and artifact digest verified; run #77 gates tracker closeout. | C06.06: Ghi nhận contract review, source SHA và gate local; exact #78/#79 còn bắt buộc. | C06.06: Ghi nhận exact PR run #78 PASS; tracker closeout #79 còn bắt buộc trước C06.07. | C06.07: ghi run #79, source/local/runtime/build evidence và checkpoint cho bước token/theme. | C06.07: exact PR run #80 PASS 34/34; merge provenance/artifact digest recorded in EV-20261016-055; tracker closeout run #81 remains mandatory. | C06.07: bind DCA fingerprint to 1a04ce3; record #83/#84; require exact #85/#86 before C06.08.",
+      "reason": "Register EV-013 full suite, MarketSentiment owner slice and DCA next target. EV-20261010-014 registers the DCA overlay full-suite slice and P2P next target. | EV-015 registers the full-suite counters, owner slice, evidence artifact and checkpoint. | EV-016 registers measured counters, scope and checkpoint. | EV-017 registers measured counters, scope and checkpoint. | EV-018 registers measured counters, scope and checkpoint. | EV-019 registers measured counters, scope and checkpoint. | EV-020 registers measured counters, scope and checkpoint. | EV-021 registers measured counters, scope and checkpoint. | EV-022 registers measured counters, scope and checkpoint. | EV-023 registers measured counters, owner scope, and checkpoint. | EV-024 registers measured counters, owner scope, and checkpoint. | EV-025 registers measured counters, owner scope, and checkpoint. | EV-026 maps the owner test to C03.05 and registers measured counters. | EV-027 maps the owner test to C03.05 and registers measured counters. | EV-028 maps the P2P create-ad owner test to C03.05 and registers measured counters. | EV-029 maps the Coachmark owner test to C03.05 and registers measured counters. | EV-030 maps the P2P achievements source and owner test to C03.05 and registers measured counters. | EV-031 maps the Trade Analytics owner test to C03.05 and registers measured counters. | EV-20261011-064 registers the current local full-suite report, exact dirty-status/mismatch inventory, and C03 checkpoint. | EV-20261011-065 records the P2P coverage iteration, full-suite counters, source change and next TabletTopBar checkpoint. | EV-20261011-066 records TabletTopBar owner coverage, full-suite counters, worktree-only test provenance and next SwipeBack checkpoint. | EV-20261011-067 records SwipeBack gesture coverage, source/test hashes, full-suite counters and PasswordChange next slice. | EV-20261011-068 records PasswordChangePage coverage, owner-test hash delta, full-suite counters and OrdersHistory next slice. | User-authorized unused-output retention EV-20261012-008; previous catalogue retained until reviewed Git delivery. | DECISION-20261013-002: docs-only remediation planning; no runtime source edited. | EV-20261014-001/002/003: record coverage, wide UI and checker evidence without rebasing dirty source provenance. | Iteration55 ledger payload records new coverage, responsive review and environment blocker evidence; self-audit change will be recorded after the actual payload snapshot. | EV-20261014-009: record source-based responsive candidate classification without changing source fingerprints. | CHANGE-20261014-036: preserve and audit the final overflow-triage payload. | Record exact post-audit gates and self-audit the inventory-pointer/evidence reconciliation. | EV-20261014-012–014: register full coverage, exact source provenance and hosted CI #51 result. | Iteration 62: ghi source hashes, coverage/UI/E2E evidence, blocker status và checkpoint. | C06.01: đăng ký 15-step scope, route/page matrix, local validation, và provenance audit. | C06.02 self-audit round 5: records exact-SHA CI regression/fix, local and hosted verification, preserves old file snapshots, and rebinds 11 actual source blobs to a29a255e. | EV-20261015-016 records exact pushed-SHA CI #62 success and verified downloaded artifact digest. | C06.03: ghi provenance, evidence và checkpoint theo exact commit; self-audit archive được lưu ngoài repository. | C06.03 closeout records both exact-SHA run #71 attempts and verified artifact digests (EV-20261015-034/035); attempt 1 failed one coverage test, attempt 2 passed 34/34; first-attempt cause remains unproven and no DCA code/test changed. C06.04 stays gated on run #72 for the resulting tracker SHA. | C06.05: Ghi nhận run #75 đã qua, kết quả kiểm thử local và cổng exact-SHA #76/#77. | C06.05: Run #76 exact PR head passed 34/34 with merge/tree and artifact digest verified; run #77 gates tracker closeout. | C06.06: Ghi nhận contract review, source SHA và gate local; exact #78/#79 còn bắt buộc. | C06.06: Ghi nhận exact PR run #78 PASS; tracker closeout #79 còn bắt buộc trước C06.07. | C06.07: ghi run #79, source/local/runtime/build evidence và checkpoint cho bước token/theme. | C06.07: exact PR run #80 PASS 34/34; merge provenance/artifact digest recorded in EV-20261016-055; tracker closeout run #81 remains mandatory. | C06.07: bind DCA fingerprint to 1a04ce3; record #83/#84; require exact #85/#86 before C06.08. | C06.08: record shared action type contract, measured source fingerprints and exact #96 prerequisite. | EV-20261016-082: prepared-ledger consistency check passed; final self-audit is checked again.",
       "evidenceIds": [
         "EV-20261001-034",
         "EV-20261001-035",
@@ -133184,7 +133304,10 @@
         "EV-20261016-076",
         "EV-20261016-077",
         "EV-20261016-078",
-        "EV-20261016-079"
+        "EV-20261016-079",
+        "EV-20261016-080",
+        "EV-20261016-081",
+        "EV-20261016-082"
       ],
       "changeIds": [
         "CHANGE-20261001-0316",
@@ -133338,7 +133461,31 @@
         "CHANGE-20261016-080",
         "CHANGE-20261016-090",
         "CHANGE-20261016-093",
-        "CHANGE-20261016-094"
+        "CHANGE-20261016-094",
+        "CHANGE-20261016-095",
+        "CHANGE-20261016-096",
+        "CHANGE-20261016-097",
+        "CHANGE-20261016-098",
+        "CHANGE-20261016-099",
+        "CHANGE-20261016-100",
+        "CHANGE-20261016-101",
+        "CHANGE-20261016-102",
+        "CHANGE-20261016-103",
+        "CHANGE-20261016-104",
+        "CHANGE-20261016-105",
+        "CHANGE-20261016-106",
+        "CHANGE-20261016-107",
+        "CHANGE-20261016-108",
+        "CHANGE-20261016-109",
+        "CHANGE-20261016-110",
+        "CHANGE-20261016-111",
+        "CHANGE-20261016-112",
+        "CHANGE-20261016-113",
+        "CHANGE-20261016-114",
+        "CHANGE-20261016-115",
+        "CHANGE-20261016-116",
+        "CHANGE-20261016-117",
+        "CHANGE-20261016-118"
       ],
       "cataloguedAt": "2026-10-01T04:02:26.000Z",
       "executionScope": {
@@ -171897,7 +172044,7 @@
         "C06"
       ],
       "disposition": "changed",
-      "reason": "C06.02 thay đổi/test vòng đời focus BottomSheetV2; public API và nghiệp vụ được giữ nguyên. | C06.02 corrective commit a29a255e closes the exact-SHA modal/accessibility regression; catalog fingerprint is bound to the committed blob.",
+      "reason": "C06.02 thay đổi/test vòng đời focus BottomSheetV2; public API và nghiệp vụ được giữ nguyên. | C06.02 corrective commit a29a255e closes the exact-SHA modal/accessibility regression; catalog fingerprint is bound to the committed blob. | C06.08: Khai báo type=button cho hành động shared UI để không vô tình submit form chứa; giữ nguyên callback và payload.",
       "evidenceIds": [
         "EV-20261012-002",
         "EV-20261015-005",
@@ -171906,10 +172053,12 @@
         "EV-20261015-013",
         "EV-20261015-015",
         "EV-20261015-012",
-        "EV-20261015-014"
+        "EV-20261015-014",
+        "EV-20261016-081"
       ],
       "changeIds": [
-        "CHANGE-20261015-006"
+        "CHANGE-20261015-006",
+        "CHANGE-20261016-096"
       ],
       "executionScope": {
         "ownerTaskId": "C01",
@@ -171928,8 +172077,8 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "a29a255e72aa98aa7199d6ee21e506bdd5d4f6ca",
-      "cataloguedSha256": "ccc1821eb13fcd51a015cb732ee333b245bd936daf7e32795a19aae2483e9fb5",
+      "cataloguedSourceHead": "3401ba6c667fd5cfe84bfc3e263fde24130d3438",
+      "cataloguedSha256": "e4a9cf0e319d5b58f129c1b20a4cd696f75b0ec284145066a73bbd32c7cb0224",
       "cataloguedSourceHistory": [
         {
           "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
@@ -171944,8 +172093,16 @@
           "supersededAt": "2026-10-15T04:29:29.443Z",
           "evidenceId": "EV-20261015-015",
           "reason": "Preserved prior source snapshot after exact-SHA GitHub run #61 identified stale C06.02 provenance; rebound to the corrective source commit."
+        },
+        {
+          "sourceHead": "a29a255e72aa98aa7199d6ee21e506bdd5d4f6ca",
+          "sha256": "ccc1821eb13fcd51a015cb732ee333b245bd936daf7e32795a19aae2483e9fb5",
+          "supersededAt": "2026-10-16T05:31:59.845Z",
+          "evidenceId": "EV-20261016-081",
+          "reason": "Preserved the prior exact source-catalogue pointer before recording the shared native button type contract."
         }
-      ]
+      ],
+      "cataloguedAt": "2026-10-16T05:31:59.845Z"
     },
     {
       "path": "src/shared/ui/Breadcrumb.test.tsx",
@@ -172058,12 +172215,14 @@
         "C06"
       ],
       "disposition": "changed",
-      "reason": "Verify density classes and Radix Slot anchor rendering.",
+      "reason": "Verify density classes and Radix Slot anchor rendering. | C06.08: Khóa regression contract type=button cho hành động shared UI; kiểm tra giữ submit tường minh và anchor asChild.",
       "evidenceIds": [
-        "EV-20261010-008"
+        "EV-20261010-008",
+        "EV-20261016-081"
       ],
       "changeIds": [
-        "CHANGE-20261010-0044"
+        "CHANGE-20261010-0044",
+        "CHANGE-20261016-113"
       ],
       "executionScope": {
         "ownerTaskId": "C03",
@@ -172076,8 +172235,18 @@
         ],
         "action": "add_coverage_regression_test"
       },
-      "cataloguedSourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
-      "cataloguedSha256": "34355886262c2d87663c2f92f11aa0ef8eea298b1e39b0ceacfaaedb009b760d"
+      "cataloguedSourceHead": "3401ba6c667fd5cfe84bfc3e263fde24130d3438",
+      "cataloguedSha256": "32730a49d2f70f34a3f0aae74f9f5fa770645a1d3910ae9c47a2e236ad32228b",
+      "cataloguedSourceHistory": [
+        {
+          "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
+          "sha256": "34355886262c2d87663c2f92f11aa0ef8eea298b1e39b0ceacfaaedb009b760d",
+          "supersededAt": "2026-10-16T05:31:59.845Z",
+          "evidenceId": "EV-20261016-081",
+          "reason": "Preserved the prior exact source-catalogue pointer before recording the shared native button type contract."
+        }
+      ],
+      "cataloguedAt": "2026-10-16T05:31:59.845Z"
     },
     {
       "path": "src/shared/ui/button.tsx",
@@ -172087,10 +172256,14 @@
         "C01",
         "C06"
       ],
-      "disposition": "not_assessed",
-      "reason": "",
-      "evidenceIds": [],
-      "changeIds": [],
+      "disposition": "changed",
+      "reason": "C06.08: Button native mặc định type=button; giữ nguyên type=submit tường minh và không truyền type mặc định cho child anchor qua asChild.",
+      "evidenceIds": [
+        "EV-20261016-081"
+      ],
+      "changeIds": [
+        "CHANGE-20261016-114"
+      ],
       "executionScope": {
         "ownerTaskId": "C01",
         "role": "ui_component",
@@ -172108,8 +172281,18 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
-      "cataloguedSha256": "ae799fd6b639146a831f30a2c5182ba3df7a775fab56a2f17ca79c1b09b96ad9"
+      "cataloguedSourceHead": "3401ba6c667fd5cfe84bfc3e263fde24130d3438",
+      "cataloguedSha256": "4def3593104d50081f8fce113369ce142f269744f8bd683bb714af9a03f6014d",
+      "cataloguedSourceHistory": [
+        {
+          "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+          "sha256": "ae799fd6b639146a831f30a2c5182ba3df7a775fab56a2f17ca79c1b09b96ad9",
+          "supersededAt": "2026-10-16T05:31:59.845Z",
+          "evidenceId": "EV-20261016-081",
+          "reason": "Preserved the prior exact source-catalogue pointer before recording the shared native button type contract."
+        }
+      ],
+      "cataloguedAt": "2026-10-16T05:31:59.845Z"
     },
     {
       "path": "src/shared/ui/carousel.test.tsx",
@@ -172252,12 +172435,14 @@
         "C06"
       ],
       "disposition": "changed",
-      "reason": "Verify optional dialog content renders.",
+      "reason": "Verify optional dialog content renders. | C06.08: Khóa regression contract type=button cho hành động shared UI; kiểm tra giữ submit tường minh và anchor asChild.",
       "evidenceIds": [
-        "EV-20261010-009"
+        "EV-20261010-009",
+        "EV-20261016-081"
       ],
       "changeIds": [
-        "CHANGE-20261010-0053"
+        "CHANGE-20261010-0053",
+        "CHANGE-20261016-098"
       ],
       "executionScope": {
         "ownerTaskId": "C03",
@@ -172270,8 +172455,18 @@
         ],
         "action": "add_coverage_regression_test"
       },
-      "cataloguedSourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
-      "cataloguedSha256": "2d3e78231fb157971bd49fa0f552a1d4c78c40d0cc55f95e64cbfac48d7ca51a"
+      "cataloguedSourceHead": "3401ba6c667fd5cfe84bfc3e263fde24130d3438",
+      "cataloguedSha256": "6a8967683d5973f03dd9867214dc2bbce6a6b0fe243b0d47194f466da0b8912c",
+      "cataloguedSourceHistory": [
+        {
+          "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
+          "sha256": "2d3e78231fb157971bd49fa0f552a1d4c78c40d0cc55f95e64cbfac48d7ca51a",
+          "supersededAt": "2026-10-16T05:31:59.845Z",
+          "evidenceId": "EV-20261016-081",
+          "reason": "Preserved the prior exact source-catalogue pointer before recording the shared native button type contract."
+        }
+      ],
+      "cataloguedAt": "2026-10-16T05:31:59.845Z"
     },
     {
       "path": "src/shared/ui/ConfirmationDialog.tsx",
@@ -172281,10 +172476,14 @@
         "C01",
         "C06"
       ],
-      "disposition": "not_assessed",
-      "reason": "",
-      "evidenceIds": [],
-      "changeIds": [],
+      "disposition": "changed",
+      "reason": "C06.08: Khai báo type=button cho hành động shared UI để không vô tình submit form chứa; giữ nguyên callback và payload.",
+      "evidenceIds": [
+        "EV-20261016-081"
+      ],
+      "changeIds": [
+        "CHANGE-20261016-099"
+      ],
       "executionScope": {
         "ownerTaskId": "C01",
         "role": "ui_component",
@@ -172301,8 +172500,18 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
-      "cataloguedSha256": "ee8603c037d71540663cd870a9116630ab323f43bad3f8cba8d9605f762cea0c"
+      "cataloguedSourceHead": "3401ba6c667fd5cfe84bfc3e263fde24130d3438",
+      "cataloguedSha256": "4a5cb40be895f808fcfad6c35bb4c32c308f4525258814e756fa807ea7dfeeed",
+      "cataloguedSourceHistory": [
+        {
+          "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+          "sha256": "ee8603c037d71540663cd870a9116630ab323f43bad3f8cba8d9605f762cea0c",
+          "supersededAt": "2026-10-16T05:31:59.845Z",
+          "evidenceId": "EV-20261016-081",
+          "reason": "Preserved the prior exact source-catalogue pointer before recording the shared native button type contract."
+        }
+      ],
+      "cataloguedAt": "2026-10-16T05:31:59.845Z"
     },
     {
       "path": "src/shared/ui/CTAButton.test.tsx",
@@ -172313,14 +172522,16 @@
         "C06"
       ],
       "disposition": "changed",
-      "reason": "Verify custom/default/secondary styling and disabled/loading behavior. | C06.03: Kiểm readable foreground cho default, variant, loading và gradient.",
+      "reason": "Verify custom/default/secondary styling and disabled/loading behavior. | C06.03: Kiểm readable foreground cho default, variant, loading và gradient. | C06.08: Khóa regression contract type=button cho hành động shared UI; kiểm tra giữ submit tường minh và anchor asChild.",
       "evidenceIds": [
         "EV-20261010-008",
-        "EV-20261015-019"
+        "EV-20261015-019",
+        "EV-20261016-081"
       ],
       "changeIds": [
         "CHANGE-20261010-0043",
-        "CHANGE-20261015-036"
+        "CHANGE-20261015-036",
+        "CHANGE-20261016-097"
       ],
       "executionScope": {
         "ownerTaskId": "C03",
@@ -172334,8 +172545,8 @@
         ],
         "action": "add_coverage_regression_test"
       },
-      "cataloguedSourceHead": "6192a3fd8c6fc44ddfd1b0f6a7780b9252947a8e",
-      "cataloguedSha256": "4c3e09042c66db28eb07853a1a37ede0806b37c42f175b1e2f2a1cad66c36a12",
+      "cataloguedSourceHead": "3401ba6c667fd5cfe84bfc3e263fde24130d3438",
+      "cataloguedSha256": "55e807744936ed8efaa3384a503b05f2d6709730a121fc9afef6db2f2dbff815",
       "cataloguedSourceHistory": [
         {
           "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
@@ -172343,9 +172554,16 @@
           "supersededAt": "2026-10-15T07:40:00.000Z",
           "evidenceId": "EV-20261015-019",
           "reason": "Preserved exact prior source pointer before C06.03 ownership update; verified against source SHA 278700733d6d623fb2bfa06bf07426b2e5117feb."
+        },
+        {
+          "sourceHead": "6192a3fd8c6fc44ddfd1b0f6a7780b9252947a8e",
+          "sha256": "4c3e09042c66db28eb07853a1a37ede0806b37c42f175b1e2f2a1cad66c36a12",
+          "supersededAt": "2026-10-16T05:31:59.845Z",
+          "evidenceId": "EV-20261016-081",
+          "reason": "Preserved the prior exact source-catalogue pointer before recording the shared native button type contract."
         }
       ],
-      "cataloguedAt": "2026-10-15T07:40:00.000Z"
+      "cataloguedAt": "2026-10-16T05:31:59.845Z"
     },
     {
       "path": "src/shared/ui/CTAButton.tsx",
@@ -172442,10 +172660,14 @@
         "C01",
         "C06"
       ],
-      "disposition": "not_assessed",
-      "reason": "",
-      "evidenceIds": [],
-      "changeIds": [],
+      "disposition": "changed",
+      "reason": "C06.08: Khóa regression contract type=button cho hành động shared UI; kiểm tra giữ submit tường minh và anchor asChild.",
+      "evidenceIds": [
+        "EV-20261016-081"
+      ],
+      "changeIds": [
+        "CHANGE-20261016-100"
+      ],
       "executionScope": {
         "ownerTaskId": "C01",
         "role": "behavior_test",
@@ -172461,8 +172683,18 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
-      "cataloguedSha256": "24081a0363f1037eedfb78f929c7cb770cc2fc395e67af5333193cdf1d5591ae"
+      "cataloguedSourceHead": "3401ba6c667fd5cfe84bfc3e263fde24130d3438",
+      "cataloguedSha256": "439dd8954434f43ad57fbccd8444ec68900d9b28cc4870aefd4b96cf9f885217",
+      "cataloguedSourceHistory": [
+        {
+          "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+          "sha256": "24081a0363f1037eedfb78f929c7cb770cc2fc395e67af5333193cdf1d5591ae",
+          "supersededAt": "2026-10-16T05:31:59.845Z",
+          "evidenceId": "EV-20261016-081",
+          "reason": "Preserved the prior exact source-catalogue pointer before recording the shared native button type contract."
+        }
+      ],
+      "cataloguedAt": "2026-10-16T05:31:59.845Z"
     },
     {
       "path": "src/shared/ui/EmptyState.tsx",
@@ -172472,10 +172704,14 @@
         "C01",
         "C06"
       ],
-      "disposition": "not_assessed",
-      "reason": "",
-      "evidenceIds": [],
-      "changeIds": [],
+      "disposition": "changed",
+      "reason": "C06.08: Khai báo type=button cho hành động shared UI để không vô tình submit form chứa; giữ nguyên callback và payload.",
+      "evidenceIds": [
+        "EV-20261016-081"
+      ],
+      "changeIds": [
+        "CHANGE-20261016-101"
+      ],
       "executionScope": {
         "ownerTaskId": "C01",
         "role": "ui_component",
@@ -172491,8 +172727,18 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
-      "cataloguedSha256": "f43def34039f247e1ed7a3697ab526d3f8207b629219b3653b70198f85175f66"
+      "cataloguedSourceHead": "3401ba6c667fd5cfe84bfc3e263fde24130d3438",
+      "cataloguedSha256": "b17cb252c6f8fabe8a9d1ffc3a52e7c56ee33b00c5b15eac083536895a7d11ba",
+      "cataloguedSourceHistory": [
+        {
+          "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+          "sha256": "f43def34039f247e1ed7a3697ab526d3f8207b629219b3653b70198f85175f66",
+          "supersededAt": "2026-10-16T05:31:59.845Z",
+          "evidenceId": "EV-20261016-081",
+          "reason": "Preserved the prior exact source-catalogue pointer before recording the shared native button type contract."
+        }
+      ],
+      "cataloguedAt": "2026-10-16T05:31:59.845Z"
     },
     {
       "path": "src/shared/ui/ErrorState.tsx",
@@ -172502,12 +172748,15 @@
         "C01",
         "C06"
       ],
-      "disposition": "not_assessed",
-      "reason": "",
+      "disposition": "changed",
+      "reason": "C06.08: Khai báo type=button cho hành động shared UI để không vô tình submit form chứa; giữ nguyên callback và payload.",
       "evidenceIds": [
-        "EV-20261014-010"
+        "EV-20261014-010",
+        "EV-20261016-081"
       ],
-      "changeIds": [],
+      "changeIds": [
+        "CHANGE-20261016-102"
+      ],
       "executionScope": {
         "ownerTaskId": "C01",
         "role": "ui_component",
@@ -172524,8 +172773,8 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "80ba3ae80bff7dfb6a2f0f3d87f10059b875a44d",
-      "cataloguedSha256": "61b27e2046c49c46279d380c3ae668ed06bb6ac1ec5d41319062bab01ab9a9d3",
+      "cataloguedSourceHead": "3401ba6c667fd5cfe84bfc3e263fde24130d3438",
+      "cataloguedSha256": "0e27f9ff7de1364d8517f2909a37840de0391ad85c06a9118f176544384137b5",
       "cataloguedSourceHistory": [
         {
           "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
@@ -172533,8 +172782,16 @@
           "supersededAt": "2026-10-14T01:15:27.283Z",
           "evidenceId": "EV-20261014-010",
           "reason": "Previous source pointer retained; current path-specific commit and Git blob independently verified in this evidence."
+        },
+        {
+          "sourceHead": "80ba3ae80bff7dfb6a2f0f3d87f10059b875a44d",
+          "sha256": "61b27e2046c49c46279d380c3ae668ed06bb6ac1ec5d41319062bab01ab9a9d3",
+          "supersededAt": "2026-10-16T05:31:59.845Z",
+          "evidenceId": "EV-20261016-081",
+          "reason": "Preserved the prior exact source-catalogue pointer before recording the shared native button type contract."
         }
-      ]
+      ],
+      "cataloguedAt": "2026-10-16T05:31:59.845Z"
     },
     {
       "path": "src/shared/ui/form.test.tsx",
@@ -172648,10 +172905,14 @@
         "C01",
         "C06"
       ],
-      "disposition": "not_assessed",
-      "reason": "",
-      "evidenceIds": [],
-      "changeIds": [],
+      "disposition": "changed",
+      "reason": "C06.08: Khai báo type=button cho hành động shared UI để không vô tình submit form chứa; giữ nguyên callback và payload.",
+      "evidenceIds": [
+        "EV-20261016-081"
+      ],
+      "changeIds": [
+        "CHANGE-20261016-103"
+      ],
       "executionScope": {
         "ownerTaskId": "C01",
         "role": "ui_component",
@@ -172669,8 +172930,18 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
-      "cataloguedSha256": "1cb698796ba917828101d7d423e0abe1315bcf591a7031e72514e171ac9aa165"
+      "cataloguedSourceHead": "3401ba6c667fd5cfe84bfc3e263fde24130d3438",
+      "cataloguedSha256": "5eb90f34f0ec461050988c0bcde7080b8e5ce907ff65a7189aac00cf5928737e",
+      "cataloguedSourceHistory": [
+        {
+          "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+          "sha256": "1cb698796ba917828101d7d423e0abe1315bcf591a7031e72514e171ac9aa165",
+          "supersededAt": "2026-10-16T05:31:59.845Z",
+          "evidenceId": "EV-20261016-081",
+          "reason": "Preserved the prior exact source-catalogue pointer before recording the shared native button type contract."
+        }
+      ],
+      "cataloguedAt": "2026-10-16T05:31:59.845Z"
     },
     {
       "path": "src/shared/ui/InfoRow.test.tsx",
@@ -172680,12 +172951,15 @@
         "C01",
         "C06"
       ],
-      "disposition": "not_assessed",
-      "reason": "",
+      "disposition": "changed",
+      "reason": "C06.08: Khóa regression contract type=button cho hành động shared UI; kiểm tra giữ submit tường minh và anchor asChild.",
       "evidenceIds": [
-        "EV-20261012-002"
+        "EV-20261012-002",
+        "EV-20261016-081"
       ],
-      "changeIds": [],
+      "changeIds": [
+        "CHANGE-20261016-104"
+      ],
       "executionScope": {
         "ownerTaskId": "C01",
         "role": "behavior_test",
@@ -172702,8 +172976,18 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
-      "cataloguedSha256": "e22e8d65325ef8c89065cc7a0d07a96d96fa9080b188399b9fcd476b09cb4180"
+      "cataloguedSourceHead": "3401ba6c667fd5cfe84bfc3e263fde24130d3438",
+      "cataloguedSha256": "537aab8eaaba134c6b4067d2988ffe8dc21b44766b38dd28198e3819f4beda21",
+      "cataloguedSourceHistory": [
+        {
+          "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
+          "sha256": "e22e8d65325ef8c89065cc7a0d07a96d96fa9080b188399b9fcd476b09cb4180",
+          "supersededAt": "2026-10-16T05:31:59.845Z",
+          "evidenceId": "EV-20261016-081",
+          "reason": "Preserved the prior exact source-catalogue pointer before recording the shared native button type contract."
+        }
+      ],
+      "cataloguedAt": "2026-10-16T05:31:59.845Z"
     },
     {
       "path": "src/shared/ui/InfoRow.tsx",
@@ -172713,12 +172997,15 @@
         "C01",
         "C06"
       ],
-      "disposition": "not_assessed",
-      "reason": "",
+      "disposition": "changed",
+      "reason": "C06.08: Gán type=button cho row tương tác được render động và nút sao chép; không đổi hành vi nghiệp vụ.",
       "evidenceIds": [
-        "EV-20261012-002"
+        "EV-20261012-002",
+        "EV-20261016-081"
       ],
-      "changeIds": [],
+      "changeIds": [
+        "CHANGE-20261016-105"
+      ],
       "executionScope": {
         "ownerTaskId": "C01",
         "role": "ui_component",
@@ -172735,8 +173022,18 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
-      "cataloguedSha256": "7e42f5fb1b8e10b8d9384f67c7d97c3fd83fc724d91361c08d2b9b481b52170d"
+      "cataloguedSourceHead": "3401ba6c667fd5cfe84bfc3e263fde24130d3438",
+      "cataloguedSha256": "81700d9d069f004e3b7cc9fa46854064dabc284ddec3684413edf6d171ac216e",
+      "cataloguedSourceHistory": [
+        {
+          "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
+          "sha256": "7e42f5fb1b8e10b8d9384f67c7d97c3fd83fc724d91361c08d2b9b481b52170d",
+          "supersededAt": "2026-10-16T05:31:59.845Z",
+          "evidenceId": "EV-20261016-081",
+          "reason": "Preserved the prior exact source-catalogue pointer before recording the shared native button type contract."
+        }
+      ],
+      "cataloguedAt": "2026-10-16T05:31:59.845Z"
     },
     {
       "path": "src/shared/ui/InputField.test.tsx",
@@ -172911,13 +173208,15 @@
         "C06"
       ],
       "disposition": "changed",
-      "reason": "Cover accessible action labels, navigation fallbacks, badge limits, placeholder layout, transparent styles and breadcrumb rendering.",
+      "reason": "Cover accessible action labels, navigation fallbacks, badge limits, placeholder layout, transparent styles and breadcrumb rendering. | C06.08: Khóa regression contract type=button cho hành động shared UI; kiểm tra giữ submit tường minh và anchor asChild.",
       "evidenceIds": [
         "EV-20261010-011",
-        "EV-20261014-010"
+        "EV-20261014-010",
+        "EV-20261016-081"
       ],
       "changeIds": [
-        "CHANGE-20261010-0063"
+        "CHANGE-20261010-0063",
+        "CHANGE-20261016-115"
       ],
       "executionScope": {
         "ownerTaskId": "C01",
@@ -172937,8 +173236,8 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "80ba3ae80bff7dfb6a2f0f3d87f10059b875a44d",
-      "cataloguedSha256": "4f2b8ccc0ae0ad5c61e4b1f206b566852e091cbb4c3bbba370ba274570aca9c9",
+      "cataloguedSourceHead": "3401ba6c667fd5cfe84bfc3e263fde24130d3438",
+      "cataloguedSha256": "52f6c474f496d36a9dbdb89d204aef5c8bb56d2ab092c9815c99e22cde0b78cb",
       "cataloguedSourceHistory": [
         {
           "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
@@ -172946,8 +173245,16 @@
           "supersededAt": "2026-10-14T01:15:27.283Z",
           "evidenceId": "EV-20261014-010",
           "reason": "Previous source pointer retained; current path-specific commit and Git blob independently verified in this evidence."
+        },
+        {
+          "sourceHead": "80ba3ae80bff7dfb6a2f0f3d87f10059b875a44d",
+          "sha256": "4f2b8ccc0ae0ad5c61e4b1f206b566852e091cbb4c3bbba370ba274570aca9c9",
+          "supersededAt": "2026-10-16T05:31:59.845Z",
+          "evidenceId": "EV-20261016-081",
+          "reason": "Preserved the prior exact source-catalogue pointer before recording the shared native button type contract."
         }
-      ]
+      ],
+      "cataloguedAt": "2026-10-16T05:31:59.845Z"
     },
     {
       "path": "src/shared/ui/layout/Header.tsx",
@@ -172958,12 +173265,15 @@
         "C05",
         "C06"
       ],
-      "disposition": "not_assessed",
-      "reason": "",
+      "disposition": "changed",
+      "reason": "C06.08: Khai báo type=button cho hành động shared UI để không vô tình submit form chứa; giữ nguyên callback và payload.",
       "evidenceIds": [
-        "EV-20261014-010"
+        "EV-20261014-010",
+        "EV-20261016-081"
       ],
-      "changeIds": [],
+      "changeIds": [
+        "CHANGE-20261016-116"
+      ],
       "executionScope": {
         "ownerTaskId": "C01",
         "role": "ui_component",
@@ -172982,8 +173292,8 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "80ba3ae80bff7dfb6a2f0f3d87f10059b875a44d",
-      "cataloguedSha256": "2f37d6d3c826c7739adcdd5a6c8ef84f9882044a74afeb0d1c71208729fac1dc",
+      "cataloguedSourceHead": "3401ba6c667fd5cfe84bfc3e263fde24130d3438",
+      "cataloguedSha256": "b44035048942ad55824e7eac468709dcd73a851ca00cfbaa991716d2664d57af",
       "cataloguedSourceHistory": [
         {
           "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
@@ -172991,8 +173301,16 @@
           "supersededAt": "2026-10-14T01:15:27.283Z",
           "evidenceId": "EV-20261014-010",
           "reason": "Previous source pointer retained; current path-specific commit and Git blob independently verified in this evidence."
+        },
+        {
+          "sourceHead": "80ba3ae80bff7dfb6a2f0f3d87f10059b875a44d",
+          "sha256": "2f37d6d3c826c7739adcdd5a6c8ef84f9882044a74afeb0d1c71208729fac1dc",
+          "supersededAt": "2026-10-16T05:31:59.845Z",
+          "evidenceId": "EV-20261016-081",
+          "reason": "Preserved the prior exact source-catalogue pointer before recording the shared native button type contract."
         }
-      ]
+      ],
+      "cataloguedAt": "2026-10-16T05:31:59.845Z"
     },
     {
       "path": "src/shared/ui/layout/PageContent.tsx",
@@ -173143,13 +173461,15 @@
         "C06"
       ],
       "disposition": "changed",
-      "reason": "",
+      "reason": "C06.08: Khóa regression contract type=button cho hành động shared UI; kiểm tra giữ submit tường minh và anchor asChild.",
       "evidenceIds": [
         "EV-20261013-026",
-        "EV-20261013-027"
+        "EV-20261013-027",
+        "EV-20261016-081"
       ],
       "changeIds": [
-        "CHANGE-20261013-550"
+        "CHANGE-20261013-550",
+        "CHANGE-20261016-106"
       ],
       "executionScope": {
         "ownerTaskId": "C01",
@@ -173167,8 +173487,8 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "ffdf7ec46b16646cfba468897b5a7255202c9ab7",
-      "cataloguedSha256": "4d955b3efb1f82899d3e2409fb769f894c5b79a28a99580441641978f91d6ec4",
+      "cataloguedSourceHead": "3401ba6c667fd5cfe84bfc3e263fde24130d3438",
+      "cataloguedSha256": "64e1468cf5aa5486be843418702e63ef5a21ed29e2d60a4171a0c6f0e5366326",
       "cataloguedSourceHistory": [
         {
           "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
@@ -173176,8 +173496,16 @@
           "supersededAt": "2026-10-13T13:49:03.734Z",
           "evidenceId": "EV-20261013-027",
           "reason": "Individual actual verified owner source commit; historical catalogue preserved."
+        },
+        {
+          "sourceHead": "ffdf7ec46b16646cfba468897b5a7255202c9ab7",
+          "sha256": "4d955b3efb1f82899d3e2409fb769f894c5b79a28a99580441641978f91d6ec4",
+          "supersededAt": "2026-10-16T05:31:59.845Z",
+          "evidenceId": "EV-20261016-081",
+          "reason": "Preserved the prior exact source-catalogue pointer before recording the shared native button type contract."
         }
-      ]
+      ],
+      "cataloguedAt": "2026-10-16T05:31:59.845Z"
     },
     {
       "path": "src/shared/ui/LazyRoute.tsx",
@@ -173190,13 +173518,15 @@
         "C06"
       ],
       "disposition": "changed",
-      "reason": "",
+      "reason": "C06.08: Khai báo type=button cho hành động shared UI để không vô tình submit form chứa; giữ nguyên callback và payload.",
       "evidenceIds": [
         "EV-20261013-026",
-        "EV-20261013-027"
+        "EV-20261013-027",
+        "EV-20261016-081"
       ],
       "changeIds": [
-        "CHANGE-20261013-551"
+        "CHANGE-20261013-551",
+        "CHANGE-20261016-107"
       ],
       "executionScope": {
         "ownerTaskId": "C01",
@@ -173219,8 +173549,8 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "ffdf7ec46b16646cfba468897b5a7255202c9ab7",
-      "cataloguedSha256": "ac7814c0cdbcaf839274b77f370ca47305cb21a52f5a8acb5ff6a5455c8b6a75",
+      "cataloguedSourceHead": "3401ba6c667fd5cfe84bfc3e263fde24130d3438",
+      "cataloguedSha256": "4a76f8ebb4432ddc2ec5f136f434ae3dda8d11b1927b7450c35fcc405583ca4c",
       "cataloguedSourceHistory": [
         {
           "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
@@ -173228,8 +173558,16 @@
           "supersededAt": "2026-10-13T13:49:03.734Z",
           "evidenceId": "EV-20261013-027",
           "reason": "Individual actual verified owner source commit; historical catalogue preserved."
+        },
+        {
+          "sourceHead": "ffdf7ec46b16646cfba468897b5a7255202c9ab7",
+          "sha256": "ac7814c0cdbcaf839274b77f370ca47305cb21a52f5a8acb5ff6a5455c8b6a75",
+          "supersededAt": "2026-10-16T05:31:59.845Z",
+          "evidenceId": "EV-20261016-081",
+          "reason": "Preserved the prior exact source-catalogue pointer before recording the shared native button type contract."
         }
-      ]
+      ],
+      "cataloguedAt": "2026-10-16T05:31:59.845Z"
     },
     {
       "path": "src/shared/ui/NetworkBanners.test.tsx",
@@ -173445,10 +173783,14 @@
         "C01",
         "C06"
       ],
-      "disposition": "not_assessed",
-      "reason": "",
-      "evidenceIds": [],
-      "changeIds": [],
+      "disposition": "changed",
+      "reason": "C06.08: Khóa regression contract type=button cho hành động shared UI; kiểm tra giữ submit tường minh và anchor asChild.",
+      "evidenceIds": [
+        "EV-20261016-081"
+      ],
+      "changeIds": [
+        "CHANGE-20261016-108"
+      ],
       "executionScope": {
         "ownerTaskId": "C01",
         "role": "behavior_test",
@@ -173464,8 +173806,18 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
-      "cataloguedSha256": "8afe134e7372f131ef93feda8ee3ceeed7f327a8c97ce5ff88e252781a9837e5"
+      "cataloguedSourceHead": "3401ba6c667fd5cfe84bfc3e263fde24130d3438",
+      "cataloguedSha256": "d8e4e0e3bda2226c00598e2e995683332a22c731a558487a8718f2360c916789",
+      "cataloguedSourceHistory": [
+        {
+          "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+          "sha256": "8afe134e7372f131ef93feda8ee3ceeed7f327a8c97ce5ff88e252781a9837e5",
+          "supersededAt": "2026-10-16T05:31:59.845Z",
+          "evidenceId": "EV-20261016-081",
+          "reason": "Preserved the prior exact source-catalogue pointer before recording the shared native button type contract."
+        }
+      ],
+      "cataloguedAt": "2026-10-16T05:31:59.845Z"
     },
     {
       "path": "src/shared/ui/SearchBar.tsx",
@@ -173475,10 +173827,14 @@
         "C01",
         "C06"
       ],
-      "disposition": "not_assessed",
-      "reason": "",
-      "evidenceIds": [],
-      "changeIds": [],
+      "disposition": "changed",
+      "reason": "C06.08: Khai báo type=button cho hành động shared UI để không vô tình submit form chứa; giữ nguyên callback và payload.",
+      "evidenceIds": [
+        "EV-20261016-081"
+      ],
+      "changeIds": [
+        "CHANGE-20261016-109"
+      ],
       "executionScope": {
         "ownerTaskId": "C01",
         "role": "ui_component",
@@ -173494,8 +173850,18 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
-      "cataloguedSha256": "4595a7127ef3ad0ba43f3ed5fa9e789d0ab98afbd6c30153aba47eb9c19c52b3"
+      "cataloguedSourceHead": "3401ba6c667fd5cfe84bfc3e263fde24130d3438",
+      "cataloguedSha256": "e0394ee20f5e553cce81e517d354ce365cd66d94fc96dffcc5885a3ce7aacc40",
+      "cataloguedSourceHistory": [
+        {
+          "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+          "sha256": "4595a7127ef3ad0ba43f3ed5fa9e789d0ab98afbd6c30153aba47eb9c19c52b3",
+          "supersededAt": "2026-10-16T05:31:59.845Z",
+          "evidenceId": "EV-20261016-081",
+          "reason": "Preserved the prior exact source-catalogue pointer before recording the shared native button type contract."
+        }
+      ],
+      "cataloguedAt": "2026-10-16T05:31:59.845Z"
     },
     {
       "path": "src/shared/ui/SectionHeader.tsx",
@@ -173610,10 +173976,14 @@
         "C01",
         "C06"
       ],
-      "disposition": "not_assessed",
-      "reason": "",
-      "evidenceIds": [],
-      "changeIds": [],
+      "disposition": "changed",
+      "reason": "C06.08: Gán type=button khi pill chuyển thành nút do có onClick.",
+      "evidenceIds": [
+        "EV-20261016-081"
+      ],
+      "changeIds": [
+        "CHANGE-20261016-110"
+      ],
       "executionScope": {
         "ownerTaskId": "C01",
         "role": "ui_component",
@@ -173630,8 +174000,18 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
-      "cataloguedSha256": "60ab9801e1e8885631ae64fc84f414b3041d0a156d22e02c67f00922d3e32604"
+      "cataloguedSourceHead": "3401ba6c667fd5cfe84bfc3e263fde24130d3438",
+      "cataloguedSha256": "39e4fd50b27db4014f0b8c70bd895aed83ad8595e41f5d9a36a1b65c9b66164b",
+      "cataloguedSourceHistory": [
+        {
+          "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+          "sha256": "60ab9801e1e8885631ae64fc84f414b3041d0a156d22e02c67f00922d3e32604",
+          "supersededAt": "2026-10-16T05:31:59.845Z",
+          "evidenceId": "EV-20261016-081",
+          "reason": "Preserved the prior exact source-catalogue pointer before recording the shared native button type contract."
+        }
+      ],
+      "cataloguedAt": "2026-10-16T05:31:59.845Z"
     },
     {
       "path": "src/shared/ui/StickyHeader.test.tsx",
@@ -173704,13 +174084,15 @@
         "C06"
       ],
       "disposition": "changed",
-      "reason": "",
+      "reason": "C06.08: Khóa regression contract type=button cho hành động shared UI; kiểm tra giữ submit tường minh và anchor asChild.",
       "evidenceIds": [
         "EV-20261013-026",
-        "EV-20261013-027"
+        "EV-20261013-027",
+        "EV-20261016-081"
       ],
       "changeIds": [
-        "CHANGE-20261013-553"
+        "CHANGE-20261013-553",
+        "CHANGE-20261016-111"
       ],
       "executionScope": {
         "ownerTaskId": "C01",
@@ -173729,8 +174111,8 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "075517d81f235e6096c09946a2383442a590cd26",
-      "cataloguedSha256": "411abcd25b333fcc61b4f1df05e378eaf5a07b1b41b1cecca986e44f19ccd3ee",
+      "cataloguedSourceHead": "3401ba6c667fd5cfe84bfc3e263fde24130d3438",
+      "cataloguedSha256": "b1603270e3c3bbc2c5b3887b35eeb4a0a042f264bf404116ea6ae963ef221147",
       "cataloguedSourceHistory": [
         {
           "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
@@ -173738,8 +174120,16 @@
           "supersededAt": "2026-10-13T13:49:03.734Z",
           "evidenceId": "EV-20261013-027",
           "reason": "Individual actual verified owner source commit; historical catalogue preserved."
+        },
+        {
+          "sourceHead": "075517d81f235e6096c09946a2383442a590cd26",
+          "sha256": "411abcd25b333fcc61b4f1df05e378eaf5a07b1b41b1cecca986e44f19ccd3ee",
+          "supersededAt": "2026-10-16T05:31:59.845Z",
+          "evidenceId": "EV-20261016-081",
+          "reason": "Preserved the prior exact source-catalogue pointer before recording the shared native button type contract."
         }
-      ]
+      ],
+      "cataloguedAt": "2026-10-16T05:31:59.845Z"
     },
     {
       "path": "src/shared/ui/TabBar.tsx",
@@ -173751,14 +174141,16 @@
         "C06"
       ],
       "disposition": "changed",
-      "reason": "",
+      "reason": "C06.08: Khai báo type=button cho hành động shared UI để không vô tình submit form chứa; giữ nguyên callback và payload.",
       "evidenceIds": [
         "EV-20261013-026",
         "EV-20261013-027",
-        "EV-20261014-010"
+        "EV-20261014-010",
+        "EV-20261016-081"
       ],
       "changeIds": [
-        "CHANGE-20261013-554"
+        "CHANGE-20261013-554",
+        "CHANGE-20261016-112"
       ],
       "executionScope": {
         "ownerTaskId": "C01",
@@ -173776,8 +174168,8 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "80ba3ae80bff7dfb6a2f0f3d87f10059b875a44d",
-      "cataloguedSha256": "ae0b016ec2ce272940dd8b2d64c801f616d74d44f65c11b639313d5093948600",
+      "cataloguedSourceHead": "3401ba6c667fd5cfe84bfc3e263fde24130d3438",
+      "cataloguedSha256": "63ecbd6c88d6c066f489554a9453f2f8173ae711ad51130f506cf675e8b48e48",
       "cataloguedSourceHistory": [
         {
           "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
@@ -173792,8 +174184,16 @@
           "supersededAt": "2026-10-14T01:15:27.283Z",
           "evidenceId": "EV-20261014-010",
           "reason": "Previous source pointer retained; current path-specific commit and Git blob independently verified in this evidence."
+        },
+        {
+          "sourceHead": "80ba3ae80bff7dfb6a2f0f3d87f10059b875a44d",
+          "sha256": "ae0b016ec2ce272940dd8b2d64c801f616d74d44f65c11b639313d5093948600",
+          "supersededAt": "2026-10-16T05:31:59.845Z",
+          "evidenceId": "EV-20261016-081",
+          "reason": "Preserved the prior exact source-catalogue pointer before recording the shared native button type contract."
         }
-      ]
+      ],
+      "cataloguedAt": "2026-10-16T05:31:59.845Z"
     },
     {
       "path": "src/shared/ui/ThemedToaster.tsx",
@@ -177383,7 +177783,7 @@
         "C06"
       ],
       "disposition": "changed",
-      "reason": "Đăng ký source đã có trong Git theo proof riêng của file và snapshot full suite thật; không sửa bytes source hay rebaseline lịch sử. | C06.02 thay đổi/test vòng đời focus BottomSheetV2; public API và nghiệp vụ được giữ nguyên. | C06.02 corrective commit a29a255e closes the exact-SHA modal/accessibility regression; catalog fingerprint is bound to the committed blob.",
+      "reason": "Đăng ký source đã có trong Git theo proof riêng của file và snapshot full suite thật; không sửa bytes source hay rebaseline lịch sử. | C06.02 thay đổi/test vòng đời focus BottomSheetV2; public API và nghiệp vụ được giữ nguyên. | C06.02 corrective commit a29a255e closes the exact-SHA modal/accessibility regression; catalog fingerprint is bound to the committed blob. | C06.08: Khóa regression contract type=button cho hành động shared UI; kiểm tra giữ submit tường minh và anchor asChild.",
       "evidenceIds": [
         "EV-20261012-002",
         "EV-20261015-005",
@@ -177392,10 +177792,12 @@
         "EV-20261015-013",
         "EV-20261015-015",
         "EV-20261015-012",
-        "EV-20261015-014"
+        "EV-20261015-014",
+        "EV-20261016-081"
       ],
       "changeIds": [
-        "CHANGE-20261015-007"
+        "CHANGE-20261015-007",
+        "CHANGE-20261016-095"
       ],
       "executionScope": {
         "ownerTaskId": "C03",
@@ -177409,8 +177811,8 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "a29a255e72aa98aa7199d6ee21e506bdd5d4f6ca",
-      "cataloguedSha256": "d7bc42439d1113e379bfd9d104a4b3f9678aca65383903a097c262086148d0f0",
+      "cataloguedSourceHead": "3401ba6c667fd5cfe84bfc3e263fde24130d3438",
+      "cataloguedSha256": "d51785da06e9ec78847387d428be45ad0cdcc0b9703255bb02fd3d367b843e3d",
       "cataloguedSourceHistory": [
         {
           "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
@@ -177425,8 +177827,16 @@
           "supersededAt": "2026-10-15T04:29:29.443Z",
           "evidenceId": "EV-20261015-015",
           "reason": "Preserved prior source snapshot after exact-SHA GitHub run #61 identified stale C06.02 provenance; rebound to the corrective source commit."
+        },
+        {
+          "sourceHead": "a29a255e72aa98aa7199d6ee21e506bdd5d4f6ca",
+          "sha256": "d7bc42439d1113e379bfd9d104a4b3f9678aca65383903a097c262086148d0f0",
+          "supersededAt": "2026-10-16T05:31:59.845Z",
+          "evidenceId": "EV-20261016-081",
+          "reason": "Preserved the prior exact source-catalogue pointer before recording the shared native button type contract."
         }
-      ]
+      ],
+      "cataloguedAt": "2026-10-16T05:31:59.845Z"
     },
     {
       "path": "src/shared/ui/SkeletonBlock.test.tsx",
@@ -177517,24 +177927,39 @@
       "baselineSha256": null,
       "lifecycle": "active",
       "taskIds": [
-        "C03"
+        "C03",
+        "C06"
       ],
       "disposition": "added",
-      "reason": "Đăng ký source đã có trong Git theo proof riêng của file và snapshot full suite thật; không sửa bytes source hay rebaseline lịch sử.",
+      "reason": "Đăng ký source đã có trong Git theo proof riêng của file và snapshot full suite thật; không sửa bytes source hay rebaseline lịch sử. | C06.08: Khóa regression contract type=button cho hành động shared UI; kiểm tra giữ submit tường minh và anchor asChild.",
       "evidenceIds": [
-        "EV-20261012-002"
+        "EV-20261012-002",
+        "EV-20261016-081"
       ],
-      "changeIds": [],
+      "changeIds": [
+        "CHANGE-20261016-117"
+      ],
       "executionScope": {
         "ownerTaskId": "C03",
         "role": "owner_test",
         "stepIds": [
-          "C03.05"
+          "C03.05",
+          "C06.08"
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
-      "cataloguedSha256": "247739922e6d50ee92448506746c8a68fbcfbaac543b5f4ef5cf4962af6ada55"
+      "cataloguedSourceHead": "3401ba6c667fd5cfe84bfc3e263fde24130d3438",
+      "cataloguedSha256": "dff2e295afbdb7391b37fb9a1ccbbf78fa990211354a742f033d12f3935bd148",
+      "cataloguedSourceHistory": [
+        {
+          "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
+          "sha256": "247739922e6d50ee92448506746c8a68fbcfbaac543b5f4ef5cf4962af6ada55",
+          "supersededAt": "2026-10-16T05:31:59.845Z",
+          "evidenceId": "EV-20261016-081",
+          "reason": "Preserved the prior exact source-catalogue pointer before recording the shared native button type contract."
+        }
+      ],
+      "cataloguedAt": "2026-10-16T05:31:59.845Z"
     },
     {
       "path": "docs/architecture/production-readiness/evidence/C03/repo-ledger-current-source-verification-2026-10-12.json",
@@ -310196,6 +310621,374 @@
         "archiveSha256": "da9420a5d432da4dcc84b8c01b62d2c1f26423a9ec1fb2ce4515a68ed6c19f58",
         "payloadSha256": "da9420a5d432da4dcc84b8c01b62d2c1f26423a9ec1fb2ce4515a68ed6c19f58"
       }
+    },
+    {
+      "id": "CHANGE-20261016-095",
+      "taskId": "C06",
+      "stepId": "C06.08",
+      "path": "src/shared/ui/BottomSheetV2.test.tsx",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Khóa regression contract type=button cho shared UI; giữ submit tường minh và anchor asChild.",
+      "beforeHash": "d7bc42439d1113e379bfd9d104a4b3f9678aca65383903a097c262086148d0f0",
+      "afterHash": "d51785da06e9ec78847387d428be45ad0cdcc0b9703255bb02fd3d367b843e3d",
+      "evidenceIds": [
+        "EV-20261016-081"
+      ],
+      "commit": "3401ba6c667fd5cfe84bfc3e263fde24130d3438"
+    },
+    {
+      "id": "CHANGE-20261016-096",
+      "taskId": "C06",
+      "stepId": "C06.08",
+      "path": "src/shared/ui/BottomSheetV2.tsx",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Khai báo type=button cho hành động shared UI để không vô tình submit form chứa; giữ callback và payload.",
+      "beforeHash": "ccc1821eb13fcd51a015cb732ee333b245bd936daf7e32795a19aae2483e9fb5",
+      "afterHash": "e4a9cf0e319d5b58f129c1b20a4cd696f75b0ec284145066a73bbd32c7cb0224",
+      "evidenceIds": [
+        "EV-20261016-081"
+      ],
+      "commit": "3401ba6c667fd5cfe84bfc3e263fde24130d3438"
+    },
+    {
+      "id": "CHANGE-20261016-097",
+      "taskId": "C06",
+      "stepId": "C06.08",
+      "path": "src/shared/ui/CTAButton.test.tsx",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Khóa regression contract type=button cho shared UI; giữ submit tường minh và anchor asChild.",
+      "beforeHash": "4c3e09042c66db28eb07853a1a37ede0806b37c42f175b1e2f2a1cad66c36a12",
+      "afterHash": "55e807744936ed8efaa3384a503b05f2d6709730a121fc9afef6db2f2dbff815",
+      "evidenceIds": [
+        "EV-20261016-081"
+      ],
+      "commit": "3401ba6c667fd5cfe84bfc3e263fde24130d3438"
+    },
+    {
+      "id": "CHANGE-20261016-098",
+      "taskId": "C06",
+      "stepId": "C06.08",
+      "path": "src/shared/ui/ConfirmationDialog.test.tsx",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Khóa regression contract type=button cho shared UI; giữ submit tường minh và anchor asChild.",
+      "beforeHash": "2d3e78231fb157971bd49fa0f552a1d4c78c40d0cc55f95e64cbfac48d7ca51a",
+      "afterHash": "6a8967683d5973f03dd9867214dc2bbce6a6b0fe243b0d47194f466da0b8912c",
+      "evidenceIds": [
+        "EV-20261016-081"
+      ],
+      "commit": "3401ba6c667fd5cfe84bfc3e263fde24130d3438"
+    },
+    {
+      "id": "CHANGE-20261016-099",
+      "taskId": "C06",
+      "stepId": "C06.08",
+      "path": "src/shared/ui/ConfirmationDialog.tsx",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Khai báo type=button cho hành động shared UI để không vô tình submit form chứa; giữ callback và payload.",
+      "beforeHash": "ee8603c037d71540663cd870a9116630ab323f43bad3f8cba8d9605f762cea0c",
+      "afterHash": "4a5cb40be895f808fcfad6c35bb4c32c308f4525258814e756fa807ea7dfeeed",
+      "evidenceIds": [
+        "EV-20261016-081"
+      ],
+      "commit": "3401ba6c667fd5cfe84bfc3e263fde24130d3438"
+    },
+    {
+      "id": "CHANGE-20261016-100",
+      "taskId": "C06",
+      "stepId": "C06.08",
+      "path": "src/shared/ui/EmptyState.test.tsx",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Khóa regression contract type=button cho shared UI; giữ submit tường minh và anchor asChild.",
+      "beforeHash": "24081a0363f1037eedfb78f929c7cb770cc2fc395e67af5333193cdf1d5591ae",
+      "afterHash": "439dd8954434f43ad57fbccd8444ec68900d9b28cc4870aefd4b96cf9f885217",
+      "evidenceIds": [
+        "EV-20261016-081"
+      ],
+      "commit": "3401ba6c667fd5cfe84bfc3e263fde24130d3438"
+    },
+    {
+      "id": "CHANGE-20261016-101",
+      "taskId": "C06",
+      "stepId": "C06.08",
+      "path": "src/shared/ui/EmptyState.tsx",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Khai báo type=button cho hành động shared UI để không vô tình submit form chứa; giữ callback và payload.",
+      "beforeHash": "f43def34039f247e1ed7a3697ab526d3f8207b629219b3653b70198f85175f66",
+      "afterHash": "b17cb252c6f8fabe8a9d1ffc3a52e7c56ee33b00c5b15eac083536895a7d11ba",
+      "evidenceIds": [
+        "EV-20261016-081"
+      ],
+      "commit": "3401ba6c667fd5cfe84bfc3e263fde24130d3438"
+    },
+    {
+      "id": "CHANGE-20261016-102",
+      "taskId": "C06",
+      "stepId": "C06.08",
+      "path": "src/shared/ui/ErrorState.tsx",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Khai báo type=button cho hành động shared UI để không vô tình submit form chứa; giữ callback và payload.",
+      "beforeHash": "61b27e2046c49c46279d380c3ae668ed06bb6ac1ec5d41319062bab01ab9a9d3",
+      "afterHash": "0e27f9ff7de1364d8517f2909a37840de0391ad85c06a9118f176544384137b5",
+      "evidenceIds": [
+        "EV-20261016-081"
+      ],
+      "commit": "3401ba6c667fd5cfe84bfc3e263fde24130d3438"
+    },
+    {
+      "id": "CHANGE-20261016-103",
+      "taskId": "C06",
+      "stepId": "C06.08",
+      "path": "src/shared/ui/IconButton.tsx",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Khai báo type=button cho hành động shared UI để không vô tình submit form chứa; giữ callback và payload.",
+      "beforeHash": "1cb698796ba917828101d7d423e0abe1315bcf591a7031e72514e171ac9aa165",
+      "afterHash": "5eb90f34f0ec461050988c0bcde7080b8e5ce907ff65a7189aac00cf5928737e",
+      "evidenceIds": [
+        "EV-20261016-081"
+      ],
+      "commit": "3401ba6c667fd5cfe84bfc3e263fde24130d3438"
+    },
+    {
+      "id": "CHANGE-20261016-104",
+      "taskId": "C06",
+      "stepId": "C06.08",
+      "path": "src/shared/ui/InfoRow.test.tsx",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Khóa regression contract type=button cho shared UI; giữ submit tường minh và anchor asChild.",
+      "beforeHash": "e22e8d65325ef8c89065cc7a0d07a96d96fa9080b188399b9fcd476b09cb4180",
+      "afterHash": "537aab8eaaba134c6b4067d2988ffe8dc21b44766b38dd28198e3819f4beda21",
+      "evidenceIds": [
+        "EV-20261016-081"
+      ],
+      "commit": "3401ba6c667fd5cfe84bfc3e263fde24130d3438"
+    },
+    {
+      "id": "CHANGE-20261016-105",
+      "taskId": "C06",
+      "stepId": "C06.08",
+      "path": "src/shared/ui/InfoRow.tsx",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Gán type=button cho row tương tác render động và nút sao chép; không đổi hành vi nghiệp vụ.",
+      "beforeHash": "7e42f5fb1b8e10b8d9384f67c7d97c3fd83fc724d91361c08d2b9b481b52170d",
+      "afterHash": "81700d9d069f004e3b7cc9fa46854064dabc284ddec3684413edf6d171ac216e",
+      "evidenceIds": [
+        "EV-20261016-081"
+      ],
+      "commit": "3401ba6c667fd5cfe84bfc3e263fde24130d3438"
+    },
+    {
+      "id": "CHANGE-20261016-106",
+      "taskId": "C06",
+      "stepId": "C06.08",
+      "path": "src/shared/ui/LazyRoute.test.tsx",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Khóa regression contract type=button cho shared UI; giữ submit tường minh và anchor asChild.",
+      "beforeHash": "4d955b3efb1f82899d3e2409fb769f894c5b79a28a99580441641978f91d6ec4",
+      "afterHash": "64e1468cf5aa5486be843418702e63ef5a21ed29e2d60a4171a0c6f0e5366326",
+      "evidenceIds": [
+        "EV-20261016-081"
+      ],
+      "commit": "3401ba6c667fd5cfe84bfc3e263fde24130d3438"
+    },
+    {
+      "id": "CHANGE-20261016-107",
+      "taskId": "C06",
+      "stepId": "C06.08",
+      "path": "src/shared/ui/LazyRoute.tsx",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Khai báo type=button cho hành động shared UI để không vô tình submit form chứa; giữ callback và payload.",
+      "beforeHash": "ac7814c0cdbcaf839274b77f370ca47305cb21a52f5a8acb5ff6a5455c8b6a75",
+      "afterHash": "4a76f8ebb4432ddc2ec5f136f434ae3dda8d11b1927b7450c35fcc405583ca4c",
+      "evidenceIds": [
+        "EV-20261016-081"
+      ],
+      "commit": "3401ba6c667fd5cfe84bfc3e263fde24130d3438"
+    },
+    {
+      "id": "CHANGE-20261016-108",
+      "taskId": "C06",
+      "stepId": "C06.08",
+      "path": "src/shared/ui/SearchBar.test.tsx",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Khóa regression contract type=button cho shared UI; giữ submit tường minh và anchor asChild.",
+      "beforeHash": "8afe134e7372f131ef93feda8ee3ceeed7f327a8c97ce5ff88e252781a9837e5",
+      "afterHash": "d8e4e0e3bda2226c00598e2e995683332a22c731a558487a8718f2360c916789",
+      "evidenceIds": [
+        "EV-20261016-081"
+      ],
+      "commit": "3401ba6c667fd5cfe84bfc3e263fde24130d3438"
+    },
+    {
+      "id": "CHANGE-20261016-109",
+      "taskId": "C06",
+      "stepId": "C06.08",
+      "path": "src/shared/ui/SearchBar.tsx",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Khai báo type=button cho hành động shared UI để không vô tình submit form chứa; giữ callback và payload.",
+      "beforeHash": "4595a7127ef3ad0ba43f3ed5fa9e789d0ab98afbd6c30153aba47eb9c19c52b3",
+      "afterHash": "e0394ee20f5e553cce81e517d354ce365cd66d94fc96dffcc5885a3ce7aacc40",
+      "evidenceIds": [
+        "EV-20261016-081"
+      ],
+      "commit": "3401ba6c667fd5cfe84bfc3e263fde24130d3438"
+    },
+    {
+      "id": "CHANGE-20261016-110",
+      "taskId": "C06",
+      "stepId": "C06.08",
+      "path": "src/shared/ui/StatusPill.tsx",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Gán type=button khi pill chuyển thành nút do có onClick.",
+      "beforeHash": "60ab9801e1e8885631ae64fc84f414b3041d0a156d22e02c67f00922d3e32604",
+      "afterHash": "39e4fd50b27db4014f0b8c70bd895aed83ad8595e41f5d9a36a1b65c9b66164b",
+      "evidenceIds": [
+        "EV-20261016-081"
+      ],
+      "commit": "3401ba6c667fd5cfe84bfc3e263fde24130d3438"
+    },
+    {
+      "id": "CHANGE-20261016-111",
+      "taskId": "C06",
+      "stepId": "C06.08",
+      "path": "src/shared/ui/TabBar.test.tsx",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Khóa regression contract type=button cho shared UI; giữ submit tường minh và anchor asChild.",
+      "beforeHash": "411abcd25b333fcc61b4f1df05e378eaf5a07b1b41b1cecca986e44f19ccd3ee",
+      "afterHash": "b1603270e3c3bbc2c5b3887b35eeb4a0a042f264bf404116ea6ae963ef221147",
+      "evidenceIds": [
+        "EV-20261016-081"
+      ],
+      "commit": "3401ba6c667fd5cfe84bfc3e263fde24130d3438"
+    },
+    {
+      "id": "CHANGE-20261016-112",
+      "taskId": "C06",
+      "stepId": "C06.08",
+      "path": "src/shared/ui/TabBar.tsx",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Khai báo type=button cho hành động shared UI để không vô tình submit form chứa; giữ callback và payload.",
+      "beforeHash": "ae0b016ec2ce272940dd8b2d64c801f616d74d44f65c11b639313d5093948600",
+      "afterHash": "63ecbd6c88d6c066f489554a9453f2f8173ae711ad51130f506cf675e8b48e48",
+      "evidenceIds": [
+        "EV-20261016-081"
+      ],
+      "commit": "3401ba6c667fd5cfe84bfc3e263fde24130d3438"
+    },
+    {
+      "id": "CHANGE-20261016-113",
+      "taskId": "C06",
+      "stepId": "C06.08",
+      "path": "src/shared/ui/button.test.tsx",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Khóa regression contract type=button cho shared UI; giữ submit tường minh và anchor asChild.",
+      "beforeHash": "34355886262c2d87663c2f92f11aa0ef8eea298b1e39b0ceacfaaedb009b760d",
+      "afterHash": "32730a49d2f70f34a3f0aae74f9f5fa770645a1d3910ae9c47a2e236ad32228b",
+      "evidenceIds": [
+        "EV-20261016-081"
+      ],
+      "commit": "3401ba6c667fd5cfe84bfc3e263fde24130d3438"
+    },
+    {
+      "id": "CHANGE-20261016-114",
+      "taskId": "C06",
+      "stepId": "C06.08",
+      "path": "src/shared/ui/button.tsx",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Button native mặc định type=button; giữ type=submit tường minh và không gắn type mặc định lên child anchor qua asChild.",
+      "beforeHash": "ae799fd6b639146a831f30a2c5182ba3df7a775fab56a2f17ca79c1b09b96ad9",
+      "afterHash": "4def3593104d50081f8fce113369ce142f269744f8bd683bb714af9a03f6014d",
+      "evidenceIds": [
+        "EV-20261016-081"
+      ],
+      "commit": "3401ba6c667fd5cfe84bfc3e263fde24130d3438"
+    },
+    {
+      "id": "CHANGE-20261016-115",
+      "taskId": "C06",
+      "stepId": "C06.08",
+      "path": "src/shared/ui/layout/Header.test.tsx",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Khóa regression contract type=button cho shared UI; giữ submit tường minh và anchor asChild.",
+      "beforeHash": "4f2b8ccc0ae0ad5c61e4b1f206b566852e091cbb4c3bbba370ba274570aca9c9",
+      "afterHash": "52f6c474f496d36a9dbdb89d204aef5c8bb56d2ab092c9815c99e22cde0b78cb",
+      "evidenceIds": [
+        "EV-20261016-081"
+      ],
+      "commit": "3401ba6c667fd5cfe84bfc3e263fde24130d3438"
+    },
+    {
+      "id": "CHANGE-20261016-116",
+      "taskId": "C06",
+      "stepId": "C06.08",
+      "path": "src/shared/ui/layout/Header.tsx",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Khai báo type=button cho hành động shared UI để không vô tình submit form chứa; giữ callback và payload.",
+      "beforeHash": "2f37d6d3c826c7739adcdd5a6c8ef84f9882044a74afeb0d1c71208729fac1dc",
+      "afterHash": "b44035048942ad55824e7eac468709dcd73a851ca00cfbaa991716d2664d57af",
+      "evidenceIds": [
+        "EV-20261016-081"
+      ],
+      "commit": "3401ba6c667fd5cfe84bfc3e263fde24130d3438"
+    },
+    {
+      "id": "CHANGE-20261016-117",
+      "taskId": "C06",
+      "stepId": "C06.08",
+      "path": "src/shared/ui/ui-primitives.test.tsx",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Khóa regression contract type=button cho shared UI; giữ submit tường minh và anchor asChild.",
+      "beforeHash": "247739922e6d50ee92448506746c8a68fbcfbaac543b5f4ef5cf4962af6ada55",
+      "afterHash": "dff2e295afbdb7391b37fb9a1ccbbf78fa990211354a742f033d12f3935bd148",
+      "evidenceIds": [
+        "EV-20261016-081"
+      ],
+      "commit": "3401ba6c667fd5cfe84bfc3e263fde24130d3438"
+    },
+    {
+      "id": "CHANGE-20261016-118",
+      "taskId": "C06",
+      "stepId": "C06.08",
+      "path": "docs/architecture/production-readiness/TRACKING.json",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Ghi nhận code commit shared action-button type contract, exact CI prerequisite #96, kết quả local/ledger và fingerprints; khóa primitive kế tiếp đến sau exact #97/#98.",
+      "beforeHash": "794bb2e785718511b089922bb57d27f9de6c9d3de70a2a0e1bfd130589a5f7e2",
+      "afterHash": "6c5f0766cd6446b4571c1bcc4c5b55e46433733b00d1a8aeb1e38bbb02b586fb",
+      "evidenceIds": [
+        "EV-20261016-080",
+        "EV-20261016-081",
+        "EV-20261016-082"
+      ],
+      "commit": null,
+      "afterHashRecovery": {
+        "kind": "actual_written_business_payload_before_final_self_audit",
+        "archivePath": "C:/CodexEvidence/vittrade-react/2026-10-16/c06-08/c06-08-tracking-business-payload-v2.json",
+        "archiveSha256": "6c5f0766cd6446b4571c1bcc4c5b55e46433733b00d1a8aeb1e38bbb02b586fb",
+        "payloadSha256": "6c5f0766cd6446b4571c1bcc4c5b55e46433733b00d1a8aeb1e38bbb02b586fb"
+      }
     }
   ],
   "evidence": [
@@ -345618,6 +346411,80 @@
       "result": "pass",
       "artifact": "C:/Users/Joker-PC/.codex/visualizations/2026/10/16/c06-08/c06-08-run95-provenance.json",
       "notes": "Provenance report SHA-256 6cf4cf29e6baf60935a0e7ece4a5d0f658ad50d7c20c6b41fc799e8dc1633142. Bốn E2E case cấu hình bị skip; không coi CI này là full-route, manual WCAG, backend/staging, UAT hoặc production certification."
+    },
+    {
+      "id": "EV-20261016-080",
+      "taskId": "C06",
+      "stepId": "C06.08",
+      "kind": "github_exact_pr_run_96_pass_and_artifact_provenance",
+      "commandOrSteps": "Đọc GitHub run #96 theo run ID 38851427639; xác minh head SHA, conclusion, đủ 34 step, test summaries, metadata/digest artifact và synthetic merge provenance.",
+      "environment": "GitHub Actions ubuntu-latest; workflow CI; PR #3; attempt 1; source SHA 86a7be287915cf16baf61940e60c49e31da6d03a.",
+      "observedAt": "2026-10-16T05:08:16Z",
+      "sourceHead": "86a7be287915cf16baf61940e60c49e31da6d03a",
+      "dirtyFileHashes": {},
+      "expected": "Run trên đúng SHA prerequisite hoàn tất toàn bộ CI gate; artifact tải về khớp digest GitHub; merge provenance đúng base/head/tree/signature.",
+      "actual": "PASS: 34/34 step; 363/363 file và 3490/3490 unit/integration tests; E2E 62 passed/4 configured skips; Auth API 34 và development mock 41 passed. Artifact 12026730383, 33,670,502 bytes, SHA-256 b5fc4229798830028bb8799c55d1cb87932a5c6fb959c9ebd90db4733c765243 trùng metadata và ZIP tải về. Synthetic merge 49bb71f924661b38f69738ed6abd625203b16436 có parents đúng base/head, tree trùng source và signature verified; 6 runner manifests đều childClosed, exitCode 0, sourceUnchanged.",
+      "result": "pass",
+      "artifact": "C:/CodexEvidence/vittrade-react/2026-10-16/c06-08/c06-08-button-type-source-and-run96.json",
+      "notes": "Exact PR run #96 là gate của primitive hiện tại. Bốn E2E skip cấu hình được giữ nguyên; đây không phải full-route, manual WCAG, backend, UAT hay production certification."
+    },
+    {
+      "id": "EV-20261016-081",
+      "taskId": "C06",
+      "stepId": "C06.08",
+      "kind": "shared_action_button_type_source_and_local_verification",
+      "commandOrSteps": "TypeScript AST trước/sau trên shared UI; 11-file Vitest slice qua scripts/run-with-artifacts.mjs; hai TypeScript project typecheck; check-lint-budget; Prettier trên 23 file; dependency-cruiser; route matrix --check; git show --check.",
+      "environment": "Windows; Node v24.19.0; source commit 3401ba6c667fd5cfe84bfc3e263fde24130d3438; không chạy browser runtime trong lát cắt primitive này.",
+      "observedAt": "2026-10-16T05:28:46Z",
+      "sourceHead": "3401ba6c667fd5cfe84bfc3e263fde24130d3438",
+      "dirtyFileHashes": {
+        "src/shared/ui/BottomSheetV2.test.tsx": "d51785da06e9ec78847387d428be45ad0cdcc0b9703255bb02fd3d367b843e3d",
+        "src/shared/ui/BottomSheetV2.tsx": "e4a9cf0e319d5b58f129c1b20a4cd696f75b0ec284145066a73bbd32c7cb0224",
+        "src/shared/ui/CTAButton.test.tsx": "55e807744936ed8efaa3384a503b05f2d6709730a121fc9afef6db2f2dbff815",
+        "src/shared/ui/ConfirmationDialog.test.tsx": "6a8967683d5973f03dd9867214dc2bbce6a6b0fe243b0d47194f466da0b8912c",
+        "src/shared/ui/ConfirmationDialog.tsx": "4a5cb40be895f808fcfad6c35bb4c32c308f4525258814e756fa807ea7dfeeed",
+        "src/shared/ui/EmptyState.test.tsx": "439dd8954434f43ad57fbccd8444ec68900d9b28cc4870aefd4b96cf9f885217",
+        "src/shared/ui/EmptyState.tsx": "b17cb252c6f8fabe8a9d1ffc3a52e7c56ee33b00c5b15eac083536895a7d11ba",
+        "src/shared/ui/ErrorState.tsx": "0e27f9ff7de1364d8517f2909a37840de0391ad85c06a9118f176544384137b5",
+        "src/shared/ui/IconButton.tsx": "5eb90f34f0ec461050988c0bcde7080b8e5ce907ff65a7189aac00cf5928737e",
+        "src/shared/ui/InfoRow.test.tsx": "537aab8eaaba134c6b4067d2988ffe8dc21b44766b38dd28198e3819f4beda21",
+        "src/shared/ui/InfoRow.tsx": "81700d9d069f004e3b7cc9fa46854064dabc284ddec3684413edf6d171ac216e",
+        "src/shared/ui/LazyRoute.test.tsx": "64e1468cf5aa5486be843418702e63ef5a21ed29e2d60a4171a0c6f0e5366326",
+        "src/shared/ui/LazyRoute.tsx": "4a76f8ebb4432ddc2ec5f136f434ae3dda8d11b1927b7450c35fcc405583ca4c",
+        "src/shared/ui/SearchBar.test.tsx": "d8e4e0e3bda2226c00598e2e995683332a22c731a558487a8718f2360c916789",
+        "src/shared/ui/SearchBar.tsx": "e0394ee20f5e553cce81e517d354ce365cd66d94fc96dffcc5885a3ce7aacc40",
+        "src/shared/ui/StatusPill.tsx": "39e4fd50b27db4014f0b8c70bd895aed83ad8595e41f5d9a36a1b65c9b66164b",
+        "src/shared/ui/TabBar.test.tsx": "b1603270e3c3bbc2c5b3887b35eeb4a0a042f264bf404116ea6ae963ef221147",
+        "src/shared/ui/TabBar.tsx": "63ecbd6c88d6c066f489554a9453f2f8173ae711ad51130f506cf675e8b48e48",
+        "src/shared/ui/button.test.tsx": "32730a49d2f70f34a3f0aae74f9f5fa770645a1d3910ae9c47a2e236ad32228b",
+        "src/shared/ui/button.tsx": "4def3593104d50081f8fce113369ce142f269744f8bd683bb714af9a03f6014d",
+        "src/shared/ui/layout/Header.test.tsx": "52f6c474f496d36a9dbdb89d204aef5c8bb56d2ab092c9815c99e22cde0b78cb",
+        "src/shared/ui/layout/Header.tsx": "b44035048942ad55824e7eac468709dcd73a851ca00cfbaa991716d2664d57af",
+        "src/shared/ui/ui-primitives.test.tsx": "dff2e295afbdb7391b37fb9a1ccbbf78fa990211354a742f033d12f3935bd148"
+      },
+      "expected": "22 direct native button sites và 4 dynamic button render sites thiếu type trước sửa đều có type=button sau sửa; type=submit tường minh và asChild anchor được giữ; tests và structural gates pass.",
+      "actual": "PASS: AST trên 38 production shared UI files: direct untyped 22/26 xuống 0/26, dynamic untyped 4/4 xuống 0/4. Focused tests 11/11 files, 86/86; typecheck 2/2; lint 0 error/0 warning; format 23/23; dependency-cruiser 939 modules/5312 dependencies/0 violations; 12 shared primitive files có 133 unique direct production importers. Route matrix 428 static rows reconcile, 0 runtime rows. Test runner cleanup xóa 1 file/968 logical bytes, 0 lỗi.",
+      "result": "pass",
+      "artifact": "C:/CodexEvidence/vittrade-react/2026-10-16/c06-08/c06-08-button-type-source-and-run96.json",
+      "notes": "Evidence report ngoài repository có fingerprint từng file và raw artifact digest; direct importer là module count, không phải route runtime coverage. Sai entrypoint dependency-cruiser ở lần thử đầu được sửa; binary chính thức .mjs chạy pass."
+    },
+    {
+      "id": "EV-20261016-082",
+      "taskId": "C06",
+      "stepId": "C06.08",
+      "kind": "c06_08_tracking_integrity_check_before_self_audit",
+      "commandOrSteps": "node docs/architecture/production-readiness/check-tracking.mjs; xác nhận output report không có error.",
+      "environment": "Windows; Node v24.19.0; working source HEAD là commit 3401ba6c667fd5cfe84bfc3e263fde24130d3438; chạy sau khi cập nhật 23 file fingerprints và evidence EV-080/081.",
+      "observedAt": "2026-10-16T05:33:38.013Z",
+      "sourceHead": "3401ba6c667fd5cfe84bfc3e263fde24130d3438",
+      "dirtyFileHashes": {
+        "docs/architecture/production-readiness/TRACKING.json": "a2400415f202361e3a64c1bd7e229c6d5845d76ba43bd1921c982b1e122b7b34"
+      },
+      "expected": "C06 tracker references, source catalogue hashes, 428-route inventory and file/change/evidence scopes reconcile without errors.",
+      "actual": "PASS: check-tracking.mjs errorCount=0 on the prepared C06.08 business payload; a final check is also run after the self-audit record is appended.",
+      "result": "pass",
+      "artifact": "C:/CodexEvidence/vittrade-react/2026-10-16/c06-08/c06-08-tracking-validation.json",
+      "notes": "This evidence records the pre-self-audit validation run; the final post-self-audit validation output is retained at the same external evidence path."
     }
   ],
   "decisions": [
