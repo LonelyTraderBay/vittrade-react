@@ -19274,9 +19274,11 @@
             "EV-20261016-079",
             "EV-20261016-080",
             "EV-20261016-081",
-            "EV-20261016-082"
+            "EV-20261016-082",
+            "EV-20261016-083",
+            "EV-20261016-084"
           ],
-          "notes": "C06.08 is in progress. First scoped primitive contract: CTAButton defaults to type=\"button\"; explicit submit/button call sites are preserved. Static TypeScript AST found 53 JSX uses in 23 files and 9 form uses, all with explicit type. Focused component plus RegistrationForm tests passed 74/74 and local typecheck/lint/format passed (EV-069). Exact run #88 is the verified prerequisite (EV-068). CTAButton code and test are committed separately as 7e8aba6f18ff427694f184ec001a24915379988b. Exact source+ledger PR run #89 passed all 34/34 steps on 5ad8235093a018ee18ad12ffeadddcb278ea38d1; synthetic merge and artifact digest are verified (EV-20261016-070). Tracker-only closeout PR run #90 passed 34/34 steps on b0225b5c18beed2a0fd9a2511e78f25223332bce; synthetic merge and artifact digest are verified (EV-20261016-071). This two-commit CTAButton slice is complete; the next measured primitive may begin. Final cleanup completed with 0 deleted files/bytes; 18 protected/incomplete/current outputs retained by policy. InputField slice: AST measurement covered 549 project source files, 16 InputField JSX uses in 5 production modules, and 1 separate TrInput use. Replaced 2 identical #EF4444 error-border literals with the already-existing --input-border-error semantic token and removed 2 duplicate LoginPage overrides; computed color remains unchanged. Source commit 42899e4b418a6ff1b86f7aaed326a38997f05f5c. Local evidence EV-075 passes. Exact source-only CI run #93 (EV-074) passed test/browser steps but failed the readiness ledger on six stale file fingerprints; tracker update and exact run #94 plus tracker-only closeout #95 are required before the next primitive. Run #94 attempt 1 failed only at Coverage with no terminal Vitest summary; on unchanged exact source+ledger head, attempt 2 passed all 34/34 CI steps and the artifact digest is verified (EV-076/077). Coverage is measured at 99.93% lines, 99.91% statements, 99.94% functions and 99.81% branches; E2E 62 passed/4 configured skips, auth API/mock 75/75. Cause of attempt 1 remains unknown. The next closeout commit updates the canonical PLAN input-lock/re-audit protocol and its AI prompt pointer/authorization wording together with the tracker; exact PR run #95 and its artifact are required before another primitive. C06.08 remains in progress because more primitives remain. Local protocol/ledger verification passed (EV-078): check-tracking errorCount=0, PLAN/PROMPT Prettier and 7 content/link assertions pass; exact PR run #95 and subsequent primitives remain. Exact docs/tracker PR run #95 passed all 34/34 steps on source head 9f9495415e31db51da5de769eef17fc0925b6f5a (EV-079); artifact digest, synthetic merge and all six runner manifests verified. E2E had 4 configured skips. A tracker-only commit records EV-079 and must pass exact run #96 before the next primitive. Shared action-button sub-slice: source commit 3401ba6c667fd5cfe84bfc3e263fde24130d3438 sets type=button on shared action controls and makes generic Button safe by default. Measured AST: 22/26 direct and 4/4 dynamic sites missing type before; 0/26 and 0/4 after. Focused tests 86/86; 12 primitives affect 133 direct production importer modules. Exact #96 prerequisite passes; exact source+ledger #97 and tracker-closeout #98 are next required gates. The 428-row route matrix has 0 runtime-tested rows.",
+          "notes": "C06.08 is in progress. First scoped primitive contract: CTAButton defaults to type=\"button\"; explicit submit/button call sites are preserved. Static TypeScript AST found 53 JSX uses in 23 files and 9 form uses, all with explicit type. Focused component plus RegistrationForm tests passed 74/74 and local typecheck/lint/format passed (EV-069). Exact run #88 is the verified prerequisite (EV-068). CTAButton code and test are committed separately as 7e8aba6f18ff427694f184ec001a24915379988b. Exact source+ledger PR run #89 passed all 34/34 steps on 5ad8235093a018ee18ad12ffeadddcb278ea38d1; synthetic merge and artifact digest are verified (EV-20261016-070). Tracker-only closeout PR run #90 passed 34/34 steps on b0225b5c18beed2a0fd9a2511e78f25223332bce; synthetic merge and artifact digest are verified (EV-20261016-071). This two-commit CTAButton slice is complete; the next measured primitive may begin. Final cleanup completed with 0 deleted files/bytes; 18 protected/incomplete/current outputs retained by policy. InputField slice: AST measurement covered 549 project source files, 16 InputField JSX uses in 5 production modules, and 1 separate TrInput use. Replaced 2 identical #EF4444 error-border literals with the already-existing --input-border-error semantic token and removed 2 duplicate LoginPage overrides; computed color remains unchanged. Source commit 42899e4b418a6ff1b86f7aaed326a38997f05f5c. Local evidence EV-075 passes. Exact source-only CI run #93 (EV-074) passed test/browser steps but failed the readiness ledger on six stale file fingerprints; tracker update and exact run #94 plus tracker-only closeout #95 are required before the next primitive. Run #94 attempt 1 failed only at Coverage with no terminal Vitest summary; on unchanged exact source+ledger head, attempt 2 passed all 34/34 CI steps and the artifact digest is verified (EV-076/077). Coverage is measured at 99.93% lines, 99.91% statements, 99.94% functions and 99.81% branches; E2E 62 passed/4 configured skips, auth API/mock 75/75. Cause of attempt 1 remains unknown. The next closeout commit updates the canonical PLAN input-lock/re-audit protocol and its AI prompt pointer/authorization wording together with the tracker; exact PR run #95 and its artifact are required before another primitive. C06.08 remains in progress because more primitives remain. Local protocol/ledger verification passed (EV-078): check-tracking errorCount=0, PLAN/PROMPT Prettier and 7 content/link assertions pass; exact PR run #95 and subsequent primitives remain. Exact docs/tracker PR run #95 passed all 34/34 steps on source head 9f9495415e31db51da5de769eef17fc0925b6f5a (EV-079); artifact digest, synthetic merge and all six runner manifests verified. E2E had 4 configured skips. A tracker-only commit records EV-079 and must pass exact run #96 before the next primitive. Shared action-button sub-slice: source commit 3401ba6c667fd5cfe84bfc3e263fde24130d3438 sets type=button on shared action controls and makes generic Button safe by default. Measured AST: 22/26 direct and 4/4 dynamic sites missing type before; 0/26 and 0/4 after. Focused tests 86/86; 12 primitives affect 133 direct production importer modules. Exact #96 prerequisite passes; exact source+ledger #97 and tracker-closeout #98 are next required gates. The 428-row route matrix has 0 runtime-tested rows. Exact source+ledger PR run #97 passed 34/34 on f9b7dea9380d142ee8716547c600d58c997e45f5; artifact digest, six runner manifests, synthetic merge parents/tree/signature verified (EV-20261016-083). A separate tracker-only closeout is now required; do not start the next primitive until exact PR run #98 passes on the closeout SHA.",
           "execution": {
             "instructionsRef": "PLAN.md#frontend-ui-ux-ds-migration-20261015",
             "fileSelection": "files[].executionScope.stepIds includes C06.08",
@@ -19286,9 +19288,10 @@
               "EV-20261016-075",
               "EV-20261016-078",
               "EV-20261016-081",
-              "EV-20261016-082"
+              "EV-20261016-082",
+              "EV-20261016-084"
             ],
-            "prerequisiteGithubEvidenceId": "EV-20261016-080",
+            "prerequisiteGithubEvidenceId": "EV-20261016-083",
             "consumerInventory": {
               "sourceFilesScanned": 549,
               "CTAButtonConsumerFiles": 23,
@@ -19314,9 +19317,9 @@
               "focusedTestFiles": 11,
               "focusedTests": 86
             },
-            "requiredNextGate": "Chỉ chuyển sang primitive C06.08 kế tiếp sau exact PR run #97 trên source+ledger SHA mới PASS đầy đủ, xác minh merge/artifact provenance; sau đó tracker-only closeout phải có exact PR run #98 PASS trên SHA closeout. Dùng số run thực tế nếu GitHub có run khác chen vào; không suy ra từ số dự kiến.",
+            "requiredNextGate": "Exact PR run #97 đã PASS 34/34 trên SHA f9b7dea9380d142ee8716547c600d58c997e45f5 (EV-20261016-083). Chỉ bắt đầu primitive tiếp theo sau tracker-only closeout và exact PR run #98 trên SHA closeout PASS; xác minh artifact digest, merge parents/tree/signature. Nếu có run khác chen vào, dùng số run/SHA thực tế.",
             "sourceCommit": "3401ba6c667fd5cfe84bfc3e263fde24130d3438",
-            "latestGithubEvidenceId": "EV-20261016-080",
+            "latestGithubEvidenceId": "EV-20261016-083",
             "perPrimitiveImporterCounts": {
               "BottomSheetV2": {
                 "production": 14,
@@ -19409,7 +19412,8 @@
             "CHANGE-20261016-115",
             "CHANGE-20261016-116",
             "CHANGE-20261016-117",
-            "CHANGE-20261016-118"
+            "CHANGE-20261016-118",
+            "CHANGE-20261016-119"
           ]
         },
         {
@@ -20119,7 +20123,9 @@
         "EV-20261016-069",
         "EV-20261016-080",
         "EV-20261016-081",
-        "EV-20261016-082"
+        "EV-20261016-082",
+        "EV-20261016-083",
+        "EV-20261016-084"
       ],
       "changeIds": [
         "CHANGE-20261015-001",
@@ -20219,7 +20225,8 @@
         "CHANGE-20261016-115",
         "CHANGE-20261016-116",
         "CHANGE-20261016-117",
-        "CHANGE-20261016-118"
+        "CHANGE-20261016-118",
+        "CHANGE-20261016-119"
       ],
       "blockers": [],
       "startedAt": "2026-10-15T01:47:05.375Z",
@@ -133150,7 +133157,7 @@
         "C06"
       ],
       "disposition": "changed",
-      "reason": "Register EV-013 full suite, MarketSentiment owner slice and DCA next target. EV-20261010-014 registers the DCA overlay full-suite slice and P2P next target. | EV-015 registers the full-suite counters, owner slice, evidence artifact and checkpoint. | EV-016 registers measured counters, scope and checkpoint. | EV-017 registers measured counters, scope and checkpoint. | EV-018 registers measured counters, scope and checkpoint. | EV-019 registers measured counters, scope and checkpoint. | EV-020 registers measured counters, scope and checkpoint. | EV-021 registers measured counters, scope and checkpoint. | EV-022 registers measured counters, scope and checkpoint. | EV-023 registers measured counters, owner scope, and checkpoint. | EV-024 registers measured counters, owner scope, and checkpoint. | EV-025 registers measured counters, owner scope, and checkpoint. | EV-026 maps the owner test to C03.05 and registers measured counters. | EV-027 maps the owner test to C03.05 and registers measured counters. | EV-028 maps the P2P create-ad owner test to C03.05 and registers measured counters. | EV-029 maps the Coachmark owner test to C03.05 and registers measured counters. | EV-030 maps the P2P achievements source and owner test to C03.05 and registers measured counters. | EV-031 maps the Trade Analytics owner test to C03.05 and registers measured counters. | EV-20261011-064 registers the current local full-suite report, exact dirty-status/mismatch inventory, and C03 checkpoint. | EV-20261011-065 records the P2P coverage iteration, full-suite counters, source change and next TabletTopBar checkpoint. | EV-20261011-066 records TabletTopBar owner coverage, full-suite counters, worktree-only test provenance and next SwipeBack checkpoint. | EV-20261011-067 records SwipeBack gesture coverage, source/test hashes, full-suite counters and PasswordChange next slice. | EV-20261011-068 records PasswordChangePage coverage, owner-test hash delta, full-suite counters and OrdersHistory next slice. | User-authorized unused-output retention EV-20261012-008; previous catalogue retained until reviewed Git delivery. | DECISION-20261013-002: docs-only remediation planning; no runtime source edited. | EV-20261014-001/002/003: record coverage, wide UI and checker evidence without rebasing dirty source provenance. | Iteration55 ledger payload records new coverage, responsive review and environment blocker evidence; self-audit change will be recorded after the actual payload snapshot. | EV-20261014-009: record source-based responsive candidate classification without changing source fingerprints. | CHANGE-20261014-036: preserve and audit the final overflow-triage payload. | Record exact post-audit gates and self-audit the inventory-pointer/evidence reconciliation. | EV-20261014-012–014: register full coverage, exact source provenance and hosted CI #51 result. | Iteration 62: ghi source hashes, coverage/UI/E2E evidence, blocker status và checkpoint. | C06.01: đăng ký 15-step scope, route/page matrix, local validation, và provenance audit. | C06.02 self-audit round 5: records exact-SHA CI regression/fix, local and hosted verification, preserves old file snapshots, and rebinds 11 actual source blobs to a29a255e. | EV-20261015-016 records exact pushed-SHA CI #62 success and verified downloaded artifact digest. | C06.03: ghi provenance, evidence và checkpoint theo exact commit; self-audit archive được lưu ngoài repository. | C06.03 closeout records both exact-SHA run #71 attempts and verified artifact digests (EV-20261015-034/035); attempt 1 failed one coverage test, attempt 2 passed 34/34; first-attempt cause remains unproven and no DCA code/test changed. C06.04 stays gated on run #72 for the resulting tracker SHA. | C06.05: Ghi nhận run #75 đã qua, kết quả kiểm thử local và cổng exact-SHA #76/#77. | C06.05: Run #76 exact PR head passed 34/34 with merge/tree and artifact digest verified; run #77 gates tracker closeout. | C06.06: Ghi nhận contract review, source SHA và gate local; exact #78/#79 còn bắt buộc. | C06.06: Ghi nhận exact PR run #78 PASS; tracker closeout #79 còn bắt buộc trước C06.07. | C06.07: ghi run #79, source/local/runtime/build evidence và checkpoint cho bước token/theme. | C06.07: exact PR run #80 PASS 34/34; merge provenance/artifact digest recorded in EV-20261016-055; tracker closeout run #81 remains mandatory. | C06.07: bind DCA fingerprint to 1a04ce3; record #83/#84; require exact #85/#86 before C06.08. | C06.08: record shared action type contract, measured source fingerprints and exact #96 prerequisite. | EV-20261016-082: prepared-ledger consistency check passed; final self-audit is checked again.",
+      "reason": "Register EV-013 full suite, MarketSentiment owner slice and DCA next target. EV-20261010-014 registers the DCA overlay full-suite slice and P2P next target. | EV-015 registers the full-suite counters, owner slice, evidence artifact and checkpoint. | EV-016 registers measured counters, scope and checkpoint. | EV-017 registers measured counters, scope and checkpoint. | EV-018 registers measured counters, scope and checkpoint. | EV-019 registers measured counters, scope and checkpoint. | EV-020 registers measured counters, scope and checkpoint. | EV-021 registers measured counters, scope and checkpoint. | EV-022 registers measured counters, scope and checkpoint. | EV-023 registers measured counters, owner scope, and checkpoint. | EV-024 registers measured counters, owner scope, and checkpoint. | EV-025 registers measured counters, owner scope, and checkpoint. | EV-026 maps the owner test to C03.05 and registers measured counters. | EV-027 maps the owner test to C03.05 and registers measured counters. | EV-028 maps the P2P create-ad owner test to C03.05 and registers measured counters. | EV-029 maps the Coachmark owner test to C03.05 and registers measured counters. | EV-030 maps the P2P achievements source and owner test to C03.05 and registers measured counters. | EV-031 maps the Trade Analytics owner test to C03.05 and registers measured counters. | EV-20261011-064 registers the current local full-suite report, exact dirty-status/mismatch inventory, and C03 checkpoint. | EV-20261011-065 records the P2P coverage iteration, full-suite counters, source change and next TabletTopBar checkpoint. | EV-20261011-066 records TabletTopBar owner coverage, full-suite counters, worktree-only test provenance and next SwipeBack checkpoint. | EV-20261011-067 records SwipeBack gesture coverage, source/test hashes, full-suite counters and PasswordChange next slice. | EV-20261011-068 records PasswordChangePage coverage, owner-test hash delta, full-suite counters and OrdersHistory next slice. | User-authorized unused-output retention EV-20261012-008; previous catalogue retained until reviewed Git delivery. | DECISION-20261013-002: docs-only remediation planning; no runtime source edited. | EV-20261014-001/002/003: record coverage, wide UI and checker evidence without rebasing dirty source provenance. | Iteration55 ledger payload records new coverage, responsive review and environment blocker evidence; self-audit change will be recorded after the actual payload snapshot. | EV-20261014-009: record source-based responsive candidate classification without changing source fingerprints. | CHANGE-20261014-036: preserve and audit the final overflow-triage payload. | Record exact post-audit gates and self-audit the inventory-pointer/evidence reconciliation. | EV-20261014-012–014: register full coverage, exact source provenance and hosted CI #51 result. | Iteration 62: ghi source hashes, coverage/UI/E2E evidence, blocker status và checkpoint. | C06.01: đăng ký 15-step scope, route/page matrix, local validation, và provenance audit. | C06.02 self-audit round 5: records exact-SHA CI regression/fix, local and hosted verification, preserves old file snapshots, and rebinds 11 actual source blobs to a29a255e. | EV-20261015-016 records exact pushed-SHA CI #62 success and verified downloaded artifact digest. | C06.03: ghi provenance, evidence và checkpoint theo exact commit; self-audit archive được lưu ngoài repository. | C06.03 closeout records both exact-SHA run #71 attempts and verified artifact digests (EV-20261015-034/035); attempt 1 failed one coverage test, attempt 2 passed 34/34; first-attempt cause remains unproven and no DCA code/test changed. C06.04 stays gated on run #72 for the resulting tracker SHA. | C06.05: Ghi nhận run #75 đã qua, kết quả kiểm thử local và cổng exact-SHA #76/#77. | C06.05: Run #76 exact PR head passed 34/34 with merge/tree and artifact digest verified; run #77 gates tracker closeout. | C06.06: Ghi nhận contract review, source SHA và gate local; exact #78/#79 còn bắt buộc. | C06.06: Ghi nhận exact PR run #78 PASS; tracker closeout #79 còn bắt buộc trước C06.07. | C06.07: ghi run #79, source/local/runtime/build evidence và checkpoint cho bước token/theme. | C06.07: exact PR run #80 PASS 34/34; merge provenance/artifact digest recorded in EV-20261016-055; tracker closeout run #81 remains mandatory. | C06.07: bind DCA fingerprint to 1a04ce3; record #83/#84; require exact #85/#86 before C06.08. | C06.08: record shared action type contract, measured source fingerprints and exact #96 prerequisite. | EV-20261016-082: prepared-ledger consistency check passed; final self-audit is checked again. | C06.08: exact run #97 passed 34/34 with artifact and synthetic merge provenance; tracker-only run #98 gates the next primitive. | EV-20261016-084: run #97 closeout checker passed; final self-audit checked again.",
       "evidenceIds": [
         "EV-20261001-034",
         "EV-20261001-035",
@@ -133307,7 +133314,9 @@
         "EV-20261016-079",
         "EV-20261016-080",
         "EV-20261016-081",
-        "EV-20261016-082"
+        "EV-20261016-082",
+        "EV-20261016-083",
+        "EV-20261016-084"
       ],
       "changeIds": [
         "CHANGE-20261001-0316",
@@ -133485,7 +133494,8 @@
         "CHANGE-20261016-115",
         "CHANGE-20261016-116",
         "CHANGE-20261016-117",
-        "CHANGE-20261016-118"
+        "CHANGE-20261016-118",
+        "CHANGE-20261016-119"
       ],
       "cataloguedAt": "2026-10-01T04:02:26.000Z",
       "executionScope": {
@@ -310989,6 +310999,28 @@
         "archiveSha256": "6c5f0766cd6446b4571c1bcc4c5b55e46433733b00d1a8aeb1e38bbb02b586fb",
         "payloadSha256": "6c5f0766cd6446b4571c1bcc4c5b55e46433733b00d1a8aeb1e38bbb02b586fb"
       }
+    },
+    {
+      "id": "CHANGE-20261016-119",
+      "taskId": "C06",
+      "stepId": "C06.08",
+      "path": "docs/architecture/production-readiness/TRACKING.json",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Đóng exact PR run #97 bằng provenance, ghi tracker-only gate #98 và kết quả kiểm tra ledger trước self-audit.",
+      "beforeHash": "32e47ce9d387ab74446f7d426120c9b89b555b6921b137fdd7e60adf8a15a792",
+      "afterHash": "012ecc81d9d4d8638b9816b636bca73715fdf58d7a08ea802b727c6d82aa45bf",
+      "evidenceIds": [
+        "EV-20261016-083",
+        "EV-20261016-084"
+      ],
+      "commit": null,
+      "afterHashRecovery": {
+        "kind": "actual_written_business_payload_before_final_self_audit",
+        "archivePath": "C:/CodexEvidence/vittrade-react/2026-10-16/c06-08/c06-08-run97-tracking-business-payload.json",
+        "archiveSha256": "012ecc81d9d4d8638b9816b636bca73715fdf58d7a08ea802b727c6d82aa45bf",
+        "payloadSha256": "012ecc81d9d4d8638b9816b636bca73715fdf58d7a08ea802b727c6d82aa45bf"
+      }
     }
   ],
   "evidence": [
@@ -346485,6 +346517,40 @@
       "result": "pass",
       "artifact": "C:/CodexEvidence/vittrade-react/2026-10-16/c06-08/c06-08-tracking-validation.json",
       "notes": "This evidence records the pre-self-audit validation run; the final post-self-audit validation output is retained at the same external evidence path."
+    },
+    {
+      "id": "EV-20261016-083",
+      "taskId": "C06",
+      "stepId": "C06.08",
+      "kind": "github_exact_pr_run_97_pass_and_artifact_provenance",
+      "commandOrSteps": "Xác minh run #97 theo run ID 38856553917; kiểm tra exact head SHA, toàn bộ job steps, artifact metadata/digest, sáu runner manifests và synthetic merge tree/signature.",
+      "environment": "GitHub Actions ubuntu-latest; workflow CI; PR #3; attempt 1; source+ledger head f9b7dea9380d142ee8716547c600d58c997e45f5.",
+      "observedAt": "2026-10-16T06:01:42Z",
+      "sourceHead": "f9b7dea9380d142ee8716547c600d58c997e45f5",
+      "dirtyFileHashes": {},
+      "expected": "Exact pushed source+ledger SHA hoàn tất toàn bộ CI; artifact digest khớp GitHub; runner snapshots và synthetic merge provenance đúng.",
+      "actual": "PASS: job Production gates success, 34/34 steps; không step lỗi. Artifact 12028865137, 33,627,737 bytes, SHA-256 f0a02e68fcf1b4ed05032bf9e5ba9b6344dc794b196493ec2c30ca88768b0a7d khớp ZIP tải về. Sáu runner manifests đều passed, childClosed, exitCode 0, sourceUnchanged; cùng snapshot c28c21c86fd16ab11407284d330ce22589bf9a67 với 1143 fingerprint. Synthetic merge có base db9c9064fa3ba79bd76fb7acb1023d90486b6cbf + head f9b7dea9380d142ee8716547c600d58c997e45f5, tree trùng source 3353deb6d54a825dba2315ff7b4e4c2ec488539c, signature verified (valid).",
+      "result": "pass",
+      "artifact": "C:/CodexEvidence/vittrade-react/2026-10-16/c06-08/c06-08-run97-provenance.json",
+      "notes": "Exact PR source+ledger gate hoàn tất; tracker-only closeout run #98 là gate bắt buộc trước primitive tiếp theo. Không đọc hoặc lưu screenshot contents."
+    },
+    {
+      "id": "EV-20261016-084",
+      "taskId": "C06",
+      "stepId": "C06.08",
+      "kind": "run_97_tracker_closeout_integrity_check",
+      "commandOrSteps": "node docs/architecture/production-readiness/check-tracking.mjs after recording exact run #97 and before the tracker self-audit record.",
+      "environment": "Windows; Node v24.19.0; source HEAD f9b7dea9380d142ee8716547c600d58c997e45f5.",
+      "observedAt": "2026-10-16T06:05:14.940Z",
+      "sourceHead": "f9b7dea9380d142ee8716547c600d58c997e45f5",
+      "dirtyFileHashes": {
+        "docs/architecture/production-readiness/TRACKING.json": "31267a83a9d2b822a53cd2d07551f5dfc8b31abd2e2f6b9a3d08b463d8fd41e4"
+      },
+      "expected": "Tracker references, file scope, route inventory and exact #97 evidence reconcile.",
+      "actual": "PASS: check-tracking errorCount=0 on the prepared run #97 closeout payload; final ledger is checked again after the self-audit entry is appended.",
+      "result": "pass",
+      "artifact": "C:/CodexEvidence/vittrade-react/2026-10-16/c06-08/c06-08-run97-tracking-validation.json",
+      "notes": "The pre-self-audit validator output is retained separately; final validator output uses the artifact path above."
     }
   ],
   "decisions": [
