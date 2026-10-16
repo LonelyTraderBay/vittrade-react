@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "sourceHead": "0e60b30f2efb42873eaa5ace9bb4178f581eb0ea",
+  "sourceHead": "c80d8c3434e48e3b47e5e56d2a9e7b519a72733b",
   "inventorySource": "docs/architecture/page-inventory.json",
   "trackingSource": "docs/architecture/production-readiness/TRACKING.json",
   "scope": {
