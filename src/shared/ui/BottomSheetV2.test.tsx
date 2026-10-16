@@ -1,5 +1,6 @@
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
+import { useState } from 'react';
 import { renderWithProviders } from '@/test/test-utils';
 import { BottomSheetRow, BottomSheetV2 } from './BottomSheetV2';
 
@@ -42,6 +43,40 @@ describe('BottomSheetV2', () => {
     expect(close).toBeEnabled();
     fireEvent.click(close);
     expect(onClose).toHaveBeenCalledOnce();
+  });
+
+  it('keeps the modal layer active through exit and allows reopen after it completes', async () => {
+    function ReopenableSheet() {
+      const [open, setOpen] = useState(false);
+      return (
+        <>
+          <button type="button" onClick={() => setOpen(true)}>
+            Open sheet
+          </button>
+          <BottomSheetV2 open={open} onClose={() => setOpen(false)} title="Reopenable sheet">
+            <p>Sheet content</p>
+          </BottomSheetV2>
+        </>
+      );
+    }
+
+    renderWithProviders(<ReopenableSheet />);
+    fireEvent.click(screen.getByRole('button', { name: 'Open sheet' }));
+    expect(screen.getByRole('dialog', { name: 'Reopenable sheet' })).toBeVisible();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Đóng' }));
+    expect(document.querySelector('[role="dialog"]')).toBeInTheDocument();
+    expect(document.querySelector('[data-bottom-sheet-overlay]')).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Open sheet' })).not.toBeInTheDocument();
+
+    await waitFor(() =>
+      expect(document.querySelector('[data-bottom-sheet-overlay]')).not.toBeInTheDocument(),
+    );
+    expect(document.querySelector('[role="dialog"]')).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Open sheet' }));
+
+    expect(screen.getByRole('dialog', { name: 'Reopenable sheet' })).toBeVisible();
+    expect(screen.getByText('Sheet content')).toBeVisible();
   });
 
   it('blocks every close request while preventClose is active', () => {
@@ -323,10 +358,11 @@ describe('BottomSheetV2', () => {
         <button>Action</button>
       </BottomSheetV2>,
     );
-    expect(screen.getByRole('button', { name: 'Open sheet' })).toBeInTheDocument();
     await waitFor(() =>
-      expect(screen.queryByRole('dialog', { name: 'Focus' })).not.toBeInTheDocument(),
+      expect(document.querySelector('[data-bottom-sheet-overlay]')).not.toBeInTheDocument(),
     );
+    expect(document.querySelector('[role="dialog"]')).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Open sheet' })).toBeInTheDocument();
     await waitFor(() => expect(trigger).toHaveFocus());
     trigger.remove();
   });

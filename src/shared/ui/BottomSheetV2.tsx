@@ -374,7 +374,7 @@ export function BottomSheetV2({
   const sheetContent = (
     <DialogPrimitive.Root
       open={open}
-      modal={open}
+      modal
       onOpenChange={(nextOpen) => {
         if (!nextOpen) handleCloseRequest();
       }}
@@ -400,7 +400,7 @@ export function BottomSheetV2({
                   /* ═══ Bottom Sheet ═══ */
                   <div className="absolute inset-0 z-[60] flex justify-center items-end">
                     {/* ─── Backdrop ─── */}
-                    <DialogPrimitive.Overlay asChild>
+                    <DialogPrimitive.Overlay forceMount asChild>
                       <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: open ? computedBackdropOpacity : 0 }}
@@ -423,6 +423,7 @@ export function BottomSheetV2({
 
                     {/* ─── Sheet panel ─── */}
                     <DialogPrimitive.Content
+                      forceMount
                       asChild
                       onOpenAutoFocus={handleOpenAutoFocus}
                       onCloseAutoFocus={handleCloseAutoFocus}
@@ -476,7 +477,7 @@ export function BottomSheetV2({
                 ) : (
                   /* ═══ Center Modal ═══ */
                   <div className="contents">
-                    <DialogPrimitive.Overlay asChild>
+                    <DialogPrimitive.Overlay forceMount asChild>
                       <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: open ? 1 : 0 }}
@@ -497,6 +498,7 @@ export function BottomSheetV2({
                       style={{ padding: 12 }}
                     >
                       <DialogPrimitive.Content
+                        forceMount
                         asChild
                         onOpenAutoFocus={handleOpenAutoFocus}
                         onCloseAutoFocus={handleCloseAutoFocus}
