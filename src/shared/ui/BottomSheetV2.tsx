@@ -89,14 +89,19 @@ export function BottomSheetV2({
 }: BottomSheetV2Props) {
   const c = useThemeColors();
   const prefersReducedMotion = useReducedMotion() ?? false;
+  const [modalOpen, setModalOpen] = useState(open);
   const sheetRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const previousFocusRef = useRef<HTMLElement | null>(null);
   const wasOpenRef = useRef(false);
   const portalContentRef = useRef<HTMLDivElement>(null);
 
+  useLayoutEffect(() => {
+    if (open) setModalOpen(true);
+  }, [open]);
+
   /* ─── Scroll lock ─── */
-  useScrollLock(open);
+  useScrollLock(modalOpen);
 
   /* ─── Swipe-to-dismiss: native touch + mouse listeners for reliable swipe-to-dismiss ─── */
   const [dragOffset, setDragOffset] = useState(0);
@@ -230,14 +235,14 @@ export function BottomSheetV2({
   useLayoutEffect(() => {
     const portalContent = portalContentRef.current;
     if (portalContent) {
-      if (open) portalContent.removeAttribute('inert');
+      if (modalOpen) portalContent.removeAttribute('inert');
       else portalContent.setAttribute('inert', '');
     }
 
-    if (open && !wasOpenRef.current) {
+    if (modalOpen && !wasOpenRef.current) {
       previousFocusRef.current =
         document.activeElement instanceof HTMLElement ? document.activeElement : null;
-    } else if (!open && wasOpenRef.current) {
+    } else if (!modalOpen && wasOpenRef.current) {
       const previousFocus = previousFocusRef.current;
       previousFocusRef.current = null;
       const hasOpenDialog = Boolean(document.querySelector('[role="dialog"][data-state="open"]'));
@@ -252,8 +257,8 @@ export function BottomSheetV2({
       }
     }
 
-    wasOpenRef.current = open;
-  }, [open]);
+    wasOpenRef.current = modalOpen;
+  }, [modalOpen]);
 
   /* ─── onAfterOpen callback ─── */
   useEffect(() => {
@@ -373,20 +378,24 @@ export function BottomSheetV2({
 
   const sheetContent = (
     <DialogPrimitive.Root
-      open={open}
-      modal
+      open={modalOpen}
+      modal={modalOpen}
       onOpenChange={(nextOpen) => {
         if (!nextOpen) handleCloseRequest();
       }}
     >
-      <DialogPrimitive.Portal container={portalTarget} forceMount>
+      <DialogPrimitive.Portal container={portalTarget}>
         <div
           ref={portalContentRef}
           className="contents"
-          aria-hidden={!open}
+          aria-hidden={!modalOpen}
           style={{ pointerEvents: open ? 'auto' : 'none' }}
         >
-          <AnimatePresence>
+          <AnimatePresence
+            onExitComplete={() => {
+              if (!open) setModalOpen(false);
+            }}
+          >
             {open && (
               <motion.div
                 key={variant}
@@ -400,7 +409,7 @@ export function BottomSheetV2({
                   /* ═══ Bottom Sheet ═══ */
                   <div className="absolute inset-0 z-[60] flex justify-center items-end">
                     {/* ─── Backdrop ─── */}
-                    <DialogPrimitive.Overlay forceMount asChild>
+                    <DialogPrimitive.Overlay asChild>
                       <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: open ? computedBackdropOpacity : 0 }}
@@ -423,7 +432,6 @@ export function BottomSheetV2({
 
                     {/* ─── Sheet panel ─── */}
                     <DialogPrimitive.Content
-                      forceMount
                       asChild
                       onOpenAutoFocus={handleOpenAutoFocus}
                       onCloseAutoFocus={handleCloseAutoFocus}
@@ -432,7 +440,7 @@ export function BottomSheetV2({
                       {...dialogLabelProps}
                       aria-label={resolvedAriaLabel}
                       aria-describedby={undefined}
-                      aria-modal={open ? true : undefined}
+                      aria-modal={modalOpen ? true : undefined}
                       tabIndex={-1}
                     >
                       <motion.div
@@ -477,7 +485,7 @@ export function BottomSheetV2({
                 ) : (
                   /* ═══ Center Modal ═══ */
                   <div className="contents">
-                    <DialogPrimitive.Overlay forceMount asChild>
+                    <DialogPrimitive.Overlay asChild>
                       <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: open ? 1 : 0 }}
@@ -498,7 +506,6 @@ export function BottomSheetV2({
                       style={{ padding: 12 }}
                     >
                       <DialogPrimitive.Content
-                        forceMount
                         asChild
                         onOpenAutoFocus={handleOpenAutoFocus}
                         onCloseAutoFocus={handleCloseAutoFocus}
@@ -507,7 +514,7 @@ export function BottomSheetV2({
                         {...dialogLabelProps}
                         aria-label={resolvedAriaLabel}
                         aria-describedby={undefined}
-                        aria-modal={open ? true : undefined}
+                        aria-modal={modalOpen ? true : undefined}
                         tabIndex={-1}
                       >
                         <motion.div

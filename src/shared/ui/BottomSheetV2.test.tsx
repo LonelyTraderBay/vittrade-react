@@ -68,11 +68,14 @@ describe('BottomSheetV2', () => {
     expect(document.querySelector('[role="dialog"]')).toBeInTheDocument();
     expect(document.querySelector('[data-bottom-sheet-overlay]')).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'Open sheet' })).not.toBeInTheDocument();
+    expect(document.body.style.pointerEvents).toBe('none');
 
     await waitFor(() =>
       expect(document.querySelector('[data-bottom-sheet-overlay]')).not.toBeInTheDocument(),
     );
     expect(document.querySelector('[role="dialog"]')).not.toBeInTheDocument();
+    await waitFor(() => expect(document.body.style.pointerEvents).toBe(''));
+    expect(screen.getByRole('button', { name: 'Open sheet' })).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Open sheet' }));
 
     expect(screen.getByRole('dialog', { name: 'Reopenable sheet' })).toBeVisible();
