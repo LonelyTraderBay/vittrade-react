@@ -19,6 +19,8 @@ Hãy tiếp tục triển khai roadmap chuẩn hóa React frontend của reposit
 
 Không hardcode ID bước, phần trăm hoặc kết luận cũ trong phiên làm việc mới. Đọc checkpoint và source hiện tại trước khi quyết định việc kế tiếp.
 
+Khi được yêu cầu kiểm tra lại, áp dụng protocol khóa đầu vào và đối chiếu stable IDs trong [PLAN.md](../architecture/production-readiness/PLAN.md); PLAN/TRACKING/evidence là nguồn quyết định, prompt này chỉ điều phối.
+
 ## 2. Chọn skill vừa đủ
 
 Khi khả dụng, dùng karpathy-guidelines cho thay đổi code có giả định hoặc rủi ro; chọn thêm skill chuyên môn phù hợp với đúng ranh giới của bước hiện tại theo WORKFLOW.md. Nếu người dùng gọi rõ skill, đọc hướng dẫn của skill đó khi nó có sẵn. Không nạp hàng loạt skill, không tuyên bố đã dùng thứ chưa đọc/không khả dụng, không tự cài plugin hay đổi cấu hình cá nhân. Khi thiếu skill, áp dụng hướng dẫn repo tương đương và ghi giới hạn nếu ảnh hưởng tiêu chí.
@@ -73,7 +75,7 @@ Thực hiện M1–M4 theo định nghĩa trong PLAN.md, nhưng không gọi d�
 
 Cập nhật đúng runbook/tài liệu owner để người dùng có thể khởi động preview, kiểm tra URL/port/persona/scenario/reset, thao tác, expected và artifact thực tế; nêu API/contract draft và việc backend còn phải cung cấp. Không tạo framework/module mẫu chỉ để minh họa.
 
-Không tự commit, push, deploy, gửi dữ liệu ra dịch vụ ngoài hoặc làm thao tác phá hủy chỉ vì PLAN nhắc đến. Nếu kết thúc phiên trước khi hoàn tất, lưu checkpoint trong TRACKING.json: bước cuối đã kiểm chứng, file, evidence, kiểm tra còn thiếu, blocker và nextAction đủ cụ thể để tiếp tục mà không làm lại từ đầu.
+Không commit/push chỉ vì PLAN nhắc đến. Nếu người dùng đã ủy quyền trực tiếp trong task hiện tại, hãy commit và push từng lát cắt sau khi acceptance local đạt, theo đúng giới hạn branch/PR, review, hooks và GitHub gate ở PLAN; không hỏi lại cho từng commit trong phạm vi đã ủy quyền. Ủy quyền này không bao gồm deploy, thao tác dữ liệu thật, force-push, bỏ qua kiểm tra hoặc đưa thay đổi ngoài scope lên remote. Khi chưa có ủy quyền trực tiếp, giữ nguyên không commit/push. Không gửi dữ liệu ra dịch vụ ngoài hay làm thao tác phá hủy nếu chưa được giao rõ. Nếu kết thúc phiên trước khi hoàn tất, lưu checkpoint trong TRACKING.json: bước cuối đã kiểm chứng, file, evidence, kiểm tra còn thiếu, blocker và nextAction đủ cụ thể để tiếp tục mà không làm lại từ đầu.
 
 Bắt đầu bằng xác minh checkpoint hiện tại, chọn bước hợp lệ theo PLAN, nêu phạm vi/cách kiểm chứng ngắn gọn rồi triển khai liên tục.
 ```

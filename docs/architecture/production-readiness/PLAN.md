@@ -676,6 +676,25 @@ quyền deploy hoặc quyền commit thay đổi ngoài migration:
   implementation; evidence ghi kết quả. Không chép status vào hướng dẫn thứ hai.
   Nếu code, Guidelines, tracker, CI hoặc evidence mâu thuẫn, ghi conflict và sửa
   tại owner trước khi đóng; không âm thầm chọn nguồn thuận tiện.
+- Mỗi lần kiểm tra lại phải khóa một bộ đầu vào có thể đối chiếu trong evidence:
+  revision Git (base/head/merge khi dùng PR), dirty-path hash nếu có, danh sách
+  route/file và mẫu số áp dụng, ID tiêu chí/check, config/script/lockfile hash,
+  phiên bản Node/package manager/browser/OS, lệnh thực tế, cùng matrix shell ×
+  state × viewport/breakpoint × theme × locale/timezone × role khi các chiều đó
+  áp dụng. Ghi fixture/seed, clock, font và motion setting nếu chúng ảnh hưởng
+  kết quả; chiều không áp dụng phải ghi N/A và lý do, không tự thêm vào phạm vi.
+  Evidence lưu raw artifact/hash và số đo tử/mẫu, không chứa secret hoặc PII.
+- Khi bộ đầu vào và revision trùng, chạy cùng check trên cùng tập ID ổn định và
+  so từng trạng thái, số đo, test/route, finding và ngoại lệ. Timestamp hoặc
+  metadata môi trường được phép khác chỉ khi đã tách khỏi phép so sánh và raw
+  output vẫn được giữ. Nếu kết quả thay đổi với cùng đầu vào, giữ cả hai lần đo,
+  đánh dấu gate chưa đạt và tìm nguyên nhân; không ghi đè kết quả cũ, lấy kết quả
+  thuận lợi hơn hoặc gọi prompt lặp lại là xác minh. Nếu bất kỳ đầu vào nào đổi,
+  tạo evidence mới, tính lại tử/mẫu và giải thích delta; không so tỷ lệ khác scope.
+- Câu trả lời cho prompt kiểm tra lại phải dựng lại kết quả từ source, tracker và
+  evidence hiện hành theo stable IDs; cùng fingerprint phải cho cùng quyết định
+  PASS/FAIL/NOT RUN/BLOCKED/N/A. Văn xuôi có thể khác, nhưng không được đổi scope,
+  kết quả hay mức chắc chắn nếu không có source/evidence mới.
 
 #### Thứ tự khởi động
 
