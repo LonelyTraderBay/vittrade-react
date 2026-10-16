@@ -181,6 +181,9 @@ describe('WatchlistPage', () => {
     );
 
     expect(await screen.findByText('BTC/USDT')).toBeInTheDocument();
+    expect(
+      screen.getByText('1 cặp đang theo dõi').parentElement?.querySelector('svg'),
+    ).toHaveAttribute('fill', 'var(--tr-primary)');
     fireEvent.click(screen.getByRole('button', { name: 'Giao dịch' }));
     expect(screen.getByTestId('location')).toHaveTextContent('/w/trade/btc-usdt');
   });
@@ -244,7 +247,7 @@ describe('WatchlistPage', () => {
 
     renderWithProviders(<WatchlistPage />, { authAdapter });
 
-    expect(await screen.findByText('-2.34%')).toHaveStyle({ color: 'rgb(239, 68, 68)' });
+    expect(await screen.findByText('-2.34%')).toHaveStyle({ color: 'var(--tr-error-text)' });
   });
 
   it('retries both market queries after a transient load error', async () => {

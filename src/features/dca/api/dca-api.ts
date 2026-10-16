@@ -128,7 +128,11 @@ export const dcaApi: DCAApi = {
       },
       { retries: 0 },
     );
-    return mapPlan(planSchema.parse(response));
+    return mapPlan(
+      planSchema
+        .refine((plan) => plan.id === planId, 'Plan response does not match the requested plan')
+        .parse(response),
+    );
   },
   async deletePlan(planId, idempotencyKey, signal) {
     await apiClient.request<void>(

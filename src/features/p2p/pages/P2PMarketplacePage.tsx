@@ -103,7 +103,7 @@ export function P2PMarketplacePage({
   }, [actionToast]);
 
   const handleViewMerchant = useCallback(
-    (ad: P2PAd) => navigate(`${prefix}/p2p/merchant/${ad.merchantId}`),
+    (ad: P2PAd) => navigate(`${prefix}/p2p/merchant/${encodeURIComponent(ad.merchantId)}`),
     [navigate, prefix],
   );
 

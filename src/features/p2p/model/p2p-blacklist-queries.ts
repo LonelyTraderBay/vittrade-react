@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { p2pApi } from '../api/p2p-api';
 import type { P2PBlacklistCreateRequest, P2PBlacklistQuery } from './p2p-types';
 
@@ -11,6 +11,7 @@ export function useP2PBlacklistQuery(query: P2PBlacklistQuery = {}) {
   return useQuery({
     queryKey: blacklistQueryKeys.list(query),
     queryFn: ({ signal }) => p2pApi.listBlacklist(query, signal),
+    placeholderData: keepPreviousData,
     staleTime: 15_000,
   });
 }

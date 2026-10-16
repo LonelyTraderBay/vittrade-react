@@ -53,11 +53,14 @@ export function P2PDashboardPage() {
       <PageContent gap="default">
         <TrCard className="p-4" accentBorder="rgba(59,130,246,0.2)">
           <div className="flex items-center gap-2 mb-3">
-            <Activity size={16} color="#3B82F6" />
+            <Activity size={16} color="var(--tr-link)" />
             <span style={{ color: colors.text2, fontSize: 13, fontWeight: 600 }}>
               Tổng Volume (30 ngày)
             </span>
-            <span className="ml-auto" style={{ color: '#10B981', fontSize: 11, fontWeight: 700 }}>
+            <span
+              className="ml-auto"
+              style={{ color: 'var(--tr-success-text)', fontSize: 11, fontWeight: 700 }}
+            >
               +12.5%
             </span>
           </div>
@@ -78,35 +81,35 @@ export function P2PDashboardPage() {
 
         <div className="grid grid-cols-2 gap-2.5">
           <Metric
-            icon={<CheckCircle size={15} color="#10B981" />}
+            icon={<CheckCircle size={15} color="var(--tr-success-text)" />}
             label="Đơn hoàn thành"
             value={String(stats.completedOrders)}
             sub={`/ ${stats.totalOrders} tổng`}
-            color="#10B981"
+            color="var(--tr-success-text)"
             colors={colors}
           />
           <Metric
-            icon={<TrendingUp size={15} color="#3B82F6" />}
+            icon={<TrendingUp size={15} color="var(--tr-link)" />}
             label="Tỷ lệ hoàn thành"
             value={`${fmtPct(stats.completionRate, 1)}%`}
             sub={`Platform ${fmtPct(stats.platformAvgCompletionRate, 1)}%`}
-            color="#3B82F6"
+            color="var(--tr-link)"
             colors={colors}
           />
           <Metric
-            icon={<DollarSign size={15} color="#F59E0B" />}
+            icon={<DollarSign size={15} color="var(--tr-warning-text)" />}
             label="Lợi nhuận spread"
             value={fmtCompact(stats.spreadRevenue30d, { prefix: '₫' })}
             sub="30 ngày"
-            color="#F59E0B"
+            color="var(--tr-warning-text)"
             colors={colors}
           />
           <Metric
-            icon={<Clock size={15} color="#8B5CF6" />}
+            icon={<Clock size={15} color="var(--tr-accent)" />}
             label="Thời gian trung bình"
             value={stats.avgCompletionTime}
             sub={`Phản hồi ${stats.responseTimeAvg}`}
-            color="#8B5CF6"
+            color="var(--tr-accent)"
             colors={colors}
           />
         </div>
@@ -179,7 +182,7 @@ export function P2PDashboardPage() {
                   className="w-7 h-7 rounded-lg flex items-center justify-center"
                   style={{
                     background: 'rgba(59,130,246,0.1)',
-                    color: '#3B82F6',
+                    color: 'var(--tr-link)',
                     fontSize: 10,
                     fontWeight: 700,
                   }}

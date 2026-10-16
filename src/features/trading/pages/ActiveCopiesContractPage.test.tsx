@@ -6,6 +6,7 @@ import userEvent from '@testing-library/user-event';
 import { Route, Routes } from 'react-router';
 import { renderWithProviders } from '@/test/test-utils';
 import { testAuthAdapter } from '@/test/auth-test-adapter';
+import { invokeStaleReactHandler } from '@/test/invoke-stale-react-handler';
 import type { AuthAdapter } from '@/shared/session/AuthContext';
 import { ActiveCopiesContractPage } from './ActiveCopiesContractPage';
 
@@ -204,8 +205,10 @@ describe('Active copies contract page', () => {
       'Reduce exposure',
     );
 
-    expect(screen.getByRole('button', { name: 'Dừng' })).toBeDisabled();
+    const stop = screen.getByRole('button', { name: 'Dừng' });
+    expect(stop).toBeDisabled();
     expect(screen.getByRole('status')).toHaveTextContent('Cần quyền giao dịch');
+    invokeStaleReactHandler(stop, 'onClick');
     expect(stopRequestCount).toBe(0);
   });
 

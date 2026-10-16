@@ -1,0 +1,292 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-10-13T15:28:38.740Z",
+  "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
+  "origin": "http://127.0.0.1:4193",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "sourceHashes": {
+    "contracts/openapi/earn.yaml": "f658455d5dcc1927fcee5a814c01b59e22dc5cae30640cb092e710e4ad7fa608",
+    "docs/architecture/production-readiness/evidence/A06/run-earn-success-current-head-browser-check.mjs": "05505439b37f8e6056292bb4bb91b6ba0507cfca11840f0478886288c79c2389",
+    "src/app/routeConfig.ts": "675ea95ec4831b9d0caf1cbf68524efaebda8ed9b970b5dad129bdd55f28bac9",
+    "src/dev/PreviewControls.tsx": "a318fb182dda24c9b8d2103ae4b40eeecb7c3eded57332aad3c5bc8a1836a54c",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/earn-fixtures.ts": "d17fff1aef1404678d8e99fe23c2a19b0243d7a0ac6bd4650cdfb901cdb43941",
+    "src/dev/mocks/handlers.ts": "9d1ea085bab944b0bd0e59a665222113cb7bb661bbcd2408f09c6adf08cd3ea9",
+    "src/dev/mocks/personas.ts": "6189b9cbfb9765f5c442c52a089d30b5be171170fe054ef6bf2faffbbb53dccd",
+    "src/dev/mocks/preview-scenario-handler.ts": "1b05e3e420b1df43de6d2e37533d4d8dbcd203fedb70ca59a65a4a62179396f5",
+    "src/dev/mocks/scenario-runtime.ts": "446d43808b478a1eaca07faa29d690c49c8e7ffb21fc1f12d2de2feb524e2e50",
+    "src/features/earn/api/earn-api.ts": "06715b9d001e7a5b13a7ff819251cded67bca32a32a7912b1b89e6acc8c3e545",
+    "src/features/earn/components/EarnFeatureComponents.tsx": "37ccda0bfc56b570a6e455a57ee7e51dcd72d78558300bcdac9f65a3fd22a7be",
+    "src/features/earn/model/earn-queries.ts": "c3215c441db5e4254fed1a6e91c733b96ed01528dcf61bdc5db4c1390528d10a",
+    "src/features/earn/model/earn-types.ts": "1586e57532dec7ba44c78bc385b21f921902fe626b950ca50a4e450b0f6490f1",
+    "src/features/earn/pages/EarnHistoryPage.tsx": "10853dcd2f40a4c60fc6bbbf698c497d59d3b0d31406a46d6ff7ecca55d426e1",
+    "src/features/earn/pages/EarnPage.tsx": "1d597ca4cda319a7e1bca81d31f95a279bc20cc7497e2007b03583e2e0146c9a",
+    "src/features/earn/routes.ts": "4316eece354d89cbcb54a44808a8a86811fd29f5394a9317d27e9cbc6e2eddab"
+  },
+  "scenario": {
+    "id": "earn.success",
+    "domain": "earn",
+    "state": "success",
+    "status": "passed",
+    "observedAt": "2026-10-13T15:28:38.740Z",
+    "persona": "developer (local MSW fixture)",
+    "role": "user",
+    "permissions": [
+      "market:read",
+      "trading:write",
+      "wallet:read",
+      "trade:read",
+      "earn:write",
+      "p2p:write",
+      "predictions:trade",
+      "profile:read",
+      "profile:write",
+      "profile:security:write"
+    ],
+    "route": "/w/earn/savings",
+    "finalRoute": "/w/earn/savings/history",
+    "operationIds": [
+      "getEarnSnapshot",
+      "listEarnTransactions",
+      "createEarnSubscription",
+      "redeemEarnPosition"
+    ],
+    "observedOperationIds": [
+      "createEarnSubscription",
+      "getEarnSnapshot",
+      "listEarnTransactions",
+      "redeemEarnPosition"
+    ],
+    "operationRequestCounts": {
+      "getEarnSnapshot": 3,
+      "listEarnTransactions": 1,
+      "createEarnSubscription": 1,
+      "redeemEarnPosition": 1
+    },
+    "requests": [
+      {
+        "operationId": "getSession",
+        "method": "GET",
+        "path": "/api/auth/session",
+        "resourceType": "fetch",
+        "idempotencyKeyPresent": false,
+        "idempotencyKeyLength": 0
+      },
+      {
+        "operationId": "login",
+        "method": "POST",
+        "path": "/api/auth/login",
+        "resourceType": "fetch",
+        "idempotencyKeyPresent": false,
+        "idempotencyKeyLength": 0
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "resourceType": "fetch",
+        "idempotencyKeyPresent": false,
+        "idempotencyKeyLength": 0
+      },
+      {
+        "operationId": "getMarketWatchlist",
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "resourceType": "fetch",
+        "idempotencyKeyPresent": false,
+        "idempotencyKeyLength": 0
+      },
+      {
+        "operationId": "getEarnSnapshot",
+        "method": "GET",
+        "path": "/api/earn/snapshot",
+        "resourceType": "fetch",
+        "idempotencyKeyPresent": false,
+        "idempotencyKeyLength": 0
+      },
+      {
+        "operationId": "createEarnSubscription",
+        "method": "POST",
+        "path": "/api/earn/subscriptions",
+        "resourceType": "fetch",
+        "idempotencyKeyPresent": true,
+        "idempotencyKeyLength": 51
+      },
+      {
+        "operationId": "getEarnSnapshot",
+        "method": "GET",
+        "path": "/api/earn/snapshot",
+        "resourceType": "fetch",
+        "idempotencyKeyPresent": false,
+        "idempotencyKeyLength": 0
+      },
+      {
+        "operationId": "redeemEarnPosition",
+        "method": "POST",
+        "path": "/api/earn/redemptions",
+        "resourceType": "fetch",
+        "idempotencyKeyPresent": true,
+        "idempotencyKeyLength": 48
+      },
+      {
+        "operationId": "getEarnSnapshot",
+        "method": "GET",
+        "path": "/api/earn/snapshot",
+        "resourceType": "fetch",
+        "idempotencyKeyPresent": false,
+        "idempotencyKeyLength": 0
+      },
+      {
+        "operationId": "listEarnTransactions",
+        "method": "GET",
+        "path": "/api/earn/transactions",
+        "resourceType": "fetch",
+        "idempotencyKeyPresent": false,
+        "idempotencyKeyLength": 0
+      }
+    ],
+    "responses": [
+      {
+        "operationId": "getSession",
+        "method": "GET",
+        "path": "/api/auth/session",
+        "status": 401,
+        "fromServiceWorker": true,
+        "elapsedMs": 17
+      },
+      {
+        "operationId": "login",
+        "method": "POST",
+        "path": "/api/auth/login",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 11
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 4
+      },
+      {
+        "operationId": "getMarketWatchlist",
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 5
+      },
+      {
+        "operationId": "getEarnSnapshot",
+        "method": "GET",
+        "path": "/api/earn/snapshot",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 3
+      },
+      {
+        "operationId": "createEarnSubscription",
+        "method": "POST",
+        "path": "/api/earn/subscriptions",
+        "status": 201,
+        "fromServiceWorker": true,
+        "elapsedMs": 18
+      },
+      {
+        "operationId": "getEarnSnapshot",
+        "method": "GET",
+        "path": "/api/earn/snapshot",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 3
+      },
+      {
+        "operationId": "redeemEarnPosition",
+        "method": "POST",
+        "path": "/api/earn/redemptions",
+        "status": 201,
+        "fromServiceWorker": true,
+        "elapsedMs": 18
+      },
+      {
+        "operationId": "getEarnSnapshot",
+        "method": "GET",
+        "path": "/api/earn/snapshot",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 2
+      },
+      {
+        "operationId": "listEarnTransactions",
+        "method": "GET",
+        "path": "/api/earn/transactions",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 3
+      }
+    ],
+    "initialSessionResponse": {
+      "status": 401,
+      "fromServiceWorker": true
+    },
+    "loginResponse": {
+      "status": 200,
+      "fromServiceWorker": true
+    },
+    "scenarioSelected": true,
+    "initialSnapshot": {
+      "activePositions": 2,
+      "totalDepositedUsd": 4208
+    },
+    "subscriptionReceipt": {
+      "id": "dev-earn-subscription-0001",
+      "operation": "subscribe",
+      "productId": "sav001",
+      "positionId": "dev-earn-position-0001",
+      "asset": "USDT",
+      "amount": 100,
+      "status": "completed",
+      "createdAt": "2026-10-13T15:28:38.139Z"
+    },
+    "redemptionReceipt": {
+      "id": "dev-earn-redemption-0001",
+      "operation": "redeem",
+      "productId": "sav001",
+      "positionId": "dev-earn-position-0001",
+      "asset": "USDT",
+      "amount": 100,
+      "status": "completed",
+      "createdAt": "2026-10-13T15:28:38.356Z"
+    },
+    "snapshotAfterSubscription": {
+      "activePositions": 3,
+      "totalDepositedUsd": 4208,
+      "createdPositionVisible": true
+    },
+    "snapshotAfterRedemption": {
+      "activePositions": 2,
+      "totalDepositedUsd": 4208,
+      "redeemedPositionStillVisible": false
+    },
+    "transactionCount": 1,
+    "idempotencyKeyPresent": {
+      "subscribe": true,
+      "redeem": true
+    },
+    "externalApiOrigins": [],
+    "elapsedMs": 1863,
+    "screenshots": [
+      "preview-earn-success-products-current-head-202610131528367.png",
+      "preview-earn-success-subscription-current-head-202610131528367.png",
+      "preview-earn-success-redemption-current-head-202610131528367.png",
+      "preview-earn-success-history-current-head-202610131528367.png"
+    ],
+    "failures": [],
+    "note": "Chromium exercised all four Earn success operations through local MSW: snapshot GET, transaction GET, subscription POST 201 and redemption POST 201. The subscription added a local position; full redemption removed that position from the refreshed snapshot. Snapshot totalDepositedUsd was 4208 before, 4208 after the 100 USDT subscription and 4208 after full redemption; the mock does not reconcile this aggregate, and no asset-to-USD valuation contract/source is configured, so the runner records the fixture aggregation gap without inventing a conversion. Required Idempotency-Key headers were observed, but same-key replay semantics were not tested or inferred. Transaction history shows the checked-in savings fixture rows; the mock does not correlate these rows to the new receipts. No real funds, backend, staging or user acceptance were involved."
+  }
+}

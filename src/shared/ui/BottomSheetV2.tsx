@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useCallback, useState } from 'react';
-import { createPortal } from 'react-dom';
-import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
+import React, { useEffect, useLayoutEffect, useRef, useCallback, useState } from 'react';
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { X } from 'lucide-react';
+import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { useScrollLock } from '@/shared/hooks/useScrollLock';
 import { φElevation } from '@/shared/lib/golden';
@@ -91,6 +91,9 @@ export function BottomSheetV2({
   const prefersReducedMotion = useReducedMotion() ?? false;
   const sheetRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
+  const wasOpenRef = useRef(false);
+  const portalContentRef = useRef<HTMLDivElement>(null);
 
   /* ─── Scroll lock ─── */
   useScrollLock(open);
@@ -214,26 +217,42 @@ export function BottomSheetV2({
   // Backdrop opacity follows drag
   const computedBackdropOpacity = dragOffset > 0 ? Math.max(0, 1 - dragOffset / 300) : 1;
 
-  /* ─── Previous focus restore ─── */
-  const previousFocusRef = useRef<Element | null>(null);
-  useEffect(() => {
-    if (open) {
-      previousFocusRef.current = document.activeElement;
-    } else if (previousFocusRef.current instanceof HTMLElement) {
-      const el = previousFocusRef.current;
-      requestAnimationFrame(() => el.focus());
-      previousFocusRef.current = null;
-    }
-  }, [open]);
+  /* ─── Modal focus lifecycle ─── */
+  const handleOpenAutoFocus = useCallback((event: Event) => {
+    event.preventDefault();
+    sheetRef.current?.focus({ preventScroll: true });
+  }, []);
 
-  /* ─── Auto-focus on open ─── */
-  useEffect(() => {
-    if (open && sheetRef.current) {
-      const timer = setTimeout(() => {
-        sheetRef.current?.focus({ preventScroll: true });
-      }, 100);
-      return () => clearTimeout(timer);
+  const handleCloseAutoFocus = useCallback((event: Event) => {
+    event.preventDefault();
+  }, []);
+
+  useLayoutEffect(() => {
+    const portalContent = portalContentRef.current;
+    if (portalContent) {
+      if (open) portalContent.removeAttribute('inert');
+      else portalContent.setAttribute('inert', '');
     }
+
+    if (open && !wasOpenRef.current) {
+      previousFocusRef.current =
+        document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    } else if (!open && wasOpenRef.current) {
+      const previousFocus = previousFocusRef.current;
+      previousFocusRef.current = null;
+      const hasOpenDialog = Boolean(document.querySelector('[role="dialog"][data-state="open"]'));
+      const focusWasInsideOpenDialog = Boolean(
+        previousFocus?.closest('[role="dialog"][data-state="open"]'),
+      );
+
+      if (previousFocus?.isConnected && (!hasOpenDialog || focusWasInsideOpenDialog)) {
+        requestAnimationFrame(() => {
+          if (previousFocus.isConnected) previousFocus.focus({ preventScroll: true });
+        });
+      }
+    }
+
+    wasOpenRef.current = open;
   }, [open]);
 
   /* ─── onAfterOpen callback ─── */
@@ -246,43 +265,56 @@ export function BottomSheetV2({
     }
   }, [open, onAfterOpen]);
 
-  /* ─── Focus trap + Escape ─── */
-  const handleKeyDown = useCallback(
-    (e: React.KeyboardEvent) => {
-      if (e.key === 'Escape' && !preventClose) {
-        onClose();
-        return;
-      }
-      if (e.key === 'Tab' && sheetRef.current) {
-        const focusable = sheetRef.current.querySelectorAll<HTMLElement>(
-          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
-        );
-        if (focusable.length === 0) return;
-        const first = focusable[0];
-        const last = focusable[focusable.length - 1];
-        if (e.shiftKey) {
-          if (document.activeElement === first) {
-            e.preventDefault();
-            last.focus();
-          }
-        } else {
-          if (document.activeElement === last) {
-            e.preventDefault();
-            first.focus();
-          }
-        }
-      }
-    },
-    [onClose, preventClose],
-  );
+  const preventOutsideDismiss = useCallback((event: CustomEvent) => {
+    // Keep click-to-dismiss behavior on the backdrop without also dismissing on
+    // pointerdown (which would invoke onClose twice for one pointer interaction).
+    event.preventDefault();
+  }, []);
 
   const handleCloseRequest = useCallback(() => {
     if (!preventClose) onClose();
   }, [onClose, preventClose]);
 
+  const handleEscapeKeyDown = useCallback(
+    (event: KeyboardEvent) => {
+      // This controlled dialog owns its close request. Prevent Radix's follow-up
+      // dismiss callback so a single Escape cannot invoke onClose twice.
+      event.preventDefault();
+      if (!preventClose) handleCloseRequest();
+    },
+    [handleCloseRequest, preventClose],
+  );
+
+  const handlePanelKeyDown = useCallback(
+    (event: React.KeyboardEvent<HTMLDivElement>) => {
+      if (event.key !== 'Escape' || event.defaultPrevented || preventClose) return;
+
+      // Radix owns Escape ordering across stacked overlays. If another open
+      // layer handled the key before this event reached the sheet, leave it
+      // alone; otherwise close this sheet as a controlled-component fallback.
+      const hasOtherOpenLayer = Array.from(document.querySelectorAll('[data-state="open"]')).some(
+        (element) =>
+          element !== sheetRef.current && !element.hasAttribute('data-bottom-sheet-overlay'),
+      );
+      if (hasOtherOpenLayer) return;
+
+      event.preventDefault();
+      handleCloseRequest();
+    },
+    [handleCloseRequest, preventClose],
+  );
+
   /* ─── Resolved values ─── */
   const resolvedMaxHeight = maxHeight ?? (variant === 'bottom' ? '85vh' : '80vh');
-  const resolvedAriaLabel = ariaLabel ?? title ?? 'Dialog';
+  const resolvedAriaLabel =
+    ariaLabel ?? (typeof title === 'string' ? title : title ? undefined : 'Dialog');
+  const hiddenDialogTitle =
+    !title || customHeader || ariaLabel ? (
+      <DialogPrimitive.Title asChild>
+        <span className="sr-only">{title ?? ariaLabel ?? 'Dialog'}</span>
+      </DialogPrimitive.Title>
+    ) : null;
+  const dialogLabelProps = ariaLabel ? { 'aria-labelledby': undefined } : {};
   /* ─── Default header — 44×44pt close button ─── */
   const defaultHeader =
     title || showCloseButton ? (
@@ -291,14 +323,23 @@ export function BottomSheetV2({
         style={{ paddingTop: 4, paddingBottom: 4 }}
       >
         {title ? (
-          <h3 style={{ color: c.text1, fontSize: 18, fontWeight: 600, lineHeight: 1.4 }}>
-            {title}
-          </h3>
+          ariaLabel ? (
+            <h3 style={{ color: c.text1, fontSize: 18, fontWeight: 600, lineHeight: 1.4 }}>
+              {title}
+            </h3>
+          ) : (
+            <DialogPrimitive.Title asChild>
+              <h3 style={{ color: c.text1, fontSize: 18, fontWeight: 600, lineHeight: 1.4 }}>
+                {title}
+              </h3>
+            </DialogPrimitive.Title>
+          )
         ) : (
           <div />
         )}
         {showCloseButton && (
           <button
+            type="button"
             onClick={handleCloseRequest}
             disabled={preventClose}
             className="flex items-center justify-center shrink-0 rounded-full transition-colors"
@@ -331,143 +372,191 @@ export function BottomSheetV2({
     document.body;
 
   const sheetContent = (
-    <AnimatePresence>
-      {open && (
-        <div className="contents">
-          {variant === 'bottom' ? (
-            /* ═══ Bottom Sheet ═══ */
-            <div className="absolute inset-0 z-[60] flex justify-center items-end">
-              {/* ─── Backdrop ─── */}
+    <DialogPrimitive.Root
+      open={open}
+      modal={open}
+      onOpenChange={(nextOpen) => {
+        if (!nextOpen) handleCloseRequest();
+      }}
+    >
+      <DialogPrimitive.Portal container={portalTarget} forceMount>
+        <div
+          ref={portalContentRef}
+          className="contents"
+          aria-hidden={!open}
+          style={{ pointerEvents: open ? 'auto' : 'none' }}
+        >
+          <AnimatePresence>
+            {open && (
               <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: computedBackdropOpacity }}
-                exit={{ opacity: 0 }}
-                transition={
-                  dragOffset > 0 || prefersReducedMotion ? { duration: 0 } : { duration: 0.2 }
-                }
-                className="absolute inset-0"
-                style={{
-                  background: 'rgba(0,0,0,0.5)',
-                  backdropFilter: 'blur(8px)',
-                  WebkitBackdropFilter: 'blur(8px)',
-                }}
-                onClick={handleCloseRequest}
-                aria-hidden="true"
-              />
-
-              {/* ─── Sheet panel ─── */}
-              <motion.div
-                ref={sheetRef}
-                initial={{ y: '100%', opacity: 1 }}
-                animate={{ y: dragOffset, opacity: 1 }}
-                exit={{ y: '100%', opacity: 1 }}
-                transition={
-                  dragOffset > 0 || prefersReducedMotion
-                    ? { duration: 0 }
-                    : { type: 'spring', damping: 28, stiffness: 320 }
-                }
-                className={`relative w-full rounded-t-3xl flex flex-col overflow-hidden outline-none ${className ?? ''}`}
-                tabIndex={-1}
-                onKeyDown={handleKeyDown}
-                role="dialog"
-                aria-modal="true"
-                aria-label={String(resolvedAriaLabel)}
-                onClick={(e) => e.stopPropagation()}
-                style={{
-                  background: c.surface,
-                  maxWidth: 440,
-                  maxHeight: resolvedMaxHeight,
-                  boxShadow: φElevation.overlay,
-                  paddingBottom: 'calc(20px + env(safe-area-inset-bottom, 0px))',
-                }}
-              >
-                {handleElement}
-                {customHeader ?? defaultHeader}
-
-                {/* Content — scrollable */}
-                <div
-                  ref={contentRef}
-                  className="flex-1 min-h-0 overflow-y-auto px-5 scrollbar-none"
-                  style={{
-                    overscrollBehaviorY: 'contain',
-                    paddingTop: 8,
-                    paddingBottom: 8,
-                  }}
-                >
-                  {children}
-                </div>
-              </motion.div>
-            </div>
-          ) : (
-            /* ═══ Center Modal ═══ */
-            <div className="contents">
-              <motion.div
-                initial={{ opacity: 0 }}
+                key={variant}
+                className="absolute inset-0 z-[60]"
+                initial={false}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: prefersReducedMotion ? 0 : 0.2 }}
-                className="absolute inset-0 z-[60]"
-                style={{
-                  background: 'rgba(0,0,0,0.5)',
-                  backdropFilter: 'blur(8px)',
-                  WebkitBackdropFilter: 'blur(8px)',
-                }}
-                onClick={handleCloseRequest}
-                aria-hidden="true"
-              />
-              <div
-                className="absolute inset-0 z-[60] flex items-center justify-center pointer-events-none"
-                style={{ padding: 12 }}
               >
-                <motion.div
-                  ref={sheetRef}
-                  initial={{ opacity: 0, scale: 0.92 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.92 }}
-                  transition={
-                    prefersReducedMotion
-                      ? { duration: 0 }
-                      : { type: 'spring', damping: 26, stiffness: 400 }
-                  }
-                  className={`rounded-3xl w-full pointer-events-auto flex flex-col overflow-hidden outline-none ${className ?? ''}`}
-                  tabIndex={-1}
-                  onKeyDown={handleKeyDown}
-                  role="dialog"
-                  aria-modal="true"
-                  aria-label={String(resolvedAriaLabel)}
-                  onClick={(e) => e.stopPropagation()}
-                  style={{
-                    background: c.surface,
-                    maxHeight: resolvedMaxHeight,
-                    boxShadow: φElevation.overlay,
-                  }}
-                >
-                  {showHandle && (
-                    <div className="flex justify-center pt-3 pb-1 shrink-0">
-                      <div
-                        className="rounded-full"
-                        style={{ width: 40, height: 4, background: c.text3, opacity: 0.3 }}
+                {variant === 'bottom' ? (
+                  /* ═══ Bottom Sheet ═══ */
+                  <div className="absolute inset-0 z-[60] flex justify-center items-end">
+                    {/* ─── Backdrop ─── */}
+                    <DialogPrimitive.Overlay asChild>
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: open ? computedBackdropOpacity : 0 }}
+                        transition={
+                          dragOffset > 0 || prefersReducedMotion
+                            ? { duration: 0 }
+                            : { duration: 0.2 }
+                        }
+                        className="absolute inset-0"
+                        data-bottom-sheet-overlay=""
+                        style={{
+                          background: 'rgba(0,0,0,0.5)',
+                          backdropFilter: 'blur(8px)',
+                          WebkitBackdropFilter: 'blur(8px)',
+                        }}
+                        onClick={handleCloseRequest}
+                        aria-hidden="true"
                       />
-                    </div>
-                  )}
-                  {customHeader ?? defaultHeader}
-                  <div
-                    ref={contentRef}
-                    className="flex-1 min-h-0 overflow-y-auto px-5 pb-6 scrollbar-none"
-                    style={{ overscrollBehaviorY: 'contain', paddingTop: 8 }}
-                  >
-                    {children}
+                    </DialogPrimitive.Overlay>
+
+                    {/* ─── Sheet panel ─── */}
+                    <DialogPrimitive.Content
+                      asChild
+                      onOpenAutoFocus={handleOpenAutoFocus}
+                      onCloseAutoFocus={handleCloseAutoFocus}
+                      onEscapeKeyDown={handleEscapeKeyDown}
+                      onPointerDownOutside={preventOutsideDismiss}
+                      {...dialogLabelProps}
+                      aria-label={resolvedAriaLabel}
+                      aria-describedby={undefined}
+                      aria-modal={open ? true : undefined}
+                      tabIndex={-1}
+                    >
+                      <motion.div
+                        ref={sheetRef}
+                        initial={{ y: '100%', opacity: 1 }}
+                        animate={{ y: open ? dragOffset : '100%', opacity: 1 }}
+                        transition={
+                          dragOffset > 0 || prefersReducedMotion
+                            ? { duration: 0 }
+                            : { type: 'spring', damping: 28, stiffness: 320 }
+                        }
+                        className={`relative w-full rounded-t-3xl flex flex-col overflow-hidden outline-none ${className ?? ''}`}
+                        onKeyDown={handlePanelKeyDown}
+                        onClick={(e) => e.stopPropagation()}
+                        style={{
+                          background: c.surface,
+                          maxWidth: 440,
+                          maxHeight: resolvedMaxHeight,
+                          boxShadow: φElevation.overlay,
+                          paddingBottom: 'calc(20px + env(safe-area-inset-bottom, 0px))',
+                        }}
+                      >
+                        {hiddenDialogTitle}
+                        {handleElement}
+                        {customHeader ?? defaultHeader}
+
+                        {/* Content — scrollable */}
+                        <div
+                          ref={contentRef}
+                          className="flex-1 min-h-0 overflow-y-auto px-5 scrollbar-none"
+                          style={{
+                            overscrollBehaviorY: 'contain',
+                            paddingTop: 8,
+                            paddingBottom: 8,
+                          }}
+                        >
+                          {children}
+                        </div>
+                      </motion.div>
+                    </DialogPrimitive.Content>
                   </div>
-                </motion.div>
-              </div>
-            </div>
-          )}
+                ) : (
+                  /* ═══ Center Modal ═══ */
+                  <div className="contents">
+                    <DialogPrimitive.Overlay asChild>
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: open ? 1 : 0 }}
+                        transition={{ duration: prefersReducedMotion ? 0 : 0.2 }}
+                        className="absolute inset-0 z-[60]"
+                        data-bottom-sheet-overlay=""
+                        style={{
+                          background: 'rgba(0,0,0,0.5)',
+                          backdropFilter: 'blur(8px)',
+                          WebkitBackdropFilter: 'blur(8px)',
+                        }}
+                        onClick={handleCloseRequest}
+                        aria-hidden="true"
+                      />
+                    </DialogPrimitive.Overlay>
+                    <div
+                      className="absolute inset-0 z-[60] flex items-center justify-center pointer-events-none"
+                      style={{ padding: 12 }}
+                    >
+                      <DialogPrimitive.Content
+                        asChild
+                        onOpenAutoFocus={handleOpenAutoFocus}
+                        onCloseAutoFocus={handleCloseAutoFocus}
+                        onEscapeKeyDown={handleEscapeKeyDown}
+                        onPointerDownOutside={preventOutsideDismiss}
+                        {...dialogLabelProps}
+                        aria-label={resolvedAriaLabel}
+                        aria-describedby={undefined}
+                        aria-modal={open ? true : undefined}
+                        tabIndex={-1}
+                      >
+                        <motion.div
+                          ref={sheetRef}
+                          initial={{ opacity: 0, scale: 0.92 }}
+                          animate={{ opacity: open ? 1 : 0, scale: open ? 1 : 0.92 }}
+                          transition={
+                            prefersReducedMotion
+                              ? { duration: 0 }
+                              : { type: 'spring', damping: 26, stiffness: 400 }
+                          }
+                          className={`rounded-3xl w-full pointer-events-auto flex flex-col overflow-hidden outline-none ${className ?? ''}`}
+                          onKeyDown={handlePanelKeyDown}
+                          onClick={(e) => e.stopPropagation()}
+                          style={{
+                            background: c.surface,
+                            maxHeight: resolvedMaxHeight,
+                            boxShadow: φElevation.overlay,
+                          }}
+                        >
+                          {hiddenDialogTitle}
+                          {showHandle && (
+                            <div className="flex justify-center pt-3 pb-1 shrink-0">
+                              <div
+                                className="rounded-full"
+                                style={{ width: 40, height: 4, background: c.text3, opacity: 0.3 }}
+                              />
+                            </div>
+                          )}
+                          {customHeader ?? defaultHeader}
+                          <div
+                            ref={contentRef}
+                            className="flex-1 min-h-0 overflow-y-auto px-5 pb-6 scrollbar-none"
+                            style={{ overscrollBehaviorY: 'contain', paddingTop: 8 }}
+                          >
+                            {children}
+                          </div>
+                        </motion.div>
+                      </DialogPrimitive.Content>
+                    </div>
+                  </div>
+                )}
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
-      )}
-    </AnimatePresence>
+      </DialogPrimitive.Portal>
+    </DialogPrimitive.Root>
   );
 
-  return createPortal(sheetContent, portalTarget);
+  return sheetContent;
 }
 
 /* ═══════════════════════════════════════════════════════════

@@ -1,4 +1,4 @@
-import { act, fireEvent, screen } from '@testing-library/react';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { renderWithProviders } from '@/test/test-utils';
 import { BottomSheetRow, BottomSheetV2 } from './BottomSheetV2';
@@ -37,8 +37,10 @@ describe('BottomSheetV2', () => {
     expect(dialog).toHaveAttribute('aria-modal', 'true');
     expect(dialog).toHaveTextContent('Nội dung');
     expect(dialog).toHaveStyle({ maxHeight: '85vh' });
-    expect(screen.getByRole('button', { name: 'Đóng' })).toBeEnabled();
-    fireEvent.click(screen.getByRole('button', { name: 'Đóng' }));
+    const close = screen.getByRole('button', { name: 'Đóng' });
+    expect(close).toHaveAttribute('type', 'button');
+    expect(close).toBeEnabled();
+    fireEvent.click(close);
     expect(onClose).toHaveBeenCalledOnce();
   });
 
@@ -146,18 +148,12 @@ describe('BottomSheetV2', () => {
     const dialog = screen.getByRole('dialog', { name: 'Tab order' });
     const first = screen.getByRole('button', { name: 'Đóng' });
     const last = screen.getByRole('link', { name: 'Cuối' });
-    screen.getByRole('button', { name: 'Đầu' }).focus();
-    fireEvent.keyDown(dialog, { key: 'Tab', shiftKey: true });
-    expect(screen.getByRole('button', { name: 'Đầu' })).toHaveFocus();
-    first.focus();
+    last.focus();
     fireEvent.keyDown(dialog, { key: 'Tab' });
     expect(first).toHaveFocus();
     first.focus();
     fireEvent.keyDown(dialog, { key: 'Tab', shiftKey: true });
     expect(last).toHaveFocus();
-    last.focus();
-    fireEvent.keyDown(dialog, { key: 'Tab' });
-    expect(first).toHaveFocus();
 
     rerender(
       <BottomSheetV2
@@ -182,6 +178,25 @@ describe('BottomSheetV2', () => {
 
     fireEvent.keyDown(screen.getByRole('dialog', { name: 'Escape' }), { key: 'Escape' });
     expect(onClose).toHaveBeenCalledOnce();
+  });
+
+  it('hides background content and prevents focus from escaping the modal', () => {
+    const outside = document.createElement('button');
+    outside.textContent = 'Background action';
+    document.body.append(outside);
+
+    renderWithProviders(
+      <BottomSheetV2 open onClose={() => undefined} title="Modal focus">
+        <button>Sheet action</button>
+      </BottomSheetV2>,
+    );
+
+    const dialog = screen.getByRole('dialog', { name: 'Modal focus' });
+    expect(outside).toHaveAttribute('aria-hidden', 'true');
+    outside.focus();
+    expect(dialog).toHaveFocus();
+
+    outside.remove();
   });
 
   it('supports swipe dismissal only when the gesture starts at the top of the content', () => {
@@ -287,13 +302,10 @@ describe('BottomSheetV2', () => {
     expect(onClose).not.toHaveBeenCalled();
   });
 
-  it('calls onAfterOpen once and restores focus when closed', () => {
-    vi.useFakeTimers();
-    vi.spyOn(window, 'requestAnimationFrame').mockImplementation((callback) => {
-      callback(0);
-      return 1;
-    });
+  it('calls onAfterOpen once and restores focus when the sheet closes', async () => {
+    reducedMotion.value = true;
     const trigger = document.createElement('button');
+    trigger.textContent = 'Open sheet';
     document.body.append(trigger);
     trigger.focus();
     const onAfterOpen = vi.fn();
@@ -304,15 +316,18 @@ describe('BottomSheetV2', () => {
       </BottomSheetV2>,
     );
 
-    act(() => vi.advanceTimersByTime(350));
-    expect(onAfterOpen).toHaveBeenCalledOnce();
-    expect(screen.getByRole('dialog', { name: 'Focus' })).toHaveFocus();
+    await waitFor(() => expect(onAfterOpen).toHaveBeenCalledOnce());
+    await waitFor(() => expect(screen.getByRole('dialog', { name: 'Focus' })).toHaveFocus());
     rerender(
       <BottomSheetV2 open={false} onClose={onClose} onAfterOpen={onAfterOpen} title="Focus">
         <button>Action</button>
       </BottomSheetV2>,
     );
-    expect(trigger).toHaveFocus();
+    expect(screen.getByRole('button', { name: 'Open sheet' })).toBeInTheDocument();
+    await waitFor(() =>
+      expect(screen.queryByRole('dialog', { name: 'Focus' })).not.toBeInTheDocument(),
+    );
+    await waitFor(() => expect(trigger).toHaveFocus());
     trigger.remove();
   });
 });

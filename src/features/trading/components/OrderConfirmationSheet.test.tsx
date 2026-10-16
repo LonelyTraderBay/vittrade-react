@@ -6,6 +6,7 @@ import { OrderConfirmationSheet, type OrderConfirmationSheetProps } from './Orde
 const defaultProps: OrderConfirmationSheetProps = {
   open: true,
   isPlacing: false,
+  canWriteTrading: true,
   side: 'buy',
   pair: { symbol: 'BTC/USDT', baseAsset: 'BTC' },
   orderTypeLabel: 'Giới hạn',
@@ -55,6 +56,15 @@ describe('OrderConfirmationSheet', () => {
     renderSheet({ isPlacing: true });
 
     expect(screen.getByRole('button', { name: 'Đang đặt lệnh...' })).toBeDisabled();
+  });
+
+  it('keeps permission loss visible and blocks confirmation inside the modal', () => {
+    renderSheet({ canWriteTrading: false });
+
+    expect(screen.getByRole('alert')).toHaveTextContent(
+      'Trading permission is required to place an order.',
+    );
+    expect(screen.getByTestId('trade-confirm-submit')).toBeDisabled();
   });
 
   it('passes confirmation and close actions to the owning flow', () => {

@@ -227,7 +227,7 @@ export function MiniChart({
     if (onTap) {
       onTap();
     } else {
-      navigate(`${routePrefix}/trade/advanced-chart/${pairId}`);
+      navigate(`${routePrefix}/trade/advanced-chart/${encodeURIComponent(pairId)}`);
     }
   };
 
@@ -276,9 +276,9 @@ export function MiniChart({
       {/* Tap to Expand Hint (subtle) */}
       {interactive && !isLoading && (
         <div
-          className="absolute bottom-2 right-2 px-2 py-1 rounded-md backdrop-blur-sm"
+          className="absolute bottom-2 right-2 px-2 py-1 rounded-md"
           style={{
-            background: c.surface2 + 'CC', // 80% opacity
+            background: c.surface,
             color: c.text3,
             fontSize: 10,
             fontWeight: 500,
@@ -292,14 +292,13 @@ export function MiniChart({
       {/* 24h Change Badge (top-left) */}
       {!isLoading && (
         <div
-          className="absolute top-2 left-2 px-2 py-1 rounded-md backdrop-blur-sm"
+          className="absolute top-2 left-2 px-2 py-1 rounded-md"
           style={{
-            background:
-              priceChange === 'up' ? 'rgba(16, 185, 129, 0.15)' : 'rgba(239, 68, 68, 0.15)',
-            color: priceChange === 'up' ? '#10B981' : '#EF4444',
+            background: c.surface,
+            color: priceChange === 'up' ? c.successText : c.errorText,
             fontSize: 11,
             fontWeight: 700,
-            border: `1px solid ${priceChange === 'up' ? 'rgba(16, 185, 129, 0.3)' : 'rgba(239, 68, 68, 0.3)'}`,
+            border: `1px solid ${c.borderSolid}`,
           }}
         >
           24H

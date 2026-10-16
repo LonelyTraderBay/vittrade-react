@@ -20,7 +20,11 @@ export function collectRoutePaths(routes: RouteObject[] = router.routes): string
           ? parentPath || '/'
           : parentPath;
 
-      if (node.path || node.index) paths.push(currentPath || '/');
+      if (node.path) {
+        paths.push(currentPath);
+      } else if (node.index) {
+        paths.push(parentPath || '/');
+      }
       if (node.children) visit(node.children, currentPath);
     });
   };
@@ -33,6 +37,6 @@ function joinRoutePath(parentPath: string, childPath: string): string {
   const parent = parentPath.replace(/\/$/, '');
   const child = childPath.replace(/^\//, '');
   if (!parent) return `/${child}`;
-  if (!child) return parent || '/';
+  if (!child) return parent;
   return `${parent}/${child}`;
 }

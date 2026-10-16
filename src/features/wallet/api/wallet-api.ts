@@ -509,7 +509,12 @@ export const walletApi: WalletApi = {
       },
       { retries: 2 },
     );
-    return dustConversionQuoteSchema.parse(response);
+    return dustConversionQuoteSchema
+      .refine(
+        (quote) => quote.targetAsset === request.targetAsset,
+        'Quote does not match the requested target asset',
+      )
+      .parse(response);
   },
   async createDustConversion(request, idempotencyKey, signal) {
     const response = await apiClient.request<unknown>(
@@ -522,7 +527,12 @@ export const walletApi: WalletApi = {
       },
       { retries: 0 },
     );
-    return dustConversionReceiptSchema.parse(response);
+    return dustConversionReceiptSchema
+      .refine(
+        (receipt) => receipt.targetAsset === request.targetAsset,
+        'Conversion response does not match the requested target asset',
+      )
+      .parse(response);
   },
 };
 

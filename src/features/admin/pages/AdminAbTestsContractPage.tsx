@@ -24,7 +24,13 @@ export function AdminAbTestsContractPage() {
   }
 
   if (query.isError || !query.data) {
-    return <AdminQueryErrorState error={query.error} onRetry={() => void query.refetch()} />;
+    return (
+      <AdminQueryErrorState
+        error={query.error}
+        onRetry={() => void query.refetch()}
+        pageTitle="A/B tests"
+      />
+    );
   }
 
   return (
