@@ -51,6 +51,30 @@ describe('TrCard', () => {
       expect(card.tagName).toBe('BUTTON');
     });
 
+    it('defaults button cards to non-submit inside a form', () => {
+      const onSubmit = vi.fn();
+      const onClick = vi.fn();
+
+      renderWithTheme(
+        <form
+          onSubmit={(event) => {
+            event.preventDefault();
+            onSubmit();
+          }}
+        >
+          <TrCard as="button" onClick={onClick}>
+            Select card
+          </TrCard>
+        </form>,
+      );
+
+      const button = screen.getByRole('button', { name: 'Select card' });
+      expect(button).toHaveAttribute('type', 'button');
+      fireEvent.click(button);
+      expect(onClick).toHaveBeenCalledTimes(1);
+      expect(onSubmit).not.toHaveBeenCalled();
+    });
+
     it('should render as section when specified', () => {
       const { container } = renderWithTheme(<TrCard as="section">Section Card</TrCard>);
       const card = container.firstChild as HTMLElement;
