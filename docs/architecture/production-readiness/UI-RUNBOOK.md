@@ -4,12 +4,37 @@ Tài liệu này giúp chạy giao diện development độc lập backend, xem 
 
 Theo dõi page, route, API operation và từng bước trong [TRACKING.json](TRACKING.json); ưu tiên công việc theo [PLAN.md](PLAN.md). Khu vực cần chú ý: [cấu hình môi trường](../../../src/shared/config/env.ts), [bootstrap](../../../src/main.tsx), [điều khiển preview](../../../src/dev/PreviewControls.tsx), [persona mock](../../../src/dev/mocks/personas.ts), [login UI](../../../src/features/auth/pages/WebLoginPage.tsx), [ví dụ biến môi trường](../../../.env.example), [ví dụ staging](../../../.env.staging.example) và [ví dụ production](../../../.env.production.example).
 
+## Đọc evidence theo revision hiện tại
+
+Các walkthrough và số đo ngày 28/09–02/10 bên dưới là lịch sử. Tên file có
+`current-head` chỉ mô tả revision tại thời điểm chạy; phải kiểm source hash và
+thời điểm trong artifact. Dùng [PLAN](PLAN.md#khac-phuc-audit-20261013),
+[matrix](evidence/A06/scenario-matrix-2026-09-28.json) và
+[UI index](evidence/C05/ui-acceptance-index-2026-09-29.json) để chọn evidence hiện
+hành. Fixture pass, UI review, user acceptance và backend verification là các
+điều kiện riêng.
+
+Ba profile cần chạy độc lập: `npm.cmd run test:e2e`,
+`npm.cmd run test:e2e -- --config playwright.auth-api.config.ts` và
+`npm.cmd run test:e2e -- --config playwright.auth-mock.config.ts`. Không thêm skip
+hoặc bỏ assertion để đóng một lỗi. Axe cho trạng thái settled phải chờ opacity
+thực tế, vì JavaScript Motion fade không luôn có trong `document.getAnimations()`.
+
+Các runner A06 dùng loopback/MSW. Mỗi report/screenshot mới cần tên riêng, giữ
+nguyên artifact cũ. Market runner nhận `EVIDENCE_SOURCE_HEAD` để đối chiếu SHA đã
+khảo sát; `--no-register` chỉ tạo report, sau đó một bước đăng ký manifest tránh
+ghi đè khi chạy đồng thời. Không cập nhật matrix trước khi có browser report mới.
+
 ## 1. Khởi động mock trên Windows
 
-Mở PowerShell tại thư mục gốc repository. Cần có Node.js/npm và dependency trong node_modules. Trong workspace này, npm.cmd run dev -- --version không phân giải được lệnh vite; lệnh Vite trực tiếp dưới đây đã khởi động được server. Nếu npm.cmd run dev hoạt động trên máy của bạn, có thể dùng script đó thay thế.
+Mở PowerShell tại thư mục gốc repository. Dùng Node theo `.nvmrc` và dependency
+đầy đủ từ lockfile; thiếu dependency là lỗi môi trường, không phải browser pass.
+Script npm hiện có được dùng như sau:
 
     $env:VITE_DATA_SOURCE = 'mock'
-    node .\node_modules\vite\bin\vite.js --host 127.0.0.1 --port 4173 --strictPort
+    $env:VITE_API_BASE_URL = ''
+    $env:VITE_WS_URL = ''
+    npm.cmd run dev -- --host 127.0.0.1 --port 4173 --strictPort
 
 Giữ cửa sổ PowerShell đang chạy. Mở trình duyệt tại:
 

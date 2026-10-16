@@ -6,6 +6,8 @@ import userEvent from '@testing-library/user-event';
 import { toast } from 'sonner';
 import { renderWithProviders } from '@/test/test-utils';
 import { testAuthAdapter } from '@/test/auth-test-adapter';
+import { invokeStaleReactHandler } from '@/test/invoke-stale-react-handler';
+import { supportApi } from '../api/support-api';
 import type { AuthAdapter } from '@/shared/session/AuthContext';
 import { HelpCenterContractPage } from './HelpCenterContractPage';
 import { NotificationsContractPage } from './NotificationsContractPage';
@@ -45,6 +47,7 @@ const notification = {
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
 afterEach(() => {
   server.resetHandlers();
+  vi.restoreAllMocks();
   vi.clearAllMocks();
 });
 afterAll(() => server.close());
@@ -63,6 +66,34 @@ function supportWriteAdapter(): AuthAdapter {
 }
 
 describe('SupportContractPage', () => {
+  it('keeps support ticket creation blocked for a read-only support session', async () => {
+    let createCalls = 0;
+    server.use(
+      http.get('*/support/tickets', () => HttpResponse.json({ items: [] })),
+      http.post('*/support/tickets', () => {
+        createCalls += 1;
+        return HttpResponse.json(ticket, { status: 201 });
+      }),
+    );
+    const readOnlyAdapter: AuthAdapter = {
+      ...testAuthAdapter,
+      initialSession: {
+        ...testAuthAdapter.initialSession!,
+        user: { ...testAuthAdapter.initialSession!.user, permissions: ['support:read'] },
+      },
+    };
+
+    renderWithProviders(<SupportContractPage />, { authAdapter: readOnlyAdapter });
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'Support write permission is required to create a ticket.',
+    );
+    const submit = screen.getByRole('button', { name: 'Gửi ticket' });
+    expect(submit).toBeDisabled();
+    invokeStaleReactHandler(submit, 'onClick');
+    expect(createCalls).toBe(0);
+  });
+
   it('submits trimmed ticket content with an idempotency key and confirms success', async () => {
     let requestBody: unknown;
     let idempotencyKey: string | null = null;
@@ -166,6 +197,24 @@ describe('SupportContractPage', () => {
     expect(idempotencyKeys[1]).toBe(idempotencyKeys[0]);
   });
 
+  it('uses safe feedback when the ticket adapter rejects a non-Error value', async () => {
+    server.use(http.get('*/support/tickets', () => HttpResponse.json({ items: [] })));
+    vi.spyOn(supportApi, 'createTicket').mockRejectedValueOnce('adapter failure');
+    renderWithProviders(<SupportContractPage />, { authAdapter: supportWriteAdapter() });
+
+    const user = userEvent.setup();
+    await user.type(await screen.findByLabelText('Tiêu đề ticket'), 'Login issue');
+    await user.type(screen.getByLabelText('Nội dung ticket'), 'Cannot sign in');
+    await user.click(screen.getByRole('button', { name: 'Gửi ticket' }));
+
+    await waitFor(() =>
+      expect(toast.error).toHaveBeenCalledWith('Không thể gửi yêu cầu hỗ trợ.', {
+        duration: 2000,
+      }),
+    );
+    expect(screen.getByLabelText('Tiêu đề ticket')).toHaveValue('Login issue');
+  });
+
   it('shows an empty ticket state', async () => {
     server.use(http.get('*/support/tickets', () => HttpResponse.json({ items: [] })));
     renderWithProviders(<SupportContractPage />, { authAdapter: supportWriteAdapter() });
@@ -183,6 +232,59 @@ describe('SupportContractPage', () => {
 });
 
 describe('NotificationsContractPage', () => {
+  it('does not query notifications without notification read permission', async () => {
+    let readRequests = 0;
+    server.use(
+      http.get('*/notifications', () => {
+        readRequests += 1;
+        return HttpResponse.json({ items: [notification] });
+      }),
+    );
+    const noReadAdapter: AuthAdapter = {
+      ...testAuthAdapter,
+      initialSession: {
+        ...testAuthAdapter.initialSession!,
+        user: { ...testAuthAdapter.initialSession!.user, permissions: [] },
+      },
+    };
+
+    renderWithProviders(<NotificationsContractPage />, { authAdapter: noReadAdapter });
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'Notification read permission is required to view notifications.',
+    );
+    expect(readRequests).toBe(0);
+  });
+
+  it('allows notification reads but blocks acknowledgement without write permission', async () => {
+    let writeCalls = 0;
+    server.use(
+      http.get('*/notifications', () => HttpResponse.json({ items: [notification] })),
+      http.post('*/notifications/notification-1/read', () => {
+        writeCalls += 1;
+        return new HttpResponse(null, { status: 204 });
+      }),
+    );
+    const readOnlyAdapter: AuthAdapter = {
+      ...testAuthAdapter,
+      initialSession: {
+        ...testAuthAdapter.initialSession!,
+        user: { ...testAuthAdapter.initialSession!.user, permissions: ['notifications:read'] },
+      },
+    };
+
+    renderWithProviders(<NotificationsContractPage />, { authAdapter: readOnlyAdapter });
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'Notification write permission is required to mark notifications as read.',
+    );
+    expect(screen.getByText('System update')).toBeInTheDocument();
+    const markRead = screen.getByRole('button', { name: 'Đã đọc' });
+    expect(markRead).toBeDisabled();
+    invokeStaleReactHandler(markRead, 'onClick');
+    expect(writeCalls).toBe(0);
+  });
+
   it('marks a notification as read with an idempotency key and confirms success', async () => {
     let idempotencyKey: string | null = null;
     let isRead = false;
@@ -243,6 +345,21 @@ describe('NotificationsContractPage', () => {
     );
     expect(attempts).toBe(2);
     expect(idempotencyKeys[1]).toBe(idempotencyKeys[0]);
+  });
+
+  it('uses safe feedback when the notification adapter rejects a non-Error value', async () => {
+    server.use(http.get('*/notifications', () => HttpResponse.json({ items: [notification] })));
+    vi.spyOn(supportApi, 'markNotificationRead').mockRejectedValueOnce('adapter failure');
+    renderWithProviders(<NotificationsContractPage />, { authAdapter: supportWriteAdapter() });
+
+    await userEvent.click(await screen.findByRole('button', { name: 'Đã đọc' }));
+
+    await waitFor(() =>
+      expect(toast.error).toHaveBeenCalledWith('Không thể cập nhật trạng thái thông báo.', {
+        duration: 2000,
+      }),
+    );
+    expect(screen.getByRole('button', { name: 'Đã đọc' })).toBeEnabled();
   });
 
   it('shows an empty notification state', async () => {

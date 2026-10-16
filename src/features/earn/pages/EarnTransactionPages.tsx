@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { CheckCircle2, Clock3, LockKeyhole, ShieldCheck } from 'lucide-react';
 import { useLocation, useNavigate, useParams } from 'react-router';
 import {
@@ -43,7 +43,8 @@ export function EarnProductDetailPage() {
   const snapshotQuery = useEarnSnapshotQuery();
   const mutation = useCreateEarnSubscriptionMutation();
   const [amount, setAmount] = useState('');
-  const [idempotencyKey, setIdempotencyKey] = useState(() => crypto.randomUUID());
+  const submitInFlight = useRef(false);
+  const attemptKeys = useRef(new Map<string, string>());
   const [agreed, setAgreed] = useState(false);
   const product = snapshotQuery.data?.products.find((item) => item.id === productId);
   const balance = product ? (snapshotQuery.data?.balances[product.asset] ?? 0) : 0;
@@ -51,6 +52,8 @@ export function EarnProductDetailPage() {
   const canSubmit =
     canSubscribe &&
     Boolean(product) &&
+    Number.isFinite(amountNumber) &&
+    amountNumber > 0 &&
     amountNumber >= (product?.minAmount ?? Infinity) &&
     amountNumber <= balance &&
     agreed;
@@ -66,15 +69,24 @@ export function EarnProductDetailPage() {
   }
 
   const submit = async () => {
+    if (!canSubmit || submitInFlight.current) return;
+    submitInFlight.current = true;
+    const request = { productId: product.id, amount: amountNumber };
+    const signature = JSON.stringify(request);
+    const key = attemptKeys.current.get(signature) ?? crypto.randomUUID();
+    attemptKeys.current.set(signature, key);
     try {
       const receipt = await mutation.mutateAsync({
-        request: { productId: product.id, amount: amountNumber },
-        idempotencyKey: `earn-subscribe-${idempotencyKey}`,
+        request,
+        idempotencyKey: `earn-subscribe-${key}`,
       });
+      attemptKeys.current.delete(signature);
       hapticSuccess();
       navigate(`${prefix}/earn/savings/receipt`, { state: { receipt } });
     } catch {
       // The mutation error is rendered inline below and reported by the API boundary.
+    } finally {
+      submitInFlight.current = false;
     }
   };
 
@@ -86,14 +98,14 @@ export function EarnProductDetailPage() {
           <div className="flex items-start justify-between gap-4">
             <div>
               <p style={{ color: c.text2, fontSize: 13 }}>{product.asset}</p>
-              <h1 style={{ color: c.text1, fontSize: 22, fontWeight: 800 }}>{product.name}</h1>
+              <h2 style={{ color: c.text1, fontSize: 22, fontWeight: 800 }}>{product.name}</h2>
             </div>
-            <ShieldCheck color="#34D399" size={28} />
+            <ShieldCheck color={c.successText} size={28} />
           </div>
           <div className="mt-5 grid grid-cols-2 gap-3">
             <div>
               <p style={{ color: c.text3, fontSize: 11 }}>APY hiện tại</p>
-              <p style={{ color: '#34D399', fontSize: 26, fontWeight: 800 }}>{product.apy}%</p>
+              <p style={{ color: c.successText, fontSize: 26, fontWeight: 800 }}>{product.apy}%</p>
             </div>
             <div>
               <p style={{ color: c.text3, fontSize: 11 }}>Thời hạn</p>
@@ -113,6 +125,7 @@ export function EarnProductDetailPage() {
             </label>
             <button
               className="text-xs font-semibold text-blue-500"
+              disabled={mutation.isPending}
               onClick={() => setAmount(String(balance))}
             >
               Khả dụng {formatAmount(balance)} {product.asset}
@@ -126,10 +139,8 @@ export function EarnProductDetailPage() {
               id="earn-detail-amount"
               inputMode="decimal"
               value={amount}
-              onChange={(event) => {
-                setAmount(event.target.value);
-                setIdempotencyKey(crypto.randomUUID());
-              }}
+              disabled={mutation.isPending}
+              onChange={(event) => setAmount(event.target.value)}
               className="min-w-0 flex-1 bg-transparent text-lg outline-none"
               placeholder={String(product.minAmount)}
             />
@@ -142,6 +153,7 @@ export function EarnProductDetailPage() {
         <label className="flex items-start gap-2 text-xs" style={{ color: c.text2 }}>
           <input
             type="checkbox"
+            disabled={mutation.isPending}
             checked={agreed}
             onChange={(event) => setAgreed(event.target.checked)}
             className="mt-0.5"
@@ -182,11 +194,16 @@ export function EarnRedeemPage() {
   const snapshotQuery = useEarnSnapshotQuery();
   const mutation = useRedeemEarnPositionMutation();
   const [amount, setAmount] = useState('');
-  const [idempotencyKey, setIdempotencyKey] = useState(() => crypto.randomUUID());
+  const submitInFlight = useRef(false);
+  const attemptKeys = useRef(new Map<string, string>());
   const position = snapshotQuery.data?.positions.find((item) => item.id === positionId);
   const amountNumber = Number(amount);
   const canSubmit =
-    canRedeem && position !== undefined && amountNumber > 0 && amountNumber <= position.amount;
+    canRedeem &&
+    position !== undefined &&
+    Number.isFinite(amountNumber) &&
+    amountNumber > 0 &&
+    amountNumber <= position.amount;
 
   if (snapshotQuery.isPending) return <LoadingPage title="Rút vốn" />;
   if (snapshotQuery.isError || !position) {
@@ -199,15 +216,24 @@ export function EarnRedeemPage() {
   }
 
   const submit = async () => {
+    if (!canSubmit || submitInFlight.current) return;
+    submitInFlight.current = true;
+    const request = { positionId: position.id, amount: amountNumber };
+    const signature = JSON.stringify(request);
+    const key = attemptKeys.current.get(signature) ?? crypto.randomUUID();
+    attemptKeys.current.set(signature, key);
     try {
       const receipt = await mutation.mutateAsync({
-        request: { positionId: position.id, amount: amountNumber },
-        idempotencyKey: `earn-redeem-${idempotencyKey}`,
+        request,
+        idempotencyKey: `earn-redeem-${key}`,
       });
+      attemptKeys.current.delete(signature);
       hapticSuccess();
       navigate(`${prefix}/earn/savings/receipt`, { state: { receipt } });
     } catch {
       // The mutation error is rendered inline below.
+    } finally {
+      submitInFlight.current = false;
     }
   };
 
@@ -221,9 +247,7 @@ export function EarnRedeemPage() {
               className="flex h-11 w-11 items-center justify-center rounded-full"
               style={{ background: `${position.color}22` }}
             >
-              <span style={{ color: position.color, fontWeight: 800 }}>
-                {position.asset.slice(0, 3)}
-              </span>
+              <span style={{ color: c.text1, fontWeight: 800 }}>{position.asset.slice(0, 3)}</span>
             </div>
             <div>
               <p style={{ color: c.text1, fontSize: 16, fontWeight: 700 }}>{position.product}</p>
@@ -241,15 +265,14 @@ export function EarnRedeemPage() {
               aria-label="Số lượng rút"
               inputMode="decimal"
               value={amount}
-              onChange={(event) => {
-                setAmount(event.target.value);
-                setIdempotencyKey(crypto.randomUUID());
-              }}
+              disabled={mutation.isPending}
+              onChange={(event) => setAmount(event.target.value)}
               className="min-w-0 flex-1 bg-transparent text-lg outline-none"
               placeholder="0.00"
             />
             <button
               className="text-xs font-semibold text-blue-500"
+              disabled={mutation.isPending}
               onClick={() => setAmount(String(position.amount))}
             >
               MAX
@@ -311,13 +334,13 @@ export function EarnReceiptPage() {
       <PageContent gap="relaxed">
         <div className="flex flex-col items-center gap-3 py-6">
           {isPending ? (
-            <Clock3 size={56} color="#D97706" aria-hidden="true" />
+            <Clock3 size={56} color="var(--tr-warning-text)" aria-hidden="true" />
           ) : (
-            <CheckCircle2 size={56} color="#10B981" aria-hidden="true" />
+            <CheckCircle2 size={56} color="var(--tr-success-text)" aria-hidden="true" />
           )}
-          <h1 className="text-xl font-bold">
+          <h2 className="text-xl font-bold">
             {isPending ? 'Yêu cầu đang xử lý' : 'Giao dịch đã hoàn tất'}
-          </h1>
+          </h2>
           <p className="text-center text-sm opacity-70">
             {isPending
               ? 'Yêu cầu đã được tiếp nhận. Kết quả cuối cùng vẫn đang chờ backend xác nhận.'

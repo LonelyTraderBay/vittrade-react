@@ -17,20 +17,20 @@ import type {
 } from '@/features/wallet/model/wallet-types';
 
 const TYPE_LABELS: Record<WalletTransactionType, { label: string; color: string; icon: string }> = {
-  deposit: { label: 'Nạp tiền', color: '#10B981', icon: '↓' },
-  withdraw: { label: 'Rút tiền', color: '#EF4444', icon: '↑' },
-  trade_buy: { label: 'Mua giao dịch', color: '#10B981', icon: '🔄' },
-  trade_sell: { label: 'Bán giao dịch', color: '#EF4444', icon: '🔄' },
-  p2p_buy: { label: 'P2P Mua', color: '#10B981', icon: '🤝' },
-  p2p_sell: { label: 'P2P Bán', color: '#EF4444', icon: '🤝' },
+  deposit: { label: 'Nạp tiền', color: 'var(--tr-success-text)', icon: '↓' },
+  withdraw: { label: 'Rút tiền', color: 'var(--tr-error-text)', icon: '↑' },
+  trade_buy: { label: 'Mua giao dịch', color: 'var(--tr-success-text)', icon: '🔄' },
+  trade_sell: { label: 'Bán giao dịch', color: 'var(--tr-error-text)', icon: '🔄' },
+  p2p_buy: { label: 'P2P Mua', color: 'var(--tr-success-text)', icon: '🤝' },
+  p2p_sell: { label: 'P2P Bán', color: 'var(--tr-error-text)', icon: '🤝' },
 };
 const STATUS_MAP: Record<
   WalletTransactionStatus,
   { label: string; color: string; icon: LucideIcon }
 > = {
-  completed: { label: 'Hoàn thành', color: '#10B981', icon: CheckCircle },
-  pending: { label: 'Đang xử lý', color: '#F59E0B', icon: Clock },
-  failed: { label: 'Thất bại', color: '#EF4444', icon: XCircle },
+  completed: { label: 'Hoàn thành', color: 'var(--tr-success-text)', icon: CheckCircle },
+  pending: { label: 'Đang xử lý', color: 'var(--tr-warning-text)', icon: Clock },
+  failed: { label: 'Thất bại', color: 'var(--tr-error-text)', icon: XCircle },
 };
 
 interface TransactionProgressStep {
@@ -67,9 +67,9 @@ function CopyButton({ text }: { text: string }) {
       style={{ background: c.hoverBg }}
     >
       {copyState === 'copied' ? (
-        <Check size={13} color="#10B981" />
+        <Check size={13} color="var(--tr-success-text)" />
       ) : copyState === 'failed' ? (
-        <AlertCircle size={13} color="#EF4444" />
+        <AlertCircle size={13} color="var(--tr-error-text)" />
       ) : (
         <Copy size={13} color={c.text2} />
       )}
@@ -121,14 +121,14 @@ export function TransactionDetailPage() {
             className="w-16 h-16 rounded-2xl flex items-center justify-center"
             style={{ background: c.surface2 }}
           >
-            <AlertCircle size={32} color="#EF4444" />
+            <AlertCircle size={32} color="var(--tr-error-text)" />
           </div>
           <p style={{ color: c.text2, fontSize: 15, fontWeight: 600 }}>Không tìm thấy giao dịch</p>
           <button
             type="button"
             onClick={() => navigate(`${prefix}/wallet/history`)}
             className="px-5 py-2.5 rounded-xl text-sm font-semibold"
-            style={{ background: '#3B82F6', color: '#fff' }}
+            style={{ background: c.info, color: '#fff' }}
           >
             Quay lại lịch sử
           </button>
@@ -295,7 +295,7 @@ export function TransactionDetailPage() {
             style={{
               background: 'rgba(245,158,11,0.08)',
               border: '1px solid rgba(245,158,11,0.2)',
-              color: '#F59E0B',
+              color: 'var(--tr-warning-text)',
             }}
           >
             <MessageSquare size={16} /> Liên hệ hỗ trợ

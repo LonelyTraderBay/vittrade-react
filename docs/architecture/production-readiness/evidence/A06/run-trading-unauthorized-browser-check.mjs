@@ -44,6 +44,9 @@ const sourceFiles = [
   'src/features/trading/pages/OpenPositionsPage.tsx',
   'src/shared/api/http-client.ts',
   'src/shared/session/AuthContext.tsx',
+  'src/features/market/pages/MarketHomePage.tsx',
+  'src/features/market/model/market-queries.ts',
+  'src/app/contexts/AppContext.tsx',
   'docs/architecture/production-readiness/evidence/A06/run-trading-unauthorized-browser-check.mjs',
 ];
 const sourceHashes = Object.fromEntries(
@@ -135,6 +138,7 @@ try {
   await page.locator('[data-testid="dev-preview-controls"]').waitFor();
   await page.waitForFunction(() => Boolean(navigator.serviceWorker?.controller));
   assert.equal(await page.evaluate(() => Boolean(navigator.serviceWorker?.controller)), true);
+  await page.getByText('Dữ liệu market contract', { exact: true }).waitFor();
 
   const expandPreview = page.getByRole('button', { name: 'Mở công cụ xem trước' });
   if (await expandPreview.count()) await expandPreview.click();
@@ -144,6 +148,7 @@ try {
     .locator('[data-testid="dev-preview-controls"]')
     .getByText('developer@vittrade.local')
     .waitFor();
+  await page.getByText('Dữ liệu market contract', { exact: true }).waitFor();
   await page.locator('#preview-domain').selectOption('trading');
   await page.locator('#preview-state').selectOption('unauthorized');
   await page.getByRole('button', { name: 'Áp dụng trạng thái API' }).click();

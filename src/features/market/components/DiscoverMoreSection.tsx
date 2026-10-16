@@ -61,7 +61,7 @@ export function DiscoverMoreSection() {
                   className="px-1.5 py-0.5 rounded"
                   style={{
                     background: hexToRgba(item.color, 10),
-                    color: item.color,
+                    color: c.text1,
                     fontSize: 8,
                     fontWeight: 700,
                   }}

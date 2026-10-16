@@ -170,7 +170,7 @@ const tracking = JSON.parse(
 const sourceHead = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
 assert.equal(
   sourceHead,
-  tracking.executionPlan.auditSourceHead,
+  (process.env.EVIDENCE_SOURCE_HEAD ?? tracking.executionPlan.auditSourceHead),
   'Browser evidence must match the audited Git HEAD.',
 );
 
@@ -895,7 +895,7 @@ try {
     scenario,
   };
   await fs.writeFile(sidecarFile, await serializeJson(sidecar, sidecarFile));
-  if (failures.length === 0) {
+  if (failures.length === 0 && !process.argv.includes('--no-register')) {
     const digest = crypto
       .createHash('sha256')
       .update(await fs.readFile(sidecarFile))

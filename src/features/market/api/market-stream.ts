@@ -20,14 +20,17 @@ export function connectMarketStream(url: string, handlers: MarketStreamHandlers)
 
   const connect = () => {
     if (!active) return;
-    socket = new WebSocket(url);
+    const currentSocket = new WebSocket(url);
+    socket = currentSocket;
 
-    socket.addEventListener('open', () => {
+    currentSocket.addEventListener('open', () => {
+      if (!active || socket !== currentSocket) return;
       reconnectAttempt = 0;
       handlers.onStatus(true);
     });
 
-    socket.addEventListener('message', (event) => {
+    currentSocket.addEventListener('message', (event) => {
+      if (!active || socket !== currentSocket) return;
       try {
         const payload: unknown = JSON.parse(String(event.data));
         if (!isRecord(payload) || typeof payload.type !== 'string') return;
@@ -37,10 +40,13 @@ export function connectMarketStream(url: string, handlers: MarketStreamHandlers)
       }
     });
 
-    socket.addEventListener('error', () => handlers.onStatus(false));
-    socket.addEventListener('close', () => {
+    currentSocket.addEventListener('error', () => {
+      if (!active || socket !== currentSocket) return;
       handlers.onStatus(false);
-      if (!active) return;
+    });
+    currentSocket.addEventListener('close', () => {
+      if (!active || socket !== currentSocket) return;
+      handlers.onStatus(false);
       const delay = Math.min(30_000, 1_000 * 2 ** reconnectAttempt);
       reconnectAttempt += 1;
       reconnectTimer = window.setTimeout(connect, delay);
@@ -50,6 +56,7 @@ export function connectMarketStream(url: string, handlers: MarketStreamHandlers)
   connect();
 
   return () => {
+    if (!active) return;
     active = false;
     if (reconnectTimer !== undefined) window.clearTimeout(reconnectTimer);
     socket?.close();

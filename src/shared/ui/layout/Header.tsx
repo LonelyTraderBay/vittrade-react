@@ -5,6 +5,7 @@ import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { useRoutePrefix } from '@/shared/navigation/useRoutePrefix';
 import { Breadcrumb } from '@/shared/ui/Breadcrumb';
 import type { LucideIcon } from 'lucide-react';
+import { pageInlineGutterStyle } from './pageGutter';
 
 /**
  * ══════════════════════════════════════════════════════════
@@ -12,7 +13,7 @@ import type { LucideIcon } from 'lucide-react';
  * ══════════════════════════════════════════════════════════
  *
  *  Height: 52pt (iOS standard 44pt + 8pt breathing room)
- *  Padding: 20px horizontal (device standard)
+ *  Horizontal gutter: inherited from the app shell (20px standalone fallback)
  *  Title: 17px weight 600 — iOS nav bar exception (not in φ scale)
  *
  *  ┌──────────────────────────────────────────────────┐
@@ -148,6 +149,7 @@ export function Header({
       return (
         <div className="flex items-center gap-1.5 shrink-0">
           <button
+            type="button"
             onClick={action.onClick}
             className="flex items-center justify-center hover-ghost"
             style={actionBtnStyle}
@@ -168,6 +170,7 @@ export function Header({
       <div className="flex items-center gap-1.5 shrink-0">
         {right === 'bell' && (
           <button
+            type="button"
             onClick={() =>
               onNotificationsClick ? onNotificationsClick() : navigate(`${prefix}/notifications`)
             }
@@ -185,6 +188,7 @@ export function Header({
         )}
         {right === 'search' && (
           <button
+            type="button"
             onClick={onSearch}
             className="flex items-center justify-center hover-ghost"
             style={actionBtnStyle}
@@ -195,6 +199,7 @@ export function Header({
         )}
         {right === 'more' && (
           <button
+            type="button"
             className="flex items-center justify-center hover-ghost"
             style={actionBtnStyle}
             aria-label="Thêm"
@@ -213,6 +218,7 @@ export function Header({
   const renderBack = () =>
     back ? (
       <button
+        type="button"
         onClick={handleBack}
         className="flex items-center justify-center hover-ghost shrink-0 active:opacity-60"
         style={backBtnStyle}
@@ -246,9 +252,10 @@ export function Header({
     return (
       <div className="contents">
         <div
-          className={`flex ${hasSubtitle ? 'items-start' : 'items-center'} gap-3 px-5 shrink-0`}
+          className={`flex ${hasSubtitle ? 'items-start' : 'items-center'} gap-3 shrink-0`}
           style={{
             ...barStyle,
+            ...pageInlineGutterStyle(),
             minHeight: 52,
             paddingTop: hasSubtitle ? 8 : 0,
             paddingBottom: hasSubtitle ? 8 : 0,
@@ -258,6 +265,7 @@ export function Header({
           {left ??
             (back && (
               <button
+                type="button"
                 onClick={handleBack}
                 className="flex items-center justify-center hover-ghost shrink-0 active:opacity-60"
                 style={{ ...backBtnStyle, marginTop: hasSubtitle ? 2 : 0 }}
@@ -270,8 +278,8 @@ export function Header({
           {/* Title group — left aligned, flex-1 */}
           <div className="flex-1 min-w-0">
             {title && (
-              <span
-                className="block truncate"
+              <h1
+                className="m-0 block truncate"
                 style={{
                   color: c.text1,
                   /* FIX 1.6: 17px = iOS nav bar standard (exception from φ scale, documented) */
@@ -282,7 +290,7 @@ export function Header({
                 }}
               >
                 {title}
-              </span>
+              </h1>
             )}
             {subtitle && (
               <span
@@ -311,12 +319,13 @@ export function Header({
   return (
     <div className="contents">
       <div
-        className={`flex ${hasSubtitle ? 'items-start' : 'items-center'} justify-between px-5 shrink-0`}
+        className={`flex ${hasSubtitle ? 'items-start' : 'items-center'} justify-between shrink-0`}
         style={{
           minHeight: 52,
           paddingTop: hasSubtitle ? 8 : 0,
           paddingBottom: hasSubtitle ? 8 : 0,
           ...barStyle,
+          ...pageInlineGutterStyle(),
         }}
       >
         {/* Left */}
@@ -328,16 +337,18 @@ export function Header({
         <div className="flex flex-col items-center flex-2 text-center">
           {title && (
             <div className="flex items-center gap-1.5">
-              <span
+              <h1
                 style={{
                   color: c.text1,
                   fontSize: 17 /* iOS nav bar exception */,
                   fontWeight: 600,
                   letterSpacing: -0.2,
+                  lineHeight: 1.3,
+                  margin: 0,
                 }}
               >
                 {title}
-              </span>
+              </h1>
               {badge != null && badge > 0 && <CountBadge count={badge} />}
             </div>
           )}

@@ -56,7 +56,7 @@ export function MarketCorrelationPairsPage() {
             className="rounded-lg px-3 py-1.5"
             style={{
               background: order === 'positive' ? 'rgba(239,68,68,0.1)' : colors.chipBg,
-              color: order === 'positive' ? '#EF4444' : colors.text3,
+              color: order === 'positive' ? 'var(--tr-error-text)' : colors.text3,
               fontSize: 11,
             }}
           >
@@ -69,7 +69,7 @@ export function MarketCorrelationPairsPage() {
             className="rounded-lg px-3 py-1.5"
             style={{
               background: order === 'negative' ? 'rgba(59,130,246,0.1)' : colors.chipBg,
-              color: order === 'negative' ? '#3B82F6' : colors.text3,
+              color: order === 'negative' ? 'var(--tr-link)' : colors.text3,
               fontSize: 11,
             }}
           >

@@ -482,6 +482,13 @@ describe('market API contract', () => {
 
     server.use(
       http.get('http://localhost:3000/api/market/unlocks', () =>
+        HttpResponse.json({ ...response, items: [response.items[0], response.items[0]] }),
+      ),
+    );
+    await expect(marketApi.getTokenUnlocks({ window: '30d' })).rejects.toThrow(/unique/);
+
+    server.use(
+      http.get('http://localhost:3000/api/market/unlocks', () =>
         HttpResponse.json({
           ...response,
           items: [
@@ -604,6 +611,13 @@ describe('market API contract', () => {
     );
 
     await expect(marketApi.getSentiment({ window: '7d' })).resolves.toEqual(response);
+
+    server.use(
+      http.get('http://localhost:3000/api/market/sentiment', () =>
+        HttpResponse.json({ ...response, tokens: [response.tokens[0], response.tokens[0]] }),
+      ),
+    );
+    await expect(marketApi.getSentiment({ window: '7d' })).rejects.toThrow(/unique/);
 
     server.use(
       http.get('http://localhost:3000/api/market/sentiment', () =>

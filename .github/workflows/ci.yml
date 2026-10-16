@@ -12,6 +12,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # The source ledger verifies historical Git blobs, not only the latest checkout.
+          fetch-depth: 0
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -76,6 +79,9 @@ jobs:
       - name: Architecture inventory
         run: npm run architecture:inventory:check
 
+      - name: Readiness source ledger
+        run: node docs/architecture/production-readiness/check-tracking.mjs
+
       - name: Page size gate
         run: npm run page-size:check
 
@@ -102,3 +108,28 @@ jobs:
 
       - name: Bundle budget
         run: npm run bundle:check
+
+      - name: Preserve verification reports on success or failure
+        if: always()
+        id: verification-artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-gates-${{ github.sha }}-${{ github.run_attempt }}
+          # Select only run evidence; hidden project config and cache are excluded.
+          include-hidden-files: true
+          path: |
+            .artifacts/runs/**/run.json
+            .artifacts/runs/**/coverage/**
+            .artifacts/runs/**/playwright-report/**
+            .artifacts/runs/**/test-results/**
+            .artifacts/cleanup-report.json
+          retention-days: 7
+          if-no-files-found: warn
+
+      - name: Record verification artifact digest
+        if: always() && steps.verification-artifacts.outcome == 'success'
+        env:
+          ARTIFACT_ID: ${{ steps.verification-artifacts.outputs.artifact-id }}
+          ARTIFACT_DIGEST: ${{ steps.verification-artifacts.outputs.artifact-digest }}
+        run: |
+          printf 'Verification artifact ID: %s\n\nSHA-256: `%s`\n' "$ARTIFACT_ID" "$ARTIFACT_DIGEST" >> "$GITHUB_STEP_SUMMARY"

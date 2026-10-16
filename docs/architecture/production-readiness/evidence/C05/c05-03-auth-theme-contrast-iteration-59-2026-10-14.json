@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "commandOrSteps": "Run focused Auth E2E cases for Web 2FA contrast, Session Expired axe and Account Locked axe with light/dark themes and supported viewport sizes.",
+  "environment": "Windows local Chromium with repository E2E fixtures; no backend or staging.",
+  "expected": "Auth text contrast remains above the existing 4.5:1 assertion through theme changes and axe reports no violation on affected pages; assertions remain unchanged.",
+  "actual": "Focused suite passed 3/3. Account Locked axe case passed all four light/dark and 320/1440 viewport combinations. Web 2FA no longer interpolates circle background during theme change; locked-page back navigation animates transform only; test expectations use current #344054 light text token. Existing contrast/axe thresholds retained.",
+  "result": "pass",
+  "limitations": "Screenshot review/formal UI acceptance remains 14/128 reviewed and 0/128 accepted; this focused regression does not close C05.03."
+}

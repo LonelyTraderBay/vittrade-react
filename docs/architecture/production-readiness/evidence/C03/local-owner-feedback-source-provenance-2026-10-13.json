@@ -1,0 +1,245 @@
+{
+  "observedAt": "2026-10-13T14:29:31.000Z",
+  "sourceHead": "3ffe8605ac08391a13c30f22a1b0981640bfe35f",
+  "branch": "codex/frontend-readiness-remediation-20261013",
+  "commits": [
+    {
+      "priority": "P2",
+      "head": "3ffe8605ac08391a13c30f22a1b0981640bfe35f",
+      "parent": "511e003798d76c70178ff2551752d4c86436a95a",
+      "message": "P2: kiểm chứng phục hồi đọc refresh và điều hướng owner"
+    }
+  ],
+  "proofs": [
+    {
+      "path": "src/app/__tests__/read-error-recovery.test.tsx",
+      "blobId": "5586fc1816dde155d0657f9b47b814dbe504864c",
+      "filteredBlobId": "5586fc1816dde155d0657f9b47b814dbe504864c",
+      "committedSha256": "e8d4eca85fef99c581768b6421023851ba1d4aaeee411847e5ef68fd6414baed",
+      "workingSha256": "e8d4eca85fef99c581768b6421023851ba1d4aaeee411847e5ef68fd6414baed",
+      "sourceHead": "3ffe8605ac08391a13c30f22a1b0981640bfe35f",
+      "priority": "P2",
+      "previous": {
+        "sourceHead": null,
+        "sha256": null
+      },
+      "currentFilteredBlobId": "5586fc1816dde155d0657f9b47b814dbe504864c"
+    },
+    {
+      "path": "src/app/components/layout/WebShell.test.tsx",
+      "blobId": "616913142a7bf3a292f59c62a122823dd5a9327d",
+      "filteredBlobId": "616913142a7bf3a292f59c62a122823dd5a9327d",
+      "committedSha256": "929abc6732df5bd5030149e29b94ce018de3030003b428b493aa8df1d7c576e1",
+      "workingSha256": "929abc6732df5bd5030149e29b94ce018de3030003b428b493aa8df1d7c576e1",
+      "sourceHead": "3ffe8605ac08391a13c30f22a1b0981640bfe35f",
+      "priority": "P2",
+      "previous": {
+        "sourceHead": null,
+        "sha256": null
+      },
+      "currentFilteredBlobId": "616913142a7bf3a292f59c62a122823dd5a9327d"
+    },
+    {
+      "path": "src/app/components/layout/WebSidebar.test.tsx",
+      "blobId": "8a0118959677c5bc0bb6fe4d2451b9ed823f75f2",
+      "filteredBlobId": "8a0118959677c5bc0bb6fe4d2451b9ed823f75f2",
+      "committedSha256": "80f0c7473adab599db6078e25e733c36f00d15cdceca330eb3b531db7a01a381",
+      "workingSha256": "80f0c7473adab599db6078e25e733c36f00d15cdceca330eb3b531db7a01a381",
+      "sourceHead": "3ffe8605ac08391a13c30f22a1b0981640bfe35f",
+      "priority": "P2",
+      "previous": {
+        "sourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+        "sha256": "68678fec0e67780353c495419a72816de7588f0aaa2082b097e3511d577754e9"
+      },
+      "currentFilteredBlobId": "8a0118959677c5bc0bb6fe4d2451b9ed823f75f2"
+    },
+    {
+      "path": "src/features/admin/model/admin-queries.test.tsx",
+      "blobId": "dd40b63e12fd02cfbeedf65573a1725188ff0cf8",
+      "filteredBlobId": "dd40b63e12fd02cfbeedf65573a1725188ff0cf8",
+      "committedSha256": "036a7d64de91e2c78dba95a936048b5617c8e6941c5dd81a6dfacb93e96fdb19",
+      "workingSha256": "036a7d64de91e2c78dba95a936048b5617c8e6941c5dd81a6dfacb93e96fdb19",
+      "sourceHead": "3ffe8605ac08391a13c30f22a1b0981640bfe35f",
+      "priority": "P2",
+      "previous": {
+        "sourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+        "sha256": "4fc0d7ff8a1bf793c0fb8ada5e0c2396a5bfdf8d965807fd952754c74f3e6d44"
+      },
+      "currentFilteredBlobId": "dd40b63e12fd02cfbeedf65573a1725188ff0cf8"
+    },
+    {
+      "path": "src/features/auth/pages/WebLoginPage.test.tsx",
+      "blobId": "c4c5f2638016ba8bf64df8e7c0188c38b45e5fd1",
+      "filteredBlobId": "c4c5f2638016ba8bf64df8e7c0188c38b45e5fd1",
+      "committedSha256": "a6db1f3176f6c1dc4c3e99cefd0716c4fb43ddd7c48e4532b609d95b4400f65b",
+      "workingSha256": "a6db1f3176f6c1dc4c3e99cefd0716c4fb43ddd7c48e4532b609d95b4400f65b",
+      "sourceHead": "3ffe8605ac08391a13c30f22a1b0981640bfe35f",
+      "priority": "P2",
+      "previous": {
+        "sourceHead": "db9c9064fa3ba79bd76fb7acb1023d90486b6cbf",
+        "sha256": "a5422f8ced1b303a014dad5c062c497123fa6d249012818697ae6ea36bbcfcd5"
+      },
+      "currentFilteredBlobId": "c4c5f2638016ba8bf64df8e7c0188c38b45e5fd1"
+    },
+    {
+      "path": "src/features/auth/pages/WebSessionExpiredPage.test.tsx",
+      "blobId": "8a0bcf01fcf71e028db585ae2e9147347313a216",
+      "filteredBlobId": "8a0bcf01fcf71e028db585ae2e9147347313a216",
+      "committedSha256": "633a4e1be8afea796157bdd7934f785301caf124d1f7c1020103d0944c0dbf37",
+      "workingSha256": "633a4e1be8afea796157bdd7934f785301caf124d1f7c1020103d0944c0dbf37",
+      "sourceHead": "3ffe8605ac08391a13c30f22a1b0981640bfe35f",
+      "priority": "P2",
+      "previous": {
+        "sourceHead": "db9c9064fa3ba79bd76fb7acb1023d90486b6cbf",
+        "sha256": "f7e7cdf9e47a1fd614030062fcb2e1331e4c4f5c9a1f71d51e1221e843dc6f30"
+      },
+      "currentFilteredBlobId": "8a0bcf01fcf71e028db585ae2e9147347313a216"
+    },
+    {
+      "path": "src/features/market/pages/MarketCorrelationPairsPage.test.tsx",
+      "blobId": "681b4708fddba5fdb521e5c974cde4de7aa211a3",
+      "filteredBlobId": "681b4708fddba5fdb521e5c974cde4de7aa211a3",
+      "committedSha256": "6e440edefed0a54aada7219d3f0894a46a61cc26b01e405c3ad6f64ce52887d1",
+      "workingSha256": "6e440edefed0a54aada7219d3f0894a46a61cc26b01e405c3ad6f64ce52887d1",
+      "sourceHead": "3ffe8605ac08391a13c30f22a1b0981640bfe35f",
+      "priority": "P2",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "4a215884ebad35d93bcfd87a80ae5d53c763d1186961dc8d4a5d6daddd96e6ab"
+      },
+      "currentFilteredBlobId": "681b4708fddba5fdb521e5c974cde4de7aa211a3"
+    },
+    {
+      "path": "src/features/market/pages/MarketEventCalendarPage.test.tsx",
+      "blobId": "d38ef6f291c2e255208683bca81d26326b410024",
+      "filteredBlobId": "d38ef6f291c2e255208683bca81d26326b410024",
+      "committedSha256": "905b86abd8e242678a0c8e34c27d49d868ae991f2b06cb296a4d8dd9fb962404",
+      "workingSha256": "905b86abd8e242678a0c8e34c27d49d868ae991f2b06cb296a4d8dd9fb962404",
+      "sourceHead": "3ffe8605ac08391a13c30f22a1b0981640bfe35f",
+      "priority": "P2",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "583486ea27269a9526af57e9ea7891928e718be848641bc5470f8e7f30e41e86"
+      },
+      "currentFilteredBlobId": "d38ef6f291c2e255208683bca81d26326b410024"
+    },
+    {
+      "path": "src/features/market/pages/MarketMoversPage.test.tsx",
+      "blobId": "c3164d957e73039622f66ba0f1b3da3f32de9f2b",
+      "filteredBlobId": "c3164d957e73039622f66ba0f1b3da3f32de9f2b",
+      "committedSha256": "652b6608f64620298c8cd337a6127a717913136b4303ce5d55ee44fd2091bbbe",
+      "workingSha256": "652b6608f64620298c8cd337a6127a717913136b4303ce5d55ee44fd2091bbbe",
+      "sourceHead": "3ffe8605ac08391a13c30f22a1b0981640bfe35f",
+      "priority": "P2",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "96b6424946931867c5b7024b31c668b7eabecaa3d0cc082aac30805f2f763656"
+      },
+      "currentFilteredBlobId": "c3164d957e73039622f66ba0f1b3da3f32de9f2b"
+    },
+    {
+      "path": "src/features/market/pages/MarketNewsFeedPage.test.tsx",
+      "blobId": "b60b545eb0f639ecee6793476efbaacf836da775",
+      "filteredBlobId": "b60b545eb0f639ecee6793476efbaacf836da775",
+      "committedSha256": "55819556b8541a344b93fad9d9f8e2f3707400190683d7e51b8a1ed12e8fd082",
+      "workingSha256": "55819556b8541a344b93fad9d9f8e2f3707400190683d7e51b8a1ed12e8fd082",
+      "sourceHead": "3ffe8605ac08391a13c30f22a1b0981640bfe35f",
+      "priority": "P2",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "de7e7a8861a3c386cd31590cedd6e13b2f0d5277c3520eaa8c6cfebadee8a69e"
+      },
+      "currentFilteredBlobId": "b60b545eb0f639ecee6793476efbaacf836da775"
+    },
+    {
+      "path": "src/features/market/pages/PairDetailPage.test.tsx",
+      "blobId": "9ea36e2ab4581adc097c1b533ced33d6f5b8301b",
+      "filteredBlobId": "9ea36e2ab4581adc097c1b533ced33d6f5b8301b",
+      "committedSha256": "5a02a96f408e2b712894dffdddf7e7fdd7ee2ba3fedb8656caafec987be7979b",
+      "workingSha256": "5a02a96f408e2b712894dffdddf7e7fdd7ee2ba3fedb8656caafec987be7979b",
+      "sourceHead": "3ffe8605ac08391a13c30f22a1b0981640bfe35f",
+      "priority": "P2",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "e515a33bdd7e810b1c67ed0fc08fa04ee6f7eb43037583347fbb95d7a2ec3302"
+      },
+      "currentFilteredBlobId": "9ea36e2ab4581adc097c1b533ced33d6f5b8301b"
+    },
+    {
+      "path": "src/features/market/pages/TokenUnlockSchedulePage.test.tsx",
+      "blobId": "e28322349615566f87ac5ccccf0b745b9df3a8d7",
+      "filteredBlobId": "e28322349615566f87ac5ccccf0b745b9df3a8d7",
+      "committedSha256": "7e94abebd105897745e470dad8fda54298e22e91f473e3bd05ab65125aaf0e67",
+      "workingSha256": "7e94abebd105897745e470dad8fda54298e22e91f473e3bd05ab65125aaf0e67",
+      "sourceHead": "3ffe8605ac08391a13c30f22a1b0981640bfe35f",
+      "priority": "P2",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "c1b77179fc86889f3e6363b80195880bb42072faee80dfb74d7f12f6c9e2d02f"
+      },
+      "currentFilteredBlobId": "e28322349615566f87ac5ccccf0b745b9df3a8d7"
+    },
+    {
+      "path": "src/features/profile/pages/ProfileContractPage.test.tsx",
+      "blobId": "da2e6b366c421da8a58162b1c0c69a562215d96d",
+      "filteredBlobId": "da2e6b366c421da8a58162b1c0c69a562215d96d",
+      "committedSha256": "343fba7b70dd75cbde477ce42ea996ee795ebc00f172f4f9c75c5c064c9df920",
+      "workingSha256": "343fba7b70dd75cbde477ce42ea996ee795ebc00f172f4f9c75c5c064c9df920",
+      "sourceHead": "3ffe8605ac08391a13c30f22a1b0981640bfe35f",
+      "priority": "P2",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "7c594d017e1a87265bd56387a04d158b4d69ef69235953a1521b4ddc13b9a8a7"
+      },
+      "currentFilteredBlobId": "da2e6b366c421da8a58162b1c0c69a562215d96d"
+    },
+    {
+      "path": "src/features/trading/pages/TradingCopyPages.test.tsx",
+      "blobId": "1da3879cf2143ca14e07b3712bdd3f1c4d63841d",
+      "filteredBlobId": "1da3879cf2143ca14e07b3712bdd3f1c4d63841d",
+      "committedSha256": "0ee5bc36160b1868117a1411608fffca860a60c94d2d251cbd398081acedd3e2",
+      "workingSha256": "0ee5bc36160b1868117a1411608fffca860a60c94d2d251cbd398081acedd3e2",
+      "sourceHead": "3ffe8605ac08391a13c30f22a1b0981640bfe35f",
+      "priority": "P2",
+      "previous": {
+        "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+        "sha256": "d6daa0eddb2818824260144f8424e6f375d8113ad3216007d92cc2aab2851da6"
+      },
+      "currentFilteredBlobId": "1da3879cf2143ca14e07b3712bdd3f1c4d63841d"
+    },
+    {
+      "path": "src/shared/ui/form.test.tsx",
+      "blobId": "d600cc85874d5a7ab3ad554c1b34f9a67b513622",
+      "filteredBlobId": "d600cc85874d5a7ab3ad554c1b34f9a67b513622",
+      "committedSha256": "6a7513a336d978924604f057a8ff2b05335c6024dfe4d11131d3eaa9c7149b2d",
+      "workingSha256": "6a7513a336d978924604f057a8ff2b05335c6024dfe4d11131d3eaa9c7149b2d",
+      "sourceHead": "3ffe8605ac08391a13c30f22a1b0981640bfe35f",
+      "priority": "P2",
+      "previous": {
+        "sourceHead": "075517d81f235e6096c09946a2383442a590cd26",
+        "sha256": "d7923080f9cffa9df8e4c7b2928ddedd95111c38a469576815df8b112a66e628"
+      },
+      "currentFilteredBlobId": "d600cc85874d5a7ab3ad554c1b34f9a67b513622"
+    },
+    {
+      "path": "src/shared/ui/layout-loading-primitives.test.tsx",
+      "blobId": "d17a6ec52b6da6d254bcccd87864b985e6e18ec0",
+      "filteredBlobId": "d17a6ec52b6da6d254bcccd87864b985e6e18ec0",
+      "committedSha256": "4902c1ab9c1c28e966755c48547727305fc6e4505e9a51bc0e78998baaf43a20",
+      "workingSha256": "4902c1ab9c1c28e966755c48547727305fc6e4505e9a51bc0e78998baaf43a20",
+      "sourceHead": "3ffe8605ac08391a13c30f22a1b0981640bfe35f",
+      "priority": "P2",
+      "previous": {
+        "sourceHead": "cf07c54809b248871d59a41627fbaf138b8383d3",
+        "sha256": "5d4d3b33d72d69bdb6f223201f0befc0cabeaa2a3ea1e141a1e936b31031ffdb"
+      },
+      "currentFilteredBlobId": "d17a6ec52b6da6d254bcccd87864b985e6e18ec0"
+    }
+  ],
+  "limits": [
+    "16 actual local source/test/inventory blobs only. No push, PR, hosted CI or deployment.",
+    "Pre-commit runtime evidence retains the HEAD it actually observed; exact bytes match these actual committed objects after Git filtering.",
+    "Current strict-HEAD browser/build evidence must run on this final source commit.",
+    "Original baseline, catalogue history and backend/UAT/coverage criteria are preserved."
+  ]
+}

@@ -1,6 +1,10 @@
-import { fireEvent, screen } from '@testing-library/react';
+import { act, fireEvent, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import { renderWithProviders } from '@/test/test-utils';
+import {
+  getRenderedReactHandler,
+  invokeStaleReactHandler,
+} from '@/test/invoke-stale-react-handler';
 import type { TradingOrder } from '../model/trading-types';
 import { OrderModifySheet } from './OrderModifySheet';
 
@@ -20,18 +24,20 @@ const order: TradingOrder = {
 function renderSheet({
   canWrite = true,
   isPending = false,
+  selectedOrder = order,
   onClose = vi.fn(),
   onSave = vi.fn(),
 }: {
   canWrite?: boolean;
   isPending?: boolean;
+  selectedOrder?: TradingOrder | null;
   onClose?: () => void;
   onSave?: (values: { orderId: string; price: number; amount: number }) => void | Promise<void>;
 } = {}) {
   renderWithProviders(
     <OrderModifySheet
       open
-      order={order}
+      order={selectedOrder}
       canWrite={canWrite}
       isPending={isPending}
       onClose={onClose}
@@ -48,6 +54,13 @@ describe('OrderModifySheet', () => {
     expect(screen.getByText('BTC/USDT')).toBeInTheDocument();
     expect(screen.getByLabelText('Giá mới (USDT)')).toHaveValue(64_500);
     expect(screen.getByLabelText('Khối lượng mới')).toHaveValue(0.1);
+  });
+
+  it('shows sell-side labels and colors for a sell order', () => {
+    renderSheet({ selectedOrder: { ...order, side: 'sell' } });
+
+    expect(screen.getByText('BÁN')).toBeInTheDocument();
+    expect(screen.queryByText('MUA')).not.toBeInTheDocument();
   });
 
   it('submits finite positive values for the selected order', () => {
@@ -80,6 +93,40 @@ describe('OrderModifySheet', () => {
   ])('disables editing submission for a %s', (_caseName, props) => {
     renderSheet(props);
 
+    expect(screen.getByRole('button', { name: 'Lưu thay đổi' })).toBeDisabled();
+  });
+
+  it('keeps the save callback blocked if a read-only button emits a click anyway', () => {
+    const { onSave } = renderSheet({ canWrite: false });
+    const saveButton = screen.getByRole('button', { name: 'Lưu thay đổi' });
+
+    // Simulate a stale child event after permission changed; the handler must
+    // re-check its permission instead of relying only on the disabled button.
+    invokeStaleReactHandler(saveButton, 'onClick');
+
+    expect(onSave).not.toHaveBeenCalled();
+  });
+
+  it('keeps invalid values blocked if a stale save callback fires', () => {
+    const { onSave } = renderSheet();
+    fireEvent.change(screen.getByLabelText('Giá mới (USDT)'), { target: { value: '' } });
+    const saveButton = screen.getByRole('button', { name: 'Lưu thay đổi' });
+
+    expect(saveButton).toBeDisabled();
+    invokeStaleReactHandler(saveButton, 'onClick');
+
+    expect(onSave).not.toHaveBeenCalled();
+    expect(screen.getByText(/Thay đổi:/)).toBeInTheDocument();
+  });
+
+  it('uses a finite display fallback for a malformed decimal draft', () => {
+    renderSheet();
+    const price = screen.getByLabelText('Giá mới (USDT)');
+    const onChange = getRenderedReactHandler(price, 'onChange');
+
+    act(() => onChange({ target: { value: '.' } }));
+
+    expect(screen.getByText(/Thay đổi:/)).toHaveTextContent('-100.00%');
     expect(screen.getByRole('button', { name: 'Lưu thay đổi' })).toBeDisabled();
   });
 

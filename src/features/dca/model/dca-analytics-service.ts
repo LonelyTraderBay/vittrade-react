@@ -6,13 +6,14 @@
  * - Event batching for performance
  * - Offline queue with localStorage
  * - Debug mode for development
- * - GDPR-compliant (no PII)
+ * - Consent-aware collection with sanitized release diagnostics
  * - Type-safe event tracking
  *
  * @module services/DCAAnalyticsService
  * @version 2.0 (Phase 2 - Sprint 2)
  */
 
+import { captureException } from '@/shared/telemetry/telemetry';
 import { DEFAULT_ANALYTICS_CONFIG } from './dca-analytics-types';
 import type {
   AnalyticsConfig,
@@ -28,10 +29,6 @@ import type {
 import type { DCAFrequency } from './dca-types';
 import { env } from '@/shared/config/env';
 import { browserStorage } from '@/shared/lib/browser-storage';
-
-/* ═══════════════════════════════════════════
-   SERVICE CLASS
-   ═══════════════════════════════════════════ */
 
 class DCAAnalyticsService implements IAnalyticsService {
   private config: AnalyticsConfig;
@@ -87,7 +84,7 @@ class DCAAnalyticsService implements IAnalyticsService {
 
     this.enqueueEvent(event);
 
-    if (this.config.debug) {
+    if (env.isDev && this.config.debug) {
       // eslint-disable-next-line no-console -- debug mode exposes queued event diagnostics
       console.log('[DCA Analytics] Event:', event);
     }
@@ -163,7 +160,7 @@ class DCAAnalyticsService implements IAnalyticsService {
       this.userId = `anon_${this.sessionId}`;
     }
 
-    if (this.config.debug) {
+    if (env.isDev && this.config.debug) {
       // eslint-disable-next-line no-console -- debug mode exposes user property diagnostics
       console.log('[DCA Analytics] User Property:', { key, value });
     }
@@ -335,10 +332,6 @@ class DCAAnalyticsService implements IAnalyticsService {
     });
   }
 
-  /* ─────────────────────────────────────────
-     QUEUE MANAGEMENT
-     ───────────────────────────────────────── */
-
   /**
    * Read-only camelCase view of the queued events for diagnostics and tests.
    */
@@ -381,7 +374,7 @@ class DCAAnalyticsService implements IAnalyticsService {
     try {
       // In production, send to analytics backend
       // For now, just log in debug mode
-      if (this.config.debug) {
+      if (env.isDev && this.config.debug) {
         // eslint-disable-next-line no-console -- debug mode exposes the outgoing batch for QA
         console.log('[DCA Analytics] Flushing events:', events.length);
         // eslint-disable-next-line no-console -- the table is the documented QA view of the batch
@@ -402,7 +395,8 @@ class DCAAnalyticsService implements IAnalyticsService {
         this.clearOfflineQueue();
       }
     } catch (error) {
-      console.error('[DCA Analytics] Flush error:', error);
+      captureException(error, { area: 'dca-analytics', operation: 'flush' });
+      if (env.isDev) console.error('[DCA Analytics] Flush error:', error);
 
       // Re-queue events on failure
       this.eventQueue = [...events, ...this.eventQueue];
@@ -435,7 +429,8 @@ class DCAAnalyticsService implements IAnalyticsService {
     try {
       browserStorage.local.setItem('dca_analytics_queue', JSON.stringify(this.eventQueue));
     } catch (error) {
-      console.error('[DCA Analytics] Failed to save offline queue:', error);
+      captureException(error, { area: 'dca-analytics', operation: 'save-offline-queue' });
+      if (env.isDev) console.error('[DCA Analytics] Failed to save offline queue:', error);
     }
   }
 
@@ -450,7 +445,8 @@ class DCAAnalyticsService implements IAnalyticsService {
         this.eventQueue = events.slice(-this.config.maxQueueSize);
       }
     } catch (error) {
-      console.error('[DCA Analytics] Failed to load offline queue:', error);
+      captureException(error, { area: 'dca-analytics', operation: 'load-offline-queue' });
+      if (env.isDev) console.error('[DCA Analytics] Failed to load offline queue:', error);
     }
   }
 
@@ -461,7 +457,8 @@ class DCAAnalyticsService implements IAnalyticsService {
     try {
       browserStorage.local.removeItem('dca_analytics_queue');
     } catch (error) {
-      console.error('[DCA Analytics] Failed to clear offline queue:', error);
+      captureException(error, { area: 'dca-analytics', operation: 'clear-offline-queue' });
+      if (env.isDev) console.error('[DCA Analytics] Failed to clear offline queue:', error);
     }
   }
 
@@ -556,7 +553,8 @@ class DCAAnalyticsService implements IAnalyticsService {
     try {
       browserStorage.local.setItem('analytics_consent', consent.toString());
     } catch (error) {
-      console.error('[DCA Analytics] Failed to save consent:', error);
+      captureException(error, { area: 'dca-analytics', operation: 'save-consent' });
+      if (env.isDev) console.error('[DCA Analytics] Failed to save consent:', error);
     }
   }
 
@@ -565,8 +563,10 @@ class DCAAnalyticsService implements IAnalyticsService {
    */
   enableDebugMode(enabled: boolean): void {
     this.config.debug = enabled;
-    // eslint-disable-next-line no-console -- announces an explicit developer diagnostic mode change
-    console.log(`[DCA Analytics] Debug mode ${enabled ? 'enabled' : 'disabled'}`);
+    if (env.isDev) {
+      // eslint-disable-next-line no-console -- announces an explicit developer diagnostic mode change
+      console.log(`[DCA Analytics] Debug mode ${enabled ? 'enabled' : 'disabled'}`);
+    }
   }
 
   /**
@@ -581,10 +581,6 @@ class DCAAnalyticsService implements IAnalyticsService {
     this.flush();
   }
 }
-
-/* ═══════════════════════════════════════════
-   SINGLETON INSTANCE
-   ═══════════════════════════════════════════ */
 
 /**
  * Global DCA Analytics instance

@@ -41,9 +41,9 @@ export function IntegrationPendingPage() {
               <Database size={24} />
             </div>
             <div>
-              <h1 style={{ margin: 0, color: colors.text1, fontSize: 20, fontWeight: 700 }}>
+              <h2 style={{ margin: 0, color: colors.text1, fontSize: 20, fontWeight: 700 }}>
                 Route này chưa sẵn sàng cho production
-              </h1>
+              </h2>
               <p style={{ margin: '10px 0 0', color: colors.text2, lineHeight: 1.6 }}>
                 Tính năng chỉ được mở lại sau khi API contract, quyền truy cập, audit event và trạng
                 thái lỗi đã được kiểm thử trên backend staging.

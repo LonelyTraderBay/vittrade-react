@@ -18,14 +18,19 @@ assert.equal(previewUrl.pathname, '/', 'PREVIEW_BASE_URL must be an origin witho
 const origin = previewUrl.origin;
 const checkedAt = new Date().toISOString();
 const date = checkedAt.slice(0, 10);
+const evidenceArtifactRunId = process.env.EVIDENCE_RUN_SUFFIX ?? String(Date.now());
+assert.match(evidenceArtifactRunId, /^[a-z0-9-]+$/i, 'Evidence run ID must be filename-safe.');
 const screenshotPaths = {
-  placePending: path.join(directory, `preview-trading-pending-place-${date}.png`),
-  modifyPending: path.join(directory, `preview-trading-pending-modify-${date}.png`),
-  cancelPending: path.join(directory, `preview-trading-pending-cancel-${date}.png`),
-  historyAfterCancel: path.join(directory, `preview-trading-pending-history-${date}.png`),
+  placePending: path.join(directory, `preview-trading-pending-place-${date}-${evidenceArtifactRunId}.png`),
+  modifyPending: path.join(directory, `preview-trading-pending-modify-${date}-${evidenceArtifactRunId}.png`),
+  cancelPending: path.join(directory, `preview-trading-pending-cancel-${date}-${evidenceArtifactRunId}.png`),
+  historyAfterCancel: path.join(directory, `preview-trading-pending-history-${date}-${evidenceArtifactRunId}.png`),
 };
-const reportPath = path.join(directory, `trading-pending-browser-check-${date}.json`);
+const reportPath = path.join(directory, `trading-pending-browser-check-${date}-${evidenceArtifactRunId}.json`);
 const sourceFiles = [
+  'src/app/contexts/AppContext.tsx',
+  'src/features/market/model/market-queries.ts',
+  'src/features/market/pages/MarketHomePage.tsx',
   'contracts/openapi/trading.yaml',
   'src/app/routeConfig.ts',
   'src/app/routes.ts',
@@ -207,6 +212,7 @@ try {
   await page.locator('[data-testid="dev-preview-controls"]').waitFor();
   await page.waitForFunction(() => Boolean(navigator.serviceWorker?.controller));
   assert.equal(await page.evaluate(() => Boolean(navigator.serviceWorker?.controller)), true);
+  await page.getByText('Dữ liệu market contract', { exact: true }).waitFor();
   const expandPreview = page.getByRole('button', { name: 'Mở công cụ xem trước' });
   if (await expandPreview.count()) await expandPreview.click();
   await page.locator('#preview-persona').selectOption('developer');
@@ -215,6 +221,7 @@ try {
     .locator('[data-testid="dev-preview-controls"]')
     .getByText('developer@vittrade.local')
     .waitFor();
+  await page.getByText('Dữ liệu market contract', { exact: true }).waitFor();
   await page.locator('#preview-domain').selectOption('trading');
   await page.locator('#preview-state').selectOption('pending');
   await page.getByRole('button', { name: 'Áp dụng trạng thái API' }).click();
