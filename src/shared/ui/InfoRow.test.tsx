@@ -55,6 +55,7 @@ describe('InfoRow', () => {
     );
 
     const copy = screen.getByRole('button', { name: 'Sao chép' });
+    expect(copy).toHaveAttribute('type', 'button');
     fireEvent.click(copy);
     expect(writeText).toHaveBeenCalledWith('0x1234');
     expect(copy.querySelector('svg.lucide-check')).toBeInTheDocument();
@@ -90,6 +91,7 @@ describe('InfoRow', () => {
     expect(screen.getByText('Shown below')).toBeInTheDocument();
     expect(screen.getByText('Network').parentElement?.querySelector('svg')).toBeInTheDocument();
     const stackedAction = screen.getByRole('button', { name: /Memo.*A long note/ });
+    expect(stackedAction).toHaveAttribute('type', 'button');
     expect(stackedAction.querySelector('svg.lucide-chevron-right')).toBeInTheDocument();
     fireEvent.click(stackedAction);
     expect(onPress).toHaveBeenCalledOnce();

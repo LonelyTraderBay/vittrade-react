@@ -147,6 +147,7 @@ export function TabBar<T extends string>({
           const tabColor = colors?.[tab.id as T] ?? activeColor;
           return (
             <button
+              type="button"
               key={tab.id}
               role="tab"
               aria-selected={isActive}
@@ -189,6 +190,7 @@ export function TabBar<T extends string>({
           const tabColor = colors?.[tab.id as T] ?? activeColor;
           return (
             <button
+              type="button"
               key={tab.id}
               role="tab"
               aria-selected={isActive}
@@ -227,6 +229,7 @@ export function TabBar<T extends string>({
         const tabColor = colors?.[tab.id as T] ?? activeColor;
         return (
           <button
+            type="button"
             key={tab.id}
             role="tab"
             aria-selected={isActive}

@@ -17,6 +17,8 @@ describe('TabBar', () => {
         />,
       );
       const [first, second] = screen.getAllByRole('tab');
+      expect(first).toHaveAttribute('type', 'button');
+      expect(second).toHaveAttribute('type', 'button');
       first.focus();
       fireEvent.keyDown(first, { key: 'ArrowRight' });
       expect(onChange).toHaveBeenLastCalledWith('second');

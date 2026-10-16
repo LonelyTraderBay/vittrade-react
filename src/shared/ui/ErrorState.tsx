@@ -39,6 +39,7 @@ export function ErrorState({
 
       {onAction && (
         <button
+          type="button"
           onClick={onAction}
           className="flex items-center gap-2 px-6 py-3 rounded-2xl font-semibold text-sm"
           style={{
@@ -54,6 +55,7 @@ export function ErrorState({
 
       {onSecondary && (
         <button
+          type="button"
           onClick={onSecondary}
           className="flex items-center gap-2 px-6 py-3 rounded-2xl font-semibold text-sm"
           style={{

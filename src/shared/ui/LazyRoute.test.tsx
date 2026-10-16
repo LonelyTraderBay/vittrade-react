@@ -58,7 +58,9 @@ describe('LazyRoute', () => {
     expect(screen.getByText('Không tải được trang')).toBeInTheDocument();
     expect(importer).toHaveBeenCalledTimes(4);
 
-    fireEvent.click(screen.getByRole('button', { name: 'Thử lại' }));
+    const retry = screen.getByRole('button', { name: 'Thử lại' });
+    expect(retry).toHaveAttribute('type', 'button');
+    fireEvent.click(retry);
     await act(async () => {
       await Promise.resolve();
     });

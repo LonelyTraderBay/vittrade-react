@@ -38,7 +38,9 @@ describe('Header', () => {
 
     expect(screen.getByRole('heading', { level: 1, name: 'Tổng quan' })).toBeInTheDocument();
     expect(screen.getAllByText('99+')).toHaveLength(2);
-    fireEvent.click(screen.getByRole('button', { name: 'Thông báo (120)' }));
+    const notifications = screen.getByRole('button', { name: 'Thông báo (120)' });
+    expect(notifications).toHaveAttribute('type', 'button');
+    fireEvent.click(notifications);
     expect(onNotificationsClick).toHaveBeenCalledOnce();
   });
 
@@ -47,6 +49,7 @@ describe('Header', () => {
     const onBack = vi.fn();
     renderWithProviders(<Header back onBack={onBack} />);
     const back = screen.getByRole('button', { name: 'Quay lại' });
+    expect(back).toHaveAttribute('type', 'button');
 
     fireEvent.click(back);
     fireEvent.click(back);
@@ -67,7 +70,9 @@ describe('Header', () => {
       />,
     );
 
-    fireEvent.click(screen.getByRole('button', { name: 'Tìm kiếm nâng cao' }));
+    const action = screen.getByRole('button', { name: 'Tìm kiếm nâng cao' });
+    expect(action).toHaveAttribute('type', 'button');
+    fireEvent.click(action);
     expect(onAction).toHaveBeenCalledOnce();
     expect(screen.queryByRole('button', { name: 'Thông báo (4)' })).not.toBeInTheDocument();
   });
@@ -88,7 +93,9 @@ describe('Header', () => {
     const onSearch = vi.fn();
     renderWithProviders(<Header variant="standard" right="search" onSearch={onSearch} />);
 
-    fireEvent.click(screen.getByRole('button', { name: 'Tìm kiếm' }));
+    const search = screen.getByRole('button', { name: 'Tìm kiếm' });
+    expect(search).toHaveAttribute('type', 'button');
+    fireEvent.click(search);
     expect(onSearch).toHaveBeenCalledOnce();
   });
 
@@ -140,7 +147,7 @@ describe('Header', () => {
     );
     const bar = container.querySelector('.contents > div');
 
-    expect(screen.getByRole('button', { name: 'Thêm' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Thêm' })).toHaveAttribute('type', 'button');
     expect(screen.getByText('Thông tin của bạn')).toBeInTheDocument();
     expect(screen.getByRole('navigation', { name: 'breadcrumb' })).toBeInTheDocument();
     expect(screen.queryByText('0')).not.toBeInTheDocument();
@@ -160,7 +167,9 @@ describe('Header', () => {
     const onAction = vi.fn();
     renderWithProviders(<Header action={{ icon: Search, onClick: onAction }} />);
 
-    fireEvent.click(screen.getByRole('button', { name: 'Action' }));
+    const action = screen.getByRole('button', { name: 'Action' });
+    expect(action).toHaveAttribute('type', 'button');
+    fireEvent.click(action);
     expect(onAction).toHaveBeenCalledOnce();
   });
 

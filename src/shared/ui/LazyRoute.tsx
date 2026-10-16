@@ -72,6 +72,7 @@ function RouteErrorFallback({ onRetry }: { onRetry: () => void }) {
           Lỗi kết nối hoặc module chưa sẵn sàng. Vui lòng thử lại.
         </p>
         <button
+          type="button"
           onClick={onRetry}
           className="px-5 py-2.5 rounded-xl"
           style={{

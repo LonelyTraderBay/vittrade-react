@@ -37,8 +37,10 @@ describe('BottomSheetV2', () => {
     expect(dialog).toHaveAttribute('aria-modal', 'true');
     expect(dialog).toHaveTextContent('Nội dung');
     expect(dialog).toHaveStyle({ maxHeight: '85vh' });
-    expect(screen.getByRole('button', { name: 'Đóng' })).toBeEnabled();
-    fireEvent.click(screen.getByRole('button', { name: 'Đóng' }));
+    const close = screen.getByRole('button', { name: 'Đóng' });
+    expect(close).toHaveAttribute('type', 'button');
+    expect(close).toBeEnabled();
+    fireEvent.click(close);
     expect(onClose).toHaveBeenCalledOnce();
   });
 

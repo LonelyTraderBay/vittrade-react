@@ -339,6 +339,7 @@ export function BottomSheetV2({
         )}
         {showCloseButton && (
           <button
+            type="button"
             onClick={handleCloseRequest}
             disabled={preventClose}
             className="flex items-center justify-center shrink-0 rounded-full transition-colors"

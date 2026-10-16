@@ -40,6 +40,7 @@ describe('CTAButton', () => {
     );
 
     const button = screen.getByRole('button', { name: 'Place order' });
+    expect(button).toHaveAttribute('type', 'button');
     expect(button).toHaveStyle({ background: '#123456', color: '#abcdef' });
     expect(button).not.toHaveClass('w-full');
   });

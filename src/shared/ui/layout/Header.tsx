@@ -148,6 +148,7 @@ export function Header({
       return (
         <div className="flex items-center gap-1.5 shrink-0">
           <button
+            type="button"
             onClick={action.onClick}
             className="flex items-center justify-center hover-ghost"
             style={actionBtnStyle}
@@ -168,6 +169,7 @@ export function Header({
       <div className="flex items-center gap-1.5 shrink-0">
         {right === 'bell' && (
           <button
+            type="button"
             onClick={() =>
               onNotificationsClick ? onNotificationsClick() : navigate(`${prefix}/notifications`)
             }
@@ -185,6 +187,7 @@ export function Header({
         )}
         {right === 'search' && (
           <button
+            type="button"
             onClick={onSearch}
             className="flex items-center justify-center hover-ghost"
             style={actionBtnStyle}
@@ -195,6 +198,7 @@ export function Header({
         )}
         {right === 'more' && (
           <button
+            type="button"
             className="flex items-center justify-center hover-ghost"
             style={actionBtnStyle}
             aria-label="Thêm"
@@ -213,6 +217,7 @@ export function Header({
   const renderBack = () =>
     back ? (
       <button
+        type="button"
         onClick={handleBack}
         className="flex items-center justify-center hover-ghost shrink-0 active:opacity-60"
         style={backBtnStyle}
@@ -258,6 +263,7 @@ export function Header({
           {left ??
             (back && (
               <button
+                type="button"
                 onClick={handleBack}
                 className="flex items-center justify-center hover-ghost shrink-0 active:opacity-60"
                 style={{ ...backBtnStyle, marginTop: hasSubtitle ? 2 : 0 }}
