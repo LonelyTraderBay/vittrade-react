@@ -416,7 +416,7 @@ for (const viewport of viewports) {
 
     const primaryAction = page.getByRole('button', { name: 'Vào trang chủ' });
     await primaryAction.click();
-    await expect(page).toHaveURL('/w/home');
+    await expect(page).toHaveURL(viewport.loginHomeRoute);
 
     const screenshotSha256 = Object.fromEntries(
       await Promise.all(
