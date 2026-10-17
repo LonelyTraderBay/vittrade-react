@@ -196,7 +196,14 @@ test.describe('wallet contract smoke on local API-mode build', () => {
     });
     expect(centerTarget.belongsToSubmit).toBe(true);
     expect(centerTarget.navigationLabel).toBeNull();
-    console.log(`C06_WALLET_TRANSFER_HIT_TARGET ${JSON.stringify(centerTarget)}`);
+    console.log(
+      `C06_WALLET_TRANSFER_HIT_TARGET ${JSON.stringify({
+        ...centerTarget,
+        ctaBottom: bounds!.y + bounds!.height,
+        navigationTargetTop: navigationActionBounds!.y,
+        clearance: navigationActionBounds!.y - (bounds!.y + bounds!.height),
+      })}`,
+    );
     if (process.env.C06_NAV_LAYOUT_SCREENSHOT) {
       await page.screenshot({ path: process.env.C06_NAV_LAYOUT_SCREENSHOT, fullPage: true });
     }

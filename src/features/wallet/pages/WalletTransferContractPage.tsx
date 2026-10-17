@@ -25,6 +25,7 @@ const EMPTY_VALUE = '—';
 export function WalletTransferContractPage() {
   const colors = useThemeColors();
   const shellPrefix = useRoutePrefix();
+  const isPhoneShell = shellPrefix === '' || shellPrefix === '/r';
   const { hasPermission } = useAuth();
   const canReadWallet = hasPermission('wallet:read');
   const accountsQuery = useWalletAccountsQuery(canReadWallet);
@@ -160,7 +161,7 @@ export function WalletTransferContractPage() {
   return (
     <PageLayout>
       <Header title="Internal transfer" subtitle="Move assets between your wallets" back />
-      <PageContent gap="default">
+      <PageContent gap={isPhoneShell ? 'tight' : 'default'}>
         {receipt && (
           <div
             role="status"
