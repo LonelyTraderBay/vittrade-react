@@ -48,13 +48,13 @@
     }
   ],
   "checkpoint": {
-    "updatedAt": "2026-10-17T03:53:08.001Z",
+    "updatedAt": "2026-10-17T04:32:55.000Z",
     "lastCompletedTask": "C03",
     "activeTask": "C06",
     "activeStep": "C06.11",
     "nextTask": "C06",
     "nextStep": "C06.11",
-    "nextAction": "C06.11 E2E correction commit a25a3788 passes local measured 7-alias/14-theme-scan test (EV-150); prior exact run #128 failed at the old 30s timeout/ambiguous selector and is retained (EV-148), with one local CI-profile attempt incomplete (EV-149). Reconcile this test file and CHANGE-208 to exact a25 Git blob, run check-tracking/diff checks, commit TRACKING separately with Vietnamese -s, push source+ledger fast-forward, then require exact corrected-head GitHub CI, artifact digest, six manifests, readiness source ledger and merge provenance before any closeout or C06.12.",
+    "nextAction": "C06.11 exact source+ledger GitHub run #129 passed at a36232f503e5865cb19b1b72ac86de2c6209ae55 (EV-20261017-151): 34/34 steps, artifact digest, six manifests and identical 1,151-file hash maps, readiness source ledger, route matrix and merge provenance verified. Commit and push this tracker-only closeout update with Vietnamese signed-off message; require exact run #130 and full provenance before marking C06.11 done or starting C06.12.",
     "changedFiles": [
       "docs/ai/PRODUCTION-READINESS-PROMPT.md",
       "docs/ai/WORKFLOW.md",
@@ -19620,9 +19620,10 @@
             "EV-20261017-147",
             "EV-20261017-148",
             "EV-20261017-149",
-            "EV-20261017-150"
+            "EV-20261017-150",
+            "EV-20261017-151"
           ],
-          "notes": "C06.10 completion-record exact run #127 đã PASS 34/34 với artifact, six manifests, source ledger và merge provenance (EV-20261017-145), nên C06.11 được mở. C06.11 source commit fe9d51c735efc9e875660f0f0ef994abf4fe23b0 có focused 157/157, static gates và staging build PASS (EV-20261017-146); browser local Chromium vi-VN đo 7 alias/viewport, 14 Axe light/dark scans, 0 violation, plus 7 computed-style runtime cases PASS (EV-20261017-147). API chỉ là fixture tổng hợp. Sau khi catalogue 27 path trỏ chính xác Git blob của source commit, cần check-tracking, push fast-forward và exact GitHub CI/artifact/six-manifest/merge provenance; giữ C06.11 in_progress tới closeout. Run #128 tại head b9e1ace1 FAIL E2E: test Market mất 33.3s nhưng config cho 30s, đồng thời locator sau delete còn ambiguous (EV-148). Commit correction a25a3788 đặt timeout riêng 90s và `.first()` cho favorite row; local exact changed-file hash E2E 1/1, 7 alias, 14 Axe scans PASS trong 34.4s (EV-150). Một lần tái hiện theo CI config bị ngắt sau 6 phút vì không ra terminal state; manifest giữ nguyên, không tính PASS (EV-149). Phải chạy exact hosted source+ledger trên a25 sau khi update provenance.",
+          "notes": "C06.10 completion-record exact run #127 đã PASS 34/34 với artifact, six manifests, source ledger và merge provenance (EV-20261017-145), nên C06.11 được mở. C06.11 source commit fe9d51c735efc9e875660f0f0ef994abf4fe23b0 có focused 157/157, static gates và staging build PASS (EV-20261017-146); browser local Chromium vi-VN đo 7 alias/viewport, 14 Axe light/dark scans, 0 violation, plus 7 computed-style runtime cases PASS (EV-20261017-147). API chỉ là fixture tổng hợp. Sau khi catalogue 27 path trỏ chính xác Git blob của source commit, cần check-tracking, push fast-forward và exact GitHub CI/artifact/six-manifest/merge provenance; giữ C06.11 in_progress tới closeout. Run #128 tại head b9e1ace1 FAIL E2E: test Market mất 33.3s nhưng config cho 30s, đồng thời locator sau delete còn ambiguous (EV-148). Commit correction a25a3788 đặt timeout riêng 90s và `.first()` cho favorite row; local exact changed-file hash E2E 1/1, 7 alias, 14 Axe scans PASS trong 34.4s (EV-150). Một lần tái hiện theo CI config bị ngắt sau 6 phút vì không ra terminal state; manifest giữ nguyên, không tính PASS (EV-149). Phải chạy exact hosted source+ledger trên a25 sau khi update provenance. Exact corrected-head source+ledger run #129 (39000517821) PASS 34/34 with artifact digest, 6 manifests/1,151 identical source hashes, readiness source ledger, route matrix and synthetic merge provenance verified (EV-20261017-151). C06.11 remains in_progress until the tracker-only closeout commit passes its exact required GitHub run #130.",
           "execution": {
             "instructionsRef": "PLAN.md#frontend-ui-ux-ds-migration-20261015",
             "fileSelection": "files[].executionScope.stepIds includes C06.11",
@@ -20358,7 +20359,8 @@
         "EV-20261017-147",
         "EV-20261017-148",
         "EV-20261017-149",
-        "EV-20261017-150"
+        "EV-20261017-150",
+        "EV-20261017-151"
       ],
       "changeIds": [
         "CHANGE-20261015-001",
@@ -350531,6 +350533,22 @@
       "artifact": "C:/CodexEvidence/vittrade-react/2026-10-17/c06-11/C06-11-E2E-run128-correction-a25-verification.json",
       "artifactSha256": "ede6430c8a8d2e8f91f3e893b7bdfaea4ef86db6630e467a921d5cefd02b305a",
       "notes": "Local evidence validates exact changed test bytes and seven declared Market cases only. Hosted exact-SHA CI on source a25 and tracker ledger remains required; no route-wide WCAG/backend/production/UAT claim."
+    },
+    {
+      "id": "EV-20261017-151",
+      "taskId": "C06",
+      "stepId": "C06.11",
+      "kind": "github_exact_pr_run_129_source_ledger_pass_with_artifact_manifest_and_merge_provenance",
+      "commandOrSteps": "Exact GitHub Actions PR #3 Production gates run #129 on pushed head a36232f503e5865cb19b1b72ac86de2c6209ae55; verify 34 steps, artifact digest, six run manifests and identical source hash maps, readiness source ledger, architecture inventory, route matrix recorded-head check and synthetic merge parent/tree.",
+      "environment": "GitHub Actions Production gates; local Windows PowerShell/Node 24.19.0 read-only evidence checks in the isolated managed worktree.",
+      "observedAt": "2026-10-17T04:32:55.000Z",
+      "sourceHead": "a36232f503e5865cb19b1b72ac86de2c6209ae55",
+      "expected": "All 34 required workflow steps pass on the exact pushed source+ledger head; hosted manifests close cleanly with unchanged source; uploaded artifact and synthetic merge provenance match GitHub metadata and PR branch.",
+      "actual": "PASS: run 39000517821 completed success, 34/34 steps, 0 failures/skips. Artifact 12089777469 is 33,764,424 bytes and local ZIP SHA-256 8b10325a6fe2f704968aeb9efac08fc516f006269e4b3ffe334953541971e614 matches GitHub digest. Six manifests passed with exitCode=0, childClosed=true and sourceUnchanged=true; each has 1,151 identical file hashes (map SHA-256 f9a061ebd3f01ad4c03697aa00e4e5241b2a88fd3bd0f7a5a24c8410b83fdae7). Readiness source ledger has 0 errors; architecture inventory 130 pages/428 routes; recorded route matrix reconciles 428 rows, with runtime rows 0. Synthetic merge c008efdcc35311a8676ff653db5069f58146cf89 has base/head parents and tree f7865dd89837744e05d1a7270484bee5a3de817e equal to branch tree.",
+      "result": "pass",
+      "artifact": "C:/CodexEvidence/vittrade-react/2026-10-17/c06-11/run129-corrected-head-a362-verification/C06-11-run129-source-ledger-verification-20261017.json",
+      "artifactSha256": "48ad71ff8b17c7be0d0072ac9e4b6e59120b430c2516762ca035490eae3b27b0",
+      "notes": "This exact hosted source+ledger gate supersedes the retained #128 E2E failure for the corrected SHA; it does not establish production/backend behavior, user acceptance, all-route runtime or product-wide WCAG. Keep C06.11 in progress until the tracker-only closeout SHA passes its exact GitHub run."
     }
   ],
   "decisions": [
