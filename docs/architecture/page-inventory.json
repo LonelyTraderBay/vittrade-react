@@ -3835,7 +3835,7 @@
       "domain": "wallet",
       "owner": "features/wallet",
       "status": "integration-pending",
-      "lines": 379,
+      "lines": 380,
       "routePaths": [
         "wallet/transfer"
       ],
