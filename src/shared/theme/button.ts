@@ -10,19 +10,27 @@
 import type { VitDensity } from './density';
 
 export const ButtonGradients = {
-  primary: 'linear-gradient(135deg, #E58A00 0%, #B96000 100%)',
+  primary: 'linear-gradient(135deg, #E58A00 0%, #D97706 100%)',
   success: 'linear-gradient(135deg, #10B981 0%, #059669 100%)',
-  danger: 'linear-gradient(135deg, #EF4444 0%, #DC2626 100%)',
+  danger: 'linear-gradient(135deg, #DC2626 0%, #991B1B 100%)',
   warning: 'linear-gradient(135deg, #F59E0B 0%, #D97706 100%)',
   ghost: 'transparent',
 } as const;
 
 export type ButtonGradientKey = keyof typeof ButtonGradients;
 
+/** Foreground colors chosen to maintain readable contrast over each CTA gradient. */
+export const ButtonTextColors = {
+  primary: '#111827',
+  success: '#111827',
+  danger: '#FFFFFF',
+  warning: '#111827',
+} as const;
+
 export const ButtonShadows = {
   primary: '0 4px 16px rgba(229,138,0,0.3)',
   success: '0 4px 16px rgba(16,185,129,0.3)',
-  danger: '0 4px 16px rgba(239,68,68,0.3)',
+  danger: '0 4px 16px rgba(220,38,38,0.3)',
   warning: '0 4px 16px rgba(245,158,11,0.3)',
   ghost: 'none',
 } as const;

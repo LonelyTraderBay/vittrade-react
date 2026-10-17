@@ -1,0 +1,95 @@
+{
+  "checkedAt": "2026-10-13T06:09:07.314Z",
+  "sourceHead": "db9c9064fa3ba79bd76fb7acb1023d90486b6cbf",
+  "branch": "",
+  "origin": "http://127.0.0.1:4193",
+  "browser": "Chromium via Playwright",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "scenario": {
+    "id": "referral.empty",
+    "status": "passed",
+    "persona": "developer (preview only)",
+    "operationIds": [
+      "getReferralOverview"
+    ],
+    "observedOperationIds": [
+      "getReferralOverview"
+    ],
+    "expectedDomainOperationCount": 1,
+    "coverage": "full_browser_observed_one_of_one_operations"
+  },
+  "fixtureBoundary": {
+    "serviceWorkerControlled": true,
+    "allObservedResponsesFromServiceWorker": true,
+    "realBackendRequestSent": false,
+    "realBackendMutationSent": false,
+    "externalApiOrigins": []
+  },
+  "authorizationLimitations": {
+    "persona": "developer",
+    "referralReadScopeEnforcedByMsw": false,
+    "backendAuthorizationVerified": false
+  },
+  "measurements": {
+    "totalFlowMs": 885,
+    "scenarioFlowMs": 383,
+    "apiRequestCount": 1,
+    "apiResponseCount": 1,
+    "apiRequestFailureCount": 0,
+    "referralOverviewRequestCount": 1,
+    "referralOverviewResponseCount": 1,
+    "referralOverviewStatus": 200,
+    "referralOverviewResponseElapsedMs": 2,
+    "referralWriteCount": 0,
+    "pageErrorCount": 0,
+    "friendCount": 0,
+    "externalApiOriginCount": 0
+  },
+  "assertions": {
+    "route": "/w/referral",
+    "responseFromServiceWorker": true,
+    "referralCode": "PREVIEW-EMPTY",
+    "renderedCurrentTier": "Đồng",
+    "renderedCampaign": "Tháng 3 Bùng Nổ",
+    "renderedCommission": "$0.00",
+    "allStatisticsZero": true,
+    "renderedEmptyMessage": "Chưa có người được giới thiệu. Hãy chia sẻ mã để bắt đầu.",
+    "renderedFriendCount": 0,
+    "inviteLink": "https://vittrade.app/ref/PREVIEW-EMPTY",
+    "noReferralWrites": true,
+    "pageErrors": []
+  },
+  "screenshots": {
+    "overview": "preview-referral-empty-2026-10-13-1791871747314.png"
+  },
+  "sourceHashes": {
+    "contracts/openapi/referral.yaml": "91e4eb405cc9b095a71416f64189bf6e16547babe05d04eaa137477175391715",
+    "src/app/routes.ts": "c93a80e123fd95c3abd246aeb00589a51f5ff4560e794e87f70f7ff96248c0d5",
+    "src/app/routeConfig.ts": "675ea95ec4831b9d0caf1cbf68524efaebda8ed9b970b5dad129bdd55f28bac9",
+    "src/dev/PreviewControls.tsx": "a318fb182dda24c9b8d2103ae4b40eeecb7c3eded57332aad3c5bc8a1836a54c",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/handlers.ts": "9d1ea085bab944b0bd0e59a665222113cb7bb661bbcd2408f09c6adf08cd3ea9",
+    "src/dev/mocks/personas.ts": "6189b9cbfb9765f5c442c52a089d30b5be171170fe054ef6bf2faffbbb53dccd",
+    "src/dev/mocks/preview-scenario-handler.ts": "1b05e3e420b1df43de6d2e37533d4d8dbcd203fedb70ca59a65a4a62179396f5",
+    "src/dev/mocks/scenario-runtime.ts": "446d43808b478a1eaca07faa29d690c49c8e7ffb21fc1f12d2de2feb524e2e50",
+    "src/dev/mocks/referral-fixtures.ts": "7fd86c8ab15e080495783fc701036ff48368cf3beeb8cb55fbc46322561f47de",
+    "src/features/referral/api/referral-api.ts": "31eddcf78a6bd9e171ac323507eb5dd502c96f0cab6dad051061109134f94f1e",
+    "src/features/referral/model/referral-queries.ts": "17aac1c266012732521debaea0d86b68fe7a54320245a5aa6913e5fdece18346",
+    "src/features/referral/model/referral-types.ts": "5ca9f6ee1a3c45a7e62c31fa6b77214d57456f52ba8baa41f791375a8a2ccec9",
+    "src/features/referral/pages/ReferralContractPage.tsx": "60e778d394969a1f5bca94ef2652fe3069efa4b7907881830e2586435a133359",
+    "src/features/referral/routes.ts": "6ded2d274870f0f77fbc7ddb7600d720d03f36c61326f9a7f3154b3608d2a5d5",
+    "src/shared/api/http-client.ts": "12a04035eac23a2999f8c7a76aafa32966585402c06d98f451ef33eb8601cf42",
+    "src/shared/session/AuthContext.tsx": "b95d134413d28d85278553b752a4d6738857ed7785ea53d7a0e441db61b310f2",
+    "src/shared/session/useAuth.ts": "65d58cfe61d4618a1849da066ecd4d6ae7c94c036af7361a91a1383a6b383e0b",
+    "src/main.tsx": "c150098914a25b7e0630d66f480ffbfe4160e96a8bdb54262b5ad4b5b33719e6",
+    "docs/architecture/production-readiness/evidence/A06/run-referral-empty-browser-check.mjs": "aea636a3d0f42cffe87da6a04cdc02c55eacd3e0ac37da16b35b1812d6258186"
+  },
+  "limitations": [
+    "The overview response and all timing measurements come from local service-worker-controlled MSW fixtures, not a backend or staging environment.",
+    "MSW does not enforce referral read authorization; this does not verify server permissions, persistence, user acceptance, or real invite-link behavior.",
+    "Only the declared read operation getReferralOverview ran; the displayed invite URL was not opened or copied."
+  ]
+}

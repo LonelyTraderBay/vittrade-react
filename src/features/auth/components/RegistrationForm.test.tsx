@@ -4,10 +4,14 @@ import { setupServer } from 'msw/node';
 import { Route, Routes, useLocation } from 'react-router';
 import { fireEvent, renderWithProviders, screen, userEvent, waitFor } from '@/test/test-utils';
 import { RegistrationForm } from './RegistrationForm';
+import { authApi } from '../api/auth-api-instance';
 
 const server = setupServer();
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
-afterEach(() => server.resetHandlers());
+afterEach(() => {
+  server.resetHandlers();
+  vi.restoreAllMocks();
+});
 afterAll(() => server.close());
 
 function CurrentPath() {
@@ -43,6 +47,40 @@ async function fillValidEmailForm() {
 }
 
 describe('RegistrationForm', () => {
+  it('keeps a rejected registration on the form with editable data and safe validation feedback', async () => {
+    const request = vi.fn(() => HttpResponse.json({ code: 'VALIDATION_ERROR' }, { status: 400 }));
+    server.use(http.post('http://localhost:3000/api/auth/register', request));
+    renderForm();
+    const user = await fillValidEmailForm();
+    await user.click(screen.getByRole('button', { name: 'Tiếp tục' }));
+
+    expect(
+      await screen.findByText(
+        'Thông tin đăng ký chưa được chấp nhận. Vui lòng kiểm tra và thử lại.',
+      ),
+    ).toBeInTheDocument();
+    expect(screen.getByTestId('current-path')).toHaveTextContent('/w/auth/register');
+    expect(screen.getByLabelText('Email')).toHaveValue('new-user@example.com');
+    expect(screen.getByRole('button', { name: 'Tiếp tục' })).toBeEnabled();
+    expect(request).toHaveBeenCalledTimes(1);
+  });
+
+  it('contains an unexpected adapter rejection without displaying its private details', async () => {
+    const request = vi
+      .spyOn(authApi, 'register')
+      .mockRejectedValue(new Error('private adapter failure'));
+    renderForm();
+    const user = await fillValidEmailForm();
+    await user.click(screen.getByRole('button', { name: 'Tiếp tục' }));
+
+    expect(
+      await screen.findByText('Chưa thể bắt đầu xác minh. Kiểm tra kết nối rồi thử lại.'),
+    ).toBeInTheDocument();
+    expect(screen.queryByText('private adapter failure')).not.toBeInTheDocument();
+    expect(screen.getByTestId('current-path')).toHaveTextContent('/w/auth/register');
+    expect(request).toHaveBeenCalledTimes(1);
+  });
+
   it('validates required fields and consent before making a request', async () => {
     const user = userEvent.setup();
     renderForm();

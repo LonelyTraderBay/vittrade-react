@@ -15,19 +15,22 @@ assert.equal(origin.pathname, '/', 'PREVIEW_BASE_URL must be an origin without a
 const originUrl = origin.origin;
 const checkedAt = new Date().toISOString();
 const date = checkedAt.slice(0, 10);
+const evidenceRunId = process.env.EVIDENCE_RUN_SUFFIX ?? String(Date.now());
+assert.match(evidenceRunId, /^[a-z0-9-]+$/i, 'Evidence run ID must be filename-safe.');
+const artifactDate = `${date}-${evidenceRunId}`;
 const operationIds = ['getProfile', 'listTrustedDevices', 'listProfileActivity', 'listSubAccounts'];
 const screenshots = {
-  profile: path.join(directory, 'preview-profile-error-current-head-profile-' + date + '.png'),
-  devices: path.join(directory, 'preview-profile-error-current-head-devices-' + date + '.png'),
-  activity: path.join(directory, 'preview-profile-error-current-head-activity-' + date + '.png'),
+  profile: path.join(directory, 'preview-profile-error-current-head-profile-' + artifactDate + '.png'),
+  devices: path.join(directory, 'preview-profile-error-current-head-devices-' + artifactDate + '.png'),
+  activity: path.join(directory, 'preview-profile-error-current-head-activity-' + artifactDate + '.png'),
   subAccounts: path.join(
     directory,
-    'preview-profile-error-current-head-subaccounts-' + date + '.png',
+    'preview-profile-error-current-head-subaccounts-' + artifactDate + '.png',
   ),
 };
 const reportPath = path.join(
   directory,
-  'profile-error-current-head-browser-check-' + date + '.json',
+  'profile-error-current-head-browser-check-' + artifactDate + '.json',
 );
 const sourceFiles = [
   'contracts/openapi/profile.yaml',

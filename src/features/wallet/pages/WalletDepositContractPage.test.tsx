@@ -77,7 +77,7 @@ describe('Wallet deposit contract page', () => {
     });
 
     expect(await screen.findByLabelText('Deposit network')).toHaveValue('ethereum');
-    expect(screen.getByLabelText('Deposit QR code')).toBeInTheDocument();
+    expect(screen.getByRole('img', { name: 'Deposit address QR code' })).toBeInTheDocument();
     expect(screen.getByText(networks.networks[0].address)).toBeInTheDocument();
     expect(screen.getByText('12 confirmations')).toBeInTheDocument();
   });

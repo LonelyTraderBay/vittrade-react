@@ -7,9 +7,10 @@ export function copyHubPath(pathname: string, prefix: string) {
 }
 
 export function copyProviderPath(pathname: string, prefix: string, providerId: string) {
+  const segment = encodeURIComponent(providerId);
   return isWebCopyPath(pathname)
-    ? `${prefix}/trade/copy/provider/${providerId}`
-    : `${prefix}/trade/copy-provider/${providerId}`;
+    ? `${prefix}/trade/copy/provider/${segment}`
+    : `${prefix}/trade/copy-provider/${segment}`;
 }
 
 export function copyProviderFlowPath(

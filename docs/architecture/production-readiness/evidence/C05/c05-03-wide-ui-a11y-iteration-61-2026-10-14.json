@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-10-14T05:36:42.365Z",
+  "sourceHead": "8c977839141d6997b9c150a5846b820961344fd9",
+  "kind": "local_wide_route_a11y_scan",
+  "environment": "Windows local Chromium; 1440x900; developer/MFA/admin personas; Vite with MSW/local fixtures; all non-loopback requests blocked; no backend/staging.",
+  "reports": [
+    {
+      "theme": "light",
+      "path": "C:/Users/Joker-PC/.codex/visualizations/2026/10/14/01a13394-3caa-7930-a58f-e3e6c61b066f/vittrade-audit/ui-wide-iteration-61-final-light/ui-a11y-wide-report.json",
+      "bytes": 824971,
+      "sha256": "459910c3b260a632d5ff21f17cc7bb47b7302e147085668b6a4cec3942ff7186",
+      "sourceHead": "8c977839141d6997b9c150a5846b820961344fd9",
+      "sourceState": "clean",
+      "observedAt": "2026-10-14T05:31:39.693Z",
+      "results": 376,
+      "personas": {
+        "developer/light": 371,
+        "mfa/light": 1,
+        "admin/light": 4
+      },
+      "summary": {
+        "routes": 376,
+        "plannedRoutes": 376,
+        "personaThemeCounts": {
+          "developer/light": 371,
+          "mfa/light": 1,
+          "admin/light": 4
+        },
+        "routeMismatches": [],
+        "notFoundRoutes": [],
+        "horizontalOverflow": [],
+        "pageErrors": [],
+        "loadingNotSettledRoutes": [],
+        "consoleErrorCount": 679,
+        "consoleErrorsByMessage": {
+          "Failed to load resource: net::ERR_FAILED": 626,
+          "Failed to load resource: the server responded with a status of 503 (Service Unavailable)": 33,
+          "Failed to load resource: the server responded with a status of 404 (Not Found)": 20
+        },
+        "externalRequestAttemptsBlocked": 626,
+        "externalRequestAttemptsByHost": {
+          "fonts.googleapis.com": 376,
+          "cryptologos.cc": 6,
+          "ui-avatars.com": 244
+        },
+        "axeIncompleteByRule": {
+          "color-contrast": {
+            "routeChecks": 374,
+            "nodeChecks": 1671
+          },
+          "aria-prohibited-attr": {
+            "routeChecks": 7,
+            "nodeChecks": 9
+          }
+        },
+        "axeViolationNodes": 0,
+        "axeViolationsById": {}
+      }
+    },
+    {
+      "theme": "dark",
+      "path": "C:/Users/Joker-PC/.codex/visualizations/2026/10/14/01a13394-3caa-7930-a58f-e3e6c61b066f/vittrade-audit/ui-wide-iteration-61-final-dark/ui-a11y-wide-report.json",
+      "bytes": 830884,
+      "sha256": "672e83d19c2abf6778abf4b34d4a06e10f178b6d212ad97a455451a89c17e204",
+      "sourceHead": "8c977839141d6997b9c150a5846b820961344fd9",
+      "sourceState": "clean",
+      "observedAt": "2026-10-14T05:36:42.365Z",
+      "results": 376,
+      "personas": {
+        "developer/dark": 371,
+        "mfa/dark": 1,
+        "admin/dark": 4
+      },
+      "summary": {
+        "routes": 376,
+        "plannedRoutes": 376,
+        "personaThemeCounts": {
+          "developer/dark": 371,
+          "mfa/dark": 1,
+          "admin/dark": 4
+        },
+        "routeMismatches": [],
+        "notFoundRoutes": [],
+        "horizontalOverflow": [],
+        "pageErrors": [],
+        "loadingNotSettledRoutes": [],
+        "consoleErrorCount": 710,
+        "consoleErrorsByMessage": {
+          "Failed to load resource: net::ERR_FAILED": 657,
+          "Failed to load resource: the server responded with a status of 503 (Service Unavailable)": 33,
+          "Failed to load resource: the server responded with a status of 404 (Not Found)": 20
+        },
+        "externalRequestAttemptsBlocked": 657,
+        "externalRequestAttemptsByHost": {
+          "fonts.googleapis.com": 376,
+          "cryptologos.cc": 6,
+          "ui-avatars.com": 275
+        },
+        "axeIncompleteByRule": {
+          "color-contrast": {
+            "routeChecks": 374,
+            "nodeChecks": 1668
+          },
+          "aria-prohibited-attr": {
+            "routeChecks": 7,
+            "nodeChecks": 9
+          }
+        },
+        "axeViolationNodes": 0,
+        "axeViolationsById": {}
+      }
+    }
+  ],
+  "combined": {
+    "plannedAndCompleted": "752/752 route-theme checks",
+    "routeMismatches": 0,
+    "notFound": 0,
+    "horizontalOverflow": 0,
+    "pageErrors": 0,
+    "loadingNotSettled": 0,
+    "h1Missing": 0,
+    "axeViolationNodes": 0,
+    "axeIncomplete": {
+      "colorContrast": 3339,
+      "ariaProhibitedAttribute": 18,
+      "total": 3357
+    },
+    "localFixtureApiResponsesPerTheme": {
+      "total": 180,
+      "success200": 127,
+      "notFound404": 20,
+      "serviceUnavailable503": 33
+    },
+    "blockedExternalRequests": {
+      "light": 626,
+      "dark": 657
+    },
+    "notes": "Zero violations means Axe reported no violation nodes. Incomplete node evaluations are unresolved and are not counted as passes; fixture 404/503 are local MSW responses, not backend findings."
+  },
+  "expected": "Every planned route-theme check settles and reports no route mismatch, not-found, horizontal overflow, page error, missing h1 or Axe violation node.",
+  "actual": "Both theme reports are source-clean at 8c977839; 376/376 routes complete for each theme. All enumerated expected checks are zero. Axe left 3357 evaluations incomplete, so broad accessibility review is not complete.",
+  "result": "pass",
+  "limitations": [
+    "3,357 Axe incomplete evaluations remain open: 3,339 contrast and 18 prohibited-ARIA.",
+    "Console output includes local fixture 404/503 and deliberately blocked external asset attempts.",
+    "Screenshot review remains 14/128; formal page acceptance remains 0/128."
+  ]
+}

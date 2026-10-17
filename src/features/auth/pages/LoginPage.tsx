@@ -135,7 +135,6 @@ export function LoginPage() {
             autoComplete="email"
             prefix={<Mail size={18} color={colors.text3} />}
             error={emailFieldError}
-            containerStyle={emailFieldError ? { borderColor: '#EF4444' } : undefined}
           />
 
           <InputField
@@ -165,7 +164,6 @@ export function LoginPage() {
               </button>
             }
             error={passwordFieldError}
-            containerStyle={passwordFieldError ? { borderColor: '#EF4444' } : undefined}
           />
 
           {error && !emailFieldError && !passwordFieldError && (

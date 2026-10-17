@@ -102,6 +102,20 @@ describe('TradingOrderEntryPanel', () => {
 
     fireEvent.click(screen.getByRole('button', { name: /Đặt lệnh bán BTC\/USDT/ }));
     expect(onRequestConfirmation).toHaveBeenCalledOnce();
+    fireEvent.click(screen.getByRole('button', { name: 'MUA' }));
+    expect(screen.getByRole('button', { name: /Đặt lệnh mua BTC\/USDT/ })).toBeEnabled();
+  });
+
+  it('updates the limit and stop-limit price fields from user input', () => {
+    renderEntry();
+    const limitInput = screen.getByRole('spinbutton', { name: 'Giá đặt (USDT)' });
+    fireEvent.change(limitInput, { target: { value: '64000' } });
+    expect(limitInput).toHaveValue(64000);
+    fireEvent.click(screen.getByRole('button', { name: 'Hiện loại lệnh nâng cao' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Stop-Limit' }));
+    const stopLimitInput = screen.getByRole('spinbutton', { name: 'Giá đặt (USDT)' });
+    fireEvent.change(stopLimitInput, { target: { value: '63000' } });
+    expect(stopLimitInput).toHaveValue(63000);
   });
 
   it('exposes the advanced order menu accessibly and switches its order fields', () => {

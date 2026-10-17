@@ -8,6 +8,8 @@ import type { MarketMoverSummary, MarketSectorSummary } from '../model/market-ty
 export function FearGreedGauge({ value, label }: { value: number; label: string }) {
   const colors = useThemeColors();
   const gaugeColor = value <= 25 ? '#EF4444' : value <= 45 ? '#F59E0B' : '#10B981';
+  const gaugeTextColor =
+    value <= 25 ? colors.errorText : value <= 45 ? colors.warningText : colors.successText;
   const rotation = (value / 100) * 180 - 90;
 
   return (
@@ -45,10 +47,12 @@ export function FearGreedGauge({ value, label }: { value: number; label: string 
         />
         <circle cx="60" cy="60" r="4" fill={gaugeColor} />
       </svg>
-      <span style={{ color: gaugeColor, fontSize: 22, fontWeight: 700, fontFamily: 'monospace' }}>
+      <span
+        style={{ color: gaugeTextColor, fontSize: 22, fontWeight: 700, fontFamily: 'monospace' }}
+      >
         {value}
       </span>
-      <span style={{ color: gaugeColor, fontSize: 11, fontWeight: 600 }}>{label}</span>
+      <span style={{ color: gaugeTextColor, fontSize: 11, fontWeight: 600 }}>{label}</span>
     </div>
   );
 }
@@ -84,7 +88,13 @@ export function StatCard({
         {value}
       </p>
       {change !== undefined && (
-        <p style={{ color: positive ? '#10B981' : '#EF4444', fontSize: 11, fontWeight: 600 }}>
+        <p
+          style={{
+            color: positive ? colors.successText : colors.errorText,
+            fontSize: 11,
+            fontWeight: 600,
+          }}
+        >
           {positive ? '+' : ''}
           {fmtPct(change)}
         </p>
@@ -107,7 +117,7 @@ export function MoverRow({ mover, onClick }: { mover: MarketMoverSummary; onClic
         className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg"
         style={{ background: `${mover.color}20` }}
       >
-        <span style={{ color: mover.color, fontSize: 10, fontWeight: 700 }}>
+        <span style={{ color: colors.text1, fontSize: 10, fontWeight: 700 }}>
           {mover.symbol.slice(0, 3)}
         </span>
       </span>
@@ -119,7 +129,7 @@ export function MoverRow({ mover, onClick }: { mover: MarketMoverSummary; onClic
       </span>
       <span
         style={{
-          color: positive ? '#10B981' : '#EF4444',
+          color: positive ? colors.successText : colors.errorText,
           background: positive ? 'rgba(16,185,129,0.12)' : 'rgba(239,68,68,0.12)',
           fontSize: 11,
           fontWeight: 700,
@@ -167,7 +177,7 @@ export function SectorRow({
         <span
           style={{
             display: 'block',
-            color: positive ? '#10B981' : '#EF4444',
+            color: positive ? colors.successText : colors.errorText,
             fontSize: 12,
             fontWeight: 700,
             fontFamily: 'monospace',

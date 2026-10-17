@@ -48,6 +48,7 @@ export function EarnPage({ domain }: EarnPageProps) {
   const [successMessage, setSuccessMessage] = useState<string>();
   const subscriptionKeys = useRef(new Map<string, string>());
   const redemptionKeys = useRef(new Map<string, string>());
+  const actionInFlight = useRef(false);
   const snapshotQuery = useEarnSnapshotQuery({
     pausePolling: Boolean(selectedProduct || selectedPosition),
   });
@@ -68,40 +69,50 @@ export function EarnPage({ domain }: EarnPageProps) {
   const title = domain === 'savings' ? 'Tiết kiệm' : 'Staking & Earn';
 
   const submitSubscription = async (amount: number) => {
-    if (!canSubscribe || !selectedProduct) return;
+    if (!canSubscribe || !selectedProduct || actionInFlight.current) return;
+    actionInFlight.current = true;
     const actionId = `${selectedProduct.id}:${amount}`;
     const key = subscriptionKeys.current.get(actionId) ?? crypto.randomUUID();
     subscriptionKeys.current.set(actionId, key);
-    const receipt = await subscribeMutation.mutateAsync({
-      request: { productId: selectedProduct.id, amount },
-      idempotencyKey: `earn-subscribe-${key}`,
-    });
-    subscriptionKeys.current.delete(actionId);
-    setSelectedProduct(undefined);
-    hapticSuccess();
-    if (receipt.status === 'pending') {
-      navigate(`${prefix}/earn/${domain}/receipt`, { state: { receipt } });
-      return;
+    try {
+      const receipt = await subscribeMutation.mutateAsync({
+        request: { productId: selectedProduct.id, amount },
+        idempotencyKey: `earn-subscribe-${key}`,
+      });
+      subscriptionKeys.current.delete(actionId);
+      setSelectedProduct(undefined);
+      hapticSuccess();
+      if (receipt.status === 'pending') {
+        navigate(`${prefix}/earn/${domain}/receipt`, { state: { receipt } });
+        return;
+      }
+      setSuccessMessage('Đăng ký sản phẩm thành công.');
+    } finally {
+      actionInFlight.current = false;
     }
-    setSuccessMessage('Đăng ký sản phẩm thành công.');
   };
   const submitRedemption = async (amount: number) => {
-    if (!canRedeem || !selectedPosition) return;
+    if (!canRedeem || !selectedPosition || actionInFlight.current) return;
+    actionInFlight.current = true;
     const actionId = `${selectedPosition.id}:${amount}`;
     const key = redemptionKeys.current.get(actionId) ?? crypto.randomUUID();
     redemptionKeys.current.set(actionId, key);
-    const receipt = await redeemMutation.mutateAsync({
-      request: { positionId: selectedPosition.id, amount },
-      idempotencyKey: `earn-redeem-${key}`,
-    });
-    redemptionKeys.current.delete(actionId);
-    setSelectedPosition(undefined);
-    hapticSuccess();
-    if (receipt.status === 'pending') {
-      navigate(`${prefix}/earn/${domain}/receipt`, { state: { receipt } });
-      return;
+    try {
+      const receipt = await redeemMutation.mutateAsync({
+        request: { positionId: selectedPosition.id, amount },
+        idempotencyKey: `earn-redeem-${key}`,
+      });
+      redemptionKeys.current.delete(actionId);
+      setSelectedPosition(undefined);
+      hapticSuccess();
+      if (receipt.status === 'pending') {
+        navigate(`${prefix}/earn/${domain}/receipt`, { state: { receipt } });
+        return;
+      }
+      setSuccessMessage('Yêu cầu rút vốn đã được ghi nhận.');
+    } finally {
+      actionInFlight.current = false;
     }
-    setSuccessMessage('Yêu cầu rút vốn đã được ghi nhận.');
   };
 
   if (snapshotQuery.isError && !snapshot)

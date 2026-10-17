@@ -46,7 +46,9 @@ const statusPillStatuses = [
 describe('IconButton family', () => {
   it.each(iconButtonVariants)('renders the %s variant', (variant) => {
     render(<IconButton icon={Search} label="Tìm kiếm" variant={variant} />);
-    expect(screen.getByRole('button', { name: 'Tìm kiếm' })).toBeInTheDocument();
+    const button = screen.getByRole('button', { name: 'Tìm kiếm' });
+    expect(button).toBeInTheDocument();
+    expect(button).toHaveAttribute('type', 'button');
   });
 
   it.each(iconButtonSizes)('applies the %s size', (size) => {
@@ -119,9 +121,11 @@ describe('StatusPill', () => {
     const { rerender } = render(
       <StatusPill color="#8B5CF6" label="VIP" size="sm" outline count={0} onClick={onClick} />,
     );
-    expect(screen.getByRole('button', { name: 'VIP' })).toBeInTheDocument();
+    const clickablePill = screen.getByRole('button', { name: 'VIP' });
+    expect(clickablePill).toBeInTheDocument();
+    expect(clickablePill).toHaveAttribute('type', 'button');
     expect(screen.queryByText('0')).not.toBeInTheDocument();
-    fireEvent.click(screen.getByRole('button', { name: 'VIP' }));
+    fireEvent.click(clickablePill);
     expect(onClick).toHaveBeenCalledOnce();
 
     rerender(<StatusPill label="Live" size="md" pulse count={12} icon={Search} />);
@@ -154,8 +158,12 @@ describe('ErrorState', () => {
         icon={<span>!</span>}
       />,
     );
-    fireEvent.click(screen.getByRole('button', { name: 'Tải lại' }));
-    fireEvent.click(screen.getByRole('button', { name: 'Đóng' }));
+    const retry = screen.getByRole('button', { name: 'Tải lại' });
+    const close = screen.getByRole('button', { name: 'Đóng' });
+    expect(retry).toHaveAttribute('type', 'button');
+    expect(close).toHaveAttribute('type', 'button');
+    fireEvent.click(retry);
+    fireEvent.click(close);
     expect(onAction).toHaveBeenCalledOnce();
     expect(onSecondary).toHaveBeenCalledOnce();
   });
@@ -181,7 +189,9 @@ describe('Dialog wrappers', () => {
 
     expect(screen.getByRole('dialog', { name: 'Confirm action' })).toBeInTheDocument();
     expect(screen.getByText('Review this action before continuing.')).toBeInTheDocument();
-    fireEvent.click(screen.getByRole('button', { name: 'Cancel' }));
+    const cancel = screen.getByRole('button', { name: 'Cancel' });
+    expect(cancel).toHaveAttribute('type', 'button');
+    fireEvent.click(cancel);
     expect(onOpenChange).toHaveBeenCalledWith(false);
   });
 });

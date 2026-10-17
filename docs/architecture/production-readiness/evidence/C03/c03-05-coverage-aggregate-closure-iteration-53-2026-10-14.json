@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "id": "EV-20261014-001",
+  "taskId": "C03",
+  "stepId": "C03.05",
+  "kind": "unit",
+  "observedAt": "2026-10-13T21:32:22Z",
+  "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
+  "sourceState": "Dirty Windows working tree; canonical runner source snapshot matched before/after and sourceHead stayed unchanged.",
+  "dirtyFileHashes": {
+    "src/app/router/index.ts": "2bdc346e5c9a9b74599860ea89f29bdfb5e2af9787248942fe5f097c89d6267f",
+    "src/features/profile/pages/EditProfileContractPage.test.tsx": "121c1fb7cbf07af1c27baadf4a6b34999e35377507f882731889efbab1132d90",
+    "src/features/trading/components/OrderModifySheet.test.tsx": "1937a288baaf45581e6ce05b21963b54d030648bdcc79ebc996a3e89c37f3798",
+    "src/features/trading/components/TradeTerminal.readonly-boundary.test.tsx": "a6688a654f6efdf29049b819d48b9a561a5d3d488667083b0a02a5e995c3d6b5",
+    "src/features/trading/pages/OrdersHistoryPage.test.tsx": "d9e9af98e7cdc9756e1f98b60af3698660a01fc1cc28e24ca299fe1bfa9db06d"
+  },
+  "commandOrSteps": "npm.cmd run test:coverage; focused owner tests for final boundary fixes; tsc --noEmit -p tsconfig.json; tsc --noEmit -p tsconfig.node.json; npm.cmd run lint; scoped Prettier; node scripts/check-git-eol.mjs.",
+  "environment": "Windows local checkout; Node v24.19.0; npm 11.17.0; Vitest/V8 via scripts/run-with-artifacts.mjs.",
+  "expected": "C03.05 aggregate statements, branches, functions and lines reach 100% with no changed thresholds, exclusions or denominator; all measurable source files are fully covered.",
+  "actual": {
+    "coverageRunId": "2026-10-13T21-08-11-622Z-vitest-31069bde-3320-49fc-b3ff-e78cdd7ccb41",
+    "coverageRunStatus": "passed",
+    "coverageRunStartedAt": "2026-10-13T21:08:11.622Z",
+    "coverageRunFinishedAt": "2026-10-13T21:09:07.874Z",
+    "coverageRunExitCode": 0,
+    "sourceSnapshotUnchanged": true,
+    "testFiles": { "passed": 360, "total": 360 },
+    "tests": { "passed": 3451, "failed": 0, "skipped": 0, "total": 3451 },
+    "coverageReport": {
+      "path": ".artifacts/runs/2026-10-13T21-08-11-622Z-vitest-31069bde-3320-49fc-b3ff-e78cdd7ccb41/coverage/coverage-final.json",
+      "sha256": "cc9be162664aa828e01dbea19a407733033ea405df196eb653a94d7170f8baf0",
+      "runManifestPath": ".artifacts/runs/2026-10-13T21-08-11-622Z-vitest-31069bde-3320-49fc-b3ff-e78cdd7ccb41/run.json",
+      "runManifestSha256": "b7ce8aee83c6e6bee9b7b488bff2bfb96237de5f35f47f99fbe77c9636cc192e",
+      "entries": 440,
+      "measurableFiles": 408,
+      "fullyCoveredFiles": 408,
+      "filesWithGaps": 0,
+      "noCounterFiles": 32,
+      "metrics": {
+        "statements": { "covered": 12426, "total": 12426, "missing": 0, "pct": 100 },
+        "branches": { "covered": 10239, "total": 10239, "missing": 0, "pct": 100 },
+        "functions": { "covered": 3970, "total": 3970, "missing": 0, "pct": 100 },
+        "lines": { "covered": 11487, "total": 11487, "missing": 0, "pct": 100 }
+      }
+    },
+    "focusedFinalSlice": { "testFiles": 5, "testsPassed": 40, "additionalTradeTerminalBoundaryFile": { "testsPassed": 6, "total": 6 } },
+    "typecheck": { "app": "passed", "node": "passed" },
+    "lint": { "errors": 0, "warnings": 2, "warningsAt": ["src/shared/ui/TrInput.tsx:158", "src/shared/ui/TrInput.tsx:165"] },
+    "scopedPrettier": "passed",
+    "gitEolPreflight": { "command": "node scripts/check-git-eol.mjs", "result": "passed", "paths": 4148, "lf": 2045, "withoutTerminator": 0, "preservedNonText": 2100, "protectedWindowsCrlf": 3, "violations": 0 },
+    "coverageThresholdsOrExclusionsChanged": false,
+    "productionBuildAttempt": {
+      "runId": "2026-10-13T21-24-39-543Z-build-73246fea-3c97-4cec-9ac0-3e860973c262",
+      "status": "failed_before_bundle",
+      "exitCode": 1,
+      "missingRequiredEnvironment": ["VITE_API_BASE_URL", "VITE_WS_URL"]
+    }
+  },
+  "result": "pass",
+  "artifact": ".artifacts/runs/2026-10-13T21-08-11-622Z-vitest-31069bde-3320-49fc-b3ff-e78cdd7ccb41/coverage/coverage-final.json",
+  "notes": "The C03.05 aggregate coverage counter target is met on the measured local dirty working tree. The 32 entries with no executable counters remain explicitly outside the measurable denominator. The production build did not produce a bundle because the required API and WebSocket environment values were absent. This evidence does not close C03.02/C03.03, hosted CI, backend/staging, production, or user acceptance."
+}

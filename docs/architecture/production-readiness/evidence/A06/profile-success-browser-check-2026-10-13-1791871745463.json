@@ -1,0 +1,411 @@
+{
+  "checkedAt": "2026-10-13T06:09:05.463Z",
+  "sourceHead": "db9c9064fa3ba79bd76fb7acb1023d90486b6cbf",
+  "branch": "",
+  "origin": "http://127.0.0.1:4193",
+  "browser": "Chromium via Playwright",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "scenario": {
+    "id": "profile.success",
+    "status": "passed",
+    "persona": "developer (preview only)",
+    "operationIds": [
+      "getProfile",
+      "updateProfile",
+      "listTrustedDevices",
+      "revokeDevice",
+      "setDeviceTrust",
+      "listProfileActivity",
+      "listSubAccounts"
+    ],
+    "observedOperationIds": [
+      "getProfile",
+      "updateProfile",
+      "listTrustedDevices",
+      "revokeDevice",
+      "setDeviceTrust",
+      "listProfileActivity",
+      "listSubAccounts"
+    ],
+    "expectedDomainOperationCount": 7,
+    "coverage": "full_scenario_operations_browser_observed"
+  },
+  "fixtureBoundary": {
+    "serviceWorkerControlled": true,
+    "allObservedResponsesFromServiceWorker": true,
+    "observedNetworkApiResponseCount": 15,
+    "localMockMutationCount": 3,
+    "realBackendRequestSent": false,
+    "realBackendMutationSent": false,
+    "externalApiOrigins": [],
+    "postResponseAbortEventCount": 1
+  },
+  "authorizationLimitations": {
+    "persona": "developer",
+    "mockSourcePermissions": [
+      "profile:read",
+      "profile:write",
+      "profile:security:write"
+    ],
+    "profileReadPermissionPresent": true,
+    "mswEnforcesProfileReadPermission": false,
+    "backendAuthorizationVerified": false
+  },
+  "measurements": {
+    "totalFlowMs": 1284,
+    "apiRequestCount": 15,
+    "apiResponseCount": 15,
+    "operationCounts": {
+      "getProfile": 2,
+      "updateProfile": 1,
+      "listTrustedDevices": 3,
+      "revokeDevice": 1,
+      "setDeviceTrust": 1,
+      "listProfileActivity": 1,
+      "listSubAccounts": 1
+    },
+    "profileUpdateStatus": 200,
+    "trustUpdateStatus": 200,
+    "revokeStatus": 204,
+    "activityItemCount": 7,
+    "subAccountCount": 5,
+    "idempotencyKeysPresent": {
+      "updateProfile": true,
+      "setDeviceTrust": true,
+      "revokeDevice": true
+    },
+    "externalApiOriginCount": 0,
+    "profileRequestFailureCount": 0,
+    "postResponseAbortEvents": [
+      {
+        "requestId": 201,
+        "method": "POST",
+        "path": "/api/profile/devices/dev002/revoke",
+        "failure": "net::ERR_ABORTED",
+        "hadResponse": true
+      }
+    ],
+    "pageErrorCount": 0
+  },
+  "assertions": {
+    "profile": {
+      "status": 200,
+      "fullNameVisible": true
+    },
+    "profileUpdate": {
+      "status": 200,
+      "updatedName": "Nguyễn Văn A Preview QA",
+      "idempotencyKeyPresent": true
+    },
+    "devices": {
+      "initialCount": 4,
+      "trustDeviceId": "dev004",
+      "trustUpdated": true,
+      "revokedDeviceId": "dev002",
+      "revokedDeviceAbsentAfterRefetch": true
+    },
+    "activity": {
+      "status": 200,
+      "itemCount": 7
+    },
+    "subAccounts": {
+      "status": 200,
+      "itemCount": 5
+    },
+    "apiRequests": [
+      {
+        "requestId": 166,
+        "method": "GET",
+        "path": "/api/auth/session",
+        "operationId": null,
+        "idempotencyKeyPresent": false
+      },
+      {
+        "requestId": 180,
+        "method": "POST",
+        "path": "/api/auth/logout",
+        "operationId": null,
+        "idempotencyKeyPresent": false
+      },
+      {
+        "requestId": 181,
+        "method": "POST",
+        "path": "/api/auth/login",
+        "operationId": null,
+        "idempotencyKeyPresent": false
+      },
+      {
+        "requestId": 188,
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "operationId": null,
+        "idempotencyKeyPresent": false
+      },
+      {
+        "requestId": 189,
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "operationId": null,
+        "idempotencyKeyPresent": false
+      },
+      {
+        "requestId": 194,
+        "method": "GET",
+        "path": "/api/profile",
+        "operationId": "getProfile",
+        "idempotencyKeyPresent": false
+      },
+      {
+        "requestId": 195,
+        "method": "PATCH",
+        "path": "/api/profile",
+        "operationId": "updateProfile",
+        "idempotencyKeyPresent": true
+      },
+      {
+        "requestId": 196,
+        "method": "GET",
+        "path": "/api/profile",
+        "operationId": "getProfile",
+        "idempotencyKeyPresent": false
+      },
+      {
+        "requestId": 198,
+        "method": "GET",
+        "path": "/api/profile/devices",
+        "operationId": "listTrustedDevices",
+        "idempotencyKeyPresent": false
+      },
+      {
+        "requestId": 199,
+        "method": "PATCH",
+        "path": "/api/profile/devices/dev004/trust",
+        "operationId": "setDeviceTrust",
+        "idempotencyKeyPresent": true
+      },
+      {
+        "requestId": 200,
+        "method": "GET",
+        "path": "/api/profile/devices",
+        "operationId": "listTrustedDevices",
+        "idempotencyKeyPresent": false
+      },
+      {
+        "requestId": 201,
+        "method": "POST",
+        "path": "/api/profile/devices/dev002/revoke",
+        "operationId": "revokeDevice",
+        "idempotencyKeyPresent": true
+      },
+      {
+        "requestId": 202,
+        "method": "GET",
+        "path": "/api/profile/devices",
+        "operationId": "listTrustedDevices",
+        "idempotencyKeyPresent": false
+      },
+      {
+        "requestId": 204,
+        "method": "GET",
+        "path": "/api/profile/activity",
+        "operationId": "listProfileActivity",
+        "idempotencyKeyPresent": false
+      },
+      {
+        "requestId": 206,
+        "method": "GET",
+        "path": "/api/profile/sub-accounts",
+        "operationId": "listSubAccounts",
+        "idempotencyKeyPresent": false
+      }
+    ],
+    "apiResponses": [
+      {
+        "requestId": 166,
+        "method": "GET",
+        "path": "/api/auth/session",
+        "operationId": null,
+        "status": 401,
+        "fromServiceWorker": true,
+        "responseTimeMs": 17
+      },
+      {
+        "requestId": 180,
+        "method": "POST",
+        "path": "/api/auth/logout",
+        "operationId": null,
+        "status": 204,
+        "fromServiceWorker": true,
+        "responseTimeMs": 15
+      },
+      {
+        "requestId": 181,
+        "method": "POST",
+        "path": "/api/auth/login",
+        "operationId": null,
+        "status": 200,
+        "fromServiceWorker": true,
+        "responseTimeMs": 4
+      },
+      {
+        "requestId": 188,
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "operationId": null,
+        "status": 200,
+        "fromServiceWorker": true,
+        "responseTimeMs": 4
+      },
+      {
+        "requestId": 189,
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "operationId": null,
+        "status": 200,
+        "fromServiceWorker": true,
+        "responseTimeMs": 4
+      },
+      {
+        "requestId": 194,
+        "method": "GET",
+        "path": "/api/profile",
+        "operationId": "getProfile",
+        "status": 200,
+        "fromServiceWorker": true,
+        "responseTimeMs": 4
+      },
+      {
+        "requestId": 195,
+        "method": "PATCH",
+        "path": "/api/profile",
+        "operationId": "updateProfile",
+        "status": 200,
+        "fromServiceWorker": true,
+        "responseTimeMs": 17
+      },
+      {
+        "requestId": 196,
+        "method": "GET",
+        "path": "/api/profile",
+        "operationId": "getProfile",
+        "status": 200,
+        "fromServiceWorker": true,
+        "responseTimeMs": 2
+      },
+      {
+        "requestId": 198,
+        "method": "GET",
+        "path": "/api/profile/devices",
+        "operationId": "listTrustedDevices",
+        "status": 200,
+        "fromServiceWorker": true,
+        "responseTimeMs": 2
+      },
+      {
+        "requestId": 199,
+        "method": "PATCH",
+        "path": "/api/profile/devices/dev004/trust",
+        "operationId": "setDeviceTrust",
+        "status": 200,
+        "fromServiceWorker": true,
+        "responseTimeMs": 15
+      },
+      {
+        "requestId": 200,
+        "method": "GET",
+        "path": "/api/profile/devices",
+        "operationId": "listTrustedDevices",
+        "status": 200,
+        "fromServiceWorker": true,
+        "responseTimeMs": 1
+      },
+      {
+        "requestId": 201,
+        "method": "POST",
+        "path": "/api/profile/devices/dev002/revoke",
+        "operationId": "revokeDevice",
+        "status": 204,
+        "fromServiceWorker": true,
+        "responseTimeMs": 17
+      },
+      {
+        "requestId": 202,
+        "method": "GET",
+        "path": "/api/profile/devices",
+        "operationId": "listTrustedDevices",
+        "status": 200,
+        "fromServiceWorker": true,
+        "responseTimeMs": 1
+      },
+      {
+        "requestId": 204,
+        "method": "GET",
+        "path": "/api/profile/activity",
+        "operationId": "listProfileActivity",
+        "status": 200,
+        "fromServiceWorker": true,
+        "responseTimeMs": 3
+      },
+      {
+        "requestId": 206,
+        "method": "GET",
+        "path": "/api/profile/sub-accounts",
+        "operationId": "listSubAccounts",
+        "status": 200,
+        "fromServiceWorker": true,
+        "responseTimeMs": 3
+      }
+    ],
+    "externalApiOrigins": [],
+    "profileRequestFailures": [],
+    "profileRequestCancellationsAfterResponse": [
+      {
+        "requestId": 201,
+        "method": "POST",
+        "path": "/api/profile/devices/dev002/revoke",
+        "failure": "net::ERR_ABORTED",
+        "hadResponse": true
+      }
+    ],
+    "pageErrors": []
+  },
+  "screenshots": {
+    "edit": "preview-profile-success-edit-2026-10-13-1791871745463.png",
+    "devices": "preview-profile-success-devices-2026-10-13-1791871745463.png",
+    "activity": "preview-profile-success-activity-2026-10-13-1791871745463.png",
+    "subAccounts": "preview-profile-success-sub-accounts-2026-10-13-1791871745463.png"
+  },
+  "sourceHashes": {
+    "contracts/openapi/profile.yaml": "6830c4976f5b94b4f78e08b824eabd1c18b41bf96f23613412db065575f1d5d8",
+    "src/app/routes.ts": "c93a80e123fd95c3abd246aeb00589a51f5ff4560e794e87f70f7ff96248c0d5",
+    "src/dev/PreviewControls.tsx": "a318fb182dda24c9b8d2103ae4b40eeecb7c3eded57332aad3c5bc8a1836a54c",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/handlers.ts": "9d1ea085bab944b0bd0e59a665222113cb7bb661bbcd2408f09c6adf08cd3ea9",
+    "src/dev/mocks/personas.ts": "6189b9cbfb9765f5c442c52a089d30b5be171170fe054ef6bf2faffbbb53dccd",
+    "src/dev/mocks/preview-scenario-handler.ts": "1b05e3e420b1df43de6d2e37533d4d8dbcd203fedb70ca59a65a4a62179396f5",
+    "src/dev/mocks/scenario-runtime.ts": "446d43808b478a1eaca07faa29d690c49c8e7ffb21fc1f12d2de2feb524e2e50",
+    "src/dev/mocks/trading-fixtures.ts": "b082e4bc4094a4d7b36f41897ce9b27ea4c487fd3bf714622baf2f91fe2153cf",
+    "src/features/profile/api/profile-api.ts": "acba23f32e4c8b2ad972e02c2184e6fbb616ce1ab4b1defeca60d2a825a9b707",
+    "src/features/profile/model/profile-queries.ts": "384f749fcf37d7ac68405dd78288a1ef738251206d7e3bccc5aaa98f8e986a57",
+    "src/features/profile/model/profile-types.ts": "2c31759640a548270a76a9bb7ff17ef5af0cb1a684d968e063373f1157f93761",
+    "src/features/profile/pages/ActivityLogContractPage.tsx": "48be877678ceb63bb2ad01fa94eaf711bd291539508b3c60500632d0c24efb36",
+    "src/features/profile/pages/DeviceManagementContractPage.tsx": "fb32ff88b2c1d65420537814a3d8244cfde0f1a353a2c76356ae2329717dd286",
+    "src/features/profile/pages/EditProfileContractPage.tsx": "b3f1694edc7aa561c42bf016d543e870dba174767dc664edcc31474a89dc79be",
+    "src/features/profile/pages/SubAccountContractPage.tsx": "4842a28e0bc17738d0895352d4dcb168f4a981ea2926feb747120ea9de94d0a0",
+    "src/features/profile/routes.ts": "231052711e6dd138f27c96272e63d401e06854ed33d425d8712f485c3b601418",
+    "src/shared/api/http-client.ts": "12a04035eac23a2999f8c7a76aafa32966585402c06d98f451ef33eb8601cf42",
+    "src/shared/session/AuthContext.tsx": "b95d134413d28d85278553b752a4d6738857ed7785ea53d7a0e441db61b310f2",
+    "src/shared/session/useAuth.ts": "65d58cfe61d4618a1849da066ecd4d6ae7c94c036af7361a91a1383a6b383e0b",
+    "src/main.tsx": "c150098914a25b7e0630d66f480ffbfe4160e96a8bdb54262b5ad4b5b33719e6",
+    "docs/architecture/production-readiness/evidence/A06/run-profile-success-browser-check.mjs": "afca1cab528ae3b3dc5592691b9be4f0b8663f2c9c239e31f958c8ad533789d6"
+  },
+  "limitations": [
+    "All three write operations updated only in-memory preview fixtures through the local service worker; no backend mutation was sent.",
+    "The Developer preview persona declares the Profile permissions required by the OpenAPI operations; current MSW handlers do not enforce those permissions, so this run does not prove backend authorization.",
+    "Chromium emitted net::ERR_ABORTED for the revoke request after the same request had already received a 204 MSW response; this is recorded separately from failed requests.",
+    "This browser run does not verify persistence, staging, production, or user acceptance."
+  ]
+}

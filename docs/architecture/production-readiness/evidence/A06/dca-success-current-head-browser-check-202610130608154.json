@@ -1,0 +1,462 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-13T06:08:15.485Z",
+  "observedAt": "2026-10-13T06:08:21.926Z",
+  "sourceHead": "db9c9064fa3ba79bd76fb7acb1023d90486b6cbf",
+  "origin": "http://127.0.0.1:4193",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "sourceHashes": {
+    "contracts/openapi/dca.yaml": "105ad6cbe91891cf20336ac20cd26485c22c3dbd26055d1a4dcc4d0a45bf5b5d",
+    "docs/architecture/production-readiness/evidence/A06/operation-mock-map-2026-09-28.json": "22daaea2c44da7e384507fbcd118f72aea0f18bf59e65aa025e8309eef01d320",
+    "docs/architecture/production-readiness/evidence/A06/run-dca-success-current-head-browser-check.mjs": "8cd74b2780361732007b40bc7c18b6ef2c7bef9470aa4c17f551ce4a2f1fcfc8",
+    "src/app/pages/dca/DCAPage.tsx": "3fe3bbb605365348e12fc40a53799c2f270a1c0e2d6c7d07f8484c7fa30acfb4",
+    "src/app/routeConfig.ts": "675ea95ec4831b9d0caf1cbf68524efaebda8ed9b970b5dad129bdd55f28bac9",
+    "src/dev/PreviewControls.tsx": "a318fb182dda24c9b8d2103ae4b40eeecb7c3eded57332aad3c5bc8a1836a54c",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/dca-fixtures.ts": "33f7f6e4cee03ce1d9b6099ce7b9046c40f3600000da618138fdfed3108c6b2e",
+    "src/dev/mocks/handlers.ts": "9d1ea085bab944b0bd0e59a665222113cb7bb661bbcd2408f09c6adf08cd3ea9",
+    "src/dev/mocks/personas.ts": "6189b9cbfb9765f5c442c52a089d30b5be171170fe054ef6bf2faffbbb53dccd",
+    "src/dev/mocks/preview-scenario-handler.ts": "1b05e3e420b1df43de6d2e37533d4d8dbcd203fedb70ca59a65a4a62179396f5",
+    "src/dev/mocks/scenario-runtime.ts": "446d43808b478a1eaca07faa29d690c49c8e7ffb21fc1f12d2de2feb524e2e50",
+    "src/features/dca/api/dca-api.ts": "dd9c9a077e7b8c4ff137d59680e5c69722dd391d69088b75e2ec2fa28256a997",
+    "src/features/dca/components/DCACreatePlanSheet.tsx": "db90a53c0470d4655fab3a68c76a25c9088801a3fb13878140b134d6ccfb8867",
+    "src/features/dca/components/DCAPlanCard.tsx": "2581e0d751782ba2852d7680a540dbdbdae7dbdcaf48a2e8878e638898547a6b",
+    "src/features/dca/model/dca-queries.ts": "73a9680a7b246dea4141e06682e3eb8557799682445c9e53cc5e4cbdee7a1d65",
+    "src/features/dca/pages/DCAAdvancedPreviewPage.tsx": "573c8b47da920ff891f04daa488c0fef69b644a181b94142e3a4a5dc7b6ef811",
+    "src/features/dca/pages/DCAMainPage.tsx": "3c845ba27b78bb07ac54bfd566cbd0bc636c0fb1d4ce870f292c0defed9bdd4c"
+  },
+  "scenario": {
+    "id": "dca.success",
+    "domain": "dca",
+    "state": "success",
+    "status": "passed",
+    "observedAt": "2026-10-13T06:08:21.926Z",
+    "persona": "dca (local MSW fixture)",
+    "role": "user",
+    "permissions": ["dca:read", "dca:write"],
+    "route": "/w/dca",
+    "finalRoute": "/w/dca/rebalance/config",
+    "operationIds": [
+      "getDCAAdvancedOverview",
+      "getDCASnapshot",
+      "createDCAPlan",
+      "updateDCAPlan",
+      "deleteDCAPlan"
+    ],
+    "observedOperationIds": [
+      "createDCAPlan",
+      "deleteDCAPlan",
+      "getDCAAdvancedOverview",
+      "getDCASnapshot",
+      "updateDCAPlan"
+    ],
+    "operationRequestCounts": {
+      "getDCAAdvancedOverview": 1,
+      "getDCASnapshot": 4,
+      "createDCAPlan": 1,
+      "updateDCAPlan": 1,
+      "deleteDCAPlan": 1
+    },
+    "requests": [
+      {
+        "operationId": "getSession",
+        "method": "GET",
+        "path": "/api/auth/session",
+        "resourceType": "fetch",
+        "idempotencyKeyPresent": false
+      },
+      {
+        "operationId": "login",
+        "method": "POST",
+        "path": "/api/auth/login",
+        "resourceType": "fetch",
+        "idempotencyKeyPresent": false
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "resourceType": "fetch",
+        "idempotencyKeyPresent": false
+      },
+      {
+        "operationId": "getMarketWatchlist",
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "resourceType": "fetch",
+        "idempotencyKeyPresent": false
+      },
+      {
+        "operationId": "getDCASnapshot",
+        "method": "GET",
+        "path": "/api/dca/snapshot",
+        "resourceType": "fetch",
+        "idempotencyKeyPresent": false
+      },
+      {
+        "operationId": "createDCAPlan",
+        "method": "POST",
+        "path": "/api/dca/plans",
+        "resourceType": "fetch",
+        "idempotencyKeyPresent": true
+      },
+      {
+        "operationId": "getDCASnapshot",
+        "method": "GET",
+        "path": "/api/dca/snapshot",
+        "resourceType": "fetch",
+        "idempotencyKeyPresent": false
+      },
+      {
+        "operationId": null,
+        "method": "GET",
+        "path": "/api/",
+        "resourceType": "image",
+        "idempotencyKeyPresent": false
+      },
+      {
+        "operationId": "updateDCAPlan",
+        "method": "PATCH",
+        "path": "/api/dca/plans/dev-plan-0001",
+        "resourceType": "fetch",
+        "idempotencyKeyPresent": true
+      },
+      {
+        "operationId": "getDCASnapshot",
+        "method": "GET",
+        "path": "/api/dca/snapshot",
+        "resourceType": "fetch",
+        "idempotencyKeyPresent": false
+      },
+      {
+        "operationId": "deleteDCAPlan",
+        "method": "DELETE",
+        "path": "/api/dca/plans/dev-plan-0001",
+        "resourceType": "fetch",
+        "idempotencyKeyPresent": true
+      },
+      {
+        "operationId": "getDCASnapshot",
+        "method": "GET",
+        "path": "/api/dca/snapshot",
+        "resourceType": "fetch",
+        "idempotencyKeyPresent": false
+      },
+      {
+        "operationId": "getDCAAdvancedOverview",
+        "method": "GET",
+        "path": "/api/dca/advanced/overview",
+        "resourceType": "fetch",
+        "idempotencyKeyPresent": false
+      }
+    ],
+    "responses": [
+      {
+        "operationId": "getSession",
+        "method": "GET",
+        "path": "/api/auth/session",
+        "status": 401,
+        "fromServiceWorker": true,
+        "elapsedMs": 21
+      },
+      {
+        "operationId": "login",
+        "method": "POST",
+        "path": "/api/auth/login",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 9
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 8
+      },
+      {
+        "operationId": "getMarketWatchlist",
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 8
+      },
+      {
+        "operationId": "getDCASnapshot",
+        "method": "GET",
+        "path": "/api/dca/snapshot",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 7
+      },
+      {
+        "operationId": "createDCAPlan",
+        "method": "POST",
+        "path": "/api/dca/plans",
+        "status": 201,
+        "fromServiceWorker": true,
+        "elapsedMs": 34
+      },
+      {
+        "operationId": "getDCASnapshot",
+        "method": "GET",
+        "path": "/api/dca/snapshot",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 8
+      },
+      {
+        "operationId": null,
+        "method": "GET",
+        "path": "/api/",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 71
+      },
+      {
+        "operationId": "updateDCAPlan",
+        "method": "PATCH",
+        "path": "/api/dca/plans/dev-plan-0001",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 17
+      },
+      {
+        "operationId": "getDCASnapshot",
+        "method": "GET",
+        "path": "/api/dca/snapshot",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 15
+      },
+      {
+        "operationId": "deleteDCAPlan",
+        "method": "DELETE",
+        "path": "/api/dca/plans/dev-plan-0001",
+        "status": 204,
+        "fromServiceWorker": true,
+        "elapsedMs": 20
+      },
+      {
+        "operationId": "getDCASnapshot",
+        "method": "GET",
+        "path": "/api/dca/snapshot",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 6
+      },
+      {
+        "operationId": "getDCAAdvancedOverview",
+        "method": "GET",
+        "path": "/api/dca/advanced/overview",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 1
+      }
+    ],
+    "initialSessionResponse": {
+      "status": 401,
+      "fromServiceWorker": true
+    },
+    "loginResponse": {
+      "status": 200,
+      "fromServiceWorker": true
+    },
+    "scenarioSelected": true,
+    "createdPlanId": "dev-plan-0001",
+    "idempotencyKeyPresent": {
+      "create": true,
+      "update": true,
+      "delete": true
+    },
+    "contractResponses": {
+      "getDCAAdvancedOverview": [
+        {
+          "status": 200,
+          "fromServiceWorker": true
+        }
+      ],
+      "getDCASnapshot": [
+        {
+          "status": 200,
+          "fromServiceWorker": true
+        },
+        {
+          "status": 200,
+          "fromServiceWorker": true
+        },
+        {
+          "status": 200,
+          "fromServiceWorker": true
+        },
+        {
+          "status": 200,
+          "fromServiceWorker": true
+        }
+      ],
+      "createDCAPlan": [
+        {
+          "status": 201,
+          "fromServiceWorker": true
+        }
+      ],
+      "updateDCAPlan": [
+        {
+          "status": 200,
+          "fromServiceWorker": true
+        }
+      ],
+      "deleteDCAPlan": [
+        {
+          "status": 204,
+          "fromServiceWorker": true
+        }
+      ]
+    },
+    "backendRequiredNoticeVisible": true,
+    "externalApiOrigins": [],
+    "externalAssetOrigins": [
+      "https://fonts.googleapis.com",
+      "https://fonts.gstatic.com",
+      "https://cryptologos.cc",
+      "https://ui-avatars.com"
+    ],
+    "externalResourceOrigins": [],
+    "externalRequests": [
+      {
+        "origin": "https://fonts.googleapis.com",
+        "path": "/css2",
+        "method": "GET",
+        "resourceType": "stylesheet"
+      },
+      {
+        "origin": "https://fonts.gstatic.com",
+        "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw5BXoKZA.woff2",
+        "method": "GET",
+        "resourceType": "font"
+      },
+      {
+        "origin": "https://fonts.gstatic.com",
+        "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw3BXo.woff2",
+        "method": "GET",
+        "resourceType": "font"
+      },
+      {
+        "origin": "https://fonts.gstatic.com",
+        "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw4BXoKZA.woff2",
+        "method": "GET",
+        "resourceType": "font"
+      },
+      {
+        "origin": "https://fonts.gstatic.com",
+        "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG81Rb0.woff2",
+        "method": "GET",
+        "resourceType": "font"
+      },
+      {
+        "origin": "https://fonts.gstatic.com",
+        "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW81Rb0.woff2",
+        "method": "GET",
+        "resourceType": "font"
+      },
+      {
+        "origin": "https://fonts.gstatic.com",
+        "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HTEJm81Rb0.woff2",
+        "method": "GET",
+        "resourceType": "font"
+      },
+      {
+        "origin": "https://fonts.gstatic.com",
+        "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW86Rb0bcw.woff2",
+        "method": "GET",
+        "resourceType": "font"
+      },
+      {
+        "origin": "https://fonts.gstatic.com",
+        "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW87Rb0bcw.woff2",
+        "method": "GET",
+        "resourceType": "font"
+      },
+      {
+        "origin": "https://fonts.gstatic.com",
+        "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG87Rb0bcw.woff2",
+        "method": "GET",
+        "resourceType": "font"
+      },
+      {
+        "origin": "https://fonts.gstatic.com",
+        "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG86Rb0bcw.woff2",
+        "method": "GET",
+        "resourceType": "font"
+      },
+      {
+        "origin": "https://fonts.gstatic.com",
+        "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HTEJm86Rb0bcw.woff2",
+        "method": "GET",
+        "resourceType": "font"
+      },
+      {
+        "origin": "https://fonts.gstatic.com",
+        "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HTEJm87Rb0bcw.woff2",
+        "method": "GET",
+        "resourceType": "font"
+      },
+      {
+        "origin": "https://cryptologos.cc",
+        "path": "/logos/bitcoin-btc-logo.png",
+        "method": "GET",
+        "resourceType": "image"
+      },
+      {
+        "origin": "https://cryptologos.cc",
+        "path": "/logos/ethereum-eth-logo.png",
+        "method": "GET",
+        "resourceType": "image"
+      },
+      {
+        "origin": "https://cryptologos.cc",
+        "path": "/logos/solana-sol-logo.png",
+        "method": "GET",
+        "resourceType": "image"
+      },
+      {
+        "origin": "https://cryptologos.cc",
+        "path": "/logos/bnb-bnb-logo.png",
+        "method": "GET",
+        "resourceType": "image"
+      },
+      {
+        "origin": "https://cryptologos.cc",
+        "path": "/logos/cardano-ada-logo.png",
+        "method": "GET",
+        "resourceType": "image"
+      },
+      {
+        "origin": "https://cryptologos.cc",
+        "path": "/logos/ada-logo.png",
+        "method": "GET",
+        "resourceType": "image"
+      },
+      {
+        "origin": "https://ui-avatars.com",
+        "path": "/api/",
+        "method": "GET",
+        "resourceType": "image"
+      }
+    ],
+    "elapsedMs": 6315,
+    "screenshots": [
+      "preview-dca-success-plans-current-head-202610130608154.png",
+      "preview-dca-success-plan-created-current-head-202610130608154.png",
+      "preview-dca-success-plan-paused-current-head-202610130608154.png",
+      "preview-dca-success-backend-required-current-head-202610130608154.png"
+    ],
+    "failures": [],
+    "note": "Chromium exercised all five DCA contract operations through the local MSW service worker: snapshot and advanced overview GET, plan create 201, update 200, and delete 204. A dedicated least-privilege DCA preview persona displayed the controls. The new plan was created, persisted across refetch, paused, and deleted from the in-memory development fixture. Required Idempotency-Key headers were observed, but server replay semantics were not tested or inferred. Advanced DCA correctly displays that backend integration is still required. No real investment or backend/staging request was made; this is local preview evidence, not user acceptance or production certification."
+  }
+}
