@@ -394,8 +394,30 @@ test.describe('wallet contract smoke on staging build', () => {
     await page.goto('/wallet/withdraw/USDT');
     await expect(page).toHaveURL(/\/w\/wallet\/withdraw\/USDT$/);
     await expect(page.getByLabel('Mạng lưới')).toHaveValue('ethereum');
+    const fieldTokens = await page.evaluate(() => ({
+      height: getComputedStyle(document.documentElement).getPropertyValue('--input-height').trim(),
+      radius: getComputedStyle(document.documentElement)
+        .getPropertyValue('--tr-radius-input')
+        .trim(),
+    }));
+    for (const selector of ['#withdraw-network', '#withdraw-address', '#withdraw-amount']) {
+      const control = page.locator(selector);
+      const surface = selector === '#withdraw-network' ? control : control.locator('xpath=..');
+      await expect(surface).toHaveCSS('height', fieldTokens.height);
+      await expect(surface).toHaveCSS('border-radius', fieldTokens.radius);
+    }
     const addressField = page.locator('#withdraw-address');
     const amountField = page.locator('#withdraw-amount');
+    await expect(addressField).toHaveCSS('font-size', '16px');
+    await expect(amountField).toHaveCSS('font-size', '18px');
+    await addressField.focus();
+    await expect
+      .poll(
+        () =>
+          addressField.evaluate((element) => getComputedStyle(element.parentElement!).boxShadow),
+        { timeout: 2_000 },
+      )
+      .toContain('rgba(229, 138, 0, 0.25)');
     await page.getByRole('button', { name: /Tiếp tục/ }).click();
     await expect(addressField).toHaveAttribute('aria-invalid', 'true');
     await expect(addressField).toHaveAttribute('aria-describedby', 'withdraw-address-error');

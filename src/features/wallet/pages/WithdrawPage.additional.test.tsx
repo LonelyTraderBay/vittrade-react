@@ -80,6 +80,58 @@ function getButtonContaining(text: string) {
 }
 
 describe('WithdrawPage additional coverage', () => {
+  it('treats an unknown withdrawal receipt status as an unconfirmed outcome', async () => {
+    installReadHandlers();
+    server.use(
+      http.post('*/wallet/withdrawals/challenge', () =>
+        HttpResponse.json({
+          id: 'challenge-unknown-status-1',
+          method: 'totp',
+          expiresAt: '2026-09-22T09:00:00Z',
+        }),
+      ),
+      http.post('*/wallet/withdrawals/challenge/:challengeId/verify', () =>
+        HttpResponse.json({
+          verificationToken: 'verification-token-unknown-status',
+          expiresAt: '2026-09-22T09:00:00Z',
+        }),
+      ),
+      http.post('*/wallet/withdrawals', () =>
+        HttpResponse.json({
+          id: 'withdrawal-unknown-status-1',
+          transactionId: 'transaction-unknown-status-1',
+          asset: 'USDT',
+          amount: 12,
+          status: 'broadcasting',
+          createdAt: '2026-09-22T08:00:00.000Z',
+        }),
+      ),
+    );
+    renderWithProviders(<WithdrawPage />, {
+      routerProps: { initialEntries: ['/wallet/withdraw/USDT'] },
+    });
+    await screen.findByRole('combobox');
+    await userEvent.type(
+      document.getElementById('withdraw-address') as HTMLInputElement,
+      'wallet-address-long-enough-for-validation-123456',
+    );
+    await userEvent.type(document.getElementById('withdraw-amount') as HTMLInputElement, '12');
+    await userEvent.click(getContinueButton());
+    await userEvent.click(getButtonContaining('Xác minh 2FA'));
+    await userEvent.type(await screen.findByLabelText(/Mã xác minh/i), '123456');
+    await userEvent.click(getButtonContaining('Xác nhận rút tiền'));
+
+    await waitFor(() =>
+      expect(toast.error).toHaveBeenCalledWith(
+        'Chưa xác nhận được kết quả rút tiền. Hãy kiểm tra lịch sử giao dịch trước khi thử lại.',
+        { duration: 2000 },
+      ),
+    );
+    expect(toast.success).not.toHaveBeenCalled();
+    expect(screen.getByText('Xác minh bảo mật')).toBeVisible();
+    expect(screen.queryByText('Đang xử lý')).not.toBeInTheDocument();
+  });
+
   it('returns from MFA verification to the form without discarding withdrawal details', async () => {
     installReadHandlers();
     server.use(

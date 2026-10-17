@@ -2,12 +2,15 @@ import type { ChangeEvent } from 'react';
 import { AlertTriangle, CheckCircle, ChevronDown, Clock, Loader2, Shield, X } from 'lucide-react';
 import { BottomSheetRow, BottomSheetV2 } from '@/shared/ui/BottomSheetV2';
 import { CTAButton } from '@/shared/ui/CTAButton';
+import { Button } from '@/shared/ui/button';
 import { ErrorState } from '@/shared/ui/ErrorState';
+import { InputField } from '@/shared/ui/InputField';
 import { Header } from '@/shared/ui/layout/Header';
 import { PageContent } from '@/shared/ui/layout/PageContent';
 import { PageLayout } from '@/shared/ui/layout/PageLayout';
 import { TrCard } from '@/shared/ui/TrCard';
 import { fmtAmount } from '@/shared/lib/formatNumber';
+import { typeSize } from '@/shared/theme/typography';
 import type { ThemeColors } from '@/shared/hooks/useThemeColors';
 import type {
   WalletAsset,
@@ -310,11 +313,13 @@ export function WithdrawalForm({
             value={selectedNetwork.id}
             disabled={!canWithdraw}
             onChange={onNetworkChange}
-            className="h-14 w-full appearance-none rounded-2xl px-4"
+            className="w-full appearance-none px-4"
             style={{
               background: colors.surface2,
               border: `1.5px solid ${colors.borderSolid}`,
+              borderRadius: 'var(--input-radius)',
               color: colors.text1,
+              height: 'var(--input-height)',
             }}
           >
             {networks.map((network) => (
@@ -324,126 +329,63 @@ export function WithdrawalForm({
             ))}
           </select>
           <ChevronDown
-            className="pointer-events-none absolute right-4 top-4"
+            className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2"
             size={18}
             color={colors.text2}
           />
         </div>
       </div>
 
-      <div>
-        <label
-          htmlFor="withdraw-address"
-          style={{ color: colors.text2, display: 'block', fontSize: 13, marginBottom: 6 }}
-        >
-          Địa chỉ ví nhận
-        </label>
-        <input
-          id="withdraw-address"
-          value={address}
-          disabled={!canWithdraw}
-          onChange={onAddressChange}
-          aria-invalid={Boolean(errors.address)}
-          aria-describedby={errors.address ? 'withdraw-address-error' : undefined}
-          placeholder={`Nhập địa chỉ ${asset}`}
-          className="h-14 w-full rounded-2xl px-4"
-          style={{
-            background: colors.surface2,
-            border: `1.5px solid ${errors.address ? colors.error : colors.borderSolid}`,
-            color: colors.text1,
-          }}
-        />
-        {errors.address && (
-          <p
-            id="withdraw-address-error"
-            role="alert"
-            style={{ color: colors.error, fontSize: 12, marginTop: 4 }}
-          >
-            {errors.address}
-          </p>
-        )}
-      </div>
+      <InputField
+        id="withdraw-address"
+        label="Địa chỉ ví nhận"
+        value={address}
+        disabled={!canWithdraw}
+        onChange={onAddressChange}
+        error={errors.address}
+        placeholder={`Nhập địa chỉ ${asset}`}
+        style={{ fontSize: typeSize('md') }}
+      />
 
       {selectedNetwork.requiresMemo && (
-        <div>
-          <label
-            htmlFor="withdraw-memo"
-            style={{ color: colors.text2, display: 'block', fontSize: 13, marginBottom: 6 }}
-          >
-            {selectedNetwork.memoLabel ?? 'Memo'}
-          </label>
-          <input
-            id="withdraw-memo"
-            value={memo}
-            disabled={!canWithdraw}
-            onChange={onMemoChange}
-            aria-invalid={Boolean(errors.memo)}
-            aria-describedby={errors.memo ? 'withdraw-memo-error' : undefined}
-            placeholder={selectedNetwork.memoPlaceholder ?? 'Nhập memo'}
-            className="h-14 w-full rounded-2xl px-4"
-            style={{
-              background: colors.surface2,
-              border: `1.5px solid ${errors.memo ? colors.error : colors.borderSolid}`,
-              color: colors.text1,
-            }}
-          />
-          {errors.memo && (
-            <p
-              id="withdraw-memo-error"
-              role="alert"
-              style={{ color: colors.error, fontSize: 12, marginTop: 4 }}
-            >
-              {errors.memo}
-            </p>
-          )}
-        </div>
+        <InputField
+          id="withdraw-memo"
+          label={selectedNetwork.memoLabel ?? 'Memo'}
+          value={memo}
+          disabled={!canWithdraw}
+          onChange={onMemoChange}
+          error={errors.memo}
+          placeholder={selectedNetwork.memoPlaceholder ?? 'Nhập memo'}
+          style={{ fontSize: typeSize('md') }}
+        />
       )}
 
-      <div>
-        <div className="mb-2 flex justify-between">
-          <label htmlFor="withdraw-amount" style={{ color: colors.text2, fontSize: 13 }}>
-            Số lượng rút
-          </label>
-          <button
+      <InputField
+        id="withdraw-amount"
+        label="Số lượng rút"
+        type="number"
+        disabled={!canWithdraw}
+        min={selectedNetwork.minWithdraw}
+        max={Math.min(selectedNetwork.maxWithdraw, assetData.available)}
+        step="any"
+        value={amount}
+        onChange={onAmountChange}
+        error={errors.amount}
+        placeholder="0.00"
+        style={{ fontFamily: 'monospace', fontSize: typeSize('lg') }}
+        suffix={
+          <Button
             type="button"
+            variant="link"
+            size="sm"
             disabled={!canWithdraw}
             onClick={onSetMax}
-            style={{ color: colors.primary, fontSize: 12 }}
+            style={{ color: colors.primary }}
           >
             Tất cả
-          </button>
-        </div>
-        <input
-          id="withdraw-amount"
-          type="number"
-          disabled={!canWithdraw}
-          min={selectedNetwork.minWithdraw}
-          max={Math.min(selectedNetwork.maxWithdraw, assetData.available)}
-          step="any"
-          value={amount}
-          onChange={onAmountChange}
-          aria-invalid={Boolean(errors.amount)}
-          aria-describedby={errors.amount ? 'withdraw-amount-error' : undefined}
-          placeholder="0.00"
-          className="h-14 w-full rounded-2xl px-4"
-          style={{
-            background: colors.surface2,
-            border: `1.5px solid ${errors.amount ? colors.error : colors.borderSolid}`,
-            color: colors.text1,
-            fontFamily: 'monospace',
-            fontSize: 18,
-          }}
-        />
-        {errors.amount && (
-          <p
-            id="withdraw-amount-error"
-            role="alert"
-            style={{ color: colors.error, fontSize: 12, marginTop: 4 }}
-          >
-            {errors.amount}
-          </p>
-        )}
-      </div>
+          </Button>
+        }
+      />
 
       <div
         className="flex items-start gap-2 rounded-2xl p-3"
