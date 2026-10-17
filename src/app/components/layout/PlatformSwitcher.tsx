@@ -157,6 +157,7 @@ export function PlatformSwitcher({
 
   return (
     <div
+      aria-hidden="true"
       className="fixed z-[9999] flex items-center gap-1.5 rounded-full px-2.5 pointer-events-none select-none"
       style={{
         bottom: currentPlatform === 'phone' ? 100 : previewControlsVisible ? 112 : 24,

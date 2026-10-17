@@ -50,6 +50,7 @@ describe('PlatformSwitcher', () => {
 
     expect(screen.getByLabelText('Current path')).toHaveTextContent('/w/markets');
     expect(screen.getByText('Web')).toBeInTheDocument();
+    expect(screen.getByText('Web').parentElement).toHaveAttribute('aria-hidden', 'true');
   });
 
   it('moves the informational badge above the mock preview controls when they are present', () => {

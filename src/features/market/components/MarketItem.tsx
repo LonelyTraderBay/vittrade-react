@@ -7,6 +7,7 @@ import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { useRoutePrefix } from '@/shared/navigation/useRoutePrefix';
 import { fmtPrice as fmtPriceUtil, fmtPct } from '@/shared/lib/formatNumber';
 import { hexToRgba } from '@/shared/lib/string';
+import { FONT_SCALE, FONT_WEIGHT } from '@/shared/theme/legacyTypography';
 
 interface MarketItemProps {
   pair: MarketPair;
@@ -16,16 +17,7 @@ interface MarketItemProps {
   favoriteDisabled?: boolean;
 }
 
-/**
- * ══════════════════════════════════════════════════════════
- *  MARKET ITEM — Enterprise Standard Row (P0-P1-P2 chuẩn)
- * ══════════════════════════════════════════════════════════
- *  Row height: ~64pt (14px top/bottom + 34px avatar)
- *  Avatar: 34px circle with brand color
- *  Typography: 14px body, 12px caption, 14px monospace price
- *  Change badge: rounded-lg px-2 py-1, fontSize 12
- *  Padding: px-5 (20px) container level
- */
+/** Dense, data-focused row; asset tint comes from the market data. */
 export const MarketItem = memo(function MarketItem({
   pair,
   showSparkline = true,
@@ -35,7 +27,8 @@ export const MarketItem = memo(function MarketItem({
 }: MarketItemProps) {
   const c = useThemeColors();
   const prefix = useRoutePrefix();
-  const isPositive = pair.change24h >= 0;
+  const isPositive = pair.change24h > 0;
+  const isNegative = pair.change24h < 0;
 
   return (
     <div
@@ -50,17 +43,17 @@ export const MarketItem = memo(function MarketItem({
         className="flex flex-1 min-w-0 items-center gap-3 active:opacity-70 transition-opacity cursor-pointer"
         style={{ paddingTop: 14, paddingBottom: 14 }}
       >
-        {/* Logo — 34px circle */}
+        {/* Asset logo tint is market data, not a semantic status color. */}
         <div
           className="rounded-full flex items-center justify-center shrink-0"
           style={{
-            width: 34,
-            height: 34,
+            width: 'var(--φ-avatar-sm)',
+            height: 'var(--φ-avatar-sm)',
             background: hexToRgba(pair.logoColor, 15),
             border: `1.5px solid ${hexToRgba(pair.logoColor, 30)}`,
           }}
         >
-          <span style={{ color: c.text1, fontSize: 12, fontWeight: 700 }}>
+          <span style={{ color: c.text1, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.bold }}>
             {pair.baseAsset.slice(0, 3)}
           </span>
         </div>
@@ -69,13 +62,18 @@ export const MarketItem = memo(function MarketItem({
         <div className="flex flex-col items-start flex-1 min-w-0">
           <span
             className="text-truncate"
-            style={{ color: c.text1, fontSize: 14, fontWeight: 600, maxWidth: '100%' }}
+            style={{
+              color: c.text1,
+              fontSize: FONT_SCALE.sm,
+              fontWeight: FONT_WEIGHT.semibold,
+              maxWidth: '100%',
+            }}
           >
             {pair.baseAsset}
           </span>
           <span
             className="text-truncate"
-            style={{ color: c.text3, fontSize: 12, maxWidth: '100%' }}
+            style={{ color: c.text3, fontSize: FONT_SCALE.xs, maxWidth: '100%' }}
           >
             {pair.quoteAsset}
           </span>
@@ -93,9 +91,9 @@ export const MarketItem = memo(function MarketItem({
           <span
             style={{
               color: c.text1,
-              fontSize: 14,
-              fontWeight: 600,
-              fontFamily: '-apple-system, BlinkMacSystemFont, "SF Mono", monospace',
+              fontSize: FONT_SCALE.sm,
+              fontWeight: FONT_WEIGHT.semibold,
+              fontFamily: 'var(--font-mono)',
             }}
           >
             {fmtPriceUtil(pair.price)}
@@ -103,10 +101,10 @@ export const MarketItem = memo(function MarketItem({
           <span
             className="rounded-lg px-2 py-1"
             style={{
-              background: isPositive ? 'rgba(16,185,129,0.12)' : 'rgba(239,68,68,0.12)',
-              color: isPositive ? c.successText : c.errorText,
-              fontSize: 12,
-              fontWeight: 600,
+              background: isPositive ? c.buyAlpha10 : isNegative ? c.sellAlpha10 : c.surface2,
+              color: isPositive ? c.successText : isNegative ? c.errorText : c.text2,
+              fontSize: FONT_SCALE.xs,
+              fontWeight: FONT_WEIGHT.semibold,
             }}
           >
             {fmtPct(pair.change24h)}

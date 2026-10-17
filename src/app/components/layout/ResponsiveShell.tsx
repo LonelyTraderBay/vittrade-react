@@ -85,7 +85,8 @@ export function ResponsiveAppLayout({ desktopMode = 'adaptive' }: ResponsiveShel
         }
       >
         {adaptiveDesktop && (
-          <div
+          <header
+            aria-label="Thanh công cụ chính"
             className="flex items-center justify-between px-6 shrink-0"
             style={{
               height: 48,
@@ -106,7 +107,7 @@ export function ResponsiveAppLayout({ desktopMode = 'adaptive' }: ResponsiveShel
               )}
               <span style={{ color: c.text1, fontSize: 12 }}>v2.4.1</span>
             </div>
-          </div>
+          </header>
         )}
         {!adaptiveDesktop && !isAuthRoute && <StatusBar />}
         {!adaptiveDesktop && isOffline && (

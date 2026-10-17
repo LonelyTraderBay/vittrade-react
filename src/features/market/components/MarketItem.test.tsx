@@ -90,6 +90,7 @@ describe('MarketItem', () => {
 
       const changeElement = screen.getByText('+2.50%');
       expect(changeElement).toHaveStyle({ color: 'var(--tr-success-text)' });
+      expect(changeElement).toHaveStyle({ background: 'var(--tr-buy-alpha-10)' });
     });
 
     it('should use the semantic error text color for negative change', () => {
@@ -97,14 +98,18 @@ describe('MarketItem', () => {
 
       const changeElement = screen.getByText('-1.50%');
       expect(changeElement).toHaveStyle({ color: 'var(--tr-error-text)' });
+      expect(changeElement).toHaveStyle({ background: 'var(--tr-sell-alpha-10)' });
     });
 
-    it('should use the semantic success text color when change is zero', () => {
+    it('uses neutral semantic colors when change is zero', () => {
       const zeroPair = { ...mockPair, change24h: 0 };
       renderWithProviders(<MarketItem pair={zeroPair} />);
 
       const changeElement = screen.getByText('0.00%');
-      expect(changeElement).toHaveStyle({ color: 'var(--tr-success-text)' });
+      expect(changeElement).toHaveStyle({
+        color: 'var(--tr-text-2)',
+        background: 'var(--tr-surface-2)',
+      });
     });
   });
 

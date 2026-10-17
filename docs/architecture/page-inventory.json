@@ -1374,7 +1374,7 @@
       "domain": "market",
       "owner": "features/market",
       "status": "integration-pending",
-      "lines": 207,
+      "lines": 248,
       "routePaths": [
         "markets"
       ],
@@ -1382,6 +1382,7 @@
         "localImports": [
           "../components/MarketListSections",
           "../lib/mutation-attempts",
+          "../model/market-list-options",
           "@/features/market",
           "@/features/market/components/DiscoverMoreSection",
           "@/shared/constants/toastMessages",
@@ -1391,6 +1392,7 @@
           "@/shared/hooks/useThemeColors",
           "@/shared/navigation/useRoutePrefix",
           "@/shared/session/useAuth",
+          "@/shared/theme/legacyTypography",
           "@/shared/ui/layout/PageContent",
           "@/shared/ui/layout/PageLayout"
         ],

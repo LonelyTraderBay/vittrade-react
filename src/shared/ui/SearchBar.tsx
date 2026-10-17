@@ -187,7 +187,7 @@ export function SearchBar({
 
       {/* Search input container */}
       <div
-        className="flex items-center gap-2 flex-1"
+        className="tr-search-bar-control flex items-center gap-2 flex-1"
         style={{
           height,
           paddingLeft: 12,
@@ -224,8 +224,8 @@ export function SearchBar({
             onClick={handleClear}
             className="shrink-0 flex items-center justify-center rounded-full active:opacity-60"
             style={{
-              width: 20,
-              height: 20,
+              width: 24,
+              height: 24,
               background: c.surface3,
             }}
             aria-label="Xóa tìm kiếm"
