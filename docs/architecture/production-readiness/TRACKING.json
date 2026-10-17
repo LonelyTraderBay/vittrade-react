@@ -48,20 +48,14 @@
     }
   ],
   "checkpoint": {
-    "updatedAt": "2026-10-17T10:02:55.623Z",
+    "updatedAt": "2026-10-17T10:36:04.305Z",
     "lastCompletedTask": "C03",
     "activeTask": "C06",
     "activeStep": "C06.13",
     "nextTask": "C06",
     "nextStep": "C06.13",
-    "nextAction": "Source commit 51d5d11bc8223fafcadded8751c583776c71348c and its separate tracker ledger are ready for one non-force push to the existing PR branch. Require exact PR #3 run #136 on the combined tracker SHA, then verify all required steps, downloaded artifact digest, six stable source manifests, and synthetic merge parent/tree/signature. After #136 PASS, commit/push tracker-only closeout for this source slice and require exact run #137 before editing the next consumer. C06.13 remains open: one of 128 post-pilot eligible pages and 1/425 declarations migrated; 127 pages/424 declarations remain. Global runtime is 1/428; unresolved product-wide accessibility and backend/staging/production/UAT remain unverified.",
+    "nextAction": "Record EV-165 exact source gate #136, artifact digest/manifests/source ledger/merge provenance in this tracker-only closeout; run node docs/architecture/production-readiness/check-tracking.mjs, git diff --check, review the one-file diff and verify repository/tracker hashes. Create a Vietnamese DCO tracker-only commit and push to the existing PR branch; require exact PR #3 run #137 and verify all steps, artifact digest/manifests and synthetic merge provenance before the next source edit. C06.13 remains open: 127 page files and 424 route declarations remain after prior pilots; runtime is 1/428. Preserve synthetic-fixture and product-wide accessibility/backend/staging/production/UAT limitations.",
     "changedFiles": [
-      "src/features/wallet/pages/AddressAddPage.tsx",
-      "src/features/wallet/pages/AddressAddPage.test.tsx",
-      "src/shared/ui/InputField.tsx",
-      "src/shared/ui/InputField.test.tsx",
-      "guidelines/Guidelines.md",
-      "docs/architecture/page-inventory.json",
       "docs/architecture/production-readiness/TRACKING.json"
     ],
     "pendingChecks": [
@@ -19633,9 +19627,13 @@
           "id": "C06.13",
           "status": "in_progress",
           "evidenceIds": [
-            "EV-20261017-161"
+            "EV-20261017-161",
+            "EV-20261017-162",
+            "EV-20261017-163",
+            "EV-20261017-164",
+            "EV-20261017-165"
           ],
-          "notes": "C06.13 inventory baseline EV-161: 130 active page sources/428 route declarations; after two pilots 128 pages/425 declarations remained. Exact kickoff run #135 PASS on d03ac6c (EV-162). First form slice is committed as 51d5d11bc8223fafcadded8751c583776c71348c: AddressAddPage (1 page/1 route declaration, four shell aliases) now uses three shared InputField instances; TypeScript AST shows native input 3→0 and shared InputField 0→3. Local static/full suite/build and sampled Chromium evidence pass (EV-163/164). Runtime now covers 1/428 declarations only; 127 page files/424 declarations remain in the post-pilot rollout pool. Keep C06.13 open. Push source+ledger and require exact PR run #136 with artifact/manifests/merge provenance; then commit tracker-only slice closeout and require exact run #137 before the next source slice. C06.14 exceptions and C06.15 legacy retirement remain later gates.",
+          "notes": "C06.13 inventory baseline EV-161: 130 active page sources/428 route declarations; after two pilots 128 pages/425 declarations remained. Exact kickoff run #135 PASS EV-162. AddressAddPage source slice 51d5d11bc8223fafcadded8751c583776c71348c migrated three fields to shared InputField (1 page/1 route declaration, four aliases); local static/full suite/build and sampled Chromium evidence are EV-163/164. Exact pushed source-plus-ledger run #136 PASS on 16d2e28b237955a96703a483c19d79880018acc8 (EV-165): 34/34 hosted steps; artifact digest, six stable manifests, source ledger, synthetic merge parents/tree and GitHub signature verified. Keep C06.13 in progress: 127 pages/424 declarations remain in the post-pilot rollout pool; runtime covers 1/428 declarations only. Commit/push tracker-only closeout and require exact #137 plus artifact/provenance verification before editing another consumer. C06.14 exceptions and C06.15 legacy retirement remain later gates.",
           "execution": {
             "instructionsRef": "PLAN.md#frontend-ui-ux-ds-migration-20261015",
             "fileSelection": "files[].executionScope.stepIds includes C06.13",
@@ -20362,7 +20360,8 @@
         "EV-20261017-161",
         "EV-20261017-162",
         "EV-20261017-163",
-        "EV-20261017-164"
+        "EV-20261017-164",
+        "EV-20261017-165"
       ],
       "changeIds": [
         "CHANGE-20261015-001",
@@ -20545,7 +20544,8 @@
         "CHANGE-20261017-220",
         "CHANGE-20261017-221",
         "CHANGE-20261017-222",
-        "CHANGE-20261017-223"
+        "CHANGE-20261017-223",
+        "CHANGE-20261017-224"
       ],
       "blockers": [],
       "startedAt": "2026-10-15T01:47:05.375Z",
@@ -133737,7 +133737,8 @@
         "EV-20261017-156",
         "EV-20261017-162",
         "EV-20261017-163",
-        "EV-20261017-164"
+        "EV-20261017-164",
+        "EV-20261017-165"
       ],
       "changeIds": [
         "CHANGE-20261001-0316",
@@ -133942,7 +133943,8 @@
         "CHANGE-20261017-175",
         "CHANGE-20261017-177",
         "CHANGE-20261017-213",
-        "CHANGE-20261017-223"
+        "CHANGE-20261017-223",
+        "CHANGE-20261017-224"
       ],
       "cataloguedAt": "2026-10-01T04:02:26.000Z",
       "executionScope": {
@@ -314218,6 +314220,27 @@
         "EV-20261017-164"
       ],
       "commit": null
+    },
+    {
+      "id": "CHANGE-20261017-224",
+      "taskId": "C06",
+      "stepId": "C06.13",
+      "path": "docs/architecture/production-readiness/TRACKING.json",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Đóng checkpoint riêng sau exact PR #3 run #136 PASS; ghi artifact, sáu manifest, source ledger và synthetic merge provenance; giữ C06.13 mở tới khi tracker-only run #137 PASS.",
+      "beforeHash": "6fb17629a12a9063b9bed321dfdba747a1787b5bce5a8cbb2d538899e5637a64",
+      "afterHash": "7821b797063fe39b7f974264796de8ab35535a91d9b80e6e4998d13d3d6750a2",
+      "afterHashRecovery": {
+        "kind": "actual_written_business_payload_before_self_audit_change_record",
+        "archivePath": "C:/CodexEvidence/vittrade-react/2026-10-17/c06-13-address-add-run136/C06-13-address-add-tracker-closeout-payload.json",
+        "archiveSha256": "7821b797063fe39b7f974264796de8ab35535a91d9b80e6e4998d13d3d6750a2",
+        "payloadSha256": "7821b797063fe39b7f974264796de8ab35535a91d9b80e6e4998d13d3d6750a2"
+      },
+      "evidenceIds": [
+        "EV-20261017-165"
+      ],
+      "commit": null
     }
   ],
   "evidence": [
@@ -351155,6 +351178,23 @@
       "artifact": "C:/CodexEvidence/vittrade-react/2026-10-17/c06-13-inventory/address-add-browser-diagnostic/baseline.json",
       "artifactSha256": "3edde97b4d396f2a9c2f97952a210bd7fccfb4eebdc3593b8c05dbba0d259bac",
       "notes": "Computed styles: C:/CodexEvidence/vittrade-react/2026-10-17/c06-13-inventory/address-add-computed-after-stable/computed-baseline.json (SHA-256 adc635f93777e619c4ac937b6616aa88543af23a971a935cfd6fc0ed0b46d594); screenshot và runtime JSON chỉ dùng fixture tổng hợp. 427 route declarations, các tổ hợp state/role/locale/browser khác, manual assistive technology và WCAG sản phẩm chưa được kiểm chứng."
+    },
+    {
+      "id": "EV-20261017-165",
+      "taskId": "C06",
+      "stepId": "C06.13",
+      "kind": "github_exact_pr_run_136_c06_13_address_add_source_gate_pass_with_artifact_manifests_and_merge_provenance",
+      "commandOrSteps": "Verify exact PR #3 GitHub Actions run 39023505197 at pushed head 16d2e28b237955a96703a483c19d79880018acc8; inspect all CI steps; download artifact 12098770041 and compare bytes/SHA-256 to GitHub metadata; inspect six run manifests and readiness source ledger; compare remote synthetic merge parents/tree/signature and local/remote PR branch heads.",
+      "environment": "GitHub Actions hosted Linux; GitHub CLI/API and Git verification from the isolated Windows C06 worktree.",
+      "observedAt": "2026-10-17T10:36:04.305Z",
+      "sourceHead": "16d2e28b237955a96703a483c19d79880018acc8",
+      "dirtyFileHashes": [],
+      "expected": "The exact pushed source-plus-ledger SHA passes every required hosted check; its artifact, source manifests, source ledger and synthetic merge provenance reconcile before tracker-only closeout.",
+      "actual": "PASS: PR #3 run #136 (39023505197) tested exact head 16d2e28b237955a96703a483c19d79880018acc8; one Production gates job, 34/34 successful steps, zero failed/skipped. Artifact 12098770041 measured 39,789,336 bytes; SHA-256 e582de28f860ac85852197ceee05ca31a97e7ca6e8d806693fbcbbcb25e8c3be matches GitHub metadata. Six hosted run manifests (2 Vitest, 3 Playwright, 1 build) passed with exitCode=0, childClosed=true, sourceUnchanged=true; each compares 1,151 before/after source hashes with zero key/hash differences. Readiness source ledger reports synthetic sourceHead 760c2d02f82884e5caae3659ae507084fe91f56f and errorCount=0. GitHub synthetic merge has exact base/head parents, tree 55960e04a3de79c9e715e9a43601db801eb11f0d equal to the source commit tree, and GitHub REST signature verification valid=true/reason=valid. Local and remote PR branch point to the tested head.",
+      "result": "pass",
+      "artifact": "C:/CodexEvidence/vittrade-react/2026-10-17/c06-13-address-add-run136/C06-13-address-add-hosted-verification-run136.json",
+      "artifactSha256": "a85db9bce02a962dfaf3a92224378a77cdca0003bff88ccca980920acbe17c45",
+      "notes": "The hosted artifact is synthetic/development verification, not backend/staging/production/UAT or product-wide UI/WCAG evidence. Local git verify-commit could not validate the synthetic merge signature because its public key is unavailable; GitHub API reports verified=true. Local Chromium evidence still covers only one of 428 route declarations."
     }
   ],
   "decisions": [
