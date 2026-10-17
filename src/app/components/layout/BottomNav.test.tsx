@@ -45,6 +45,16 @@ describe('BottomNav', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Giao dịch' }));
     expect(screen.getByTestId('location')).toHaveTextContent('/trade/btcusdt');
   });
+
+  it('marks the matching tab for Web-prefixed routes rendered in the narrow Web shell', () => {
+    renderWithProviders(<BottomNav />, { routerProps: { initialEntries: ['/w/markets'] } });
+
+    expect(screen.getByRole('button', { name: 'Thị trường' })).toHaveAttribute(
+      'aria-current',
+      'page',
+    );
+  });
+
   it('shows pending rewards, ignores non-arrow keys and activates a regular tab', () => {
     renderWithProviders(
       <UIContext.Provider

@@ -33,7 +33,9 @@ describe('SearchBar', () => {
     expect(onChange).toHaveBeenCalledWith('ethereum');
     expect(input).toHaveValue('ethereum');
 
-    fireEvent.click(screen.getByRole('button', { name: 'Xóa tìm kiếm' }));
+    const clear = screen.getByRole('button', { name: 'Xóa tìm kiếm' });
+    expect(clear).toHaveAttribute('type', 'button');
+    fireEvent.click(clear);
     expect(onChange).toHaveBeenLastCalledWith('');
     expect(onClear).toHaveBeenCalledOnce();
     expect(input).toHaveValue('');
@@ -82,6 +84,7 @@ describe('SearchBar', () => {
     expect(onSubmit).toHaveBeenCalledWith('btc');
 
     const filter = screen.getByRole('button', { name: 'Tắt bộ lọc' });
+    expect(filter).toHaveAttribute('type', 'button');
     expect(filter).toHaveAttribute('aria-pressed', 'true');
     fireEvent.click(filter);
     expect(onFilterToggle).toHaveBeenCalledOnce();
@@ -111,8 +114,9 @@ describe('SearchBar', () => {
 
     const headerInput = screen.getByRole('textbox', { name: 'Tìm kiếm...' });
     expect(document.activeElement).toBe(headerInput);
-    expect(screen.getByRole('button', { name: 'Quay lại' })).toBeInTheDocument();
-    fireEvent.click(screen.getByRole('button', { name: 'Quay lại' }));
+    const back = screen.getByRole('button', { name: 'Quay lại' });
+    expect(back).toHaveAttribute('type', 'button');
+    fireEvent.click(back);
     expect(onBack).toHaveBeenCalledOnce();
     expect(screen.getByText('Actions')).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'Bật bộ lọc' })).not.toBeInTheDocument();

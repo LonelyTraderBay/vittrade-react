@@ -73,6 +73,7 @@ describe('PredictionEventContractPage', () => {
     expect(
       await screen.findByText('Prediction trading permission is required to place an order.'),
     ).toBeInTheDocument();
+    expect(screen.getByRole('spinbutton', { name: 'Số lượng cổ phần' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Mua Yes/i })).toBeDisabled();
   });
 

@@ -76,7 +76,9 @@ export function PairDetailPage() {
       actionToast.info('Vui lòng đăng nhập để lưu cặp giao dịch theo dõi.', {
         haptic: 'selection',
       });
-      navigate(`${prefix}/auth/login`, { state: { from: `${prefix}/pair/${pair.id}` } });
+      navigate(`${prefix}/auth/login`, {
+        state: { from: `${prefix}/pair/${encodeURIComponent(pair.id)}` },
+      });
       return;
     }
     if (!canManageWatchlist) {
@@ -156,8 +158,8 @@ export function PairDetailPage() {
           >
             <Star
               size={20}
-              color={isFavorite ? '#F59E0B' : colors.text3}
-              fill={isFavorite ? '#F59E0B' : 'none'}
+              color={isFavorite ? colors.primary : colors.text3}
+              fill={isFavorite ? colors.primary : 'none'}
             />
           </button>
         }
@@ -189,7 +191,13 @@ export function PairDetailPage() {
               </p>
             </div>
             <div className="text-right">
-              <p style={{ color: positive ? '#10B981' : '#EF4444', fontSize: 14, fontWeight: 700 }}>
+              <p
+                style={{
+                  color: positive ? 'var(--tr-success-text)' : 'var(--tr-error-text)',
+                  fontSize: 14,
+                  fontWeight: 700,
+                }}
+              >
                 {fmtPct(pair.change24h)}
               </p>
               <p style={{ color: colors.text3, fontSize: 11 }}>24 giờ</p>
@@ -206,13 +214,13 @@ export function PairDetailPage() {
           <div className="grid grid-cols-2 gap-3 mt-3">
             <div>
               <p style={{ color: colors.text3, fontSize: 11 }}>Cao nhất 24h</p>
-              <p style={{ color: '#10B981', fontSize: 13, fontFamily: 'monospace' }}>
+              <p style={{ color: 'var(--tr-success-text)', fontSize: 13, fontFamily: 'monospace' }}>
                 ${fmtPrice(pair.high24h)}
               </p>
             </div>
             <div>
               <p style={{ color: colors.text3, fontSize: 11 }}>Thấp nhất 24h</p>
-              <p style={{ color: '#EF4444', fontSize: 13, fontFamily: 'monospace' }}>
+              <p style={{ color: 'var(--tr-error-text)', fontSize: 13, fontFamily: 'monospace' }}>
                 ${fmtPrice(pair.low24h)}
               </p>
             </div>
@@ -257,17 +265,17 @@ export function PairDetailPage() {
             <div className="flex gap-2 mt-4">
               <button
                 type="button"
-                onClick={() => navigate(`${prefix}/trade/${pair.id}`)}
+                onClick={() => navigate(`${prefix}/trade/${encodeURIComponent(pair.id)}`)}
                 className="flex-1 py-3 rounded-xl font-semibold"
-                style={{ background: '#10B981', color: '#fff' }}
+                style={{ background: 'var(--tr-buy)', color: 'var(--tr-text-on-color)' }}
               >
                 Mua
               </button>
               <button
                 type="button"
-                onClick={() => navigate(`${prefix}/trade/${pair.id}`)}
+                onClick={() => navigate(`${prefix}/trade/${encodeURIComponent(pair.id)}`)}
                 className="flex-1 py-3 rounded-xl font-semibold"
-                style={{ background: '#EF4444', color: '#fff' }}
+                style={{ background: 'var(--tr-sell)', color: 'var(--tr-text-on-color)' }}
               >
                 Bán
               </button>
@@ -311,13 +319,23 @@ function OrderBookState({
           .slice()
           .reverse()
           .map((row) => (
-            <BookRow key={`ask-${row.price}`} row={row} color="#EF4444" colors={colors} />
+            <BookRow
+              key={`ask-${row.price}`}
+              row={row}
+              color="var(--tr-error-text)"
+              colors={colors}
+            />
           ))}
       </div>
       <div className="my-3" style={{ borderTop: `1px solid ${colors.divider}` }} />
       <div className="flex flex-col gap-1">
         {query.data.bids.map((row) => (
-          <BookRow key={`bid-${row.price}`} row={row} color="#10B981" colors={colors} />
+          <BookRow
+            key={`bid-${row.price}`}
+            row={row}
+            color="var(--tr-success-text)"
+            colors={colors}
+          />
         ))}
       </div>
     </TrCard>
@@ -387,7 +405,7 @@ function TradesState({
         <div key={trade.id} className="grid grid-cols-3 gap-2 py-1.5">
           <span
             style={{
-              color: trade.side === 'buy' ? '#10B981' : '#EF4444',
+              color: trade.side === 'buy' ? 'var(--tr-success-text)' : 'var(--tr-error-text)',
               fontSize: 11,
               fontFamily: 'monospace',
             }}

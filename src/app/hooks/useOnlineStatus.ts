@@ -7,7 +7,7 @@
  *  For prototype: simulated offline toggle via ?offline=1 param.
  */
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 
 interface OnlineStatus {
   /** Currently online */
@@ -25,49 +25,41 @@ export function useOnlineStatus(): OnlineStatus {
     typeof navigator !== 'undefined' ? navigator.onLine : true,
   );
   const [isReconnecting, setIsReconnecting] = useState(false);
-  const wasOfflineRef = useRef(false);
+  const wasOfflineRef = useRef(!isOnline);
   const reconnectTimerRef = useRef<ReturnType<typeof setTimeout>>();
 
+  const handleOnline = useCallback(() => {
+    setIsOnline(true);
+    if (wasOfflineRef.current) {
+      setIsReconnecting(true);
+      reconnectTimerRef.current = setTimeout(() => {
+        reconnectTimerRef.current = undefined;
+        setIsReconnecting(false);
+      }, 3000);
+    }
+    wasOfflineRef.current = false;
+  }, []);
+
+  const handleOffline = useCallback(() => {
+    if (reconnectTimerRef.current !== undefined) {
+      clearTimeout(reconnectTimerRef.current);
+      reconnectTimerRef.current = undefined;
+    }
+    setIsOnline(false);
+    setIsReconnecting(false);
+    wasOfflineRef.current = true;
+  }, []);
+
   useEffect(() => {
-    const handleOnline = () => {
-      setIsOnline(true);
-      if (wasOfflineRef.current) {
-        setIsReconnecting(true);
-        reconnectTimerRef.current = setTimeout(() => {
-          setIsReconnecting(false);
-        }, 3000);
-      }
-      wasOfflineRef.current = false;
-    };
-
-    const handleOffline = () => {
-      setIsOnline(false);
-      wasOfflineRef.current = true;
-    };
-
     window.addEventListener('online', handleOnline);
     window.addEventListener('offline', handleOffline);
 
     return () => {
       window.removeEventListener('online', handleOnline);
       window.removeEventListener('offline', handleOffline);
-      if (reconnectTimerRef.current) clearTimeout(reconnectTimerRef.current);
+      if (reconnectTimerRef.current !== undefined) clearTimeout(reconnectTimerRef.current);
     };
-  }, []);
+  }, [handleOnline, handleOffline]);
 
-  const simulateOffline = () => {
-    setIsOnline(false);
-    wasOfflineRef.current = true;
-  };
-
-  const simulateOnline = () => {
-    setIsOnline(true);
-    if (wasOfflineRef.current) {
-      setIsReconnecting(true);
-      reconnectTimerRef.current = setTimeout(() => setIsReconnecting(false), 3000);
-    }
-    wasOfflineRef.current = false;
-  };
-
-  return { isOnline, isReconnecting, simulateOffline, simulateOnline };
+  return { isOnline, isReconnecting, simulateOffline: handleOffline, simulateOnline: handleOnline };
 }

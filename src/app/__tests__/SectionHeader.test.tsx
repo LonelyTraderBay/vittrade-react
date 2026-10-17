@@ -11,8 +11,28 @@ import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { SectionHeader } from '@/shared/ui/SectionHeader';
+import { Wallet } from 'lucide-react';
 
 describe('SectionHeader', () => {
+  it('renders compact and marker icons while respecting color and chevron options', () => {
+    const { container, rerender } = render(
+      <SectionHeader
+        title="Wallet"
+        density="compact"
+        icon={Wallet}
+        iconColor="#2563EB"
+        actionLabel="Open"
+        onAction={vi.fn()}
+        actionShowChevron={false}
+      />,
+    );
+    expect(container.querySelector('svg')).toHaveAttribute('width', '21');
+    expect(screen.getByRole('button', { name: 'Open Wallet' }).querySelector('svg')).toBeNull();
+    rerender(<SectionHeader title="Wallet" variant="markerTitle" icon={Wallet} />);
+    expect(container.querySelector('svg')).toHaveAttribute('width', '18');
+    expect(screen.getByRole('heading', { name: 'Wallet' })).toHaveStyle({ fontWeight: '600' });
+  });
+
   describe('Basic Rendering', () => {
     it('should render title', () => {
       render(<SectionHeader title="Market Overview" />);

@@ -1,0 +1,145 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-13T06:08:09.429Z",
+  "sourceHead": "db9c9064fa3ba79bd76fb7acb1023d90486b6cbf",
+  "branch": "",
+  "origin": "http://127.0.0.1:4193",
+  "browser": "Chromium via Playwright",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "scenario": {
+    "id": "auth.empty",
+    "domain": "auth",
+    "state": "empty",
+    "status": "passed",
+    "persona": "guest (no authenticated session)",
+    "role": "unauthenticated",
+    "permissions": [],
+    "operationIds": [
+      "register",
+      "login",
+      "verifyLoginMfaChallenge",
+      "getSession",
+      "refreshSession",
+      "logout",
+      "verifyMfa",
+      "confirmMfaSetup",
+      "beginMfaSetup",
+      "requestPasswordResetCode",
+      "verifyCurrentPassword",
+      "changePassword",
+      "verifyPasswordResetCode",
+      "confirmPasswordReset"
+    ],
+    "observedOperationIds": ["getSession"],
+    "operationRequestCounts": {
+      "getSession": 3
+    },
+    "requests": [
+      {
+        "method": "GET",
+        "path": "/api/auth/session"
+      },
+      {
+        "method": "GET",
+        "path": "/api/auth/session"
+      },
+      {
+        "method": "GET",
+        "path": "/api/auth/session"
+      }
+    ],
+    "responses": [
+      {
+        "method": "GET",
+        "path": "/api/auth/session",
+        "status": 401,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/auth/session",
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/auth/session",
+        "status": 200,
+        "fromServiceWorker": true
+      }
+    ],
+    "initialSessionResponse": {
+      "status": 401,
+      "fromServiceWorker": true
+    },
+    "emptySessionResponse": {
+      "status": 200,
+      "body": null,
+      "fromServiceWorker": true
+    },
+    "protectedRouteSessionResponse": {
+      "status": 200,
+      "body": null,
+      "fromServiceWorker": true
+    },
+    "loginFormVisible": true,
+    "loginErrorVisible": false,
+    "activeScenarioVisible": true,
+    "protectedRoute": "/w/trade/positions",
+    "protectedRouteRedirectedToLogin": true,
+    "finalRoute": "/auth/login",
+    "writeRequestCount": 0,
+    "financialApiRequestCount": 0,
+    "elapsedMs": 1909,
+    "externalApiOrigins": [],
+    "pageErrors": [],
+    "screenshots": ["preview-auth-empty-current-head-202610130608094.png"],
+    "note": "OpenAPI declares getSession 200 as AuthSession or JSON null and declares 401. The guest fixture returned JSON null in the selected auth.empty scenario; the login form remained ready without error copy, and the protected trading route redirected to login. Only getSession among 14 linked Auth operations was observed. All requests used local MSW; backend session/cookie behavior, production and user acceptance are unverified."
+  },
+  "fixtureBoundary": {
+    "serviceWorkerControlled": true,
+    "allObservedResponsesFromServiceWorker": true,
+    "externalApiOrigins": [],
+    "realBackendRequestSent": false,
+    "realBackendMutationSent": false
+  },
+  "measurements": {
+    "totalFlowMs": 1909,
+    "apiRequestCount": 3,
+    "apiResponseCount": 3,
+    "sessionRequestCount": 3,
+    "emptySessionResponseCount": 2,
+    "unauthorizedBootstrapResponseCount": 1,
+    "writeRequestCount": 0,
+    "pageErrors": [],
+    "externalApiOriginCount": 0
+  },
+  "contract": {
+    "operationId": "getSession",
+    "declaredResponses": ["200", "401"],
+    "successSchemaIncludesNull": true
+  },
+  "sourceHashes": {
+    "contracts/openapi/auth.yaml": "cceb23c9745d716a14cc9db823afee87e8e0ebea642426e12c41524351eaab83",
+    "docs/architecture/production-readiness/evidence/A06/run-auth-empty-current-head-browser-check.mjs": "017195d501822c99a54177d4070dfaa2d642878a5b0e12b0dfab7197b13d7c68",
+    "src/app/components/layout/ProtectedRoute.tsx": "c5cb74de4707d257a40f4782ea7c7c177ce3b8bd2de4f4cccb5e4450c9f4c5d4",
+    "src/app/contexts/AuthContext.tsx": "ed4902f682cbb4c11081acb1e87cfd2195fa0d06570ef1473ef962181b0d54b3",
+    "src/app/routeConfig.ts": "675ea95ec4831b9d0caf1cbf68524efaebda8ed9b970b5dad129bdd55f28bac9",
+    "src/app/routes.ts": "c93a80e123fd95c3abd246aeb00589a51f5ff4560e794e87f70f7ff96248c0d5",
+    "src/dev/PreviewControls.tsx": "a318fb182dda24c9b8d2103ae4b40eeecb7c3eded57332aad3c5bc8a1836a54c",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/handlers.ts": "9d1ea085bab944b0bd0e59a665222113cb7bb661bbcd2408f09c6adf08cd3ea9",
+    "src/dev/mocks/personas.ts": "6189b9cbfb9765f5c442c52a089d30b5be171170fe054ef6bf2faffbbb53dccd",
+    "src/dev/mocks/preview-scenario-handler.ts": "1b05e3e420b1df43de6d2e37533d4d8dbcd203fedb70ca59a65a4a62179396f5",
+    "src/dev/mocks/scenario-runtime.ts": "446d43808b478a1eaca07faa29d690c49c8e7ffb21fc1f12d2de2feb524e2e50",
+    "src/features/auth/api/auth-api.ts": "e3733bea27f15fb63c15d04541c3dbbcf3dd619f30e650907ba8923893855b1a",
+    "src/features/auth/pages/WebLoginPage.tsx": "740142c311aa06792d3c504d0a6268c7c8ec59bc4b7203de156ba48c9acbf029",
+    "src/shared/api/http-client.ts": "12a04035eac23a2999f8c7a76aafa32966585402c06d98f451ef33eb8601cf42",
+    "src/shared/api/query-client.ts": "b2b0e5fe60f7ade24017f12859fa1b68bd2de143868c42e37df51a71ee259ac2",
+    "src/shared/session/AuthContext.tsx": "b95d134413d28d85278553b752a4d6738857ed7785ea53d7a0e441db61b310f2"
+  },
+  "limitations": "This run used local Vite development and MSW. It does not establish backend session persistence, cookie behavior, staging, production routing or user acceptance."
+}

@@ -50,7 +50,9 @@ describe('P2P achievements contract page', () => {
     server.use(http.get('*/p2p/achievements', () => HttpResponse.json(achievements)));
     renderWithProviders(<P2PAchievementsPage />);
     expect(await screen.findByText('First trade')).toBeInTheDocument();
-    expect(screen.getByText('1/1')).toBeInTheDocument();
+    expect(screen.getByText('1/1')).toHaveStyle({ color: 'var(--tr-text-1)' });
+    expect(screen.getByText('+10')).toHaveStyle({ color: 'var(--tr-text-1)' });
+    expect(screen.getByText('Điểm uy tín')).toHaveStyle({ color: 'var(--tr-text-3)' });
   });
 
   it('renders all achievement categories and both locked and unlocked presentation', async () => {

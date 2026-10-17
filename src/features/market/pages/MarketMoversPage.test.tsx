@@ -49,6 +49,55 @@ function renderMovers() {
 }
 
 describe('MarketMoversPage contract', () => {
+  it('shows losses outside the podium and keeps a refresh pending until its response arrives', async () => {
+    let holdRefresh = false;
+    let release!: () => void;
+    let calls = 0;
+    const pending = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    server.use(
+      http.get('http://localhost:3000/api/market/movers', async ({ request }) => {
+        calls += 1;
+        if (holdRefresh) await pending;
+        const view = new URL(request.url).searchParams.get('view');
+        return HttpResponse.json({
+          items: [1, 2, 3, 4].map((rank) =>
+            mover({
+              id: `asset-${rank}`,
+              name: `Asset ${rank}`,
+              symbol: `A${rank}`,
+              change24h: view === 'gainers' ? rank : -rank,
+            }),
+          ),
+          updatedAt: '2026-09-27T08:00:00.000Z',
+        });
+      }),
+    );
+    const user = userEvent.setup();
+    renderMovers();
+    expect(await screen.findByText('Asset 4')).toBeVisible();
+    await user.click(screen.getByRole('button', { name: 'Mới niêm yết' }));
+    await waitFor(() =>
+      expect(screen.getByText('Asset 4').closest('button')).toHaveTextContent('-4'),
+    );
+    expect(screen.getByText('4')).toBeVisible();
+    await user.click(screen.getByRole('button', { name: 'Giảm mạnh' }));
+    await waitFor(() =>
+      expect(screen.getByText('Asset 4').closest('button')).toHaveTextContent('-4'),
+    );
+    const refresh = screen.getByRole('button', { name: 'Làm mới danh sách' });
+    await waitFor(() => expect(refresh).toBeEnabled());
+    holdRefresh = true;
+    const before = calls;
+    await user.click(refresh);
+    await waitFor(() => expect(refresh).toBeDisabled());
+    expect(refresh.querySelector('svg')).toHaveClass('animate-spin');
+    await user.click(refresh);
+    expect(calls).toBe(before + 1);
+    release();
+    await waitFor(() => expect(refresh).toBeEnabled());
+  });
   it('loads server movers and navigates to the pair in the current web shell', async () => {
     server.use(
       http.get('http://localhost:3000/api/market/movers', async () => {

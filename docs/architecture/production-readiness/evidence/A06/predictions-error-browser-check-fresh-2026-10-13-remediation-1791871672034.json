@@ -1,0 +1,409 @@
+{
+  "checkedAt": "2026-10-13T06:08:49.591Z",
+  "sourceHead": "db9c9064fa3ba79bd76fb7acb1023d90486b6cbf",
+  "branch": "",
+  "origin": "http://127.0.0.1:4193",
+  "browser": "Chromium via Playwright",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "scenario": {
+    "id": "predictions.error",
+    "status": "passed",
+    "persona": "developer (preview only)",
+    "route": "/w/markets/predictions",
+    "additionalRoutes": [],
+    "operationIds": [
+      "listPredictionEvents",
+      "getPredictionEvent",
+      "listPredictionPositions",
+      "listPredictionRewards",
+      "listPredictionLeaderboard",
+      "listPredictionActivity",
+      "placePredictionOrder",
+      "getPredictionOrderReceipt"
+    ],
+    "observedOperationIds": ["listPredictionEvents"],
+    "expectedDomainOperationCount": 8,
+    "coverage": "representative_browser_observed"
+  },
+  "fixtureBoundary": {
+    "serviceWorkerControlled": true,
+    "predictionHttpResponsesReceived": 0,
+    "allObservedPredictionFailuresAreTransportLevel": true,
+    "transportFailureNoHttpResponse": true,
+    "localPreviewScenarioOnly": true,
+    "externalApiOrigins": [],
+    "realBackendRequestSent": false,
+    "realBackendMutationSent": false
+  },
+  "measurements": {
+    "totalFlowMs": 6538,
+    "apiRequestCount": 17,
+    "predictionApiRequestCount": 12,
+    "requestCounts": {
+      "listPredictionEvents": 12,
+      "placePredictionOrder": 0
+    },
+    "predictionReadTransportFailureCount": 12,
+    "predictionMutationCount": 0,
+    "externalApiOriginCount": 0,
+    "pageErrorCount": 0
+  },
+  "assertions": {
+    "pages": {
+      "listPredictionEvents": {
+        "route": "/w/markets/predictions",
+        "visibleErrorTitle": true,
+        "visibleErrorMessage": true,
+        "visibleRetryAction": true,
+        "emptyStateOrFixtureDataVisible": false,
+        "initialQueryAttemptsByPath": {
+          "/api/predictions/events?status=active": 6
+        },
+        "manualRetryAttemptsByPath": {
+          "/api/predictions/events?status=active": 6
+        },
+        "initialTransportAttemptCount": 6,
+        "manualRetryTransportAttemptCount": 6,
+        "totalTransportAttemptCount": 12,
+        "contractHttpStatusInvented": false
+      }
+    },
+    "requests": [
+      {
+        "method": "GET",
+        "path": "/api/auth/session",
+        "pageRoute": "/w/auth/login",
+        "operationId": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/logout",
+        "pageRoute": "/w/auth/login",
+        "operationId": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/login",
+        "pageRoute": "/w/auth/login",
+        "operationId": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/pairs?limit=50",
+        "pageRoute": "/w/home",
+        "operationId": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "pageRoute": "/w/home",
+        "operationId": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/predictions/events?status=active",
+        "pageRoute": "/w/markets/predictions",
+        "operationId": "listPredictionEvents"
+      },
+      {
+        "method": "GET",
+        "path": "/api/predictions/events?status=active",
+        "pageRoute": "/w/markets/predictions",
+        "operationId": "listPredictionEvents"
+      },
+      {
+        "method": "GET",
+        "path": "/api/predictions/events?status=active",
+        "pageRoute": "/w/markets/predictions",
+        "operationId": "listPredictionEvents"
+      },
+      {
+        "method": "GET",
+        "path": "/api/predictions/events?status=active",
+        "pageRoute": "/w/markets/predictions",
+        "operationId": "listPredictionEvents"
+      },
+      {
+        "method": "GET",
+        "path": "/api/predictions/events?status=active",
+        "pageRoute": "/w/markets/predictions",
+        "operationId": "listPredictionEvents"
+      },
+      {
+        "method": "GET",
+        "path": "/api/predictions/events?status=active",
+        "pageRoute": "/w/markets/predictions",
+        "operationId": "listPredictionEvents"
+      },
+      {
+        "method": "GET",
+        "path": "/api/predictions/events?status=active",
+        "pageRoute": "/w/markets/predictions",
+        "operationId": "listPredictionEvents"
+      },
+      {
+        "method": "GET",
+        "path": "/api/predictions/events?status=active",
+        "pageRoute": "/w/markets/predictions",
+        "operationId": "listPredictionEvents"
+      },
+      {
+        "method": "GET",
+        "path": "/api/predictions/events?status=active",
+        "pageRoute": "/w/markets/predictions",
+        "operationId": "listPredictionEvents"
+      },
+      {
+        "method": "GET",
+        "path": "/api/predictions/events?status=active",
+        "pageRoute": "/w/markets/predictions",
+        "operationId": "listPredictionEvents"
+      },
+      {
+        "method": "GET",
+        "path": "/api/predictions/events?status=active",
+        "pageRoute": "/w/markets/predictions",
+        "operationId": "listPredictionEvents"
+      },
+      {
+        "method": "GET",
+        "path": "/api/predictions/events?status=active",
+        "pageRoute": "/w/markets/predictions",
+        "operationId": "listPredictionEvents"
+      }
+    ],
+    "requestFailures": [
+      {
+        "method": "POST",
+        "path": "/api/auth/logout",
+        "pageRoute": "/w/auth/login",
+        "operationId": null,
+        "error": "net::ERR_ABORTED"
+      },
+      {
+        "method": "GET",
+        "path": "/api/predictions/events?status=active",
+        "pageRoute": "/w/markets/predictions",
+        "operationId": "listPredictionEvents",
+        "error": "net::ERR_FAILED"
+      },
+      {
+        "method": "GET",
+        "path": "/api/predictions/events?status=active",
+        "pageRoute": "/w/markets/predictions",
+        "operationId": "listPredictionEvents",
+        "error": "net::ERR_FAILED"
+      },
+      {
+        "method": "GET",
+        "path": "/api/predictions/events?status=active",
+        "pageRoute": "/w/markets/predictions",
+        "operationId": "listPredictionEvents",
+        "error": "net::ERR_FAILED"
+      },
+      {
+        "method": "GET",
+        "path": "/api/predictions/events?status=active",
+        "pageRoute": "/w/markets/predictions",
+        "operationId": "listPredictionEvents",
+        "error": "net::ERR_FAILED"
+      },
+      {
+        "method": "GET",
+        "path": "/api/predictions/events?status=active",
+        "pageRoute": "/w/markets/predictions",
+        "operationId": "listPredictionEvents",
+        "error": "net::ERR_FAILED"
+      },
+      {
+        "method": "GET",
+        "path": "/api/predictions/events?status=active",
+        "pageRoute": "/w/markets/predictions",
+        "operationId": "listPredictionEvents",
+        "error": "net::ERR_FAILED"
+      },
+      {
+        "method": "GET",
+        "path": "/api/predictions/events?status=active",
+        "pageRoute": "/w/markets/predictions",
+        "operationId": "listPredictionEvents",
+        "error": "net::ERR_FAILED"
+      },
+      {
+        "method": "GET",
+        "path": "/api/predictions/events?status=active",
+        "pageRoute": "/w/markets/predictions",
+        "operationId": "listPredictionEvents",
+        "error": "net::ERR_FAILED"
+      },
+      {
+        "method": "GET",
+        "path": "/api/predictions/events?status=active",
+        "pageRoute": "/w/markets/predictions",
+        "operationId": "listPredictionEvents",
+        "error": "net::ERR_FAILED"
+      },
+      {
+        "method": "GET",
+        "path": "/api/predictions/events?status=active",
+        "pageRoute": "/w/markets/predictions",
+        "operationId": "listPredictionEvents",
+        "error": "net::ERR_FAILED"
+      },
+      {
+        "method": "GET",
+        "path": "/api/predictions/events?status=active",
+        "pageRoute": "/w/markets/predictions",
+        "operationId": "listPredictionEvents",
+        "error": "net::ERR_FAILED"
+      },
+      {
+        "method": "GET",
+        "path": "/api/predictions/events?status=active",
+        "pageRoute": "/w/markets/predictions",
+        "operationId": "listPredictionEvents",
+        "error": "net::ERR_FAILED"
+      }
+    ],
+    "externalApiOrigins": [],
+    "pageErrors": []
+  },
+  "requestTrace": [
+    {
+      "method": "GET",
+      "path": "/api/auth/session",
+      "pageRoute": "/w/auth/login",
+      "operationId": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/logout",
+      "pageRoute": "/w/auth/login",
+      "operationId": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/login",
+      "pageRoute": "/w/auth/login",
+      "operationId": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/pairs?limit=50",
+      "pageRoute": "/w/home",
+      "operationId": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/watchlist",
+      "pageRoute": "/w/home",
+      "operationId": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/predictions/events?status=active",
+      "pageRoute": "/w/markets/predictions",
+      "operationId": "listPredictionEvents"
+    },
+    {
+      "method": "GET",
+      "path": "/api/predictions/events?status=active",
+      "pageRoute": "/w/markets/predictions",
+      "operationId": "listPredictionEvents"
+    },
+    {
+      "method": "GET",
+      "path": "/api/predictions/events?status=active",
+      "pageRoute": "/w/markets/predictions",
+      "operationId": "listPredictionEvents"
+    },
+    {
+      "method": "GET",
+      "path": "/api/predictions/events?status=active",
+      "pageRoute": "/w/markets/predictions",
+      "operationId": "listPredictionEvents"
+    },
+    {
+      "method": "GET",
+      "path": "/api/predictions/events?status=active",
+      "pageRoute": "/w/markets/predictions",
+      "operationId": "listPredictionEvents"
+    },
+    {
+      "method": "GET",
+      "path": "/api/predictions/events?status=active",
+      "pageRoute": "/w/markets/predictions",
+      "operationId": "listPredictionEvents"
+    },
+    {
+      "method": "GET",
+      "path": "/api/predictions/events?status=active",
+      "pageRoute": "/w/markets/predictions",
+      "operationId": "listPredictionEvents"
+    },
+    {
+      "method": "GET",
+      "path": "/api/predictions/events?status=active",
+      "pageRoute": "/w/markets/predictions",
+      "operationId": "listPredictionEvents"
+    },
+    {
+      "method": "GET",
+      "path": "/api/predictions/events?status=active",
+      "pageRoute": "/w/markets/predictions",
+      "operationId": "listPredictionEvents"
+    },
+    {
+      "method": "GET",
+      "path": "/api/predictions/events?status=active",
+      "pageRoute": "/w/markets/predictions",
+      "operationId": "listPredictionEvents"
+    },
+    {
+      "method": "GET",
+      "path": "/api/predictions/events?status=active",
+      "pageRoute": "/w/markets/predictions",
+      "operationId": "listPredictionEvents"
+    },
+    {
+      "method": "GET",
+      "path": "/api/predictions/events?status=active",
+      "pageRoute": "/w/markets/predictions",
+      "operationId": "listPredictionEvents"
+    }
+  ],
+  "sourceHashes": {
+    "contracts/openapi/predictions.yaml": "146a0442f6879fc50dc53c9f74d104837092d06edcfcf3e68537454b3e8c556b",
+    "src/app/routes.ts": "c93a80e123fd95c3abd246aeb00589a51f5ff4560e794e87f70f7ff96248c0d5",
+    "src/dev/PreviewControls.tsx": "a318fb182dda24c9b8d2103ae4b40eeecb7c3eded57332aad3c5bc8a1836a54c",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/handlers.ts": "9d1ea085bab944b0bd0e59a665222113cb7bb661bbcd2408f09c6adf08cd3ea9",
+    "src/dev/mocks/prediction-fixtures.ts": "19108d2497d121587f3385df8db99908d094efe1f8fc0b170f350c5f76c4096f",
+    "src/dev/mocks/preview-scenario-handler.ts": "1b05e3e420b1df43de6d2e37533d4d8dbcd203fedb70ca59a65a4a62179396f5",
+    "src/dev/mocks/preview-scenario-handler.test.ts": "927ddb529170fb9dec31cedda12703e01a0138bd23e7bd8942880e517f888995",
+    "src/dev/mocks/scenario-runtime.ts": "446d43808b478a1eaca07faa29d690c49c8e7ffb21fc1f12d2de2feb524e2e50",
+    "src/features/predictions/api/predictions-api.ts": "122853909253981bc9274bba29e022111d6b5ca58da81d9d9a28f0c59cbf7b87",
+    "src/features/predictions/model/prediction-queries.ts": "03dd010790608dd086de73d18e88b33c0295b61dd73e9c1ad35227e6076470ca",
+    "src/features/predictions/model/prediction-types.ts": "abfcf3333848f7444fdf5877a2c38fc606bf497d86b6f9b4a82cd5b9616dff78",
+    "src/features/predictions/pages/PredictionContractPages.tsx": "19da64273880dde5d29101cf644a946d1f3cda89cf8d25752432a0d5a0de53a8",
+    "src/features/predictions/routes.ts": "1356d898100c0bd6c6dc5b266d85fe62dc268dc09f353db574a782c4763ad4f3",
+    "src/shared/api/http-client.ts": "12a04035eac23a2999f8c7a76aafa32966585402c06d98f451ef33eb8601cf42",
+    "src/shared/api/query-client.ts": "b2b0e5fe60f7ade24017f12859fa1b68bd2de143868c42e37df51a71ee259ac2",
+    "src/shared/config/env.ts": "f4065bb9a092b5a60c11ace7070ea7eb635e783cfa3543c786d30597537ad48c",
+    "src/shared/ui/ErrorState.tsx": "7e501dd15a90aea2bf93e33150e47d455bbe3a24a0da1f986cca180125d4acd2",
+    "src/main.tsx": "c150098914a25b7e0630d66f480ffbfe4160e96a8bdb54262b5ad4b5b33719e6",
+    "docs/architecture/production-readiness/evidence/A06/run-predictions-error-browser-check.mjs": "cea63f6b0a39c84038b0d6c4b2d594537379aa92bb9d0b8d894242ba0f282d7c"
+  },
+  "screenshots": {
+    "events": "preview-predictions-error-events-fresh-2026-10-13-remediation-1791871672034.png"
+  },
+  "limitations": [
+    "Predictions OpenAPI declares no 5xx responses, so the preview represents read failures as statusless transport failures; this does not simulate a backend HTTP 5xx.",
+    "The observed listPredictionEvents query made six local transport attempts before showing the error and six more after manual Retry: three attempts in the HTTP client multiplied by one React Query retry. Other Predictions reads were not exercised in this scenario.",
+    "The order mutation is deliberately not submitted because a lost write response would have an unknown business outcome; its count must remain zero.",
+    "This verifies local browser error and retry behavior only; it does not prove backend behavior, persistence, staging or user acceptance."
+  ]
+}

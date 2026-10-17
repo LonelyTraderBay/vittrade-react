@@ -212,6 +212,8 @@ export function WithdrawalVerifyState({
             onChange={(event) => onCodeChange(event.target.value.replace(/\D/g, '').slice(0, 6))}
             placeholder="••••••"
             aria-label="Mã xác minh 2FA"
+            aria-invalid={Boolean(errors.code)}
+            aria-describedby={errors.code ? 'withdraw-code-error' : undefined}
             className="h-16 w-full rounded-2xl text-center"
             style={{
               background: colors.surface2,
@@ -223,7 +225,11 @@ export function WithdrawalVerifyState({
               outline: 'none',
             }}
           />
-          {errors.code && <p style={{ color: colors.error, fontSize: 12 }}>{errors.code}</p>}
+          {errors.code && (
+            <p id="withdraw-code-error" role="alert" style={{ color: colors.error, fontSize: 12 }}>
+              {errors.code}
+            </p>
+          )}
           <CTAButton
             onClick={onSubmit}
             disabled={!canWithdraw || code.length < 6 || busy}
@@ -231,7 +237,12 @@ export function WithdrawalVerifyState({
           >
             Xác nhận rút tiền
           </CTAButton>
-          <button type="button" onClick={onBack} style={{ color: colors.text2, fontSize: 13 }}>
+          <button
+            type="button"
+            onClick={onBack}
+            disabled={busy}
+            style={{ color: colors.text2, fontSize: 13 }}
+          >
             Quay lại chỉnh sửa
           </button>
         </div>
@@ -332,6 +343,8 @@ export function WithdrawalForm({
           value={address}
           disabled={!canWithdraw}
           onChange={onAddressChange}
+          aria-invalid={Boolean(errors.address)}
+          aria-describedby={errors.address ? 'withdraw-address-error' : undefined}
           placeholder={`Nhập địa chỉ ${asset}`}
           className="h-14 w-full rounded-2xl px-4"
           style={{
@@ -341,7 +354,13 @@ export function WithdrawalForm({
           }}
         />
         {errors.address && (
-          <p style={{ color: colors.error, fontSize: 12, marginTop: 4 }}>{errors.address}</p>
+          <p
+            id="withdraw-address-error"
+            role="alert"
+            style={{ color: colors.error, fontSize: 12, marginTop: 4 }}
+          >
+            {errors.address}
+          </p>
         )}
       </div>
 
@@ -358,6 +377,8 @@ export function WithdrawalForm({
             value={memo}
             disabled={!canWithdraw}
             onChange={onMemoChange}
+            aria-invalid={Boolean(errors.memo)}
+            aria-describedby={errors.memo ? 'withdraw-memo-error' : undefined}
             placeholder={selectedNetwork.memoPlaceholder ?? 'Nhập memo'}
             className="h-14 w-full rounded-2xl px-4"
             style={{
@@ -367,7 +388,13 @@ export function WithdrawalForm({
             }}
           />
           {errors.memo && (
-            <p style={{ color: colors.error, fontSize: 12, marginTop: 4 }}>{errors.memo}</p>
+            <p
+              id="withdraw-memo-error"
+              role="alert"
+              style={{ color: colors.error, fontSize: 12, marginTop: 4 }}
+            >
+              {errors.memo}
+            </p>
           )}
         </div>
       )}
@@ -395,6 +422,8 @@ export function WithdrawalForm({
           step="any"
           value={amount}
           onChange={onAmountChange}
+          aria-invalid={Boolean(errors.amount)}
+          aria-describedby={errors.amount ? 'withdraw-amount-error' : undefined}
           placeholder="0.00"
           className="h-14 w-full rounded-2xl px-4"
           style={{
@@ -406,7 +435,13 @@ export function WithdrawalForm({
           }}
         />
         {errors.amount && (
-          <p style={{ color: colors.error, fontSize: 12, marginTop: 4 }}>{errors.amount}</p>
+          <p
+            id="withdraw-amount-error"
+            role="alert"
+            style={{ color: colors.error, fontSize: 12, marginTop: 4 }}
+          >
+            {errors.amount}
+          </p>
         )}
       </div>
 

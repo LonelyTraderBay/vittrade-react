@@ -4,6 +4,12 @@ Hồ sơ khảo sát trong phạm vi checkout hiện tại, dùng bộ Universal
 Đây là điểm tra cứu nguồn và điều kiện làm việc; kiến trúc, quy trình, công việc
 và tiến độ tiếp tục thuộc các nguồn trong [WORKFLOW.md](ai/WORKFLOW.md#1-nguồn-hướng-dẫn-và-thứ-tự-đọc).
 
+Các số liệu khảo sát và quyền docs-only bên dưới thuộc snapshot **30/09/2026**.
+Phạm vi triển khai frontend từ **13/10/2026** được người dùng giao sau đó; xem
+[kế hoạch hiện hành](architecture/production-readiness/PLAN.md#khac-phuc-audit-20261013)
+và checkpoint trong [TRACKING](architecture/production-readiness/TRACKING.json).
+Người dùng xác nhận chưa có đầu vào backend/staging; các mục phụ thuộc vẫn blocked.
+
 ## 1. Phạm vi, căn cứ và quyền
 
 - **ĐÃ QUAN SÁT:** frontend đang phát triển; mã ứng dụng, test, contract frontend,

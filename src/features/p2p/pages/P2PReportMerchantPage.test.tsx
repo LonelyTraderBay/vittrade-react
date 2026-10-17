@@ -1,7 +1,7 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { screen } from '@testing-library/react';
+import { fireEvent, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Route, Routes } from 'react-router';
 import { renderWithProviders } from '@/test/test-utils';
@@ -76,7 +76,14 @@ describe('P2P merchant report contract page', () => {
   });
 
   it('keeps merchant report submission disabled for read-only users', async () => {
-    server.use(http.get('*/p2p/merchants/merchant-1', () => HttpResponse.json(profile)));
+    let reportCalls = 0;
+    server.use(
+      http.get('*/p2p/merchants/merchant-1', () => HttpResponse.json(profile)),
+      http.post('*/p2p/reports/merchants', () => {
+        reportCalls += 1;
+        return HttpResponse.json({ id: 'report-1' }, { status: 201 });
+      }),
+    );
 
     renderReport({
       ...testAuthAdapter,
@@ -90,7 +97,11 @@ describe('P2P merchant report contract page', () => {
     expect(
       screen.getByText('P2P report permission is required to submit a merchant report.'),
     ).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Submit P2P merchant report' })).toBeDisabled();
+    const submit = screen.getByRole('button', { name: 'Submit P2P merchant report' });
+    expect(submit).toBeDisabled();
+    submit.removeAttribute('disabled');
+    fireEvent.click(submit);
+    expect(reportCalls).toBe(0);
   });
 
   it('contains report failures without losing the selected reason', async () => {

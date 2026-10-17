@@ -109,8 +109,16 @@ export function P2POrdersContractPage() {
       <PageContent gap="default">
         <div className="grid grid-cols-3 gap-2">
           <Summary label="Total orders" value={orders.length.toString()} color={colors.text1} />
-          <Summary label="Completed" value={completedCount.toString()} color="#10B981" />
-          <Summary label="Completed volume" value={formatFiat(completedVolume)} color="#3B82F6" />
+          <Summary
+            label="Completed"
+            value={completedCount.toString()}
+            color="var(--tr-success-text)"
+          />
+          <Summary
+            label="Completed volume"
+            value={formatFiat(completedVolume)}
+            color="var(--tr-link)"
+          />
         </div>
 
         <TrCard className="p-3">
@@ -182,7 +190,7 @@ export function P2POrdersContractPage() {
               <OrderCard
                 key={order.id}
                 order={order}
-                onClick={() => navigate(`${shellPrefix}/p2p/order/${order.id}`)}
+                onClick={() => navigate(`${shellPrefix}/p2p/order/${encodeURIComponent(order.id)}`)}
               />
             ))}
           </div>
@@ -205,7 +213,7 @@ function OrderCard({ order, onClick }: { order: P2POrder; onClick: () => void })
             className="rounded-md px-2 py-1 text-[10px] font-bold"
             style={{
               background: `${isBuy ? '#10B981' : '#EF4444'}20`,
-              color: isBuy ? '#10B981' : '#EF4444',
+              color: isBuy ? 'var(--tr-success-text)' : 'var(--tr-error-text)',
             }}
           >
             {isBuy ? 'BUY' : 'SELL'}
@@ -257,11 +265,13 @@ function matchesTab(status: P2POrderStatus, tab: TabId) {
 
 function orderStatus(status: P2POrderStatus) {
   if (status === 'pending_payment')
-    return { label: 'Pending payment', color: '#F59E0B', icon: Clock };
-  if (status === 'paid') return { label: 'Paid', color: '#3B82F6', icon: ArrowUpRight };
-  if (status === 'released') return { label: 'Released', color: '#10B981', icon: ArrowDownLeft };
-  if (status === 'disputed') return { label: 'Disputed', color: '#EF4444', icon: ShieldAlert };
-  return { label: status, color: '#8B95B3', icon: Clock };
+    return { label: 'Pending payment', color: 'var(--tr-warning-text)', icon: Clock };
+  if (status === 'paid') return { label: 'Paid', color: 'var(--tr-info)', icon: ArrowUpRight };
+  if (status === 'released')
+    return { label: 'Released', color: 'var(--tr-success-text)', icon: ArrowDownLeft };
+  if (status === 'disputed')
+    return { label: 'Disputed', color: 'var(--tr-error-text)', icon: ShieldAlert };
+  return { label: status, color: 'var(--tr-text-2)', icon: Clock };
 }
 
 function formatFiat(value: number, currency = 'VND') {

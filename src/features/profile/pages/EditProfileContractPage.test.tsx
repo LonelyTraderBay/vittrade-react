@@ -6,7 +6,9 @@ import userEvent from '@testing-library/user-event';
 import { toast } from 'sonner';
 import { renderWithProviders } from '@/test/test-utils';
 import { testAuthAdapter } from '@/test/auth-test-adapter';
+import { invokeStaleReactHandler } from '@/test/invoke-stale-react-handler';
 import type { AuthAdapter } from '@/shared/session/AuthContext';
+import { profileApi } from '../api/profile-api';
 import { EditProfileContractPage } from './EditProfileContractPage';
 
 vi.mock('sonner', () => ({
@@ -38,6 +40,7 @@ const profile = {
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
 afterEach(() => {
   server.resetHandlers();
+  vi.restoreAllMocks();
   vi.clearAllMocks();
 });
 afterAll(() => server.close());
@@ -53,6 +56,37 @@ function profileWriteAdapter(): AuthAdapter {
 }
 
 describe('EditProfileContractPage', () => {
+  it('renders profile data as read-only without profile write permission', async () => {
+    let updateCalls = 0;
+    server.use(
+      http.get('*/profile', () => HttpResponse.json(profile)),
+      http.patch('*/profile', () => {
+        updateCalls += 1;
+        return HttpResponse.json(profile);
+      }),
+    );
+    const readOnlyAdapter: AuthAdapter = {
+      ...testAuthAdapter,
+      initialSession: {
+        ...testAuthAdapter.initialSession!,
+        user: { ...testAuthAdapter.initialSession!.user, permissions: ['profile:read'] },
+      },
+    };
+
+    renderWithProviders(<EditProfileContractPage />, { authAdapter: readOnlyAdapter });
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'Profile edit permission is required to update account details.',
+    );
+    expect(screen.getByLabelText('Họ và tên')).toBeDisabled();
+    expect(screen.getByLabelText('Số điện thoại')).toBeDisabled();
+    expect(screen.getByLabelText('Email')).toHaveAttribute('readonly');
+    const save = screen.getByRole('button', { name: 'Lưu thay đổi' });
+    expect(save).toBeDisabled();
+    invokeStaleReactHandler(save, 'onClick');
+    expect(updateCalls).toBe(0);
+  });
+
   it('saves normalized profile changes with an idempotency key and confirms success', async () => {
     let body: unknown;
     let idempotencyKey: string | null = null;
@@ -109,6 +143,45 @@ describe('EditProfileContractPage', () => {
     expect(idempotencyKeys[0]).toMatch(/^profile-/);
     expect(idempotencyKeys[1]).toBe(idempotencyKeys[0]);
     expect(toast.error).toHaveBeenCalledWith('Profile service unavailable', { duration: 2000 });
+  });
+
+  it('shows a pending save state until the profile write settles', async () => {
+    let finishSave!: () => void;
+    const saveGate = new Promise<void>((resolve) => {
+      finishSave = resolve;
+    });
+    server.use(
+      http.get('*/profile', () => HttpResponse.json(profile)),
+      http.patch('*/profile', async () => {
+        await saveGate;
+        return HttpResponse.json(profile);
+      }),
+    );
+    renderWithProviders(<EditProfileContractPage />, { authAdapter: profileWriteAdapter() });
+
+    const user = userEvent.setup();
+    await user.click(await screen.findByRole('button', { name: 'Lưu thay đổi' }));
+    const pendingButton = await screen.findByRole('button', { name: 'Đang lưu…' });
+    expect(pendingButton).toBeDisabled();
+
+    finishSave();
+    await waitFor(() =>
+      expect(toast.success).toHaveBeenCalledWith('Đã cập nhật hồ sơ.', { duration: 1500 }),
+    );
+  });
+
+  it('uses safe UI and toast fallbacks when the profile adapter rejects a non-Error value', async () => {
+    server.use(http.get('*/profile', () => HttpResponse.json(profile)));
+    vi.spyOn(profileApi, 'updateProfile').mockRejectedValueOnce('opaque adapter failure');
+    renderWithProviders(<EditProfileContractPage />, { authAdapter: profileWriteAdapter() });
+
+    const user = userEvent.setup();
+    await user.click(await screen.findByRole('button', { name: 'Lưu thay đổi' }));
+
+    expect(await screen.findByRole('alert')).toHaveTextContent('Không thể lưu profile.');
+    await waitFor(() =>
+      expect(toast.error).toHaveBeenCalledWith('Không thể lưu profile.', { duration: 2000 }),
+    );
   });
 
   it('requires a non-empty name before enabling save', async () => {

@@ -41,6 +41,7 @@ export function EmptyState({
 
       {ctaLabel && onCta && (
         <button
+          type="button"
           onClick={onCta}
           className="px-6 py-3 rounded-2xl font-semibold text-sm"
           style={{

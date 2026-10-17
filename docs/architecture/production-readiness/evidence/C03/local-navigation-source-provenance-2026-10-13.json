@@ -1,0 +1,643 @@
+{
+  "observedAt": "2026-10-13T12:27:13.025Z",
+  "sourceHead": "a46a8cdde1414461eaf4937159eaee3746360763",
+  "branch": "codex/frontend-readiness-remediation-20261013",
+  "commits": [
+    {
+      "priority": "P1",
+      "head": "36e793657327ac1aa2b72cf302af285aa133f7e5",
+      "parent": "7aad715a493cfc1474cc489ee01bfbae770b6a14",
+      "message": "P1: giữ nguyên ID tài nguyên qua path và query của URL"
+    },
+    {
+      "priority": "P2",
+      "head": "a46a8cdde1414461eaf4937159eaee3746360763",
+      "parent": "36e793657327ac1aa2b72cf302af285aa133f7e5",
+      "message": "P2: đồng bộ inventory sau sửa ranh giới điều hướng"
+    }
+  ],
+  "proofs": [
+    {
+      "path": "src/features/arena/pages/ArenaContractPages.tsx",
+      "blobId": "281ee9511a7d8403dfb6a74524b3b43a00172537",
+      "filteredBlobId": "281ee9511a7d8403dfb6a74524b3b43a00172537",
+      "committedSha256": "64fc11a200cdce0d397efffd4c2988f8186dcde8de1f235315a207abd2e36c25",
+      "workingSha256": "64fc11a200cdce0d397efffd4c2988f8186dcde8de1f235315a207abd2e36c25",
+      "sourceHead": "36e793657327ac1aa2b72cf302af285aa133f7e5",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
+        "sha256": "45e7e93bb4fec6042b65e2d168ad3953d3bb4d6dd25256c4f2372cbf55e48f02"
+      },
+      "currentFilteredBlobId": "281ee9511a7d8403dfb6a74524b3b43a00172537"
+    },
+    {
+      "path": "src/features/arena/pages/ArenaDiscoveryPage.tsx",
+      "blobId": "d8ed023339601b2d8db7eacfe6922c20b3890394",
+      "filteredBlobId": "d8ed023339601b2d8db7eacfe6922c20b3890394",
+      "committedSha256": "7cab5953fba3af833d70cac1dde207d5d21078f76399b0d6d1aaa8272a80191a",
+      "workingSha256": "7cab5953fba3af833d70cac1dde207d5d21078f76399b0d6d1aaa8272a80191a",
+      "sourceHead": "36e793657327ac1aa2b72cf302af285aa133f7e5",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "07430fdbd638e510e117c0256d9a0e8aec37614855731b7273d3b939a87dae66"
+      },
+      "currentFilteredBlobId": "d8ed023339601b2d8db7eacfe6922c20b3890394"
+    },
+    {
+      "path": "src/features/discovery/pages/DiscoveryContractPages.tsx",
+      "blobId": "3825edb14c7721ea7fc82f304bebedc7c38b3c06",
+      "filteredBlobId": "3825edb14c7721ea7fc82f304bebedc7c38b3c06",
+      "committedSha256": "7fabe0000835d8804e8830af0578a63bf09740e40a25fb7cafbb0556a9ec31cc",
+      "workingSha256": "7fabe0000835d8804e8830af0578a63bf09740e40a25fb7cafbb0556a9ec31cc",
+      "sourceHead": "36e793657327ac1aa2b72cf302af285aa133f7e5",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "6fc12a4ca2bcafbce74f34ae827f0a7c5c427214c597aa0af20d2a3e487b9a79"
+      },
+      "currentFilteredBlobId": "3825edb14c7721ea7fc82f304bebedc7c38b3c06"
+    },
+    {
+      "path": "src/features/launchpad/pages/LaunchpadContractPages.tsx",
+      "blobId": "14116a9489a0a80048cdcf612e050968170774a5",
+      "filteredBlobId": "14116a9489a0a80048cdcf612e050968170774a5",
+      "committedSha256": "cfd37628a87072a81cf09e4076665596532afcaa4d6cccc91b28b9e6f8b9db42",
+      "workingSha256": "cfd37628a87072a81cf09e4076665596532afcaa4d6cccc91b28b9e6f8b9db42",
+      "sourceHead": "36e793657327ac1aa2b72cf302af285aa133f7e5",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "1c0b563300f776353a5b3a0dce37c1b011f3f3aae81c5ae2c4c1f8ea9bf5643c"
+      },
+      "currentFilteredBlobId": "14116a9489a0a80048cdcf612e050968170774a5"
+    },
+    {
+      "path": "src/features/market/components/MarketItem.test.tsx",
+      "blobId": "24b68c1a4aa3aa691bf8ac4393c98b957a5009a8",
+      "filteredBlobId": "24b68c1a4aa3aa691bf8ac4393c98b957a5009a8",
+      "committedSha256": "ec587ed08b0c2d417a54b5e6648bcb94543a850b17557537d5791c7ed4ae27d9",
+      "workingSha256": "ec587ed08b0c2d417a54b5e6648bcb94543a850b17557537d5791c7ed4ae27d9",
+      "sourceHead": "36e793657327ac1aa2b72cf302af285aa133f7e5",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
+        "sha256": "623410cc6dee290c88d122912d6437795b3e6bccad9ccf989615c83645daedb6"
+      },
+      "currentFilteredBlobId": "24b68c1a4aa3aa691bf8ac4393c98b957a5009a8"
+    },
+    {
+      "path": "src/features/market/components/MarketItem.tsx",
+      "blobId": "0c1fd31b81963584397e52a730a44355223cd5f9",
+      "filteredBlobId": "0c1fd31b81963584397e52a730a44355223cd5f9",
+      "committedSha256": "7caf11fd2f73975717648ed3b1eb7ffabb78e2d329a8d74a4fe1638511449ac0",
+      "workingSha256": "7caf11fd2f73975717648ed3b1eb7ffabb78e2d329a8d74a4fe1638511449ac0",
+      "sourceHead": "36e793657327ac1aa2b72cf302af285aa133f7e5",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "1c1dfc0168d62a5da76f315c4cb54a7a54b6428d9ea390ac5dc838219af429ed"
+      },
+      "currentFilteredBlobId": "0c1fd31b81963584397e52a730a44355223cd5f9"
+    },
+    {
+      "path": "src/features/market/pages/AdvancedChartsPage.tsx",
+      "blobId": "dcd65b346614a89a39a830725ac6341350a5eca7",
+      "filteredBlobId": "dcd65b346614a89a39a830725ac6341350a5eca7",
+      "committedSha256": "5d29123bc2306826f2be3fc5869620a3d239c2ff454ec45543a7a365e2a17c1b",
+      "workingSha256": "5d29123bc2306826f2be3fc5869620a3d239c2ff454ec45543a7a365e2a17c1b",
+      "sourceHead": "36e793657327ac1aa2b72cf302af285aa133f7e5",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "9f0915831407a38a78b0971e7f91940f7ae840a338e7c1efdbd8765e2b06563a"
+      },
+      "currentFilteredBlobId": "dcd65b346614a89a39a830725ac6341350a5eca7"
+    },
+    {
+      "path": "src/features/market/pages/MarketComparisonPage.tsx",
+      "blobId": "4b5d525486004a58c6287a703a9cb3d3ab722b79",
+      "filteredBlobId": "4b5d525486004a58c6287a703a9cb3d3ab722b79",
+      "committedSha256": "680be98ab0b8d536d10a0db382ea2fab7286d32e988cb66e30d9a2d2483b19b0",
+      "workingSha256": "680be98ab0b8d536d10a0db382ea2fab7286d32e988cb66e30d9a2d2483b19b0",
+      "sourceHead": "36e793657327ac1aa2b72cf302af285aa133f7e5",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "fbec2337a0623720b61a15917ccf58dabf2ade0edf40478004720b777c49512f"
+      },
+      "currentFilteredBlobId": "4b5d525486004a58c6287a703a9cb3d3ab722b79"
+    },
+    {
+      "path": "src/features/market/pages/MarketDepthPage.tsx",
+      "blobId": "c9642cefbe1768a8eff2ca9c51b27ebc24d95e79",
+      "filteredBlobId": "c9642cefbe1768a8eff2ca9c51b27ebc24d95e79",
+      "committedSha256": "51bbdcbfb3eb9d61ebe9edf4948ffa8ff2381d345996f4353f200f3654a797d1",
+      "workingSha256": "51bbdcbfb3eb9d61ebe9edf4948ffa8ff2381d345996f4353f200f3654a797d1",
+      "sourceHead": "36e793657327ac1aa2b72cf302af285aa133f7e5",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "4bfcd9541e7c7615f9606c1c1448bbeb145606b667bb9e2a937e38add91043f3"
+      },
+      "currentFilteredBlobId": "c9642cefbe1768a8eff2ca9c51b27ebc24d95e79"
+    },
+    {
+      "path": "src/features/market/pages/MarketHeatmapPage.tsx",
+      "blobId": "b43be1b76472ff0c944072e07f8840caa4c0fa02",
+      "filteredBlobId": "b43be1b76472ff0c944072e07f8840caa4c0fa02",
+      "committedSha256": "417ad2f0cbfe6a458aabac5f672b55536c7784cad60da1917fe0b5e085071d67",
+      "workingSha256": "417ad2f0cbfe6a458aabac5f672b55536c7784cad60da1917fe0b5e085071d67",
+      "sourceHead": "36e793657327ac1aa2b72cf302af285aa133f7e5",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "7b0a8a89fa8966e33cf440e1edf1f85f185957fe2c745489eed8940db4c946c1"
+      },
+      "currentFilteredBlobId": "b43be1b76472ff0c944072e07f8840caa4c0fa02"
+    },
+    {
+      "path": "src/features/market/pages/MarketHomePage.tsx",
+      "blobId": "e842fcc80ecb117b17bcc661511ba9ac4ff51703",
+      "filteredBlobId": "e842fcc80ecb117b17bcc661511ba9ac4ff51703",
+      "committedSha256": "b50abe549a5310006b66daf827b4472d5ee8b6600f751c32734a7c6d16209ad9",
+      "workingSha256": "b50abe549a5310006b66daf827b4472d5ee8b6600f751c32734a7c6d16209ad9",
+      "sourceHead": "36e793657327ac1aa2b72cf302af285aa133f7e5",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "473837995f85438514d174d9dbeba1411ba95dbb7fa5424788c7625fde6e34df"
+      },
+      "currentFilteredBlobId": "e842fcc80ecb117b17bcc661511ba9ac4ff51703"
+    },
+    {
+      "path": "src/features/market/pages/MarketMoversPage.tsx",
+      "blobId": "a4d7103fdd0d3063cb95625b79c0fc761c1c62e0",
+      "filteredBlobId": "a4d7103fdd0d3063cb95625b79c0fc761c1c62e0",
+      "committedSha256": "1a103c6f4f1edd2492ab0d6a5443210ed79bda1375080fc90c3db3c6fcc3e3b9",
+      "workingSha256": "1a103c6f4f1edd2492ab0d6a5443210ed79bda1375080fc90c3db3c6fcc3e3b9",
+      "sourceHead": "36e793657327ac1aa2b72cf302af285aa133f7e5",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "8c9026df94a3933e199ef758d86f3732c2a5099392b828aa0789f94690302e4e"
+      },
+      "currentFilteredBlobId": "a4d7103fdd0d3063cb95625b79c0fc761c1c62e0"
+    },
+    {
+      "path": "src/features/market/pages/MarketNewsFeedPage.tsx",
+      "blobId": "2f132a0a6ef3d1d7fa24e0bf0417926f16766bd1",
+      "filteredBlobId": "2f132a0a6ef3d1d7fa24e0bf0417926f16766bd1",
+      "committedSha256": "90bd925cee21907df4f99d1f5d97bcb42405ca445a7ecff53ae8c4ca06db1f89",
+      "workingSha256": "90bd925cee21907df4f99d1f5d97bcb42405ca445a7ecff53ae8c4ca06db1f89",
+      "sourceHead": "36e793657327ac1aa2b72cf302af285aa133f7e5",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "aedc9280943382a7d6cfb1bf7ccf81b5ab7276f897846ceb98c5cb2dc3d17ad6"
+      },
+      "currentFilteredBlobId": "2f132a0a6ef3d1d7fa24e0bf0417926f16766bd1"
+    },
+    {
+      "path": "src/features/market/pages/MarketOverviewPage.test.tsx",
+      "blobId": "1aabe6d32ee536b3e3c602529f2dd6239410b580",
+      "filteredBlobId": "1aabe6d32ee536b3e3c602529f2dd6239410b580",
+      "committedSha256": "9a76813cb8ed7ac5de68e6938f0817298cc43ac073d86ab83a61b83c1a1556ef",
+      "workingSha256": "9a76813cb8ed7ac5de68e6938f0817298cc43ac073d86ab83a61b83c1a1556ef",
+      "sourceHead": "36e793657327ac1aa2b72cf302af285aa133f7e5",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "7aad715a493cfc1474cc489ee01bfbae770b6a14",
+        "sha256": "1555b922bf159499c44acd5b670e1377a49ad7a5db9e6c9fe38dcaccfd6f9dcc"
+      },
+      "currentFilteredBlobId": "1aabe6d32ee536b3e3c602529f2dd6239410b580"
+    },
+    {
+      "path": "src/features/market/pages/MarketOverviewPage.tsx",
+      "blobId": "ab92ff257304fc723bc1e0291ad9916d6e715e51",
+      "filteredBlobId": "ab92ff257304fc723bc1e0291ad9916d6e715e51",
+      "committedSha256": "dfc074fd051225f341631c6b8bf18b09933c479d0c3ffacb8961ce2a7654389d",
+      "workingSha256": "dfc074fd051225f341631c6b8bf18b09933c479d0c3ffacb8961ce2a7654389d",
+      "sourceHead": "36e793657327ac1aa2b72cf302af285aa133f7e5",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "6bd365548714f1ae9d20ff21c87099294675e33820f7cc8e9dbd1faabad9c879"
+      },
+      "currentFilteredBlobId": "ab92ff257304fc723bc1e0291ad9916d6e715e51"
+    },
+    {
+      "path": "src/features/market/pages/MarketScreenerPage.tsx",
+      "blobId": "f34cfce2355fa9149a12a87d93137298b19a9f0d",
+      "filteredBlobId": "f34cfce2355fa9149a12a87d93137298b19a9f0d",
+      "committedSha256": "5372ff7fa4ab54f11ec96f09a70edf4ad30a8fbcdacafddd73f042549bdf4f42",
+      "workingSha256": "5372ff7fa4ab54f11ec96f09a70edf4ad30a8fbcdacafddd73f042549bdf4f42",
+      "sourceHead": "36e793657327ac1aa2b72cf302af285aa133f7e5",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "49f0999ccb8d19285c9210ea6278bd60e16d330833728fe536b769adb2f9957f"
+      },
+      "currentFilteredBlobId": "f34cfce2355fa9149a12a87d93137298b19a9f0d"
+    },
+    {
+      "path": "src/features/market/pages/MarketSectorsPage.tsx",
+      "blobId": "b22d8d7f33b410bac438bc21564fe8ff4cc1e139",
+      "filteredBlobId": "b22d8d7f33b410bac438bc21564fe8ff4cc1e139",
+      "committedSha256": "94de0ccf9ad6215a6d0211e17bb96af844f8b70b57de9954aa3676378f24351a",
+      "workingSha256": "94de0ccf9ad6215a6d0211e17bb96af844f8b70b57de9954aa3676378f24351a",
+      "sourceHead": "36e793657327ac1aa2b72cf302af285aa133f7e5",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "09f837e567cd9f87efd6fe85bf339bb1f5bf20209ca7b26e06314758b014c513"
+      },
+      "currentFilteredBlobId": "b22d8d7f33b410bac438bc21564fe8ff4cc1e139"
+    },
+    {
+      "path": "src/features/market/pages/PairDetailPage.tsx",
+      "blobId": "ae5835ff230125d0415f88884c57a7730742a4e0",
+      "filteredBlobId": "ae5835ff230125d0415f88884c57a7730742a4e0",
+      "committedSha256": "db782ed0e40a96da15f92130fe8366cc892fdc079b82798450fbeddfcd0be41a",
+      "workingSha256": "db782ed0e40a96da15f92130fe8366cc892fdc079b82798450fbeddfcd0be41a",
+      "sourceHead": "36e793657327ac1aa2b72cf302af285aa133f7e5",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "3a9e69f652aaf5d2d94fb1a1dfca3bd2d0a57721aef5ce549dc336805abd151c"
+      },
+      "currentFilteredBlobId": "ae5835ff230125d0415f88884c57a7730742a4e0"
+    },
+    {
+      "path": "src/features/market/pages/TokenInfoPage.tsx",
+      "blobId": "37b39910315ded73a0e4c19aba84042e1ab078e9",
+      "filteredBlobId": "37b39910315ded73a0e4c19aba84042e1ab078e9",
+      "committedSha256": "a67a6df15ae8459e54a6fa1d8393f8cc6ce19b9454dacaba540e59a7e5a5efb8",
+      "workingSha256": "a67a6df15ae8459e54a6fa1d8393f8cc6ce19b9454dacaba540e59a7e5a5efb8",
+      "sourceHead": "36e793657327ac1aa2b72cf302af285aa133f7e5",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "8807d10e05670ff981be7dae1c14d395e3aabe54c06000659f6e790484b5e144"
+      },
+      "currentFilteredBlobId": "37b39910315ded73a0e4c19aba84042e1ab078e9"
+    },
+    {
+      "path": "src/features/market/pages/WatchlistPage.tsx",
+      "blobId": "930eb9d621a997adfd121e5eee591f888d7da956",
+      "filteredBlobId": "930eb9d621a997adfd121e5eee591f888d7da956",
+      "committedSha256": "40d76555efd04de794fcefb3b5b312056352d938373715eadcbda002d0917e19",
+      "workingSha256": "40d76555efd04de794fcefb3b5b312056352d938373715eadcbda002d0917e19",
+      "sourceHead": "36e793657327ac1aa2b72cf302af285aa133f7e5",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
+        "sha256": "32af21bfba2de889c15b354f3cc5deca423244f6beb012559559d126375eb9d4"
+      },
+      "currentFilteredBlobId": "930eb9d621a997adfd121e5eee591f888d7da956"
+    },
+    {
+      "path": "src/features/p2p/components/P2PHomeActionSheets.tsx",
+      "blobId": "9069ea32706b2c2a012c7d25d86e627e0bd4e089",
+      "filteredBlobId": "9069ea32706b2c2a012c7d25d86e627e0bd4e089",
+      "committedSha256": "9dd42e7b211ed195b31b9ea02dd79ee441f81a3708b2eb36c2ce55da5487276b",
+      "workingSha256": "9dd42e7b211ed195b31b9ea02dd79ee441f81a3708b2eb36c2ce55da5487276b",
+      "sourceHead": "36e793657327ac1aa2b72cf302af285aa133f7e5",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+        "sha256": "e5f62712c1c9db72f36b7a2910b17529beee511cc7f3ecede2f862219117b9dd"
+      },
+      "currentFilteredBlobId": "9069ea32706b2c2a012c7d25d86e627e0bd4e089"
+    },
+    {
+      "path": "src/features/p2p/components/P2PHomeCards.tsx",
+      "blobId": "725d726da656a3414c4b8da46bf3ae8238e7a726",
+      "filteredBlobId": "725d726da656a3414c4b8da46bf3ae8238e7a726",
+      "committedSha256": "ecdf326366dbe41d8b26ca7929d6f7f3d4ab011bc20f2230b167d4f9d28fed15",
+      "workingSha256": "ecdf326366dbe41d8b26ca7929d6f7f3d4ab011bc20f2230b167d4f9d28fed15",
+      "sourceHead": "36e793657327ac1aa2b72cf302af285aa133f7e5",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "cc943ee739408178f32842f806f277b3a2a7d2f446bfb47b0c84a0b3a64a403f"
+      },
+      "currentFilteredBlobId": "725d726da656a3414c4b8da46bf3ae8238e7a726"
+    },
+    {
+      "path": "src/features/p2p/pages/P2PAdDetailContractPage.tsx",
+      "blobId": "5efa0ab7bc9b674cb1641582125189155a195c37",
+      "filteredBlobId": "5efa0ab7bc9b674cb1641582125189155a195c37",
+      "committedSha256": "3ee08b73dc2fa087c503baaf48ad491fc7113dfc75ede8fe2a253c862447901d",
+      "workingSha256": "3ee08b73dc2fa087c503baaf48ad491fc7113dfc75ede8fe2a253c862447901d",
+      "sourceHead": "36e793657327ac1aa2b72cf302af285aa133f7e5",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+        "sha256": "1c8c41c416cbdb66f2ab24bb4f2bf0e0db8fe9e7babff699b0e210caaebe7a4b"
+      },
+      "currentFilteredBlobId": "5efa0ab7bc9b674cb1641582125189155a195c37"
+    },
+    {
+      "path": "src/features/p2p/pages/P2PChatPage.tsx",
+      "blobId": "ba155c2af80445d6f93f0006a9bb0c4c9d1bc1cd",
+      "filteredBlobId": "ba155c2af80445d6f93f0006a9bb0c4c9d1bc1cd",
+      "committedSha256": "37b716955ec06c88e3d553904d0933aba5609edece0d5a4ee0dcbbf2dbdeafb1",
+      "workingSha256": "37b716955ec06c88e3d553904d0933aba5609edece0d5a4ee0dcbbf2dbdeafb1",
+      "sourceHead": "36e793657327ac1aa2b72cf302af285aa133f7e5",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "08ef2422a2b20b0d03ff63ddbd10ee1ca28609f4649833aba1f46dc3e168ae70"
+      },
+      "currentFilteredBlobId": "ba155c2af80445d6f93f0006a9bb0c4c9d1bc1cd"
+    },
+    {
+      "path": "src/features/p2p/pages/P2PDisputesPage.tsx",
+      "blobId": "8f13561ade9cd14e652774137e87133ffe3a50c9",
+      "filteredBlobId": "8f13561ade9cd14e652774137e87133ffe3a50c9",
+      "committedSha256": "0422a68bd9f05d4eb45a748a3340b522b19579af541ea898f8340a7bc86e101a",
+      "workingSha256": "0422a68bd9f05d4eb45a748a3340b522b19579af541ea898f8340a7bc86e101a",
+      "sourceHead": "36e793657327ac1aa2b72cf302af285aa133f7e5",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+        "sha256": "d405a84b535b9b8546ceecfe810999bb4f8f3c1413f50ed668637c97632468e5"
+      },
+      "currentFilteredBlobId": "8f13561ade9cd14e652774137e87133ffe3a50c9"
+    },
+    {
+      "path": "src/features/p2p/pages/P2PEscrowDetailPage.tsx",
+      "blobId": "c4e4683379b586d7f05ec79b90bcfac23b142d4a",
+      "filteredBlobId": "c4e4683379b586d7f05ec79b90bcfac23b142d4a",
+      "committedSha256": "c854cf661b95cb5ca3b9e0212c9101c1cab98628621afe7533c41f7a8fafd79b",
+      "workingSha256": "c854cf661b95cb5ca3b9e0212c9101c1cab98628621afe7533c41f7a8fafd79b",
+      "sourceHead": "36e793657327ac1aa2b72cf302af285aa133f7e5",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "90f39e38073ff3f7f1a9e650bb1f5f5d43a29f6131b3910ee742e7074b07c4a8"
+      },
+      "currentFilteredBlobId": "c4e4683379b586d7f05ec79b90bcfac23b142d4a"
+    },
+    {
+      "path": "src/features/p2p/pages/P2PExpressConfirmPage.tsx",
+      "blobId": "925761cb23db8a5906fcc63e4bba8b791132ac1e",
+      "filteredBlobId": "925761cb23db8a5906fcc63e4bba8b791132ac1e",
+      "committedSha256": "18956dc82b64c3e445106fd78621d36418db70451a88efe2043eda5e30a1e283",
+      "workingSha256": "18956dc82b64c3e445106fd78621d36418db70451a88efe2043eda5e30a1e283",
+      "sourceHead": "36e793657327ac1aa2b72cf302af285aa133f7e5",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+        "sha256": "f0402fd5564303ce12c1d58895969d77f43d5bb978150e5cd980d1d84caf7763"
+      },
+      "currentFilteredBlobId": "925761cb23db8a5906fcc63e4bba8b791132ac1e"
+    },
+    {
+      "path": "src/features/p2p/pages/P2PMarketplacePage.tsx",
+      "blobId": "8c7ec7bb36f5a417b5efc9b86459fb519fdd71d1",
+      "filteredBlobId": "8c7ec7bb36f5a417b5efc9b86459fb519fdd71d1",
+      "committedSha256": "d5ac5d1fd4718290702fb28d80b0a99bbc610e866d0ae2e836a9f06d9d371458",
+      "workingSha256": "d5ac5d1fd4718290702fb28d80b0a99bbc610e866d0ae2e836a9f06d9d371458",
+      "sourceHead": "36e793657327ac1aa2b72cf302af285aa133f7e5",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+        "sha256": "7a94e180974c274182b6d9ad256a810c1089c541217de3b4259ffec185c03fbe"
+      },
+      "currentFilteredBlobId": "8c7ec7bb36f5a417b5efc9b86459fb519fdd71d1"
+    },
+    {
+      "path": "src/features/p2p/pages/P2PMerchantProfilePage.tsx",
+      "blobId": "6290ad9a69591974e86a093b88d82a8d27ed8e68",
+      "filteredBlobId": "6290ad9a69591974e86a093b88d82a8d27ed8e68",
+      "committedSha256": "b0afd83588f087a13be4e479c92ffef9f33aaf30254ed28f23abe4f2fc65c6f0",
+      "workingSha256": "b0afd83588f087a13be4e479c92ffef9f33aaf30254ed28f23abe4f2fc65c6f0",
+      "sourceHead": "36e793657327ac1aa2b72cf302af285aa133f7e5",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+        "sha256": "3d27b92a1355d313ad28b7fc6eb61a249e22b79628c954945988cfbe7168770b"
+      },
+      "currentFilteredBlobId": "6290ad9a69591974e86a093b88d82a8d27ed8e68"
+    },
+    {
+      "path": "src/features/p2p/pages/P2PMyAdsContractPage.tsx",
+      "blobId": "fd6920568d940771801cc1ed8fd8f3325038b1c4",
+      "filteredBlobId": "fd6920568d940771801cc1ed8fd8f3325038b1c4",
+      "committedSha256": "7992c078697ca5283a50d1d371f807f11854d9214282afac152468a900ad8154",
+      "workingSha256": "7992c078697ca5283a50d1d371f807f11854d9214282afac152468a900ad8154",
+      "sourceHead": "36e793657327ac1aa2b72cf302af285aa133f7e5",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+        "sha256": "85361f18632ce8afc54c395a5f5ca018f79694cac185f4dace072204894a82a8"
+      },
+      "currentFilteredBlobId": "fd6920568d940771801cc1ed8fd8f3325038b1c4"
+    },
+    {
+      "path": "src/features/p2p/pages/P2POrderActionPages.tsx",
+      "blobId": "78220ddc7371be27fd65533ca5f33e256b0a2a1f",
+      "filteredBlobId": "78220ddc7371be27fd65533ca5f33e256b0a2a1f",
+      "committedSha256": "e6f20f77f30a59f94e97c8abb37bf43e7c6ee11f0d3e9e4f6014d7af02a75f9f",
+      "workingSha256": "e6f20f77f30a59f94e97c8abb37bf43e7c6ee11f0d3e9e4f6014d7af02a75f9f",
+      "sourceHead": "36e793657327ac1aa2b72cf302af285aa133f7e5",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+        "sha256": "c84dc45396714b417c0a9fb43a8f6e1d38476157d616c67b6a14a9f2345ad10c"
+      },
+      "currentFilteredBlobId": "78220ddc7371be27fd65533ca5f33e256b0a2a1f"
+    },
+    {
+      "path": "src/features/p2p/pages/P2POrdersContractPage.tsx",
+      "blobId": "dc439df770fd2e3b78bfa6c7bbe3c101056260aa",
+      "filteredBlobId": "dc439df770fd2e3b78bfa6c7bbe3c101056260aa",
+      "committedSha256": "a3d229f58e5e87b4ebfa6d7c5c0b9bfe6ea44e5dc2f3b78fd01f5fd4a213f7cf",
+      "workingSha256": "a3d229f58e5e87b4ebfa6d7c5c0b9bfe6ea44e5dc2f3b78fd01f5fd4a213f7cf",
+      "sourceHead": "36e793657327ac1aa2b72cf302af285aa133f7e5",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "4a9e8002772f515dd1117d1ac5386a2ace5136290ca8303c5a67e88b05ef8a67"
+      },
+      "currentFilteredBlobId": "dc439df770fd2e3b78bfa6c7bbe3c101056260aa"
+    },
+    {
+      "path": "src/features/predictions/pages/PredictionContractPages.tsx",
+      "blobId": "e99006e2bf1b6b0e7a7a3130ed2ddfcd91c553fd",
+      "filteredBlobId": "e99006e2bf1b6b0e7a7a3130ed2ddfcd91c553fd",
+      "committedSha256": "0e6a7f7b40af44da3b354f83e59160d6d066f8769ad272b63c04dbdfea75db9b",
+      "workingSha256": "0e6a7f7b40af44da3b354f83e59160d6d066f8769ad272b63c04dbdfea75db9b",
+      "sourceHead": "36e793657327ac1aa2b72cf302af285aa133f7e5",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "2b2277fd2c6e4dc12ab89db2e088d2a75072b802",
+        "sha256": "dd976cb2bbe7b3d64bf6eb144e0124c88e08786f02b962c26841ec82bacc5cdb"
+      },
+      "currentFilteredBlobId": "e99006e2bf1b6b0e7a7a3130ed2ddfcd91c553fd"
+    },
+    {
+      "path": "src/features/trading/components/MiniChart.tsx",
+      "blobId": "3c2aa6826d713bc52c942268755d17697971da58",
+      "filteredBlobId": "3c2aa6826d713bc52c942268755d17697971da58",
+      "committedSha256": "40c12eee194154a453753a1ca42b5c4b47a18b558eac86071e199b32fc9de28b",
+      "workingSha256": "40c12eee194154a453753a1ca42b5c4b47a18b558eac86071e199b32fc9de28b",
+      "sourceHead": "36e793657327ac1aa2b72cf302af285aa133f7e5",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "0551554eb286f4d4fd2f70cd2130f2d2a32e92dc81bf3f51570800cd736e5623"
+      },
+      "currentFilteredBlobId": "3c2aa6826d713bc52c942268755d17697971da58"
+    },
+    {
+      "path": "src/features/trading/components/TradeTerminal.tsx",
+      "blobId": "7f26b9385018acb382cca23fd8b215aab4858356",
+      "filteredBlobId": "7f26b9385018acb382cca23fd8b215aab4858356",
+      "committedSha256": "85053c9e42cc397cbef9e1b3cd92cb24b226c7a0c93f8ac0eccb9d01e38ab5ec",
+      "workingSha256": "85053c9e42cc397cbef9e1b3cd92cb24b226c7a0c93f8ac0eccb9d01e38ab5ec",
+      "sourceHead": "36e793657327ac1aa2b72cf302af285aa133f7e5",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "bd8f1eba1344da1c39449e5189649de0a9b047cd7528175414a8033e2bc56990"
+      },
+      "currentFilteredBlobId": "7f26b9385018acb382cca23fd8b215aab4858356"
+    },
+    {
+      "path": "src/features/trading/components/TradingMarketPanel.tsx",
+      "blobId": "bbb06f87da99603435d758647edf37e24e47120c",
+      "filteredBlobId": "bbb06f87da99603435d758647edf37e24e47120c",
+      "committedSha256": "030ef9a414812bf21c860e2384c17ef56e1e57ccf21a00ca04d930479b587e3f",
+      "workingSha256": "030ef9a414812bf21c860e2384c17ef56e1e57ccf21a00ca04d930479b587e3f",
+      "sourceHead": "36e793657327ac1aa2b72cf302af285aa133f7e5",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "8ad1c9ed4d015ff8143d5d38832c255542a47337a64c8f6a3e949a41ff4c911e"
+      },
+      "currentFilteredBlobId": "bbb06f87da99603435d758647edf37e24e47120c"
+    },
+    {
+      "path": "src/features/trading/pages/ProviderLeaderboardPage.tsx",
+      "blobId": "246de38627498586a125cbf5f1c2a6efe36ee80e",
+      "filteredBlobId": "246de38627498586a125cbf5f1c2a6efe36ee80e",
+      "committedSha256": "92e72efa5ac82f25fa3385dabcac5b507a0b000c074a6cf486d93e16161e36ec",
+      "workingSha256": "92e72efa5ac82f25fa3385dabcac5b507a0b000c074a6cf486d93e16161e36ec",
+      "sourceHead": "36e793657327ac1aa2b72cf302af285aa133f7e5",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "1b3f9b5503a96a7f1e119f4f0076c83b0774de1f79570f0e52297110df172711"
+      },
+      "currentFilteredBlobId": "246de38627498586a125cbf5f1c2a6efe36ee80e"
+    },
+    {
+      "path": "src/features/trading/pages/TraderProfilePage.tsx",
+      "blobId": "d92b5534972e2d05d623a475d4433d0ebfb76411",
+      "filteredBlobId": "d92b5534972e2d05d623a475d4433d0ebfb76411",
+      "committedSha256": "b21760506bdd1f417e1b60afac7fb9095a162517fa106de7276da0cf6f980e58",
+      "workingSha256": "b21760506bdd1f417e1b60afac7fb9095a162517fa106de7276da0cf6f980e58",
+      "sourceHead": "36e793657327ac1aa2b72cf302af285aa133f7e5",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "31de88dd913f7541958d995ddd0f8877618685118c0a4dafd067a56f662a349b"
+      },
+      "currentFilteredBlobId": "d92b5534972e2d05d623a475d4433d0ebfb76411"
+    },
+    {
+      "path": "src/features/wallet/pages/AssetDetailPage.tsx",
+      "blobId": "e51eb28a3b975e33ac01e62fc1fbfb15202166dd",
+      "filteredBlobId": "e51eb28a3b975e33ac01e62fc1fbfb15202166dd",
+      "committedSha256": "231c3dfb48ee8ef6dae07cb03ed6e2331cbfed6f21a3aeb84f0590be7b23bf03",
+      "workingSha256": "231c3dfb48ee8ef6dae07cb03ed6e2331cbfed6f21a3aeb84f0590be7b23bf03",
+      "sourceHead": "36e793657327ac1aa2b72cf302af285aa133f7e5",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
+        "sha256": "589d572b02f4c42e69d010f7cd2572c9611ad507face1da394c913236296236a"
+      },
+      "currentFilteredBlobId": "e51eb28a3b975e33ac01e62fc1fbfb15202166dd"
+    },
+    {
+      "path": "src/features/wallet/pages/PendingDepositsPage.tsx",
+      "blobId": "04b779cc7cda3d9c14ee2a2aedff7ddbe31472a3",
+      "filteredBlobId": "04b779cc7cda3d9c14ee2a2aedff7ddbe31472a3",
+      "committedSha256": "ec961adfb0f66e4dd7c9f729ea2789c566c78f510fd6a5389f533fcd24931a0c",
+      "workingSha256": "ec961adfb0f66e4dd7c9f729ea2789c566c78f510fd6a5389f533fcd24931a0c",
+      "sourceHead": "36e793657327ac1aa2b72cf302af285aa133f7e5",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "4fc2ef58d44ce92d7e422d510cdd0aaba60127d7a4c59d64159fd896dc7f7a4d"
+      },
+      "currentFilteredBlobId": "04b779cc7cda3d9c14ee2a2aedff7ddbe31472a3"
+    },
+    {
+      "path": "src/features/wallet/pages/WalletOverviewContractPage.test.tsx",
+      "blobId": "a730ad4570201e541e638e070a2fc004455ba74e",
+      "filteredBlobId": "a730ad4570201e541e638e070a2fc004455ba74e",
+      "committedSha256": "6e8d6a2b5b5939b6cd73cce66a450847106c36dd3acbb5013cea3e6e58482099",
+      "workingSha256": "6e8d6a2b5b5939b6cd73cce66a450847106c36dd3acbb5013cea3e6e58482099",
+      "sourceHead": "36e793657327ac1aa2b72cf302af285aa133f7e5",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
+        "sha256": "97554b696130f8ef2b3b97247b41251d9f346502c2197ded259c6d19c8254b69"
+      },
+      "currentFilteredBlobId": "a730ad4570201e541e638e070a2fc004455ba74e"
+    },
+    {
+      "path": "src/features/wallet/pages/WalletOverviewContractPage.tsx",
+      "blobId": "2e1848eab93151159c6e0474a81cd5474be80f93",
+      "filteredBlobId": "2e1848eab93151159c6e0474a81cd5474be80f93",
+      "committedSha256": "7f5328675ac30690708e8ff0b41baae48b830ab606932927233adb2c63c11bd9",
+      "workingSha256": "7f5328675ac30690708e8ff0b41baae48b830ab606932927233adb2c63c11bd9",
+      "sourceHead": "36e793657327ac1aa2b72cf302af285aa133f7e5",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+        "sha256": "b1ad77e142185a3b02930712d928fe6082627a5f8c61a46f6c280640306404bc"
+      },
+      "currentFilteredBlobId": "2e1848eab93151159c6e0474a81cd5474be80f93"
+    },
+    {
+      "path": "src/features/predictions/pages/PredictionNavigation.test.tsx",
+      "blobId": "241dfebe356d3ebfed09f41c5b07094a6b8f799a",
+      "filteredBlobId": "241dfebe356d3ebfed09f41c5b07094a6b8f799a",
+      "committedSha256": "676de295aa0b67b2621cef279f783a1c6848a6a39e5ad3bae991f924ba24a986",
+      "workingSha256": "676de295aa0b67b2621cef279f783a1c6848a6a39e5ad3bae991f924ba24a986",
+      "sourceHead": "36e793657327ac1aa2b72cf302af285aa133f7e5",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": null,
+        "sha256": null
+      },
+      "currentFilteredBlobId": "241dfebe356d3ebfed09f41c5b07094a6b8f799a"
+    },
+    {
+      "path": "docs/architecture/page-inventory.json",
+      "blobId": "b1c494e4dd51b69913754d007e7aaa9c95ddf3e6",
+      "filteredBlobId": "b1c494e4dd51b69913754d007e7aaa9c95ddf3e6",
+      "committedSha256": "a4621f8ec4ada14b2a4384a2e8a3a5965d607b36e2c4a63600bb366b04f87497",
+      "workingSha256": "a4621f8ec4ada14b2a4384a2e8a3a5965d607b36e2c4a63600bb366b04f87497",
+      "sourceHead": "a46a8cdde1414461eaf4937159eaee3746360763",
+      "priority": "P2",
+      "previous": {
+        "sourceHead": "7aad715a493cfc1474cc489ee01bfbae770b6a14",
+        "sha256": "280bd0bf82071cd080b5464a0754466ecf0fd1199f4bc43a52b0ff522827e7e6"
+      },
+      "currentFilteredBlobId": "b1c494e4dd51b69913754d007e7aaa9c95ddf3e6"
+    }
+  ],
+  "limits": [
+    "44 actual local source/test/inventory blobs only. No push, PR, hosted CI or deployment.",
+    "Pre-commit runtime evidence retains the HEAD it actually observed; exact bytes match these actual committed objects after Git filtering.",
+    "Current strict-HEAD browser/build evidence must run on this final source commit.",
+    "Original baseline, catalogue history and backend/UAT/coverage criteria are preserved."
+  ]
+}

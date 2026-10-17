@@ -34,7 +34,7 @@ export function AccountLockedPage() {
           >
             <Lock size={28} color={colors.sell} />
           </div>
-          <h1
+          <h2
             ref={headingRef}
             id="account-locked-title"
             tabIndex={-1}
@@ -42,7 +42,7 @@ export function AccountLockedPage() {
             style={{ color: colors.text1 }}
           >
             Tài khoản tạm khóa
-          </h1>
+          </h2>
           <p
             role="status"
             className="text-center text-sm leading-relaxed"

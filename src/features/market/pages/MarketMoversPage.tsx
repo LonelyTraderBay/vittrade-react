@@ -91,8 +91,8 @@ export function MarketMoversPage() {
               onClick={() => setTimeframe(item)}
               className="rounded-lg px-3 py-1.5"
               style={{
-                background: timeframe === item ? '#3B82F6' : colors.chipBg,
-                color: timeframe === item ? '#fff' : colors.chipText,
+                background: timeframe === item ? colors.info : colors.chipBg,
+                color: timeframe === item ? 'var(--tr-text-on-color)' : colors.chipText,
                 fontSize: 11,
                 fontWeight: 600,
               }}
@@ -151,7 +151,7 @@ export function MarketMoversPage() {
                   mover={mover}
                   rank={index + 1}
                   view={view}
-                  onClick={() => navigate(`${prefix}/pair/${mover.id}`)}
+                  onClick={() => navigate(`${prefix}/pair/${encodeURIComponent(mover.id)}`)}
                 />
               ))
             )}
@@ -192,7 +192,7 @@ function MoverRow({
         className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
         style={{
           background: rank <= 3 ? 'rgba(245,158,11,0.12)' : colors.surface2,
-          color: rank <= 3 ? '#F59E0B' : colors.text3,
+          color: rank <= 3 ? colors.warningText : colors.text3,
           fontSize: 11,
           fontWeight: 700,
         }}
@@ -203,14 +203,16 @@ function MoverRow({
         className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
         style={{ background: `${mover.color}1F` }}
       >
-        <span style={{ color: mover.color, fontSize: 10, fontWeight: 700 }}>
+        <span style={{ color: colors.text1, fontSize: 10, fontWeight: 700 }}>
           {mover.symbol.slice(0, 3)}
         </span>
       </span>
       <span className="min-w-0 flex-1">
         <span style={{ color: colors.text1, display: 'block', fontSize: 12, fontWeight: 600 }}>
           {mover.symbol}
-          {mover.isNew && <span style={{ color: '#8B5CF6', fontSize: 9, marginLeft: 6 }}>NEW</span>}
+          {mover.isNew && (
+            <span style={{ color: 'var(--tr-accent-text)', fontSize: 9, marginLeft: 6 }}>NEW</span>
+          )}
         </span>
         <span className="truncate block" style={{ color: colors.text3, fontSize: 10 }}>
           {mover.name}
@@ -233,7 +235,12 @@ function MoverRow({
         </span>
         <span
           style={{
-            color: view === 'losers' ? '#EF4444' : positive ? '#10B981' : '#EF4444',
+            color:
+              view === 'losers'
+                ? colors.errorText
+                : positive
+                  ? colors.successText
+                  : colors.errorText,
             display: 'inline-flex',
             alignItems: 'center',
             gap: 2,

@@ -8,6 +8,8 @@
  * @version 2.0 (Phase 2 - Sprint 2)
  */
 
+import { captureException } from '@/shared/telemetry/telemetry';
+import { env } from '@/shared/config/env';
 import { useEffect, useCallback, useMemo } from 'react';
 import { funnelTracker } from './dca-funnel-service';
 import type { FunnelAnalytics } from './dca-funnel-service';
@@ -254,7 +256,8 @@ export function useFunnelAnalytics(funnelId: string): FunnelAnalytics | null {
     try {
       return funnelTracker.getFunnelAnalytics(funnelId);
     } catch (error) {
-      console.error('[useFunnelAnalytics] Error:', error);
+      captureException(error, { area: 'dca-funnel', operation: 'query-analytics' });
+      if (env.isDev) console.error('[useFunnelAnalytics] Error:', error);
       return null;
     }
   }, [funnelId]);

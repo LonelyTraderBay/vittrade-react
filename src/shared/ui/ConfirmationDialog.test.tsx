@@ -19,5 +19,7 @@ describe('ConfirmationDialog', () => {
     );
 
     expect(screen.getByText('Additional review details')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Huỷ' })).toHaveAttribute('type', 'button');
+    expect(screen.getByRole('button', { name: 'Xác nhận' })).toHaveAttribute('type', 'button');
   });
 });
