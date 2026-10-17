@@ -310,6 +310,20 @@ test.describe('production shell smoke', () => {
       logoColor: '#F7931A',
       category: 'Layer 1',
     };
+    const secondMarketPair = {
+      ...marketPair,
+      id: 'eth-usdt',
+      symbol: 'ETH/USDT',
+      baseAsset: 'ETH',
+      price: 3_500,
+      prevPrice: 3_400,
+      change24h: 1.25,
+      high24h: 3_600,
+      low24h: 3_300,
+      volume24h: 8_765_432_100,
+      marketCap: 420_000_000_000,
+      category: 'Layer 1',
+    };
     const marketSession = {
       ...authenticatedSession,
       user: {
@@ -325,7 +339,7 @@ test.describe('production shell smoke', () => {
     let watchlistWriteCount = 0;
 
     await page.route('**/auth/session', (route) => route.fulfill({ json: marketSession }));
-    await page.route('**/market/pairs*', (route) => {
+    await page.route('**/market/pairs**', (route) => {
       const pathname = new URL(route.request().url()).pathname;
       if (pathname.endsWith('/orderbook')) {
         return route.fulfill({
@@ -334,7 +348,8 @@ test.describe('production shell smoke', () => {
       }
       if (pathname.endsWith('/trades')) return route.fulfill({ json: { items: [] } });
       if (pathname.endsWith('/btc-usdt')) return route.fulfill({ json: marketPair });
-      return route.fulfill({ json: { items: [marketPair] } });
+      if (pathname.endsWith('/eth-usdt')) return route.fulfill({ json: secondMarketPair });
+      return route.fulfill({ json: { items: [marketPair, secondMarketPair] } });
     });
     await page.route('**/market/watchlist**', (route) => {
       const method = route.request().method();
@@ -369,6 +384,34 @@ test.describe('production shell smoke', () => {
         pairPath: '/t/pair/btc-usdt',
       },
       { name: 'phone', width: 390, height: 844, listPath: '/markets', pairPath: '/pair/btc-usdt' },
+      {
+        name: 'responsive-phone-breakpoint',
+        width: 767,
+        height: 900,
+        listPath: '/r/markets',
+        pairPath: '/r/pair/btc-usdt',
+      },
+      {
+        name: 'responsive-tablet-breakpoint',
+        width: 768,
+        height: 1_024,
+        listPath: '/r/markets',
+        pairPath: '/r/pair/btc-usdt',
+      },
+      {
+        name: 'responsive-tablet-max-breakpoint',
+        width: 1_023,
+        height: 1_024,
+        listPath: '/r/markets',
+        pairPath: '/r/pair/btc-usdt',
+      },
+      {
+        name: 'responsive-web-breakpoint',
+        width: 1_024,
+        height: 900,
+        listPath: '/r/markets',
+        pairPath: '/r/pair/btc-usdt',
+      },
     ]) {
       await page.setViewportSize({ width: shell.width, height: shell.height });
       const shellInitialWriteCount = watchlistWriteCount;
@@ -376,11 +419,34 @@ test.describe('production shell smoke', () => {
       await page.goto(shell.listPath);
       await expect(page).toHaveURL(new RegExp(`${shell.listPath.replaceAll('/', '\\/')}$`));
 
+      for (const theme of ['light', 'dark'] as const) {
+        await page.evaluate((mode) => {
+          document.documentElement.classList.remove('dark', 'light');
+          document.documentElement.classList.add(mode);
+        }, theme);
+        const axeResults = await new AxeBuilder({ page }).analyze();
+        expect(
+          axeResults.violations,
+          `${shell.name}/${theme} market list axe violations: ${JSON.stringify(axeResults.violations, null, 2)}`,
+        ).toEqual([]);
+      }
+
       const pairLink = page.getByRole('link', { name: 'BTC/USDT — 67,543.21' });
       await expect(pairLink).toHaveAttribute('href', shell.pairPath);
-      const addFavorite = page.getByRole('button', { name: 'Thêm vào yêu thích' });
+      const addFavorite = page.getByRole('button', { name: 'Thêm vào yêu thích' }).first();
       await expect(addFavorite).toHaveAttribute('aria-pressed', 'false');
       await expect(page.locator('a button, button a')).toHaveCount(0);
+
+      const searchInput = page.getByRole('textbox', { name: 'Tìm kiếm BTC, ETH...' });
+      await searchInput.focus();
+      const searchFocusStyle = await searchInput.evaluate((element) => {
+        const style = getComputedStyle(element.parentElement!);
+        return { outlineStyle: style.outlineStyle, outlineWidth: style.outlineWidth };
+      });
+      expect(searchFocusStyle.outlineStyle, shell.name).not.toBe('none');
+      expect(Number.parseFloat(searchFocusStyle.outlineWidth), shell.name).toBeGreaterThanOrEqual(
+        2,
+      );
 
       await pairLink.focus();
       await page.keyboard.press('Tab');
@@ -399,7 +465,7 @@ test.describe('production shell smoke', () => {
       await page.keyboard.press('Tab');
       await expect(addFavorite).toBeFocused();
       await page.keyboard.press('Space');
-      const removeFavorite = page.getByRole('button', { name: 'Bỏ yêu thích' });
+      const removeFavorite = page.getByRole('button', { name: 'Bỏ yêu thích' }).first();
       await expect(removeFavorite).toHaveAttribute('aria-pressed', 'true');
       await expect.poll(() => watchlistWriteCount).toBe(shellInitialWriteCount + 1);
       await expect(page).toHaveURL(new RegExp(`${shell.listPath.replaceAll('/', '\\/')}$`));
@@ -412,10 +478,59 @@ test.describe('production shell smoke', () => {
       await expect.poll(() => watchlistWriteCount).toBe(shellInitialWriteCount + 2);
       await expect(page).toHaveURL(new RegExp(`${shell.listPath.replaceAll('/', '\\/')}$`));
 
+      await page.getByRole('textbox', { name: 'Tìm kiếm BTC, ETH...' }).fill('');
+      await page.getByRole('button', { name: 'Layer 1' }).click();
+      await expect(page.getByRole('button', { name: 'Layer 1' })).toHaveAttribute(
+        'aria-pressed',
+        'true',
+      );
+      await page.getByRole('button', { name: 'Mở bộ sắp xếp' }).click();
+      await expect(page.getByRole('button', { name: 'Đóng bộ sắp xếp' })).toHaveAttribute(
+        'aria-expanded',
+        'true',
+      );
+      await page.getByRole('button', { name: 'Giá cao → thấp' }).click();
+      const btcRow = page.locator('a[href$="/pair/btc-usdt"]');
+      const ethRow = page.locator('a[href$="/pair/eth-usdt"]');
+      await expect(btcRow).toBeVisible();
+      await expect(ethRow).toBeVisible();
+      const btcBounds = await btcRow.boundingBox();
+      const ethBounds = await ethRow.boundingBox();
+      expect(btcBounds).not.toBeNull();
+      expect(ethBounds).not.toBeNull();
+      expect(btcBounds!.y).toBeLessThan(ethBounds!.y);
+
+      await searchInput.fill('BTC');
+      await expect(searchInput).toBeFocused();
+      await expect
+        .poll(() => page.evaluate(() => Object.fromEntries(new URLSearchParams(location.search))))
+        .toEqual({
+          category: 'Layer 1',
+          sort: 'price_desc',
+          q: 'BTC',
+        });
       await pairLink.click();
       await expect(page).toHaveURL(new RegExp(`${shell.pairPath.replaceAll('/', '\\/')}$`));
+      await expect(page.getByRole('heading', { name: 'BTC/USDT', exact: true })).toBeVisible();
       await page.goBack();
-      await expect(page).toHaveURL(new RegExp(`${shell.listPath.replaceAll('/', '\\/')}$`));
+      await expect(page).toHaveURL(new RegExp(`${shell.listPath.replaceAll('/', '\\/')}\\?`));
+      await expect
+        .poll(() => page.evaluate(() => Object.fromEntries(new URLSearchParams(location.search))))
+        .toEqual({
+          category: 'Layer 1',
+          sort: 'price_desc',
+          q: 'BTC',
+        });
+      await expect(page.getByRole('textbox', { name: 'Tìm kiếm BTC, ETH...' })).toHaveValue('BTC');
+      await expect(page.getByRole('button', { name: 'Layer 1' })).toHaveAttribute(
+        'aria-pressed',
+        'true',
+      );
+      await page.getByRole('button', { name: 'Mở bộ sắp xếp' }).click();
+      await expect(page.getByRole('button', { name: 'Giá cao → thấp' })).toHaveAttribute(
+        'aria-pressed',
+        'true',
+      );
       await page.getByRole('link', { name: 'BTC/USDT — 67,543.21' }).focus();
       await page.keyboard.press('Enter');
       await expect(page).toHaveURL(new RegExp(`${shell.pairPath.replaceAll('/', '\\/')}$`));

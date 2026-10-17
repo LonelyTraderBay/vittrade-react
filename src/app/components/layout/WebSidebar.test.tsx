@@ -12,6 +12,12 @@ function LocationProbe() {
 }
 
 describe('WebSidebar', () => {
+  it('exposes the navigation panel as a named complementary landmark', () => {
+    renderWithProviders(<WebSidebar />);
+
+    expect(screen.getByRole('complementary', { name: 'Điều hướng chính' })).toBeInTheDocument();
+  });
+
   it('uses the shared readable fill for account initials', () => {
     renderWithProviders(<WebSidebar />);
 

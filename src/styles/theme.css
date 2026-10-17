@@ -976,6 +976,11 @@
   /* ========================================
      ENTERPRISE FINTECH — Input Focus Glow
      ======================================== */
+  .tr-search-bar-control:focus-within {
+    outline: 2px solid var(--tr-primary);
+    outline-offset: 2px;
+  }
+
   input:focus,
   textarea:focus {
     outline: none;

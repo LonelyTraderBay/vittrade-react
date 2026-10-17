@@ -109,6 +109,7 @@ describe('ResponsiveAppLayout', () => {
     fireEvent.resize(window);
 
     expect(screen.getByText('VitTrade Desktop')).toBeInTheDocument();
+    expect(screen.getByRole('banner', { name: 'Thanh công cụ chính' })).toBeInTheDocument();
     expect(screen.queryByRole('navigation', { name: 'Main navigation' })).not.toBeInTheDocument();
     view.unmount();
   });

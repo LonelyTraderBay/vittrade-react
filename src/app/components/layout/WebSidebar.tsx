@@ -160,7 +160,8 @@ export function WebSidebar() {
   }, [location.pathname]);
 
   return (
-    <div
+    <aside
+      aria-label="Điều hướng chính"
       className="flex flex-col shrink-0"
       style={{
         width: WEB_SIDEBAR_WIDTH,
@@ -382,6 +383,6 @@ export function WebSidebar() {
           </div>
         </button>
       </div>
-    </div>
+    </aside>
   );
 }

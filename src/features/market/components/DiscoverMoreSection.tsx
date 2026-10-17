@@ -16,7 +16,7 @@ export function DiscoverMoreSection() {
 
   return (
     <div>
-      <SectionHeader title="Khám phá thêm" accent accentColor="#6366F1" mb={8} />
+      <SectionHeader title="Khám phá thêm" headingLevel={2} accent accentColor="#6366F1" mb={8} />
       <TrCard overflow>
         {[
           {

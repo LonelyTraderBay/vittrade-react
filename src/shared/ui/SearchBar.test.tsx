@@ -28,6 +28,7 @@ describe('SearchBar', () => {
     );
 
     const input = screen.getByRole('textbox', { name: 'Tìm kiếm...' });
+    expect(input.parentElement).toHaveClass('tr-search-bar-control');
     expect(input).toHaveValue('bitcoin');
     fireEvent.change(input, { target: { value: 'ethereum' } });
     expect(onChange).toHaveBeenCalledWith('ethereum');
@@ -35,6 +36,7 @@ describe('SearchBar', () => {
 
     const clear = screen.getByRole('button', { name: 'Xóa tìm kiếm' });
     expect(clear).toHaveAttribute('type', 'button');
+    expect(clear).toHaveStyle({ width: '24px', height: '24px' });
     fireEvent.click(clear);
     expect(onChange).toHaveBeenLastCalledWith('');
     expect(onClear).toHaveBeenCalledOnce();

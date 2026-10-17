@@ -131,7 +131,8 @@ export function WebCommandBar() {
   }, [isDark, setTheme]);
 
   return (
-    <div
+    <header
+      aria-label="Thanh công cụ chính"
       className="flex items-center justify-between px-6 shrink-0 gap-4"
       style={{
         height: WEB_COMMAND_BAR_HEIGHT,
@@ -316,6 +317,6 @@ export function WebCommandBar() {
           </div>
         </button>
       </div>
-    </div>
+    </header>
   );
 }

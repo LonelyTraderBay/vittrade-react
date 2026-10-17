@@ -24,6 +24,12 @@ afterEach(() => {
 });
 
 describe('WebCommandBar', () => {
+  it('exposes the command bar as a named banner landmark', () => {
+    renderWithProviders(<WebCommandBar />);
+
+    expect(screen.getByRole('banner', { name: 'Thanh công cụ chính' })).toBeInTheDocument();
+  });
+
   it('shows labeled breadcrumbs and navigates from a parent breadcrumb', () => {
     renderWithProviders(<WebCommandBar />, {
       routerProps: { initialEntries: ['/w/markets/overview'] },
