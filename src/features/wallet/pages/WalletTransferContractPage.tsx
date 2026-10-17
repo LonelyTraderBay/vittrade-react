@@ -288,13 +288,13 @@ export function WalletTransferContractPage() {
         </TrCard>
 
         <div
-          className="flex items-start gap-2 rounded-xl px-4 py-3"
+          className="flex items-start gap-2 rounded-xl px-4 py-2"
           style={{ background: `${colors.primary}14` }}
         >
           <Info size={15} color={colors.primary} className="mt-0.5 shrink-0" />
           <p className="text-xs leading-5" style={{ color: colors.text2 }}>
-            Transfers may remain pending. Keep the reference and do not repeat the same transfer
-            while its status is pending.
+            Transfers may remain pending. Keep the reference and do not retry until its status
+            changes.
           </p>
         </div>
 

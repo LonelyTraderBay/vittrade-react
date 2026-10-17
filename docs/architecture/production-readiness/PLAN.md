@@ -581,6 +581,14 @@ shared consumers để cùng một thay đổi không bị đếm hai lần ho�
    và side effects của shared CSS. Không bulk replace token hoặc class bằng regex.
    Thay đổi nhiều product/shell trong một nhóm chỉ khi cùng hợp đồng và cùng cổng
    rollback; nếu khác nhau thì chia commit/step.
+   Runtime wallet-transfer sample tại `/r/wallet/transfer` ở 390×844 đã đo được
+   điểm giữa CTA nằm dưới vùng vẽ của nút `Giao dịch` trong `ResponsiveBottomNav`;
+   click chuột thật điều hướng sang `/r/trade/btcusdt` thay vì gửi form. Trước khi
+   nghiệm thu trang, regression phải xác nhận CTA không giao hình học với vùng nút
+   navigation nổi, đo `elementFromPoint` ở tâm CTA, xác nhận hit vào CTA và request
+   fixture thành công, rồi kiểm tra riêng nút điều hướng vẫn đi tới route trade.
+   Owner sửa là bottom-navigation contract đang được shell dùng;
+   không đánh dấu page/route hoàn tất chỉ vì field/token đã chuẩn hóa.
 3. **C06.14** — Ngoại lệ nghiệp vụ/mật độ/immersive/chart/auth/developer preview ghi đúng nơi
    policy hiện hành chỉ định. Không ép dashboard dày đặc như form, không ép Web
    desktop như phone, không xóa quyền native/dynamic style. Nếu owner duyệt visual
