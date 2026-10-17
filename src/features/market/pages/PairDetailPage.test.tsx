@@ -1,7 +1,7 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 import { http, HttpResponse, type DefaultBodyType } from 'msw';
 import { setupServer } from 'msw/node';
-import { screen } from '@testing-library/react';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Route, Routes, useLocation } from 'react-router';
 import { renderWithProviders } from '@/test/test-utils';
@@ -130,6 +130,49 @@ function renderPairDetail(authAdapter?: AuthAdapter, initialEntries = ['/pair/bt
 }
 
 describe('Market pair detail page', () => {
+  it('renders negative market performance and a sell-side recent trade', async () => {
+    installMarketReadHandlers({ items: [] });
+    server.use(
+      http.get('*/market/pairs/btc-usdt', () => HttpResponse.json({ ...pair, change24h: -2.34 })),
+      http.get('*/market/pairs/btc-usdt/trades', () =>
+        HttpResponse.json({
+          items: [{ ...recentTrades.items[0], side: 'sell' }],
+        }),
+      ),
+    );
+    renderPairDetail();
+    expect((await screen.findAllByText(/2\.34%/)).length).toBeGreaterThan(0);
+    await userEvent.click(screen.getByRole('button', { name: 'Giao dịch' }));
+    expect(await screen.findByText('0.125000')).toBeInTheDocument();
+    expect(screen.getByText('0.125000').closest('div')?.querySelector('svg')).toHaveClass(
+      'lucide-arrow-down',
+    );
+  });
+  it('locks favorite changes until a failed watchlist read is recovered by an explicit retry', async () => {
+    installMarketReadHandlers({ items: [] });
+    let fail = true;
+    let reads = 0;
+    server.use(
+      http.get('*/market/watchlist', () => {
+        reads += 1;
+        return fail
+          ? HttpResponse.json({ message: 'Watchlist unavailable' }, { status: 503 })
+          : HttpResponse.json({ items: [] });
+      }),
+    );
+    const user = userEvent.setup();
+    renderPairDetail(writeAdapter());
+    const retry = await screen.findByRole('button', { name: 'Thử tải lại' });
+    const favorite = screen.getByRole('button', { name: 'Theo dõi cặp giao dịch' });
+    expect(favorite).toBeDisabled();
+    const before = reads;
+    fail = false;
+    await user.click(retry);
+    await waitFor(() => expect(favorite).toBeEnabled());
+    expect(reads).toBe(before + 1);
+    expect(screen.queryByRole('button', { name: 'Thử tải lại' })).not.toBeInTheDocument();
+    expect(favorite).toHaveAttribute('aria-pressed', 'false');
+  });
   it('loads pair data and adds then removes the pair from the watchlist', async () => {
     const watchlist: { items: Array<Record<string, unknown>> } = { items: [] };
     installMarketReadHandlers(watchlist);
@@ -155,9 +198,11 @@ describe('Market pair detail page', () => {
     expect(await screen.findAllByText('BTC/USDT')).not.toHaveLength(0);
     const user = userEvent.setup();
     await user.click(await screen.findByRole('button', { name: 'Theo dõi cặp giao dịch' }));
-    expect(
-      await screen.findByRole('button', { name: 'Bỏ theo dõi cặp giao dịch' }),
-    ).toHaveAttribute('aria-pressed', 'true');
+    const activeFavorite = await screen.findByRole('button', {
+      name: 'Bỏ theo dõi cặp giao dịch',
+    });
+    expect(activeFavorite).toHaveAttribute('aria-pressed', 'true');
+    expect(activeFavorite.querySelector('svg')).toHaveAttribute('fill', 'var(--tr-primary)');
 
     await user.click(screen.getByRole('button', { name: 'Bỏ theo dõi cặp giao dịch' }));
     expect(await screen.findByRole('button', { name: 'Theo dõi cặp giao dịch' })).toHaveAttribute(
@@ -167,10 +212,21 @@ describe('Market pair detail page', () => {
   });
 
   it('keeps the watchlist control disabled for an authenticated read-only session', async () => {
+    let createCalls = 0;
     installMarketReadHandlers({ items: [] });
+    server.use(
+      http.post('*/market/watchlist', () => {
+        createCalls += 1;
+        return HttpResponse.json({ id: 'watchlist-1', pairId: pair.id }, { status: 201 });
+      }),
+    );
     renderPairDetail(readOnlyAdapter());
 
-    expect(await screen.findByRole('button', { name: 'Theo dõi cặp giao dịch' })).toBeDisabled();
+    const favorite = await screen.findByRole('button', { name: 'Theo dõi cặp giao dịch' });
+    expect(favorite).toBeDisabled();
+    favorite.removeAttribute('disabled');
+    fireEvent.click(favorite);
+    expect(createCalls).toBe(0);
   });
 
   it('renders server order-book and recent-trade tabs', async () => {

@@ -46,6 +46,24 @@ function renderForm({
 }
 
 describe('TPSLForm', () => {
+  it('does not divide by zero when stop loss equals the entry price', () => {
+    renderForm({ values: { ...emptyValues, enabled: true, tpPrice: '66000', slPrice: '65000' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Mở rộng' }));
+    expect(screen.getByText('1 : 0.00')).toBeInTheDocument();
+    expect(screen.getByText('SL phải thấp hơn giá vào')).toBeInTheDocument();
+    expect(screen.queryByText(/NaN|Infinity/)).not.toBeInTheDocument();
+  });
+
+  it('withholds reward and risk estimates when the entry price is unavailable', () => {
+    renderForm({
+      entryPrice: 0,
+      values: { ...emptyValues, enabled: true, tpPrice: '66000', slPrice: '64000' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Mở rộng' }));
+
+    expect(screen.queryByText(/0\.00%/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/NaN|Infinity/)).not.toBeInTheDocument();
+  });
   it.each([
     ['buy', '64000', '66000', 'cao hơn', 'thấp hơn'],
     ['sell', '66000', '64000', 'thấp hơn', 'cao hơn'],

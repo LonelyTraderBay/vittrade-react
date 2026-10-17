@@ -138,7 +138,7 @@ export function WalletTransactionHistoryContractPage() {
             <button
               type="submit"
               className="rounded-lg px-3 py-2 text-xs font-semibold"
-              style={{ background: colors.primary, color: '#fff' }}
+              style={{ background: colors.primary, color: 'var(--tr-text-on-color)' }}
             >
               Apply
             </button>

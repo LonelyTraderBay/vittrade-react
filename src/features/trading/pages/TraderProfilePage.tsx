@@ -102,7 +102,11 @@ export function TraderProfilePage() {
           </div>
           <button
             type="button"
-            onClick={() => navigate(`${prefix}/trade/copy-provider/${provider.id}/configuration`)}
+            onClick={() =>
+              navigate(
+                `${prefix}/trade/copy-provider/${encodeURIComponent(provider.id)}/configuration`,
+              )
+            }
             className="w-full rounded-xl py-3 mt-4 flex items-center justify-center gap-2"
             style={{ background: colors.primary, color: '#fff', fontSize: 13, fontWeight: 700 }}
           >

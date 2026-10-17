@@ -1,0 +1,161 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-13T15:28:18.658Z",
+  "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
+  "branch": "",
+  "origin": "http://127.0.0.1:4193",
+  "browser": "Chromium via Playwright",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "scenario": {
+    "id": "auth.success",
+    "domain": "auth",
+    "state": "success",
+    "status": "passed",
+    "persona": "developer (local MSW fixture)",
+    "role": "user",
+    "operationIds": [
+      "register",
+      "login",
+      "verifyLoginMfaChallenge",
+      "getSession",
+      "refreshSession",
+      "logout",
+      "verifyMfa",
+      "confirmMfaSetup",
+      "beginMfaSetup",
+      "requestPasswordResetCode",
+      "verifyCurrentPassword",
+      "changePassword",
+      "verifyPasswordResetCode",
+      "confirmPasswordReset"
+    ],
+    "observedOperationIds": ["login"],
+    "operationRequestCounts": {
+      "getSession": 1,
+      "login": 1
+    },
+    "requests": [
+      {
+        "method": "GET",
+        "path": "/api/auth/session"
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/login"
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/pairs"
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/watchlist"
+      }
+    ],
+    "responses": [
+      {
+        "method": "GET",
+        "path": "/api/auth/session",
+        "status": 401,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/login",
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "status": 200,
+        "fromServiceWorker": true
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "status": 200,
+        "fromServiceWorker": true
+      }
+    ],
+    "initialSessionResponse": {
+      "status": 401,
+      "fromServiceWorker": true,
+      "contractExpected": true
+    },
+    "loginResult": {
+      "status": "authenticated",
+      "userEmail": "developer@vittrade.local",
+      "userFullName": "VitTrade Developer",
+      "elapsedMs": 215
+    },
+    "visibleIdentityCount": 2,
+    "formerStaticIdentityCount": 0,
+    "visibleHomeContent": true,
+    "finalRoute": "/w/home",
+    "elapsedMs": 1225,
+    "externalApiOrigins": [],
+    "writeRequestCount": 1,
+    "pageErrors": [],
+    "screenshots": ["preview-auth-success-current-head-202610131528186.png"],
+    "note": "The login flow used the real WebLoginPage and a local MSW developer fixture. getSession returned its declared unauthenticated 401; exactly one login POST returned the declared 200 and routed to /w/home with the session identity visible. Only login among 14 linked Auth operations was observed. This does not prove backend authentication, cookie persistence, MFA, staging or production behavior."
+  },
+  "fixtureBoundary": {
+    "serviceWorkerControlled": true,
+    "allObservedResponsesFromServiceWorker": true,
+    "externalApiOrigins": [],
+    "realBackendRequestSent": false,
+    "realBackendMutationSent": false
+  },
+  "measurements": {
+    "totalFlowMs": 1225,
+    "apiRequestCount": 4,
+    "apiResponseCount": 4,
+    "authLoginCount": 1,
+    "authSessionCount": 1,
+    "writeRequestCount": 1,
+    "pageErrors": [],
+    "externalApiOriginCount": 0
+  },
+  "contract": {
+    "operationIds": [
+      "register",
+      "login",
+      "verifyLoginMfaChallenge",
+      "getSession",
+      "refreshSession",
+      "logout",
+      "verifyMfa",
+      "confirmMfaSetup",
+      "beginMfaSetup",
+      "requestPasswordResetCode",
+      "verifyCurrentPassword",
+      "changePassword",
+      "verifyPasswordResetCode",
+      "confirmPasswordReset"
+    ],
+    "loginSuccessResponses": ["200", "401", "423"],
+    "sessionResponses": ["200", "401"]
+  },
+  "sourceHashes": {
+    "contracts/openapi/auth.yaml": "cceb23c9745d716a14cc9db823afee87e8e0ebea642426e12c41524351eaab83",
+    "docs/architecture/production-readiness/evidence/A06/run-auth-success-current-head-browser-check.mjs": "3dded6c928d82ea0ff0cd921d15ff81e3c77ad77154a052096fb3f42f5d581ca",
+    "src/app/contexts/AuthContext.tsx": "ed4902f682cbb4c11081acb1e87cfd2195fa0d06570ef1473ef962181b0d54b3",
+    "src/app/components/layout/WebCommandBar.tsx": "fe24d124e34dab6ce77f97b499315ae1469c3f93e06e27b805247deecaac06f4",
+    "src/app/components/layout/WebSidebar.tsx": "be4d7c10c7378290dc69516cd66c071e3e821215afbd97c3bc508d437c37362c",
+    "src/app/routes.ts": "c93a80e123fd95c3abd246aeb00589a51f5ff4560e794e87f70f7ff96248c0d5",
+    "src/dev/PreviewControls.tsx": "a318fb182dda24c9b8d2103ae4b40eeecb7c3eded57332aad3c5bc8a1836a54c",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/handlers.ts": "9d1ea085bab944b0bd0e59a665222113cb7bb661bbcd2408f09c6adf08cd3ea9",
+    "src/dev/mocks/personas.ts": "6189b9cbfb9765f5c442c52a089d30b5be171170fe054ef6bf2faffbbb53dccd",
+    "src/features/auth/api/auth-api.ts": "e3733bea27f15fb63c15d04541c3dbbcf3dd619f30e650907ba8923893855b1a",
+    "src/features/auth/pages/WebLoginPage.tsx": "740142c311aa06792d3c504d0a6268c7c8ec59bc4b7203de156ba48c9acbf029",
+    "src/shared/api/http-client.ts": "12a04035eac23a2999f8c7a76aafa32966585402c06d98f451ef33eb8601cf42",
+    "src/shared/api/query-client.ts": "b2b0e5fe60f7ade24017f12859fa1b68bd2de143868c42e37df51a71ee259ac2",
+    "src/shared/session/AuthContext.tsx": "b95d134413d28d85278553b752a4d6738857ed7785ea53d7a0e441db61b310f2"
+  },
+  "limitations": "This run used local Vite development and MSW. It does not establish backend authentication, persisted cookies, MFA behavior, staging, production routing or user acceptance."
+}

@@ -122,7 +122,7 @@ export function P2PPaymentMethodsPage() {
             className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl font-semibold text-sm"
             style={{
               background: 'rgba(59,130,246,0.08)',
-              color: '#3B82F6',
+              color: 'var(--tr-link)',
               border: '1px dashed rgba(59,130,246,0.3)',
             }}
           >
@@ -137,7 +137,7 @@ export function P2PPaymentMethodsPage() {
             className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl font-semibold text-sm"
             style={{
               background: 'rgba(168,85,247,0.08)',
-              color: '#A855F7',
+              color: 'var(--tr-accent-text)',
               border: '1px dashed rgba(168,85,247,0.3)',
             }}
           >
@@ -194,7 +194,7 @@ export function P2PPaymentMethodsPage() {
           className="rounded-xl p-3"
           style={{ background: 'rgba(59,130,246,0.06)', border: '1px solid rgba(59,130,246,0.15)' }}
         >
-          <p style={{ color: '#3B82F6', fontSize: 11, lineHeight: 1.6 }}>
+          <p style={{ color: 'var(--tr-link)', fontSize: 11, lineHeight: 1.6 }}>
             <Shield size={10} className="inline mr-1" />
             Thông tin thanh toán chỉ hiển thị cho đối tác khi đơn hàng P2P được tạo.
           </p>
@@ -206,7 +206,7 @@ export function P2PPaymentMethodsPage() {
         onClose={() => setDeleteId(null)}
         onConfirm={() => void remove(deleteId!)}
         variant="danger"
-        icon={<Trash2 size={24} color="#EF4444" />}
+        icon={<Trash2 size={24} color="var(--tr-error-text)" />}
         title="Delete payment method?"
         description="Hành động này không thể hoàn tác. Quảng cáo P2P đang dùng phương thức này cần được cập nhật."
         confirmText="Delete"
@@ -245,9 +245,9 @@ function PaymentMethodCard({
           style={{ background: isBank ? 'rgba(59,130,246,0.1)' : 'rgba(168,85,247,0.1)' }}
         >
           {isBank ? (
-            <CreditCard size={18} color="#3B82F6" />
+            <CreditCard size={18} color="var(--tr-link)" />
           ) : (
-            <Smartphone size={18} color="#A855F7" />
+            <Smartphone size={18} color="var(--tr-accent)" />
           )}
         </div>
         <div className="flex-1 min-w-0">
@@ -255,11 +255,11 @@ function PaymentMethodCard({
             <span style={{ color: colors.text1, fontSize: 13, fontWeight: 700 }}>
               {method.bankName}
             </span>
-            {method.isVerified && <Shield size={12} color="#10B981" />}
+            {method.isVerified && <Shield size={12} color="var(--tr-success-text)" />}
             {method.isDefault && (
               <span
                 className="px-1.5 py-0.5 rounded text-xs font-bold"
-                style={{ background: 'rgba(59,130,246,0.1)', color: '#3B82F6', fontSize: 9 }}
+                style={{ background: 'rgba(59,130,246,0.1)', color: 'var(--tr-link)', fontSize: 9 }}
               >
                 Mặc định
               </span>
@@ -291,7 +291,7 @@ function PaymentMethodCard({
             className="w-8 h-8 rounded-lg flex items-center justify-center"
             style={{ background: 'rgba(239,68,68,0.08)' }}
           >
-            <Trash2 size={14} color="#EF4444" />
+            <Trash2 size={14} color="var(--tr-error-text)" />
           </button>
         </div>
       </div>
@@ -313,8 +313,8 @@ function PaymentMethodCard({
       )}
       {!method.isVerified && (
         <div className="flex items-center gap-1.5 mt-2">
-          <AlertTriangle size={10} color="#F59E0B" />
-          <span style={{ color: '#F59E0B', fontSize: 10 }}>
+          <AlertTriangle size={10} color="var(--tr-warning-text)" />
+          <span style={{ color: 'var(--tr-warning-text)', fontSize: 10 }}>
             Chưa xác minh — cần xác minh để dùng trên P2P.
           </span>
         </div>

@@ -151,7 +151,7 @@ test.describe('wallet contract smoke on staging build', () => {
     await page.goto('/wallet/deposit/USDT');
 
     await expect(page.getByLabel('Deposit network')).toHaveValue('ethereum');
-    await expect(page.getByLabel('Deposit QR code')).toBeVisible();
+    await expect(page.getByRole('img', { name: 'Deposit address QR code' })).toBeVisible();
     await expect(page.getByText(depositNetworks.networks[0].address)).toBeVisible();
     await expect(page.getByText('12 confirmations')).toBeVisible();
   });
@@ -394,18 +394,48 @@ test.describe('wallet contract smoke on staging build', () => {
     await page.goto('/wallet/withdraw/USDT');
     await expect(page).toHaveURL(/\/w\/wallet\/withdraw\/USDT$/);
     await expect(page.getByLabel('Mạng lưới')).toHaveValue('ethereum');
-    await page
-      .locator('#withdraw-address')
-      .fill('wallet-address-long-enough-for-validation-123456');
+    const fieldTokens = await page.evaluate(() => ({
+      height: getComputedStyle(document.documentElement).getPropertyValue('--input-height').trim(),
+      radius: getComputedStyle(document.documentElement)
+        .getPropertyValue('--tr-radius-input')
+        .trim(),
+    }));
+    for (const selector of ['#withdraw-network', '#withdraw-address', '#withdraw-amount']) {
+      const control = page.locator(selector);
+      const surface = selector === '#withdraw-network' ? control : control.locator('xpath=..');
+      await expect(surface).toHaveCSS('height', fieldTokens.height);
+      await expect(surface).toHaveCSS('border-radius', fieldTokens.radius);
+    }
+    const addressField = page.locator('#withdraw-address');
+    const amountField = page.locator('#withdraw-amount');
+    await expect(addressField).toHaveCSS('font-size', '16px');
+    await expect(amountField).toHaveCSS('font-size', '18px');
+    await addressField.focus();
+    await expect
+      .poll(
+        () =>
+          addressField.evaluate((element) => getComputedStyle(element.parentElement!).boxShadow),
+        { timeout: 2_000 },
+      )
+      .toContain('rgba(229, 138, 0, 0.25)');
+    await page.getByRole('button', { name: /Tiếp tục/ }).click();
+    await expect(addressField).toHaveAttribute('aria-invalid', 'true');
+    await expect(addressField).toHaveAttribute('aria-describedby', 'withdraw-address-error');
+    await expect(page.locator('#withdraw-address-error')).toHaveAttribute('role', 'alert');
+    await expect(amountField).toHaveAttribute('aria-invalid', 'true');
+    await expect(amountField).toHaveAttribute('aria-describedby', 'withdraw-amount-error');
+    expect(challengeBody).toBeUndefined();
+
+    await addressField.fill('wallet-address-long-enough-for-validation-123456');
+    await expect(page.locator('#withdraw-address-error')).toHaveCount(0);
     await page.getByRole('button', { name: 'Tất cả' }).click();
-    await expect(page.locator('#withdraw-amount')).toHaveValue('50.000000');
+    await expect(amountField).toHaveValue('50.000000');
+    await expect(page.locator('#withdraw-amount-error')).toHaveCount(0);
     await page.setViewportSize({ width: 390, height: 844 });
     await page.waitForTimeout(350);
     await expect(page).toHaveURL(/\/w\/wallet\/withdraw\/USDT$/);
-    await expect(page.locator('#withdraw-address')).toHaveValue(
-      'wallet-address-long-enough-for-validation-123456',
-    );
-    await expect(page.locator('#withdraw-amount')).toHaveValue('50.000000');
+    await expect(addressField).toHaveValue('wallet-address-long-enough-for-validation-123456');
+    await expect(amountField).toHaveValue('50.000000');
     await page.getByRole('button', { name: /Tiếp tục/ }).click();
     await page.getByRole('button', { name: /Xác minh 2FA/ }).click();
 

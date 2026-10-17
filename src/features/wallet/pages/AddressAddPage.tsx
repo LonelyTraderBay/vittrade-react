@@ -3,6 +3,7 @@ import { AlertTriangle, CheckCircle, Clipboard, Shield } from 'lucide-react';
 import { useNavigate } from 'react-router';
 import { CTAButton } from '@/shared/ui/CTAButton';
 import { Header } from '@/shared/ui/layout/Header';
+import { InputField } from '@/shared/ui/InputField';
 import { PageContent } from '@/shared/ui/layout/PageContent';
 import { PageLayout, StickyFooter } from '@/shared/ui/layout/PageLayout';
 import { TrCard } from '@/shared/ui/TrCard';
@@ -85,25 +86,23 @@ export function AddressAddPage() {
             Wallet address-book permission is required to add a withdrawal address.
           </p>
         )}
-        <label style={{ color: colors.text2, fontSize: 13, fontWeight: 600 }}>
-          Tên địa chỉ <span style={{ color: '#EF4444' }}>*</span>
-          <input
-            value={label}
-            disabled={!canManageAddressBook}
-            onChange={(event) => setLabel(event.target.value)}
-            maxLength={30}
-            placeholder="Ví lạnh cá nhân, Sàn Binance…"
-            className="w-full rounded-2xl px-4 mt-2"
-            style={{
-              background: colors.surface2,
-              border: `1.5px solid ${colors.borderSolid}`,
-              color: colors.text1,
-              fontSize: 15,
-              height: 52,
-              outline: 'none',
-            }}
-          />
-        </label>
+        <InputField
+          id="wallet-address-book-label"
+          label={
+            <>
+              Tên địa chỉ{' '}
+              <span aria-hidden="true" style={{ color: colors.error }}>
+                *
+              </span>
+            </>
+          }
+          required
+          value={label}
+          disabled={!canManageAddressBook}
+          onChange={(event) => setLabel(event.target.value)}
+          maxLength={30}
+          placeholder="Ví lạnh cá nhân, Sàn Binance…"
+        />
         <div>
           <p style={{ color: colors.text2, fontSize: 13, fontWeight: 600, marginBottom: 8 }}>
             Mạng lưới
@@ -150,35 +149,27 @@ export function AddressAddPage() {
             ))}
           </div>
         </div>
-        <div>
-          <label style={{ color: colors.text2, fontSize: 13, fontWeight: 600 }}>
-            Địa chỉ ví <span style={{ color: '#EF4444' }}>*</span>
-          </label>
-          <div
-            className="flex items-center gap-2 rounded-2xl px-4 mt-2"
-            style={{
-              background: colors.surface2,
-              border: `1.5px solid ${colors.borderSolid}`,
-              minHeight: 52,
-            }}
-          >
-            <input
-              value={address}
-              disabled={!canManageAddressBook}
-              onChange={(event) => setAddress(event.target.value)}
-              aria-label="Địa chỉ ví"
-              placeholder="Nhập hoặc dán địa chỉ…"
-              className="flex-1"
-              style={{
-                background: 'transparent',
-                border: 'none',
-                outline: 'none',
-                color: colors.text1,
-                fontSize: 13,
-                fontFamily: 'monospace',
-              }}
-            />
+        <InputField
+          id="wallet-address-book-address"
+          label={
+            <>
+              Địa chỉ ví{' '}
+              <span aria-hidden="true" style={{ color: colors.error }}>
+                *
+              </span>
+            </>
+          }
+          required
+          value={address}
+          disabled={!canManageAddressBook}
+          onChange={(event) => setAddress(event.target.value)}
+          placeholder="Nhập hoặc dán địa chỉ…"
+          className="font-mono"
+          style={{ fontSize: 13, fontFamily: 'monospace' }}
+          helper={ADDRESS_HINTS[network]}
+          suffix={
             <button
+              type="button"
               disabled={!canManageAddressBook}
               onClick={handlePaste}
               aria-label="Dán địa chỉ từ clipboard"
@@ -187,28 +178,20 @@ export function AddressAddPage() {
             >
               <Clipboard size={16} color={colors.text2} />
             </button>
-          </div>
-          <span style={{ color: colors.text3, fontSize: 11, marginTop: 4, display: 'block' }}>
-            {ADDRESS_HINTS[network]}
-          </span>
-        </div>
-        <label style={{ color: colors.text2, fontSize: 13, fontWeight: 600 }}>
-          Memo / Tag <span style={{ color: colors.text3, fontWeight: 400 }}>(tùy chọn)</span>
-          <input
-            value={memo}
-            disabled={!canManageAddressBook}
-            onChange={(event) => setMemo(event.target.value)}
-            placeholder="Nhập memo nếu cần…"
-            className="w-full rounded-2xl px-4 mt-2"
-            style={{
-              background: colors.surface2,
-              border: `1.5px solid ${colors.borderSolid}`,
-              color: colors.text1,
-              height: 48,
-              outline: 'none',
-            }}
-          />
-        </label>
+          }
+        />
+        <InputField
+          id="wallet-address-book-memo"
+          label={
+            <>
+              Memo / Tag <span style={{ color: colors.text3, fontWeight: 400 }}>(tùy chọn)</span>
+            </>
+          }
+          value={memo}
+          disabled={!canManageAddressBook}
+          onChange={(event) => setMemo(event.target.value)}
+          placeholder="Nhập memo nếu cần…"
+        />
         <TrCard className="p-4">
           <button
             disabled={!canManageAddressBook}

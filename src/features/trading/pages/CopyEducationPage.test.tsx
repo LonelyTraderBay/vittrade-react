@@ -28,7 +28,7 @@
  */
 
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { screen, waitFor, within } from '@testing-library/react';
+import { fireEvent, screen, waitFor, within } from '@testing-library/react';
 import { renderWithRouter, userEvent, mockNavigate } from '@/test/test-utils-navigation';
 import { CopyEducationPage } from './CopyEducationPage';
 
@@ -47,6 +47,47 @@ function getInputByLabel(label: string): HTMLInputElement {
 describe('CopyEducationPage', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+  });
+
+  it('explains the profit illustration consistently with the displayed capital outcomes', async () => {
+    renderWithRouter(<CopyEducationPage />);
+    await userEvent.click(screen.getByRole('tab', { name: 'Kịch bản' }));
+    expect(screen.getByText('$13000')).toBeInTheDocument();
+    expect(screen.getByText('$12760')).toBeInTheDocument();
+    expect(
+      screen.getByText(pContaining('bạn lời 27.6%', '2.4 điểm phần trăm')),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(pContaining('chi phí giả định', 'không phải biểu phí thực tế')),
+    ).toBeInTheDocument();
+  });
+
+  it('labels both real chart tooltip series and formats the capital axis', async () => {
+    const rect = vi
+      .spyOn(HTMLElement.prototype, 'getBoundingClientRect')
+      .mockReturnValue(new DOMRect(0, 0, 800, 300));
+    const width = vi.spyOn(HTMLElement.prototype, 'offsetWidth', 'get').mockReturnValue(800);
+    const height = vi.spyOn(HTMLElement.prototype, 'offsetHeight', 'get').mockReturnValue(300);
+    try {
+      const { container } = renderWithRouter(<CopyEducationPage />);
+      await userEvent.click(screen.getByRole('tab', { name: 'Kịch bản' }));
+      await waitFor(() => expect(container.querySelector('.recharts-wrapper')).not.toBeNull());
+      expect(screen.getAllByText(/^\$\d+k$/).length).toBeGreaterThan(0);
+      fireEvent.mouseMove(container.querySelector('.recharts-wrapper')!, {
+        clientX: 450,
+        clientY: 100,
+      });
+      await waitFor(() => {
+        const tooltip = container.querySelector('.recharts-tooltip-wrapper') as HTMLElement;
+        expect(within(tooltip).getByText('Provider')).toBeInTheDocument();
+        expect(within(tooltip).getByText('Bạn')).toBeInTheDocument();
+        expect(within(tooltip).getAllByText(/^\$\d+$/)).toHaveLength(2);
+      });
+    } finally {
+      rect.mockRestore();
+      width.mockRestore();
+      height.mockRestore();
+    }
   });
 
   it('should render intro banner and the 4 how-it-works steps by default', () => {
@@ -125,7 +166,9 @@ describe('CopyEducationPage', () => {
       expect(screen.getByText('$13000')).toBeInTheDocument();
       expect(screen.getByText('$12760')).toBeInTheDocument();
       expect(screen.getByText('-1.8%')).toBeInTheDocument();
-      expect(screen.getByText(pContaining('Gap ~8% là chi phí thực tế'))).toBeInTheDocument();
+      expect(
+        screen.getByText(pContaining('chi phí giả định', 'không phải biểu phí thực tế')),
+      ).toBeInTheDocument();
     });
 
     // Loss scenario

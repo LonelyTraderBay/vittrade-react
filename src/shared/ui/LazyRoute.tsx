@@ -72,6 +72,7 @@ function RouteErrorFallback({ onRetry }: { onRetry: () => void }) {
           Lỗi kết nối hoặc module chưa sẵn sàng. Vui lòng thử lại.
         </p>
         <button
+          type="button"
           onClick={onRetry}
           className="px-5 py-2.5 rounded-xl"
           style={{
@@ -113,7 +114,7 @@ class LazyErrorBoundary extends Component<EBProps, EBState> {
       release: env.releaseVersion,
       metadata: { componentStack: info.componentStack },
     });
-    console.error('[LazyRoute] Render error:', error, info);
+    if (env.isDev) console.error('[LazyRoute] Render error:', error, info);
   }
 
   render() {

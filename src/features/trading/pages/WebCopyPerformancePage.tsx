@@ -36,9 +36,25 @@ export function WebCopyPerformancePage() {
         </PageContent>
       </PageLayout>
     );
-  if (query.isError || !query.data) return <ErrorState onAction={() => void query.refetch()} />;
+  if (query.isError || !query.data)
+    return (
+      <PageLayout>
+        <Header title="Hiệu suất Copy" back />
+        <PageContent>
+          <ErrorState onAction={() => void query.refetch()} />
+        </PageContent>
+      </PageLayout>
+    );
   const relationship = query.data.items.find((item) => item.id === copyId);
-  if (!relationship) return <ErrorState onAction={() => void query.refetch()} />;
+  if (!relationship)
+    return (
+      <PageLayout>
+        <Header title="Hiệu suất Copy" back />
+        <PageContent>
+          <ErrorState onAction={() => void query.refetch()} />
+        </PageContent>
+      </PageLayout>
+    );
 
   return (
     <PageLayout>
@@ -78,7 +94,12 @@ function Metric({ label, value, positive }: { label: string; value: string; posi
       <p style={{ color: colors.text3, fontSize: 10 }}>{label}</p>
       <p
         style={{
-          color: positive === undefined ? colors.text1 : positive ? '#10B981' : '#EF4444',
+          color:
+            positive === undefined
+              ? colors.text1
+              : positive
+                ? colors.successText
+                : colors.errorText,
           fontSize: 16,
           fontWeight: 700,
         }}

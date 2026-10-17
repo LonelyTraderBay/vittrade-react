@@ -17,12 +17,31 @@ const reasons: Array<{
   label: string;
   icon: typeof AlertTriangle;
   color: string;
+  tone: 'error' | 'warning' | 'accent' | 'neutral';
 }> = [
-  { id: 'scam', label: 'Lừa đảo', icon: AlertTriangle, color: '#EF4444' },
-  { id: 'unresponsive', label: 'Không phản hồi', icon: Clock, color: '#F59E0B' },
-  { id: 'fake_payment', label: 'Thanh toán giả', icon: Ban, color: '#EF4444' },
-  { id: 'harassment', label: 'Quấy rối', icon: MessageSquare, color: '#8B5CF6' },
-  { id: 'other', label: 'Lý do khác', icon: Info, color: '#6B7280' },
+  { id: 'scam', label: 'Lừa đảo', icon: AlertTriangle, color: '#EF4444', tone: 'error' },
+  {
+    id: 'unresponsive',
+    label: 'Không phản hồi',
+    icon: Clock,
+    color: '#F59E0B',
+    tone: 'warning',
+  },
+  {
+    id: 'fake_payment',
+    label: 'Thanh toán giả',
+    icon: Ban,
+    color: '#EF4444',
+    tone: 'error',
+  },
+  {
+    id: 'harassment',
+    label: 'Quấy rối',
+    icon: MessageSquare,
+    color: '#8B5CF6',
+    tone: 'accent',
+  },
+  { id: 'other', label: 'Lý do khác', icon: Info, color: '#6B7280', tone: 'neutral' },
 ];
 
 export function P2PBlacklistAddPage() {
@@ -58,7 +77,7 @@ export function P2PBlacklistAddPage() {
             className="w-16 h-16 rounded-2xl flex items-center justify-center"
             style={{ background: 'rgba(239,68,68,0.1)' }}
           >
-            <UserX size={28} color="#EF4444" />
+            <UserX size={28} color="var(--tr-error-text)" />
           </div>
           <p style={{ color: colors.text1, fontSize: 16, fontWeight: 700 }}>Chặn người dùng</p>
           <p style={{ color: colors.text3, fontSize: 11, textAlign: 'center' }}>
@@ -89,6 +108,12 @@ export function P2PBlacklistAddPage() {
             {reasons.map((item) => {
               const Icon = item.icon;
               const selected = reason === item.id;
+              const textColor = {
+                error: colors.errorText,
+                warning: colors.warningText,
+                accent: colors.accent,
+                neutral: colors.text2,
+              }[item.tone];
               return (
                 <button
                   key={item.id}
@@ -102,10 +127,10 @@ export function P2PBlacklistAddPage() {
                     border: `1px solid ${selected ? `${item.color}66` : colors.borderSolid}`,
                   }}
                 >
-                  <Icon size={15} color={item.color} />
+                  <Icon size={15} color={selected ? textColor : colors.text2} />
                   <span
                     style={{
-                      color: selected ? item.color : colors.text2,
+                      color: selected ? textColor : colors.text2,
                       fontSize: 13,
                       fontWeight: selected ? 700 : 500,
                     }}
@@ -141,13 +166,13 @@ export function P2PBlacklistAddPage() {
           />
         )}
         <TrCard className="p-3">
-          <p style={{ color: '#F59E0B', fontSize: 11, lineHeight: 1.6 }}>
+          <p style={{ color: 'var(--tr-warning-text)', fontSize: 11, lineHeight: 1.6 }}>
             Người bị chặn sẽ không thể giao dịch, nhắn tin hoặc xem quảng cáo của bạn. Bạn có thể bỏ
             chặn bất kỳ lúc nào.
           </p>
         </TrCard>
         {!canManageBlacklist && (
-          <p role="alert" style={{ color: '#EF4444', fontSize: 12 }}>
+          <p role="alert" style={{ color: 'var(--tr-error-text)', fontSize: 12 }}>
             P2P blacklist write permission is required to block a user.
           </p>
         )}

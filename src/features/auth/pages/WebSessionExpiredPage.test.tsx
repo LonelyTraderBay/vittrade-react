@@ -45,6 +45,19 @@ function readLocation() {
 }
 
 describe('WebSessionExpiredPage', () => {
+  it('does not display a malformed email passed in recovery route state', () => {
+    renderExpiredPage({ email: 'private-invalid-identifier', reason: 'timeout' });
+
+    expect(screen.getByRole('heading', { name: 'Phiên đã hết hạn' })).toBeInTheDocument();
+    expect(screen.queryByText('private-invalid-identifier')).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Đăng nhập lại/ })).toBeEnabled();
+  });
+
+  it('opens password recovery from the expired-session screen', async () => {
+    renderExpiredPage({ reason: 'security' });
+    await userEvent.setup().click(screen.getByRole('button', { name: 'Đổi mật khẩu' }));
+    expect(readLocation().pathname).toBe('/w/auth/forgot-password');
+  });
   it('does not expose unavailable help destinations as inert controls', () => {
     renderExpiredPage();
 

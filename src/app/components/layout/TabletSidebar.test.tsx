@@ -43,4 +43,47 @@ describe('TabletSidebar', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Thu gọn' }));
     expect(screen.getByRole('button', { name: 'Mở rộng' })).toBeInTheDocument();
   });
+
+  it('exposes and marks the standalone news route in tablet utility navigation', () => {
+    renderWithProviders(
+      <UIContext.Provider
+        value={{
+          isBalanceHidden: false,
+          isOffline: false,
+          pendingRewards: 0,
+          notifications: 0,
+          toggleBalanceHidden: () => {},
+          setIsOffline: () => {},
+          setPendingRewards: () => {},
+        }}
+      >
+        <TabletSidebar />
+      </UIContext.Provider>,
+      { routerProps: { initialEntries: ['/t/news'] } },
+    );
+
+    expect(screen.getByRole('button', { name: 'Tin tức' })).toHaveAttribute('aria-current', 'page');
+  });
+
+  it('marks the current tablet profile utility route as the only active item', () => {
+    renderWithProviders(
+      <UIContext.Provider
+        value={{
+          isBalanceHidden: false,
+          isOffline: false,
+          pendingRewards: 0,
+          notifications: 0,
+          toggleBalanceHidden: () => {},
+          setIsOffline: () => {},
+          setPendingRewards: () => {},
+        }}
+      >
+        <TabletSidebar />
+      </UIContext.Provider>,
+      { routerProps: { initialEntries: ['/t/profile/settings'] } },
+    );
+
+    expect(screen.getByRole('button', { name: 'Cài đặt' })).toHaveAttribute('aria-current', 'page');
+    expect(screen.getAllByRole('button', { current: 'page' })).toHaveLength(1);
+  });
 });

@@ -1,0 +1,335 @@
+{
+  "checkedAt": "2026-10-13T06:08:48.507Z",
+  "sourceHead": "db9c9064fa3ba79bd76fb7acb1023d90486b6cbf",
+  "branch": "",
+  "origin": "http://127.0.0.1:4193",
+  "browser": "Chromium via Playwright",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "scenario": {
+    "id": "predictions.empty",
+    "status": "passed",
+    "persona": "developer (preview only)",
+    "route": "/w/markets/predictions",
+    "additionalRoutes": [
+      "/w/markets/predictions/portfolio",
+      "/w/markets/predictions/rewards",
+      "/w/markets/predictions/leaderboard",
+      "/w/markets/predictions/activity"
+    ],
+    "operationIds": [
+      "listPredictionEvents",
+      "listPredictionPositions",
+      "listPredictionRewards",
+      "listPredictionLeaderboard",
+      "listPredictionActivity"
+    ],
+    "observedOperationIds": [
+      "listPredictionEvents",
+      "listPredictionPositions",
+      "listPredictionRewards",
+      "listPredictionLeaderboard",
+      "listPredictionActivity"
+    ],
+    "expectedDomainOperationCount": 5,
+    "coverage": "full_scenario_operations_browser_observed"
+  },
+  "fixtureBoundary": {
+    "serviceWorkerControlled": true,
+    "allObservedResponsesFromServiceWorker": true,
+    "localPredictionFixturesOnly": true,
+    "externalApiOrigins": [],
+    "realBackendRequestSent": false,
+    "realBackendMutationSent": false
+  },
+  "measurements": {
+    "totalFlowMs": 1122,
+    "apiRequestCount": 10,
+    "apiResponseCount": 10,
+    "predictionApiRequestCount": 5,
+    "requestCounts": {
+      "listPredictionEvents": 1,
+      "listPredictionPositions": 1,
+      "listPredictionRewards": 1,
+      "listPredictionLeaderboard": 1,
+      "listPredictionActivity": 1
+    },
+    "writeRequestCount": 0,
+    "requestFailureCount": 1,
+    "predictionRequestFailureCount": 0,
+    "pageErrorCount": 0
+  },
+  "assertions": {
+    "collections": {
+      "listPredictionEvents": {
+        "route": "/w/markets/predictions",
+        "status": 200,
+        "itemCount": 0,
+        "emptyStateText": "Không có prediction market phù hợp.",
+        "emptyStateVisible": true,
+        "responseTimeMs": 1
+      },
+      "listPredictionPositions": {
+        "route": "/w/markets/predictions/portfolio",
+        "status": 200,
+        "itemCount": 0,
+        "emptyStateText": "Chưa có vị thế.",
+        "emptyStateVisible": true,
+        "responseTimeMs": 1
+      },
+      "listPredictionRewards": {
+        "route": "/w/markets/predictions/rewards",
+        "status": 200,
+        "itemCount": 0,
+        "emptyStateText": "Chưa có phần thưởng.",
+        "emptyStateVisible": true,
+        "responseTimeMs": 1
+      },
+      "listPredictionLeaderboard": {
+        "route": "/w/markets/predictions/leaderboard",
+        "status": 200,
+        "itemCount": 0,
+        "emptyStateText": "Chưa có dữ liệu bảng xếp hạng.",
+        "emptyStateVisible": true,
+        "responseTimeMs": 2
+      },
+      "listPredictionActivity": {
+        "route": "/w/markets/predictions/activity",
+        "status": 200,
+        "itemCount": 0,
+        "emptyStateText": "Chưa có hoạt động dự đoán.",
+        "emptyStateVisible": true,
+        "responseTimeMs": 2
+      }
+    },
+    "responses": [
+      {
+        "method": "GET",
+        "path": "/api/auth/session",
+        "operationId": null,
+        "status": 401,
+        "fromServiceWorker": true,
+        "responseTimeMs": 16
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/logout",
+        "operationId": null,
+        "status": 204,
+        "fromServiceWorker": true,
+        "responseTimeMs": 16
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/login",
+        "operationId": null,
+        "status": 200,
+        "fromServiceWorker": true,
+        "responseTimeMs": 4
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "operationId": null,
+        "status": 200,
+        "fromServiceWorker": true,
+        "responseTimeMs": 5
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "operationId": null,
+        "status": 200,
+        "fromServiceWorker": true,
+        "responseTimeMs": 5
+      },
+      {
+        "method": "GET",
+        "path": "/api/predictions/events",
+        "operationId": "listPredictionEvents",
+        "status": 200,
+        "fromServiceWorker": true,
+        "responseTimeMs": 1
+      },
+      {
+        "method": "GET",
+        "path": "/api/predictions/positions",
+        "operationId": "listPredictionPositions",
+        "status": 200,
+        "fromServiceWorker": true,
+        "responseTimeMs": 1
+      },
+      {
+        "method": "GET",
+        "path": "/api/predictions/rewards",
+        "operationId": "listPredictionRewards",
+        "status": 200,
+        "fromServiceWorker": true,
+        "responseTimeMs": 1
+      },
+      {
+        "method": "GET",
+        "path": "/api/predictions/leaderboard",
+        "operationId": "listPredictionLeaderboard",
+        "status": 200,
+        "fromServiceWorker": true,
+        "responseTimeMs": 2
+      },
+      {
+        "method": "GET",
+        "path": "/api/predictions/activity",
+        "operationId": "listPredictionActivity",
+        "status": 200,
+        "fromServiceWorker": true,
+        "responseTimeMs": 2
+      }
+    ],
+    "requests": [
+      {
+        "method": "GET",
+        "path": "/api/auth/session",
+        "operationId": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/logout",
+        "operationId": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/login",
+        "operationId": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "operationId": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "operationId": null
+      },
+      {
+        "method": "GET",
+        "path": "/api/predictions/events",
+        "operationId": "listPredictionEvents"
+      },
+      {
+        "method": "GET",
+        "path": "/api/predictions/positions",
+        "operationId": "listPredictionPositions"
+      },
+      {
+        "method": "GET",
+        "path": "/api/predictions/rewards",
+        "operationId": "listPredictionRewards"
+      },
+      {
+        "method": "GET",
+        "path": "/api/predictions/leaderboard",
+        "operationId": "listPredictionLeaderboard"
+      },
+      {
+        "method": "GET",
+        "path": "/api/predictions/activity",
+        "operationId": "listPredictionActivity"
+      }
+    ],
+    "externalApiOrigins": [],
+    "requestFailures": [
+      {
+        "method": "POST",
+        "path": "/api/auth/logout",
+        "error": "net::ERR_ABORTED"
+      }
+    ],
+    "pageErrors": []
+  },
+  "requestTrace": [
+    {
+      "method": "GET",
+      "path": "/api/auth/session",
+      "operationId": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/logout",
+      "operationId": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/login",
+      "operationId": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/pairs",
+      "operationId": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/watchlist",
+      "operationId": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/predictions/events",
+      "operationId": "listPredictionEvents"
+    },
+    {
+      "method": "GET",
+      "path": "/api/predictions/positions",
+      "operationId": "listPredictionPositions"
+    },
+    {
+      "method": "GET",
+      "path": "/api/predictions/rewards",
+      "operationId": "listPredictionRewards"
+    },
+    {
+      "method": "GET",
+      "path": "/api/predictions/leaderboard",
+      "operationId": "listPredictionLeaderboard"
+    },
+    {
+      "method": "GET",
+      "path": "/api/predictions/activity",
+      "operationId": "listPredictionActivity"
+    }
+  ],
+  "sourceHashes": {
+    "contracts/openapi/predictions.yaml": "146a0442f6879fc50dc53c9f74d104837092d06edcfcf3e68537454b3e8c556b",
+    "src/app/routes.ts": "c93a80e123fd95c3abd246aeb00589a51f5ff4560e794e87f70f7ff96248c0d5",
+    "src/dev/PreviewControls.tsx": "a318fb182dda24c9b8d2103ae4b40eeecb7c3eded57332aad3c5bc8a1836a54c",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/handlers.ts": "9d1ea085bab944b0bd0e59a665222113cb7bb661bbcd2408f09c6adf08cd3ea9",
+    "src/dev/mocks/prediction-fixtures.ts": "19108d2497d121587f3385df8db99908d094efe1f8fc0b170f350c5f76c4096f",
+    "src/dev/mocks/preview-scenario-handler.ts": "1b05e3e420b1df43de6d2e37533d4d8dbcd203fedb70ca59a65a4a62179396f5",
+    "src/dev/mocks/scenario-runtime.ts": "446d43808b478a1eaca07faa29d690c49c8e7ffb21fc1f12d2de2feb524e2e50",
+    "src/features/predictions/api/predictions-api.ts": "122853909253981bc9274bba29e022111d6b5ca58da81d9d9a28f0c59cbf7b87",
+    "src/features/predictions/model/prediction-queries.ts": "03dd010790608dd086de73d18e88b33c0295b61dd73e9c1ad35227e6076470ca",
+    "src/features/predictions/model/prediction-types.ts": "abfcf3333848f7444fdf5877a2c38fc606bf497d86b6f9b4a82cd5b9616dff78",
+    "src/features/predictions/pages/PredictionContractPages.tsx": "19da64273880dde5d29101cf644a946d1f3cda89cf8d25752432a0d5a0de53a8",
+    "src/features/predictions/routes.ts": "1356d898100c0bd6c6dc5b266d85fe62dc268dc09f353db574a782c4763ad4f3",
+    "src/shared/api/http-client.ts": "12a04035eac23a2999f8c7a76aafa32966585402c06d98f451ef33eb8601cf42",
+    "src/shared/config/env.ts": "f4065bb9a092b5a60c11ace7070ea7eb635e783cfa3543c786d30597537ad48c",
+    "src/main.tsx": "c150098914a25b7e0630d66f480ffbfe4160e96a8bdb54262b5ad4b5b33719e6",
+    "docs/architecture/production-readiness/evidence/A06/run-predictions-empty-browser-check.mjs": "0a7e44e1d90b07de2c2da50fe1c0b79d56abab49c6053d6c754fd498e26985fc"
+  },
+  "screenshots": {
+    "events": "preview-predictions-empty-events-2026-10-13-remediation-1791871672034.png",
+    "portfolio": "preview-predictions-empty-portfolio-2026-10-13-remediation-1791871672034.png",
+    "rewards": "preview-predictions-empty-rewards-2026-10-13-remediation-1791871672034.png",
+    "leaderboard": "preview-predictions-empty-leaderboard-2026-10-13-remediation-1791871672034.png",
+    "activity": "preview-predictions-empty-activity-2026-10-13-remediation-1791871672034.png"
+  },
+  "limitations": [
+    "All five collection responses came from the local MSW service worker and used in-memory preview data.",
+    "Preview sign-in produced one net::ERR_ABORTED event for POST /api/auth/logout during redirect; the trace also records the matching service-worker 204 response. The five Prediction reads had no request failures.",
+    "This verifies local request wiring and empty-state rendering only; it does not prove backend behavior, authorization enforcement, persistence, staging or user acceptance.",
+    "Event detail, order placement and receipt reads are outside this empty-read scenario."
+  ]
+}

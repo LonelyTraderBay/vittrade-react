@@ -564,6 +564,8 @@ test.describe('auth session smoke on staging build', () => {
       authenticated = true;
       return route.fulfill({ json: session });
     });
+    await page.route('https://fonts.googleapis.com/**', (route) => route.abort());
+    await page.route('https://fonts.gstatic.com/**', (route) => route.abort());
 
     await page.goto('/w/auth/login');
     await page.getByTestId('auth-email').fill('auth@example.com');

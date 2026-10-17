@@ -93,7 +93,7 @@ export function ProviderLeaderboardPage() {
               className="rounded-lg px-3 py-1.5"
               style={{
                 background: risk === item.id ? colors.primary : colors.surface2,
-                color: risk === item.id ? '#fff' : colors.text2,
+                color: risk === item.id ? 'var(--tr-text-on-color)' : colors.text2,
                 fontSize: 11,
               }}
             >
@@ -124,7 +124,9 @@ export function ProviderLeaderboardPage() {
             <button
               type="button"
               key={provider.id}
-              onClick={() => navigate(`${prefix}/trade/copy-provider/${provider.id}`)}
+              onClick={() =>
+                navigate(`${prefix}/trade/copy-provider/${encodeURIComponent(provider.id)}`)
+              }
               className="w-full text-left"
             >
               <TrCard className="p-4">
@@ -133,7 +135,12 @@ export function ProviderLeaderboardPage() {
                     className="w-10 h-10 rounded-full flex items-center justify-center"
                     style={{ background: index < 3 ? 'rgba(245,158,11,0.15)' : colors.surface2 }}
                   >
-                    <span style={{ color: index < 3 ? '#F59E0B' : colors.text2, fontWeight: 700 }}>
+                    <span
+                      style={{
+                        color: index < 3 ? colors.warningText : colors.text2,
+                        fontWeight: 700,
+                      }}
+                    >
                       #{index + 1}
                     </span>
                   </div>
@@ -148,17 +155,17 @@ export function ProviderLeaderboardPage() {
                       <Metric
                         label="ROI"
                         value={`${provider.totalPnlPct >= 0 ? '+' : ''}${provider.totalPnlPct.toFixed(1)}%`}
-                        color="#10B981"
+                        color={colors.successText}
                       />
                       <Metric
                         label="Sharpe"
                         value={provider.sharpeRatio.toFixed(2)}
-                        color="#F59E0B"
+                        color={colors.warningText}
                       />
                       <Metric
                         label="Max DD"
                         value={`${provider.maxDrawdown.toFixed(1)}%`}
-                        color="#EF4444"
+                        color={colors.errorText}
                       />
                     </div>
                     <div className="flex items-center gap-3 mt-3">

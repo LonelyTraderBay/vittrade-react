@@ -158,11 +158,11 @@ export function WalletAssetDetailPage({
             <div
               className="w-12 h-12 rounded-full flex items-center justify-center"
               style={{
-                background: asset.logoColor + '22',
+                background: c.surface,
                 border: `2px solid ${asset.logoColor}44`,
               }}
             >
-              <span style={{ color: asset.logoColor, fontSize: 14, fontWeight: 700 }}>
+              <span style={{ color: c.text1, fontSize: 14, fontWeight: 700 }}>
                 {asset.symbol.slice(0, 3)}
               </span>
             </div>
@@ -180,7 +180,11 @@ export function WalletAssetDetailPage({
               {fmtAmount(asset.balance)} {asset.symbol}
             </span>
             <span
-              style={{ color: isPositive ? '#10B981' : '#EF4444', fontSize: 13, fontWeight: 600 }}
+              style={{
+                color: isPositive ? c.successText : c.errorText,
+                fontSize: 13,
+                fontWeight: 600,
+              }}
             >
               {fmtPct(asset.change24h)}
             </span>
@@ -196,17 +200,13 @@ export function WalletAssetDetailPage({
             </div>
             <div className="rounded-xl p-2.5" style={{ background: 'rgba(255,255,255,0.05)' }}>
               <p style={{ color: c.text3, fontSize: 10 }}>Trong lệnh</p>
-              <p
-                style={{ color: '#3B82F6', fontSize: 13, fontWeight: 600, fontFamily: 'monospace' }}
-              >
+              <p style={{ color: c.text1, fontSize: 13, fontWeight: 600, fontFamily: 'monospace' }}>
                 {fmtAmount(asset.inOrder)}
               </p>
             </div>
             <div className="rounded-xl p-2.5" style={{ background: 'rgba(255,255,255,0.05)' }}>
               <p style={{ color: c.text3, fontSize: 10 }}>Đóng băng</p>
-              <p
-                style={{ color: '#F59E0B', fontSize: 13, fontWeight: 600, fontFamily: 'monospace' }}
-              >
+              <p style={{ color: c.text1, fontSize: 13, fontWeight: 600, fontFamily: 'monospace' }}>
                 {fmtAmount(asset.frozen)}
               </p>
             </div>
@@ -363,7 +363,9 @@ export function WalletAssetDetailPage({
             return (
               <button
                 key={tx.id}
-                onClick={() => navigate(`${prefix}/wallet/transaction/${tx.id}`)}
+                onClick={() =>
+                  navigate(`${prefix}/wallet/transaction/${encodeURIComponent(tx.id)}`)
+                }
                 className="w-full flex items-center gap-3 py-3"
                 style={{
                   borderBottom: i < assetTxs.length - 1 ? `1px solid ${c.divider}` : 'none',
@@ -398,7 +400,7 @@ export function WalletAssetDetailPage({
                 <div className="text-right">
                   <p
                     style={{
-                      color: isDeposit ? '#10B981' : '#EF4444',
+                      color: isDeposit ? c.successText : c.errorText,
                       fontSize: 13,
                       fontWeight: 600,
                       fontFamily: 'monospace',
@@ -411,10 +413,10 @@ export function WalletAssetDetailPage({
                     style={{
                       color:
                         tx.status === 'completed'
-                          ? '#10B981'
+                          ? c.successText
                           : tx.status === 'pending'
-                            ? '#F59E0B'
-                            : '#EF4444',
+                            ? c.warningText
+                            : c.errorText,
                       fontSize: 10,
                     }}
                   >

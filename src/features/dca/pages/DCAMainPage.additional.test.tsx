@@ -2,7 +2,8 @@ import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import { useLocation } from 'react-router';
-import { screen, waitFor, within } from '@testing-library/react';
+import { useEffect } from 'react';
+import { act, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useAuth } from '@/shared/session/useAuth';
 import { renderWithProviders } from '@/test/test-utils';
@@ -71,9 +72,14 @@ function RouteStateProbe() {
   );
 }
 
-function RefreshSessionButton() {
+function RefreshSessionProbe({
+  onReady,
+}: {
+  onReady: (refreshSession: () => Promise<unknown>) => void;
+}) {
   const { refreshSession } = useAuth();
-  return <button onClick={() => void refreshSession()}>Refresh session</button>;
+  useEffect(() => onReady(refreshSession), [onReady, refreshSession]);
+  return null;
 }
 
 describe('DCAMainPage additional coverage', () => {
@@ -147,7 +153,6 @@ describe('DCAMainPage additional coverage', () => {
       }),
     );
     const user = userEvent.setup();
-
     renderWithProviders(
       <DCAMainPage
         isEnabled
@@ -258,6 +263,10 @@ describe('DCAMainPage additional coverage', () => {
       }),
     );
     const user = userEvent.setup();
+    let refreshSession: (() => Promise<unknown>) | undefined;
+    const provideRefreshSession = (refresh: () => Promise<unknown>) => {
+      refreshSession = refresh;
+    };
 
     renderWithProviders(
       <>
@@ -272,26 +281,35 @@ describe('DCAMainPage additional coverage', () => {
             trackPreselectedCoinUsed: vi.fn(),
           }}
         />
-        <RefreshSessionButton />
+        <RefreshSessionProbe onReady={provideRefreshSession} />
       </>,
       { authAdapter: revocableAdapter },
     );
 
     await user.click(await screen.findByRole('button', { name: 'Xóa kế hoạch' }));
+    const deleteDialog = await screen.findByRole('dialog', { name: 'Xác nhận xóa' });
     await screen.findByRole('button', { name: /^Xóa$/ });
     permissions = [];
-    await user.click(screen.getByRole('button', { name: 'Refresh session' }));
+    await waitFor(() => expect(refreshSession).toBeDefined());
+    await act(async () => {
+      await refreshSession?.();
+    });
     await waitFor(() =>
-      expect(screen.getByRole('button', { name: 'Xóa kế hoạch' })).toBeDisabled(),
+      expect(screen.getByRole('button', { name: 'Xóa kế hoạch', hidden: true })).toBeDisabled(),
     );
     await user.click(screen.getByRole('button', { name: /^Xóa$/ }));
 
     expect(deleteRequests).toBe(0);
+    await user.click(within(deleteDialog).getByRole('button', { name: 'Hủy' }));
+    await waitFor(() =>
+      expect(screen.queryByRole('dialog', { name: 'Xác nhận xóa' })).not.toBeInTheDocument(),
+    );
   });
 
   it('supports the legacy coin query deep link without rewriting the URL', async () => {
     const trackDeepLink = vi.fn();
     const trackAssetCreateSheetOpened = vi.fn();
+    const user = userEvent.setup();
     server.use(http.get('*/dca/snapshot', () => HttpResponse.json(snapshot)));
 
     renderWithProviders(
@@ -312,9 +330,16 @@ describe('DCAMainPage additional coverage', () => {
       { routerProps: { initialEntries: ['/w/wallet/dca?coin=eth'] } },
     );
 
-    expect(await screen.findByText('Tạo Kế Hoạch DCA Mới')).toBeInTheDocument();
+    const createDialog = await screen.findByRole('dialog', { name: 'Tạo Kế Hoạch DCA Mới' });
+    expect(createDialog).toBeInTheDocument();
     expect(screen.getByTestId('route-search')).toHaveTextContent('?coin=eth');
     expect(trackDeepLink).toHaveBeenCalledWith('ETH', true);
     expect(trackAssetCreateSheetOpened).toHaveBeenCalledTimes(1);
+    await user.click(within(createDialog).getByRole('button', { name: 'Đóng' }));
+    await waitFor(() =>
+      expect(
+        screen.queryByRole('dialog', { name: 'Tạo Kế Hoạch DCA Mới' }),
+      ).not.toBeInTheDocument(),
+    );
   });
 });

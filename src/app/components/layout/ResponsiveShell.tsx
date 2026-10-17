@@ -6,6 +6,7 @@ import { StatusBar } from './StatusBar';
 import { useBreakpoint } from '../../hooks/useBreakpoint';
 import { useUI } from '../../hooks/useUI';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
+import { SHELL_PAGE_GUTTER_OWNER_STYLE } from '@/shared/ui/layout/pageGutter';
 
 /** Suspense Fallback for lazy-loaded responsive pages */
 function PageLoadingFallback() {
@@ -42,20 +43,55 @@ export function ResponsiveAppLayout({ desktopMode = 'adaptive' }: ResponsiveShel
   const { isTablet, isDesktop } = useBreakpoint();
   const { isOffline } = useUI();
   const c = useThemeColors();
+  const adaptiveDesktop = isDesktop && desktopMode === 'adaptive';
+  const centeredDesktop = isDesktop && desktopMode === 'centered';
 
-  // ─── Desktop Adaptive: LeftRail + wide content ───
-  if (isDesktop && desktopMode === 'adaptive') {
-    return (
-      <div className="relative flex h-screen overflow-hidden" style={{ background: c.bg }}>
-        <LeftRail />
-        <div className="flex-1 flex flex-col overflow-hidden">
-          {/* Top bar for desktop */}
-          <div
+  // The Outlet keeps the same ancestor tree across breakpoints, preserving drafts and pending work.
+  return (
+    <div
+      className={
+        centeredDesktop
+          ? 'min-h-screen flex items-center justify-center py-4'
+          : 'relative flex overflow-hidden'
+      }
+      style={{
+        background: centeredDesktop
+          ? 'radial-gradient(ellipse at 50% 0%, #0d1b3e 0%, #050810 70%)'
+          : c.bg,
+        ...(centeredDesktop
+          ? {}
+          : {
+              width: '100%',
+              height: isDesktop || isTablet ? '100vh' : '100dvh',
+              overscrollBehavior: 'none',
+            }),
+      }}
+    >
+      {adaptiveDesktop && <LeftRail />}
+      <div
+        className="relative flex flex-col overflow-hidden"
+        style={
+          centeredDesktop
+            ? {
+                width: 480,
+                height: '90vh',
+                maxHeight: 900,
+                borderRadius: 24,
+                background: c.bg,
+                border: '1px solid ' + c.border,
+                boxShadow: '0 40px 80px rgba(0,0,0,0.6)',
+              }
+            : { flex: 1, minWidth: 0 }
+        }
+      >
+        {adaptiveDesktop && (
+          <header
+            aria-label="Thanh công cụ chính"
             className="flex items-center justify-between px-6 shrink-0"
             style={{
               height: 48,
               background: c.navBg,
-              borderBottom: `1px solid ${c.navBorder}`,
+              borderBottom: '1px solid ' + c.navBorder,
               backdropFilter: 'blur(20px)',
             }}
           >
@@ -71,135 +107,44 @@ export function ResponsiveAppLayout({ desktopMode = 'adaptive' }: ResponsiveShel
               )}
               <span style={{ color: c.text1, fontSize: 12 }}>v2.4.1</span>
             </div>
-          </div>
-
-          {/* Main content */}
-          <div
-            className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-none"
-            style={{ overscrollBehaviorY: 'contain', WebkitOverflowScrolling: 'touch' }}
-          >
-            <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px' }}>
-              <Suspense fallback={<PageLoadingFallback />}>
-                <Outlet />
-              </Suspense>
-            </div>
-          </div>
-        </div>
-        <div id="sheet-portal" />
-      </div>
-    );
-  }
-
-  // ─── Desktop Centered: phone-like with ResponsiveBottomNav ───
-  if (isDesktop && desktopMode === 'centered') {
-    return (
-      <div
-        className="min-h-screen flex items-center justify-center py-4"
-        style={{ background: 'radial-gradient(ellipse at 50% 0%, #0d1b3e 0%, #050810 70%)' }}
-      >
-        <div
-          className="relative overflow-hidden"
-          style={{
-            width: 480,
-            height: '90vh',
-            maxHeight: 900,
-            borderRadius: 24,
-            background: c.bg,
-            border: `1px solid ${c.border}`,
-            boxShadow: '0 40px 80px rgba(0,0,0,0.6)',
-          }}
-        >
-          <div className="flex flex-col h-full">
-            {!isAuthRoute && <StatusBar />}
-            {isOffline && (
-              <div
-                className="flex items-center justify-center gap-2 py-1.5 text-xs font-medium"
-                style={{ background: '#92400E', color: '#FDE68A' }}
-              >
-                <span>●</span>
-                <span>Mất kết nối</span>
-              </div>
-            )}
-            <div className="flex-1 overflow-y-auto overflow-x-hidden" style={{ paddingBottom: 80 }}>
-              <Suspense fallback={<PageLoadingFallback />}>
-                <Outlet />
-              </Suspense>
-            </div>
-            <ResponsiveBottomNav />
-            <div id="sheet-portal" />
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // ─── Tablet: wider content, still ResponsiveBottomNav ───
-  if (isTablet) {
-    return (
-      <div
-        className="relative flex flex-col h-screen overflow-hidden"
-        style={{ background: c.bg, overscrollBehavior: 'none' }}
-      >
-        {!isAuthRoute && <StatusBar />}
-        {isOffline && (
+          </header>
+        )}
+        {!adaptiveDesktop && !isAuthRoute && <StatusBar />}
+        {!adaptiveDesktop && isOffline && (
           <div
             className="flex items-center justify-center gap-2 py-1.5 text-xs font-medium"
             style={{ background: '#92400E', color: '#FDE68A' }}
           >
             <span>●</span>
-            <span>Mất kết nối — Đang hiển thị dữ liệu lưu trữ</span>
+            <span>
+              {centeredDesktop ? 'Mất kết nối' : 'Mất kết nối — Đang hiển thị dữ liệu lưu trữ'}
+            </span>
           </div>
         )}
         <div
           className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-none"
           style={{
-            paddingBottom: 80,
+            paddingBottom: adaptiveDesktop ? 0 : 80,
             overscrollBehaviorY: 'contain',
             WebkitOverflowScrolling: 'touch',
           }}
         >
-          <div style={{ maxWidth: 720, margin: '0 auto', padding: '0 16px' }}>
+          <div
+            style={{
+              ...(adaptiveDesktop || isTablet ? SHELL_PAGE_GUTTER_OWNER_STYLE : {}),
+              maxWidth: adaptiveDesktop ? 1200 : isTablet ? 720 : undefined,
+              margin: '0 auto',
+              padding: adaptiveDesktop ? '0 24px' : isTablet ? '0 16px' : undefined,
+            }}
+          >
             <Suspense fallback={<PageLoadingFallback />}>
               <Outlet />
             </Suspense>
           </div>
         </div>
-        <ResponsiveBottomNav />
+        {!adaptiveDesktop && <ResponsiveBottomNav />}
         <div id="sheet-portal" />
       </div>
-    );
-  }
-
-  // ─── Mobile S / Mobile L: original layout ───
-  return (
-    <div
-      className="relative flex flex-col overflow-hidden"
-      style={{ width: '100%', height: '100dvh', overscrollBehavior: 'none', background: c.bg }}
-    >
-      {!isAuthRoute && <StatusBar />}
-      {isOffline && (
-        <div
-          className="flex items-center justify-center gap-2 py-1.5 text-xs font-medium"
-          style={{ background: '#92400E', color: '#FDE68A' }}
-        >
-          <span>●</span>
-          <span>Mất kết nối — Đang hiển thị dữ liệu lưu trữ</span>
-        </div>
-      )}
-      <div
-        className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-none"
-        style={{
-          paddingBottom: 80,
-          overscrollBehaviorY: 'contain',
-          WebkitOverflowScrolling: 'touch',
-        }}
-      >
-        <Suspense fallback={<PageLoadingFallback />}>
-          <Outlet />
-        </Suspense>
-      </div>
-      <ResponsiveBottomNav />
-      <div id="sheet-portal" />
     </div>
   );
 }

@@ -1,0 +1,268 @@
+{
+  "observedAt": "2026-10-13T07:09:11.502Z",
+  "sourceHead": "db9c9064fa3ba79bd76fb7acb1023d90486b6cbf",
+  "command": "npm.cmd run artifacts:cleanup",
+  "deletedFiles": 0,
+  "deletedLogicalBytes": 0,
+  "reports": [
+    {
+      "checkout": "C:/Users/Joker-PC/Documents/Projects/vittrade-react",
+      "reportSha256": "002ec97b93e2f98d2ebae58dc711a7623559d936b5f96b2b7c7b6513590c9964",
+      "report": {
+        "schemaVersion": 1,
+        "policy": "ephemeral-cache-output-v1",
+        "mode": "apply",
+        "observedAt": "2026-10-13T07:05:49.926Z",
+        "deletedFiles": 0,
+        "deletedLogicalBytes": 0,
+        "eligibleFiles": 0,
+        "eligibleLogicalBytes": 0,
+        "retained": [
+          {
+            "run": "2026-10-12T04-11-46-810Z-vitest-2a45328d-ced2-4056-8084-a2523978826a",
+            "reason": "Legacy, unfinished or incomplete ownership metadata"
+          },
+          {
+            "run": "2026-10-12T04-13-51-210Z-vitest-ceff8144-b608-432a-8028-a0b435957f7a",
+            "reason": "Legacy, unfinished or incomplete ownership metadata"
+          },
+          {
+            "run": "2026-10-12T04-14-18-219Z-vitest-e60f0ba6-acc6-4d6b-995c-ea6677a12eb9",
+            "reason": "Legacy, unfinished or incomplete ownership metadata"
+          },
+          {
+            "run": "2026-10-12T04-17-07-274Z-vitest-24bee3a2-6925-4147-9a94-8e438fcc0dde",
+            "reason": "Legacy, unfinished or incomplete ownership metadata"
+          },
+          {
+            "run": "2026-10-12T04-23-51-147Z-vitest-bcb64375-6b3e-49ed-a457-efe6d267476e",
+            "reason": "Legacy, unfinished or incomplete ownership metadata"
+          },
+          {
+            "run": "2026-10-12T04-31-00-736Z-playwright-cfc0b86e-5d65-497e-aa85-5349973b60e3",
+            "reason": "Legacy, unfinished or incomplete ownership metadata"
+          },
+          {
+            "run": "2026-10-12T04-32-19-724Z-build-fae86df3-99b2-43b9-b064-210c432b43ef",
+            "reason": "Legacy, unfinished or incomplete ownership metadata"
+          },
+          {
+            "run": "2026-10-12T04-33-19-047Z-vitest-67d4fb2d-7517-48f3-bbd4-8e1fbc649264",
+            "reason": "Legacy, unfinished or incomplete ownership metadata"
+          },
+          {
+            "run": "2026-10-12T04-33-29-758Z-vitest-64b1d458-7a6c-494a-99cd-059881496039",
+            "reason": "Legacy, unfinished or incomplete ownership metadata"
+          },
+          {
+            "run": "2026-10-12T04-39-53-675Z-vitest-4acde96a-609a-4b71-b0c6-a020a7665bf3",
+            "reason": "Legacy, unfinished or incomplete ownership metadata"
+          },
+          {
+            "run": "2026-10-12T04-41-26-567Z-playwright-1103c4a1-93e3-43ce-995c-6886ff85b9b7",
+            "reason": "Legacy, unfinished or incomplete ownership metadata"
+          },
+          {
+            "run": "2026-10-12T04-47-03-521Z-playwright-08d3283a-e56d-48df-b966-22b5719d5419",
+            "reason": "Legacy, unfinished or incomplete ownership metadata"
+          },
+          {
+            "run": "2026-10-12T04-48-21-195Z-build-30bad79a-4f6c-4748-afba-8e65d0eab00a",
+            "reason": "Legacy, unfinished or incomplete ownership metadata"
+          },
+          {
+            "run": "2026-10-12T05-20-50-629Z-vitest-6fd96377-33a5-4680-8415-c79b52ca09c8",
+            "reason": "Legacy, unfinished or incomplete ownership metadata"
+          },
+          {
+            "run": "2026-10-12T05-23-54-162Z-vitest-470eadbf-918a-4c5a-a8be-2faa86ca871a",
+            "reason": "Legacy, unfinished or incomplete ownership metadata"
+          },
+          {
+            "run": "2026-10-12T05-27-13-548Z-vitest-675057c5-88eb-4fb3-943b-253ee9134379",
+            "reason": "Legacy, unfinished or incomplete ownership metadata"
+          },
+          {
+            "run": "2026-10-12T05-33-22-267Z-vitest-e6d9743f-a54e-415a-9f6e-e7e80424df9a",
+            "reason": "Legacy, unfinished or incomplete ownership metadata"
+          },
+          {
+            "run": "2026-10-12T05-40-05-735Z-playwright-11e75f4c-b4f2-4628-805c-d08ec1d91d77",
+            "reason": "Legacy, unfinished or incomplete ownership metadata"
+          },
+          {
+            "run": "2026-10-12T05-41-15-636Z-playwright-368fe4e4-1d39-4a06-bab5-5e3c987a0a72",
+            "reason": "Legacy, unfinished or incomplete ownership metadata"
+          },
+          {
+            "run": "2026-10-12T05-41-17-262Z-build-4f5f4062-64b6-4850-b178-93b0cf3b57b8",
+            "reason": "Legacy, unfinished or incomplete ownership metadata"
+          },
+          {
+            "run": "2026-10-12T05-41-54-999Z-playwright-66e3c023-2cf5-484e-b9ba-91fadf40f30e",
+            "reason": "Legacy, unfinished or incomplete ownership metadata"
+          },
+          {
+            "run": "2026-10-12T07-24-32-219Z-vitest-0a6df3f5-4d71-405a-8717-cd5aae1e7420",
+            "reason": "Legacy, unfinished or incomplete ownership metadata"
+          },
+          {
+            "run": "2026-10-12T07-25-15-532Z-vitest-1ca71058-f708-4b5d-9c12-6043dc549ae2",
+            "reason": "Legacy, unfinished or incomplete ownership metadata"
+          },
+          {
+            "run": "2026-10-12T07-31-55-553Z-vitest-4ff9ea5a-d76b-40fa-8436-d8daaba76e4a",
+            "reason": "Legacy, unfinished or incomplete ownership metadata"
+          },
+          {
+            "run": "2026-10-12T07-38-46-108Z-playwright-7e28eebc-f5eb-495c-940d-58df4be4bce5",
+            "reason": "Legacy, unfinished or incomplete ownership metadata"
+          },
+          {
+            "run": "2026-10-12T07-39-56-229Z-playwright-ea1c1b52-9384-4ac5-a3c4-0e092c235134",
+            "reason": "Legacy, unfinished or incomplete ownership metadata"
+          },
+          {
+            "run": "2026-10-12T07-40-18-214Z-build-5c8a293f-f50b-4366-a76f-6c076a936048",
+            "reason": "Legacy, unfinished or incomplete ownership metadata"
+          },
+          {
+            "run": "2026-10-12T07-41-13-147Z-vitest-627b416d-2432-42c0-91d5-1c3ba695d2a5",
+            "reason": "Legacy, unfinished or incomplete ownership metadata"
+          },
+          {
+            "run": "2026-10-12T07-45-38-288Z-vitest-3b0eacf8-a7de-46dc-8e84-f4813d591c3f",
+            "reason": "Legacy, unfinished or incomplete ownership metadata"
+          },
+          {
+            "run": "2026-10-12T07-45-46-777Z-vitest-88fdcc5b-0b65-41e4-802c-d3ebb221b677",
+            "reason": "Legacy, unfinished or incomplete ownership metadata"
+          },
+          {
+            "run": "2026-10-12T07-51-47-544Z-vitest-24663a56-3bf6-4073-ad0f-d4388bfabab9",
+            "reason": "Legacy, unfinished or incomplete ownership metadata"
+          },
+          {
+            "run": "2026-10-12T07-58-28-752Z-playwright-fe5ef958-95cb-4c99-9590-4776a9bf7f2b",
+            "reason": "Legacy, unfinished or incomplete ownership metadata"
+          },
+          {
+            "run": "2026-10-12T07-59-50-425Z-playwright-516a4505-aaa6-4fc5-b31f-e0b7e15952ac",
+            "reason": "Legacy, unfinished or incomplete ownership metadata"
+          },
+          {
+            "run": "2026-10-12T08-00-13-936Z-build-502a8deb-4d91-42aa-a3c4-98c3892075b2",
+            "reason": "Legacy, unfinished or incomplete ownership metadata"
+          },
+          {
+            "run": "2026-10-12T16-13-30-402Z-vitest-2ee77cbf-f4d9-4802-9c62-223f60f83e74",
+            "reason": "Legacy, unfinished or incomplete ownership metadata"
+          },
+          {
+            "run": "2026-10-12T16-13-41-051Z-vitest-34695303-4d43-43b9-9dfe-dc9c1cb88748",
+            "reason": "Legacy, unfinished or incomplete ownership metadata"
+          },
+          {
+            "run": "2026-10-12T16-20-11-924Z-vitest-13c1a549-e667-4d0f-98fa-c1293a3c8383",
+            "reason": "Legacy, unfinished or incomplete ownership metadata"
+          },
+          {
+            "run": "2026-10-12T16-27-34-494Z-playwright-f0cd4d46-5996-42b5-9d90-1e23865ea295",
+            "reason": "Legacy, unfinished or incomplete ownership metadata"
+          },
+          {
+            "run": "2026-10-12T16-28-56-011Z-playwright-7c6c1694-6850-4502-9b15-a19092290fd9",
+            "reason": "Legacy, unfinished or incomplete ownership metadata"
+          },
+          {
+            "run": "2026-10-12T16-29-22-554Z-build-9b930e0d-817e-44c2-8f70-205a2af1dd26",
+            "reason": "Legacy, unfinished or incomplete ownership metadata"
+          },
+          {
+            "run": "2026-10-12T16-43-12-882Z-vitest-6048c73c-72eb-4f16-a1c2-28021be9f902",
+            "reason": "Run child is still alive"
+          },
+          {
+            "run": "2026-10-12T16-53-33-607Z-build-50fb7357-4483-4e56-bacc-9963b5fab074",
+            "reason": "Source/evidence reference or Git-managed output"
+          },
+          {
+            "run": "2026-10-12T17-12-03-860Z-build-735680fa-f116-48a9-819a-2a84267d6ccd",
+            "reason": "Source/evidence reference or Git-managed output"
+          },
+          {
+            "run": "2026-10-12T18-16-54-155Z-playwright-d3cdb9e3-b0b3-4a59-81de-91584d661071",
+            "reason": "Legacy, unfinished or incomplete ownership metadata"
+          },
+          {
+            "run": "2026-10-12T19-07-26-719Z-build-714fdb17-1fe9-4fd5-bba5-8954225ac4b7",
+            "reason": "Latest production build or diagnostic output",
+            "area": "dist"
+          },
+          {
+            "run": "2026-10-12T19-08-15-159Z-playwright-475f9fb7-1157-48f6-bc4b-07bd502e8460",
+            "reason": "Latest production build or diagnostic output",
+            "area": "dist"
+          }
+        ],
+        "errors": []
+      }
+    },
+    {
+      "checkout": "C:/Users/Joker-PC/AppData/Local/Temp/vittrade-audit-20261013-4fbe38e1be5449e5934e7489f3744b31",
+      "reportSha256": "003cebd95e8eff7e7c550bf6d6eeba2546e9e2664c704b1c24e02c16807c8d53",
+      "report": {
+        "schemaVersion": 1,
+        "policy": "ephemeral-cache-output-v1",
+        "mode": "apply",
+        "observedAt": "2026-10-13T07:05:48.752Z",
+        "deletedFiles": 0,
+        "deletedLogicalBytes": 0,
+        "eligibleFiles": 0,
+        "eligibleLogicalBytes": 0,
+        "retained": [
+          {
+            "run": "2026-10-13T06-22-53-025Z-playwright-e8c5eba1-4e01-4b6d-b724-dc093c52d4fb",
+            "reason": "Latest production build or diagnostic output",
+            "area": "dist"
+          },
+          {
+            "run": "2026-10-13T06-51-33-796Z-playwright-0855be82-48b6-4d40-857a-1fc323f3f74f",
+            "reason": "Run child is still alive"
+          },
+          {
+            "run": "2026-10-13T07-00-51-487Z-build-150646bf-d202-4682-9635-4aa6df162193",
+            "reason": "Latest production build or diagnostic output",
+            "area": "dist"
+          }
+        ],
+        "errors": []
+      }
+    }
+  ],
+  "processOwnership": {
+    "ownedLoopbackPorts": [
+      4173,
+      4181,
+      4182,
+      4193,
+      4194
+    ],
+    "remainingListeners": 0,
+    "allFinalOwnedRuns": "Terminal passed with childClosed=true, sourceUnchanged=true.",
+    "retainedPidReuse": {
+      "runId": "2026-10-13T06-51-33-796Z-playwright-0855be82-48b6-4d40-857a-1fc323f3f74f",
+      "childPid": 71120,
+      "runFinishedAt": "2026-10-13T06:53:38.787Z",
+      "currentProcessName": "chrome.exe",
+      "currentCreatedAt": "2026-10-13T07:05:42.650292Z",
+      "commandMatchesClone": false,
+      "decision": "PID belongs to a newer unrelated Chrome process. Do not stop it or override conservative retention."
+    }
+  },
+  "limits": [
+    "Latest build/diagnostic output, coverage/reports/traces/manifests and referenced or legacy/incomplete ownership output retained.",
+    "Root source/dependencies/other worktrees/Temp unchanged by cleanup.",
+    "Initial cleanup command failed because child PATH lacked Node; retries used a command-local PATH and both completed with zero errors."
+  ]
+}

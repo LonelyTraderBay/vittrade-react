@@ -74,7 +74,7 @@ export function CopyTradingPage() {
               className="shrink-0 rounded-full px-4 py-2"
               style={{
                 background: sortIndex === index ? colors.primary : colors.surface2,
-                color: sortIndex === index ? '#fff' : colors.text2,
+                color: sortIndex === index ? 'var(--tr-text-on-color)' : colors.text2,
                 fontSize: 11,
               }}
             >
@@ -85,6 +85,18 @@ export function CopyTradingPage() {
         <div className="flex flex-col gap-3">
           {providers.map((provider) => {
             const risk = RISK_LEVELS[provider.riskLevel.toUpperCase() as keyof typeof RISK_LEVELS];
+            const riskColor =
+              risk.key === 'low'
+                ? colors.successText
+                : risk.key === 'medium'
+                  ? colors.warningText
+                  : colors.errorText;
+            const riskBackground =
+              risk.key === 'low'
+                ? 'rgba(16, 185, 129, 0.1)'
+                : risk.key === 'medium'
+                  ? 'rgba(245, 158, 11, 0.1)'
+                  : 'rgba(239, 68, 68, 0.1)';
             return (
               <TrCard key={provider.id} className="p-4">
                 <div className="flex items-start gap-3">
@@ -115,17 +127,17 @@ export function CopyTradingPage() {
                       ))}
                       <span
                         className="rounded-md px-2 py-0.5"
-                        style={{ background: `${risk.color}15`, color: risk.color, fontSize: 9 }}
+                        style={{ background: riskBackground, color: riskColor, fontSize: 9 }}
                       >
                         Rủi ro: {risk.label}
                       </span>
                     </div>
                   </div>
                   <div className="text-right">
-                    <p style={{ color: '#10B981', fontSize: 18, fontWeight: 700 }}>
+                    <p style={{ color: 'var(--tr-success-text)', fontSize: 18, fontWeight: 700 }}>
                       +{provider.totalPnlPct.toFixed(1)}%
                     </p>
-                    <p style={{ color: '#EF4444', fontSize: 11 }}>
+                    <p style={{ color: 'var(--tr-error-text)', fontSize: 11 }}>
                       DD {provider.maxDrawdown.toFixed(1)}%
                     </p>
                   </div>

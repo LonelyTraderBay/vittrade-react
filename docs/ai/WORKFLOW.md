@@ -213,4 +213,4 @@ và đọc các file được dẫn chiếu theo [cách tiếp nhận](../PROJEC
 
 ## 7. Prompt triển khai roadmap
 
-Dùng [prompt triển khai Production Readiness](PRODUCTION-READINESS-PROMPT.md) khi giao AI tiếp tục toàn roadmap. Prompt này dẫn chiếu các nguồn chuẩn trong repository thay vì tạo quy tắc hoặc trạng thái riêng. Với một yêu cầu hẹp, giao rõ task/step và tiêu chí cần làm; các quy định ở tài liệu này và `AGENTS.md` vẫn áp dụng.
+Dùng [prompt triển khai Production Readiness](PRODUCTION-READINESS-PROMPT.md) khi giao AI tiếp tục toàn roadmap. Với C06 UI/UX, bắt buộc áp dụng thêm giao thức thứ tự, state matrix, đo đạc, bằng chứng, commit/push và recheck tại mục 10 của prompt; PLAN/TRACKING vẫn là nguồn duy nhất cho phạm vi, acceptance và trạng thái. Prompt dẫn chiếu nguồn hiện có, không tạo quy định hoặc sổ trạng thái riêng. Với một yêu cầu hẹp, giao rõ task/step và tiêu chí cần làm; các quy định ở tài liệu này và `AGENTS.md` vẫn áp dụng.
