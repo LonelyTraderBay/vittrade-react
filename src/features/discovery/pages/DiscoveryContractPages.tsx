@@ -57,16 +57,37 @@ function DiscoveryRequestError({ error, onRetry }: { error: unknown; onRetry: ()
 }
 
 function ModuleLabel({ type }: { type: 'prediction' | 'arena' | 'spot' }) {
+  const colors = useThemeColors();
   const config = {
-    prediction: { label: 'Prediction Market', color: '#8B5CF6', icon: Target },
-    arena: { label: 'Arena Points only', color: '#F59E0B', icon: Zap },
-    spot: { label: 'Spot Trading', color: '#3B82F6', icon: BarChart3 },
+    prediction: {
+      label: 'Prediction Market',
+      color: 'var(--tr-accent-text)',
+      background: 'rgba(109, 40, 217, 0.08)',
+      icon: Target,
+    },
+    arena: {
+      label: 'Arena Points only',
+      color: colors.warningText,
+      background: 'rgba(146, 64, 14, 0.08)',
+      icon: Zap,
+    },
+    spot: {
+      label: 'Spot Trading',
+      color: colors.link,
+      background: 'rgba(29, 78, 216, 0.08)',
+      icon: BarChart3,
+    },
   }[type];
   const Icon = config.icon;
   return (
     <span
       className="inline-flex items-center gap-1 rounded-md px-2 py-0.5"
-      style={{ color: config.color, background: `${config.color}15`, fontSize: 9, fontWeight: 700 }}
+      style={{
+        color: config.color,
+        background: config.background,
+        fontSize: 9,
+        fontWeight: 700,
+      }}
     >
       <Icon size={9} /> {config.label}
     </span>
@@ -81,7 +102,7 @@ function PredictionResult({ item }: { item: DiscoveryPrediction }) {
     <button
       type="button"
       className="text-left"
-      onClick={() => navigate(`${prefix}/markets/predictions/event/${item.id}`)}
+      onClick={() => navigate(`${prefix}/markets/predictions/event/${encodeURIComponent(item.id)}`)}
     >
       <TrCard className="p-3.5">
         <ModuleLabel type="prediction" />
@@ -89,7 +110,7 @@ function PredictionResult({ item }: { item: DiscoveryPrediction }) {
           {item.title}
         </p>
         <div className="mt-2 flex items-center justify-between" style={{ fontSize: 11 }}>
-          <span style={{ color: item.topOutcome.color }}>
+          <span style={{ color: colors.text1 }}>
             {item.topOutcome.label} {item.topOutcome.chance}%
           </span>
           <span style={{ color: colors.text3 }}>{item.participants.toLocaleString()} traders</span>
@@ -109,7 +130,9 @@ function ArenaResult({ item }: { item: DiscoveryArenaMode | DiscoveryArenaRoom }
       type="button"
       className="text-left"
       onClick={() =>
-        navigate(`${prefix}/arena/${isMode ? `mode/${item.id}` : `challenge/${item.id}`}`)
+        navigate(
+          `${prefix}/arena/${isMode ? `mode/${encodeURIComponent(item.id)}` : `challenge/${encodeURIComponent(item.id)}`}`,
+        )
       }
     >
       <TrCard className="p-3.5">
@@ -137,7 +160,7 @@ function CreatorResult({ item }: { item: DiscoveryCreator }) {
           <p style={{ color: colors.text1, fontWeight: 700 }}>{item.name}</p>
           <p style={{ color: colors.text3, fontSize: 11 }}>Trust score {item.trustScore}/100</p>
         </div>
-        {item.fairPlayBadge && <Shield size={14} color="#10B981" />}
+        {item.fairPlayBadge && <Shield size={14} color="var(--tr-success-text)" />}
       </div>
     </TrCard>
   );
@@ -286,7 +309,11 @@ export function DiscoveryTopicContractPage() {
               <Star size={20} color={topic.color} />
             </div>
             <div>
-              <h1 style={{ color: colors.text1, fontSize: 18, fontWeight: 700 }}>{topic.label}</h1>
+              <h2
+                style={{ color: colors.text1, fontSize: 18, fontWeight: 700, margin: '0.67em 0' }}
+              >
+                {topic.label}
+              </h2>
               <p style={{ color: colors.text2, fontSize: 11 }}>{topic.description}</p>
             </div>
           </div>
@@ -297,7 +324,7 @@ export function DiscoveryTopicContractPage() {
                 className="rounded-lg p-2 text-center"
                 style={{ background: colors.surface2 }}
               >
-                <strong style={{ color: topic.color }}>{value}</strong>
+                <strong style={{ color: colors.text1 }}>{value}</strong>
                 <p style={{ color: colors.text3, fontSize: 9 }}>{label}</p>
               </div>
             ))}

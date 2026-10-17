@@ -85,7 +85,7 @@ export function EditProfileContractPage() {
           className="w-full rounded-xl py-3"
           style={{
             background: fullName.trim() ? colors.primary : colors.surface2,
-            color: fullName.trim() ? '#fff' : colors.text3,
+            color: fullName.trim() ? 'var(--tr-text-on-color)' : colors.text3,
             fontWeight: 700,
           }}
           onClick={() => {

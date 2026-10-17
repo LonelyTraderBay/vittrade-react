@@ -1,10 +1,11 @@
-import { lazy, type ComponentType } from 'react';
+import { lazy, useState, type ComponentType } from 'react';
 import { afterEach, describe, expect, it } from 'vitest';
 import { fireEvent, screen } from '@testing-library/react';
 import { Route, Routes } from 'react-router';
 import { renderWithProviders } from '@/test/test-utils';
 import { UIContext } from '../../contexts/ui-context';
 import { ResponsiveAppLayout } from './ResponsiveShell';
+import { PageContent } from '@/shared/ui/layout/PageContent';
 
 const originalWidth = window.innerWidth;
 
@@ -22,6 +23,17 @@ function contextValue(isOffline: boolean) {
 
 const SuspendedPage = lazy(() => new Promise<{ default: ComponentType }>(() => {}));
 
+function DraftPage() {
+  const [draft, setDraft] = useState('');
+  return (
+    <input
+      aria-label="Registration draft"
+      value={draft}
+      onChange={(event) => setDraft(event.target.value)}
+    />
+  );
+}
+
 function setWidth(width: number) {
   Object.defineProperty(window, 'innerWidth', { configurable: true, value: width });
 }
@@ -31,6 +43,63 @@ afterEach(() => {
 });
 
 describe('ResponsiveAppLayout', () => {
+  it.each([
+    { width: 1280, desktopMode: 'adaptive' as const, padding: '0px 24px', owner: '0px' },
+    { width: 900, desktopMode: 'adaptive' as const, padding: '0px 16px', owner: '0px' },
+    { width: 390, desktopMode: 'adaptive' as const, padding: '', owner: '' },
+    { width: 1280, desktopMode: 'centered' as const, padding: '', owner: '' },
+  ])(
+    'uses one gutter owner at $width px in $desktopMode mode',
+    ({ width, desktopMode, padding, owner }) => {
+      setWidth(width);
+      renderWithProviders(
+        <Routes>
+          <Route element={<ResponsiveAppLayout desktopMode={desktopMode} />}>
+            <Route
+              path="/r/layout"
+              element={
+                <PageContent className="responsive-gutter-probe">
+                  <p>Responsive page content</p>
+                </PageContent>
+              }
+            />
+          </Route>
+        </Routes>,
+        { routerProps: { initialEntries: ['/r/layout'] } },
+      );
+
+      const pageContent = screen.getByText('Responsive page content').parentElement;
+      const shellContent = pageContent?.parentElement;
+
+      expect(shellContent?.style.padding).toBe(padding);
+      expect(shellContent?.style.getPropertyValue('--tr-page-inline-gutter')).toBe(owner);
+      expect(pageContent?.style.paddingInline).toBe('var(--tr-page-inline-gutter, 20px)');
+    },
+  );
+
+  it.each(['adaptive', 'centered'] as const)(
+    'preserves the route form and DOM identity across breakpoint changes in %s mode',
+    (desktopMode) => {
+      setWidth(1280);
+      renderWithProviders(
+        <Routes>
+          <Route element={<ResponsiveAppLayout desktopMode={desktopMode} />}>
+            <Route path="/r/auth/register" element={<DraftPage />} />
+          </Route>
+        </Routes>,
+        { routerProps: { initialEntries: ['/r/auth/register'] } },
+      );
+      const input = screen.getByRole('textbox', { name: 'Registration draft' });
+      fireEvent.change(input, { target: { value: 'Unsaved registration' } });
+      for (const width of [1, 390, 900, 1280]) {
+        setWidth(width);
+        fireEvent.resize(window);
+        expect(screen.getByRole('textbox', { name: 'Registration draft' })).toBe(input);
+        expect(input).toHaveValue('Unsaved registration');
+      }
+    },
+  );
+
   it('switches from the phone shell to the adaptive desktop shell on resize', () => {
     setWidth(390);
     const view = renderWithProviders(<ResponsiveAppLayout />);
@@ -40,6 +109,7 @@ describe('ResponsiveAppLayout', () => {
     fireEvent.resize(window);
 
     expect(screen.getByText('VitTrade Desktop')).toBeInTheDocument();
+    expect(screen.getByRole('banner', { name: 'Thanh công cụ chính' })).toBeInTheDocument();
     expect(screen.queryByRole('navigation', { name: 'Main navigation' })).not.toBeInTheDocument();
     view.unmount();
   });

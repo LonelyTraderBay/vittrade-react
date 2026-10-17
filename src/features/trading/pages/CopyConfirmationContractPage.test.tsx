@@ -6,6 +6,7 @@ import { setupServer } from 'msw/node';
 import { Route, Routes } from 'react-router';
 import { renderWithProviders } from '@/test/test-utils';
 import { testAuthAdapter } from '@/test/auth-test-adapter';
+import { invokeStaleReactHandler } from '@/test/invoke-stale-react-handler';
 import type { AuthAdapter } from '@/shared/session/AuthContext';
 import { CopyConfirmationContractPage } from './CopyConfirmationContractPage';
 
@@ -119,8 +120,35 @@ describe('CopyConfirmationContractPage', () => {
     expect(await screen.findAllByText('Provider One')).not.toHaveLength(0);
     for (const consent of screen.getAllByRole('checkbox')) await user.click(consent);
 
-    expect(screen.getByRole('button', { name: 'Xác nhận & Bắt đầu Copy' })).toBeDisabled();
+    const submit = screen.getByRole('button', { name: 'Xác nhận & Bắt đầu Copy' });
+    expect(submit).toBeDisabled();
     expect(screen.getByRole('status')).toHaveTextContent('Cần quyền giao dịch');
+    invokeStaleReactHandler(submit, 'onClick');
     expect(createRequestCount).toBe(0);
+  });
+
+  it('keeps the final provider fallback when the component has no route parameter', async () => {
+    let profileReads = 0;
+    server.use(
+      http.get('*/trading/copy/providers/:providerId', () => {
+        profileReads += 1;
+        return HttpResponse.json({ provider, pnlHistory: [], recentTrades: [] });
+      }),
+    );
+
+    renderWithProviders(
+      <Routes>
+        <Route
+          path="/trade/copy/provider/confirmation"
+          element={<CopyConfirmationContractPage />}
+        />
+      </Routes>,
+      {
+        routerProps: { initialEntries: ['/trade/copy/provider/confirmation'] },
+      },
+    );
+
+    expect(await screen.findByText('Đang tải xác nhận…')).toBeInTheDocument();
+    expect(profileReads).toBe(0);
   });
 });

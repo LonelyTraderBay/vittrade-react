@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-10-14T06:02:27.623Z",
+  "sourceHead": "57acaaa95f48a097258553c5d8a5e0455d2706dd",
+  "kind": "local_repository_validation_pre_self_audit",
+  "environment": "Windows local; Node v24.19.0; no backend/staging.",
+  "gates": {
+    "checkTracking": {
+      "command": "node docs/architecture/production-readiness/check-tracking.mjs",
+      "exitCode": 0,
+      "errorCount": 0,
+      "scope": {
+        "tasks": 38,
+        "steps": 205,
+        "pages": 130,
+        "routeDeclarations": 428,
+        "operations": 154,
+        "filesOutsidePlan": 1011
+      },
+      "progress": {
+        "tasksDone": 9,
+        "stepsDone": 54,
+        "uiPagesDone": 0,
+        "userAcceptedPages": 0,
+        "backendOperationsDone": 0
+      }
+    },
+    "architectureInventory": {
+      "command": "node scripts/generate-architecture-inventory.mjs --check",
+      "exitCode": 0,
+      "pages": 130,
+      "routes": 428,
+      "components": 149,
+      "dataModules": 0,
+      "services": 32,
+      "mocks": 28
+    },
+    "gitEol": {
+      "command": "node scripts/check-git-eol.mjs",
+      "exitCode": 0,
+      "paths": 4173,
+      "lf": 2070,
+      "missingTerminators": 0,
+      "preservedNonText": 2100,
+      "protectedWindowsCrlf": 3
+    },
+    "jsonParsing": {
+      "files": [
+        "docs/architecture/production-readiness/TRACKING.json",
+        "docs/architecture/production-readiness/evidence/B07/b07-02-e2e-local-final-iteration-61-2026-10-14.json",
+        "docs/architecture/production-readiness/evidence/C03/c03-05-full-coverage-iteration-61-2026-10-14.json",
+        "docs/architecture/production-readiness/evidence/C05/c05-03-wide-ui-a11y-iteration-61-2026-10-14.json",
+        "docs/architecture/production-readiness/evidence/C05/c05-03-navigation-screenshots-iteration-61-2026-10-14.json"
+      ],
+      "result": "pass"
+    },
+    "diffCheck": {
+      "command": "git diff --check",
+      "exitCode": 0
+    },
+    "prettier": {
+      "command": "prettier --check PLAN.md and four iteration 61 evidence sidecars",
+      "exitCode": 0,
+      "result": "pass"
+    }
+  },
+  "expected": "The readiness ledger is internally consistent with the generated inventory and repository EOL policy; current documentation/evidence JSON parses and changed text has no whitespace errors.",
+  "actual": "check-tracking passes with 0 errors across 38 tasks/205 steps; inventory check passes (130/428/149/0/32/28); EOL check passes on 4173 paths with 0 missing terminators; all five current JSON files parse; git diff --check passes; Prettier passes PLAN.md and the four iteration 61 evidence sidecars.",
+  "result": "pass",
+  "limitations": [
+    "These are local checks, not hosted GitHub Actions or artifact/governance proof.",
+    "Prettier --check on the 15 MiB TRACKING.json reports style differences from the repository’s canonical JSON.stringify serialization; the ledger is kept in canonical serialization to avoid an unrelated whole-file reflow.",
+    "UI screenshot acceptance, Axe incomplete review, backend/staging, UAT and production gates remain open or blocked."
+  ]
+}

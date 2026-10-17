@@ -8,6 +8,8 @@
  * @version 2.0 (Phase 2 - Sprint 2)
  */
 
+import { captureException } from '@/shared/telemetry/telemetry';
+import { env } from '@/shared/config/env';
 import { dcaAnalytics } from './dca-analytics-service';
 import { browserStorage } from '@/shared/lib/browser-storage';
 import {
@@ -532,7 +534,8 @@ class ConversionFunnelTrackerService {
       };
       browserStorage.local.setItem('funnel_tracker', JSON.stringify(data));
     } catch (error) {
-      console.error('[FunnelTracker] Failed to save:', error);
+      captureException(error, { area: 'dca-funnel', operation: 'save-state' });
+      if (env.isDev) console.error('[FunnelTracker] Failed to save:', error);
     }
   }
 
@@ -548,7 +551,8 @@ class ConversionFunnelTrackerService {
       this.activeSessions = new Map(data.active);
       this.completedSessions = new Map(data.completed);
     } catch (error) {
-      console.error('[FunnelTracker] Failed to load:', error);
+      captureException(error, { area: 'dca-funnel', operation: 'load-state' });
+      if (env.isDev) console.error('[FunnelTracker] Failed to load:', error);
     }
   }
 }

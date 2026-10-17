@@ -1,16 +1,24 @@
-import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
+import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { Route, Routes } from 'react-router';
 import { renderWithProviders } from '@/test/test-utils';
+import { testAuthAdapter } from '@/test/auth-test-adapter';
+import { invokeStaleReactHandler } from '@/test/invoke-stale-react-handler';
+import type { AuthAdapter } from '@/shared/session/AuthContext';
+import { p2pApi } from '../api/p2p-api';
 import type { P2PBlacklistEntry, P2PBlacklistResponse } from '../model/p2p-types';
 import { P2PBlacklistPage } from './P2PBlacklistPage';
 
 const server = setupServer();
 
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
-afterEach(() => server.resetHandlers());
+afterEach(() => {
+  server.resetHandlers();
+  vi.restoreAllMocks();
+});
 afterAll(() => server.close());
 
 const firstEntry: P2PBlacklistEntry = {
@@ -37,6 +45,93 @@ const secondEntry: P2PBlacklistEntry = {
 };
 
 describe('P2P blacklist contract page', () => {
+  it('allows reading entries but disables blacklist management without write permission', async () => {
+    let removeCalls = 0;
+    server.use(
+      http.get('*/p2p/blacklist', () => HttpResponse.json({ items: [firstEntry], total: 1 })),
+      http.delete('*/p2p/blacklist/:entryId', () => {
+        removeCalls += 1;
+        return new HttpResponse(null, { status: 204 });
+      }),
+    );
+    const readOnlyAdapter: AuthAdapter = {
+      ...testAuthAdapter,
+      initialSession: {
+        ...testAuthAdapter.initialSession!,
+        user: { ...testAuthAdapter.initialSession!.user, permissions: ['p2p:read'] },
+      },
+    };
+
+    renderWithProviders(<P2PBlacklistPage />, { authAdapter: readOnlyAdapter });
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'P2P blacklist write permission is required to manage blocked users.',
+    );
+    expect(screen.getByText('scam-merchant')).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Thêm người dùng vào danh sách chặn' }),
+    ).toBeDisabled();
+    const remove = screen.getByRole('button', {
+      name: 'Remove scam-merchant from P2P blacklist',
+    });
+    expect(remove).toBeDisabled();
+    invokeStaleReactHandler(remove, 'onClick');
+    await userEvent.click(await screen.findByRole('button', { name: 'Bỏ chặn' }));
+    expect(removeCalls).toBe(0);
+  });
+
+  it('uses the number of returned entries when the response omits its total', async () => {
+    vi.spyOn(p2pApi, 'listBlacklist').mockResolvedValueOnce({
+      items: [firstEntry],
+    } as unknown as P2PBlacklistResponse);
+
+    renderWithProviders(<P2PBlacklistPage />);
+
+    expect(await screen.findByText('scam-merchant')).toBeInTheDocument();
+    expect(screen.getByText('1 người dùng')).toBeInTheDocument();
+  });
+
+  it('queries the trimmed search and opens the add-user route', async () => {
+    const searches: Array<string | null> = [];
+    let releaseSearch = () => {};
+    const pendingSearch = new Promise<void>((resolve) => {
+      releaseSearch = resolve;
+    });
+    server.use(
+      http.get('*/p2p/blacklist', async ({ request }) => {
+        const search = new URL(request.url).searchParams.get('search');
+        searches.push(search);
+        if (search) await pendingSearch;
+        return HttpResponse.json({
+          items: search ? [secondEntry] : [firstEntry, secondEntry],
+          total: search ? 1 : 2,
+        });
+      }),
+    );
+    renderWithProviders(
+      <Routes>
+        <Route path="/p2p/blacklist" element={<P2PBlacklistPage />} />
+        <Route path="/p2p/blacklist/add" element={<p>Add-user destination</p>} />
+      </Routes>,
+      { routerProps: { initialEntries: ['/p2p/blacklist'] } },
+    );
+    expect(await screen.findByText('scam-merchant')).toBeInTheDocument();
+    await userEvent.type(
+      screen.getByRole('textbox', { name: 'Tìm người dùng đã chặn' }),
+      '  slow  ',
+    );
+    await waitFor(() => expect(searches).toContain('slow'));
+    const searchInput = screen.getByRole('textbox', { name: 'Tìm người dùng đã chặn' });
+    expect(searchInput).toHaveFocus();
+    expect(searchInput).toHaveValue('  slow  ');
+    expect(screen.getByText('scam-merchant')).toBeInTheDocument();
+    releaseSearch();
+    await waitFor(() => expect(screen.queryByText('scam-merchant')).not.toBeInTheDocument());
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Thêm người dùng vào danh sách chặn' }),
+    );
+    expect(await screen.findByText('Add-user destination')).toBeInTheDocument();
+  });
   it('renders entries, filters by reason, and removes an entry idempotently', async () => {
     let response: P2PBlacklistResponse = { items: [firstEntry, secondEntry], total: 2 };
     server.use(

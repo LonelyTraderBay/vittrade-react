@@ -24,6 +24,12 @@ function LocationProbe() {
   return <span data-testid="location">{location.pathname + location.search}</span>;
 }
 
+async function waitForBottomSheetExit() {
+  await waitFor(() =>
+    expect(document.querySelector('[data-bottom-sheet-overlay]')).not.toBeInTheDocument(),
+  );
+}
+
 const ads: P2PAdsResponse = {
   items: [
     {
@@ -246,6 +252,7 @@ describe('P2P marketplace feature page', () => {
     expect(await screen.findByText('Merchant One')).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Tuỳ chọn offer của Merchant One' }));
     fireEvent.click(await screen.findByRole('button', { name: 'So sánh giá' }));
+    await waitForBottomSheetExit();
 
     const compareLabel = await screen.findByText('1 offer đang so sánh');
     expect(compareLabel.parentElement?.querySelector('p:last-child')).toHaveTextContent(
@@ -253,6 +260,7 @@ describe('P2P marketplace feature page', () => {
     );
     fireEvent.click(screen.getByRole('button', { name: 'Tuỳ chọn offer của Merchant One' }));
     fireEvent.click(await screen.findByRole('button', { name: 'So sánh giá' }));
+    await waitForBottomSheetExit();
     expect(screen.getByText('1 offer đang so sánh')).toBeInTheDocument();
 
     const toastInfo = vi.spyOn(toast, 'info');
@@ -277,11 +285,13 @@ describe('P2P marketplace feature page', () => {
     for (const merchant of ['Merchant One', 'Merchant Two', 'Merchant Three']) {
       fireEvent.click(screen.getByRole('button', { name: `Tuỳ chọn offer của ${merchant}` }));
       fireEvent.click(await screen.findByRole('button', { name: 'So sánh giá' }));
+      await waitForBottomSheetExit();
     }
     expect(screen.getByText('3 offer đang so sánh')).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('button', { name: 'Tuỳ chọn offer của Merchant Four' }));
     fireEvent.click(await screen.findByRole('button', { name: 'So sánh giá' }));
+    await waitForBottomSheetExit();
 
     const comparisonBar = screen.getByText('3 offer đang so sánh').parentElement;
     expect(comparisonBar).toHaveTextContent('Merchant One vs Merchant Two vs Merchant Three');
@@ -315,6 +325,7 @@ describe('P2P marketplace feature page', () => {
     await waitFor(() =>
       expect(writeText).toHaveBeenCalledWith(expect.stringContaining('/w/p2p/ad/ad-1')),
     );
+    await waitForBottomSheetExit();
 
     fireEvent.click(screen.getByRole('button', { name: 'Tuỳ chọn offer của Merchant One' }));
     fireEvent.click(await screen.findByRole('button', { name: 'Xem hồ sơ merchant' }));

@@ -34,7 +34,7 @@ function CreatorLine({ mode }: { mode: ArenaModeDetail }) {
     <div className="flex items-center gap-2">
       <span className="text-lg">{mode.creator.avatar}</span>
       <span style={{ color: colors.text1, fontWeight: 600 }}>{mode.creator.name}</span>
-      {mode.creator.fairPlayBadge && <Shield size={13} color="#10B981" />}
+      {mode.creator.fairPlayBadge && <Shield size={13} color="var(--tr-success-text)" />}
       <span style={{ color: colors.text3, fontSize: 11 }}>Trust {mode.creator.trustScore}/100</span>
     </div>
   );
@@ -60,7 +60,9 @@ export function ArenaModeContractPage() {
               {mode.template.icon}
             </div>
             <div className="min-w-0 flex-1">
-              <h1 style={{ color: colors.text1, fontSize: 18, fontWeight: 700 }}>{mode.title}</h1>
+              <p style={{ color: colors.text1, fontSize: 18, fontWeight: 700, margin: '0.67em 0' }}>
+                {mode.title}
+              </p>
               <p style={{ color: colors.text2, fontSize: 12 }}>{mode.template.title}</p>
               <div className="mt-3">
                 <CreatorLine mode={mode} />
@@ -88,7 +90,9 @@ export function ArenaModeContractPage() {
             <TrCard key={room.id} className="p-3">
               <div className="flex items-center justify-between">
                 <span style={{ color: colors.text1, fontWeight: 600 }}>{room.title}</span>
-                <span style={{ color: '#F59E0B', fontSize: 11 }}>{room.entryPoints} pts</span>
+                <span style={{ color: 'var(--tr-warning-text)', fontSize: 11 }}>
+                  {room.entryPoints} pts
+                </span>
               </div>
               <p style={{ color: colors.text3, fontSize: 11 }}>
                 {room.format} · {room.slotsFilled}/{room.slotsTotal} slots
@@ -122,7 +126,12 @@ export function ArenaChallengeContractPage() {
           <div className="flex items-center gap-2">
             <span
               className="rounded-md px-2 py-1"
-              style={{ background: '#F59E0B18', color: '#F59E0B', fontSize: 10, fontWeight: 700 }}
+              style={{
+                background: '#F59E0B18',
+                color: 'var(--tr-warning-text)',
+                fontSize: 10,
+                fontWeight: 700,
+              }}
             >
               <Zap size={10} className="mr-1 inline" /> Arena Points only
             </span>
@@ -130,9 +139,12 @@ export function ArenaChallengeContractPage() {
               {challenge.challengeState ?? challenge.status}
             </span>
           </div>
-          <h1 className="mt-3" style={{ color: colors.text1, fontSize: 19, fontWeight: 700 }}>
+          <p
+            className="mt-3"
+            style={{ color: colors.text1, fontSize: 19, fontWeight: 700, marginBottom: '0.67em' }}
+          >
             {challenge.title}
-          </h1>
+          </p>
           <p className="mt-2" style={{ color: colors.text2, lineHeight: 1.5 }}>
             {challenge.description}
           </p>
@@ -170,7 +182,7 @@ export function ArenaChallengeContractPage() {
           <div
             key={warning}
             className="flex gap-2 rounded-xl p-3"
-            style={{ background: '#F59E0B12', color: '#F59E0B', fontSize: 11 }}
+            style={{ background: '#F59E0B12', color: 'var(--tr-warning-text)', fontSize: 11 }}
           >
             <AlertTriangle size={14} className="shrink-0" />
             {warning}
@@ -242,7 +254,10 @@ export function ArenaJoinContractPage() {
 
   const handleJoin = () => {
     join.mutate(undefined, {
-      onSuccess: () => navigate(`${prefix}/arena/challenge/${challenge.id}`, { replace: true }),
+      onSuccess: () =>
+        navigate(`${prefix}/arena/challenge/${encodeURIComponent(challenge.id)}`, {
+          replace: true,
+        }),
     });
   };
 
@@ -251,7 +266,7 @@ export function ArenaJoinContractPage() {
       <Header title="Tham gia challenge" subtitle="Arena contract confirmation" back />
       <PageContent gap="default">
         <TrCard className="p-4">
-          <h1 style={{ color: colors.text1, fontSize: 18, fontWeight: 700 }}>{challenge.title}</h1>
+          <h2 style={{ color: colors.text1, fontSize: 18, fontWeight: 700 }}>{challenge.title}</h2>
           <p className="mt-2" style={{ color: colors.text2, fontSize: 12, lineHeight: 1.5 }}>
             {challenge.description}
           </p>

@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { fireEvent, screen } from '@testing-library/react';
 import { useLocation } from 'react-router';
+import { WEB_AVATAR_GRADIENT } from '@/shared/theme/webTokens';
 import { renderWithProviders } from '@/test/test-utils';
 import { testAuthAdapter, testAuthSession } from '@/test/auth-test-adapter';
 import { WebSidebar } from './WebSidebar';
@@ -11,6 +12,57 @@ function LocationProbe() {
 }
 
 describe('WebSidebar', () => {
+  it('exposes the navigation panel as a named complementary landmark', () => {
+    renderWithProviders(<WebSidebar />);
+
+    expect(screen.getByRole('complementary', { name: 'Điều hướng chính' })).toBeInTheDocument();
+  });
+
+  it('uses the shared readable fill for account initials', () => {
+    renderWithProviders(<WebSidebar />);
+
+    const accountButton = screen.getByText(testAuthSession.user.fullName).closest('button');
+    const avatar = accountButton?.querySelector('div');
+    expect(avatar).toHaveStyle({ background: WEB_AVATAR_GRADIENT });
+    expect(avatar?.querySelector('span')).toHaveStyle({ color: '#fff' });
+  });
+
+  it.each([
+    { username: 'test-handle', email: undefined, name: 'test-handle' },
+    { username: undefined, email: 'fallback@example.com', name: 'fallback@example.com' },
+    { username: undefined, email: undefined, name: 'Tài khoản' },
+  ])('uses $name for an account without a display name', ({ username, email, name }) => {
+    const session = {
+      ...testAuthSession,
+      user: { ...testAuthSession.user, fullName: ' ', username, email },
+    };
+    renderWithProviders(
+      <>
+        <WebSidebar />
+        <LocationProbe />
+      </>,
+      {
+        authAdapter: {
+          ...testAuthAdapter,
+          initialSession: session,
+          getSession: async () => session,
+        },
+        routerProps: { initialEntries: ['/w/home'] },
+      },
+    );
+    fireEvent.click(screen.getByText(name).closest('button')!);
+    expect(screen.getByTestId('location')).toHaveTextContent('/w/profile');
+    fireEvent.click(screen.getByRole('button', { name: 'Ví' }));
+    expect(screen.getByTestId('location')).toHaveTextContent('/w/wallet');
+  });
+
+  it('shows the signed-out identity when the session is absent', () => {
+    renderWithProviders(<WebSidebar />, {
+      authAdapter: { ...testAuthAdapter, initialSession: null, getSession: async () => null },
+    });
+    expect(screen.getByText('Chưa đăng nhập')).toBeInTheDocument();
+    expect(screen.queryByText(testAuthSession.user.fullName)).not.toBeInTheDocument();
+  });
   it('reveals and marks the active module route in the scrollable sidebar', () => {
     const scrollIntoView = vi.fn();
     const originalDescriptor = Object.getOwnPropertyDescriptor(
@@ -50,6 +102,36 @@ describe('WebSidebar', () => {
       'aria-current',
       'page',
     );
+  });
+
+  it.each([
+    { pathname: '/w/profile/edit', currentItem: 'profile' },
+    { pathname: '/w/profile/security', currentItem: 'Bảo mật' },
+    { pathname: '/w/profile/settings', currentItem: 'Cài đặt' },
+  ])('marks the matching profile navigation active at $pathname', ({ pathname, currentItem }) => {
+    renderWithProviders(<WebSidebar />, { routerProps: { initialEntries: [pathname] } });
+
+    const currentButton =
+      currentItem === 'profile'
+        ? screen.getByText(testAuthSession.user.fullName).closest('button')
+        : screen.getByRole('button', { name: currentItem });
+    expect(currentButton).toHaveAttribute('aria-current', 'page');
+    expect(screen.getAllByRole('button', { current: 'page' })).toHaveLength(1);
+  });
+
+  it('exposes and marks the standalone news route in the utility navigation', () => {
+    renderWithProviders(
+      <>
+        <WebSidebar />
+        <LocationProbe />
+      </>,
+      { routerProps: { initialEntries: ['/w/home'] } },
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: 'Tin tức' }));
+
+    expect(screen.getByTestId('location')).toHaveTextContent('/w/news');
+    expect(screen.getByRole('button', { name: 'Tin tức' })).toHaveAttribute('aria-current', 'page');
   });
 
   it('keeps the active market section expanded and follows web routes', () => {

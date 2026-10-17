@@ -48,6 +48,19 @@ describe('MarketNewsFeedPage', () => {
     useMarketNewsQuery.mockReset();
   });
 
+  it('clears an empty filtered result back to the unfiltered feed and permits one refresh', () => {
+    const refetch = vi.fn();
+    useMarketNewsQuery.mockReturnValue(queryState({ data: { ...response, items: [] }, refetch }));
+    renderWithProviders(<MarketNewsFeedPage />);
+    fireEvent.click(screen.getByRole('button', { name: 'Pháp lý' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Tiêu cực' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Xóa bộ lọc' }));
+    expect(useMarketNewsQuery).toHaveBeenLastCalledWith({ limit: 50 });
+    expect(screen.queryByRole('button', { name: 'Xóa bộ lọc' })).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Làm mới tin thị trường' }));
+    expect(refetch).toHaveBeenCalledOnce();
+  });
+
   it('shows loading and offers retry after a request failure', () => {
     useMarketNewsQuery.mockReturnValue(queryState({ isPending: true }));
     const { rerender } = renderWithProviders(<MarketNewsFeedPage />);

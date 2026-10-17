@@ -6,6 +6,7 @@ import {
   ArrowLeftRight,
   Wallet,
   Bell,
+  Newspaper,
   HelpCircle,
   Settings,
   ChevronLeft,
@@ -84,6 +85,7 @@ const NAV_SECTIONS: NavSection[] = [
 
 const BOTTOM_ITEMS: NavItem[] = [
   { path: `${PREFIX}/notifications`, icon: Bell, label: 'Thông báo' },
+  { path: `${PREFIX}/news`, icon: Newspaper, label: 'Tin tức' },
   { path: `${PREFIX}/support`, icon: HelpCircle, label: 'Hỗ trợ' },
   { path: `${PREFIX}/profile/settings`, icon: Settings, label: 'Cài đặt' },
 ];
@@ -106,6 +108,8 @@ export function TabletSidebar() {
     const currentBase = location.pathname.replace(PREFIX, '').split('/').filter(Boolean)[0];
     return base === currentBase;
   };
+  const isPathActive = (path: string) =>
+    location.pathname === path || location.pathname.startsWith(`${path}/`);
 
   const sidebarWidth = expanded ? 260 : 80;
 
@@ -214,21 +218,6 @@ export function TabletSidebar() {
                         strokeWidth={active ? 2.2 : 1.6}
                         color={active ? '#3B82F6' : c.text2}
                       />
-                      {item.badge && item.badge > 0 && (
-                        <div
-                          className="absolute -top-1.5 -right-1.5 flex items-center justify-center rounded-full"
-                          style={{
-                            width: 16,
-                            height: 16,
-                            background: '#EF4444',
-                            fontSize: 9,
-                            fontWeight: 700,
-                            color: '#fff',
-                          }}
-                        >
-                          {item.badge}
-                        </div>
-                      )}
                     </div>
 
                     {expanded && (
@@ -265,20 +254,27 @@ export function TabletSidebar() {
       >
         {bottomItems.map((item) => {
           const Icon = item.icon;
+          const active = isPathActive(item.path);
           return (
             <button
               key={item.path}
               onClick={() => navigate(item.path)}
               className="flex items-center gap-3 rounded-xl transition-colors"
               aria-label={item.label}
+              aria-current={location.pathname === item.path ? 'page' : undefined}
               style={{
                 height: 42,
                 paddingLeft: expanded ? 14 : 0,
                 justifyContent: expanded ? 'flex-start' : 'center',
+                background: active ? 'rgba(59,130,246,0.08)' : 'transparent',
               }}
             >
               <div className="relative">
-                <Icon size={20} strokeWidth={1.6} color={c.text3} />
+                <Icon
+                  size={20}
+                  strokeWidth={active ? 2 : 1.6}
+                  color={active ? '#3B82F6' : c.text3}
+                />
                 {item.badge && item.badge > 0 && (
                   <div
                     className="absolute -top-1 -right-1.5 flex items-center justify-center rounded-full"
@@ -296,7 +292,14 @@ export function TabletSidebar() {
                 )}
               </div>
               {expanded && (
-                <span style={{ color: c.text3, fontSize: 13, whiteSpace: 'nowrap' }}>
+                <span
+                  style={{
+                    color: active ? c.text1 : c.text3,
+                    fontSize: 13,
+                    whiteSpace: 'nowrap',
+                    fontWeight: active ? 600 : 400,
+                  }}
+                >
                   {item.label}
                 </span>
               )}

@@ -125,7 +125,7 @@ export function MarketComparisonPage() {
               <ComparisonCard
                 key={pair.id}
                 pair={pair}
-                onClick={() => navigate(`${prefix}/pair/${pair.id}`)}
+                onClick={() => navigate(`${prefix}/pair/${encodeURIComponent(pair.id)}`)}
               />
             ))}
           </div>

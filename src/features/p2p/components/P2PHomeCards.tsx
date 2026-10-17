@@ -47,9 +47,9 @@ export function SwipeableAdCard({
 
   const badgeConfig =
     ad.merchantBadge === 'elite'
-      ? { color: '#F59E0B', bg: 'rgba(245,158,11,0.12)', label: 'Elite' }
+      ? { color: c.warningText, bg: 'rgba(245,158,11,0.12)', label: 'Elite' }
       : ad.merchantBadge === 'pro'
-        ? { color: '#8B5CF6', bg: 'rgba(139,92,246,0.12)', label: 'Pro' }
+        ? { color: c.link, bg: 'rgba(139,92,246,0.12)', label: 'Pro' }
         : null;
 
   const avatarGradient =
@@ -114,8 +114,8 @@ export function SwipeableAdCard({
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
+      initial={{ y: 12 }}
+      animate={{ y: 0 }}
       transition={{ duration: 0.25, delay: index * 0.04, ease: 'easeOut' }}
       className="relative overflow-hidden rounded-2xl"
     >
@@ -188,7 +188,7 @@ export function SwipeableAdCard({
                 <div className="flex items-center gap-2 mt-0.5">
                   <span style={{ color: c.text3, fontSize: 10 }}>{ad.completedOrders} đơn</span>
                   <span style={{ color: c.text3, fontSize: 10 }}>·</span>
-                  <span style={{ color: c.buy, fontSize: 10, fontWeight: 600 }}>
+                  <span style={{ color: c.successText, fontSize: 10, fontWeight: 600 }}>
                     {ad.completionRate}%
                   </span>
                   {ad.merchantRating && (
@@ -216,13 +216,13 @@ export function SwipeableAdCard({
                 <MoreHorizontal size={14} color={c.text3} />
               </button>
               <button
-                onClick={() => navigate(`${prefix}/p2p/ad/${ad.id}`)}
+                onClick={() => navigate(`${prefix}/p2p/ad/${encodeURIComponent(ad.id)}`)}
                 className="flex-shrink-0 px-4 py-2 rounded-xl"
                 style={{
                   background:
                     tradeType === 'buy'
-                      ? 'linear-gradient(135deg, #10B981 0%, #059669 100%)'
-                      : 'linear-gradient(135deg, #EF4444 0%, #dc2626 100%)',
+                      ? 'linear-gradient(135deg, #047857 0%, #065f46 100%)'
+                      : 'linear-gradient(135deg, #b91c1c 0%, #991b1b 100%)',
                   color: '#fff',
                   fontSize: 12,
                   fontWeight: 700,
@@ -243,7 +243,11 @@ export function SwipeableAdCard({
             <span style={{ color: c.text3, fontSize: 11 }}>{ad.currency}</span>
             {margin !== null && (
               <span
-                style={{ color: margin >= 0 ? c.buy : c.primary, fontSize: 10, fontWeight: 600 }}
+                style={{
+                  color: margin >= 0 ? c.successText : c.warningText,
+                  fontSize: 10,
+                  fontWeight: 600,
+                }}
               >
                 {margin >= 0 ? '+' : ''}
                 {fmtPct(margin)}
@@ -254,7 +258,7 @@ export function SwipeableAdCard({
                 className="px-1.5 py-px rounded"
                 style={{
                   background: 'rgba(168,85,247,0.1)',
-                  color: '#A855F7',
+                  color: c.link,
                   fontSize: φ.xs,
                   fontWeight: 600,
                 }}
@@ -307,9 +311,7 @@ export function SwipeableAdCard({
               className="flex items-center justify-center gap-3 mt-3 pt-2.5"
               style={{ borderTop: `1px solid ${c.divider}` }}
             >
-              <span style={{ color: c.text3, fontSize: 9, opacity: 0.6 }}>
-                ← vuốt phải: mua nhanh
-              </span>
+              <span style={{ color: c.text2, fontSize: 10 }}>← vuốt phải: mua nhanh</span>
             </div>
           )}
 

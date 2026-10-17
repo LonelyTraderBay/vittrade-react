@@ -90,7 +90,7 @@ const addressBookResponse = {
   whitelistEnabled: true,
 };
 
-test.describe('wallet contract smoke on staging build', () => {
+test.describe('wallet contract smoke on local API-mode build', () => {
   test('submits an internal transfer with an idempotency key', async ({ page }) => {
     let transferBody: Record<string, unknown> | undefined;
     let idempotencyKey: string | undefined;
@@ -123,7 +123,9 @@ test.describe('wallet contract smoke on staging build', () => {
     await page.goto('/wallet/transfer');
     await expect((await sessionResponse).ok()).toBeTruthy();
     await expect(page.getByText('Internal transfer').first()).toBeVisible();
-    await page.getByTestId('wallet-transfer-amount').fill('25');
+    const amountField = page.getByTestId('wallet-transfer-amount');
+    await expect(amountField).toBeVisible();
+    await amountField.fill('25');
     const transferResponse = page.waitForResponse(
       (response) =>
         response.request().method() === 'POST' &&
@@ -142,6 +144,169 @@ test.describe('wallet contract smoke on staging build', () => {
     expect(idempotencyKey).toBeTruthy();
   });
 
+  test('keeps the transfer confirmation tappable at the mobile navigation overlap', async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    let transferSubmitted = false;
+
+    await page.route('**/auth/session', (route) => route.fulfill({ json: session }));
+    await page.route('**/wallet/accounts', (route) => route.fulfill({ json: accounts }));
+    await page.route('**/wallet/assets', (route) => route.fulfill({ json: assets }));
+    await page.route('**/wallet/transfers', (route) => {
+      transferSubmitted = true;
+      return route.fulfill({
+        status: 201,
+        json: {
+          id: 'e2e-transfer-mobile-1',
+          fromWallet: 'spot',
+          toWallet: 'funding',
+          asset: 'USDT',
+          amount: 25,
+          status: 'completed',
+          createdAt: '2026-09-22T10:00:00.000Z',
+        },
+      });
+    });
+
+    await page.goto('/r/wallet/transfer');
+    await page.getByTestId('wallet-transfer-amount').fill('25');
+    const submit = page.getByTestId('wallet-transfer-submit');
+    await expect(submit).toBeVisible();
+    const bounds = await submit.boundingBox();
+    expect(bounds).not.toBeNull();
+    const navigationAction = page
+      .getByRole('navigation', { name: 'Main navigation' })
+      .getByRole('button', { name: 'Giao dịch' });
+    const navigationActionBounds = await navigationAction.locator('div').first().boundingBox();
+    expect(navigationActionBounds).not.toBeNull();
+    expect(bounds!.y + bounds!.height).toBeLessThanOrEqual(navigationActionBounds!.y);
+    const centerTarget = await submit.evaluate((element) => {
+      const bounds = element.getBoundingClientRect();
+      const hit = document.elementFromPoint(
+        bounds.x + bounds.width / 2,
+        bounds.y + bounds.height / 2,
+      );
+      return {
+        belongsToSubmit: Boolean(hit && (hit === element || element.contains(hit))),
+        ctaCenterY: bounds.y + bounds.height / 2,
+        hitTag: hit?.tagName ?? null,
+        navigationLabel: hit?.closest('[role="navigation"]')?.getAttribute('aria-label') ?? null,
+      };
+    });
+    expect(centerTarget.belongsToSubmit).toBe(true);
+    expect(centerTarget.navigationLabel).toBeNull();
+    console.log(`C06_WALLET_TRANSFER_HIT_TARGET ${JSON.stringify(centerTarget)}`);
+    if (process.env.C06_NAV_LAYOUT_SCREENSHOT) {
+      await page.screenshot({ path: process.env.C06_NAV_LAYOUT_SCREENSHOT, fullPage: true });
+    }
+    await page.mouse.click(bounds!.x + bounds!.width / 2, bounds!.y + bounds!.height / 2);
+
+    await expect(page.getByRole('status')).toContainText('Transfer completed');
+    expect(transferSubmitted).toBe(true);
+    await expect(page).toHaveURL(/\/r\/wallet\/transfer$/);
+
+    await page.getByRole('button', { name: 'Giao dịch' }).click();
+    await expect(page).toHaveURL(/\/r\/trade\/btcusdt$/);
+  });
+
+  test('uses the shared amount field across wallet route aliases, viewports and themes', async ({
+    page,
+  }) => {
+    await page.route('**/auth/session', (route) => route.fulfill({ json: session }));
+    await page.route('**/wallet/accounts', (route) => route.fulfill({ json: accounts }));
+    await page.route('**/wallet/assets', (route) => route.fulfill({ json: assets }));
+
+    const aliases = [
+      { path: '/wallet/transfer', width: 320, height: 568 },
+      { path: '/t/wallet/transfer', width: 768, height: 1024 },
+      { path: '/w/wallet/transfer', width: 1280, height: 800 },
+      { path: '/r/wallet/transfer', width: 390, height: 844 },
+    ];
+    const measured: Array<Record<string, unknown>> = [];
+
+    for (const alias of aliases) {
+      await page.setViewportSize({ width: alias.width, height: alias.height });
+      await page.goto(alias.path);
+      const amountField = page.getByTestId('wallet-transfer-amount');
+      await expect(amountField).toBeVisible();
+      await expect(amountField).toHaveAttribute('type', 'number');
+      await expect(amountField).toHaveAttribute('min', '0');
+      await expect(amountField).toHaveAttribute('step', 'any');
+      await expect(amountField).toHaveAttribute('inputmode', 'decimal');
+      await expect(amountField).toHaveAttribute('aria-describedby', 'transfer-amount-helper');
+      await expect(page.locator('#transfer-amount-helper')).toContainText('Available:');
+
+      const geometry = await amountField.evaluate((element) => {
+        const input = element as HTMLInputElement;
+        const wrapper = input.parentElement;
+        const style = wrapper ? getComputedStyle(wrapper) : undefined;
+        const rect = input.getBoundingClientRect();
+        return {
+          height: style?.height,
+          borderRadius: style?.borderRadius,
+          inputFontSize: getComputedStyle(input).fontSize,
+          inputWidth: rect.width,
+          inputWithinViewport: rect.left >= 0 && rect.right <= innerWidth,
+        };
+      });
+      expect(geometry.height).toBe('52px');
+      expect(geometry.borderRadius).toBe('14px');
+      expect(geometry.inputFontSize).toBe('26px');
+      expect(geometry.inputWithinViewport).toBe(true);
+      if (alias.path === '/r/wallet/transfer' && process.env.C06_AFTER_SCREENSHOT) {
+        await page.screenshot({ path: process.env.C06_AFTER_SCREENSHOT, fullPage: true });
+      }
+
+      const themeColors: string[] = [];
+      for (const theme of ['light', 'dark'] as const) {
+        const colors = await amountField.evaluate((element, activeTheme) => {
+          document.documentElement.classList.remove('light', 'dark');
+          document.documentElement.classList.add(activeTheme);
+          const probe = document.createElement('span');
+          probe.style.color = 'var(--tr-text-1)';
+          document.body.append(probe);
+          const expected = getComputedStyle(probe).color;
+          probe.remove();
+          return { actual: getComputedStyle(element).color, expected };
+        }, theme);
+        expect(colors.actual).toBe(colors.expected);
+        themeColors.push(colors.actual);
+      }
+      expect(themeColors[0]).not.toBe(themeColors[1]);
+
+      await page.getByRole('button', { name: /Max/ }).focus();
+      await page.keyboard.press('Tab');
+      await expect(amountField).toBeFocused();
+      await expect
+        .poll(async () =>
+          amountField.evaluate((element) => {
+            const wrapper = element.parentElement;
+            return wrapper ? getComputedStyle(wrapper).boxShadow : 'missing-wrapper';
+          }),
+        )
+        .toContain('rgba(229, 138, 0, 0.25)');
+      const focusStyle = await amountField.evaluate((element) => {
+        const wrapper = element.parentElement;
+        return wrapper ? getComputedStyle(wrapper).boxShadow : 'missing-wrapper';
+      });
+      expect(focusStyle).not.toBe('none');
+
+      measured.push({
+        path: alias.path,
+        viewport: `${alias.width}x${alias.height}`,
+        fieldHeight: geometry.height,
+        fieldRadius: geometry.borderRadius,
+        fontSize: geometry.inputFontSize,
+        lightText: themeColors[0],
+        darkText: themeColors[1],
+        keyboardFocus: focusStyle,
+      });
+    }
+
+    console.log(`C06_WALLET_TRANSFER_FIELD_MATRIX ${JSON.stringify(measured)}`);
+  });
+
   test('renders server-owned deposit instructions and QR data', async ({ page }) => {
     await page.route('**/auth/session', (route) => route.fulfill({ json: session }));
     await page.route('**/wallet/deposit/networks**', (route) =>
@@ -151,7 +316,7 @@ test.describe('wallet contract smoke on staging build', () => {
     await page.goto('/wallet/deposit/USDT');
 
     await expect(page.getByLabel('Deposit network')).toHaveValue('ethereum');
-    await expect(page.getByLabel('Deposit QR code')).toBeVisible();
+    await expect(page.getByRole('img', { name: 'Deposit address QR code' })).toBeVisible();
     await expect(page.getByText(depositNetworks.networks[0].address)).toBeVisible();
     await expect(page.getByText('12 confirmations')).toBeVisible();
   });
@@ -392,20 +557,50 @@ test.describe('wallet contract smoke on staging build', () => {
     });
 
     await page.goto('/wallet/withdraw/USDT');
-    await expect(page).toHaveURL(/\/w\/wallet\/withdraw\/USDT$/);
+    await expect(page).toHaveURL(/\/wallet\/withdraw\/USDT$/);
     await expect(page.getByLabel('Mạng lưới')).toHaveValue('ethereum');
-    await page
-      .locator('#withdraw-address')
-      .fill('wallet-address-long-enough-for-validation-123456');
+    const fieldTokens = await page.evaluate(() => ({
+      height: getComputedStyle(document.documentElement).getPropertyValue('--input-height').trim(),
+      radius: getComputedStyle(document.documentElement)
+        .getPropertyValue('--tr-radius-input')
+        .trim(),
+    }));
+    for (const selector of ['#withdraw-network', '#withdraw-address', '#withdraw-amount']) {
+      const control = page.locator(selector);
+      const surface = selector === '#withdraw-network' ? control : control.locator('xpath=..');
+      await expect(surface).toHaveCSS('height', fieldTokens.height);
+      await expect(surface).toHaveCSS('border-radius', fieldTokens.radius);
+    }
+    const addressField = page.locator('#withdraw-address');
+    const amountField = page.locator('#withdraw-amount');
+    await expect(addressField).toHaveCSS('font-size', '16px');
+    await expect(amountField).toHaveCSS('font-size', '18px');
+    await addressField.focus();
+    await expect
+      .poll(
+        () =>
+          addressField.evaluate((element) => getComputedStyle(element.parentElement!).boxShadow),
+        { timeout: 2_000 },
+      )
+      .toContain('rgba(229, 138, 0, 0.25)');
+    await page.getByRole('button', { name: /Tiếp tục/ }).click();
+    await expect(addressField).toHaveAttribute('aria-invalid', 'true');
+    await expect(addressField).toHaveAttribute('aria-describedby', 'withdraw-address-error');
+    await expect(page.locator('#withdraw-address-error')).toHaveAttribute('role', 'alert');
+    await expect(amountField).toHaveAttribute('aria-invalid', 'true');
+    await expect(amountField).toHaveAttribute('aria-describedby', 'withdraw-amount-error');
+    expect(challengeBody).toBeUndefined();
+
+    await addressField.fill('wallet-address-long-enough-for-validation-123456');
+    await expect(page.locator('#withdraw-address-error')).toHaveCount(0);
     await page.getByRole('button', { name: 'Tất cả' }).click();
-    await expect(page.locator('#withdraw-amount')).toHaveValue('50.000000');
+    await expect(amountField).toHaveValue('50.000000');
+    await expect(page.locator('#withdraw-amount-error')).toHaveCount(0);
     await page.setViewportSize({ width: 390, height: 844 });
     await page.waitForTimeout(350);
-    await expect(page).toHaveURL(/\/w\/wallet\/withdraw\/USDT$/);
-    await expect(page.locator('#withdraw-address')).toHaveValue(
-      'wallet-address-long-enough-for-validation-123456',
-    );
-    await expect(page.locator('#withdraw-amount')).toHaveValue('50.000000');
+    await expect(page).toHaveURL(/\/wallet\/withdraw\/USDT$/);
+    await expect(addressField).toHaveValue('wallet-address-long-enough-for-validation-123456');
+    await expect(amountField).toHaveValue('50.000000');
     await page.getByRole('button', { name: /Tiếp tục/ }).click();
     await page.getByRole('button', { name: /Xác minh 2FA/ }).click();
 

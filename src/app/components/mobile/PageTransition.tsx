@@ -96,7 +96,7 @@ export function PageTransition({ children }: PageTransitionProps) {
     <AnimatePresence mode="wait" initial={false}>
       <motion.div
         ref={motionRef}
-        key={location.key}
+        key={location.pathname}
         initial={variants.initial}
         animate={variants.animate}
         exit={variants.exit}

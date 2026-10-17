@@ -73,6 +73,7 @@ describe('admin read contract pages', () => {
     renderWithProviders(<Page />);
 
     expect(await screen.findByText('Không có quyền truy cập')).toBeVisible();
+    expect(screen.getByRole('heading', { level: 1 })).toBeVisible();
     expect(
       screen.getByText('Tài khoản của bạn không có quyền xem dữ liệu quản trị.'),
     ).toBeVisible();

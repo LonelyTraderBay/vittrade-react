@@ -48,11 +48,12 @@ export function P2PReviewsPage() {
         <TrCard className="p-5">
           <div className="flex items-center gap-6">
             <div className="text-center">
-              <div style={{ color: '#F59E0B', fontSize: 36, fontWeight: 700 }}>
+              <div style={{ color: 'var(--tr-warning-text)', fontSize: 36, fontWeight: 700 }}>
                 {average.toFixed(1)}
               </div>
               <div
                 className="flex justify-center gap-0.5 mt-1"
+                role="img"
                 aria-label={`${average} trên 5 sao`}
               >
                 {Array.from({ length: 5 }, (_, index) => (
@@ -60,7 +61,8 @@ export function P2PReviewsPage() {
                     key={index}
                     size={12}
                     fill={index < Math.round(average) ? '#F59E0B' : colors.surface2}
-                    color={index < Math.round(average) ? '#F59E0B' : colors.surface2}
+                    color={index < Math.round(average) ? 'var(--tr-warning-text)' : colors.surface2}
+                    aria-hidden="true"
                   />
                 ))}
               </div>
@@ -68,16 +70,16 @@ export function P2PReviewsPage() {
             </div>
             <div className="flex-1 flex flex-col gap-2">
               <SummaryLine
-                icon={<ThumbsUp size={14} color="#10B981" />}
+                icon={<ThumbsUp size={14} color={colors.successText} aria-hidden="true" />}
                 label="Tích cực"
                 value={query.data?.positiveCount ?? 0}
-                color="#10B981"
+                color={colors.successText}
               />
               <SummaryLine
-                icon={<ThumbsDown size={14} color="#EF4444" />}
+                icon={<ThumbsDown size={14} color={colors.errorText} aria-hidden="true" />}
                 label="Tiêu cực"
                 value={query.data?.negativeCount ?? 0}
-                color="#EF4444"
+                color={colors.errorText}
               />
             </div>
           </div>
@@ -96,11 +98,7 @@ export function P2PReviewsPage() {
         {reviews.length === 0 ? (
           <div className="flex flex-col items-center py-16 gap-3">
             <MessageCircle size={36} color={colors.borderSolid} />
-            <p
-              role="status"
-              aria-label="No P2P reviews"
-              style={{ color: colors.text3, fontSize: 13 }}
-            >
+            <p role="status" style={{ color: colors.text3, fontSize: 13 }}>
               Chưa có đánh giá nào
             </p>
           </div>
@@ -115,13 +113,18 @@ export function P2PReviewsPage() {
                     </p>
                     <p style={{ color: colors.text3, fontSize: 10 }}>Đơn #{review.orderId}</p>
                   </div>
-                  <div className="flex items-center gap-1" aria-label={`${review.rating} sao`}>
+                  <div
+                    className="flex items-center gap-1"
+                    role="img"
+                    aria-label={`${review.rating} sao`}
+                  >
                     {Array.from({ length: 5 }, (_, index) => (
                       <Star
                         key={index}
                         size={11}
                         fill={index < review.rating ? '#F59E0B' : colors.surface2}
-                        color={index < review.rating ? '#F59E0B' : colors.surface2}
+                        color={index < review.rating ? 'var(--tr-warning-text)' : colors.surface2}
+                        aria-hidden="true"
                       />
                     ))}
                   </div>
