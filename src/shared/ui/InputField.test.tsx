@@ -69,6 +69,30 @@ describe('InputField', () => {
     expect(screen.getByRole('alert')).toHaveTextContent('Enter a valid email');
   });
 
+  it('supports composed labels with required semantics and a generated accessible id', () => {
+    render(
+      <InputField
+        label={
+          <>
+            Wallet address{' '}
+            <span aria-hidden="true" style={{ color: 'red' }}>
+              *
+            </span>
+          </>
+        }
+        required
+      />,
+    );
+
+    const input = screen.getByRole('textbox', {
+      name: 'Wallet address',
+    }) as HTMLInputElement;
+    expect(input).toBeRequired();
+    expect(input.id).toMatch(/^input-/);
+    expect(input.labels).toHaveLength(1);
+    expect(input.labels?.[0]).toHaveAttribute('for', input.id);
+  });
+
   it('keeps supplied descriptions, helper text, and validation errors connected', () => {
     render(
       <InputField
