@@ -178,7 +178,7 @@ export function MarketSectorsPage() {
                   <span
                     key={index}
                     style={{
-                      color: value >= 0 ? '#10B981' : '#EF4444',
+                      color: value >= 0 ? colors.successText : colors.errorText,
                       width: 52,
                       textAlign: 'right',
                       fontSize: 11,
@@ -231,7 +231,7 @@ function SectorCard({
         <span className="text-right">
           <span
             style={{
-              color: positive ? '#10B981' : '#EF4444',
+              color: positive ? colors.successText : colors.errorText,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'flex-end',
@@ -319,7 +319,7 @@ function SectorDetail({
             {topPairs.map((pair) => (
               <button
                 key={pair.id}
-                onClick={() => navigate(`${prefix}/pair/${pair.id}`)}
+                onClick={() => navigate(`${prefix}/pair/${encodeURIComponent(pair.id)}`)}
                 className="flex items-center gap-2 py-3 w-full"
                 style={{ borderBottom: `1px solid ${colors.divider}` }}
               >
@@ -327,7 +327,7 @@ function SectorDetail({
                   className="w-8 h-8 rounded-lg flex items-center justify-center"
                   style={{ background: `${pair.logoColor}20` }}
                 >
-                  <span style={{ color: pair.logoColor, fontSize: 10, fontWeight: 700 }}>
+                  <span style={{ color: colors.text1, fontSize: 10, fontWeight: 700 }}>
                     {pair.baseAsset.slice(0, 3)}
                   </span>
                 </span>
@@ -350,7 +350,7 @@ function SectorDetail({
                   </span>
                   <span
                     style={{
-                      color: pair.change24h >= 0 ? '#10B981' : '#EF4444',
+                      color: pair.change24h >= 0 ? colors.successText : colors.errorText,
                       fontSize: 10,
                       fontWeight: 700,
                     }}

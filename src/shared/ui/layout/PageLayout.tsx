@@ -1,5 +1,6 @@
 import React from 'react';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
+import { pageInlineGutterStyle } from './pageGutter';
 
 /**
  * ══════════════════════════════════════════════════════════════
@@ -152,8 +153,9 @@ export function StickyFooter({
   const c = useThemeColors();
   return (
     <div
-      className={`sticky bottom-0 z-10 px-5 py-4 ${className}`}
+      className={`sticky bottom-0 z-10 py-4 ${className}`}
       style={{
+        ...pageInlineGutterStyle(),
         background: bg === 'surface' ? c.surface : c.bg,
         borderTop: border ? `1px solid ${c.divider}` : 'none',
         backdropFilter: 'saturate(180%) blur(20px)',

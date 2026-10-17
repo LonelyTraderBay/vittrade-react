@@ -16,6 +16,12 @@ beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
+async function waitForBottomSheetExit() {
+  await waitFor(() =>
+    expect(document.querySelector('[data-bottom-sheet-overlay]')).not.toBeInTheDocument(),
+  );
+}
+
 const settings: P2P2FASettingsResponse = {
   methods: [
     {
@@ -313,6 +319,7 @@ describe('P2P 2FA settings contract page', () => {
       expect(toastError).toHaveBeenCalledWith('Không thể cập nhật threshold.', expect.anything()),
     );
     await user.click(screen.getByRole('button', { name: 'Đóng' }));
+    await waitForBottomSheetExit();
 
     await user.click(screen.getByRole('button', { name: 'Bật hoặc tắt SMS' }));
     await waitFor(() =>

@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "id": "EV-20261014-003",
+  "taskId": "C03",
+  "stepId": "C03.05",
+  "kind": "static",
+  "observedAt": "2026-10-13T21:37:25Z",
+  "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
+  "dirtyFileHashes": {},
+  "commandOrSteps": "node docs/architecture/production-readiness/check-tracking.mjs; git diff --check; node scripts/check-git-eol.mjs; attempt scoped Prettier CLI using the repository shim and direct Node entry point.",
+  "environment": "Windows local checkout; Node v24.19.0; current branch working tree remains dirty.",
+  "expected": "The updated ledger has no consistency/provenance errors; whitespace and managed-text EOL checks pass; documentation formatting can be verified with the declared local formatter.",
+  "actual": {
+    "trackingChecker": {
+      "firstExitCode": 1,
+      "firstErrorCount": 186,
+      "firstRawLog": "C:/Users/Joker-PC/.codex/visualizations/2026/10/14/01a13394-3caa-7930-a58f-e3e6c61b066f/vittrade-audit/implementation/check-tracking-iteration-53.log",
+      "finalPreAuditExitCode": 1,
+      "finalPreAuditErrorCount": 187,
+      "postFileLedgerRepairExitCode": 1,
+      "postFileLedgerRepairErrorCount": 184,
+      "reportedSourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
+      "visibleErrorPattern": "current source differs from cataloguedSourceHead",
+      "finalPreAuditRawLog": "C:/Users/Joker-PC/.codex/visualizations/2026/10/14/01a13394-3caa-7930-a58f-e3e6c61b066f/vittrade-audit/implementation/check-tracking-iteration-53-final.log",
+      "postFileLedgerRepairRawLog": "C:/Users/Joker-PC/.codex/visualizations/2026/10/14/01a13394-3caa-7930-a58f-e3e6c61b066f/vittrade-audit/implementation/check-tracking-iteration-53-after-file-ledger-repair.log",
+      "postFileLedgerRepairLogSha256": "41703f182704dc6debc45e2beb931027019d712bd9f59b4e7ffdccc719aad2d3",
+      "catalogOrHistoricalHashesRebased": false,
+      "finalObservedAt": "2026-10-13T21:41:18.546Z",
+      "finalLogSha256": "5bcdf4e36e6c1c1fb96d740a829250b64c2958ff4c3a117fc65f030d54c16ad04"
+    },
+    "gitDiffCheck": {
+      "exitCode": 0
+    },
+    "gitEolCheck": {
+      "exitCode": 0,
+      "paths": 4150,
+      "lf": 2047,
+      "withoutTerminator": 0,
+      "preservedNonText": 2100,
+      "protectedWindowsCrlf": 3,
+      "violations": 0
+    },
+    "prettierDocsCheck": {
+      "result": "unverified",
+      "reason": "node_modules/.bin/prettier.cmd exists but its node_modules/prettier target has no bin/prettier.cjs entry point; direct invocation returned MODULE_NOT_FOUND. No dependency was installed."
+    }
+  },
+  "result": "fail",
+  "artifact": "C:/Users/Joker-PC/.codex/visualizations/2026/10/14/01a13394-3caa-7930-a58f-e3e6c61b066f/vittrade-audit/implementation/check-tracking-iteration-53.log",
+  "notes": "The checker first reported 186, then 187 and 188 during successive ledger revisions. Cataloguing the three new evidence files with their actual change IDs reduced the latest post-repair result to 184 errors, still exit 1. The remaining visible errors are dirty-source/catalog provenance mismatches, not coverage counter regression. Do not point uncommitted bytes to HEAD or rewrite historical hashes to make the checker pass. Coverage test, route UI scan and this global ledger check are separate gates."
+}

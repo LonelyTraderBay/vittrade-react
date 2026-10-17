@@ -1,0 +1,391 @@
+{
+  "checkedAt": "2026-10-13T06:12:09.930Z",
+  "sourceHead": "db9c9064fa3ba79bd76fb7acb1023d90486b6cbf",
+  "branch": "",
+  "origin": "http://127.0.0.1:4193",
+  "browser": "Chromium via Playwright",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "scenario": {
+    "id": "profile.error",
+    "status": "passed",
+    "persona": "developer (preview only)",
+    "route": "/w/profile, /w/profile/devices, /w/profile/activity, /w/profile/sub-accounts",
+    "operationIds": [
+      "getProfile",
+      "listTrustedDevices",
+      "listProfileActivity",
+      "listSubAccounts"
+    ],
+    "observedOperationIds": [
+      "getProfile",
+      "listTrustedDevices",
+      "listProfileActivity",
+      "listSubAccounts"
+    ],
+    "expectedDomainOperationCount": 7,
+    "coverage": "representative_browser_observed_four_read_operations",
+    "injectedFailure": {
+      "kind": "statusless_transport_error",
+      "httpStatus": null,
+      "source": "runner-scoped fetch rejection before network dispatch",
+      "contractStatusRequired": false
+    }
+  },
+  "fixtureBoundary": {
+    "serviceWorkerControlled": true,
+    "allObservedResponsesFromServiceWorker": true,
+    "observedNetworkApiResponseCount": 3,
+    "profileRequestsDispatchedToNetwork": false,
+    "localMockMutationCount": 0,
+    "realBackendRequestSent": false,
+    "realBackendMutationSent": false,
+    "externalApiOrigins": []
+  },
+  "authorizationLimitations": {
+    "persona": "developer",
+    "mockSourcePermissions": [
+      "profile:read",
+      "profile:write",
+      "profile:security:write"
+    ],
+    "mswEnforcesProfileReadPermission": false,
+    "backendAuthorizationVerified": false
+  },
+  "measurements": {
+    "totalFlowMs": 7825,
+    "apiRequestCount": 3,
+    "apiResponseCount": 3,
+    "profileFetchAttemptCount": 24,
+    "totalApiAttemptCount": 27,
+    "operationCounts": {
+      "getProfile": 6,
+      "listTrustedDevices": 6,
+      "listProfileActivity": 6,
+      "listSubAccounts": 6
+    },
+    "readResults": [
+      {
+        "route": "/w/profile",
+        "operationId": "getProfile",
+        "initialRequestCount": 3,
+        "initialTransportFailureCount": 3,
+        "retryRequestCount": 3,
+        "retryTransportFailureCount": 3,
+        "httpResponseCount": 0,
+        "httpClientAttemptsPerExecution": 3,
+        "errorStateVisibleAfterRetry": true,
+        "successFixtureHidden": true,
+        "routePreservedAfterRetry": "/w/profile",
+        "screenshot": "preview-profile-error-current-head-profile-2026-10-13-remediation-1791871924011.png"
+      },
+      {
+        "route": "/w/profile/devices",
+        "operationId": "listTrustedDevices",
+        "initialRequestCount": 3,
+        "initialTransportFailureCount": 3,
+        "retryRequestCount": 3,
+        "retryTransportFailureCount": 3,
+        "httpResponseCount": 0,
+        "httpClientAttemptsPerExecution": 3,
+        "errorStateVisibleAfterRetry": true,
+        "successFixtureHidden": true,
+        "routePreservedAfterRetry": "/w/profile/devices",
+        "screenshot": "preview-profile-error-current-head-devices-2026-10-13-remediation-1791871924011.png"
+      },
+      {
+        "route": "/w/profile/activity",
+        "operationId": "listProfileActivity",
+        "initialRequestCount": 3,
+        "initialTransportFailureCount": 3,
+        "retryRequestCount": 3,
+        "retryTransportFailureCount": 3,
+        "httpResponseCount": 0,
+        "httpClientAttemptsPerExecution": 3,
+        "errorStateVisibleAfterRetry": true,
+        "successFixtureHidden": true,
+        "routePreservedAfterRetry": "/w/profile/activity",
+        "screenshot": "preview-profile-error-current-head-activity-2026-10-13-remediation-1791871924011.png"
+      },
+      {
+        "route": "/w/profile/sub-accounts",
+        "operationId": "listSubAccounts",
+        "initialRequestCount": 3,
+        "initialTransportFailureCount": 3,
+        "retryRequestCount": 3,
+        "retryTransportFailureCount": 3,
+        "httpResponseCount": 0,
+        "httpClientAttemptsPerExecution": 3,
+        "errorStateVisibleAfterRetry": true,
+        "successFixtureHidden": true,
+        "routePreservedAfterRetry": "/w/profile/sub-accounts",
+        "screenshot": "preview-profile-error-current-head-subaccounts-2026-10-13-remediation-1791871924011.png"
+      }
+    ],
+    "profileWriteCount": 0,
+    "profileRequestFailureCount": 24,
+    "pageErrorCount": 0
+  },
+  "assertions": {
+    "apiRequests": [
+      {
+        "method": "GET",
+        "path": "/api/auth/session",
+        "operationId": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/logout",
+        "operationId": null
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/login",
+        "operationId": null
+      }
+    ],
+    "apiResponses": [
+      {
+        "method": "GET",
+        "path": "/api/auth/session",
+        "operationId": null,
+        "status": 401,
+        "fromServiceWorker": true,
+        "responseTimeMs": 12
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/logout",
+        "operationId": null,
+        "status": 204,
+        "fromServiceWorker": true,
+        "responseTimeMs": 15
+      },
+      {
+        "method": "POST",
+        "path": "/api/auth/login",
+        "operationId": null,
+        "status": 200,
+        "fromServiceWorker": true,
+        "responseTimeMs": 3
+      }
+    ],
+    "profileRequestFailures": [
+      {
+        "method": "GET",
+        "path": "/api/profile",
+        "operationId": "getProfile",
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile",
+        "operationId": "getProfile",
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile",
+        "operationId": "getProfile",
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile",
+        "operationId": "getProfile",
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile",
+        "operationId": "getProfile",
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile",
+        "operationId": "getProfile",
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/devices",
+        "operationId": "listTrustedDevices",
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/devices",
+        "operationId": "listTrustedDevices",
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/devices",
+        "operationId": "listTrustedDevices",
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/devices",
+        "operationId": "listTrustedDevices",
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/devices",
+        "operationId": "listTrustedDevices",
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/devices",
+        "operationId": "listTrustedDevices",
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/activity",
+        "operationId": "listProfileActivity",
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/activity",
+        "operationId": "listProfileActivity",
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/activity",
+        "operationId": "listProfileActivity",
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/activity",
+        "operationId": "listProfileActivity",
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/activity",
+        "operationId": "listProfileActivity",
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/activity",
+        "operationId": "listProfileActivity",
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/sub-accounts",
+        "operationId": "listSubAccounts",
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/sub-accounts",
+        "operationId": "listSubAccounts",
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/sub-accounts",
+        "operationId": "listSubAccounts",
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/sub-accounts",
+        "operationId": "listSubAccounts",
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/sub-accounts",
+        "operationId": "listSubAccounts",
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      },
+      {
+        "method": "GET",
+        "path": "/api/profile/sub-accounts",
+        "operationId": "listSubAccounts",
+        "errorText": "Failed to fetch",
+        "source": "runner-scoped pre-network fetch rejection"
+      }
+    ],
+    "unexpectedProfileRequestFailures": [],
+    "profileWrites": [],
+    "pageErrors": [],
+    "externalApiOrigins": []
+  },
+  "screenshots": {
+    "profile": "preview-profile-error-current-head-profile-2026-10-13-remediation-1791871924011.png",
+    "devices": "preview-profile-error-current-head-devices-2026-10-13-remediation-1791871924011.png",
+    "activity": "preview-profile-error-current-head-activity-2026-10-13-remediation-1791871924011.png",
+    "subAccounts": "preview-profile-error-current-head-subaccounts-2026-10-13-remediation-1791871924011.png"
+  },
+  "sourceHashes": {
+    "contracts/openapi/profile.yaml": "6830c4976f5b94b4f78e08b824eabd1c18b41bf96f23613412db065575f1d5d8",
+    "src/app/routes.ts": "c93a80e123fd95c3abd246aeb00589a51f5ff4560e794e87f70f7ff96248c0d5",
+    "src/dev/PreviewControls.tsx": "a318fb182dda24c9b8d2103ae4b40eeecb7c3eded57332aad3c5bc8a1836a54c",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/handlers.ts": "9d1ea085bab944b0bd0e59a665222113cb7bb661bbcd2408f09c6adf08cd3ea9",
+    "src/dev/mocks/personas.ts": "6189b9cbfb9765f5c442c52a089d30b5be171170fe054ef6bf2faffbbb53dccd",
+    "src/dev/mocks/preview-scenario-handler.ts": "1b05e3e420b1df43de6d2e37533d4d8dbcd203fedb70ca59a65a4a62179396f5",
+    "src/dev/mocks/scenario-runtime.ts": "446d43808b478a1eaca07faa29d690c49c8e7ffb21fc1f12d2de2feb524e2e50",
+    "src/features/profile/api/profile-api.ts": "acba23f32e4c8b2ad972e02c2184e6fbb616ce1ab4b1defeca60d2a825a9b707",
+    "src/features/profile/model/profile-queries.ts": "384f749fcf37d7ac68405dd78288a1ef738251206d7e3bccc5aaa98f8e986a57",
+    "src/features/profile/model/profile-queries.test.tsx": "046a82bffb1e7c24a2f476ad2d9adf70ffa72dde2a903ad50e11318a368846ca",
+    "src/features/profile/model/profile-types.ts": "2c31759640a548270a76a9bb7ff17ef5af0cb1a684d968e063373f1157f93761",
+    "src/features/profile/pages/ActivityLogContractPage.tsx": "48be877678ceb63bb2ad01fa94eaf711bd291539508b3c60500632d0c24efb36",
+    "src/features/profile/pages/DeviceManagementContractPage.tsx": "fb32ff88b2c1d65420537814a3d8244cfde0f1a353a2c76356ae2329717dd286",
+    "src/features/profile/pages/EditProfileContractPage.tsx": "b3f1694edc7aa561c42bf016d543e870dba174767dc664edcc31474a89dc79be",
+    "src/features/profile/pages/ProfileContractPage.tsx": "0932157ef6be68cffad4f6e2481c90f010003ffcc3dbe179d562e7eab9d472bd",
+    "src/features/profile/pages/SubAccountContractPage.tsx": "4842a28e0bc17738d0895352d4dcb168f4a981ea2926feb747120ea9de94d0a0",
+    "src/features/profile/routes.ts": "231052711e6dd138f27c96272e63d401e06854ed33d425d8712f485c3b601418",
+    "src/shared/api/api-error.ts": "cd28d4480488b8b71582e085f110a637f80afde64e408b1a24717b67834e2644",
+    "src/shared/api/http-client.ts": "12a04035eac23a2999f8c7a76aafa32966585402c06d98f451ef33eb8601cf42",
+    "src/shared/api/query-client.ts": "b2b0e5fe60f7ade24017f12859fa1b68bd2de143868c42e37df51a71ee259ac2",
+    "src/shared/session/AuthContext.tsx": "b95d134413d28d85278553b752a4d6738857ed7785ea53d7a0e441db61b310f2",
+    "src/shared/session/useAuth.ts": "65d58cfe61d4618a1849da066ecd4d6ae7c94c036af7361a91a1383a6b383e0b",
+    "src/shared/ui/ErrorState.tsx": "7e501dd15a90aea2bf93e33150e47d455bbe3a24a0da1f986cca180125d4acd2",
+    "src/main.tsx": "c150098914a25b7e0630d66f480ffbfe4160e96a8bdb54262b5ad4b5b33719e6",
+    "docs/architecture/production-readiness/evidence/A06/run-profile-error-browser-check.mjs": "b4e8262943b2f0e609fd0846c3e7876d2c8c98d98bce49edc4403c1793931e45"
+  },
+  "limitations": [
+    "The Profile GET failures are injected by this runner before network dispatch because the Profile OpenAPI declares no 5xx response.",
+    "This verifies a synthetic transport-error UI and manual retry path only, not a real backend outage or MSW failure interception.",
+    "The HTTP client retries idempotent GET requests; the browser count measures local retry configuration, not a production retry recommendation.",
+    "Only four Profile GET operations are covered; updateProfile, setDeviceTrust and revokeDevice mutations were not sent.",
+    "MSW does not enforce Profile permission scopes; backend authorization, persistence, staging and user acceptance are not verified."
+  ]
+}

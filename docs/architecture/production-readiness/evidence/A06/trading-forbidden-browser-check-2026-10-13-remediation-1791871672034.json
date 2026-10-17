@@ -1,0 +1,228 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-13T06:09:23.200Z",
+  "sourceHead": "db9c9064fa3ba79bd76fb7acb1023d90486b6cbf",
+  "branch": "",
+  "origin": "http://127.0.0.1:4193",
+  "browser": "Chromium via Playwright",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "scenario": {
+    "id": "trading.forbidden",
+    "status": "passed",
+    "persona": "developer",
+    "route": "/w/trade/positions",
+    "operationIds": [
+      "listOpenPositions"
+    ],
+    "observedOperationIds": [
+      "listOpenPositions"
+    ],
+    "expectedDomainOperationCount": 10,
+    "declaredTrading403OperationCount": 10,
+    "declaredTrading403OperationIds": [
+      "listCopyRelationships",
+      "createCopyRelationship",
+      "stopCopyRelationship",
+      "getTradingAnalytics",
+      "listOpenOrders",
+      "placeOrder",
+      "listOpenPositions",
+      "listOrderHistory",
+      "modifyOrder",
+      "cancelOrder"
+    ],
+    "coverage": "representative_contract_operation_browser_observed",
+    "responseStatus": 403,
+    "responseCode": "PREVIEW_FORBIDDEN",
+    "visiblePermissionDeniedState": true,
+    "visibleEmptyState": false,
+    "routePreserved": true,
+    "writeRequestCount": 0,
+    "screenshot": "preview-trading-forbidden-positions-2026-10-13-remediation-1791871672034.png"
+  },
+  "fixtureBoundary": {
+    "serviceWorkerControlled": true,
+    "allObservedResponsesFromServiceWorker": true,
+    "externalApiOrigins": [],
+    "realBackendRequestSent": false,
+    "realBackendMutationSent": false
+  },
+  "measurements": {
+    "totalFlowMs": 943,
+    "apiRequestCount": 9,
+    "apiResponseCount": 9,
+    "positionResponses": [
+      {
+        "method": "GET",
+        "path": "/api/trading/positions",
+        "operationId": "listOpenPositions",
+        "status": 403,
+        "fromServiceWorker": true,
+        "elapsedMs": 5,
+        "body": {
+          "code": "PREVIEW_FORBIDDEN",
+          "message": "Kịch bản xem trước: tài khoản không có quyền."
+        }
+      }
+    ],
+    "tradingRequestCount": 1,
+    "tradingWriteCount": 0,
+    "unmatchedApiFailureCount": 0,
+    "pageErrors": [],
+    "externalApiOriginCount": 0
+  },
+  "apiRequests": [
+    {
+      "method": "GET",
+      "path": "/api/auth/session",
+      "operationId": null,
+      "startedAt": 1791871763653
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/pairs",
+      "operationId": null,
+      "startedAt": 1791871763719
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/logout",
+      "operationId": null,
+      "startedAt": 1791871763889
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/pairs",
+      "operationId": null,
+      "startedAt": 1791871763889
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/login",
+      "operationId": null,
+      "startedAt": 1791871763902
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/pairs",
+      "operationId": null,
+      "startedAt": 1791871763904
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/pairs",
+      "operationId": null,
+      "startedAt": 1791871763929
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/watchlist",
+      "operationId": null,
+      "startedAt": 1791871763930
+    },
+    {
+      "method": "GET",
+      "path": "/api/trading/positions",
+      "operationId": "listOpenPositions",
+      "startedAt": 1791871764267
+    }
+  ],
+  "apiResponses": [
+    {
+      "method": "GET",
+      "path": "/api/auth/session",
+      "operationId": null,
+      "status": 401,
+      "fromServiceWorker": true,
+      "elapsedMs": 19
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/pairs",
+      "operationId": null,
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 28
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/logout",
+      "operationId": null,
+      "status": 204,
+      "fromServiceWorker": true,
+      "elapsedMs": 13
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/pairs",
+      "operationId": null,
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 13
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/pairs",
+      "operationId": null,
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 4
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/login",
+      "operationId": null,
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 7
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/pairs",
+      "operationId": null,
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 9
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/watchlist",
+      "operationId": null,
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 8
+    },
+    {
+      "method": "GET",
+      "path": "/api/trading/positions",
+      "operationId": "listOpenPositions",
+      "status": 403,
+      "fromServiceWorker": true,
+      "elapsedMs": 5,
+      "body": {
+        "code": "PREVIEW_FORBIDDEN",
+        "message": "Kịch bản xem trước: tài khoản không có quyền."
+      }
+    }
+  ],
+  "sourceHashes": {
+    "contracts/openapi/trading.yaml": "ea87584c03ab69a0d552d80590e36e15ab7b38851cc1583d9c892bbb91f19437",
+    "src/app/routeConfig.ts": "675ea95ec4831b9d0caf1cbf68524efaebda8ed9b970b5dad129bdd55f28bac9",
+    "src/app/routes.ts": "c93a80e123fd95c3abd246aeb00589a51f5ff4560e794e87f70f7ff96248c0d5",
+    "src/dev/PreviewControls.tsx": "a318fb182dda24c9b8d2103ae4b40eeecb7c3eded57332aad3c5bc8a1836a54c",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/handlers.ts": "9d1ea085bab944b0bd0e59a665222113cb7bb661bbcd2408f09c6adf08cd3ea9",
+    "src/dev/mocks/personas.ts": "6189b9cbfb9765f5c442c52a089d30b5be171170fe054ef6bf2faffbbb53dccd",
+    "src/dev/mocks/preview-scenario-handler.ts": "1b05e3e420b1df43de6d2e37533d4d8dbcd203fedb70ca59a65a4a62179396f5",
+    "src/features/trading/pages/OpenPositionsPage.tsx": "709874871e1a37f5ec0d8096188357a72349a08fb6495536c1c9ddf85097c2b1",
+    "src/shared/api/http-client.ts": "12a04035eac23a2999f8c7a76aafa32966585402c06d98f451ef33eb8601cf42",
+    "src/shared/api/query-client.ts": "b2b0e5fe60f7ade24017f12859fa1b68bd2de143868c42e37df51a71ee259ac2",
+    "src/shared/ui/ErrorState.tsx": "7e501dd15a90aea2bf93e33150e47d455bbe3a24a0da1f986cca180125d4acd2",
+    "docs/architecture/production-readiness/evidence/A06/generate-scenario-matrix.mjs": "d4d32249afc14a3466043caf3e0a063a25c0aa7893e32fdeb5f0e1ec5d7e5df3",
+    "docs/architecture/production-readiness/evidence/A06/run-trading-forbidden-browser-check.mjs": "0dfe635246ea75cfa2f012b5c2a355321196bd54a2f6da0edbf9baf3d2963bba"
+  },
+  "limitations": "Local Chromium/MSW verifies only listOpenPositions (1/10 operations declaring 403), using PREVIEW_FORBIDDEN. It does not verify backend authorization, the other nine contract operations, staging or user acceptance."
+}

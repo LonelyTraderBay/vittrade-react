@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-14T03:08:27.474Z",
+  "focusTest": {
+    "id": "2026-10-14T02-22-51-527Z-vitest-bbc008fd-bf3d-4258-9778-cc3ccd0bb114",
+    "startedAt": "2026-10-14T02:22:51.527Z",
+    "finishedAt": "2026-10-14T02:23:00.857Z",
+    "status": "passed",
+    "exitCode": 0,
+    "tests": "6/6",
+    "preFixRun": {
+      "id": "2026-10-14T02-22-13-632Z-vitest-09b2daa1-9c28-4358-b9a2-94574a4a810c",
+      "status": "failed",
+      "exitCode": 1,
+      "meaning": "Regression assertion reproduced the initial opacity: 0 state before the fix."
+    }
+  },
+  "fix": {
+    "sourceCommit": "5f6fcfddb05a692dc7e301a5e9b0fb1d27744e4a",
+    "component": {
+      "path": "src/features/p2p/components/P2PHomeCards.tsx",
+      "blob": "2aa089597852070a8e6150240aa7b220c16e55e3",
+      "sha256": "e33115b45253bbe7d970d9937963e8ad7fe978090fc3a514e50d8e4a8131802d"
+    },
+    "test": {
+      "path": "src/features/p2p/components/P2PHomeCards.test.tsx",
+      "blob": "c66ece3e81965d6a160700d7b4661cd3cb6c9ebf",
+      "sha256": "485b6fe58f6c3213d08091b3a4938d017f50a76ace3bd95b1a25be114c203a46"
+    },
+    "behavior": "Removed the entrance opacity animation that produced transient low-contrast offer-card text. Kept the vertical entrance motion."
+  },
+  "focusedBrowserCheck": {
+    "route": "/w/p2p",
+    "theme": "dark",
+    "before": "Axe reported 16 serious color-contrast nodes during the initial fade.",
+    "after": "No color-contrast nodes at approximately 200 ms or after the page settled for approximately 2 s.",
+    "scope": "Local Chromium with development fixtures; this is a focused regression check, not a full manual accessibility certification."
+  },
+  "fullSuite": {
+    "runId": "2026-10-14T02-26-15-529Z-vitest-acc9fb6b-4b03-4d8c-a99d-70dcca22ddc0",
+    "startedAt": "2026-10-14T02:26:15.529Z",
+    "finishedAt": "2026-10-14T02:27:13.567Z",
+    "manifest": ".artifacts/runs/2026-10-14T02-26-15-529Z-vitest-acc9fb6b-4b03-4d8c-a99d-70dcca22ddc0/run.json",
+    "manifestSha256": "6fd70724672fa3fc9b6e37458b28d87dbdf0d57e783a5590ab673eabd0d333b3",
+    "coverageFile": ".artifacts/runs/2026-10-14T02-26-15-529Z-vitest-acc9fb6b-4b03-4d8c-a99d-70dcca22ddc0/coverage/coverage-final.json",
+    "coverageSha256": "da7a40c0b83821ac1aa84d75a5fc518a582e8d3988f2ec6a575fcfe61a6f23bf",
+    "status": "passed",
+    "exitCode": 0,
+    "sourceUnchanged": true,
+    "sourceHeadAtRun": "07e40d2534559744f0915f8884227b70de6513b6",
+    "testFiles": "360/360",
+    "tests": "3463/3463",
+    "failures": 0,
+    "skipped": 0,
+    "measurableSourceFiles": "408/408",
+    "coverageGaps": 0,
+    "noExecutableCounterEntries": 32,
+    "counters": {
+      "statements": "12441/12441",
+      "branches": "10265/10265",
+      "functions": "3972/3972",
+      "lines": "11500/11500"
+    },
+    "thresholdsOrDenominatorChanged": false,
+    "sourceHashReconciliation": {
+      "trackedSourcePaths": "905/905",
+      "p2pComponentCommitSha256": "e33115b45253bbe7d970d9937963e8ad7fe978090fc3a514e50d8e4a8131802d",
+      "p2pTestCommitSha256": "485b6fe58f6c3213d08091b3a4938d017f50a76ace3bd95b1a25be114c203a46"
+    }
+  },
+  "localGates": {
+    "appTypecheck": "pass",
+    "nodeTypecheck": "pass",
+    "eslint": "pass: 0 errors, 0 warnings",
+    "lintWarningBudget": "pass: 0/0",
+    "prettier": "3.9.8; scoped and full format:check pass"
+  },
+  "limitations": [
+    "The 100% counters apply to the measurable local source sample; they do not close C03 parent acceptance, UI acceptance, GitHub exact-SHA checks, or backend/staging."
+  ]
+}

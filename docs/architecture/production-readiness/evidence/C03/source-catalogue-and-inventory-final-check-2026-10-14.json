@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "id": "EV-20261014-011",
+  "taskId": "C03",
+  "stepId": "C03.05",
+  "kind": "validation",
+  "commandOrSteps": "node docs/architecture/production-readiness/check-tracking.mjs; node scripts/generate-architecture-inventory.mjs --check; node scripts/check-git-eol.mjs; git diff --check; verify page-inventory Git blob; compare SHA-256 for every src path in retained full-suite coverage snapshot against current source.",
+  "environment": "Windows PowerShell local checkout; bundled Node 24.19.0; local Git object database; no backend or staging access.",
+  "observedAt": "2026-10-14T01:28:31.285Z",
+  "sourceHead": "2bb952da13d13eec4275ad3aec5a2328346a07c0",
+  "preUpdateCheck": {},
+  "expected": "After exact per-path provenance reconciliation and the generated inventory commit, the readiness ledger, inventory, EOL and diff gates pass; full-suite coverage evidence applies only if all current source hashes match the measured snapshot.",
+  "actual": "The earlier error was limited to the generated inventory pointer after its refresh. Its path-specific commit is 2bb952da13d13eec4275ad3aec5a2328346a07c0, blob 6480220478bb75ba18db91a492feaa2e6a2ce40f, SHA-256 da3811b18f5afea9470d3f8ed79077536c985be3a48403f60d36985a86ec2380; git hash-object and current bytes match, and baseline SHA-256 fdcba72891447a97f12c8a0697bc68e0894b04579442e571ba429fc81dba2244 is unchanged. After updating the pointer while retaining its prior head/hash, check-tracking exits 0 with errorCount 0 across 38 tasks, 205 steps, 130 pages, 428 route declarations, 154 operations and 1011 files outside PLAN. Architecture inventory --check exits 0: Architecture inventory passed: 130 pages, 428 routes, 149 components, 0 data modules, 32 services and 28 mocks.. EOL and git diff --check both exit 0. Full-suite run 2026-10-13T22-40-26-817Z-vitest-1901ca94-8a05-42a2-aa4d-a5a26f084e6f reports sourceUnchanged=true; all 905/905 current src files match its SHA-256 snapshot exactly (0 mismatches).",
+  "result": "pass",
+  "artifact": "docs/architecture/production-readiness/evidence/C03/source-catalogue-and-inventory-final-check-2026-10-14.json",
+  "notes": "The inventory --check first detected a stale generator-owned page-inventory.json. The canonical generator refreshed it, a separate signed P1 commit preserved the output, and the exact blob pointer was reconciled. The retained coverage run recorded 360/360 test files and 3462/3462 tests, 408/408 measurable files at S/B/F/L 100%, with unchanged thresholds and denominator. This validation does not imply UI acceptance, backend/staging, a production bundle, hosted CI or production readiness."
+}

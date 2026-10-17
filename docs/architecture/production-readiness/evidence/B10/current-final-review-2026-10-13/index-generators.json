@@ -1,0 +1,30 @@
+[
+  {
+    "runner": "docs/architecture/production-readiness/evidence/A06/generate-scenario-matrix.mjs",
+    "mode": "--write",
+    "exitCode": 0,
+    "stdout": "Wrote docs\\architecture\\production-readiness\\evidence\\A06\\scenario-matrix-2026-09-28.json: 15 domains, 154 operations, 106 expectations.\n",
+    "stderr": ""
+  },
+  {
+    "runner": "docs/architecture/production-readiness/evidence/A06/generate-scenario-matrix.mjs",
+    "mode": "--check",
+    "exitCode": 0,
+    "stdout": "A06 scenario matrix is current: 15 domains, 154 operations, 106 expectations.\n",
+    "stderr": ""
+  },
+  {
+    "runner": "docs/architecture/production-readiness/evidence/C05/generate-ui-acceptance-index.mjs",
+    "mode": "--write",
+    "exitCode": 0,
+    "stdout": "Wrote UI acceptance index: 428 active declarations, 1465 URL registrations, 1396 unique preview URLs; historical URL parity 426/428; fresh scenario rows 81/106.\n",
+    "stderr": ""
+  },
+  {
+    "runner": "docs/architecture/production-readiness/evidence/C05/generate-ui-acceptance-index.mjs",
+    "mode": "--check",
+    "exitCode": 0,
+    "stdout": "UI acceptance index is current: 428 active declarations, 1465 URL registrations, 1396 unique preview URLs; 426/428 historical URL parity; 81/106 fresh scenario rows.\n",
+    "stderr": ""
+  }
+]

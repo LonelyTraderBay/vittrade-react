@@ -136,8 +136,8 @@ export function WalletDepositContractPage() {
           className="flex items-start gap-2 rounded-2xl px-4 py-3"
           style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.25)' }}
         >
-          <AlertTriangle size={17} color="#EF4444" className="mt-0.5 shrink-0" />
-          <p className="text-xs leading-5" style={{ color: '#F87171' }}>
+          <AlertTriangle size={17} color={colors.errorText} className="mt-0.5 shrink-0" />
+          <p className="text-xs leading-5" style={{ color: colors.errorText }}>
             Send only {asset} through {selectedNetwork.name}. Sending through another network may
             permanently lose your funds. Minimum deposit: {selectedNetwork.minDeposit} {asset}.
           </p>
@@ -151,8 +151,8 @@ export function WalletDepositContractPage() {
               border: '1px solid rgba(245,158,11,0.35)',
             }}
           >
-            <AlertTriangle size={17} color="#F59E0B" className="mt-0.5 shrink-0" />
-            <p className="text-xs leading-5" style={{ color: '#D97706' }}>
+            <AlertTriangle size={17} color={colors.warningText} className="mt-0.5 shrink-0" />
+            <p className="text-xs leading-5" style={{ color: colors.warningText }}>
               {selectedNetwork.memoLabel ?? 'Memo'} is required for this network. Include it when
               sending funds or the deposit may not be credited.
             </p>
@@ -160,8 +160,14 @@ export function WalletDepositContractPage() {
         )}
 
         <TrCard className="flex flex-col items-center gap-4 p-5">
-          <div className="rounded-2xl bg-white p-4" aria-label="Deposit QR code">
-            <QRCodeSVG value={selectedNetwork.address} size={188} level="M" includeMargin />
+          <div className="rounded-2xl bg-white p-4" role="img" aria-label="Deposit address QR code">
+            <QRCodeSVG
+              value={selectedNetwork.address}
+              size={188}
+              level="M"
+              includeMargin
+              aria-hidden="true"
+            />
           </div>
           <CopyableValue
             label={`${asset} deposit address`}
@@ -180,7 +186,7 @@ export function WalletDepositContractPage() {
         </TrCard>
 
         {copyError && (
-          <p role="alert" className="text-center text-xs" style={{ color: '#EF4444' }}>
+          <p role="alert" className="text-center text-xs" style={{ color: colors.errorText }}>
             {copyError}
           </p>
         )}
@@ -245,7 +251,7 @@ function CopyableValue({
           aria-label={`Copy ${label}`}
           onClick={onCopy}
           className="shrink-0 rounded-lg p-2"
-          style={{ color: copied ? '#10B981' : colors.primary }}
+          style={{ color: copied ? colors.successText : colors.primary }}
         >
           {copied ? <Check size={16} /> : <Copy size={16} />}
         </button>

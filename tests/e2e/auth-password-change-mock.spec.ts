@@ -60,6 +60,26 @@ for (const shell of shells) {
             await new Promise<void>((resolve) => requestAnimationFrame(resolve));
           });
 
+          // Motion's route fade runs in JavaScript and may not appear in getAnimations().
+          // Contrast checks describe the settled page, so wait for its actual ancestor opacity.
+          await expect
+            .poll(async () =>
+              page
+                .getByText('Đổi mật khẩu', { exact: true })
+                .first()
+                .evaluate((heading) => {
+                  for (
+                    let element: Element | null = heading;
+                    element;
+                    element = element.parentElement
+                  ) {
+                    if (Number(getComputedStyle(element).opacity) !== 1) return false;
+                  }
+                  return true;
+                }),
+            )
+            .toBe(true);
+
           const results = await new AxeBuilder({ page })
             .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'])
             .analyze();

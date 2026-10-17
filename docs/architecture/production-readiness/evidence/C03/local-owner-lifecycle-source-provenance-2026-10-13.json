@@ -1,0 +1,181 @@
+{
+  "observedAt": "2026-10-13T15:00:13.474Z",
+  "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
+  "branch": "codex/frontend-readiness-remediation-20261013",
+  "commits": [
+    {
+      "priority": "P1",
+      "head": "1ec91e72ba96506832a698d34fbb4ea459d282d7",
+      "parent": "bda9e2b0370bed45b0646bda86fcfab295950273",
+      "message": "P1: bảo vệ lifecycle stream tìm kiếm và số liệu minh họa"
+    },
+    {
+      "priority": "P2",
+      "head": "0bdab349c2863008984c89366ba71f02b094a44a",
+      "parent": "1ec91e72ba96506832a698d34fbb4ea459d282d7",
+      "message": "P2: kiểm chứng điều hướng Arena P2P và thao tác nhập lệnh"
+    }
+  ],
+  "proofs": [
+    {
+      "path": "src/features/market/api/market-stream.test.ts",
+      "blobId": "87bc63f7f570718959ebda26341c49d766a160cf",
+      "filteredBlobId": "87bc63f7f570718959ebda26341c49d766a160cf",
+      "committedSha256": "7245c21eb5313ce944d80f7d66a2dda18259cb7aae3f0fad0ec6e58dc4422512",
+      "workingSha256": "7245c21eb5313ce944d80f7d66a2dda18259cb7aae3f0fad0ec6e58dc4422512",
+      "sourceHead": "1ec91e72ba96506832a698d34fbb4ea459d282d7",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "d74520fc3b8155551629942f4284140c890162d29a5cc1ed9ec4dbbebbff88a3"
+      },
+      "currentFilteredBlobId": "87bc63f7f570718959ebda26341c49d766a160cf"
+    },
+    {
+      "path": "src/features/market/api/market-stream.ts",
+      "blobId": "8811a2991c5c898105bb00b55710f61863bea14a",
+      "filteredBlobId": "8811a2991c5c898105bb00b55710f61863bea14a",
+      "committedSha256": "1f452efc7878d2b240a1229ea3bc5571fa93e189fd9b0f90a469599ab43336c1",
+      "workingSha256": "1f452efc7878d2b240a1229ea3bc5571fa93e189fd9b0f90a469599ab43336c1",
+      "sourceHead": "1ec91e72ba96506832a698d34fbb4ea459d282d7",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "2f180b41cdf104f587c5379a461eddfc999e63002be21b85cfef693a1d0173ec"
+      },
+      "currentFilteredBlobId": "8811a2991c5c898105bb00b55710f61863bea14a"
+    },
+    {
+      "path": "src/features/p2p/model/p2p-blacklist-queries.ts",
+      "blobId": "61b3da8c4f7a70ddfb4e091f8cd69e03714df67a",
+      "filteredBlobId": "61b3da8c4f7a70ddfb4e091f8cd69e03714df67a",
+      "committedSha256": "9b2765c2b7ca8ee64b8edda66c2fcbbe0222d3c5ef602923a16a3bd5d0ad8ecb",
+      "workingSha256": "9b2765c2b7ca8ee64b8edda66c2fcbbe0222d3c5ef602923a16a3bd5d0ad8ecb",
+      "sourceHead": "1ec91e72ba96506832a698d34fbb4ea459d282d7",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "cb46fc0f0aead6c936a97e71c8662527f90c9f4bb783779679ab4ca68e7bb41f"
+      },
+      "currentFilteredBlobId": "61b3da8c4f7a70ddfb4e091f8cd69e03714df67a"
+    },
+    {
+      "path": "src/features/p2p/pages/P2PBlacklistPage.test.tsx",
+      "blobId": "df0b762a0c251c1c3ef2b476d5d26499f7ab7765",
+      "filteredBlobId": "df0b762a0c251c1c3ef2b476d5d26499f7ab7765",
+      "committedSha256": "6f8416f5e41ebbdbbad36b88f9eb30092016140d6251d7b7a8d7c3955a1c3834",
+      "workingSha256": "6f8416f5e41ebbdbbad36b88f9eb30092016140d6251d7b7a8d7c3955a1c3834",
+      "sourceHead": "1ec91e72ba96506832a698d34fbb4ea459d282d7",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "e58bfe24a450538497a8f327e5de1d13b149b36738540ef55a2624c2b3ff6f1b"
+      },
+      "currentFilteredBlobId": "df0b762a0c251c1c3ef2b476d5d26499f7ab7765"
+    },
+    {
+      "path": "src/features/trading/components/copy-education/CopyEducationScenarioTab.tsx",
+      "blobId": "062009ee03723e1d19bf0212919bfbfddc94d155",
+      "filteredBlobId": "062009ee03723e1d19bf0212919bfbfddc94d155",
+      "committedSha256": "b76592c57c608e327d8f029baabac6b12053ca3ab1dec8fdd95440ddacf099d0",
+      "workingSha256": "b76592c57c608e327d8f029baabac6b12053ca3ab1dec8fdd95440ddacf099d0",
+      "sourceHead": "1ec91e72ba96506832a698d34fbb4ea459d282d7",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "d5556fd59c016840755405b706881912aa32e6f417b4783a53b0e0b258dc9a22"
+      },
+      "currentFilteredBlobId": "062009ee03723e1d19bf0212919bfbfddc94d155"
+    },
+    {
+      "path": "src/features/trading/pages/CopyEducationPage.test.tsx",
+      "blobId": "c2b2624bcc277029c195127f6bcab4d82e125886",
+      "filteredBlobId": "c2b2624bcc277029c195127f6bcab4d82e125886",
+      "committedSha256": "ba12328d54cec98f5e18c5bde8020fda6c089b59cc2c2f9e32facaec6f3ba550",
+      "workingSha256": "ba12328d54cec98f5e18c5bde8020fda6c089b59cc2c2f9e32facaec6f3ba550",
+      "sourceHead": "1ec91e72ba96506832a698d34fbb4ea459d282d7",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "b950fc4183063f81a09f87895f54c1ef424c911d",
+        "sha256": "77b6dd07db8bcc235f43d18bcb83a995c296c8937bb7ed892e64609d38d13ef8"
+      },
+      "currentFilteredBlobId": "c2b2624bcc277029c195127f6bcab4d82e125886"
+    },
+    {
+      "path": "src/features/arena/pages/ArenaDiscoveryPage.test.tsx",
+      "blobId": "99868f63faf6d8d944a0c62cd692ed18a6c44d7f",
+      "filteredBlobId": "99868f63faf6d8d944a0c62cd692ed18a6c44d7f",
+      "committedSha256": "7f40ae9c6896b6a28af7596f3fe938fa378db8e1ba8dc4994d75ae6b4220f12c",
+      "workingSha256": "7f40ae9c6896b6a28af7596f3fe938fa378db8e1ba8dc4994d75ae6b4220f12c",
+      "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
+      "priority": "P2",
+      "previous": {
+        "sourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+        "sha256": "ab7468c2e8946cb4e8b2115335461d1ab3cf321d3f2593af90d7d92e1f9f8967"
+      },
+      "currentFilteredBlobId": "99868f63faf6d8d944a0c62cd692ed18a6c44d7f"
+    },
+    {
+      "path": "src/features/p2p/pages/P2PBlacklistAddPage.test.tsx",
+      "blobId": "a8de293c5063dc0b700bdb493c8de75b523c4253",
+      "filteredBlobId": "a8de293c5063dc0b700bdb493c8de75b523c4253",
+      "committedSha256": "de7caae23823243ee939477e0bcfb4a91f114d6f55f2d5d302f90da075b72e21",
+      "workingSha256": "de7caae23823243ee939477e0bcfb4a91f114d6f55f2d5d302f90da075b72e21",
+      "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
+      "priority": "P2",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "918151f67c63afe0baee5347a1ecbee6e1f9d0ab713925a617d434e6ddc10ff3"
+      },
+      "currentFilteredBlobId": "a8de293c5063dc0b700bdb493c8de75b523c4253"
+    },
+    {
+      "path": "src/features/p2p/pages/P2PChatPage.test.tsx",
+      "blobId": "a963b5c34836cce98162d30120a81e2b7661a151",
+      "filteredBlobId": "a963b5c34836cce98162d30120a81e2b7661a151",
+      "committedSha256": "a076e55e3b94b1b1b43bbda9fcea947d10560e5e589f449284a676df1705c25c",
+      "workingSha256": "a076e55e3b94b1b1b43bbda9fcea947d10560e5e589f449284a676df1705c25c",
+      "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
+      "priority": "P2",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "71a20ca6d16d16cd494a29524bbb648ea8fcceb9301f4236519241ce988f2b65"
+      },
+      "currentFilteredBlobId": "a963b5c34836cce98162d30120a81e2b7661a151"
+    },
+    {
+      "path": "src/features/trading/components/OCOOrderForm.test.tsx",
+      "blobId": "6c04ecde4a01962e510ac2834e471770f52d3b14",
+      "filteredBlobId": "6c04ecde4a01962e510ac2834e471770f52d3b14",
+      "committedSha256": "0c6780f2672aa507589f012d56d8670d9cbe0bea601a3a728d8e64222204db75",
+      "workingSha256": "0c6780f2672aa507589f012d56d8670d9cbe0bea601a3a728d8e64222204db75",
+      "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
+      "priority": "P2",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "35157adf98bc9720ef2ac7ea782d21d02d2070939108bd8be08ea18cbca56023"
+      },
+      "currentFilteredBlobId": "6c04ecde4a01962e510ac2834e471770f52d3b14"
+    },
+    {
+      "path": "src/features/trading/components/TradingOrderEntryPanel.test.tsx",
+      "blobId": "210071d102456c05d86ad4ee252d039058f4b4ee",
+      "filteredBlobId": "210071d102456c05d86ad4ee252d039058f4b4ee",
+      "committedSha256": "3ff0cac23de634ac2cfda5b92f16270ac55168cbad4e7b789855303c059113c4",
+      "workingSha256": "3ff0cac23de634ac2cfda5b92f16270ac55168cbad4e7b789855303c059113c4",
+      "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
+      "priority": "P2",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "8da9696d1fd7ffcf4ea2978f2a6ad766bfd6b8629fe49642b8b2689b8c3a572a"
+      },
+      "currentFilteredBlobId": "210071d102456c05d86ad4ee252d039058f4b4ee"
+    }
+  ],
+  "limits": [
+    "11 actual local source/test/inventory blobs only. No push, PR, hosted CI or deployment.",
+    "Pre-commit runtime evidence retains the HEAD it actually observed; exact bytes match these actual committed objects after Git filtering.",
+    "Current strict-HEAD browser/build evidence must run on this final source commit.",
+    "Original baseline, catalogue history and backend/UAT/coverage criteria are preserved."
+  ]
+}

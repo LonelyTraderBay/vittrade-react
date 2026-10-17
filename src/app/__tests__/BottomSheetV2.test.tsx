@@ -512,7 +512,7 @@ describe('BottomSheetV2', () => {
       expect(screen.getByText('Body content')).toBeInTheDocument();
     });
 
-    it('should not render default header when customHeader is provided', () => {
+    it('should replace the visible default header but keep the dialog title accessible', () => {
       renderWithProviders(
         <BottomSheetV2
           open={true}
@@ -524,7 +524,8 @@ describe('BottomSheetV2', () => {
         </BottomSheetV2>,
       );
 
-      expect(screen.queryByText('Should not show')).not.toBeInTheDocument();
+      expect(screen.getByRole('dialog', { name: 'Should not show' })).toBeInTheDocument();
+      expect(screen.queryByRole('heading', { name: 'Should not show' })).not.toBeInTheDocument();
       expect(screen.getByText('Custom Header')).toBeInTheDocument();
     });
   });
