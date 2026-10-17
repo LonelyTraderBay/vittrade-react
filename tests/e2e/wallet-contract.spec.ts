@@ -611,7 +611,61 @@ test.describe('wallet contract smoke on local API-mode build', () => {
     await page.getByRole('button', { name: /Tiếp tục/ }).click();
     await page.getByRole('button', { name: /Xác minh 2FA/ }).click();
 
-    await expect(page.getByLabel(/Mã xác minh/i)).toBeVisible();
+    const verificationCode = page.getByLabel(/Mã xác minh/i);
+    const verificationSurface = verificationCode.locator('xpath=..');
+    await expect(verificationCode).toBeVisible();
+    await page.setViewportSize({ width: 320, height: 568 });
+    const verificationBounds = await verificationCode.evaluate((element) => {
+      const bounds = element.getBoundingClientRect();
+      return { left: bounds.left, right: bounds.right, viewportWidth: innerWidth };
+    });
+    expect(verificationBounds.left).toBeGreaterThanOrEqual(0);
+    expect(verificationBounds.right).toBeLessThanOrEqual(verificationBounds.viewportWidth);
+    await page.setViewportSize({ width: 390, height: 844 });
+    await expect(verificationCode).toHaveAttribute('type', 'tel');
+    await expect(verificationCode).toHaveAttribute('inputmode', 'numeric');
+    await expect(verificationCode).toHaveAttribute('maxlength', '6');
+    await expect(verificationCode).toHaveAttribute('aria-invalid', 'false');
+    await verificationCode.focus();
+    await expect(verificationCode).toBeFocused();
+    await expect
+      .poll(() => verificationSurface.evaluate((surface) => getComputedStyle(surface).boxShadow), {
+        timeout: 2_000,
+      })
+      .toContain('rgba(229, 138, 0, 0.25)');
+    const expectedFocusBorder = await page.evaluate(() => {
+      const probe = document.createElement('span');
+      probe.style.color = 'var(--tr-primary)';
+      document.body.append(probe);
+      const color = getComputedStyle(probe).color;
+      probe.remove();
+      return color;
+    });
+    await expect
+      .poll(() =>
+        verificationSurface.evaluate((surface) => getComputedStyle(surface).borderTopColor),
+      )
+      .toBe(expectedFocusBorder);
+    const verificationStyles = await verificationSurface.evaluate((surface) => {
+      const input = surface.querySelector('input')!;
+      const textColorProbe = document.createElement('span');
+      textColorProbe.style.color = 'var(--tr-text-1)';
+      document.body.append(textColorProbe);
+      const expectedInputColor = getComputedStyle(textColorProbe).color;
+      textColorProbe.remove();
+      const surfaceStyle = getComputedStyle(surface);
+      return {
+        height: surfaceStyle.height,
+        borderRadius: surfaceStyle.borderRadius,
+        focusBorder: surfaceStyle.borderTopColor,
+        inputColor: getComputedStyle(input).color,
+        expectedInputColor,
+      };
+    });
+    expect(verificationStyles.height).toBe('64px');
+    expect(verificationStyles.borderRadius).toBe(fieldTokens.radius);
+    expect(verificationStyles.focusBorder).toBe(expectedFocusBorder);
+    expect(verificationStyles.inputColor).toBe(verificationStyles.expectedInputColor);
     expect(challengeBody).toEqual({
       asset: 'USDT',
       networkId: 'ethereum',

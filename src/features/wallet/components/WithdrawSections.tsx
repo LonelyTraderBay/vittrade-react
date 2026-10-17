@@ -207,7 +207,8 @@ export function WithdrawalVerifyState({
               rút tiền.
             </p>
           </div>
-          <input
+          <InputField
+            id="withdraw-code"
             type="tel"
             inputMode="numeric"
             maxLength={6}
@@ -215,24 +216,11 @@ export function WithdrawalVerifyState({
             onChange={(event) => onCodeChange(event.target.value.replace(/\D/g, '').slice(0, 6))}
             placeholder="••••••"
             aria-label="Mã xác minh 2FA"
-            aria-invalid={Boolean(errors.code)}
-            aria-describedby={errors.code ? 'withdraw-code-error' : undefined}
-            className="h-16 w-full rounded-2xl text-center"
-            style={{
-              background: colors.surface2,
-              border: `1.5px solid ${errors.code ? colors.error : colors.primary}`,
-              color: colors.text1,
-              fontSize: 28,
-              fontWeight: 700,
-              letterSpacing: 12,
-              outline: 'none',
-            }}
+            error={errors.code}
+            containerClassName="w-full"
+            containerStyle={{ height: 64 }}
+            style={{ fontSize: 28, fontWeight: 700, letterSpacing: 12, textAlign: 'center' }}
           />
-          {errors.code && (
-            <p id="withdraw-code-error" role="alert" style={{ color: colors.error, fontSize: 12 }}>
-              {errors.code}
-            </p>
-          )}
           <CTAButton
             onClick={onSubmit}
             disabled={!canWithdraw || code.length < 6 || busy}
