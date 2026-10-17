@@ -2,12 +2,14 @@ import { useMemo, useRef, useState } from 'react';
 import { ArrowDownUp, CheckCircle, Clock, Info, Loader2, WalletCards } from 'lucide-react';
 import { ErrorState } from '@/shared/ui/ErrorState';
 import { CTAButton } from '@/shared/ui/CTAButton';
+import { InputField } from '@/shared/ui/InputField';
 import { Header } from '@/shared/ui/layout/Header';
 import { PageContent } from '@/shared/ui/layout/PageContent';
 import { PageLayout } from '@/shared/ui/layout/PageLayout';
 import { TrCard } from '@/shared/ui/TrCard';
 import { fmtAmount, fmtUsd } from '@/shared/lib/formatNumber';
 import { useRoutePrefix } from '@/shared/navigation/useRoutePrefix';
+import { textRoleStyle } from '@/shared/theme/typography';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { useAuth } from '@/shared/session/useAuth';
 import {
@@ -260,32 +262,29 @@ export function WalletTransferContractPage() {
               Max {fmtAmount(available)}
             </button>
           </div>
-          <div className="flex items-center gap-3">
-            <input
-              id="transfer-amount"
-              data-testid="wallet-transfer-amount"
-              aria-label="Transfer amount"
-              disabled={submitting}
-              type="number"
-              min="0"
-              step="any"
-              inputMode="decimal"
-              value={amount}
-              onChange={(event) => {
-                setAmount(event.target.value);
-                setValidationError('');
-              }}
-              placeholder="0.00"
-              className="min-w-0 flex-1 bg-transparent text-2xl font-bold outline-none"
-              style={{ color: colors.text1 }}
-            />
-            <span className="font-semibold" style={{ color: colors.text2 }}>
-              {selectedAsset.symbol}
-            </span>
-          </div>
-          <p className="mt-2 text-xs" style={{ color: colors.text3 }}>
-            Available: {fmtAmount(available)} {selectedAsset.symbol} · ≈ {fmtUsd(usdValue)}
-          </p>
+          <InputField
+            id="transfer-amount"
+            data-testid="wallet-transfer-amount"
+            aria-label="Transfer amount"
+            disabled={submitting}
+            type="number"
+            min="0"
+            step="any"
+            inputMode="decimal"
+            value={amount}
+            onChange={(event) => {
+              setAmount(event.target.value);
+              setValidationError('');
+            }}
+            placeholder="0.00"
+            style={{ ...textRoleStyle('amountLarge'), color: colors.text1 }}
+            suffix={
+              <span className="font-semibold" style={{ color: colors.text2 }}>
+                {selectedAsset.symbol}
+              </span>
+            }
+            helper={`Available: ${fmtAmount(available)} ${selectedAsset.symbol} · ≈ ${fmtUsd(usdValue)}`}
+          />
         </TrCard>
 
         <div

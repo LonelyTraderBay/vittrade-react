@@ -123,7 +123,9 @@ test.describe('wallet contract smoke on staging build', () => {
     await page.goto('/wallet/transfer');
     await expect((await sessionResponse).ok()).toBeTruthy();
     await expect(page.getByText('Internal transfer').first()).toBeVisible();
-    await page.getByTestId('wallet-transfer-amount').fill('25');
+    const amountField = page.getByTestId('wallet-transfer-amount');
+    await expect(amountField).toBeVisible();
+    await amountField.fill('25');
     const transferResponse = page.waitForResponse(
       (response) =>
         response.request().method() === 'POST' &&
@@ -140,6 +142,103 @@ test.describe('wallet contract smoke on staging build', () => {
       amount: 25,
     });
     expect(idempotencyKey).toBeTruthy();
+  });
+
+  test('uses the shared amount field across wallet route aliases, viewports and themes', async ({
+    page,
+  }) => {
+    await page.route('**/auth/session', (route) => route.fulfill({ json: session }));
+    await page.route('**/wallet/accounts', (route) => route.fulfill({ json: accounts }));
+    await page.route('**/wallet/assets', (route) => route.fulfill({ json: assets }));
+
+    const aliases = [
+      { path: '/wallet/transfer', width: 320, height: 568 },
+      { path: '/t/wallet/transfer', width: 768, height: 1024 },
+      { path: '/w/wallet/transfer', width: 1280, height: 800 },
+      { path: '/r/wallet/transfer', width: 390, height: 844 },
+    ];
+    const measured: Array<Record<string, unknown>> = [];
+
+    for (const alias of aliases) {
+      await page.setViewportSize({ width: alias.width, height: alias.height });
+      await page.goto(alias.path);
+      const amountField = page.getByTestId('wallet-transfer-amount');
+      await expect(amountField).toBeVisible();
+      await expect(amountField).toHaveAttribute('type', 'number');
+      await expect(amountField).toHaveAttribute('min', '0');
+      await expect(amountField).toHaveAttribute('step', 'any');
+      await expect(amountField).toHaveAttribute('inputmode', 'decimal');
+      await expect(amountField).toHaveAttribute('aria-describedby', 'transfer-amount-helper');
+      await expect(page.locator('#transfer-amount-helper')).toContainText('Available:');
+
+      const geometry = await amountField.evaluate((element) => {
+        const input = element as HTMLInputElement;
+        const wrapper = input.parentElement;
+        const style = wrapper ? getComputedStyle(wrapper) : undefined;
+        const rect = input.getBoundingClientRect();
+        return {
+          height: style?.height,
+          borderRadius: style?.borderRadius,
+          inputFontSize: getComputedStyle(input).fontSize,
+          inputWidth: rect.width,
+          inputWithinViewport: rect.left >= 0 && rect.right <= innerWidth,
+        };
+      });
+      expect(geometry.height).toBe('52px');
+      expect(geometry.borderRadius).toBe('14px');
+      expect(geometry.inputFontSize).toBe('26px');
+      expect(geometry.inputWithinViewport).toBe(true);
+      if (alias.path === '/r/wallet/transfer' && process.env.C06_AFTER_SCREENSHOT) {
+        await page.screenshot({ path: process.env.C06_AFTER_SCREENSHOT, fullPage: true });
+      }
+
+      const themeColors: string[] = [];
+      for (const theme of ['light', 'dark'] as const) {
+        const colors = await amountField.evaluate((element, activeTheme) => {
+          document.documentElement.classList.remove('light', 'dark');
+          document.documentElement.classList.add(activeTheme);
+          const probe = document.createElement('span');
+          probe.style.color = 'var(--tr-text-1)';
+          document.body.append(probe);
+          const expected = getComputedStyle(probe).color;
+          probe.remove();
+          return { actual: getComputedStyle(element).color, expected };
+        }, theme);
+        expect(colors.actual).toBe(colors.expected);
+        themeColors.push(colors.actual);
+      }
+      expect(themeColors[0]).not.toBe(themeColors[1]);
+
+      await page.getByRole('button', { name: /Max/ }).focus();
+      await page.keyboard.press('Tab');
+      await expect(amountField).toBeFocused();
+      await expect
+        .poll(async () =>
+          amountField.evaluate((element) => {
+            const wrapper = element.parentElement;
+            return wrapper ? getComputedStyle(wrapper).boxShadow : 'missing-wrapper';
+          }),
+        )
+        .toContain('rgba(229, 138, 0, 0.25)');
+      const focusStyle = await amountField.evaluate((element) => {
+        const wrapper = element.parentElement;
+        return wrapper ? getComputedStyle(wrapper).boxShadow : 'missing-wrapper';
+      });
+      expect(focusStyle).not.toBe('none');
+
+      measured.push({
+        path: alias.path,
+        viewport: `${alias.width}x${alias.height}`,
+        fieldHeight: geometry.height,
+        fieldRadius: geometry.borderRadius,
+        fontSize: geometry.inputFontSize,
+        lightText: themeColors[0],
+        darkText: themeColors[1],
+        keyboardFocus: focusStyle,
+      });
+    }
+
+    console.log(`C06_WALLET_TRANSFER_FIELD_MATRIX ${JSON.stringify(measured)}`);
   });
 
   test('renders server-owned deposit instructions and QR data', async ({ page }) => {

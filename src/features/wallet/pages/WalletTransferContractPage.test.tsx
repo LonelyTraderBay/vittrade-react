@@ -55,7 +55,13 @@ describe('Wallet transfer contract page', () => {
 
     expect(await screen.findByLabelText('From wallet')).toHaveValue('spot');
     expect(screen.getByLabelText('To wallet')).toHaveValue('funding');
-    expect(screen.getByText(/Available: 75/)).toBeInTheDocument();
+    const amountInput = await screen.findByLabelText('Transfer amount');
+    expect(amountInput).toHaveAttribute('type', 'number');
+    expect(amountInput).toHaveAttribute('min', '0');
+    expect(amountInput).toHaveAttribute('step', 'any');
+    expect(amountInput).toHaveAttribute('inputmode', 'decimal');
+    expect(amountInput).toHaveAttribute('aria-describedby', 'transfer-amount-helper');
+    expect(screen.getByText(/Available: 75/)).toHaveAttribute('id', 'transfer-amount-helper');
   });
 
   it('recovers from a wallet asset query failure when the user retries', async () => {

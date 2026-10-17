@@ -552,6 +552,24 @@ trên file thực tế, không chỉ snapshot của trang thí điểm.
 route declarations; các page record khác trong TRACKING được đối chiếu riêng theo
 trạng thái route/placeholder, không mặc định là source hiện hữu.
 
+**Khóa mẫu số trước mỗi nhóm:** `docs/architecture/page-inventory.json` sau khi
+chạy generator chuẩn là nguồn đếm page/component/route declaration hiện hành;
+`TRACKING.json` giữ cả route lịch sử, retired và dev-only nên tổng số record của
+ledger không được dùng thẳng làm mẫu số active. Đối chiếu route bằng stable ID,
+`inventoryKey`, source, path, target và lifecycle; giữ lại record retired/dev-only
+với disposition, nhưng chỉ tính route declaration active được source/generator xác
+nhận. URL alias theo shell là chiều coverage riêng, không cộng thành route mới.
+Route active bị ẩn theo role/permission/flag vẫn nằm trong inventory; ma trận phải
+ghi role/flag áp dụng hoặc N/A có căn cứ. Khi generator và tracker chưa reconcile,
+không đổi baseline thủ công và không đóng nhóm: chạy lại generator/checker, giải
+thích từng ID lệch rồi mới khóa tử số/mẫu số.
+
+Pool page/route giảm khi implementation của page/route đó đã được kiểm tra và
+tracker ghi đúng source consumer; chỉ sửa shared pattern (ví dụ một FormField dùng
+ở nhiều trang) không tự làm giảm số page implementation còn lại. Trước mỗi lát cắt,
+ghi riêng số page file, active route declaration, URL alias, direct consumers và
+shared consumers để cùng một thay đổi không bị đếm hai lần hoặc bỏ sót.
+
 1. Sau hai pilot, nhóm route từ 130 page files/428 declarations theo component,
    shell, interaction và density; phân nhóm từ inventory/source, không theo tên
    sản phẩm đơn thuần. Thứ tự: Auth/Wallet form; P2P/Earn form; Market/Profile/

@@ -3835,7 +3835,7 @@
       "domain": "wallet",
       "owner": "features/wallet",
       "status": "integration-pending",
-      "lines": 380,
+      "lines": 379,
       "routePaths": [
         "wallet/transfer"
       ],
@@ -3848,8 +3848,10 @@
           "@/shared/lib/formatNumber",
           "@/shared/navigation/useRoutePrefix",
           "@/shared/session/useAuth",
+          "@/shared/theme/typography",
           "@/shared/ui/CTAButton",
           "@/shared/ui/ErrorState",
+          "@/shared/ui/InputField",
           "@/shared/ui/TrCard",
           "@/shared/ui/layout/Header",
           "@/shared/ui/layout/PageContent",
