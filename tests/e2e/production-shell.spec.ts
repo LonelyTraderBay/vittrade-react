@@ -294,6 +294,9 @@ test.describe('production shell smoke', () => {
   test('keeps market pair navigation and favorite controls accessible across shell aliases', async ({
     page,
   }) => {
+    // Seven alias/viewport cases with two Axe scans each exceed the default 30s locally.
+    test.setTimeout(90_000);
+
     const marketPair = {
       id: 'btc-usdt',
       symbol: 'BTC/USDT',
@@ -481,10 +484,9 @@ test.describe('production shell smoke', () => {
       await expect(page).toHaveURL(new RegExp(`${shell.listPath.replaceAll('/', '\\/')}$`));
 
       await removeFavorite.click();
-      await expect(page.getByRole('button', { name: 'Thêm vào yêu thích' })).toHaveAttribute(
-        'aria-pressed',
-        'false',
-      );
+      await expect(
+        page.getByRole('button', { name: 'Thêm vào yêu thích' }).first(),
+      ).toHaveAttribute('aria-pressed', 'false');
       await expect.poll(() => watchlistWriteCount).toBe(shellInitialWriteCount + 2);
       await expect(page).toHaveURL(new RegExp(`${shell.listPath.replaceAll('/', '\\/')}$`));
 
