@@ -389,6 +389,26 @@ thay đổi” nghĩa là toàn bộ thay đổi **thuộc lát cắt đã xác 
 của người khác, file ngoài scope, output được giữ làm bằng chứng hay thay đổi
 chưa được kiểm chứng. Không merge PR nếu chưa có yêu cầu riêng.
 
+#### Quy tắc tiếp tục tự động, không dừng giữa các lát cắt
+
+Trong phạm vi C06, yêu cầu triển khai tuần tự và commit/push của người dùng đã có
+hiệu lực; AI MUST không kết thúc một lượt chỉ bằng báo kế hoạch, chỉ sửa local,
+hoặc hỏi lại người dùng có muốn làm step kế hay không khi `nextAction` còn việc
+hợp lệ. Sau khi hoàn tất source gate, tracker closeout và exact-SHA GitHub gate,
+AI phải đọc checkpoint vừa xác minh, chọn step/consumer tiếp theo đủ dependency,
+cập nhật `nextAction`, rồi tiếp tục làm và kiểm chứng theo giao thức này. Nếu lượt
+làm việc bị ngắt, checkpoint phải cho agent kế tiếp biết chính xác SHA, path, gate,
+việc đã xong/chưa xong và lệnh tiếp theo; không làm lại phần đã có bằng chứng còn
+hiệu lực, nhưng phải xác minh lại hash/status hiện hành trước khi dựa vào nó.
+
+Chỉ dừng bước phụ thuộc khi gate của nó FAIL/BLOCKED/NOT RUN, hoặc khi quyết định
+brand/visual/ownership hay quyền bên ngoài thực sự chưa được cấp. Khi đó giữ step
+mở, ghi đầu vào thiếu và người/nhóm cần quyết định theo cơ chế hiện có; tiếp tục
+các phần độc lập mà PLAN cho phép. Không lặp lệnh vô hạn, hạ ngưỡng, tạo kết quả
+giả hoặc dùng “100%” chung chung. Tiếp tục tới khi C06.15 thỏa acceptance đã khóa,
+hoặc tới blocker cụ thể ngoài quyền hiện hành; khi ấy báo rõ blocker, bằng chứng
+và việc độc lập kế tiếp thay vì ghi hoàn tất.
+
 **Mốc đọc thực tế:** HEAD `074ed3bedfbbcac9e7c31697911ebf234845f0ad`, nhánh
 `codex/frontend-readiness-remediation-20261013`. Worktree có **54 path** sửa đổi
 chưa commit (51 tracked, 3 untracked; 920 insertions/571 deletions); các thay đổi
@@ -415,6 +435,23 @@ cùng nhánh). Ma trận inventory/route đối chiếu tại
 `evidence/C06/c06-01-route-matrix-2026-10-15-19593f88.json`: 130 active page
 source, 428/428 active route declaration khớp inventory, 1.465 URL registration,
 1.396 URL duy nhất; runtime route rows trong bước baseline là **0/428**.
+
+**Đo lại trước khi tiếp tục C06.13 — 19/10/2026:** trên source HEAD
+`926e1e6925d6b58789d1100110e70cc82aab4755` (exact PR #3 run #175 đã PASS),
+`node scripts/generate-architecture-inventory.mjs --check` PASS với **130 page
+files, 428 active route declarations, 150 components, 0 data modules, 32 services,
+28 mocks**. Đây là revision mới nên số component **150** thay cho số lịch sử **149**
+ở baseline C06.01; không sửa số lịch sử và không đổi pool rollout chỉ vì mẫu số
+được đo lại. Route-matrix `--check` ban đầu FAIL vì file còn gắn `sourceHead`
+`c0bcc2e10c6fec3801ce4fcaaf331d91b4ef8727`; chạy generator `--write` theo đúng owner
+đã tạo bản đo sourceHead `926e1e6925d6b58789d1100110e70cc82aab4755`, sau đó `--check`
+PASS: **428 route rows, 1.396 URL duy nhất, 0 runtime-tested rows**. So sánh stable
+`routeId`/URL với ma trận trước cho thấy 0 route thêm/bớt/thay đổi; đây là refresh
+provenance, không phải runtime coverage. Trước khi consumer tiếp theo bắt đầu,
+đưa artifact mới vào source/ledger commit và kiểm chứng lại `check-tracking`; nếu
+ledger chưa trỏ tới byte/artifact commit mới thì giữ checker là FAIL, không gọi đây
+là baseline đã chốt. Pool C06.13 vẫn **126 page files/420 active route
+declarations** cho đến khi một page/route đủ acceptance riêng.
 
 #### Finding được dùng để điều khiển thứ tự
 
