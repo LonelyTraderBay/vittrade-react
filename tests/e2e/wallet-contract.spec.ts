@@ -563,8 +563,10 @@ test.describe('wallet contract smoke on local API-mode build', () => {
       });
     });
 
+    await page.setViewportSize({ width: 390, height: 844 });
     await page.goto('/wallet/withdraw/USDT');
     await expect(page).toHaveURL(/\/wallet\/withdraw\/USDT$/);
+    expect(new URL(page.url()).pathname).toBe('/wallet/withdraw/USDT');
     await expect(page.getByLabel('Mạng lưới')).toHaveValue('ethereum');
     const fieldTokens = await page.evaluate(() => ({
       height: getComputedStyle(document.documentElement).getPropertyValue('--input-height').trim(),
