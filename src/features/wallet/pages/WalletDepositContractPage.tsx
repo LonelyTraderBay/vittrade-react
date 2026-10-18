@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { AlertTriangle, Check, Copy, Loader2, RefreshCw } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
 import { useParams } from 'react-router';
@@ -24,8 +24,11 @@ export function WalletDepositContractPage() {
   const networksQuery = useWalletDepositNetworksQuery(asset, canReadWallet);
   const networks = networksQuery.data ?? EMPTY_NETWORKS;
   const [selectedNetworkId, setSelectedNetworkId] = useState('');
-  const [copied, setCopied] = useState<'address' | 'memo'>();
-  const [copyError, setCopyError] = useState('');
+  const [copied, setCopied] = useState<
+    { selectionKey: string; kind: 'address' | 'memo' } | undefined
+  >();
+  const [copyError, setCopyError] = useState<{ selectionKey: string; message: string }>();
+  const copyRequestIdRef = useRef(0);
 
   useEffect(() => {
     if (networks.length > 0 && !networks.some((network) => network.id === selectedNetworkId)) {
@@ -39,10 +42,17 @@ export function WalletDepositContractPage() {
     return () => window.clearTimeout(timeout);
   }, [copied]);
 
+  useEffect(() => {
+    copyRequestIdRef.current += 1;
+    setCopied(undefined);
+    setCopyError(undefined);
+  }, [asset]);
+
   const selectedNetwork = useMemo(
     () => networks.find((network) => network.id === selectedNetworkId) ?? networks[0],
     [networks, selectedNetworkId],
   );
+  const selectionKey = `${asset}:${selectedNetwork?.id ?? selectedNetworkId}`;
 
   if (!canReadWallet) {
     return (
@@ -90,13 +100,20 @@ export function WalletDepositContractPage() {
   }
 
   const hasMemo = Boolean(selectedNetwork.memo);
-  const copyValue = async (value: string, kind: 'address' | 'memo') => {
+  const copyValue = async (value: string, kind: 'address' | 'memo', key: string) => {
+    const requestId = ++copyRequestIdRef.current;
     try {
       await navigator.clipboard.writeText(value);
-      setCopyError('');
-      setCopied(kind);
+      if (copyRequestIdRef.current !== requestId) return;
+      setCopyError(undefined);
+      setCopied({ selectionKey: key, kind });
     } catch {
-      setCopyError('Clipboard access is unavailable. Select the value and copy it manually.');
+      if (copyRequestIdRef.current !== requestId) return;
+      setCopied(undefined);
+      setCopyError({
+        selectionKey: key,
+        message: 'Clipboard access is unavailable. Select the value and copy it manually.',
+      });
     }
   };
 
@@ -116,7 +133,13 @@ export function WalletDepositContractPage() {
             id="deposit-network"
             aria-label="Deposit network"
             value={selectedNetwork.id}
-            onChange={(event) => setSelectedNetworkId(event.target.value)}
+            onChange={(event) => {
+              const nextNetworkId = event.target.value;
+              copyRequestIdRef.current += 1;
+              setSelectedNetworkId(nextNetworkId);
+              setCopied(undefined);
+              setCopyError(undefined);
+            }}
             className="mt-2 w-full rounded-xl px-3 py-3 text-sm outline-none"
             style={{ background: colors.surface2, color: colors.text1 }}
           >
@@ -174,22 +197,22 @@ export function WalletDepositContractPage() {
           <CopyableValue
             label={`${asset} deposit address`}
             value={selectedNetwork.address}
-            copied={copied === 'address'}
-            onCopy={() => void copyValue(selectedNetwork.address, 'address')}
+            copied={copied?.selectionKey === selectionKey && copied.kind === 'address'}
+            onCopy={() => void copyValue(selectedNetwork.address, 'address', selectionKey)}
           />
           {hasMemo && selectedNetwork.memo && (
             <CopyableValue
               label={selectedNetwork.memoLabel ?? 'Memo'}
               value={selectedNetwork.memo}
-              copied={copied === 'memo'}
-              onCopy={() => void copyValue(selectedNetwork.memo!, 'memo')}
+              copied={copied?.selectionKey === selectionKey && copied.kind === 'memo'}
+              onCopy={() => void copyValue(selectedNetwork.memo!, 'memo', selectionKey)}
             />
           )}
         </TrCard>
 
-        {copyError && (
+        {copyError?.selectionKey === selectionKey && (
           <p role="alert" className="text-center text-xs" style={{ color: colors.errorText }}>
-            {copyError}
+            {copyError.message}
           </p>
         )}
 
@@ -207,6 +230,7 @@ export function WalletDepositContractPage() {
           variant="secondary"
           density="standard"
           fullWidth
+          loading={networksQuery.isFetching}
           onClick={() => void networksQuery.refetch()}
         >
           <RefreshCw size={16} aria-hidden="true" />

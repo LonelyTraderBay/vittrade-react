@@ -3743,7 +3743,7 @@
       "domain": "wallet",
       "owner": "features/wallet",
       "status": "integration-pending",
-      "lines": 275,
+      "lines": 299,
       "routePaths": [
         "wallet/deposit",
         "wallet/deposit/:asset"

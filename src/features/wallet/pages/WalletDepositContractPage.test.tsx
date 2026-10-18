@@ -115,6 +115,69 @@ describe('Wallet deposit contract page', () => {
     expect(screen.getByText('Copied Memo')).toBeInTheDocument();
   });
 
+  it('clears copy feedback when the selected deposit network changes', async () => {
+    installHandlers();
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText },
+    });
+
+    renderWithProviders(<WalletDepositContractPage />);
+    const networkSelect = await screen.findByLabelText('Deposit network');
+    await userEvent.click(screen.getByRole('button', { name: 'Copy USDT deposit address' }));
+    expect(screen.getByText('Copied USDT deposit address')).toBeInTheDocument();
+
+    await userEvent.selectOptions(networkSelect, 'tron');
+
+    expect(screen.queryByText('Copied USDT deposit address')).not.toBeInTheDocument();
+  });
+
+  it('does not announce a late clipboard result for a different selected network', async () => {
+    installHandlers();
+    let resolveClipboardWrite: (() => void) | undefined;
+    const writeText = vi.fn(
+      () =>
+        new Promise<void>((resolve) => {
+          resolveClipboardWrite = resolve;
+        }),
+    );
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText },
+    });
+
+    renderWithProviders(<WalletDepositContractPage />);
+    const networkSelect = await screen.findByLabelText('Deposit network');
+    await userEvent.click(screen.getByRole('button', { name: 'Copy USDT deposit address' }));
+    await userEvent.selectOptions(networkSelect, 'tron');
+
+    await act(async () => {
+      resolveClipboardWrite?.();
+    });
+
+    expect(screen.queryByText('Copied USDT deposit address')).not.toBeInTheDocument();
+    expect(screen.queryByText('Copied Memo')).not.toBeInTheDocument();
+  });
+
+  it('clears clipboard errors when the selected deposit network changes', async () => {
+    installHandlers();
+    const writeText = vi.fn().mockRejectedValue(new Error('Clipboard denied'));
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText },
+    });
+
+    renderWithProviders(<WalletDepositContractPage />);
+    const networkSelect = await screen.findByLabelText('Deposit network');
+    await userEvent.click(screen.getByRole('button', { name: 'Copy USDT deposit address' }));
+    expect(await screen.findByRole('alert')).toHaveTextContent('Clipboard access is unavailable');
+
+    await userEvent.selectOptions(networkSelect, 'tron');
+
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+  });
+
   it('shows a recovery action after a contract permission error', async () => {
     let requests = 0;
     server.use(
@@ -163,6 +226,36 @@ describe('Wallet deposit contract page', () => {
 
     await userEvent.click(screen.getByRole('button', { name: 'Refresh deposit instructions' }));
     await waitFor(() => expect(requests).toBe(2));
+  });
+
+  it('marks the shared refresh action busy while a refetch is pending', async () => {
+    let requests = 0;
+    let finishRefresh: (() => void) | undefined;
+    server.use(
+      http.get('*/wallet/deposit/networks', async () => {
+        requests += 1;
+        if (requests === 1) return HttpResponse.json(networks);
+        await new Promise<void>((resolve) => {
+          finishRefresh = resolve;
+        });
+        return HttpResponse.json(networks);
+      }),
+    );
+
+    renderWithProviders(<WalletDepositContractPage />);
+    await screen.findByLabelText('Deposit network');
+    const refresh = screen.getByRole('button', { name: 'Refresh deposit instructions' });
+    await userEvent.click(refresh);
+    await waitFor(() => expect(requests).toBe(2));
+
+    expect(refresh).toBeDisabled();
+    expect(refresh).toHaveAttribute('aria-busy', 'true');
+
+    await act(async () => {
+      finishRefresh?.();
+    });
+    await waitFor(() => expect(refresh).toBeEnabled());
+    expect(refresh).toHaveAttribute('aria-busy', 'false');
   });
 
   it('clears the copied indicator after two seconds', async () => {

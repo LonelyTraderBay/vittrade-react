@@ -438,6 +438,70 @@ test.describe('wallet contract smoke on local API-mode build', () => {
     }
   });
 
+  test('scopes deposit copy feedback to its network and exposes refresh pending state', async ({
+    page,
+  }) => {
+    const networksWithMemo = {
+      networks: [
+        ...depositNetworks.networks,
+        {
+          id: 'tron',
+          name: 'Tron',
+          fee: '1 USDT',
+          minDeposit: 5,
+          address: 'TQ8k2n3exampleaddress1234567890',
+          arrivalTime: '~1 minute',
+          confirmations: 20,
+          memo: '123456',
+        },
+      ],
+    };
+    let networkRequests = 0;
+    let finishRefresh: (() => void) | undefined;
+
+    await page.addInitScript(() => {
+      Object.defineProperty(navigator, 'clipboard', {
+        configurable: true,
+        value: { writeText: async () => undefined },
+      });
+    });
+    await page.route('**/auth/session', (route) => route.fulfill({ json: session }));
+    await page.route('**/wallet/deposit/networks**', async (route) => {
+      networkRequests += 1;
+      if (networkRequests === 1) return route.fulfill({ json: networksWithMemo });
+      await new Promise<void>((resolve) => {
+        finishRefresh = resolve;
+      });
+      return route.fulfill({ json: networksWithMemo });
+    });
+
+    await page.goto('/wallet/deposit/USDT');
+    const networkSelect = page.getByLabel('Deposit network');
+    await expect(networkSelect).toHaveValue('ethereum');
+
+    await page.getByRole('button', { name: 'Copy USDT deposit address' }).click();
+    await expect(page.getByText('Copied USDT deposit address', { exact: true })).toBeVisible();
+    await networkSelect.selectOption('tron');
+    await expect(page.getByText('Copied USDT deposit address', { exact: true })).toHaveCount(0);
+
+    await page.getByRole('button', { name: 'Copy Memo' }).click();
+    await expect(page.getByText('Copied Memo', { exact: true })).toBeVisible();
+    await networkSelect.selectOption('ethereum');
+    await expect(page.getByText('Copied Memo', { exact: true })).toHaveCount(0);
+
+    const refresh = page.getByRole('button', { name: 'Refresh deposit instructions' });
+    await refresh.click();
+    try {
+      await expect.poll(() => networkRequests).toBe(2);
+      await expect(refresh).toBeDisabled();
+      await expect(refresh).toHaveAttribute('aria-busy', 'true');
+    } finally {
+      finishRefresh?.();
+    }
+    await expect(refresh).toBeEnabled();
+    await expect(refresh).toHaveAttribute('aria-busy', 'false');
+  });
+
   test('loads pending deposits with server filters and cursor pagination', async ({ page }) => {
     const cursors: Array<string | null> = [];
     await page.route('**/auth/session', (route) => route.fulfill({ json: session }));
