@@ -3804,7 +3804,7 @@
       "domain": "wallet",
       "owner": "features/wallet",
       "status": "integration-pending",
-      "lines": 232,
+      "lines": 238,
       "routePaths": [
         "wallet/history"
       ],
@@ -3818,7 +3818,9 @@
           "@/shared/hooks/useThemeColors",
           "@/shared/navigation/useRoutePrefix",
           "@/shared/session/useAuth",
+          "@/shared/ui/CTAButton",
           "@/shared/ui/ErrorState",
+          "@/shared/ui/SearchBar",
           "@/shared/ui/TrCard",
           "@/shared/ui/layout/Header",
           "@/shared/ui/layout/PageContent",

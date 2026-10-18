@@ -499,6 +499,49 @@ test.describe('wallet contract smoke on local API-mode build', () => {
     });
   });
 
+  test('keeps the shared asset filter accessible and within wallet route viewports', async ({
+    page,
+  }) => {
+    const samples = [
+      { path: '/wallet/history', width: 390, height: 844 },
+      { path: '/t/wallet/history', width: 768, height: 1024 },
+      { path: '/w/wallet/history', width: 1280, height: 900 },
+      { path: '/r/wallet/history', width: 440, height: 956 },
+    ];
+    await page.route('**/auth/session', (route) => route.fulfill({ json: session }));
+    await page.route('**/wallet/transactions**', (route) =>
+      route.fulfill({ json: { items: [], total: 0 } }),
+    );
+
+    for (const sample of samples) {
+      await page.setViewportSize({ width: sample.width, height: sample.height });
+      await page.goto(sample.path);
+      const filter = page.getByRole('textbox', { name: 'Filter by asset' });
+      await expect(filter).toBeVisible();
+      await expect(page.getByRole('button', { name: 'Apply' })).toBeVisible();
+
+      const geometry = await filter.evaluate((input) => {
+        const form = input.closest('form');
+        const control = input.closest('.tr-search-bar-control');
+        const submit = form?.querySelector('button[type="submit"]');
+        if (!form || !control || !submit) return null;
+        const formRect = form.getBoundingClientRect();
+        return {
+          left: formRect.left,
+          right: formRect.right,
+          controlHeight: control.getBoundingClientRect().height,
+          actionHeight: submit.getBoundingClientRect().height,
+        };
+      });
+
+      expect(geometry).not.toBeNull();
+      expect(geometry?.left).toBeGreaterThanOrEqual(0);
+      expect(geometry?.right).toBeLessThanOrEqual(sample.width);
+      expect(geometry?.controlHeight).toBe(44);
+      expect(geometry?.actionHeight).toBe(36);
+    }
+  });
+
   test('renders withdrawal limits returned for the selected asset', async ({ page }) => {
     await page.route('**/auth/session', (route) => route.fulfill({ json: session }));
     await page.route('**/wallet/assets', (route) => route.fulfill({ json: assets }));

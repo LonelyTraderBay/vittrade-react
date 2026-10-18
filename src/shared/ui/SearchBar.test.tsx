@@ -150,4 +150,20 @@ describe('SearchBar', () => {
     rerender(<SearchBar value="" onChange={vi.fn()} variant="header" />);
     expect(screen.queryByRole('button', { name: 'Quay lại' })).not.toBeInTheDocument();
   });
+
+  it('allows an accessible name that is more specific than the placeholder', () => {
+    renderWithProviders(
+      <SearchBar
+        value=""
+        onChange={vi.fn()}
+        placeholder="Asset symbol, e.g. BTC"
+        ariaLabel="Filter by asset"
+      />,
+    );
+
+    expect(screen.getByRole('textbox', { name: 'Filter by asset' })).toHaveAttribute(
+      'placeholder',
+      'Asset symbol, e.g. BTC',
+    );
+  });
 });

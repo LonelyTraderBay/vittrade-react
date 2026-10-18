@@ -61,6 +61,8 @@ interface SearchBarProps {
   onChange: (value: string) => void;
   /** Placeholder text */
   placeholder?: string;
+  /** Accessible name when it differs from the placeholder. */
+  ariaLabel?: string;
   /** Visual variant */
   variant?: SearchBarVariant;
   /** Auto focus on mount */
@@ -100,6 +102,7 @@ export function SearchBar({
   value,
   onChange,
   placeholder = 'Tìm kiếm...',
+  ariaLabel,
   variant = 'default',
   autoFocus = false,
   debounce = 0,
@@ -214,7 +217,7 @@ export function SearchBar({
             fontSize: variant === 'compact' ? φ.xs : φ.sm,
           }}
           enterKeyHint="search"
-          aria-label={placeholder}
+          aria-label={ariaLabel ?? placeholder}
         />
 
         {/* Clear button */}
