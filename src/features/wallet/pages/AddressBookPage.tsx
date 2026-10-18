@@ -5,7 +5,6 @@ import {
   Copy,
   Lock,
   Plus,
-  Search,
   Shield,
   Star,
   StarOff,
@@ -17,6 +16,7 @@ import { ErrorState } from '@/shared/ui/ErrorState';
 import { Header } from '@/shared/ui/layout/Header';
 import { PageContent } from '@/shared/ui/layout/PageContent';
 import { PageLayout } from '@/shared/ui/layout/PageLayout';
+import { SearchBar } from '@/shared/ui/SearchBar';
 import { TrCard } from '@/shared/ui/TrCard';
 import { useActionToast } from '@/shared/hooks/useActionToast';
 import { useRoutePrefix } from '@/shared/navigation/useRoutePrefix';
@@ -278,30 +278,7 @@ export function AddressBookPage() {
             Wallet address-book permission is required to manage withdrawal addresses.
           </p>
         )}
-        <div
-          className="flex items-center gap-3 rounded-2xl px-4"
-          style={{
-            background: colors.searchBg,
-            border: `1.5px solid ${colors.searchBorder}`,
-            height: 52,
-          }}
-        >
-          <Search size={18} color={colors.text3} />
-          <input
-            value={search}
-            onChange={(event) => setSearch(event.target.value)}
-            aria-label="Tìm địa chỉ hoặc tên"
-            placeholder="Tìm địa chỉ hoặc tên…"
-            style={{
-              background: 'transparent',
-              border: 'none',
-              outline: 'none',
-              color: colors.text1,
-              fontSize: 14,
-              flex: 1,
-            }}
-          />
-        </div>
+        <SearchBar value={search} onChange={setSearch} placeholder="Tìm địa chỉ hoặc tên" />
         <TrCard className="p-4">
           <div className="flex items-center gap-3">
             <div

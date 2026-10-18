@@ -121,13 +121,16 @@ describe('AddressBookPage', () => {
     await user.type(search, 'btc chính');
     expect(screen.getByText('BTC chính')).toBeInTheDocument();
     expect(screen.queryByText('ETH lạnh')).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Xóa tìm kiếm' })).toBeInTheDocument();
 
-    await user.clear(search);
+    await user.click(screen.getByRole('button', { name: 'Xóa tìm kiếm' }));
+    expect(search).toHaveValue('');
+    expect(document.activeElement).toBe(search);
     await user.type(search, '0x1234');
     expect(screen.queryByText('BTC chính')).not.toBeInTheDocument();
     expect(screen.getByText('ETH lạnh')).toBeInTheDocument();
 
-    await user.clear(search);
+    await user.click(screen.getByRole('button', { name: 'Xóa tìm kiếm' }));
     await user.click(screen.getByRole('button', { name: 'BTC' }));
     expect(screen.getByText('BTC chính')).toBeInTheDocument();
     expect(screen.queryByText('ETH lạnh')).not.toBeInTheDocument();

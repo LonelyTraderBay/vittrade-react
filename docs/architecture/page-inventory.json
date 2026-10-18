@@ -3518,7 +3518,7 @@
       "domain": "wallet",
       "owner": "features/wallet",
       "status": "integration-pending",
-      "lines": 431,
+      "lines": 408,
       "routePaths": [
         "address-book",
         "wallet/address-book"
@@ -3534,6 +3534,7 @@
           "@/shared/session/useAuth",
           "@/shared/ui/ConfirmationDialog",
           "@/shared/ui/ErrorState",
+          "@/shared/ui/SearchBar",
           "@/shared/ui/TrCard",
           "@/shared/ui/layout/Header",
           "@/shared/ui/layout/PageContent",

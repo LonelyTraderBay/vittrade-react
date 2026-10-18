@@ -697,23 +697,74 @@ test.describe('wallet contract smoke on local API-mode build', () => {
     expect(idempotencyKey).toBeTruthy();
   });
 
-  test('web address book renders contract data instead of local sample destinations', async ({
+  test('address-book shell aliases use the shared search control with contract data', async ({
     page,
   }) => {
-    await page.route('**/auth/session', (route) => route.fulfill({ json: session }));
-    await page.route('**/wallet/address-book', (route) =>
+    await page.route('https://e2e.test/auth/session', (route) => route.fulfill({ json: session }));
+    await page.route('https://e2e.test/wallet/address-book', (route) =>
       route.fulfill({ json: addressBookResponse }),
     );
 
-    const addressBookResponseReceived = page.waitForResponse(
-      (response) =>
-        response.request().method() === 'GET' &&
-        new URL(response.url()).pathname.endsWith('/wallet/address-book'),
-    );
-    await page.goto('/w/address-book');
+    const samples = [
+      { path: '/w/address-book', width: 320, height: 568 },
+      { path: '/r/wallet/address-book', width: 390, height: 844 },
+      { path: '/t/wallet/address-book', width: 768, height: 1024 },
+      { path: '/wallet/address-book', width: 1280, height: 800 },
+      { path: '/w/wallet/address-book', width: 1280, height: 800 },
+      { path: '/w/profile/security/withdrawal-whitelist', width: 1280, height: 800 },
+    ];
+    const measurements: Array<Record<string, unknown>> = [];
 
-    await expect((await addressBookResponseReceived).ok()).toBeTruthy();
-    await expect(page.getByText('Contract-owned destination')).toBeVisible();
-    await expect(page.getByText('Binance Main Wallet')).toHaveCount(0);
+    for (const sample of samples) {
+      await page.setViewportSize({ width: sample.width, height: sample.height });
+      const addressBookResponseReceived = page.waitForResponse(
+        (response) =>
+          response.request().method() === 'GET' &&
+          new URL(response.url()).origin === 'https://e2e.test' &&
+          new URL(response.url()).pathname.endsWith('/wallet/address-book'),
+      );
+      await page.goto(sample.path);
+
+      expect(new URL(page.url()).pathname).toBe(sample.path);
+      expect((await addressBookResponseReceived).ok()).toBe(true);
+      const destination = page.getByText('Contract-owned destination');
+      await expect(destination).toBeVisible();
+      await expect(page.getByText('Binance Main Wallet')).toHaveCount(0);
+
+      const search = page.getByRole('textbox', { name: 'Tìm địa chỉ hoặc tên' });
+      await expect(search).toBeVisible();
+      const geometry = await search.evaluate((element) => {
+        const control = element.parentElement;
+        const style = control ? getComputedStyle(control) : undefined;
+        const rect = control?.getBoundingClientRect();
+        return {
+          controlHeight: style?.height,
+          outlineStyle: style?.outlineStyle,
+          outlineWidth: style?.outlineWidth,
+          withinViewport: Boolean(rect && rect.left >= 0 && rect.right <= innerWidth),
+        };
+      });
+      expect(geometry.controlHeight).toBe('44px');
+      expect(geometry.withinViewport).toBe(true);
+
+      await search.focus();
+      const focusStyle = await search.evaluate((element) => {
+        const control = element.parentElement;
+        const style = control ? getComputedStyle(control) : undefined;
+        return { outlineStyle: style?.outlineStyle, outlineWidth: style?.outlineWidth };
+      });
+      expect(focusStyle).toEqual({ outlineStyle: 'solid', outlineWidth: '2px' });
+
+      await search.fill('no-matching-destination');
+      await expect(destination).toHaveCount(0);
+      await expect(page.getByText('Không tìm thấy địa chỉ')).toBeVisible();
+      await page.getByRole('button', { name: 'Xóa tìm kiếm' }).click();
+      await expect(search).toHaveValue('');
+      await expect(destination).toBeVisible();
+
+      measurements.push({ ...sample, ...geometry, focusStyle });
+    }
+
+    console.log(`C06_ADDRESS_BOOK_SEARCH ${JSON.stringify(measurements)}`);
   });
 });
