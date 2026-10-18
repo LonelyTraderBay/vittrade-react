@@ -28,41 +28,64 @@ export function SavingsDCAContractPage() {
   const [coinSymbol, setCoinSymbol] = useState('BTC');
   const [frequency, setFrequency] = useState<'daily' | 'weekly' | 'monthly'>('weekly');
   const [amount, setAmount] = useState('');
-  const [createKey, setCreateKey] = useState(() => crypto.randomUUID());
+  const actionInFlight = useRef(false);
+  const createKeys = useRef(new Map<string, string>());
   const [confirmCancelPlanId, setConfirmCancelPlanId] = useState<string | null>(null);
   const updateKeys = useRef(new Map<string, string>());
   const deleteKeys = useRef(new Map<string, string>());
+  const actionPending = create.isPending || update.isPending || remove.isPending;
   if (query.isPending) return <LoadingPage />;
   if (query.isError || !query.data) return <ErrorState onAction={() => void query.refetch()} />;
   const amountValue = Number(amount);
   const canCreate = canManageDCA && Number.isFinite(amountValue) && amountValue > 0;
   const createPlan = async () => {
+    if (!canCreate || actionInFlight.current) return;
+    actionInFlight.current = true;
+    const request = {
+      coinSymbol: coinSymbol.trim().toUpperCase(),
+      frequency,
+      amountPerPurchase: amountValue,
+    };
+    const signature = JSON.stringify(request);
+    const key = createKeys.current.get(signature) ?? crypto.randomUUID();
+    createKeys.current.set(signature, key);
     try {
       await create.mutateAsync({
-        request: {
-          coinSymbol: coinSymbol.trim().toUpperCase(),
-          frequency,
-          amountPerPurchase: amountValue,
-        },
-        idempotencyKey: `dca-create-${createKey}`,
+        request,
+        idempotencyKey: `dca-create-${key}`,
       });
+      createKeys.current.delete(signature);
       setAmount('');
-      setCreateKey(crypto.randomUUID());
       actionToast.success('Đã tạo kế hoạch DCA.');
     } catch (error) {
       actionToast.error(error instanceof Error ? error.message : 'Không thể tạo kế hoạch DCA.');
+    } finally {
+      actionInFlight.current = false;
     }
   };
   const updatePlanStatus = async (planId: string, status: 'active' | 'paused') => {
+    if (
+      !canManageDCA ||
+      actionInFlight.current ||
+      !query.data.plans.some((plan) => plan.id === planId)
+    )
+      return;
+    actionInFlight.current = true;
     const actionId = `${planId}:${status}`;
     const key = updateKeys.current.get(actionId) ?? crypto.randomUUID();
     updateKeys.current.set(actionId, key);
     try {
-      await update.mutateAsync({
+      const receipt = await update.mutateAsync({
         planId,
         request: { status },
         idempotencyKey: `dca-update-${planId}-${status}-${key}`,
       });
+      if (receipt.id !== planId || receipt.status !== status) {
+        actionToast.error(
+          'Backend chưa xác nhận trạng thái yêu cầu. Vui lòng kiểm tra lại kế hoạch.',
+        );
+        return;
+      }
       updateKeys.current.delete(actionId);
       actionToast.success(
         status === 'paused' ? 'Đã tạm dừng kế hoạch DCA.' : 'Đã tiếp tục kế hoạch DCA.',
@@ -71,11 +94,20 @@ export function SavingsDCAContractPage() {
       actionToast.error(
         error instanceof Error ? error.message : 'Không thể cập nhật kế hoạch DCA.',
       );
+    } finally {
+      actionInFlight.current = false;
     }
   };
   const cancelPlan = async () => {
-    // ConfirmationDialog only exposes its confirm action while a plan ID is selected.
-    const planId = confirmCancelPlanId!;
+    const planId = confirmCancelPlanId;
+    if (
+      !canManageDCA ||
+      actionInFlight.current ||
+      !planId ||
+      !query.data.plans.some((plan) => plan.id === planId)
+    )
+      return;
+    actionInFlight.current = true;
     const key = deleteKeys.current.get(planId) ?? crypto.randomUUID();
     deleteKeys.current.set(planId, key);
     try {
@@ -87,6 +119,8 @@ export function SavingsDCAContractPage() {
       actionToast.success('Đã hủy kế hoạch DCA.');
     } catch (error) {
       actionToast.error(error instanceof Error ? error.message : 'Không thể hủy kế hoạch DCA.');
+    } finally {
+      actionInFlight.current = false;
     }
   };
   return (
@@ -94,14 +128,14 @@ export function SavingsDCAContractPage() {
       <Header title="Savings DCA" subtitle="Contract-first scheduled investments" back />
       <PageContent gap="default">
         <TrCard className="p-4">
-          <div className="grid grid-cols-3 gap-2">
+          <div className="flex flex-wrap gap-2">
             <Metric label="Invested" value={query.data.overview.totalInvested.toLocaleString()} />
             <Metric label="Value" value={query.data.overview.currentValue.toLocaleString()} />
             <Metric label="Active" value={query.data.overview.activePlans} />
           </div>
         </TrCard>
         {!canManageDCA && (
-          <p role="alert" style={{ color: '#EF4444', fontSize: 12 }}>
+          <p role="alert" style={{ color: colors.errorText, fontSize: 12 }}>
             DCA write permission is required to change scheduled investment plans.
           </p>
         )}
@@ -113,9 +147,8 @@ export function SavingsDCAContractPage() {
               value={coinSymbol}
               onChange={(event) => {
                 setCoinSymbol(event.target.value);
-                setCreateKey(crypto.randomUUID());
               }}
-              disabled={!canManageDCA}
+              disabled={!canManageDCA || actionPending}
               className="rounded-lg p-2"
               placeholder="BTC"
             />
@@ -126,9 +159,8 @@ export function SavingsDCAContractPage() {
               value={amount}
               onChange={(event) => {
                 setAmount(event.target.value);
-                setCreateKey(crypto.randomUUID());
               }}
-              disabled={!canManageDCA}
+              disabled={!canManageDCA || actionPending}
               className="rounded-lg p-2"
               placeholder="Amount per purchase"
             />
@@ -137,9 +169,8 @@ export function SavingsDCAContractPage() {
               value={frequency}
               onChange={(event) => {
                 setFrequency(event.target.value as typeof frequency);
-                setCreateKey(crypto.randomUUID());
               }}
-              disabled={!canManageDCA}
+              disabled={!canManageDCA || actionPending}
               className="rounded-lg p-2"
             >
               <option value="daily">Daily</option>
@@ -149,7 +180,7 @@ export function SavingsDCAContractPage() {
             <button
               type="button"
               aria-label="Create DCA plan"
-              disabled={!canCreate || create.isPending}
+              disabled={!canCreate || actionPending}
               onClick={() => void createPlan()}
               className="rounded-lg px-3 py-2"
             >
@@ -157,18 +188,18 @@ export function SavingsDCAContractPage() {
             </button>
           </div>
           {create.isError && (
-            <p role="alert" className="mt-2" style={{ color: '#EF4444', fontSize: 12 }}>
+            <p role="alert" className="mt-2" style={{ color: colors.errorText, fontSize: 12 }}>
               Unable to create the DCA plan. Please retry.
             </p>
           )}
         </TrCard>
         {update.isError && (
-          <p role="alert" style={{ color: '#EF4444', fontSize: 12 }}>
+          <p role="alert" style={{ color: colors.errorText, fontSize: 12 }}>
             Unable to update the DCA plan. Please retry.
           </p>
         )}
         {remove.isError && (
-          <p role="alert" style={{ color: '#EF4444', fontSize: 12 }}>
+          <p role="alert" style={{ color: colors.errorText, fontSize: 12 }}>
             Unable to cancel the DCA plan. Please retry.
           </p>
         )}
@@ -183,10 +214,15 @@ export function SavingsDCAContractPage() {
             <TrCard key={plan.id} className="p-4">
               <div className="flex items-start gap-3">
                 <span
+                  data-testid="dca-plan-coin-icon"
                   className="flex h-9 w-9 items-center justify-center rounded-xl"
-                  style={{ background: colors.surface2, color: colors.primary }}
+                  style={{ background: colors.surface2, color: colors.warningText }}
                 >
-                  {plan.coinIcon}
+                  <DcaPlanCoinIcon
+                    key={plan.coinIcon}
+                    icon={plan.coinIcon}
+                    symbol={plan.coinSymbol}
+                  />
                 </span>
                 <div className="min-w-0 flex-1">
                   <p style={{ color: colors.text1, fontWeight: 700 }}>
@@ -197,14 +233,14 @@ export function SavingsDCAContractPage() {
                     {plan.nextExecution.toLocaleDateString()}
                   </p>
                 </div>
-                <span style={{ color: isActive ? colors.buy : colors.text3, fontSize: 11 }}>
+                <span style={{ color: isActive ? colors.successText : colors.text3, fontSize: 11 }}>
                   {plan.status}
                 </span>
               </div>
               <div className="mt-3 flex gap-2">
                 <button
                   type="button"
-                  disabled={!canManageDCA || update.isPending}
+                  disabled={!canManageDCA || actionPending}
                   onClick={() => void updatePlanStatus(plan.id, isActive ? 'paused' : 'active')}
                   className="flex items-center gap-1 rounded-lg px-3 py-2"
                   style={{ background: colors.surface2, color: colors.text2, fontSize: 11 }}
@@ -214,10 +250,14 @@ export function SavingsDCAContractPage() {
                 </button>
                 <button
                   type="button"
-                  disabled={!canManageDCA || remove.isPending}
+                  disabled={!canManageDCA || actionPending}
                   onClick={() => setConfirmCancelPlanId(plan.id)}
                   className="flex items-center gap-1 rounded-lg px-3 py-2"
-                  style={{ background: `${colors.sell}15`, color: colors.sell, fontSize: 11 }}
+                  style={{
+                    background: `${colors.sell}15`,
+                    color: colors.errorText,
+                    fontSize: 11,
+                  }}
                 >
                   <Trash2 size={12} /> Cancel
                 </button>
@@ -256,9 +296,49 @@ function LoadingPage() {
 function Metric({ label, value }: { label: string; value: string | number }) {
   const colors = useThemeColors();
   return (
-    <div className="rounded-xl p-2 text-center" style={{ background: colors.surface2 }}>
-      <strong style={{ color: colors.text1 }}>{value}</strong>
+    <div
+      className="min-w-0 flex-1 rounded-xl p-2 text-center"
+      style={{ background: colors.surface2, flexBasis: 96, minWidth: 96 }}
+    >
+      <strong
+        data-testid="dca-metric-value"
+        className="block whitespace-nowrap"
+        style={{
+          color: colors.text1,
+          fontSize: 'clamp(12px, 1.2vw, 16px)',
+          fontVariantNumeric: 'tabular-nums',
+          letterSpacing: '-0.02em',
+        }}
+      >
+        {value}
+      </strong>
       <p style={{ color: colors.text3, fontSize: 9 }}>{label}</p>
     </div>
+  );
+}
+
+function DcaPlanCoinIcon({ icon, symbol }: { icon: string; symbol: string }) {
+  const [imageFailed, setImageFailed] = useState(false);
+  const source = icon.trim();
+  const isImageSource = /^(?:https?:\/\/|\/|\.\.?\/|data:image\/)/i.test(source);
+
+  if (!source || !isImageSource || imageFailed) {
+    return (
+      <span aria-hidden="true" className="text-xs font-bold">
+        {symbol}
+      </span>
+    );
+  }
+
+  return (
+    <img
+      src={source}
+      alt=""
+      aria-hidden="true"
+      loading="lazy"
+      referrerPolicy="no-referrer"
+      className="h-6 w-6 object-contain"
+      onError={() => setImageFailed(true)}
+    />
   );
 }

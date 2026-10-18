@@ -27,10 +27,10 @@ import {
 } from '../model/p2p-dispute-detail-queries';
 
 const STATUS_MAP: Record<P2PDisputeStatus, { label: string; color: string; icon: typeof Clock }> = {
-  submitted: { label: 'Đã gửi', color: '#F59E0B', icon: Clock },
-  under_review: { label: 'Đang xem xét', color: '#3B82F6', icon: FileText },
-  resolved: { label: 'Đã giải quyết', color: '#10B981', icon: CheckCircle },
-  rejected: { label: 'Bị từ chối', color: '#EF4444', icon: AlertTriangle },
+  submitted: { label: 'Đã gửi', color: 'var(--tr-warning-text)', icon: Clock },
+  under_review: { label: 'Đang xem xét', color: 'var(--tr-info)', icon: FileText },
+  resolved: { label: 'Đã giải quyết', color: 'var(--tr-success-text)', icon: CheckCircle },
+  rejected: { label: 'Bị từ chối', color: 'var(--tr-error-text)', icon: AlertTriangle },
 };
 
 export function P2PDisputeDetailPage() {
@@ -144,11 +144,11 @@ export function P2PDisputeDetailPage() {
                 border: '1px solid rgba(245,158,11,0.15)',
               }}
             >
-              <span style={{ color: '#D97706', fontSize: 12, fontWeight: 600 }}>
+              <span style={{ color: 'var(--tr-warning-text)', fontSize: 12, fontWeight: 600 }}>
                 <ArrowUp size={14} className="inline mr-2" />
                 Chuyển lên cấp {dispute.escalationLevel + 1}
               </span>
-              <span style={{ color: '#F59E0B', fontSize: 11 }}>
+              <span style={{ color: 'var(--tr-warning-text)', fontSize: 11 }}>
                 {escalationMutation.isPending ? 'Đang xử lý…' : 'Escalate'}
               </span>
             </button>
@@ -163,7 +163,7 @@ export function P2PDisputeDetailPage() {
 
         <TrCard className="p-4">
           <div className="flex items-center gap-2 mb-3">
-            <Clock size={14} color="#3B82F6" />
+            <Clock size={14} color="var(--tr-link)" />
             <p style={{ color: colors.text1, fontSize: 13, fontWeight: 700 }}>Timeline</p>
           </div>
           <div className="flex flex-col gap-3">
@@ -190,7 +190,7 @@ export function P2PDisputeDetailPage() {
 
         <TrCard className="p-4">
           <div className="flex items-center gap-2 mb-3">
-            <FileText size={14} color="#8B5CF6" />
+            <FileText size={14} color="var(--tr-accent)" />
             <p style={{ color: colors.text1, fontSize: 13, fontWeight: 700 }}>
               Bằng chứng ({dispute.evidence.length})
             </p>
@@ -210,7 +210,7 @@ export function P2PDisputeDetailPage() {
 
         <TrCard className="p-4">
           <div className="flex items-center gap-2 mb-3">
-            <Shield size={14} color="#10B981" />
+            <Shield size={14} color="var(--tr-success-text)" />
             <p style={{ color: colors.text1, fontSize: 13, fontWeight: 700 }}>Trao đổi hỗ trợ</p>
           </div>
           <div className="flex flex-col gap-2 mb-3">
@@ -225,7 +225,10 @@ export function P2PDisputeDetailPage() {
                 }}
               >
                 <div className="flex items-center gap-1.5 mb-1">
-                  <UserRound size={11} color={item.sender === 'user' ? '#3B82F6' : colors.text3} />
+                  <UserRound
+                    size={11}
+                    color={item.sender === 'user' ? 'var(--tr-link)' : colors.text3}
+                  />
                   <span style={{ color: colors.text3, fontSize: 10 }}>
                     {item.sender === 'user' ? 'Bạn' : 'Hỗ trợ'} · {item.time}
                   </span>
@@ -250,7 +253,7 @@ export function P2PDisputeDetailPage() {
               onClick={() => void sendMessage()}
               disabled={!canWriteDispute || !message.trim() || messageMutation.isPending}
               className="w-10 rounded-xl flex items-center justify-center"
-              style={{ background: '#3B82F6', color: '#fff' }}
+              style={{ background: colors.info, color: '#fff' }}
               aria-label="Send dispute message"
             >
               <Send size={14} />

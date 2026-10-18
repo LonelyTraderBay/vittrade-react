@@ -185,6 +185,11 @@ describe('WalletAssetDetailPage', () => {
     renderAssetDetail({ showDCAButton: true, onDCAImpression, onDCAButtonClick });
 
     expect(await screen.findByText('Bitcoin')).toBeVisible();
+    expect(screen.getByText('BTC', { selector: 'span' })).toHaveStyle({
+      color: 'var(--tr-text-1)',
+    });
+    expect(screen.getByText('0.040000')).toHaveStyle({ color: 'var(--tr-text-1)' });
+    expect(screen.getByText('0.010000')).toHaveStyle({ color: 'var(--tr-text-1)' });
     expect(screen.getByText('$16,000.00')).toBeVisible();
     expect(screen.getByText('64,000.00')).toBeVisible();
     expect(screen.getByText('Đang xử lý')).toBeVisible();

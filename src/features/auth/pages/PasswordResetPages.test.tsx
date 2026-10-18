@@ -174,6 +174,10 @@ describe('password reset contract flow', () => {
     await user.type(screen.getByLabelText('Email đăng ký'), 'user@example.com');
     await user.click(screen.getByRole('button', { name: 'Gửi mã xác minh' }));
     const otp = await screen.findByLabelText('Mã OTP');
+    expect(otp).toHaveAttribute('type', 'tel');
+    expect(otp).toHaveAttribute('inputmode', 'numeric');
+    expect(otp).toHaveAttribute('autocomplete', 'one-time-code');
+    expect(otp).toHaveAttribute('pattern', '[0-9]{6}');
     await user.type(otp, '12a345678');
 
     expect(otp).toHaveValue('123456');
@@ -181,6 +185,12 @@ describe('password reset contract flow', () => {
     expect(await screen.findByRole('alert')).toHaveTextContent(
       'Mã xác minh không đúng hoặc đã hết hạn.',
     );
+    const otpAfterFailure = screen.getByLabelText('Mã OTP');
+    expect(otpAfterFailure).toHaveAttribute('aria-invalid', 'true');
+    expect(otpAfterFailure.getAttribute('aria-describedby')).toBeTruthy();
+    expect(
+      document.getElementById(otpAfterFailure.getAttribute('aria-describedby')!),
+    ).toHaveTextContent('Mã xác minh không đúng hoặc đã hết hạn.');
     expect(screen.getByRole('heading', { name: 'Nhập mã OTP' })).toBeInTheDocument();
   });
 

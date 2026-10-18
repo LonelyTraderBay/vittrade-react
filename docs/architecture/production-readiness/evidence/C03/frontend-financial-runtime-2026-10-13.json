@@ -1,0 +1,64 @@
+{
+  "observedAt": "2026-10-13T13:19:21.693Z",
+  "sourceHead": "2a6d8fe4591c52a3b8d795a17aede48ca418907e",
+  "environment": "Windows/Node24.19.0/Chromium; owned byte-equivalent clone; production build uses reserved .test origins, browser uses local API interception and MSW",
+  "verification": {
+    "productionBuild": {
+      "result": "pass",
+      "outputs": 222,
+      "jsChunks": 220,
+      "mockGate": "pass",
+      "bundleGate": "pass",
+      "rawMaxKB": 500,
+      "gzipMaxKiB": 250
+    },
+    "browser": {
+      "standard": {
+        "passed": 59,
+        "skipped": 4,
+        "newSkips": 0
+      },
+      "authApi": {
+        "passed": 34,
+        "skipped": 0
+      },
+      "authMsw": {
+        "passed": 41,
+        "skipped": 0
+      }
+    },
+    "sourceUnchanged": true,
+    "childClosed": true,
+    "rawLogs": {
+      "path": "docs/architecture/production-readiness/evidence/C03/financial-runtime-verification-2026-10-13/logs.json.gz",
+      "sha256": "737d9fa4b49f5047842bcb6b13694ef40f94879a7d4bea6adf65595b360b1676"
+    },
+    "manifests": [
+      {
+        "path": "docs/architecture/production-readiness/evidence/C03/financial-runtime-verification-2026-10-13/2026-10-13T13-05-39-647Z-build-7aa36cc1-a6bf-45e0-9929-8608d9a0cf28.json",
+        "sha256": "641c7a1d42117612c1f178b8dfe92a5c7cadb5be6f603335ed3528426df1bd83"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/C03/financial-runtime-verification-2026-10-13/2026-10-13T13-07-01-918Z-playwright-58f98a2c-4cea-4f7a-9bed-a3e64c2aeed7.json",
+        "sha256": "7586444b80f3b5e02790bfa315cb334de6ca00216d95df1e99648a5ff135af47"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/C03/financial-runtime-verification-2026-10-13/2026-10-13T13-08-59-169Z-playwright-d6ac514d-cf14-488a-a7c7-48faee6dd2ca.json",
+        "sha256": "54c8e0df34eabe50d21cdf9d88e4380b10559f8a24470a3abf99632da0350e66"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/C03/financial-runtime-verification-2026-10-13/2026-10-13T13-11-42-813Z-playwright-6087f8a2-0f68-44e5-8b63-b56167af711f.json",
+        "sha256": "7bf6ed75857d9dfb0712883e6e763524b728e6aa838d7ea7b624e07964162f1a"
+      }
+    ]
+  },
+  "diagnostics": [
+    "Reporting harness first checked snapshot.sourceHead, but actual field is snapshot.head; the successful build run is unchanged and checked from its real manifest, not rerun or relabelled.",
+    "Artifact-consuming gates were invoked while another owned runtime held lifecycle.lock. Both refused safely; idle sequential reruns passed. No stale lock or foreign process was removed."
+  ],
+  "limits": [
+    "Local frontend regression proof only; no hosted Node22/Ubuntu, upload/download, backend/staging, UAT or production certification.",
+    "Four existing development registration skips remain in the standard profile; Auth API separately runs those development contracts.",
+    "Coverage target100 and broader technical UI review remain open;81 source-head scenario refresh follows final source stabilization."
+  ]
+}

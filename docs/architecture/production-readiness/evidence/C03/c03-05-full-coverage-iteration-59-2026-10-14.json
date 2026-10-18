@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "commandOrSteps": "npm.cmd run test:coverage -- --reporter=dot; inspect runner run.json and coverage/coverage-final.json; compare changed source hashes to snapshot and commit ef3fb92.",
+  "environment": "Windows local, Node v24.19.0, Vitest/V8; no backend or staging.",
+  "expected": "Full test and unchanged repository coverage thresholds pass; measurable source files are separated from entries without executable counters.",
+  "actual": "Run 2026-10-14T04-09-17-542Z-vitest-4912b92a-8cb9-4b55-ae6f-f88e9554b218 passed: 360/360 files and 3463/3463 tests, 0 failed/skipped. Report contains 440 entries: 408 measurable, all 408 without statement/branch/function gaps; 32 entries have no executable counters. Statements 12441/12441, branches 10265/10265, functions 3972/3972, lines 11500/11500 (100%); thresholds and denominator unchanged. Manifest head is ef3fb92, sourceUnchanged=true, and all three Auth source SHA-256 values match run snapshot and commit blobs. The earlier complete attempt with two unrelated 15-second timeouts was rerun unchanged and this complete run passed; timeout/assertions were not relaxed.",
+  "result": "pass",
+  "primaryReport": ".artifacts/runs/2026-10-14T04-09-17-542Z-vitest-4912b92a-8cb9-4b55-ae6f-f88e9554b218/coverage/coverage-final.json",
+  "limitations": "Primary report: .artifacts/runs/2026-10-14T04-09-17-542Z-vitest-4912b92a-8cb9-4b55-ae6f-f88e9554b218/coverage/coverage-final.json (3826235 bytes; SHA-256 405772f98545c3ecf4a0a76f119efd5a9d254f0d030733eb5f3c3534f3bfb6a5). Local coverage is not visual acceptance, hosted CI, backend/staging, UAT or production certification."
+}

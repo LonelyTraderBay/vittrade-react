@@ -65,7 +65,7 @@ export function SavingsComparisonContractPage() {
               <div />
               {selected.map((product) => (
                 <TrCard key={product!.id} className="p-3">
-                  <strong style={{ color: product!.color }}>{product!.asset}</strong>
+                  <strong style={{ color: colors.text1 }}>{product!.asset}</strong>
                   <p style={{ color: colors.text1, fontSize: 12 }}>{product!.name}</p>
                 </TrCard>
               ))}

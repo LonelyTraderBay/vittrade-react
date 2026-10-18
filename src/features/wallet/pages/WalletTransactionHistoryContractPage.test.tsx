@@ -156,6 +156,38 @@ describe('Wallet transaction history contract page', () => {
     expect(screen.getByText('+0.01', { exact: true })).toBeInTheDocument();
   });
 
+  it('applies the asset filter on Enter and clears the applied filter', async () => {
+    const requests: URLSearchParams[] = [];
+    server.use(
+      http.get('*/wallet/transactions', ({ request }) => {
+        const query = new URL(request.url).searchParams;
+        requests.push(query);
+        const result = filterTransactions(request);
+        return HttpResponse.json(
+          query.has('cursor') ? result : { ...result, nextCursor: 'history-page-2' },
+        );
+      }),
+    );
+
+    renderWithProviders(<WalletTransactionHistoryContractPage />);
+    expect(await screen.findByText('+100', { exact: true })).toBeInTheDocument();
+    await userEvent.click(screen.getByRole('button', { name: 'Next' }));
+    expect(await screen.findByText('-0.1', { exact: true })).toBeInTheDocument();
+
+    const assetInput = screen.getByRole('textbox', { name: 'Filter by asset' });
+    await userEvent.type(assetInput, 'btc{Enter}');
+    expect(await screen.findByText('-0.1', { exact: true })).toBeInTheDocument();
+    await waitFor(() => expect(requests.at(-1)?.get('asset')).toBe('BTC'));
+    expect(requests.at(-1)?.has('cursor')).toBe(false);
+    expect(screen.getByLabelText('Transaction history pagination')).toHaveTextContent('Page 1');
+
+    await userEvent.click(screen.getByRole('button', { name: 'Xóa tìm kiếm' }));
+    expect(screen.getByRole('textbox', { name: 'Filter by asset' })).toHaveValue('');
+    await userEvent.click(screen.getByRole('button', { name: 'Apply' }));
+    expect(await screen.findByText('+100', { exact: true })).toBeInTheDocument();
+    expect(screen.getByLabelText('Transaction history pagination')).toHaveTextContent('Page 1');
+  });
+
   it('follows server cursors and returns to the prior page', async () => {
     server.use(
       http.get('*/wallet/transactions', ({ request }) => {

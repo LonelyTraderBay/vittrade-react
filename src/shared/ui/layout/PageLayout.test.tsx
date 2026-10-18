@@ -14,6 +14,9 @@ describe('StickyFooter', () => {
     const footer = screen.getByRole('button', { name: 'Save changes' }).parentElement;
     expect(footer).toHaveClass('coverage-footer');
     expect((footer as HTMLDivElement).style.borderTopStyle).toBe('none');
+    expect((footer as HTMLDivElement).style.paddingInline).toBe(
+      'var(--tr-page-inline-gutter, 20px)',
+    );
     expect(footer?.getAttribute('style')).toContain('background');
   });
 });

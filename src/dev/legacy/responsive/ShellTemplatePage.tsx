@@ -12,6 +12,7 @@ import {
   ChevronRight,
 } from 'lucide-react';
 import { PageLayout } from '@/shared/ui/layout/PageLayout';
+import { WEB_AVATAR_GRADIENT } from '@/shared/theme/webTokens';
 
 /* ─── Mini Preview Components ─── */
 
@@ -208,7 +209,7 @@ export function ShellTemplatePage() {
         <div className="flex items-center gap-3 mb-2">
           <div
             className="w-10 h-10 rounded-xl flex items-center justify-center"
-            style={{ background: 'linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%)' }}
+            style={{ background: WEB_AVATAR_GRADIENT }}
           >
             <Monitor size={20} color="#fff" />
           </div>

@@ -116,10 +116,8 @@ export function PullToRefresh({
       }
 
       if (delta <= 0) {
-        if (activated.current) {
-          setPullDistance(0);
-          setPhase('idle');
-        }
+        setPullDistance(0);
+        setPhase('idle');
         return;
       }
 
