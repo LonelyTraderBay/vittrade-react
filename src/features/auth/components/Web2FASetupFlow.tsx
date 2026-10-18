@@ -90,9 +90,11 @@ export function Web2FASetupFlow() {
   /* ─── OTP input handlers ─── */
   const handleOTPChange = (index: number, value: string) => {
     const digit = value.replace(/\D/g, '').slice(-1);
-    const newOtp = [...otp];
-    newOtp[index] = digit;
-    setOtp(newOtp);
+    setOtp((currentOtp) => {
+      const nextOtp = [...currentOtp];
+      nextOtp[index] = digit;
+      return nextOtp;
+    });
     setError('');
     if (digit && index < 5) inputRefs.current[index + 1]?.focus();
   };

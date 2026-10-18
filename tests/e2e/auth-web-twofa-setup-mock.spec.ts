@@ -115,6 +115,7 @@ test('Web MFA setup has no axe violations in settled light and dark states @auth
       .getByRole('textbox', { name: `Mã xác thực 2FA, chữ số ${index + 1} trên 6` })
       .fill(digit);
   }
+  await expect(page.getByRole('button', { name: 'Xác minh' })).toBeEnabled();
   const confirmResponsePromise = page.waitForResponse(
     (response) =>
       response.request().method() === 'POST' &&
@@ -304,6 +305,7 @@ for (const viewport of viewports) {
         .getByRole('textbox', { name: `Mã xác thực 2FA, chữ số ${index + 1} trên 6` })
         .fill(digit);
     }
+    await expect(page.getByRole('button', { name: 'Xác minh' })).toBeEnabled();
 
     const confirmResponsePromise = page.waitForResponse(
       (response) =>
