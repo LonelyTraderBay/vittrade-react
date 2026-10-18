@@ -1,0 +1,27 @@
+{
+  "observedAt": "2026-10-13T07:03:06.890Z",
+  "sourceHead": "db9c9064fa3ba79bd76fb7acb1023d90486b6cbf",
+  "files": [
+    {
+      "path": "ARCHITECTURE.md",
+      "sha256": "2b06d74b25b212e4499f12fd24afac33280e4df9c776b92ddc7fe642f52242b1"
+    },
+    {
+      "path": "docs/PROJECT_CONTEXT.md",
+      "sha256": "5653f3200a6aecbae6ef9a79c6dd706d0c5d08f62143988c5c3dbb5c919afd40"
+    },
+    {
+      "path": "docs/architecture/production-readiness/UI-RUNBOOK.md",
+      "sha256": "8b70aacb076a8c57220329ad70d8301284eedd5a4bb37752976fc556fb7a4c4c"
+    },
+    {
+      "path": "docs/architecture/production-readiness/PLAN.md",
+      "sha256": "30c107b57d0116a14d95f6a41f16bd3ecb62254292cd570bfc3ab74a02a7bef3"
+    }
+  ],
+  "actual": "Architecture/current owner boundaries, historical baselines, preview/three-profile commands, source-hash evidence and external-input limits synchronized. Universal rules and source identities unchanged. Empty source folders kept.",
+  "limits": [
+    "Backend/deploy/telemetry/performance owners and staged handoff remain unavailable.",
+    "No new production, staging, user acceptance, Git delivery or branch enforcement claim."
+  ]
+}

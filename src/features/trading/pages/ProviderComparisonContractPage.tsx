@@ -77,7 +77,7 @@ export function ProviderComparisonContractPage() {
         <button
           type="button"
           className="w-full rounded-xl py-3"
-          style={{ background: colors.primary, color: '#fff', fontWeight: 700 }}
+          style={{ background: colors.primary, color: 'var(--tr-text-on-color)', fontWeight: 700 }}
           onClick={() => navigate(`${prefix}/trade/copy-trading`)}
         >
           Quay lại Copy Trading

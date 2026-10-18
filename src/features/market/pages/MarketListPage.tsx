@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router';
 import { useAuth } from '@/shared/session/useAuth';
 import { DiscoverMoreSection } from '@/features/market/components/DiscoverMoreSection';
 import { PageContent } from '@/shared/ui/layout/PageContent';
@@ -9,6 +9,7 @@ import { useRefresh } from '@/shared/hooks/useRefresh';
 import { useRoutePrefix } from '@/shared/navigation/useRoutePrefix';
 import { useInfiniteScroll } from '@/shared/hooks/useInfiniteScroll';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
+import { FONT_SCALE } from '@/shared/theme/legacyTypography';
 import { TOAST } from '@/shared/constants/toastMessages';
 import {
   type MarketPair,
@@ -22,12 +23,22 @@ import {
   MarketPairsList,
   MarketTopMovers,
 } from '../components/MarketListSections';
+import { MARKET_CATEGORIES, MARKET_SORT_OPTIONS } from '../model/market-list-options';
 import { clearMutationAttempt, getMutationAttemptKey } from '../lib/mutation-attempts';
 
 export function MarketListPage() {
-  const [search, setSearch] = useState('');
-  const [category, setCategory] = useState('Tất cả');
-  const [sort, setSort] = useState('default');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const search = searchParams.get('q') ?? '';
+  const requestedCategory = searchParams.get('category') ?? 'Tất cả';
+  const category = MARKET_CATEGORIES.includes(
+    requestedCategory as (typeof MARKET_CATEGORIES)[number],
+  )
+    ? requestedCategory
+    : 'Tất cả';
+  const requestedSort = searchParams.get('sort') ?? 'default';
+  const sort = MARKET_SORT_OPTIONS.some((option) => option.id === requestedSort)
+    ? requestedSort
+    : 'default';
   const [showSort, setShowSort] = useState(false);
   const [pairs, setPairs] = useState<MarketPair[]>([]);
   const watchlistAttempts = useRef(new Map<string, { signature: string; key: string }>());
@@ -48,6 +59,40 @@ export function MarketListPage() {
   const navigate = useNavigate();
   const routePrefix = useRoutePrefix();
   const c = useThemeColors();
+
+  const updateViewParams = useCallback(
+    (updates: Partial<Record<'q' | 'category' | 'sort', string>>) => {
+      setSearchParams(
+        (current) => {
+          const next = new URLSearchParams(current);
+          for (const [key, value] of Object.entries(updates)) {
+            const defaultValue = key === 'category' ? 'Tất cả' : key === 'sort' ? 'default' : '';
+            if (!value || value === defaultValue) next.delete(key);
+            else next.set(key, value);
+          }
+          return next;
+        },
+        { replace: true },
+      );
+    },
+    [setSearchParams],
+  );
+  const setSearch = useCallback(
+    (value: string) => updateViewParams({ q: value }),
+    [updateViewParams],
+  );
+  const setCategory = useCallback(
+    (value: string) => updateViewParams({ category: value }),
+    [updateViewParams],
+  );
+  const setSort = useCallback(
+    (value: string) => updateViewParams({ sort: value }),
+    [updateViewParams],
+  );
+  const clearFilters = useCallback(
+    () => updateViewParams({ q: '', category: 'Tất cả', sort: 'default' }),
+    [updateViewParams],
+  );
 
   useEffect(() => {
     if (marketData?.items) setPairs(marketData.items);
@@ -146,12 +191,12 @@ export function MarketListPage() {
     <PageLayout>
       <PageContent padding="compact" gap="default">
         {isAuthenticated && !canManageWatchlist && (
-          <p role="alert" style={{ color: c.text2, fontSize: 12 }}>
+          <p role="alert" style={{ color: c.text2, fontSize: FONT_SCALE.xs }}>
             Market watchlist is read-only for this session.
           </p>
         )}
         {isAuthenticated && watchlistQuery.isError && (
-          <p role="alert" style={{ color: c.text2, fontSize: 12 }}>
+          <p role="alert" style={{ color: c.text2, fontSize: FONT_SCALE.xs }}>
             Không thể tải watchlist; thao tác yêu thích đang tạm khóa.{' '}
             <button type="button" onClick={() => void watchlistQuery.refetch()}>
               Thử tải lại
@@ -188,11 +233,7 @@ export function MarketListPage() {
           refreshCount={refreshCount}
           refresh={refresh}
           refetchMarketPairs={() => void refetchMarketPairs()}
-          clearFilters={() => {
-            setSearch('');
-            setCategory('Tất cả');
-            setSort('default');
-          }}
+          clearFilters={clearFilters}
           isLoadingMore={scroll.isLoadingMore}
           hasMore={scroll.hasMore}
           visibleCount={scroll.visibleCount}

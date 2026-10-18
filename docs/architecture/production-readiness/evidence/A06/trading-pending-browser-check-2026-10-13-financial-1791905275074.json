@@ -1,0 +1,778 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-13T15:30:10.372Z",
+  "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
+  "branch": "",
+  "origin": "http://127.0.0.1:4193",
+  "browser": "Chromium via Playwright",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "scenario": {
+    "id": "trading.pending",
+    "status": "passed",
+    "persona": "developer",
+    "route": "/w/trade/btcusdt",
+    "operationIds": [
+      "placeOrder",
+      "modifyOrder",
+      "cancelOrder",
+      "listOpenOrders",
+      "listOrderHistory"
+    ],
+    "observedOperationIds": [
+      "listOpenOrders",
+      "listOrderHistory",
+      "placeOrder",
+      "modifyOrder",
+      "cancelOrder"
+    ],
+    "expectedDomainOperationCount": 5,
+    "coverage": "full_scenario_operations_browser_observed",
+    "mutationCount": 3,
+    "duplicateMutationSubmissionCount": 0,
+    "idempotencyKeyPresentForAllMutations": true,
+    "idempotencyKeysDistinct": true,
+    "createdOrderId": "dev-order-0001",
+    "receiptVisible": true,
+    "createdStatus": "open",
+    "modifiedPrice": 51000,
+    "modifiedStatus": "open",
+    "cancelledStatus": "cancelled",
+    "historyContainsCancelledOrder": true,
+    "pendingStates": {
+      "placeOrder": {
+        "visible": true,
+        "actionDisabled": true,
+        "responseUnsettledAtCapture": true,
+        "pendingUiElapsedMs": 1,
+        "screenshot": "preview-trading-pending-place-2026-10-13-financial-1791905275074.png"
+      },
+      "modifyOrder": {
+        "visible": true,
+        "actionDisabled": true,
+        "responseUnsettledAtCapture": true,
+        "pendingUiElapsedMs": 44,
+        "screenshot": "preview-trading-pending-modify-2026-10-13-financial-1791905275074.png"
+      },
+      "cancelOrder": {
+        "visible": true,
+        "actionDisabled": true,
+        "responseUnsettledAtCapture": true,
+        "pendingUiElapsedMs": 33,
+        "screenshot": "preview-trading-pending-cancel-2026-10-13-financial-1791905275074.png"
+      }
+    },
+    "screenshots": {
+      "placePending": "preview-trading-pending-place-2026-10-13-financial-1791905275074.png",
+      "modifyPending": "preview-trading-pending-modify-2026-10-13-financial-1791905275074.png",
+      "cancelPending": "preview-trading-pending-cancel-2026-10-13-financial-1791905275074.png",
+      "historyAfterCancel": "preview-trading-pending-history-2026-10-13-financial-1791905275074.png"
+    }
+  },
+  "contract": {
+    "operationContracts": {
+      "placeOrder": {
+        "method": "POST",
+        "path": "/trading/orders",
+        "responses": [
+          "201",
+          "400",
+          "401",
+          "403",
+          "409"
+        ],
+        "idempotencyKeyRequired": true
+      },
+      "modifyOrder": {
+        "method": "PATCH",
+        "path": "/trading/orders/{orderId}",
+        "responses": [
+          "200",
+          "401",
+          "403",
+          "404"
+        ],
+        "idempotencyKeyRequired": true
+      },
+      "cancelOrder": {
+        "method": "POST",
+        "path": "/trading/orders/{orderId}/cancel",
+        "responses": [
+          "200",
+          "401",
+          "403",
+          "404"
+        ],
+        "idempotencyKeyRequired": true
+      },
+      "listOpenOrders": {
+        "method": "GET",
+        "path": "/trading/orders",
+        "responses": [
+          "200",
+          "401",
+          "403"
+        ],
+        "idempotencyKeyRequired": false
+      },
+      "listOrderHistory": {
+        "method": "GET",
+        "path": "/trading/orders/history",
+        "responses": [
+          "200",
+          "401",
+          "403"
+        ],
+        "idempotencyKeyRequired": false
+      }
+    },
+    "pendingSemantics": "Client request-in-flight only. OpenAPI does not declare a durable server pending status; create returns 201 open and cancel returns 200 cancelled."
+  },
+  "fixtureBoundary": {
+    "serviceWorkerControlled": true,
+    "allObservedResponsesFromServiceWorker": true,
+    "externalApiOrigins": [],
+    "realBackendRequestSent": false,
+    "realBackendMutationSent": false
+  },
+  "measurements": {
+    "totalFlowMs": 10001,
+    "apiRequestCount": 23,
+    "apiResponseCount": 23,
+    "operationResponseCounts": {
+      "placeOrder": 1,
+      "modifyOrder": 1,
+      "cancelOrder": 1,
+      "listOpenOrders": 4,
+      "listOrderHistory": 4
+    },
+    "mutationResponseMs": {
+      "placeOrder": 2026,
+      "modifyOrder": 2033,
+      "cancelOrder": 2027
+    },
+    "readResponseStatuses": {
+      "listOpenOrders": [
+        200,
+        200,
+        200,
+        200
+      ],
+      "listOrderHistory": [
+        200,
+        200,
+        200,
+        200
+      ]
+    },
+    "tradingWriteCount": 3,
+    "unmatchedApiFailureCount": 0,
+    "pageErrors": [],
+    "externalApiOriginCount": 0
+  },
+  "apiRequests": [
+    {
+      "method": "GET",
+      "path": "/api/auth/session",
+      "operationId": null,
+      "startedAt": 1791905410725,
+      "idempotencyKeyPresent": false,
+      "idempotencyKeyLength": 0,
+      "idempotencyKeyHash": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/pairs",
+      "operationId": null,
+      "startedAt": 1791905410766,
+      "idempotencyKeyPresent": false,
+      "idempotencyKeyLength": 0,
+      "idempotencyKeyHash": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/logout",
+      "operationId": null,
+      "startedAt": 1791905410938,
+      "idempotencyKeyPresent": false,
+      "idempotencyKeyLength": 0,
+      "idempotencyKeyHash": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/pairs",
+      "operationId": null,
+      "startedAt": 1791905410938,
+      "idempotencyKeyPresent": false,
+      "idempotencyKeyLength": 0,
+      "idempotencyKeyHash": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/login",
+      "operationId": null,
+      "startedAt": 1791905410953,
+      "idempotencyKeyPresent": false,
+      "idempotencyKeyLength": 0,
+      "idempotencyKeyHash": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/pairs",
+      "operationId": null,
+      "startedAt": 1791905410955,
+      "idempotencyKeyPresent": false,
+      "idempotencyKeyLength": 0,
+      "idempotencyKeyHash": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/pairs",
+      "operationId": null,
+      "startedAt": 1791905410969,
+      "idempotencyKeyPresent": false,
+      "idempotencyKeyLength": 0,
+      "idempotencyKeyHash": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/watchlist",
+      "operationId": null,
+      "startedAt": 1791905410969,
+      "idempotencyKeyPresent": false,
+      "idempotencyKeyLength": 0,
+      "idempotencyKeyHash": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/pairs/btcusdt",
+      "operationId": null,
+      "startedAt": 1791905411202,
+      "idempotencyKeyPresent": false,
+      "idempotencyKeyLength": 0,
+      "idempotencyKeyHash": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/wallet/assets",
+      "operationId": null,
+      "startedAt": 1791905411202,
+      "idempotencyKeyPresent": false,
+      "idempotencyKeyLength": 0,
+      "idempotencyKeyHash": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/trading/orders",
+      "operationId": "listOpenOrders",
+      "startedAt": 1791905411202,
+      "idempotencyKeyPresent": false,
+      "idempotencyKeyLength": 0,
+      "idempotencyKeyHash": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/trading/orders/history",
+      "operationId": "listOrderHistory",
+      "startedAt": 1791905411202,
+      "idempotencyKeyPresent": false,
+      "idempotencyKeyLength": 0,
+      "idempotencyKeyHash": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/pairs",
+      "operationId": null,
+      "startedAt": 1791905411221,
+      "idempotencyKeyPresent": false,
+      "idempotencyKeyLength": 0,
+      "idempotencyKeyHash": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/pairs/btcusdt/candles",
+      "operationId": null,
+      "startedAt": 1791905411221,
+      "idempotencyKeyPresent": false,
+      "idempotencyKeyLength": 0,
+      "idempotencyKeyHash": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/trading/orders",
+      "operationId": "placeOrder",
+      "startedAt": 1791905412289,
+      "idempotencyKeyPresent": true,
+      "idempotencyKeyLength": 36,
+      "idempotencyKeyHash": "795b89bc46a79427895b8a775eb4049089e695197ce461f006909366c5621c54"
+    },
+    {
+      "method": "GET",
+      "path": "/api/trading/orders",
+      "operationId": "listOpenOrders",
+      "startedAt": 1791905414315,
+      "idempotencyKeyPresent": false,
+      "idempotencyKeyLength": 0,
+      "idempotencyKeyHash": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/trading/orders/history",
+      "operationId": "listOrderHistory",
+      "startedAt": 1791905414315,
+      "idempotencyKeyPresent": false,
+      "idempotencyKeyLength": 0,
+      "idempotencyKeyHash": null
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/trading/orders/dev-order-0001",
+      "operationId": "modifyOrder",
+      "startedAt": 1791905415486,
+      "idempotencyKeyPresent": true,
+      "idempotencyKeyLength": 36,
+      "idempotencyKeyHash": "d9c0f994e3e2b1243cb052d52837968aed93a75f7b02ca81fc4e38d1258d8bf3"
+    },
+    {
+      "method": "GET",
+      "path": "/api/trading/orders",
+      "operationId": "listOpenOrders",
+      "startedAt": 1791905417519,
+      "idempotencyKeyPresent": false,
+      "idempotencyKeyLength": 0,
+      "idempotencyKeyHash": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/trading/orders/history",
+      "operationId": "listOrderHistory",
+      "startedAt": 1791905417519,
+      "idempotencyKeyPresent": false,
+      "idempotencyKeyLength": 0,
+      "idempotencyKeyHash": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/trading/orders/dev-order-0001/cancel",
+      "operationId": "cancelOrder",
+      "startedAt": 1791905418386,
+      "idempotencyKeyPresent": true,
+      "idempotencyKeyLength": 36,
+      "idempotencyKeyHash": "1a644184148d1d79c32147ddb23cba41e2e5f42d30ed3ab8a179c8b8bf775a3d"
+    },
+    {
+      "method": "GET",
+      "path": "/api/trading/orders",
+      "operationId": "listOpenOrders",
+      "startedAt": 1791905420413,
+      "idempotencyKeyPresent": false,
+      "idempotencyKeyLength": 0,
+      "idempotencyKeyHash": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/trading/orders/history",
+      "operationId": "listOrderHistory",
+      "startedAt": 1791905420413,
+      "idempotencyKeyPresent": false,
+      "idempotencyKeyLength": 0,
+      "idempotencyKeyHash": null
+    }
+  ],
+  "apiResponses": [
+    {
+      "method": "GET",
+      "path": "/api/auth/session",
+      "operationId": null,
+      "status": 401,
+      "fromServiceWorker": true,
+      "elapsedMs": 22,
+      "body": {}
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/pairs",
+      "operationId": null,
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 5,
+      "body": {
+        "itemCount": 2,
+        "items": [
+          {
+            "id": "btcusdt"
+          },
+          {
+            "id": "ethusdt"
+          }
+        ]
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/logout",
+      "operationId": null,
+      "status": 204,
+      "fromServiceWorker": true,
+      "elapsedMs": 18,
+      "body": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/pairs",
+      "operationId": null,
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 18,
+      "body": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/pairs",
+      "operationId": null,
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 6,
+      "body": {
+        "itemCount": 2,
+        "items": [
+          {
+            "id": "btcusdt"
+          },
+          {
+            "id": "ethusdt"
+          }
+        ]
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/login",
+      "operationId": null,
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 11,
+      "body": {
+        "status": "authenticated"
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/pairs",
+      "operationId": null,
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 9,
+      "body": {
+        "itemCount": 2,
+        "items": [
+          {
+            "id": "btcusdt"
+          },
+          {
+            "id": "ethusdt"
+          }
+        ]
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/watchlist",
+      "operationId": null,
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 9,
+      "body": {
+        "itemCount": 3,
+        "items": [
+          {
+            "id": "watch001"
+          },
+          {
+            "id": "watch002"
+          },
+          {
+            "id": "watch003"
+          }
+        ]
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/pairs/btcusdt",
+      "operationId": null,
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 12,
+      "body": {
+        "id": "btcusdt",
+        "symbol": "BTC/USDT",
+        "price": 67543.21
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/wallet/assets",
+      "operationId": null,
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 12,
+      "body": {
+        "itemCount": 2,
+        "items": [
+          {
+            "id": "usdt"
+          },
+          {
+            "id": "btc"
+          }
+        ]
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/trading/orders",
+      "operationId": "listOpenOrders",
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 19,
+      "body": {
+        "itemCount": 0,
+        "items": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/trading/orders/history",
+      "operationId": "listOrderHistory",
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 19,
+      "body": {
+        "itemCount": 0,
+        "items": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/pairs",
+      "operationId": null,
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 22,
+      "body": {
+        "itemCount": 2,
+        "items": [
+          {
+            "id": "btcusdt"
+          },
+          {
+            "id": "ethusdt"
+          }
+        ]
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/pairs/btcusdt/candles",
+      "operationId": null,
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 22,
+      "body": {
+        "itemCount": 24,
+        "items": [
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {}
+        ]
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/trading/orders",
+      "operationId": "placeOrder",
+      "status": 201,
+      "fromServiceWorker": true,
+      "elapsedMs": 2026,
+      "body": {
+        "id": "dev-order-0001",
+        "status": "open",
+        "symbol": "BTC/USDT",
+        "side": "buy",
+        "type": "limit",
+        "price": 50000,
+        "amount": 0.01
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/trading/orders",
+      "operationId": "listOpenOrders",
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 13,
+      "body": {
+        "itemCount": 1,
+        "items": [
+          {
+            "id": "dev-order-0001",
+            "status": "open"
+          }
+        ]
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/trading/orders/history",
+      "operationId": "listOrderHistory",
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 13,
+      "body": {
+        "itemCount": 0,
+        "items": []
+      }
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/trading/orders/dev-order-0001",
+      "operationId": "modifyOrder",
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 2033,
+      "body": {
+        "id": "dev-order-0001",
+        "status": "open",
+        "symbol": "BTC/USDT",
+        "side": "buy",
+        "type": "limit",
+        "price": 51000,
+        "amount": 0.01
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/trading/orders",
+      "operationId": "listOpenOrders",
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 11,
+      "body": {
+        "itemCount": 1,
+        "items": [
+          {
+            "id": "dev-order-0001",
+            "status": "open"
+          }
+        ]
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/trading/orders/history",
+      "operationId": "listOrderHistory",
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 11,
+      "body": {
+        "itemCount": 0,
+        "items": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/trading/orders/dev-order-0001/cancel",
+      "operationId": "cancelOrder",
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 2027,
+      "body": {
+        "id": "dev-order-0001",
+        "status": "cancelled",
+        "symbol": "BTC/USDT",
+        "side": "buy",
+        "type": "limit",
+        "price": 51000,
+        "amount": 0.01
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/trading/orders",
+      "operationId": "listOpenOrders",
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 12,
+      "body": {
+        "itemCount": 0,
+        "items": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/api/trading/orders/history",
+      "operationId": "listOrderHistory",
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 12,
+      "body": {
+        "itemCount": 1,
+        "items": [
+          {
+            "id": "dev-order-0001",
+            "status": "cancelled"
+          }
+        ]
+      }
+    }
+  ],
+  "sourceHashes": {
+    "src/app/contexts/AppContext.tsx": "5289f9bb33eb47a51f9369df8bc41bd373f83a8e80e98f13c87fdd5c5dac21ba",
+    "src/features/market/model/market-queries.ts": "0a493d15511d513b9ddb09cbf4457205dc86d12e93825e9043d310d68287c9f0",
+    "src/features/market/pages/MarketHomePage.tsx": "b50abe549a5310006b66daf827b4472d5ee8b6600f751c32734a7c6d16209ad9",
+    "contracts/openapi/trading.yaml": "ea87584c03ab69a0d552d80590e36e15ab7b38851cc1583d9c892bbb91f19437",
+    "src/app/routeConfig.ts": "675ea95ec4831b9d0caf1cbf68524efaebda8ed9b970b5dad129bdd55f28bac9",
+    "src/app/routes.ts": "c93a80e123fd95c3abd246aeb00589a51f5ff4560e794e87f70f7ff96248c0d5",
+    "src/dev/PreviewControls.tsx": "a318fb182dda24c9b8d2103ae4b40eeecb7c3eded57332aad3c5bc8a1836a54c",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/handlers.ts": "9d1ea085bab944b0bd0e59a665222113cb7bb661bbcd2408f09c6adf08cd3ea9",
+    "src/dev/mocks/personas.ts": "6189b9cbfb9765f5c442c52a089d30b5be171170fe054ef6bf2faffbbb53dccd",
+    "src/dev/mocks/preview-scenario-handler.ts": "1b05e3e420b1df43de6d2e37533d4d8dbcd203fedb70ca59a65a4a62179396f5",
+    "src/features/trading/components/TradeTerminal.tsx": "85053c9e42cc397cbef9e1b3cd92cb24b226c7a0c93f8ac0eccb9d01e38ab5ec",
+    "src/features/trading/components/TradingOrderEntryPanel.tsx": "a5cff4a90b567ec81b1eb9ea4505639ea3e5f23fbe868f8c5fe0d002aaa691b6",
+    "src/features/trading/components/OrderConfirmationSheet.tsx": "c714bcf831f964d31bda4314bf5595ace66f9804ed31013f6943f87d6d4c51e7",
+    "src/features/trading/components/OpenOrdersPanel.tsx": "7c515de1a8b648b1273a6fabe303e04292a2dea9d3ed31bfad3d69eabdbb40f7",
+    "src/features/trading/components/OrderModifySheet.tsx": "97b0af463695464315f099870e0058abf503ba26c838058ba07fa4c58d052637",
+    "src/features/trading/components/OrderHistoryPanel.tsx": "79504695e05ae6ea16746615d53f0c4133024571d78a5d0bdacfc7ac4ff23abd",
+    "src/features/trading/model/trading-queries.ts": "344352bcfc5ea4a209fb0a28a69417330f5f2e5cb87775fd90661b3a51202e5b",
+    "src/features/trading/api/trading-api.ts": "bfd385aba4911e0640567e88dd5b5c9352eea553cda7518cfb28f9009a1c32fa",
+    "src/shared/api/http-client.ts": "12a04035eac23a2999f8c7a76aafa32966585402c06d98f451ef33eb8601cf42",
+    "docs/architecture/production-readiness/evidence/A06/generate-scenario-matrix.mjs": "d4d32249afc14a3466043caf3e0a063a25c0aa7893e32fdeb5f0e1ec5d7e5df3",
+    "docs/architecture/production-readiness/evidence/A06/run-trading-pending-browser-check.mjs": "e36b60581ab7b7caa518668d3f8fe1fe6d59c79f954a4a1252aa2d49908c92ac"
+  },
+  "limitations": "All writes ran through local MSW in an isolated preview; this does not establish persistence, real backend idempotency, exchange execution, server-side pending states or user acceptance."
+}

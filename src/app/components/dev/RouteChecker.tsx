@@ -123,7 +123,7 @@ export function RouteChecker() {
               className="px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap"
               style={{
                 background: currentPhase === 'all' ? c.primary : c.surface2,
-                color: currentPhase === 'all' ? '#FFF' : c.text2,
+                color: currentPhase === 'all' ? 'var(--tr-text-on-color)' : c.text2,
               }}
             >
               All ({STAKING_ROUTES.length})
@@ -135,7 +135,7 @@ export function RouteChecker() {
                 className="px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap"
                 style={{
                   background: currentPhase === phase ? c.primary : c.surface2,
-                  color: currentPhase === phase ? '#FFF' : c.text2,
+                  color: currentPhase === phase ? 'var(--tr-text-on-color)' : c.text2,
                 }}
               >
                 Phase {phase} ({STAKING_ROUTES.filter((r) => r.phase === phase).length})

@@ -23,6 +23,8 @@ export type SectionHeaderVariant = 'plain' | 'accentBar' | 'markerTitle';
 export interface SectionHeaderProps {
   /** Section title */
   title: string;
+  /** Semantic heading level; defaults to h3 for existing consumers. */
+  headingLevel?: 2 | 3 | 4;
   /** Optional subtitle/description */
   subtitle?: string;
   /** Right-side action element (legacy; prefer actionLabel + onAction) */
@@ -55,6 +57,7 @@ export interface SectionHeaderProps {
 
 export function SectionHeader({
   title,
+  headingLevel = 3,
   subtitle,
   right,
   variant: variantProp,
@@ -71,6 +74,7 @@ export function SectionHeader({
   mb = 12,
 }: SectionHeaderProps) {
   const c = useThemeColors();
+  const HeadingTag = `h${headingLevel}` as 'h2' | 'h3' | 'h4';
   const variant = variantProp ?? (accent ? 'accentBar' : 'plain');
   const showAccent = variant === 'accentBar' || variant === 'markerTitle';
   const isMarker = variant === 'markerTitle';
@@ -106,7 +110,7 @@ export function SectionHeader({
         />
       )}
       <div className="flex-1 min-w-0">
-        <h3
+        <HeadingTag
           className="text-truncate"
           style={{
             color: c.text1,
@@ -117,7 +121,7 @@ export function SectionHeader({
           }}
         >
           {title}
-        </h3>
+        </HeadingTag>
         {subtitle && (
           <p
             style={{

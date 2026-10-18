@@ -17,7 +17,6 @@ import {
   TrendingDown,
   TrendingUp,
   Unlock,
-  X,
   Zap,
 } from 'lucide-react';
 import { useNavigate } from 'react-router';
@@ -28,30 +27,25 @@ import { TrCard } from '@/shared/ui/TrCard';
 import { PullToRefresh } from '@/shared/ui/PullToRefresh';
 import { StickyColumnHeader } from '@/shared/ui/StickyHeader';
 import { MarketItem } from '@/features/market/components/MarketItem';
+import { SearchBar } from '@/shared/ui/SearchBar';
 import { useHaptic } from '@/shared/hooks/useHaptic';
 import { useRoutePrefix } from '@/shared/navigation/useRoutePrefix';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { fmtPct } from '@/shared/lib/formatNumber';
 import { FONT_SCALE, FONT_WEIGHT } from '@/shared/theme/legacyTypography';
 import type { MarketPair } from '@/features/market';
-
-const CATEGORIES = ['Tất cả', 'Layer 1', 'Layer 2', 'DeFi', 'Meme', 'AI'];
-const SORT_OPTIONS = [
-  { id: 'default', label: 'Mặc định' },
-  { id: 'price_desc', label: 'Giá cao → thấp' },
-  { id: 'price_asc', label: 'Giá thấp → cao' },
-  { id: 'change_desc', label: 'Tăng nhiều nhất' },
-  { id: 'change_asc', label: 'Giảm nhiều nhất' },
-  { id: 'volume_desc', label: 'Volume lớn nhất' },
-];
+import {
+  MARKET_CATEGORIES,
+  MARKET_SORT_OPTIONS,
+} from '@/features/market/model/market-list-options';
 
 export interface MarketListHeaderProps {
   search: string;
-  setSearch: Dispatch<SetStateAction<string>>;
+  setSearch: (value: string) => void;
   category: string;
-  setCategory: Dispatch<SetStateAction<string>>;
+  setCategory: (value: string) => void;
   sort: string;
-  setSort: Dispatch<SetStateAction<string>>;
+  setSort: (value: string) => void;
   showSort: boolean;
   setShowSort: Dispatch<SetStateAction<boolean>>;
 }
@@ -93,55 +87,41 @@ export function MarketListHeader({
         </div>
       </div>
 
-      <div
-        className="mb-3 flex items-center gap-3 rounded-2xl px-4"
-        style={{
-          background: c.searchBg,
-          border: `1.5px solid ${c.searchBorder}`,
-          height: 52,
-          borderRadius: 14,
-        }}
-      >
-        <Search size={21} color={c.searchPlaceholder} />
-        <input
-          type="text"
-          placeholder="Tìm kiếm BTC, ETH..."
-          value={search}
-          onChange={(event) => setSearch(event.target.value)}
-          style={{
-            background: 'transparent',
-            border: 'none',
-            outline: 'none',
-            color: c.text1,
-            fontSize: FONT_SCALE.base,
-            flex: 1,
-          }}
-        />
-        {search && (
-          <button type="button" aria-label="Xóa tìm kiếm" onClick={() => setSearch('')}>
-            <X size={14} color={c.text3} />
+      <SearchBar
+        className="mb-3"
+        placeholder="Tìm kiếm BTC, ETH..."
+        value={search}
+        onChange={setSearch}
+        right={
+          <button
+            type="button"
+            aria-label={showSort ? 'Đóng bộ sắp xếp' : 'Mở bộ sắp xếp'}
+            aria-expanded={showSort}
+            aria-controls={showSort ? 'market-sort-options' : undefined}
+            onClick={() => setShowSort((value) => !value)}
+            className="flex min-h-9 items-center gap-1 rounded-xl px-2 py-1"
+            style={{
+              background: sort !== 'default' ? c.chipActiveBg : 'transparent',
+              color: sort !== 'default' ? c.chipActiveText : c.text3,
+            }}
+          >
+            <SlidersHorizontal size={14} />
           </button>
-        )}
-        <button
-          type="button"
-          aria-label="Mở bộ sắp xếp"
-          onClick={() => setShowSort((value) => !value)}
-          className="flex min-h-9 items-center gap-1 rounded-xl px-2 py-1"
-          style={{
-            background: sort !== 'default' ? 'rgba(59,130,246,0.2)' : 'transparent',
-            color: sort !== 'default' ? '#3B82F6' : c.text3,
-          }}
-        >
-          <SlidersHorizontal size={14} />
-        </button>
-      </div>
+        }
+      />
 
       {showSort && (
-        <TrCard className="mb-3 flex flex-wrap gap-2 p-3">
-          {SORT_OPTIONS.map((option) => (
+        <TrCard
+          id="market-sort-options"
+          role="group"
+          aria-label="Sắp xếp thị trường"
+          className="mb-3 flex flex-wrap gap-2 p-3"
+        >
+          {MARKET_SORT_OPTIONS.map((option) => (
             <button
               type="button"
               key={option.id}
+              aria-pressed={sort === option.id}
               onClick={() => {
                 setSort(option.id);
                 setShowSort(false);
@@ -163,10 +143,11 @@ export function MarketListHeader({
       )}
 
       <div className="scrollbar-none -mx-5 flex gap-2 overflow-x-auto px-5 pb-1">
-        {CATEGORIES.map((item) => (
+        {MARKET_CATEGORIES.map((item) => (
           <button
             type="button"
             key={item}
+            aria-pressed={category === item}
             onClick={() => {
               setCategory(item);
               hapticSelection();
@@ -253,13 +234,17 @@ export function MarketTopMovers({
       <div className="grid grid-cols-2 gap-3">
         <MoverCard
           title="Tăng mạnh"
-          color="#10B981"
+          color={c.buy}
+          accentBorder={c.buyAlpha20}
+          textColor={c.successText}
           icon={<TrendingUp size={14} />}
           items={gainers}
         />
         <MoverCard
           title="Giảm mạnh"
-          color="#EF4444"
+          color={c.sell}
+          accentBorder={c.sellAlpha20}
+          textColor={c.errorText}
           icon={<TrendingDown size={14} />}
           items={losers}
         />
@@ -292,20 +277,26 @@ export function MarketTopMovers({
 function MoverCard({
   title,
   color,
+  accentBorder,
+  textColor,
   icon,
   items,
 }: {
   title: string;
   color: string;
+  accentBorder: string;
+  textColor: string;
   icon: ReactNode;
   items: MarketPair[];
 }) {
   const c = useThemeColors();
   return (
-    <TrCard className="p-3" accentBorder={`${color}26`}>
+    <TrCard className="p-3" accentBorder={accentBorder}>
       <div className="mb-2 flex items-center gap-2">
         <span style={{ color }}>{icon}</span>
-        <span style={{ color, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold }}>
+        <span
+          style={{ color: textColor, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold }}
+        >
           {title}
         </span>
       </div>
@@ -316,7 +307,9 @@ function MoverCard({
           >
             {pair.baseAsset}
           </span>
-          <span style={{ color, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold }}>
+          <span
+            style={{ color: textColor, fontSize: FONT_SCALE.xs, fontWeight: FONT_WEIGHT.semibold }}
+          >
             {fmtPct(pair.change24h)}
           </span>
         </div>
@@ -415,7 +408,7 @@ export function MarketPairsList({
               <div className="flex items-center justify-center gap-2 py-4">
                 <Loader2
                   size={14}
-                  color="#3B82F6"
+                  color={c.info}
                   style={{ animation: 'spin 0.8s linear infinite' }}
                 />
                 <span style={{ color: c.text2, fontSize: FONT_SCALE.xs }}>Đang tải thêm...</span>

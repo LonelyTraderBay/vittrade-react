@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { fireEvent, screen } from '@testing-library/react';
 import { useLocation } from 'react-router';
+import { WEB_AVATAR_GRADIENT } from '@/shared/theme/webTokens';
 import { renderWithProviders } from '@/test/test-utils';
 import { UIContext } from '../../contexts/ui-context';
 import { TabletTopBar } from './TabletTopBar';
@@ -39,6 +40,14 @@ function renderTabletTopBar({
 }
 
 describe('TabletTopBar', () => {
+  it('uses the shared readable fill for the profile initial', () => {
+    renderTabletTopBar();
+
+    const profileButton = screen.getByRole('button', { name: 'Hồ sơ' });
+    expect(profileButton).toHaveStyle({ background: WEB_AVATAR_GRADIENT });
+    expect(profileButton.querySelector('span')).toHaveStyle({ color: '#fff' });
+  });
+
   it('navigates to a parent breadcrumb and leaves the current breadcrumb in place', () => {
     renderTabletTopBar();
 

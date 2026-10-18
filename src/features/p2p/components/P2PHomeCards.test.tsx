@@ -65,14 +65,26 @@ function renderAdCard(overrides: Partial<Parameters<typeof SwipeableAdCard>[0]> 
 afterEach(() => vi.useRealTimers());
 
 describe('P2P home cards', () => {
+  it('does not fade card text during its entrance animation', () => {
+    const { container } = renderAdCard();
+    const animatedCard = container.querySelector('.relative.overflow-hidden.rounded-2xl');
+
+    expect((animatedCard as HTMLElement | null)?.style.opacity).toBe('');
+  });
+
   it('renders merchant details and opens the selected offer route', async () => {
     renderAdCard();
 
     expect(screen.getByText('Verified Merchant')).toBeInTheDocument();
-    expect(screen.getByText('Elite')).toBeInTheDocument();
+    expect(screen.getByText('Elite')).toHaveStyle({ color: 'var(--tr-warning-text)' });
+    expect(screen.getByText('98.5%')).toHaveStyle({ color: 'var(--tr-success-text)' });
     expect(screen.getByText('4.9')).toBeInTheDocument();
     expect(screen.getByText('+1')).toBeInTheDocument();
     expect(screen.getByText(/Merchant mới/)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Mua' })).toHaveStyle({
+      background: 'linear-gradient(135deg, #047857 0%, #065f46 100%)',
+      color: '#fff',
+    });
 
     fireEvent.click(screen.getByRole('button', { name: 'Mua' }));
     expect(await screen.findByText('Offer details')).toBeVisible();

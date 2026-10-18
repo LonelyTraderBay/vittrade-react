@@ -134,6 +134,7 @@ export function InfoRow({
   if (variant === 'stacked') {
     return (
       <Tag
+        type={isClickable ? 'button' : undefined}
         onClick={onPress}
         className={`flex flex-col gap-1 w-full text-left ${className}`}
         style={{
@@ -168,6 +169,7 @@ export function InfoRow({
           </span>
           {copyable && hasCopyableValue && (
             <button
+              type="button"
               onClick={(e) => {
                 e.stopPropagation();
                 handleCopy();
@@ -191,6 +193,7 @@ export function InfoRow({
   /* ─── Default / Highlight layout (horizontal) ─── */
   return (
     <Tag
+      type={isClickable ? 'button' : undefined}
       onClick={onPress}
       className={`flex items-center gap-3 w-full ${isClickable ? 'text-left' : ''} ${className}`}
       style={{
@@ -242,6 +245,7 @@ export function InfoRow({
 
         {copyable && hasCopyableValue && (
           <button
+            type="button"
             onClick={(e) => {
               e.stopPropagation();
               handleCopy();

@@ -18,6 +18,7 @@ import { useSessionTimeout } from '../../hooks/useSessionTimeout';
 import { DEVICE } from './device-layout';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { useAuth } from '@/shared/session/useAuth';
+import { env, isDevelopmentBuild } from '@/shared/config/env';
 
 // ... existing code ...
 
@@ -43,6 +44,8 @@ function PageLoadingFallback() {
 
 /** Routes where swipe-back should be disabled (root tabs) */
 const NO_SWIPE_ROUTES = ['/home', '/markets', '/wallet', '/profile'];
+// 88px dock offset + 36px mock warning + 8px breathing room above the scroll viewport.
+const PREVIEW_STATUS_CLEARANCE = 132;
 
 export function AppLayout() {
   const uiCtx = useContext(UIContext);
@@ -80,6 +83,12 @@ export function AppLayout() {
 
   // ─── Swipe-back disabled on root tabs ───
   const isRootTab = NO_SWIPE_ROUTES.some((r) => location.pathname === r);
+  const reservePreviewStatusSpace =
+    isDevelopmentBuild &&
+    env.isDev &&
+    env.dataSource === 'mock' &&
+    typeof window !== 'undefined' &&
+    window.innerWidth < 768;
 
   // ─── Simulated reconnection logic ───
   useEffect(() => {
@@ -136,6 +145,9 @@ export function AppLayout() {
         style={{
           /* BottomNav: 56pt tab + 34pt home indicator = 90pt */
           paddingBottom: DEVICE.BOTTOM_CHROME,
+          marginBottom: reservePreviewStatusSpace
+            ? `calc(${PREVIEW_STATUS_CLEARANCE}px + env(safe-area-inset-bottom, 0px))`
+            : undefined,
           overscrollBehaviorY: 'contain',
           WebkitOverflowScrolling: 'touch',
         }}

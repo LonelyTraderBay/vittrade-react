@@ -46,7 +46,9 @@ export function PendingDepositsPage() {
                   <button
                     type="button"
                     className="flex w-full items-center justify-between gap-4 text-left"
-                    onClick={() => navigate(`${prefix}/wallet/transaction/${deposit.id}`)}
+                    onClick={() =>
+                      navigate(`${prefix}/wallet/transaction/${encodeURIComponent(deposit.id)}`)
+                    }
                     aria-label={`${deposit.asset} deposit ${formatAmount(deposit.amount)}`}
                   >
                     <span className="min-w-0">

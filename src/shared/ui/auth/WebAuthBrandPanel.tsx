@@ -28,7 +28,7 @@ const FEATURES = [
 
 const TRUST_BADGES = ['Đã xác minh', 'VASP đăng ký', 'Quỹ SAFU'];
 
-const AVATAR_COLORS = ['#3B82F6', '#10B981', '#F59E0B', '#8B5CF6'];
+const AVATAR_COLORS = ['#1d4ed8', '#047857', '#92400e', '#6d28d9'];
 const AVATAR_INITIALS = ['H', 'T', 'M', 'L'];
 
 interface WebAuthBrandPanelProps {
@@ -183,7 +183,9 @@ export function WebAuthBrandPanel({
               <p style={{ color: '#fff', fontSize: WEB_FONT.md, fontWeight: 600, marginBottom: 2 }}>
                 {f.label}
               </p>
-              <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: WEB_FONT.sm, lineHeight: 1.4 }}>
+              <p
+                style={{ color: 'rgba(255,255,255,0.65)', fontSize: WEB_FONT.sm, lineHeight: 1.4 }}
+              >
                 {f.desc}
               </p>
             </div>
@@ -251,6 +253,7 @@ export function WebAuthFormShell({ children, textColor }: WebAuthFormShellProps)
       className="flex-1 flex items-start justify-center"
       style={{
         padding: '40px 32px',
+        minWidth: 0,
         minHeight: '100vh',
         overflowY: 'auto',
       }}

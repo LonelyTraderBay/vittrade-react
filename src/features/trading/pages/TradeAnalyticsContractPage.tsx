@@ -65,7 +65,7 @@ export function TradeAnalyticsContractPage() {
               className="rounded-full px-4 py-2 text-xs font-semibold"
               style={{
                 background: period === value ? colors.primary : colors.surface2,
-                color: period === value ? '#fff' : colors.text2,
+                color: period === value ? 'var(--tr-text-on-color)' : colors.text2,
               }}
             >
               {value}
@@ -133,7 +133,7 @@ function Overview({ data }: { data: TradingAnalyticsResponse }) {
     <>
       <TrCard className="p-4">
         <div className="flex items-center gap-2">
-          <TrendingUp size={17} color="#10B981" />
+          <TrendingUp size={17} color="var(--tr-success-text)" />
           <h2 style={{ color: colors.text1, fontWeight: 700 }}>Daily P/L</h2>
         </div>
         <div className="mt-4 grid gap-3">
@@ -154,7 +154,10 @@ function Overview({ data }: { data: TradingAnalyticsResponse }) {
                     }}
                   />
                 </div>
-                <span className="text-right" style={{ color: positive ? '#10B981' : '#EF4444' }}>
+                <span
+                  className="text-right"
+                  style={{ color: positive ? 'var(--tr-success-text)' : 'var(--tr-error-text)' }}
+                >
                   {formatUsd(day.pnl)}
                 </span>
               </div>
@@ -205,9 +208,9 @@ function TradeGroup({
             style={{ background: colors.surface2 }}
           >
             {positive ? (
-              <ArrowUpRight size={15} color="#10B981" />
+              <ArrowUpRight size={15} color="var(--tr-success-text)" />
             ) : (
-              <ArrowDownRight size={15} color="#EF4444" />
+              <ArrowDownRight size={15} color="var(--tr-error-text)" />
             )}
             <div className="min-w-0 flex-1">
               <strong style={{ color: colors.text1, fontSize: 12 }}>{trade.pair}</strong>
@@ -215,7 +218,12 @@ function TradeGroup({
                 {trade.side.toUpperCase()} · {trade.date} · {trade.roi.toFixed(2)}% ROI
               </p>
             </div>
-            <strong style={{ color: positive ? '#10B981' : '#EF4444', fontSize: 12 }}>
+            <strong
+              style={{
+                color: positive ? 'var(--tr-success-text)' : 'var(--tr-error-text)',
+                fontSize: 12,
+              }}
+            >
               {formatUsd(trade.pnl)}
             </strong>
           </div>
@@ -240,7 +248,10 @@ function Assets({ data }: { data: TradingAnalyticsResponse }) {
               <span className="h-2 w-2 rounded-full" style={{ background: asset.color }} />
               {asset.asset}
             </span>
-            <span className="text-right" style={{ color: asset.pnl >= 0 ? '#10B981' : '#EF4444' }}>
+            <span
+              className="text-right"
+              style={{ color: asset.pnl >= 0 ? 'var(--tr-success-text)' : 'var(--tr-error-text)' }}
+            >
               {formatUsd(asset.pnl)}
             </span>
             <span className="text-right" style={{ color: colors.text3 }}>
@@ -260,7 +271,12 @@ function Metric({ label, value, positive }: { label: string; value: string; posi
       <p style={{ color: colors.text3, fontSize: 10 }}>{label}</p>
       <strong
         style={{
-          color: positive == null ? colors.text1 : positive ? '#10B981' : '#EF4444',
+          color:
+            positive == null
+              ? colors.text1
+              : positive
+                ? 'var(--tr-success-text)'
+                : 'var(--tr-error-text)',
           fontSize: 13,
         }}
       >

@@ -6,6 +6,7 @@ import { AuthSessionProvider } from './AuthContext';
 import { useAuth } from '@/shared/session/useAuth';
 import type { AuthAdapter } from './AuthContext';
 import { createAppApiClient, getAccessToken, setAccessToken } from '@/shared/api/client';
+import { configureTelemetry } from '@/shared/telemetry/telemetry';
 
 const user: AuthUser = {
   id: 'user-1',
@@ -123,6 +124,44 @@ function renderWithRemoteLogout(adapter: AuthAdapter) {
 }
 
 describe('AuthSessionProvider', () => {
+  it('settles the original auth error even when its telemetry sink throws', async () => {
+    const original = new Error('session endpoint unavailable');
+    const reporter = vi.fn(() => {
+      throw new Error('telemetry unavailable');
+    });
+    configureTelemetry({
+      captureException: reporter,
+      captureEvent: () => undefined,
+      setUser: () => undefined,
+    });
+    const { result, unmount } = renderHook(() => useAuth(), {
+      wrapper: ({ children }) => (
+        <AuthSessionProvider
+          adapter={createAdapter({
+            getSession: async () => {
+              throw original;
+            },
+          })}
+        >
+          {children}
+        </AuthSessionProvider>
+      ),
+    });
+    try {
+      await waitFor(() => expect(result.current.status).toBe('error'));
+      expect(result.current.isLoading).toBe(false);
+      expect(result.current.error).toBe(original);
+      expect(reporter).toHaveBeenCalledOnce();
+    } finally {
+      unmount();
+      configureTelemetry({
+        captureException: () => undefined,
+        captureEvent: () => undefined,
+        setUser: () => undefined,
+      });
+    }
+  });
+
   it('starts unauthenticated when the server has no session', async () => {
     const adapter = createAdapter();
     const { result } = renderHook(() => useAuth(), {
