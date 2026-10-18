@@ -258,7 +258,7 @@ export function WebAuthFormShell({ children, textColor }: WebAuthFormShellProps)
         overflowY: 'auto',
       }}
     >
-      <div style={{ width: '100%', maxWidth: 440, paddingTop: 24, paddingBottom: 40 }}>
+      <div style={{ width: '100%', maxWidth: 440, minWidth: 0, paddingTop: 24, paddingBottom: 40 }}>
         {/* Mobile-only logo (visible when brand panel hidden on <lg) */}
         <div className="flex lg:hidden flex-col items-center" style={{ marginBottom: 32 }}>
           <div
