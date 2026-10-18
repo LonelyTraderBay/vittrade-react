@@ -69,6 +69,44 @@ describe('InputField', () => {
     expect(screen.getByRole('alert')).toHaveTextContent('Enter a valid email');
   });
 
+  it('preserves comfortable defaults and applies the compact field contract', () => {
+    const { rerender } = render(<InputField id="account-email" label="Email" />);
+    const defaultInput = screen.getByLabelText('Email');
+    const defaultControl = defaultInput.parentElement!;
+    expect(defaultControl.style.height).toBe('var(--input-height)');
+    expect(defaultControl.style.borderRadius).toBe('var(--input-radius)');
+    expect(defaultControl.style.background).toBe('var(--tr-surface-2)');
+    expect((defaultInput as HTMLInputElement).style.fontSize).toBe('15px');
+
+    rerender(
+      <InputField
+        id="compact-email"
+        label="Email"
+        density="compact"
+        surfaceTone="base"
+        labelAction={<button type="button">Help</button>}
+        required
+        helper="Use your account email."
+        error="Enter a valid email"
+      />,
+    );
+
+    const compactInput = screen.getByRole('textbox', { name: 'Email' });
+    const compactControl = compactInput.parentElement!;
+    const label = screen.getByText('Email', { selector: 'label' });
+    expect(compactControl.style.height).toBe('var(--input-height-compact)');
+    expect(compactControl.style.borderRadius).toBe('var(--input-radius-compact)');
+    expect(compactControl.style.paddingInline).toBe('var(--input-padding-inline-compact)');
+    expect(compactControl.style.gap).toBe('var(--input-gap-compact)');
+    expect(compactControl.style.background).toBe('var(--tr-surface)');
+    expect((compactInput as HTMLInputElement).style.fontSize).toBe('14px');
+    expect(label).toHaveStyle({ fontSize: '12px', fontWeight: '500' });
+    expect(label.nextElementSibling).toBe(screen.getByRole('button', { name: 'Help' }));
+    expect(compactInput).toBeRequired();
+    expect(compactInput).toHaveAttribute('aria-invalid', 'true');
+    expect(compactInput).toHaveAccessibleDescription('Use your account email. Enter a valid email');
+  });
+
   it('supports composed labels with required semantics and a generated accessible id', () => {
     render(
       <InputField

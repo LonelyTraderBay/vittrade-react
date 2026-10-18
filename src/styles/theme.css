@@ -275,6 +275,11 @@
      ═══════════════════════════════════════════════ */
   --input-height: 52px; /* all inputs, selects, dropdowns */
   --input-radius: var(--tr-radius-input); /* 14px — input border radius */
+  --input-height-compact: 48px;
+  --input-radius-compact: 10px;
+  --input-padding-inline-compact: 14px;
+  --input-gap-compact: 10px;
+  --input-label-gap: 6px;
   --input-bg: #1c2235; /* input background */
   --input-border: #2a3356; /* input border color */
   --input-border-error: #ef4444;

@@ -1,5 +1,25 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Locator } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+
+async function readCompactFieldGeometry(input: Locator) {
+  return input.evaluate((element) => {
+    const control = element.parentElement!;
+    const expectedSurface = document.createElement('div');
+    expectedSurface.style.backgroundColor = 'var(--tr-surface)';
+    document.body.append(expectedSurface);
+    const surfaceColor = getComputedStyle(expectedSurface).backgroundColor;
+    expectedSurface.remove();
+    const style = getComputedStyle(control);
+    return {
+      height: style.height,
+      borderRadius: style.borderRadius,
+      paddingInline: style.paddingInline,
+      gap: style.gap,
+      background: style.backgroundColor,
+      expectedSurface: surfaceColor,
+    };
+  });
+}
 import { createHash } from 'node:crypto';
 import { readFile, writeFile } from 'node:fs/promises';
 
@@ -59,6 +79,17 @@ test('login uses the real development MSW handler across shells @auth-login-mock
 
     const email = page.getByTestId('auth-email');
     const password = page.getByTestId('auth-password');
+    let fieldGeometry: Awaited<ReturnType<typeof readCompactFieldGeometry>> | undefined;
+    if (shell.name === 'web') {
+      fieldGeometry = await readCompactFieldGeometry(email);
+      expect(fieldGeometry).toMatchObject({
+        height: '48px',
+        borderRadius: '10px',
+        paddingInline: '14px',
+        gap: '10px',
+        background: fieldGeometry.expectedSurface,
+      });
+    }
     const submit = page.getByTestId('auth-submit');
     await submit.click();
     await expect(page.getByText('Vui lòng nhập email.', { exact: true })).toBeVisible();
@@ -211,6 +242,7 @@ test('login uses the real development MSW handler across shells @auth-login-mock
       documentWidth,
       previewPosition: 'static',
       previewOverlapsSubmit: overlapsSubmit,
+      fieldGeometry,
       screenshots: [
         validationScreenshot,
         populatedScreenshot,
@@ -274,12 +306,23 @@ test('Web login has no axe violations in settled light and dark states @auth-log
           await new Promise<void>((resolve) => requestAnimationFrame(resolve));
         });
 
+        const email = page.getByTestId('auth-email');
+        const fieldGeometry = await readCompactFieldGeometry(email);
+        expect(fieldGeometry).toMatchObject({
+          height: '48px',
+          borderRadius: '10px',
+          paddingInline: '14px',
+          gap: '10px',
+          background: fieldGeometry.expectedSurface,
+        });
+
         if (state === 'empty-submit-validation') {
           await page.getByTestId('auth-submit').click();
           await expect(page.getByRole('alert')).toHaveText('Vui lòng nhập email.');
+          await expect(email).toHaveAttribute('aria-invalid', 'true');
+          await expect(email).toHaveAccessibleDescription('Vui lòng nhập email.');
         }
         if (state === 'invalid-email-blur') {
-          const email = page.getByTestId('auth-email');
           await email.fill('invalid-email');
           await email.blur();
           await expect(email).toHaveAttribute('aria-invalid', 'true');
@@ -299,7 +342,14 @@ test('Web login has no axe violations in settled light and dark states @auth-log
           })),
         }));
 
-        measurements.push({ theme, width, state, violationCount: violations.length, violations });
+        measurements.push({
+          theme,
+          width,
+          state,
+          fieldGeometry,
+          violationCount: violations.length,
+          violations,
+        });
       }
     }
   }
