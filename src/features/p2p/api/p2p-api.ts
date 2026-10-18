@@ -27,6 +27,14 @@ import {
   reportReceiptSchema,
 } from './p2p-api-schemas';
 
+function parseOrderResponse(response: unknown, orderId: string) {
+  return orderSchema
+    .refine((order) => order.id === orderId, {
+      message: 'Order response does not match the requested order.',
+    })
+    .parse(response);
+}
+
 export function createP2PApi(client: typeof apiClient = apiClient): P2PApi {
   return {
     async listAds(query, signal) {
@@ -208,7 +216,7 @@ export function createP2PApi(client: typeof apiClient = apiClient): P2PApi {
         { method: 'GET', path: `/p2p/orders/${encodeURIComponent(orderId)}`, signal },
         { retries: 2 },
       );
-      return orderSchema.parse(response);
+      return parseOrderResponse(response, orderId);
     },
     async listOrders(query, signal) {
       const response = await client.request<unknown>(
@@ -227,7 +235,7 @@ export function createP2PApi(client: typeof apiClient = apiClient): P2PApi {
         },
         { retries: 0 },
       );
-      return orderSchema.parse(response);
+      return parseOrderResponse(response, orderId);
     },
     async createReleaseChallenge(orderId, signal) {
       const response = await client.request<unknown>(
@@ -263,7 +271,7 @@ export function createP2PApi(client: typeof apiClient = apiClient): P2PApi {
         },
         { retries: 0 },
       );
-      return orderSchema.parse(response);
+      return parseOrderResponse(response, orderId);
     },
     async get2FASettings(signal) {
       const response = await client.request<unknown>(
@@ -342,7 +350,7 @@ export function createP2PApi(client: typeof apiClient = apiClient): P2PApi {
         },
         { retries: 0 },
       );
-      return orderSchema.parse(response);
+      return parseOrderResponse(response, orderId);
     },
     async rateOrder(orderId, request, idempotencyKey, signal) {
       const response = await client.request<unknown>(
@@ -355,7 +363,7 @@ export function createP2PApi(client: typeof apiClient = apiClient): P2PApi {
         },
         { retries: 0 },
       );
-      return orderSchema.parse(response);
+      return parseOrderResponse(response, orderId);
     },
     async submitPaymentProof(orderId, request, idempotencyKey, signal) {
       const body = new FormData();
@@ -370,7 +378,7 @@ export function createP2PApi(client: typeof apiClient = apiClient): P2PApi {
         },
         { retries: 0 },
       );
-      return orderSchema.parse(response);
+      return parseOrderResponse(response, orderId);
     },
     async listPaymentMethods(signal) {
       const response = await client.request<unknown>(

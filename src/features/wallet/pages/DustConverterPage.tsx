@@ -1,15 +1,3 @@
-/**
- * ══════════════════════════════════════════════════════════════
- *  DustConverterPage — P3: Small Balance Converter
- * ══════════════════════════════════════════════════════════════
- *  Converts small residual balances ("dust") to a target asset
- *  (BNB or USDT). Shows eligible assets, conversion preview,
- *  fee breakdown, and confirm flow.
- *  Pattern C — Form/Wizard with Bottom CTA
- *  Compliance: §8.4 Wallet, §7.1 Buttons, §7.3 Bottom sheets
- * ══════════════════════════════════════════════════════════════
- */
-
 import React, { useState, useMemo, useRef } from 'react';
 import { Header } from '@/shared/ui/layout/Header';
 import { PageLayout, StickyFooter } from '@/shared/ui/layout/PageLayout';
@@ -29,8 +17,17 @@ import {
   useWalletDustConversionMutation,
   useWalletDustConversionQuoteQuery,
 } from '@/features/wallet/model/wallet-queries';
-import type { WalletAsset } from '@/features/wallet/model/wallet-types';
-import { Sparkles, CheckCircle, Info, Coins, ArrowRight, Square, CheckSquare } from 'lucide-react';
+import type { DustConversionReceipt, WalletAsset } from '@/features/wallet/model/wallet-types';
+import {
+  Sparkles,
+  CheckCircle,
+  Clock3,
+  Info,
+  Coins,
+  ArrowRight,
+  Square,
+  CheckSquare,
+} from 'lucide-react';
 
 const DUST_THRESHOLD = 10; // $10 threshold
 const EMPTY_ASSETS: WalletAsset[] = [];
@@ -50,8 +47,12 @@ export function DustConverterPage() {
   const [targetAsset, setTargetAsset] = useState('USDT');
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [showConfirmSheet, setShowConfirmSheet] = useState(false);
-  const [showSuccessSheet, setShowSuccessSheet] = useState(false);
-  const conversionAttempt = useRef<{ signature: string; key: string } | null>(null);
+  const [conversionResult, setConversionResult] = useState<{
+    receipt: DustConversionReceipt;
+    sourceCount: number;
+  } | null>(null);
+  const conversionInFlight = useRef(false);
+  const conversionAttempts = useRef(new Map<string, string>());
   const { data: assetsData, isLoading, error, refetch } = useWalletAssetsQuery(canReadWallet);
   const assets = assetsData?.items ?? EMPTY_ASSETS;
 
@@ -69,6 +70,7 @@ export function DustConverterPage() {
   );
 
   const toggleAsset = (id: string) => {
+    if (conversionInFlight.current) return;
     hapticSelection();
     setSelectedIds((prev) => {
       const next = new Set(prev);
@@ -79,6 +81,7 @@ export function DustConverterPage() {
   };
 
   const selectAll = () => {
+    if (conversionInFlight.current) return;
     hapticSelection();
     if (selectedIds.size === dustAssets.length) {
       setSelectedIds(new Set());
@@ -106,23 +109,38 @@ export function DustConverterPage() {
   const feePct = quote?.feePct ?? 0;
 
   const handleConvert = async () => {
+    if (
+      !canReadWallet ||
+      !canConvertDust ||
+      conversionInFlight.current ||
+      !quote ||
+      quoteLoading ||
+      quote.targetAsset !== targetAsset ||
+      selectedAssets.length === 0 ||
+      selectedAssets.length !== selectedIds.size
+    )
+      return;
+    conversionInFlight.current = true;
     const signature = JSON.stringify(conversionRequest);
-    if (conversionAttempt.current?.signature !== signature) {
-      conversionAttempt.current = { signature, key: crypto.randomUUID() };
-    }
+    const key = conversionAttempts.current.get(signature) ?? crypto.randomUUID();
+    conversionAttempts.current.set(signature, key);
     hapticMedium();
     try {
-      await conversionMutation.mutateAsync({
+      const receipt = await conversionMutation.mutateAsync({
         request: conversionRequest,
-        idempotencyKey: conversionAttempt.current.key,
+        idempotencyKey: key,
       });
-      conversionAttempt.current = null;
+      if (receipt.status === 'completed') conversionAttempts.current.delete(signature);
       setShowConfirmSheet(false);
-      setShowSuccessSheet(true);
-      hapticSuccess();
-      actionToast.success('Đã gửi yêu cầu chuyển đổi số dư nhỏ.', { haptic: 'success' });
+      setConversionResult({ receipt, sourceCount: selectedAssets.length });
+      if (receipt.status === 'completed') {
+        hapticSuccess();
+        actionToast.success('Đã gửi yêu cầu chuyển đổi số dư nhỏ.', { haptic: 'success' });
+      }
     } catch {
       actionToast.error('Không thể chuyển đổi số dư nhỏ. Vui lòng thử lại.');
+    } finally {
+      conversionInFlight.current = false;
     }
   };
 
@@ -173,58 +191,74 @@ export function DustConverterPage() {
     <PageLayout variant="flush">
       <Header title="Chuyển đổi số dư nhỏ" back />
 
-      {/* Success sheet */}
       <BottomSheetV2
-        open={showSuccessSheet}
+        open={conversionResult !== null}
         onClose={() => {
-          setShowSuccessSheet(false);
+          setConversionResult(null);
           setSelectedIds(new Set());
         }}
-        title="Chuyển đổi thành công!"
+        title={
+          conversionResult?.receipt.status === 'pending'
+            ? 'Yêu cầu chuyển đổi đang xử lý'
+            : 'Chuyển đổi thành công!'
+        }
       >
         <div className="flex flex-col items-center gap-4 py-4">
           <div
             className="w-16 h-16 rounded-full flex items-center justify-center"
             style={{
-              background: 'rgba(16,185,129,0.15)',
-              border: '2px solid rgba(16,185,129,0.4)',
+              background:
+                conversionResult?.receipt.status === 'pending'
+                  ? `${c.warn}22`
+                  : 'rgba(16,185,129,0.15)',
+              border: `2px solid ${conversionResult?.receipt.status === 'pending' ? c.warn : 'rgba(16,185,129,0.4)'}`,
             }}
           >
-            <CheckCircle size={36} color={c.success} />
+            {conversionResult?.receipt.status === 'pending' ? (
+              <Clock3 size={36} color={c.warn} />
+            ) : (
+              <CheckCircle size={36} color={c.success} />
+            )}
           </div>
           <div className="text-center">
             <p style={{ color: c.text1, fontSize: φ.body, fontWeight: 700 }}>
-              Đã chuyển {selectedAssets.length} tài sản nhỏ
+              {conversionResult?.receipt.status === 'pending'
+                ? 'Yêu cầu đang chờ backend xác nhận.'
+                : `Đã chuyển ${conversionResult?.sourceCount ?? 0} tài sản nhỏ`}
             </p>
             <p
               style={{
-                color: c.success,
+                color: conversionResult?.receipt.status === 'pending' ? c.text2 : c.success,
                 fontSize: 22,
                 fontWeight: 700,
                 marginTop: 8,
                 fontFamily: 'monospace',
               }}
             >
-              +{fmtAmount(receivedAmount)} {targetAsset}
+              {conversionResult?.receipt.status === 'pending' ? 'Dự kiến ' : '+'}
+              {fmtAmount(conversionResult?.receipt.targetAmount ?? 0)}{' '}
+              {conversionResult?.receipt.targetAsset}
             </p>
-            <p style={{ color: c.text3, fontSize: φ.xs, marginTop: 4 }}>≈ {fmtUsd(receivedUsd)}</p>
+            <p style={{ color: c.text3, fontSize: φ.xs, marginTop: 4 }}>
+              ≈ {fmtUsd(conversionResult?.receipt.receivedUsd ?? 0)}
+            </p>
           </div>
           <CTAButton
             onClick={() => {
-              setShowSuccessSheet(false);
+              setConversionResult(null);
               setSelectedIds(new Set());
             }}
           >
-            Hoàn tất
+            {conversionResult?.receipt.status === 'pending' ? 'Đóng biên nhận' : 'Hoàn tất'}
           </CTAButton>
         </div>
       </BottomSheetV2>
 
-      {/* Confirm sheet */}
       <BottomSheetV2
         open={showConfirmSheet}
         onClose={() => setShowConfirmSheet(false)}
         title="Xác nhận chuyển đổi"
+        preventClose={conversionMutation.isPending}
       >
         <div className="flex flex-col gap-4">
           <div className="rounded-2xl p-4 flex flex-col gap-1" style={{ background: c.surface2 }}>
@@ -243,7 +277,6 @@ export function DustConverterPage() {
             <BottomSheetRow label="Giá trị nhận" value={fmtUsd(receivedUsd)} />
           </div>
 
-          {/* Assets being converted */}
           <div>
             <p style={{ color: c.text2, fontSize: 12, fontWeight: 600, marginBottom: 8 }}>
               Tài sản sẽ chuyển đổi:
@@ -280,7 +313,12 @@ export function DustConverterPage() {
           <CTAButton
             onClick={handleConvert}
             loading={conversionMutation.isPending || quoteLoading}
-            disabled={!canConvertDust || !quote}
+            disabled={
+              !canConvertDust ||
+              !quote ||
+              selectedAssets.length === 0 ||
+              selectedAssets.length !== selectedIds.size
+            }
             variant="primary"
           >
             {conversionMutation.isPending ? 'Đang chuyển đổi...' : `Chuyển đổi sang ${targetAsset}`}
@@ -294,7 +332,6 @@ export function DustConverterPage() {
       </BottomSheetV2>
 
       <PageContent grow gap="default">
-        {/* Hero info */}
         <TrCard variant="hero" rounded="lg" className="p-5">
           <div className="flex items-center gap-3 mb-3">
             <div
@@ -314,32 +351,32 @@ export function DustConverterPage() {
             </div>
           </div>
 
-          {/* Summary stats */}
           <div className="grid grid-cols-3 gap-2">
             {[
-              { label: 'Dust tìm thấy', value: dustAssets.length.toString(), color: '#F59E0B' },
-              { label: 'Đã chọn', value: selectedIds.size.toString(), color: '#3B82F6' },
-              { label: 'Giá trị', value: fmtUsd(totalDustUsd), color: '#10B981' },
+              { label: 'Dust tìm thấy', value: dustAssets.length.toString() },
+              { label: 'Đã chọn', value: selectedIds.size.toString() },
+              { label: 'Giá trị', value: fmtUsd(totalDustUsd) },
             ].map((s) => (
               <div
                 key={s.label}
                 className="rounded-xl p-2.5 text-center"
                 style={{ background: c.portfolioBtnGhost }}
               >
-                <p style={{ color: s.color, fontSize: φ.sm, fontWeight: 700 }}>{s.value}</p>
+                <p style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>{s.value}</p>
                 <p style={{ color: c.portfolioTextMuted, fontSize: 9 }}>{s.label}</p>
               </div>
             ))}
           </div>
         </TrCard>
 
-        {/* Target asset selector */}
         <PageSection label="Chuyển đổi sang">
           <div className="flex gap-2">
             {TARGET_OPTIONS.map((opt) => (
               <button
                 key={opt.symbol}
+                disabled={conversionMutation.isPending}
                 onClick={() => {
+                  if (conversionInFlight.current) return;
                   setTargetAsset(opt.symbol);
                   setSelectedIds(new Set());
                   hapticSelection();
@@ -354,7 +391,7 @@ export function DustConverterPage() {
                   className="w-8 h-8 rounded-full flex items-center justify-center"
                   style={{ background: `${opt.color}22` }}
                 >
-                  <span style={{ color: opt.color, fontSize: 10, fontWeight: 700 }}>
+                  <span style={{ color: c.text1, fontSize: 10, fontWeight: 700 }}>
                     {opt.symbol.slice(0, 3)}
                   </span>
                 </div>
@@ -370,7 +407,6 @@ export function DustConverterPage() {
           </div>
         </PageSection>
 
-        {/* Dust assets list */}
         <PageSection label={`Số dư nhỏ (${dustAssets.length})`}>
           {dustAssets.length === 0 ? (
             <div className="flex flex-col items-center py-8 gap-3">
@@ -380,14 +416,14 @@ export function DustConverterPage() {
             </div>
           ) : (
             <>
-              {/* Select all */}
               <button
                 onClick={selectAll}
+                disabled={conversionMutation.isPending}
                 className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl mb-2"
                 style={{ background: c.surface2 }}
               >
                 {selectedIds.size === dustAssets.length ? (
-                  <CheckSquare size={16} color="#3B82F6" />
+                  <CheckSquare size={16} color="var(--tr-link)" />
                 ) : (
                   <Square size={16} color={c.text3} />
                 )}
@@ -402,6 +438,7 @@ export function DustConverterPage() {
                   return (
                     <button
                       key={asset.id}
+                      disabled={conversionMutation.isPending}
                       onClick={() => toggleAsset(asset.id)}
                       className="w-full flex items-center gap-3 px-3 py-3 rounded-2xl"
                       style={{
@@ -409,14 +446,12 @@ export function DustConverterPage() {
                         border: `1.5px solid ${isSelected ? `${asset.logoColor}40` : 'transparent'}`,
                       }}
                     >
-                      {/* Checkbox */}
                       {isSelected ? (
-                        <CheckSquare size={18} color="#3B82F6" />
+                        <CheckSquare size={18} color="var(--tr-link)" />
                       ) : (
                         <Square size={18} color={c.text3} />
                       )}
 
-                      {/* Logo */}
                       <div
                         className="w-8 h-8 rounded-full flex items-center justify-center shrink-0"
                         style={{
@@ -429,7 +464,6 @@ export function DustConverterPage() {
                         </span>
                       </div>
 
-                      {/* Info */}
                       <div className="flex-1 text-left min-w-0">
                         <p style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}>
                           {asset.symbol}
@@ -437,7 +471,6 @@ export function DustConverterPage() {
                         <p style={{ color: c.text3, fontSize: 10 }}>{asset.name}</p>
                       </div>
 
-                      {/* Balance */}
                       <div className="text-right shrink-0">
                         <p
                           style={{
@@ -459,7 +492,6 @@ export function DustConverterPage() {
           )}
         </PageSection>
 
-        {/* Conversion preview */}
         {selectedIds.size > 0 && (
           <TrCard className="p-4">
             <p style={{ color: c.text2, fontSize: 12, fontWeight: 600, marginBottom: 8 }}>
@@ -506,7 +538,7 @@ export function DustConverterPage() {
               <div className="flex items-center gap-2">
                 <span
                   style={{
-                    color: '#10B981',
+                    color: 'var(--tr-success-text)',
                     fontSize: 14,
                     fontWeight: 700,
                     fontFamily: 'monospace',
@@ -530,7 +562,7 @@ export function DustConverterPage() {
           className="flex items-start gap-2 rounded-2xl px-4 py-3"
           style={{ background: 'rgba(59,130,246,0.06)', border: '1px solid rgba(59,130,246,0.15)' }}
         >
-          <Info size={13} color="#3B82F6" className="shrink-0 mt-0.5" />
+          <Info size={13} color="var(--tr-link)" className="shrink-0 mt-0.5" />
           <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.6 }}>
             Số dư nhỏ dưới {fmtUsd(DUST_THRESHOLD)} có thể được chuyển đổi. Phí chuyển đổi: {feePct}
             %. Giá dựa trên tỷ giá thị trường. Tài sản đang đóng băng hoặc trong lệnh không thể

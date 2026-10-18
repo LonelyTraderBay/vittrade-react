@@ -15,19 +15,16 @@ const VARIANT_STYLES = {
   warn: {
     bg: 'rgba(245,158,11,0.08)',
     border: '1px solid rgba(245,158,11,0.2)',
-    color: '#F59E0B',
     iconColor: '#F59E0B',
   },
   error: {
     bg: 'rgba(239,68,68,0.08)',
     border: '1px solid rgba(239,68,68,0.2)',
-    color: '#EF4444',
     iconColor: '#EF4444',
   },
   info: {
     bg: 'rgba(59,130,246,0.08)',
     border: '1px solid rgba(59,130,246,0.2)',
-    color: '#3B82F6',
     iconColor: '#3B82F6',
   },
 };
@@ -39,7 +36,10 @@ export function OfflineBanner({
   isReconnecting = false,
 }: OfflineBannerProps) {
   const c = useThemeColors();
-  const s = isReconnecting ? VARIANT_STYLES['info'] : VARIANT_STYLES[variant];
+  const activeVariant = isReconnecting ? 'info' : variant;
+  const s = VARIANT_STYLES[activeVariant];
+  const textColor =
+    activeVariant === 'warn' ? c.warningText : activeVariant === 'error' ? c.errorText : c.link;
 
   return (
     <div
@@ -52,7 +52,7 @@ export function OfflineBanner({
         <WifiOff size={16} color={s.iconColor} className="shrink-0" />
       )}
       <div className="flex-1">
-        <p style={{ color: s.color, fontSize: 13, fontWeight: 600, lineHeight: 1.4 }}>
+        <p style={{ color: textColor, fontSize: 13, fontWeight: 600, lineHeight: 1.4 }}>
           {isReconnecting ? 'Đang kết nối lại...' : message}
         </p>
         {showStaleHint && !isReconnecting && (
@@ -98,6 +98,7 @@ interface BannerProps {
 export function Banner({ variant, icon, message, detail, className }: BannerProps) {
   const c = useThemeColors();
   const s = VARIANT_STYLES[variant];
+  const textColor = variant === 'warn' ? c.warningText : variant === 'error' ? c.errorText : c.link;
   return (
     <div
       className={`flex items-start gap-2.5 px-4 py-2.5 rounded-2xl ${className ?? ''}`}
@@ -105,7 +106,9 @@ export function Banner({ variant, icon, message, detail, className }: BannerProp
     >
       {icon && <span className="shrink-0 mt-0.5">{icon}</span>}
       <div className="flex-1">
-        <p style={{ color: s.color, fontSize: 13, fontWeight: 600, lineHeight: 1.4 }}>{message}</p>
+        <p style={{ color: textColor, fontSize: 13, fontWeight: 600, lineHeight: 1.4 }}>
+          {message}
+        </p>
         {detail && <p style={{ color: c.text3, fontSize: 11, marginTop: 2 }}>{detail}</p>}
       </div>
     </div>

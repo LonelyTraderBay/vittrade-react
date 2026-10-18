@@ -6,6 +6,7 @@ import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { useUI } from '../../hooks/useUI';
 import { PlatformProvider } from '../../hooks/usePlatform';
 import type { PlatformInfo } from '../../hooks/usePlatform';
+import { SHELL_PAGE_GUTTER_OWNER_STYLE } from '@/shared/ui/layout/pageGutter';
 
 /**
  * ══════════════════════════════════════════════════════════
@@ -125,6 +126,7 @@ export function TabletShell() {
           >
             <div
               style={{
+                ...SHELL_PAGE_GUTTER_OWNER_STYLE,
                 maxWidth: TABLET_PLATFORM.contentMaxWidth,
                 margin: '0 auto',
                 padding: `0 ${TABLET_PLATFORM.contentPadding}px`,

@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router';
 import { AnimatePresence, motion } from 'motion/react';
 import {
   Activity,
-  ArrowRight,
   BarChart3,
   CircleDot,
   Filter,
@@ -138,7 +137,7 @@ export function P2PMarketplaceSections({
               }}
             >
               <div className="w-1.5 h-1.5 rounded-full" style={{ background: '#10B981' }} />
-              <span style={{ color: '#10B981', fontSize: 9, fontWeight: 600 }}>Live</span>
+              <span style={{ color: c.successText, fontSize: 9, fontWeight: 600 }}>Live</span>
             </div>
           </div>
 
@@ -146,7 +145,7 @@ export function P2PMarketplaceSections({
           <div className="grid grid-cols-2 gap-3">
             <button
               onClick={() => navigate(`${prefix}/p2p/express`)}
-              className="relative flex items-center gap-3 px-3.5 py-3 rounded-xl active:scale-[0.98]"
+              className="relative flex items-center gap-2 px-2.5 py-2.5 rounded-xl active:scale-[0.98]"
               style={{
                 background:
                   'linear-gradient(135deg, rgba(16,185,129,0.1) 0%, rgba(59,130,246,0.08) 100%)',
@@ -155,21 +154,20 @@ export function P2PMarketplaceSections({
               }}
             >
               <div
-                className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+                className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0"
                 style={{
                   background: 'linear-gradient(135deg, #10B981, #059669)',
                   boxShadow: '0 2px 8px rgba(16,185,129,0.3)',
                 }}
               >
-                <Zap size={18} color="#fff" />
+                <Zap size={16} color="#fff" />
               </div>
               <div className="flex-1 text-left min-w-0">
-                <p style={{ color: c.text1, fontSize: 13, fontWeight: 700 }}>Express Trade</p>
-                <p style={{ color: c.text3, fontSize: 10, marginTop: 1, lineHeight: 1.3 }}>
-                  Auto match · 1 chạm
+                <p style={{ color: c.text1, fontSize: 12, fontWeight: 700 }}>Express Trade</p>
+                <p style={{ color: c.text2, fontSize: 10, marginTop: 1, lineHeight: 1.3 }}>
+                  Tự khớp · 1 chạm
                 </p>
               </div>
-              <ArrowRight size={14} color="#10B981" className="shrink-0" />
             </button>
 
             <button
@@ -177,7 +175,7 @@ export function P2PMarketplaceSections({
                 navigate(`${prefix}/p2p/create`);
                 hapticSelection();
               }}
-              className="relative flex items-center gap-3 px-3.5 py-3 rounded-xl active:scale-[0.98]"
+              className="relative flex items-center gap-2 px-2.5 py-2.5 rounded-xl active:scale-[0.98]"
               style={{
                 background:
                   'linear-gradient(135deg, rgba(59,130,246,0.08) 0%, rgba(139,92,246,0.06) 100%)',
@@ -186,21 +184,20 @@ export function P2PMarketplaceSections({
               }}
             >
               <div
-                className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+                className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0"
                 style={{
                   background: 'linear-gradient(135deg, #3B82F6, #2563EB)',
                   boxShadow: '0 2px 8px rgba(59,130,246,0.3)',
                 }}
               >
-                <Plus size={18} color="#fff" />
+                <Plus size={16} color="#fff" />
               </div>
               <div className="flex-1 text-left min-w-0">
-                <p style={{ color: c.text1, fontSize: 13, fontWeight: 700 }}>Đăng offer</p>
-                <p style={{ color: c.text3, fontSize: 10, marginTop: 1, lineHeight: 1.3 }}>
+                <p style={{ color: c.text1, fontSize: 12, fontWeight: 700 }}>Đăng offer</p>
+                <p style={{ color: c.text2, fontSize: 10, marginTop: 1, lineHeight: 1.3 }}>
                   Tạo quảng cáo P2P
                 </p>
               </div>
-              <ArrowRight size={14} color="#3B82F6" className="shrink-0" />
             </button>
           </div>
         </div>
@@ -234,7 +231,7 @@ export function P2PMarketplaceSections({
               >
                 {fmtCompact(platformStats.volume24h, { prefix: '₫' })}
               </span>
-              <span style={{ color: '#10B981', fontSize: 10, fontWeight: 700, marginTop: 1 }}>
+              <span style={{ color: c.successText, fontSize: 10, fontWeight: 700, marginTop: 1 }}>
                 +{fmtPct(platformStats.volume24hChange)}
               </span>
             </div>
@@ -310,7 +307,7 @@ export function P2PMarketplaceSections({
               }}
             >
               <Shield size={10} color="#10B981" />
-              <span style={{ color: '#10B981', fontSize: 10, fontWeight: 600 }}>
+              <span style={{ color: c.successText, fontSize: 10, fontWeight: 600 }}>
                 {fmtCompact(platformStats.escrowProtected, { prefix: '₫' })} Escrow
               </span>
             </div>
@@ -325,7 +322,7 @@ export function P2PMarketplaceSections({
         ]}
         active={tab}
         onChange={(t) => handleTabSwitch(t as 'buy' | 'sell')}
-        colors={{ buy: '#10B981', sell: '#EF4444' }}
+        colors={{ buy: 'var(--tr-buy)', sell: 'var(--tr-sell)' }}
       />
 
       {/* Asset + Fiat Row */}
@@ -365,7 +362,7 @@ export function P2PMarketplaceSections({
             className="px-2 py-1.5 rounded-lg flex-shrink-0"
             style={{
               background: fiatCurrency === cur ? c.primaryAlpha12 : 'transparent',
-              color: fiatCurrency === cur ? c.primary : c.text3,
+              color: fiatCurrency === cur ? c.warningText : c.text3,
               fontWeight: 600,
               fontSize: 11,
             }}
@@ -452,7 +449,14 @@ export function P2PMarketplaceSections({
                               ? `${t.color}15`
                               : c.chipActiveBg
                             : c.chipBg,
-                        color: merchantType === t.id ? t.color || c.chipActiveText : c.chipText,
+                        color:
+                          merchantType === t.id
+                            ? t.id === 'elite'
+                              ? c.warningText
+                              : t.id === 'all'
+                                ? c.chipActiveText
+                                : c.link
+                            : c.chipText,
                         border: `1px solid ${merchantType === t.id ? (t.color ? `${t.color}40` : c.chipActiveBorder) : c.chipBorder}`,
                         fontWeight: 600,
                         fontSize: 10,
@@ -554,7 +558,7 @@ export function P2PMarketplaceSections({
           style={{ background: c.surface2 }}
         >
           <Shield size={9} color="#10B981" />
-          <span style={{ color: '#10B981', fontSize: 9, fontWeight: 600 }}>Escrow</span>
+          <span style={{ color: c.successText, fontSize: 9, fontWeight: 600 }}>Escrow</span>
         </div>
       </div>
 

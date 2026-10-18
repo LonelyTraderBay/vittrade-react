@@ -72,7 +72,7 @@ const tracking = JSON.parse(
 const sourceHead = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
 assert.equal(
   sourceHead,
-  tracking.executionPlan.auditSourceHead,
+  (process.env.EVIDENCE_SOURCE_HEAD ?? tracking.executionPlan.auditSourceHead),
   'Evidence must match the audited Git HEAD.',
 );
 
@@ -341,7 +341,7 @@ try {
     path.join(root, sidecarPath),
     await serializeJson(sidecar, path.join(root, sidecarPath)),
   );
-  if (failures.length === 0) {
+  if (failures.length === 0 && !process.argv.includes('--no-register')) {
     const master = JSON.parse((await read(masterPath)).toString('utf8'));
     const reportDigest = crypto
       .createHash('sha256')

@@ -20,7 +20,9 @@ describe('EmptyState', () => {
 
     expect(screen.getByText('No results')).toBeInTheDocument();
     expect(screen.getByText('Try a different search')).toBeInTheDocument();
-    fireEvent.click(screen.getByRole('button', { name: 'Clear filters' }));
+    const cta = screen.getByRole('button', { name: 'Clear filters' });
+    expect(cta).toHaveAttribute('type', 'button');
+    fireEvent.click(cta);
     expect(onCta).toHaveBeenCalledOnce();
   });
 

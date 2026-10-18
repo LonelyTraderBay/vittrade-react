@@ -53,16 +53,17 @@ export function PortfolioAnalyticsContractPage() {
     <PageLayout>
       <Header title="Portfolio Analytics" subtitle="Server-owned wallet performance" back />
       <PageContent gap="default">
-        <div className="flex gap-2 overflow-x-auto" aria-label="Analytics period">
+        <div role="group" className="flex gap-2 overflow-x-auto" aria-label="Analytics period">
           {PERIODS.map((value) => (
             <button
               key={value}
               type="button"
               onClick={() => setPeriod(value)}
+              aria-pressed={period === value}
               className="rounded-full px-4 py-2 text-xs font-semibold"
               style={{
                 background: period === value ? colors.primary : colors.surface2,
-                color: period === value ? '#fff' : colors.text2,
+                color: period === value ? 'var(--tr-text-on-color)' : colors.text2,
               }}
             >
               {value}
@@ -75,13 +76,13 @@ export function PortfolioAnalyticsContractPage() {
         <MonthlyPnlCard data={query.data} />
         <PerformersCard
           title="Top performers"
-          icon={<TrendingUp size={17} color="#10B981" />}
+          icon={<TrendingUp size={17} color="var(--tr-success-text)" />}
           performers={query.data.topPerformers}
           positive
         />
         <PerformersCard
           title="Worst performers"
-          icon={<TrendingDown size={17} color="#EF4444" />}
+          icon={<TrendingDown size={17} color="var(--tr-error-text)" />}
           performers={query.data.worstPerformers}
           positive={false}
         />
@@ -178,7 +179,10 @@ function MonthlyPnlCard({ data }: { data: PortfolioAnalyticsResponse }) {
                   }}
                 />
               </div>
-              <span className="text-right" style={{ color: positive ? '#10B981' : '#EF4444' }}>
+              <span
+                className="text-right"
+                style={{ color: positive ? 'var(--tr-success-text)' : 'var(--tr-error-text)' }}
+              >
                 {formatUsd(month.pnl)}
               </span>
             </div>
@@ -230,7 +234,12 @@ function PerformersCard({
                 <p style={{ color: colors.text3, fontSize: 10 }}>{performer.name}</p>
               </div>
               <div className="text-right">
-                <strong style={{ color: positive ? '#10B981' : '#EF4444', fontSize: 12 }}>
+                <strong
+                  style={{
+                    color: positive ? 'var(--tr-success-text)' : 'var(--tr-error-text)',
+                    fontSize: 12,
+                  }}
+                >
                   {formatPercent(performer.change)}
                 </strong>
                 <p style={{ color: colors.text3, fontSize: 10 }}>
@@ -252,7 +261,12 @@ function Metric({ label, value, positive }: { label: string; value: string; posi
       <p style={{ color: colors.text3, fontSize: 10 }}>{label}</p>
       <strong
         style={{
-          color: positive == null ? colors.text1 : positive ? '#10B981' : '#EF4444',
+          color:
+            positive == null
+              ? colors.text1
+              : positive
+                ? 'var(--tr-success-text)'
+                : 'var(--tr-error-text)',
           fontSize: 13,
         }}
       >

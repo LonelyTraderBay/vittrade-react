@@ -204,7 +204,9 @@ export function MarketNewsFeedPage() {
                         <button
                           key={pair.pairId}
                           type="button"
-                          onClick={() => navigate(`${prefix}/pair/${pair.pairId}`)}
+                          onClick={() =>
+                            navigate(`${prefix}/pair/${encodeURIComponent(pair.pairId)}`)
+                          }
                           className="rounded-lg px-2 py-1 text-[10px]"
                           style={{
                             background: colors.chipBg,

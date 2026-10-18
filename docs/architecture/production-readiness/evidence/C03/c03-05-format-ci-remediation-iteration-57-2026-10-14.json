@@ -1,0 +1,125 @@
+{
+  "schemaVersion": 1,
+  "itemId": "C03.05",
+  "observedAt": "2026-10-14T02:12:12.883Z",
+  "sourceHead": "9133dc78f215f1862bfbb68b14607add758dcff2",
+  "sourceState": "Prettier-only edits were present during the full run; the runner snapshot stayed unchanged, and the exact tested bytes were committed by the path-specific P2 commit eacd039f.",
+  "dirtyFileHashes": {
+    "src/app/components/layout/PlatformSwitcher.test.tsx": "a23a229a5b1e7e0ccd0b4681d644a0aa87967025955bc479c27419f595eb3a02",
+    "src/features/dca/pages/SavingsDCAContractPage.test.tsx": "66581645a63a0833a84876542244e30bd814de900fb1a42ecbda38e14484246a",
+    "src/shared/ui/TrInput.tsx": "93e77abd4a51a22305d598a5414ce3fcb4136b1bc548006468d92bf45bce3ebd"
+  },
+  "verification": {
+    "environment": "Windows local; Vitest 4.1.11 with V8 coverage; no backend or staging access.",
+    "priorHostedRun": {
+      "id": 38498358687,
+      "runNumber": 52,
+      "url": "https://github.com/LonelyTraderBay/vittrade-react/actions/runs/38498358687",
+      "headSha": "9133dc78f215f1862bfbb68b14607add758dcff2",
+      "conclusion": "failure",
+      "failedStep": "Format check",
+      "failedFiles": [
+        "src/app/components/layout/PlatformSwitcher.test.tsx",
+        "src/features/dca/pages/SavingsDCAContractPage.test.tsx",
+        "src/shared/ui/TrInput.tsx"
+      ],
+      "earlierSteps": {
+        "typecheck": "success",
+        "lint": "success",
+        "lintWarningBudget": "success"
+      },
+      "dependentSteps": "unit tests, coverage, E2E, dependency/security/architecture/build/artifact gates were skipped",
+      "fixCommit": "eacd039fddb797cc73c45e3596c0d0ec6e66cc32"
+    },
+    "formatting": {
+      "formatter": "Prettier",
+      "version": "3.9.8",
+      "lockfileVersion": "3.9.8",
+      "formatCheckCommand": "prettier --check \"src/**/*.{ts,tsx,css}\" \"tests/e2e/**/*.{ts,tsx}\"",
+      "formatCheckExitCode": 0,
+      "changedFiles": [
+        "src/app/components/layout/PlatformSwitcher.test.tsx",
+        "src/features/dca/pages/SavingsDCAContractPage.test.tsx",
+        "src/shared/ui/TrInput.tsx"
+      ]
+    },
+    "fullSuite": {
+      "command": "node scripts/run-with-artifacts.mjs vitest run --coverage",
+      "runId": "2026-10-14T02-04-09-819Z-vitest-81f8d835-dc7c-4844-9518-be97d8ca7ce1",
+      "runManifestSha256": "8b169ee683e43a3e91aa2742ba69a32bbf222c42aa92f6aeba0629443d376e58",
+      "coverageSha256": "6913e4b2d46ed71d7246bb67a67ad8eebabfae85224c8f2c89e0c921c74fa33f",
+      "exitCode": 0,
+      "status": "passed",
+      "childClosed": true,
+      "sourceUnchanged": true,
+      "runHead": "9133dc78f215f1862bfbb68b14607add758dcff2",
+      "testFiles": "360/360",
+      "tests": "3462/3462",
+      "failed": 0,
+      "skipped": 0,
+      "coverageEntries": 440,
+      "measurableFiles": 408,
+      "measurableFilesFullyCovered": 408,
+      "measurableFilesWithGaps": 0,
+      "entriesWithoutExecutableCounters": 32,
+      "statements": {
+        "total": 12441,
+        "covered": 12441,
+        "skipped": 0,
+        "pct": 100
+      },
+      "branches": {
+        "total": 10265,
+        "covered": 10265,
+        "skipped": 0,
+        "pct": 100
+      },
+      "functions": {
+        "total": 3972,
+        "covered": 3972,
+        "skipped": 0,
+        "pct": 100
+      },
+      "lines": {
+        "total": 11500,
+        "covered": 11500,
+        "skipped": 0,
+        "pct": 100
+      },
+      "thresholdsOrDenominatorChanged": false,
+      "trackedSourcePaths": 905,
+      "sourcePathsMatched": 905
+    },
+    "sourceProvenance": [
+      {
+        "path": "src/app/components/layout/PlatformSwitcher.test.tsx",
+        "commit": "eacd039fddb797cc73c45e3596c0d0ec6e66cc32",
+        "blob": "d37bbed3a71ff30180031ee1ad3819205e9acb48",
+        "sha256": "a23a229a5b1e7e0ccd0b4681d644a0aa87967025955bc479c27419f595eb3a02",
+        "runSnapshotSha256": "a23a229a5b1e7e0ccd0b4681d644a0aa87967025955bc479c27419f595eb3a02"
+      },
+      {
+        "path": "src/features/dca/pages/SavingsDCAContractPage.test.tsx",
+        "commit": "eacd039fddb797cc73c45e3596c0d0ec6e66cc32",
+        "blob": "b4627cd0f45702e4418014d97aacf612656f99ba",
+        "sha256": "66581645a63a0833a84876542244e30bd814de900fb1a42ecbda38e14484246a",
+        "runSnapshotSha256": "66581645a63a0833a84876542244e30bd814de900fb1a42ecbda38e14484246a"
+      },
+      {
+        "path": "src/shared/ui/TrInput.tsx",
+        "commit": "eacd039fddb797cc73c45e3596c0d0ec6e66cc32",
+        "blob": "40f3f901498aefa4bdd43990ccb1a2639b536d13",
+        "sha256": "93e77abd4a51a22305d598a5414ce3fcb4136b1bc548006468d92bf45bce3ebd",
+        "runSnapshotSha256": "93e77abd4a51a22305d598a5414ce3fcb4136b1bc548006468d92bf45bce3ebd"
+      }
+    ],
+    "limitations": {
+      "finalShaHostedWorkflow": "pending after push",
+      "uiAcceptance": "0/128; only 14/128 screenshots previously reviewed",
+      "backendStaging": "blocked; user confirmed required owner, endpoints, authorized account and provider/SLO inputs unavailable"
+    }
+  },
+  "result": "pass",
+  "artifact": "docs/architecture/production-readiness/evidence/C03/c03-05-format-ci-remediation-iteration-57-2026-10-14.json; .artifacts/runs/2026-10-14T02-04-09-819Z-vitest-81f8d835-dc7c-4844-9518-be97d8ca7ce1/run.json; .artifacts/runs/2026-10-14T02-04-09-819Z-vitest-81f8d835-dc7c-4844-9518-be97d8ca7ce1/coverage/coverage-final.json; https://github.com/LonelyTraderBay/vittrade-react/actions/runs/38498358687",
+  "notes": "Local formatting, TypeScript, ESLint, zero-warning budget and full suite pass. GitHub run #52 failed at format check on the previous SHA; no hosted gate after format ran. The final pushed-SHA workflow is still required; this evidence does not certify UI acceptance, backend/staging or production."
+}

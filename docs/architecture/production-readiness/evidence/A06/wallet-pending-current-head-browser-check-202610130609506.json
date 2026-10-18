@@ -1,0 +1,238 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-13T06:09:50.674Z",
+  "observedAt": "2026-10-13T06:09:54.431Z",
+  "sourceHead": "db9c9064fa3ba79bd76fb7acb1023d90486b6cbf",
+  "branch": "",
+  "origin": "http://127.0.0.1:4193",
+  "browser": "Chromium via Playwright",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "fixtureBoundary": {
+    "serviceWorkerControlled": true,
+    "allWalletResponsesFromServiceWorker": true,
+    "allObservedResponsesFromServiceWorker": true,
+    "externalApiOrigins": [],
+    "realBackendRequestSent": false,
+    "walletWriteRequestCount": 1,
+    "withdrawalRequestCount": 0
+  },
+  "sourceHashes": {
+    "contracts/openapi/wallet.yaml": "a7b2e6fbdf62f2e6a789de25e712767d79014355870e86a87c8e809938f9e7b7",
+    "docs/architecture/production-readiness/evidence/A06/operation-mock-map-2026-09-28.json": "22daaea2c44da7e384507fbcd118f72aea0f18bf59e65aa025e8309eef01d320",
+    "src/app/routes.ts": "c93a80e123fd95c3abd246aeb00589a51f5ff4560e794e87f70f7ff96248c0d5",
+    "src/app/routes/walletProfileProtectedRoutes.ts": "279cb168d99cef06c18fd8348f4961c3378f6672d33a90bd23ace71dd2dc05ab",
+    "src/dev/PreviewControls.tsx": "a318fb182dda24c9b8d2103ae4b40eeecb7c3eded57332aad3c5bc8a1836a54c",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/handlers.ts": "9d1ea085bab944b0bd0e59a665222113cb7bb661bbcd2408f09c6adf08cd3ea9",
+    "src/dev/mocks/personas.ts": "6189b9cbfb9765f5c442c52a089d30b5be171170fe054ef6bf2faffbbb53dccd",
+    "src/dev/mocks/preview-scenario-handler.ts": "1b05e3e420b1df43de6d2e37533d4d8dbcd203fedb70ca59a65a4a62179396f5",
+    "src/dev/mocks/preview-scenario-handler.test.ts": "927ddb529170fb9dec31cedda12703e01a0138bd23e7bd8942880e517f888995",
+    "src/dev/mocks/scenario-runtime.ts": "446d43808b478a1eaca07faa29d690c49c8e7ffb21fc1f12d2de2feb524e2e50",
+    "src/features/wallet/api/wallet-api.test.ts": "7614abef4e737a5738a1bf342890caf2bb7f2f1d0672a146812fd5d6922448db",
+    "src/features/wallet/api/wallet-api.ts": "6f1918992ebdf61e559492ec2d16ba794edb04ef83cde3f248dcdacf6ba91d8a",
+    "src/features/wallet/model/wallet-queries.test.tsx": "e6cb6fca2c942f16586df25b3f7b6e5d67ac7d8968a333978d0ff879af5dbfc0",
+    "src/features/wallet/model/wallet-queries.ts": "28d7b8b808a1162f25ab3e6da9ee2684652ccd5da92d6612b308f85449efbd80",
+    "src/features/wallet/model/wallet-types.ts": "c31f657e91c0976ae6250a1a918f89003e6a5f0147e92f915775fdf3716c39f0",
+    "src/features/wallet/pages/WalletTransferContractPage.test.tsx": "70c8363e3f9020a0a3d48e47903c1ccc40f7bde7dbdc67c312765198c0d19443",
+    "src/features/wallet/pages/WalletTransferContractPage.tsx": "35389bad79720819aac1ad979b77eacb896491a82a80cd08c3e0d44935098959",
+    "src/features/wallet/routes.ts": "045e7499ef9dd47398d4986ab3a0c63ec339a29d572e79bfb9bbfb824b0ecc9c",
+    "src/main.tsx": "c150098914a25b7e0630d66f480ffbfe4160e96a8bdb54262b5ad4b5b33719e6",
+    "docs/architecture/production-readiness/evidence/A06/run-wallet-pending-current-head-browser-check.mjs": "8898ed920e66576c4ba60160f88dd38d5caeca9eb8d0e57430b864d7a9457008"
+  },
+  "scenario": {
+    "id": "wallet.pending",
+    "domain": "wallet",
+    "state": "pending",
+    "status": "passed",
+    "observedAt": "2026-10-13T06:09:54.431Z",
+    "persona": "wallet (local MSW fixture)",
+    "role": "wallet",
+    "permissions": [
+      "market:read",
+      "trading:write",
+      "wallet:read",
+      "wallet:transfer",
+      "wallet:withdraw"
+    ],
+    "route": "/w/wallet/transfer",
+    "finalRoute": "/w/wallet/transfer",
+    "operationIds": ["createWalletTransfer"],
+    "observedOperationIds": ["createWalletTransfer"],
+    "supportingOperationIds": ["getWalletAccounts", "getWalletAssets"],
+    "expectedDomainOperationCount": 19,
+    "coverage": "representative_browser_observed",
+    "operationRequestCounts": {
+      "getWalletAssets": 2,
+      "getWalletAccounts": 1,
+      "getWalletAddressBook": 0,
+      "createWalletAddressBookEntry": 0,
+      "updateWalletAddressBookSettings": 0,
+      "updateWalletAddressBookEntry": 0,
+      "deleteWalletAddressBookEntry": 0,
+      "getPortfolioAnalytics": 0,
+      "quoteWalletDustConversion": 0,
+      "createWalletDustConversion": 0,
+      "getWalletTransactions": 0,
+      "getWalletTransaction": 0,
+      "getWalletDepositNetworks": 0,
+      "getWalletWithdrawalNetworks": 0,
+      "getWalletNetworkStatus": 0,
+      "createWalletTransfer": 1,
+      "createWalletWithdrawalChallenge": 0,
+      "verifyWalletWithdrawalChallenge": 0,
+      "createWalletWithdrawal": 0
+    },
+    "requests": [
+      {
+        "operationId": null,
+        "method": "GET",
+        "path": "/api/auth/session"
+      },
+      {
+        "operationId": null,
+        "method": "POST",
+        "path": "/api/auth/login"
+      },
+      {
+        "operationId": null,
+        "method": "GET",
+        "path": "/api/market/pairs"
+      },
+      {
+        "operationId": null,
+        "method": "GET",
+        "path": "/api/market/watchlist"
+      },
+      {
+        "operationId": "getWalletAccounts",
+        "method": "GET",
+        "path": "/api/wallet/accounts"
+      },
+      {
+        "operationId": "getWalletAssets",
+        "method": "GET",
+        "path": "/api/wallet/assets"
+      },
+      {
+        "operationId": "createWalletTransfer",
+        "method": "POST",
+        "path": "/api/wallet/transfers"
+      },
+      {
+        "operationId": "getWalletAssets",
+        "method": "GET",
+        "path": "/api/wallet/assets"
+      }
+    ],
+    "responses": [
+      {
+        "operationId": null,
+        "method": "GET",
+        "path": "/api/auth/session",
+        "status": 401,
+        "fromServiceWorker": true,
+        "elapsedMs": 22
+      },
+      {
+        "operationId": null,
+        "method": "POST",
+        "path": "/api/auth/login",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 11
+      },
+      {
+        "operationId": null,
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 5
+      },
+      {
+        "operationId": null,
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 5
+      },
+      {
+        "operationId": "getWalletAccounts",
+        "method": "GET",
+        "path": "/api/wallet/accounts",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 6
+      },
+      {
+        "operationId": "getWalletAssets",
+        "method": "GET",
+        "path": "/api/wallet/assets",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 6
+      },
+      {
+        "operationId": "createWalletTransfer",
+        "method": "POST",
+        "path": "/api/wallet/transfers",
+        "status": 201,
+        "fromServiceWorker": true,
+        "elapsedMs": 13
+      },
+      {
+        "operationId": "getWalletAssets",
+        "method": "GET",
+        "path": "/api/wallet/assets",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 4
+      }
+    ],
+    "transfer": {
+      "httpStatus": 201,
+      "receiptStatus": "pending",
+      "receiptReference": "preview-wallet-transfer-0001",
+      "transactionIdReturned": false,
+      "idempotencyKeyPresent": true,
+      "idempotencyKeyLength": 52,
+      "idempotencyKeyPrefix": "wallet-transfer-",
+      "requestBody": {
+        "fromWallet": "spot",
+        "toWallet": "funding",
+        "asset": "USDT",
+        "amount": 12.5
+      },
+      "requestCount": 1,
+      "inFlightButtonDisabled": true,
+      "inFlightLabel": "Submitting transfer…",
+      "inFlightButtonPresentation": {
+        "text": "Submitting transfer…",
+        "color": "rgb(255, 255, 255)",
+        "labelColor": "rgb(17, 24, 39)",
+        "labelOpacity": "1",
+        "labelVisibility": "visible"
+      },
+      "inFlightVisibleMs": 47,
+      "runnerHoldConfiguredMs": 2000,
+      "runnerHoldMs": 2013,
+      "uiMutationPendingMs": 2079,
+      "responseTimeMs": 13,
+      "pendingReceiptVisible": true,
+      "duplicateSubmitBlocked": true
+    },
+    "externalApiOrigins": [],
+    "pageErrors": [],
+    "requestFailures": [],
+    "elapsedMs": 3621,
+    "screenshots": [
+      "preview-wallet-pending-transfer-inflight-202610130609506.png",
+      "preview-wallet-pending-transfer-receipt-202610130609506.png"
+    ],
+    "note": "Local Chromium/Vite/MSW only. The browser runner holds the service-worker-resolved transfer response for 2 seconds before delivering it to the UI, keeping the mutation promise pending while one POST receives a local contract-shaped HTTP 201 receipt with mock status pending. The measured request response time is local MSW timing; the runner hold is test harness time. This does not establish backend latency or pending semantics, backend authorization, reconciliation, production behavior or user acceptance. No withdrawal/challenge/verification or transaction lookup was requested; the transfer receipt id is not treated as a transaction id."
+  }
+}

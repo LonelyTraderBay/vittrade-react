@@ -5,6 +5,9 @@ import { Route, Routes } from 'react-router';
 import { renderWithProviders } from '@/test/test-utils';
 import { UIContext } from '../../contexts/ui-context';
 import { TabletShell } from './TabletShell';
+import { PageContent } from '@/shared/ui/layout/PageContent';
+import { Header } from '@/shared/ui/layout/Header';
+import { StickyFooter } from '@/shared/ui/layout/PageLayout';
 
 const SuspendedPage = lazy(() => new Promise<{ default: ComponentType }>(() => {}));
 
@@ -32,6 +35,33 @@ function renderTablet(isOffline: boolean, child: ReactElement) {
 }
 
 describe('TabletShell', () => {
+  it('owns the horizontal gutter and aligns shared page layout primitives', () => {
+    renderTablet(
+      false,
+      <>
+        <Header title="Tablet gutter" />
+        <PageContent>
+          <p>Tablet content</p>
+        </PageContent>
+        <StickyFooter>
+          <button type="button">Tablet action</button>
+        </StickyFooter>
+      </>,
+    );
+
+    const pageContent = screen.getByText('Tablet content').parentElement;
+    const shellContent = pageContent?.parentElement;
+    const header = screen.getByRole('heading', { name: 'Tablet gutter' }).parentElement
+      ?.parentElement;
+    const footer = screen.getByRole('button', { name: 'Tablet action' }).parentElement;
+
+    expect(shellContent?.style.padding).toBe('0px 24px');
+    expect(shellContent?.style.getPropertyValue('--tr-page-inline-gutter')).toBe('0px');
+    expect(pageContent?.style.paddingInline).toBe('var(--tr-page-inline-gutter, 20px)');
+    expect(header?.style.paddingInline).toBe('var(--tr-page-inline-gutter, 20px)');
+    expect(footer?.style.paddingInline).toBe('var(--tr-page-inline-gutter, 20px)');
+  });
+
   it('renders the tablet route without an offline banner when online', () => {
     renderTablet(false, <div>tablet route content</div>);
 

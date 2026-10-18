@@ -144,6 +144,20 @@ for (const shell of shells) {
             await new Promise<void>((resolve) => requestAnimationFrame(resolve));
           });
 
+          if (state === 'otp-step') {
+            const otpLayout = await page.getByLabel('Mã OTP').evaluate((input) => {
+              const rect = input.getBoundingClientRect();
+              return {
+                left: rect.left,
+                right: rect.right,
+                documentWidth: document.documentElement.scrollWidth,
+              };
+            });
+            expect(otpLayout.left).toBeGreaterThanOrEqual(0);
+            expect(otpLayout.right).toBeLessThanOrEqual(width);
+            expect(otpLayout.documentWidth).toBeLessThanOrEqual(width);
+          }
+
           const results = await new AxeBuilder({ page })
             .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'])
             .analyze();
@@ -198,7 +212,38 @@ for (const shell of shells) {
     await capture('otp-step');
     await scanAxeState('otp-step');
 
-    await page.getByLabel('Mã OTP').fill('123456');
+    const otp = page.getByLabel('Mã OTP');
+    const otpFieldMeasurement = await otp.evaluate((input) => {
+      const wrapper = input.parentElement;
+      if (!wrapper) throw new Error('OTP field wrapper is missing.');
+      const wrapperStyle = window.getComputedStyle(wrapper);
+      const inputStyle = window.getComputedStyle(input);
+      return {
+        width: wrapper.getBoundingClientRect().width,
+        height: wrapperStyle.height,
+        borderRadius: wrapperStyle.borderRadius,
+        fontSize: inputStyle.fontSize,
+        fontWeight: inputStyle.fontWeight,
+        letterSpacing: inputStyle.letterSpacing,
+        textAlign: inputStyle.textAlign,
+      };
+    });
+    expect(otpFieldMeasurement.width).toBeGreaterThan(0);
+    expect(otpFieldMeasurement).toMatchObject({
+      height: '52px',
+      borderRadius: '14px',
+      fontSize: '24px',
+      fontWeight: '700',
+      letterSpacing: '8px',
+      textAlign: 'center',
+    });
+    await otp.focus();
+    const otpFocusShadow = await otp.evaluate(
+      (input) => window.getComputedStyle(input.parentElement!).boxShadow,
+    );
+    expect(otpFocusShadow).not.toBe('none');
+
+    await otp.fill('123456');
     const verifyResponsePromise = page.waitForResponse(
       (response) =>
         response.request().method() === 'POST' &&
@@ -288,6 +333,7 @@ for (const shell of shells) {
       directConfirmStatus: directConfirmResponse.status(),
       authRequests,
       requestBodiesMatchAdapter: requestBodyMatches,
+      otpFieldMeasurement: { ...otpFieldMeasurement, focusShadowVisible: true },
       screenshots: screenshots.map((file) => file.split(/[\\/]/).at(-1) ?? file),
       screenshotSha256,
       documentWidth,

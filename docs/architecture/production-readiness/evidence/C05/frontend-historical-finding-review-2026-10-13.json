@@ -1,0 +1,33 @@
+{
+  "observedAt": "2026-10-13T07:17:48.347Z",
+  "sourceHead": "db9c9064fa3ba79bd76fb7acb1023d90486b6cbf",
+  "sourceHashes": {
+    "src/app/components/layout/WebSidebar.tsx": "be4d7c10c7378290dc69516cd66c071e3e821215afbd97c3bc508d437c37362c",
+    "src/app/components/layout/WebSidebar.test.tsx": "68678fec0e67780353c495419a72816de7588f0aaa2082b097e3511d577754e9",
+    "src/app/components/layout/PlatformSwitcher.tsx": "c7fad1269a6396f287e679d0251e327ee10f751cc1ef08b7eb8e05cb438bf5f9",
+    "src/dev/PreviewControls.tsx": "a318fb182dda24c9b8d2103ae4b40eeecb7c3eded57332aad3c5bc8a1836a54c"
+  },
+  "browserReport": {
+    "path": "docs/architecture/production-readiness/evidence/A06/wallet-empty-current-head-browser-check-202610130609369.json",
+    "sha256": "b7ef7c3fe913468664b30cd2b8b7c0ea4a8886da3cd1aafc4f125692c35b4e99",
+    "observedAt": "2026-10-13T06:09:37.865Z",
+    "declaredInputsCurrent": true
+  },
+  "screenshots": [
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-wallet-empty-overview-202610130609369.png",
+      "sha256": "18ac50e0b1e05ab2943fc126f55f004c69fb65e82831c886acc0bba58b49d005"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-wallet-empty-history-202610130609369.png",
+      "sha256": "400ecb580f2600a0ad043589f2e154983eb31f42878616a4eac7cb85dfa0f581"
+    }
+  ],
+  "actual": "Reviewed the existing 13/10 Wallet overview/history screenshots at 1440x900: both select Ví with the blue current marker; Home has no current marker. The Web badge is above the readable mock warning without overlap. Source/tests implement exact or descendant route matching and the preview-aware badge position. These historical findings are not reproduced in this scoped review; no application edit was needed. Final whole-source E2E evidence has standard59 pass/4 existing skips, AuthAPI34/34 and AuthMSW41/41; all source owners still match the final verification hashes.",
+  "limits": [
+    "Visual inspection of two existing local MSW screenshots, not a new browser run or all-route UI review.",
+    "The sidecar binds its declared input set; it does not cover every layout/style dependency.",
+    "C05.03 wider page/route interactions remain open. User acceptance and backend verification are unchanged.",
+    "No application source changed after the final verification."
+  ]
+}

@@ -1,5 +1,6 @@
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import { act, fireEvent, screen, waitFor, within } from '@testing-library/react';
+import { useEffect } from 'react';
 import userEvent from '@testing-library/user-event';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
@@ -209,13 +210,10 @@ function OrderReceiptState() {
   );
 }
 
-function RevokeSessionControl() {
+function RevokeSessionProbe({ onReady }: { onReady: (signOut: () => Promise<unknown>) => void }) {
   const { signOut } = useAuth();
-  return (
-    <button type="button" onClick={() => void signOut()}>
-      Revoke trading session
-    </button>
-  );
+  useEffect(() => onReady(signOut), [onReady, signOut]);
+  return null;
 }
 
 function useDefaultHandlers(openOrders: TradingOrder[] = [], orderHistory: TradingOrder[] = []) {
@@ -743,6 +741,10 @@ describe('TradeTerminal contract-backed order lifecycle', () => {
 
   it('rejects confirmation if the authenticated trading session ends while the sheet is open', async () => {
     const user = userEvent.setup();
+    let signOut: (() => Promise<unknown>) | undefined;
+    const provideSignOut = (revoke: () => Promise<unknown>) => {
+      signOut = revoke;
+    };
     let requests = 0;
     server.use(
       http.post('*/trading/orders', () => {
@@ -752,7 +754,7 @@ describe('TradeTerminal contract-backed order lifecycle', () => {
     );
     renderWithProviders(
       <>
-        <RevokeSessionControl />
+        <RevokeSessionProbe onReady={provideSignOut} />
         <Routes>
           <Route path="/trade/:pairId" element={<TradeTerminal />} />
           <Route path="/trade/order-receipt" element={<OrderReceiptState />} />
@@ -765,7 +767,10 @@ describe('TradeTerminal contract-backed order lifecycle', () => {
     fireEvent.change(screen.getByTestId('trade-amount'), { target: { value: '0.1' } });
     await user.click(screen.getByRole('button', { name: /Đặt lệnh mua BTC\/USDT/i }));
     expect(await screen.findByRole('dialog')).toBeVisible();
-    await user.click(screen.getByRole('button', { name: 'Revoke trading session' }));
+    await waitFor(() => expect(signOut).toBeDefined());
+    await act(async () => {
+      await signOut?.();
+    });
     await waitFor(() =>
       expect(screen.getByRole('alert')).toHaveTextContent('Trading permission is required'),
     );

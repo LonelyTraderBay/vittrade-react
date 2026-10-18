@@ -4,6 +4,32 @@ describe('runtime environment boundary', () => {
   beforeEach(() => vi.resetModules());
   afterEach(() => vi.unstubAllEnvs());
 
+  it.each(['staging', 'production'])('rejects unknown release data sources in %s', async (mode) => {
+    const { assertReleaseEnvironment } = await import('./runtime-env-validation');
+    expect(() =>
+      assertReleaseEnvironment({
+        mode,
+        isProduction: false,
+        dataSource: 'fixture',
+        apiBaseUrl: 'https://api.example.test',
+        wsUrl: 'wss://ws.example.test',
+      }),
+    ).toThrow(`${mode} environment requires VITE_DATA_SOURCE=api`);
+  });
+
+  it('rejects malformed URLs and the reserved invalid host', async () => {
+    const { assertReleaseEnvironment } = await import('./runtime-env-validation');
+    expect(() =>
+      assertReleaseEnvironment({
+        mode: 'production',
+        isProduction: false,
+        dataSource: 'api',
+        apiBaseUrl: 'not a URL',
+        wsUrl: 'wss://invalid./stream',
+      }),
+    ).toThrow('Production environment is incomplete: VITE_API_BASE_URL, VITE_WS_URL');
+  });
+
   it('normalizes unknown modes, defaults and opt-in flags', async () => {
     vi.stubEnv('MODE', 'preview');
     vi.stubEnv('DEV', false);

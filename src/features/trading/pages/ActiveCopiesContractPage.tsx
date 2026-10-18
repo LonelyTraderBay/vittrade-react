@@ -93,7 +93,11 @@ export function ActiveCopiesContractPage() {
                     {relationship.copyMode} · {relationship.positionSizing} · {relationship.status}
                   </p>
                 </div>
-                <strong style={{ color: relationship.pnl >= 0 ? '#10B981' : '#EF4444' }}>
+                <strong
+                  style={{
+                    color: relationship.pnl >= 0 ? colors.successText : colors.errorText,
+                  }}
+                >
                   {relationship.pnlPct.toFixed(2)}%
                 </strong>
               </div>

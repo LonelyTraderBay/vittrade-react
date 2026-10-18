@@ -154,7 +154,9 @@ describe('Market comparison contract page', () => {
     expect(screen.getByText('Volume 24h')).toBeInTheDocument();
 
     const assetButtons = screen.getAllByRole('button', { name: /BTC\/USDT/ });
-    await userEvent.click(assetButtons[assetButtons.length - 1]!);
+    const pairButton = assetButtons[assetButtons.length - 1]!;
+    expect(pairButton).toHaveAttribute('type', 'button');
+    await userEvent.click(pairButton);
     expect(screen.getByTestId('location')).toHaveTextContent('/w/pair/btc-usdt');
 
     const removeButtons = screen.getAllByRole('button', { name: 'BTC/USDT' });

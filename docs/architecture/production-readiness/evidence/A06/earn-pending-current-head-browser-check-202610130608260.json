@@ -1,0 +1,316 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-10-13T06:08:28.155Z",
+  "sourceHead": "db9c9064fa3ba79bd76fb7acb1023d90486b6cbf",
+  "origin": "http://127.0.0.1:4193",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "sourceHashes": {
+    "contracts/openapi/earn.yaml": "f658455d5dcc1927fcee5a814c01b59e22dc5cae30640cb092e710e4ad7fa608",
+    "docs/architecture/production-readiness/evidence/A06/operation-mock-map-2026-09-28.json": "22daaea2c44da7e384507fbcd118f72aea0f18bf59e65aa025e8309eef01d320",
+    "docs/architecture/production-readiness/evidence/A06/run-earn-pending-current-head-browser-check.mjs": "934927aaed6372b904c57e3b398ccd84e55ec6bc8cb656a388ade0a07989c1b6",
+    "src/app/routeConfig.ts": "675ea95ec4831b9d0caf1cbf68524efaebda8ed9b970b5dad129bdd55f28bac9",
+    "src/dev/PreviewControls.tsx": "a318fb182dda24c9b8d2103ae4b40eeecb7c3eded57332aad3c5bc8a1836a54c",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/earn-fixtures.ts": "d17fff1aef1404678d8e99fe23c2a19b0243d7a0ac6bd4650cdfb901cdb43941",
+    "src/dev/mocks/handlers.ts": "9d1ea085bab944b0bd0e59a665222113cb7bb661bbcd2408f09c6adf08cd3ea9",
+    "src/dev/mocks/personas.ts": "6189b9cbfb9765f5c442c52a089d30b5be171170fe054ef6bf2faffbbb53dccd",
+    "src/dev/mocks/preview-scenario-handler.test.ts": "927ddb529170fb9dec31cedda12703e01a0138bd23e7bd8942880e517f888995",
+    "src/dev/mocks/preview-scenario-handler.ts": "1b05e3e420b1df43de6d2e37533d4d8dbcd203fedb70ca59a65a4a62179396f5",
+    "src/dev/mocks/scenario-runtime.ts": "446d43808b478a1eaca07faa29d690c49c8e7ffb21fc1f12d2de2feb524e2e50",
+    "src/features/earn/api/earn-api.ts": "06715b9d001e7a5b13a7ff819251cded67bca32a32a7912b1b89e6acc8c3e545",
+    "src/features/earn/components/EarnFeatureComponents.tsx": "fbe519c1c8a5d1fc608b6adc5e0ec7fb796a0a35ee4184615b8c19dafa5c3ddf",
+    "src/features/earn/model/earn-queries.ts": "c3215c441db5e4254fed1a6e91c733b96ed01528dcf61bdc5db4c1390528d10a",
+    "src/features/earn/model/earn-types.ts": "1586e57532dec7ba44c78bc385b21f921902fe626b950ca50a4e450b0f6490f1",
+    "src/features/earn/pages/EarnHistoryPage.tsx": "10853dcd2f40a4c60fc6bbbf698c497d59d3b0d31406a46d6ff7ecca55d426e1",
+    "src/features/earn/pages/EarnPage.tsx": "c694b03be7e96b9e5997174f38ee47b81351b4a011fe2c9783331db65249401b",
+    "src/features/earn/pages/EarnTransactionPages.tsx": "1009cd7d4546760f15cc23b45b5c19a4a5d4566a7a0c1842f7f713fc909aadb5",
+    "src/features/earn/routes.ts": "4316eece354d89cbcb54a44808a8a86811fd29f5394a9317d27e9cbc6e2eddab",
+    "src/shared/api/http-client.ts": "12a04035eac23a2999f8c7a76aafa32966585402c06d98f451ef33eb8601cf42",
+    "src/shared/session/AuthContext.tsx": "b95d134413d28d85278553b752a4d6738857ed7785ea53d7a0e441db61b310f2",
+    "src/shared/session/useAuth.ts": "65d58cfe61d4618a1849da066ecd4d6ae7c94c036af7361a91a1383a6b383e0b"
+  },
+  "scenario": {
+    "id": "earn.pending",
+    "domain": "earn",
+    "state": "pending",
+    "status": "passed",
+    "observedAt": "2026-10-13T06:08:28.155Z",
+    "persona": "developer (local MSW fixture)",
+    "role": "user",
+    "permissions": [
+      "market:read",
+      "trading:write",
+      "wallet:read",
+      "trade:read",
+      "earn:write",
+      "p2p:write",
+      "predictions:trade",
+      "profile:read",
+      "profile:write",
+      "profile:security:write"
+    ],
+    "route": "/w/earn/savings",
+    "finalRoute": "/w/earn/savings/history",
+    "routes": [
+      "/w/earn/savings/product/sav001",
+      "/w/earn/savings/redeem/:positionId",
+      "/w/earn/savings/receipt",
+      "/w/earn/savings/history"
+    ],
+    "operationIds": ["createEarnSubscription", "redeemEarnPosition", "listEarnTransactions"],
+    "observedOperationIds": [
+      "createEarnSubscription",
+      "listEarnTransactions",
+      "redeemEarnPosition"
+    ],
+    "operationRequestCounts": {
+      "getEarnSnapshot": 3,
+      "listEarnTransactions": 1,
+      "createEarnSubscription": 1,
+      "redeemEarnPosition": 1
+    },
+    "requests": [
+      {
+        "operationId": "getSession",
+        "method": "GET",
+        "path": "/api/auth/session",
+        "resourceType": "fetch",
+        "idempotencyKeyPresent": false,
+        "idempotencyKeyLength": 0
+      },
+      {
+        "operationId": "login",
+        "method": "POST",
+        "path": "/api/auth/login",
+        "resourceType": "fetch",
+        "idempotencyKeyPresent": false,
+        "idempotencyKeyLength": 0
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "resourceType": "fetch",
+        "idempotencyKeyPresent": false,
+        "idempotencyKeyLength": 0
+      },
+      {
+        "operationId": "getMarketWatchlist",
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "resourceType": "fetch",
+        "idempotencyKeyPresent": false,
+        "idempotencyKeyLength": 0
+      },
+      {
+        "operationId": "getEarnSnapshot",
+        "method": "GET",
+        "path": "/api/earn/snapshot",
+        "resourceType": "fetch",
+        "idempotencyKeyPresent": false,
+        "idempotencyKeyLength": 0
+      },
+      {
+        "operationId": "createEarnSubscription",
+        "method": "POST",
+        "path": "/api/earn/subscriptions",
+        "resourceType": "fetch",
+        "idempotencyKeyPresent": true,
+        "idempotencyKeyLength": 51
+      },
+      {
+        "operationId": "getEarnSnapshot",
+        "method": "GET",
+        "path": "/api/earn/snapshot",
+        "resourceType": "fetch",
+        "idempotencyKeyPresent": false,
+        "idempotencyKeyLength": 0
+      },
+      {
+        "operationId": "redeemEarnPosition",
+        "method": "POST",
+        "path": "/api/earn/redemptions",
+        "resourceType": "fetch",
+        "idempotencyKeyPresent": true,
+        "idempotencyKeyLength": 48
+      },
+      {
+        "operationId": "getEarnSnapshot",
+        "method": "GET",
+        "path": "/api/earn/snapshot",
+        "resourceType": "fetch",
+        "idempotencyKeyPresent": false,
+        "idempotencyKeyLength": 0
+      },
+      {
+        "operationId": "listEarnTransactions",
+        "method": "GET",
+        "path": "/api/earn/transactions",
+        "resourceType": "fetch",
+        "idempotencyKeyPresent": false,
+        "idempotencyKeyLength": 0
+      }
+    ],
+    "responses": [
+      {
+        "operationId": "getSession",
+        "method": "GET",
+        "path": "/api/auth/session",
+        "status": 401,
+        "fromServiceWorker": true,
+        "elapsedMs": 13
+      },
+      {
+        "operationId": "login",
+        "method": "POST",
+        "path": "/api/auth/login",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 3
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 4
+      },
+      {
+        "operationId": "getMarketWatchlist",
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 4
+      },
+      {
+        "operationId": "getEarnSnapshot",
+        "method": "GET",
+        "path": "/api/earn/snapshot",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 2
+      },
+      {
+        "operationId": "createEarnSubscription",
+        "method": "POST",
+        "path": "/api/earn/subscriptions",
+        "status": 201,
+        "fromServiceWorker": true,
+        "elapsedMs": 15
+      },
+      {
+        "operationId": "getEarnSnapshot",
+        "method": "GET",
+        "path": "/api/earn/snapshot",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 3
+      },
+      {
+        "operationId": "redeemEarnPosition",
+        "method": "POST",
+        "path": "/api/earn/redemptions",
+        "status": 201,
+        "fromServiceWorker": true,
+        "elapsedMs": 16
+      },
+      {
+        "operationId": "getEarnSnapshot",
+        "method": "GET",
+        "path": "/api/earn/snapshot",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 3
+      },
+      {
+        "operationId": "listEarnTransactions",
+        "method": "GET",
+        "path": "/api/earn/transactions",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 2
+      }
+    ],
+    "requestFailures": [],
+    "pageErrors": [],
+    "initialSessionResponse": {
+      "status": 401,
+      "fromServiceWorker": true
+    },
+    "loginResponse": {
+      "status": 200,
+      "fromServiceWorker": true
+    },
+    "scenarioSelected": true,
+    "initialSnapshot": {
+      "activePositions": 2,
+      "totalDepositedUsd": 4208
+    },
+    "subscriptionReceipt": {
+      "id": "preview-earn-receipt-0001",
+      "operation": "subscribe",
+      "productId": "sav001",
+      "asset": "USDT",
+      "amount": 100,
+      "status": "pending",
+      "createdAt": "2026-10-13T06:08:27.332Z"
+    },
+    "redemptionReceipt": {
+      "id": "preview-earn-receipt-0002",
+      "operation": "redeem",
+      "productId": "sav001",
+      "positionId": "earn-position-1",
+      "asset": "USDT",
+      "amount": 50,
+      "status": "pending",
+      "createdAt": "2026-10-13T06:08:27.698Z"
+    },
+    "subscriptionPendingUi": {
+      "route": "/w/earn/savings/receipt",
+      "receiptRouteVisible": true,
+      "pendingHeadingVisible": true,
+      "pendingStatusVisible": true,
+      "receiptReferenceVisible": true,
+      "completedHeadingVisible": false,
+      "genericSuccessVisible": false
+    },
+    "redemptionPendingUi": {
+      "route": "/w/earn/savings/receipt",
+      "receiptRouteVisible": true,
+      "pendingHeadingVisible": true,
+      "pendingStatusVisible": true,
+      "receiptReferenceVisible": true,
+      "completedHeadingVisible": false,
+      "genericSuccessVisible": false
+    },
+    "snapshotAfterSubscription": {
+      "activePositions": 2,
+      "positionCount": 2
+    },
+    "snapshotAfterRedemption": {
+      "activePositions": 2,
+      "positionCount": 2
+    },
+    "pendingHistoryCount": 1,
+    "transactionRequestCount": 1,
+    "idempotencyKeyPresent": {
+      "subscribe": true,
+      "redeem": true
+    },
+    "externalApiOrigins": [],
+    "elapsedMs": 1976,
+    "screenshots": [
+      "preview-earn-pending-products-current-head-202610130608260.png",
+      "preview-earn-pending-subscription-current-head-202610130608260.png",
+      "preview-earn-pending-redemption-current-head-202610130608260.png",
+      "preview-earn-pending-history-current-head-202610130608260.png"
+    ],
+    "failures": [],
+    "note": "Local Chromium/MSW observed contract-valid pending 201 receipts for subscription and redemption, stable receipt IDs, pending history and unchanged positions until final confirmation. This is local fixture evidence and does not prove server-side pending durability or settlement."
+  }
+}

@@ -38,6 +38,7 @@ export function StatusBar() {
 
   return (
     <div
+      aria-hidden="true"
       className="flex items-end justify-between select-none pointer-events-none z-40 shrink-0"
       style={{
         height: DEVICE.STATUS_BAR,

@@ -47,6 +47,97 @@ const receipt: P2POrderReceipt = {
 };
 
 describe('P2P Express confirmation contract page', () => {
+  it.each(['-1', 'Infinity', '-Infinity', '99999', '10000001'])(
+    'blocks invalid URL fiat %s against the current offer',
+    async (fiat) => {
+      let posts = 0;
+      server.use(
+        http.get('*/p2p/ads/ad-1', () => HttpResponse.json(ad)),
+        http.post('*/p2p/orders', () => {
+          posts += 1;
+          return HttpResponse.json(receipt, { status: 201 });
+        }),
+      );
+      renderExpress(testAuthAdapter, [
+        '/p2p/express/confirm?type=buy&asset=USDT&fiat=' + fiat + '&adId=ad-1&payment=Vietcombank',
+      ]);
+      const button = await screen.findByRole('button', { name: 'Confirm P2P Express order' });
+      expect(button).toBeDisabled();
+      fireEvent.click(button);
+      expect(posts).toBe(0);
+    },
+  );
+  it.each([
+    { asset: 'BTC' },
+    { currency: 'USD' },
+    { status: 'paused' },
+    { type: 'buy' },
+    { available: 3 },
+    { paymentMethods: ['MoMo'] },
+  ] satisfies Partial<P2PAd>[])(
+    'requires the URL intent to match the current offer %j',
+    async (change) => {
+      server.use(http.get('*/p2p/ads/ad-1', () => HttpResponse.json({ ...ad, ...change })));
+      renderExpress();
+      expect(
+        await screen.findByRole('button', { name: 'Confirm P2P Express order' }),
+      ).toBeDisabled();
+    },
+  );
+
+  it('serializes two confirmations before React commits its pending state', async () => {
+    let releaseResponse!: () => void;
+    const gate = new Promise<void>((resolve) => {
+      releaseResponse = resolve;
+    });
+    const keys: string[] = [];
+    server.use(
+      http.get('*/p2p/ads/ad-1', () => HttpResponse.json(ad)),
+      http.post('*/p2p/orders', async ({ request }) => {
+        keys.push(request.headers.get('Idempotency-Key')!);
+        await gate;
+        return HttpResponse.json({ code: 'TEMPORARY_FAILURE' }, { status: 503 });
+      }),
+    );
+    renderExpress();
+
+    const button = await screen.findByRole('button', { name: 'Confirm P2P Express order' });
+    act(() => {
+      fireEvent.click(button);
+      fireEvent.click(button);
+    });
+    try {
+      await waitFor(() => expect(keys.length).toBeGreaterThan(0));
+    } finally {
+      releaseResponse();
+    }
+    await waitFor(() => expect(button).not.toBeDisabled());
+    expect(keys).toHaveLength(1);
+  });
+
+  it('retains the same-intent key after a lost create response until an explicit retry', async () => {
+    const keys: string[] = [];
+    server.use(
+      http.get('*/p2p/ads/ad-1', () => HttpResponse.json(ad)),
+      http.post('*/p2p/orders', ({ request }) => {
+        keys.push(request.headers.get('Idempotency-Key')!);
+        return HttpResponse.error();
+      }),
+    );
+    const user = userEvent.setup();
+    renderExpress();
+
+    const button = await screen.findByRole('button', { name: 'Confirm P2P Express order' });
+    await user.click(button);
+    await screen.findByRole('alert');
+    await waitFor(() => expect(button).not.toBeDisabled());
+    expect(keys).toHaveLength(1);
+    await user.click(button);
+    await waitFor(() => expect(keys).toHaveLength(2));
+    await waitFor(() => expect(button).not.toBeDisabled());
+    expect(keys[1]).toBe(keys[0]);
+  });
+
   it('creates the escrow order with an idempotency key', async () => {
     server.use(
       http.get('*/p2p/ads/ad-1', () => HttpResponse.json(ad)),

@@ -75,10 +75,20 @@ describe('AddressAddPage', () => {
 
     const saveButton = screen.getByRole('button', { name: 'Lưu địa chỉ' });
     const labelInput = screen.getByLabelText(/Tên địa chỉ/);
-    const addressInput = screen.getByLabelText('Địa chỉ ví');
+    const addressInput = screen.getByLabelText(/Địa chỉ ví/);
+    expect(labelInput).toBeRequired();
+    expect(addressInput).toBeRequired();
+    expect(addressInput).toHaveAttribute('aria-describedby', 'wallet-address-book-address-helper');
+    expect(document.getElementById('wallet-address-book-address-helper')).toHaveTextContent(
+      'Bắt đầu với 0x… (42 ký tự)',
+    );
     expect(saveButton).toBeDisabled();
 
     await user.type(labelInput, 'Ví lạnh');
+    await user.click(screen.getAllByRole('button', { name: 'BTC' })[0]);
+    expect(document.getElementById('wallet-address-book-address-helper')).toHaveTextContent(
+      'Bắt đầu với bc1…, 1… hoặc 3…',
+    );
     await user.type(addressInput, '1234567890123456789');
     await user.click(screen.getByRole('button', { name: /Tôi xác nhận địa chỉ ví/ }));
     expect(saveButton).toBeDisabled();
@@ -117,7 +127,7 @@ describe('AddressAddPage', () => {
     await user.click(screen.getByRole('button', { name: 'BSC (BEP20)' }));
     await user.click(screen.getByRole('button', { name: 'USDT' }));
     await user.type(
-      screen.getByLabelText('Địa chỉ ví'),
+      screen.getByLabelText(/Địa chỉ ví/),
       '  0x742d35Cc6634C0532925a3b844Bc9e7595f6C29f  ',
     );
     await user.type(screen.getByLabelText(/Memo \/ Tag/), '  memo-123  ');
@@ -150,7 +160,7 @@ describe('AddressAddPage', () => {
     renderAddressAddPage();
 
     await user.type(screen.getByLabelText(/Tên địa chỉ/), 'Ví thử');
-    await user.type(screen.getByLabelText('Địa chỉ ví'), '12345678901234567890');
+    await user.type(screen.getByLabelText(/Địa chỉ ví/), '12345678901234567890');
     await user.click(screen.getByRole('button', { name: /Tôi xác nhận địa chỉ ví/ }));
     await user.click(screen.getByRole('button', { name: 'Lưu địa chỉ' }));
 
@@ -161,7 +171,7 @@ describe('AddressAddPage', () => {
       ),
     );
     expect(screen.getByLabelText(/Tên địa chỉ/)).toHaveValue('Ví thử');
-    expect(screen.getByLabelText('Địa chỉ ví')).toHaveValue('12345678901234567890');
+    expect(screen.getByLabelText(/Địa chỉ ví/)).toHaveValue('12345678901234567890');
     expect(screen.getByLabelText('Current path')).toHaveTextContent('/w/wallet/address-book/add');
   });
 
@@ -175,7 +185,7 @@ describe('AddressAddPage', () => {
     renderAddressAddPage();
 
     await user.click(screen.getByRole('button', { name: 'Dán địa chỉ từ clipboard' }));
-    expect(await screen.findByLabelText('Địa chỉ ví')).toHaveValue('bc1qexampleaddress0123456789');
+    expect(await screen.findByLabelText(/Địa chỉ ví/)).toHaveValue('bc1qexampleaddress0123456789');
 
     readText.mockRejectedValueOnce(new Error('Clipboard permission denied'));
     await user.click(screen.getByRole('button', { name: 'Dán địa chỉ từ clipboard' }));
@@ -193,7 +203,7 @@ describe('AddressAddPage', () => {
     });
     renderAddressAddPage();
 
-    const addressInput = screen.getByLabelText('Địa chỉ ví');
+    const addressInput = screen.getByLabelText(/Địa chỉ ví/);
     await user.type(addressInput, '12345678901234567890');
     await user.click(screen.getByRole('button', { name: 'Dán địa chỉ từ clipboard' }));
 
@@ -231,7 +241,7 @@ describe('AddressAddPage', () => {
     renderAddressAddPage();
 
     await user.type(screen.getByLabelText(/Tên địa chỉ/), 'Ví chờ');
-    await user.type(screen.getByLabelText('Địa chỉ ví'), '12345678901234567890');
+    await user.type(screen.getByLabelText(/Địa chỉ ví/), '12345678901234567890');
     await user.click(screen.getByRole('button', { name: /Tôi xác nhận địa chỉ ví/ }));
     await user.click(screen.getByRole('button', { name: 'Lưu địa chỉ' }));
     await requestStarted;
