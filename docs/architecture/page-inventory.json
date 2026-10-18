@@ -3743,7 +3743,7 @@
       "domain": "wallet",
       "owner": "features/wallet",
       "status": "integration-pending",
-      "lines": 274,
+      "lines": 275,
       "routePaths": [
         "wallet/deposit",
         "wallet/deposit/:asset"
@@ -3754,7 +3754,9 @@
           "../model/wallet-types",
           "@/shared/hooks/useThemeColors",
           "@/shared/session/useAuth",
+          "@/shared/ui/CTAButton",
           "@/shared/ui/ErrorState",
+          "@/shared/ui/IconButton",
           "@/shared/ui/TrCard",
           "@/shared/ui/layout/Header",
           "@/shared/ui/layout/PageContent",

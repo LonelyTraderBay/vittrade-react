@@ -108,9 +108,11 @@ describe('Wallet deposit contract page', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Copy USDT deposit address' }));
 
     expect(writeText).toHaveBeenCalledWith(networks.networks[0].address);
+    expect(screen.getByText('Copied USDT deposit address')).toBeInTheDocument();
     await userEvent.selectOptions(screen.getByLabelText('Deposit network'), 'tron');
     await userEvent.click(screen.getByRole('button', { name: 'Copy Memo' }));
     expect(writeText).toHaveBeenCalledWith(networks.networks[1].memo);
+    expect(screen.getByText('Copied Memo')).toBeInTheDocument();
   });
 
   it('shows a recovery action after a contract permission error', async () => {
@@ -177,6 +179,7 @@ describe('Wallet deposit contract page', () => {
     const copyButton = screen.getByRole('button', { name: 'Copy USDT deposit address' });
     await userEvent.click(copyButton);
     expect(copyButton.querySelector('svg')).toHaveClass('lucide-check');
+    expect(screen.getByText('Copied USDT deposit address')).toBeInTheDocument();
 
     const resetCopiedIndicator = setTimeoutSpy.mock.calls.find(([, delay]) => delay === 2_000)?.[0];
     if (typeof resetCopiedIndicator !== 'function') {
@@ -184,6 +187,7 @@ describe('Wallet deposit contract page', () => {
     }
     act(() => resetCopiedIndicator());
     expect(copyButton.querySelector('svg')).toHaveClass('lucide-copy');
+    expect(screen.queryByText('Copied USDT deposit address')).not.toBeInTheDocument();
     setTimeoutSpy.mockRestore();
   });
 });

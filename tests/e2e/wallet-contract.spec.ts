@@ -321,11 +321,121 @@ test.describe('wallet contract smoke on local API-mode build', () => {
     );
 
     await page.goto('/wallet/deposit/USDT');
-
     await expect(page.getByLabel('Deposit network')).toHaveValue('ethereum');
+
+    const standardizedControls = await page.evaluate(() => {
+      const copy = document.querySelector<HTMLButtonElement>(
+        'button[aria-label="Copy USDT deposit address"]',
+      );
+      const refresh = [...document.querySelectorAll<HTMLButtonElement>('button')].find((button) =>
+        button.textContent?.includes('Refresh deposit instructions'),
+      );
+      const measure = (element?: HTMLButtonElement) => {
+        if (!element) return null;
+        const rect = element.getBoundingClientRect();
+        const style = getComputedStyle(element);
+        return {
+          width: rect.width,
+          height: rect.height,
+          fontSize: style.fontSize,
+          borderRadius: style.borderRadius,
+          backgroundColor: style.backgroundColor,
+          color: style.color,
+        };
+      };
+      return {
+        viewport: `${innerWidth}x${innerHeight}`,
+        copy: measure(copy ?? undefined),
+        refresh: measure(refresh),
+      };
+    });
+    expect(standardizedControls.copy?.width).toBeGreaterThanOrEqual(36);
+    expect(standardizedControls.copy).toMatchObject({
+      height: 36,
+      fontSize: '13px',
+      borderRadius: '24px',
+    });
+    expect(standardizedControls.refresh).toMatchObject({
+      height: 52,
+      fontSize: '16px',
+      borderRadius: '14px',
+    });
+
     await expect(page.getByRole('img', { name: 'Deposit address QR code' })).toBeVisible();
     await expect(page.getByText(depositNetworks.networks[0].address)).toBeVisible();
     await expect(page.getByText('12 confirmations')).toBeVisible();
+  });
+
+  test('keeps deposit action targets reachable across shell aliases and viewports', async ({
+    page,
+  }) => {
+    test.setTimeout(120_000);
+
+    await page.route('**/auth/session', (route) => route.fulfill({ json: session }));
+    await page.route('**/wallet/deposit/networks**', (route) =>
+      route.fulfill({ json: depositNetworks }),
+    );
+
+    const aliases = [
+      { path: '/wallet/deposit', asset: 'USDT' },
+      { path: '/t/wallet/deposit', asset: 'USDT' },
+      { path: '/w/wallet/deposit', asset: 'USDT' },
+      { path: '/r/wallet/deposit', asset: 'USDT' },
+      { path: '/wallet/deposit/BTC', asset: 'BTC' },
+      { path: '/t/wallet/deposit/BTC', asset: 'BTC' },
+      { path: '/w/wallet/deposit/BTC', asset: 'BTC' },
+      { path: '/r/wallet/deposit/BTC', asset: 'BTC' },
+    ];
+    const cases = [
+      ...aliases.map((alias) => ({ ...alias, viewport: { width: 390, height: 844 } })),
+      { path: '/r/wallet/deposit/USDT', asset: 'USDT', viewport: { width: 320, height: 568 } },
+      { path: '/t/wallet/deposit/USDT', asset: 'USDT', viewport: { width: 768, height: 1024 } },
+      { path: '/w/wallet/deposit/USDT', asset: 'USDT', viewport: { width: 1280, height: 900 } },
+    ];
+
+    for (const { path: routePath, asset, viewport } of cases) {
+      await page.setViewportSize(viewport);
+      await page.goto(routePath);
+      await expect(page.getByLabel('Deposit network')).toHaveValue('ethereum');
+      await expect(page.getByRole('heading', { name: `Deposit ${asset}` })).toBeVisible();
+
+      const copy = page.getByRole('button', { name: `Copy ${asset} deposit address` });
+      const refresh = page.getByRole('button', { name: 'Refresh deposit instructions' });
+      await expect(copy).toBeVisible();
+      await expect(refresh).toBeVisible();
+
+      const documentWidth = await page.evaluate(() => document.documentElement.scrollWidth);
+      expect(documentWidth).toBeLessThanOrEqual(viewport.width);
+
+      await copy.scrollIntoViewIfNeeded();
+      const copyGeometry = await copy.boundingBox();
+      expect(copyGeometry?.height).toBe(36);
+      expect(copyGeometry?.width).toBeGreaterThanOrEqual(36);
+      const copyReceivesCenterHit = await copy.evaluate((element) => {
+        const rect = element.getBoundingClientRect();
+        const hit = document.elementFromPoint(
+          rect.left + rect.width / 2,
+          rect.top + rect.height / 2,
+        );
+        return hit === element || Boolean(hit && element.contains(hit));
+      });
+      expect(copyReceivesCenterHit).toBe(true);
+
+      await refresh.scrollIntoViewIfNeeded();
+      const refreshGeometry = await refresh.boundingBox();
+      expect(refreshGeometry?.height).toBe(52);
+      expect(refreshGeometry?.x).toBeGreaterThanOrEqual(0);
+      expect(refreshGeometry!.x + refreshGeometry!.width).toBeLessThanOrEqual(viewport.width);
+      const refreshReceivesCenterHit = await refresh.evaluate((element) => {
+        const rect = element.getBoundingClientRect();
+        const hit = document.elementFromPoint(
+          rect.left + rect.width / 2,
+          rect.top + rect.height / 2,
+        );
+        return hit === element || Boolean(hit && element.contains(hit));
+      });
+      expect(refreshReceivesCenterHit).toBe(true);
+    }
   });
 
   test('loads pending deposits with server filters and cursor pagination', async ({ page }) => {

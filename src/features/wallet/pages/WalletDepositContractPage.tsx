@@ -2,7 +2,9 @@ import { useEffect, useMemo, useState } from 'react';
 import { AlertTriangle, Check, Copy, Loader2, RefreshCw } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
 import { useParams } from 'react-router';
+import { CTAButton } from '@/shared/ui/CTAButton';
 import { ErrorState } from '@/shared/ui/ErrorState';
+import { IconButton } from '@/shared/ui/IconButton';
 import { Header } from '@/shared/ui/layout/Header';
 import { PageContent } from '@/shared/ui/layout/PageContent';
 import { PageLayout } from '@/shared/ui/layout/PageLayout';
@@ -201,19 +203,15 @@ export function WalletDepositContractPage() {
           <DetailRow label="Minimum deposit" value={`${selectedNetwork.minDeposit} ${asset}`} />
         </TrCard>
 
-        <button
-          type="button"
+        <CTAButton
+          variant="secondary"
+          density="standard"
+          fullWidth
           onClick={() => void networksQuery.refetch()}
-          className="flex h-12 items-center justify-center gap-2 rounded-2xl"
-          style={{
-            background: colors.surface2,
-            border: `1px solid ${colors.borderSolid}`,
-            color: colors.text2,
-          }}
         >
-          <RefreshCw size={16} />
-          Refresh deposit instructions
-        </button>
+          <RefreshCw size={16} aria-hidden="true" />
+          <span>Refresh deposit instructions</span>
+        </CTAButton>
       </PageContent>
     </PageLayout>
   );
@@ -246,16 +244,19 @@ function CopyableValue({
         >
           {value}
         </code>
-        <button
-          type="button"
+        <IconButton
+          icon={copied ? Check : Copy}
           aria-label={`Copy ${label}`}
           onClick={onCopy}
-          className="shrink-0 rounded-lg p-2"
+          variant="transparent"
+          size="md"
+          className="shrink-0"
           style={{ color: copied ? colors.successText : colors.primary }}
-        >
-          {copied ? <Check size={16} /> : <Copy size={16} />}
-        </button>
+        />
       </div>
+      <span className="sr-only" role="status" aria-live="polite">
+        {copied ? `Copied ${label}` : ''}
+      </span>
     </div>
   );
 }
