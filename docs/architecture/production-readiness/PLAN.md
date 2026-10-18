@@ -691,7 +691,7 @@ quyền deploy hoặc quyền commit thay đổi ngoài migration:
 #### Nhất quán khi người dùng yêu cầu kiểm tra lại
 
 - ID/criteria giữ ổn định: C06 và C06.01–C06.15 trong tracker; finding IDs UI-01…
-  UI-09; mỗi completion gắn SHA, paths, owner, command/env, số đo tử/mẫu, report
+  UI-10; mỗi completion gắn SHA, paths, owner, command/env, số đo tử/mẫu, report
   path/hash, local state và exact GitHub run/status. Không đổi ID để che failure.
 - Mỗi lần được hỏi “đã hoàn tất chưa” hoặc “kiểm tra lại”, AI phải đọc HEAD,
   worktree, `TRACKING.json` và evidence đúng SHA; chạy checker, xác minh remote
@@ -721,6 +721,40 @@ quyền deploy hoặc quyền commit thay đổi ngoài migration:
   evidence hiện hành theo stable IDs; cùng fingerprint phải cho cùng quyết định
   PASS/FAIL/NOT RUN/BLOCKED/N/A. Văn xuôi có thể khác, nhưng không được đổi scope,
   kết quả hay mức chắc chắn nếu không có source/evidence mới.
+
+**Khuôn đầu ra bắt buộc khi kiểm tra lại:** dùng cùng thứ tự dưới đây để hai lần
+đọc cùng fingerprint cho cùng status, số đo và bước kế. Đây là khuôn báo cáo;
+không tạo thêm nguồn trạng thái hoặc vocabulary ngoài `TRACKING.json`.
+
+1. **Đầu vào khóa:** ghi HEAD, base/merge SHA khi áp dụng, branch/remote, dirty
+   paths và hash, revision/hash của TRACKING, inventory, scripts/config liên quan,
+   runtime/browser khi áp dụng, và run ID/head SHA của GitHub. Trường không áp
+   dụng ghi `N/A` kèm lý do.
+2. **Scope và mẫu số:** ghi revision inventory cùng số source page files, active
+   route declarations, URL aliases, eligible consumers và state-matrix cells
+   thuộc lần kiểm tra. Ghi riêng numerator/denominator cho file, route, alias,
+   component consumer, test và matrix cell; không nhập chúng thành một tỷ lệ.
+3. **Status table:** có một dòng cho từng ID C06.01–C06.15 và UI finding/consumer
+   group thuộc scope. Status phải dùng đúng vocabulary của TRACKING; bằng chứng
+   dài có thể dẫn tới record/evidence, nhưng tổng số và mọi ID FAIL/NOT RUN/
+   BLOCKED/N/A phải hiện rõ.
+
+| Stable ID | Status TRACKING | Scope và số đo (n/N, revision) | Evidence ID/hash hoặc exact run/SHA | Gap và nextAction |
+| --- | --- | --- | --- | --- |
+| C06.xx / UI-xx / page-route group | status hiện hành | số đo có revision | tham chiếu kiểm được | việc kế tiếp theo dependency |
+
+4. **Tầng bằng chứng:** tách code/static/unit, browser local/mock, GitHub
+   exact-SHA, backend/staging, user acceptance và production. Không cho kết quả
+   của một tầng nâng status cho tầng khác.
+5. **So với lần kiểm trước:** fingerprint không đổi thì status, tử/mẫu, ID còn
+   mở và nextAction không đổi. Nếu input đổi, nêu delta/revision/evidence mới. Nếu
+   source, tracker, runtime hoặc CI mâu thuẫn, ghi từng bằng chứng và giữ gate
+   chưa đạt tới khi xác định nguyên nhân; không chọn kết quả thuận lợi hơn, ghi
+   đè lịch sử hoặc suy diễn pass.
+6. **Kết luận:** báo task C06 theo status hiện có, tiêu chí còn thiếu và step kế
+   được dependency cho phép. Chỉ dùng “100%” cho scope/mẫu số/revision đã khóa
+   khi mọi tiêu chí áp dụng đạt và không còn blocker; tách riêng ngoại lệ được
+   duyệt, N/A hợp lệ, cùng backend/UAT/WCAG thủ công/production chưa xác minh.
 
 #### Thứ tự khởi động
 
