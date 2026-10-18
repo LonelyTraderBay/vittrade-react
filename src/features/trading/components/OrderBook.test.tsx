@@ -44,6 +44,13 @@ function renderOrderBook() {
 }
 
 describe('OrderBook', () => {
+  it('shows an upward direction for a positive last-price change', async () => {
+    installOrderBookHandler();
+    renderWithProviders(<OrderBook pairId="btc-usdt" price={67_543.21} change24h={2.34} />);
+    expect(await screen.findByText('150.00')).toBeVisible();
+    expect(screen.getByText(/↑/)).toHaveTextContent('2.34%');
+    expect(screen.getByText('67,543.21')).toHaveStyle({ color: '#10B981' });
+  });
   it('shows the localized pending state while the order book request is in flight', () => {
     installOrderBookHandler(async () => {
       await new Promise((resolve) => setTimeout(resolve, 50));

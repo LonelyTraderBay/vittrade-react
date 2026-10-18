@@ -1,0 +1,201 @@
+{
+  "observedAt": "2026-10-13T15:33:41.801Z",
+  "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
+  "workingRuntimeSourceHashes": {
+    "docs/architecture/production-readiness/evidence/A06/run-admin-error-browser-check.mjs": "7654da5d3f93911061988a3c37dc7e4616538853a7236b656658b92cb0e66bb2",
+    "docs/architecture/production-readiness/evidence/A06/run-earn-pending-current-head-browser-check.mjs": "776fb69f84f1d3871913990c87d9e107fdc6d6495e43937703b6300d77f077ca",
+    "docs/architecture/production-readiness/evidence/A06/run-market-empty-current-head-browser-check.mjs": "968168bcb072c722b78413b773a920b9f99f718a4dfd2e805d6eb2edc01a2b24",
+    "docs/architecture/production-readiness/evidence/A06/run-market-error-current-head-browser-check.mjs": "47aac6a996760d3c6c88a0fef94458ffaf036f8c8ad546872aaaa5e83d304579",
+    "docs/architecture/production-readiness/evidence/A06/run-market-loading-current-head-browser-check.mjs": "b87c43078157707020f8412f4fe55ecaed315e541be765849d318817ce010dde",
+    "docs/architecture/production-readiness/evidence/A06/run-market-success-current-head-browser-check.mjs": "0fd7bbad017a20bc2becb7ddbc20eb8bf6ad1397414f66838e7d9a4ee00adab0",
+    "docs/architecture/production-readiness/evidence/A06/run-predictions-empty-browser-check.mjs": "0a7e44e1d90b07de2c2da50fe1c0b79d56abab49c6053d6c754fd498e26985fc",
+    "docs/architecture/production-readiness/evidence/A06/run-predictions-error-browser-check.mjs": "cea63f6b0a39c84038b0d6c4b2d594537379aa92bb9d0b8d894242ba0f282d7c",
+    "docs/architecture/production-readiness/evidence/A06/run-predictions-loading-browser-check.mjs": "1e65f74969de9fb88baa7384fddb6533d434ff48734b15d9f749f05f62032cd7",
+    "docs/architecture/production-readiness/evidence/A06/run-predictions-pending-browser-check.mjs": "19e826618280a8a9dc5db37b06f284403b1274abeca4033d834b7d7fffc35e54",
+    "docs/architecture/production-readiness/evidence/A06/run-predictions-success-browser-check.mjs": "a4367441c23512b5325a54facae49e961808fe5c85ef8068fdb487234241758b",
+    "docs/architecture/production-readiness/evidence/A06/run-predictions-unauthorized-browser-check.mjs": "7045dec9f44a1b0ad7bdc8e690fba9b845edcb85f71edc14af8c0987dfccf846",
+    "docs/architecture/production-readiness/evidence/A06/run-profile-error-browser-check.mjs": "b4e8262943b2f0e609fd0846c3e7876d2c8c98d98bce49edc4403c1793931e45",
+    "docs/architecture/production-readiness/evidence/A06/run-trading-empty-browser-check.mjs": "305d270c1c97d52debb35fa74373201429033c72185defa76a1d8620dc72d250",
+    "docs/architecture/production-readiness/evidence/A06/run-trading-error-browser-check.mjs": "2eb53f04f809643e7d7160e58c69eb89503df8a9e56596062d8ca593723180c1",
+    "docs/architecture/production-readiness/evidence/A06/run-trading-forbidden-browser-check.mjs": "6f441d923857ebb4b835e9304540a0a46bbad904dccd98f61086ccca5697a6c3",
+    "docs/architecture/production-readiness/evidence/A06/run-trading-loading-browser-check.mjs": "60d8b4e1ffd32f735a7b3947d5f3b7d08e35c38f37eecf36ad5097518e7dcfbe",
+    "docs/architecture/production-readiness/evidence/A06/run-trading-pending-browser-check.mjs": "e36b60581ab7b7caa518668d3f8fe1fe6d59c79f954a4a1252aa2d49908c92ac",
+    "docs/architecture/production-readiness/evidence/A06/run-trading-success-browser-check.mjs": "3faba092ce7bc1812e739b0bf372a701cf72977d7869e9bb886eaf1c53ee90e3",
+    "docs/architecture/production-readiness/evidence/A06/run-trading-unauthorized-browser-check.mjs": "2d391fe5357d4278ff6abddf13475663f35b044de061e86b9695ac5fbd8f3c26",
+    "docs/architecture/production-readiness/evidence/A06/run-wallet-error-current-head-browser-check.mjs": "c9aaed1f0031218ad43f94c0487355faf1724bc88d180d7abc2baaa1c9355ccf"
+  },
+  "environment": "Windows/Node24.19.0/Chromium; local owned clone and loopback MSW; production build uses reserved .test origins",
+  "build": {
+    "run": {
+      "path": "docs/architecture/production-readiness/evidence/B10/current-final-review-2026-10-13/production-build-run.json",
+      "sha256": "75673d5a87f1a9c7f369ce7890b657ff8356d27f554d7a0c888cb2061215bbe6"
+    },
+    "sourceUnchanged": true,
+    "childClosed": true,
+    "outputs": 222,
+    "jsChunks": 220,
+    "mockExclusion": "pass",
+    "bundleBudget": "pass"
+  },
+  "browserRefresh": {
+    "path": "docs/architecture/production-readiness/evidence/A06/frontend-financial-current-source-refresh-2026-10-13.json",
+    "sha256": "b4cf3e8c3aae0dcc6b8c6281406124d86d4ba866a39cccba7bc2d01cd1dcb797",
+    "passed": 81,
+    "total": 81,
+    "historicalFilesChecked": 3231,
+    "historicalBytesChanged": 0
+  },
+  "indexes": {
+    "report": {
+      "path": "docs/architecture/production-readiness/evidence/B10/current-final-review-2026-10-13/index-generators.json",
+      "sha256": "41c799908afe14e01d3a266a15fee6667ecda7d59eed7aa1f81c168eb6770b67"
+    },
+    "changed": [
+      {
+        "path": "docs/architecture/production-readiness/evidence/A06/scenario-matrix-2026-09-28.json",
+        "beforeHash": "6a11b163738f1701f7cc144d6bb6cfecb1d78ff6cbd3b063fc6fcb5336064e40",
+        "afterHash": "fe56beeb2c19fa60877d563934bc0472aebe5d5c80e6d18b866e5910469d9b4e"
+      },
+      {
+        "path": "docs/architecture/production-readiness/evidence/C05/ui-acceptance-index-2026-09-29.json",
+        "beforeHash": "29001c980d22227e84d0e3f807eff7dc9b807bc14f34f9d1e6e667415c4da5b3",
+        "afterHash": "30cba02223a569f0ead962b0c8f904d99e8cd8239dd97320812c26791d4fbc53"
+      }
+    ],
+    "summary": {
+      "domains": 15,
+      "trackedOperations": 154,
+      "exactHandlerMappings": 154,
+      "operationsWithDirectSharedHandlerTestReferences": 21,
+      "scenariosDefined": 106,
+      "scenarioRowsWithFreshBrowserEvidence": 81,
+      "scenarioRowsFullyCoveredByFreshBrowserEvidence": 38,
+      "uniqueOperationsWithFreshBrowserEvidence": 88,
+      "runtimeEvidenceFresh": false,
+      "currentHead": "0bdab349c2863008984c89366ba71f02b094a44a",
+      "runtimeEvidenceRevision": "historical_baseline",
+      "freshScenarioEvidenceSidecars": 81,
+      "registeredScenarioEvidenceSidecars": 81,
+      "historicalBaselineScenarioEvidenceSidecars": 0,
+      "historicalBaselineSidecarsWithCurrentSourceHashes": 0,
+      "sourceHashStaleScenarioEvidenceSidecars": 0,
+      "financialDomainsWithPendingUnknownDuplicateCases": [
+        "earn",
+        "p2p",
+        "predictions",
+        "trading",
+        "wallet"
+      ]
+    },
+    "uiScope": {
+      "activeRouteDeclarations": 428,
+      "retiredRouteDeclarationsExcluded": [
+        {
+          "routeId": "ROUTE-076da8bdac7d",
+          "path": "arena",
+          "reason": "Source registration is now represented by the canonical routeConfig/createProtectedRoutes route; this is a ledger identity reconciliation, not URL removal."
+        }
+      ],
+      "urlRegistrations": 1465,
+      "uniqueResolvedUrlSamples": 1396,
+      "shellUrlRegistrations": {
+        "phone": 354,
+        "tablet": 349,
+        "web": 411,
+        "responsive": 351
+      },
+      "routeDeclarationsWithPageRecords": 418,
+      "routeDeclarationsWithoutPageRecords": 10,
+      "routeDeclarationsWithDirectScenarioLinks": 11,
+      "scenarioLinks": 26,
+      "scenarioCandidates": 338,
+      "routeDeclarationsWithAnyScenarioReference": 55,
+      "personaMappingsAssigned": 17,
+      "trackedPageRecords": 331,
+      "userAcceptedPages": 0,
+      "userAcceptanceScopePages": 128,
+      "backendOperationsVerified": 0,
+      "backendOperationsTotal": 154,
+      "activeRoutesWithHistoricalPreviewUrlParity": 426,
+      "activeRoutesComparedToHistoricalResolver": 428,
+      "activeRouteDeclarationsWithStaleResolverSource": 224,
+      "activeRouteDeclarationsWithMatchingResolverSource": 204
+    }
+  },
+  "staticReview": {
+    "path": "docs/architecture/production-readiness/evidence/B10/current-final-review-2026-10-13/static-review.json",
+    "sha256": "c6a5315b6ed310d85fa881fd15fcb12b82ab9e315801afcfaf0a27f12e582f64"
+  },
+  "rawLogs": {
+    "path": "docs/architecture/production-readiness/evidence/B10/current-final-review-2026-10-13/logs.json.gz",
+    "sha256": "d2d252155ef8e2c37922d45d5b0239e401443c5cc9890823f0a5692b2a5eee42",
+    "payloadSha256": "f58036e495fcea93fba5f2fc806d1aeaf66aeb27d32ddd5712b1728eb4e7da46"
+  },
+  "applicationProfiles": {
+    "evidence": "docs/architecture/production-readiness/evidence/C03/frontend-current-runtime-2026-10-13.json",
+    "applicationAndProfileInputsStillMatch": true,
+    "standard": {
+      "passed": 59,
+      "skipped": 4,
+      "newSkips": 0
+    },
+    "authApi": {
+      "passed": 34,
+      "skipped": 0
+    },
+    "authMsw": {
+      "passed": 41,
+      "skipped": 0
+    },
+    "limits": "The three existing profile reports retain their original complete fingerprints. Eight verification runners changed afterward; this final build and 81-runner batch observe their current bytes. No historical full fingerprint was relabelled."
+  },
+  "coverage": {
+    "evidenceId": "EV-20261013-034",
+    "measurableFiles": 408,
+    "fullyCoveredFiles": 353,
+    "filesWithGaps": 55,
+    "metrics": {
+      "statements": {
+        "covered": 12359,
+        "total": 12422,
+        "missing": 63,
+        "pct": 99.49
+      },
+      "branches": {
+        "covered": 10073,
+        "total": 10250,
+        "missing": 177,
+        "pct": 98.27
+      },
+      "functions": {
+        "covered": 3970,
+        "total": 3970,
+        "missing": 0,
+        "pct": 100
+      },
+      "lines": {
+        "covered": 11448,
+        "total": 11473,
+        "missing": 25,
+        "pct": 99.78
+      }
+    }
+  },
+  "remaining": {
+    "frontend": [
+      "C03.05 aggregate100 target:55 files with measured counter gaps; preserve guards, denominator and target.",
+      "C05.03 wider route/page/viewport technical review remains open."
+    ],
+    "external": [
+      "25/106 scenario rows require approved missing contracts.",
+      "Backend/staging0/154 and user acceptance0/128 remain unverified.",
+      "Current Node22/Ubuntu hosted CI, artifact upload/download and governance enforcement are unverified.",
+      "Telemetry provider/privacy owner and staging delivery/SLO inputs are unavailable."
+    ]
+  },
+  "limits": [
+    "38 full and43 representative scenario rows cover88/154 operation IDs locally;81/81 success is not106/106 or154/154.",
+    "Historical aggregate runtime and route parity remain historical; route declarations428 and URL inventory are not all-route runtime acceptance.",
+    "No new skip, coverage exclusion, disabled guard, relaxed assertion, contract invention, backend call, push, PR or deployment."
+  ]
+}

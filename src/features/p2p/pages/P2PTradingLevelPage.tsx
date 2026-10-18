@@ -84,14 +84,19 @@ export function P2PTradingLevelPage() {
                   </span>
                   <span
                     className="px-2.5 py-1 rounded-lg"
-                    style={{ background: '#10B981', color: '#fff', fontWeight: 700, fontSize: 10 }}
+                    style={{
+                      background: 'var(--tr-buy)',
+                      color: 'var(--tr-text-on-color)',
+                      fontWeight: 700,
+                      fontSize: 10,
+                    }}
                   >
                     Hiện tại
                   </span>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <Zap size={15} color={currentLevel.color} fill={currentLevel.color} />
-                  <span style={{ color: currentLevel.color, fontSize: 13, fontWeight: 700 }}>
+                  <span style={{ color: colors.text1, fontSize: 13, fontWeight: 700 }}>
                     Phí giao dịch {fmtPct(userLevel.fee, 2)}
                   </span>
                 </div>
@@ -101,18 +106,18 @@ export function P2PTradingLevelPage() {
           <div className="px-5 py-4">
             <div className="grid grid-cols-2 gap-3">
               <Metric
-                icon={<Users size={13} color="#3B82F6" />}
+                icon={<Users size={13} color="var(--tr-link)" />}
                 label="Giao dịch hoàn tất"
                 value={String(userLevel.completedOrders)}
-                color="#3B82F6"
+                color="var(--tr-link)"
                 colors={colors}
               />
               <Metric
-                icon={<BarChart3 size={13} color="#10B981" />}
+                icon={<BarChart3 size={13} color="var(--tr-success-text)" />}
                 label="Volume tích lũy"
                 value={fmtCompact(userLevel.accumulatedVolume)}
                 sub={fmtVnd(userLevel.accumulatedVolume)}
-                color="#10B981"
+                color="var(--tr-success-text)"
                 colors={colors}
               />
             </div>
@@ -121,7 +126,7 @@ export function P2PTradingLevelPage() {
                 <span style={{ color: colors.text1, fontSize: 13, fontWeight: 700 }}>
                   Hạn mức ngày
                 </span>
-                <span style={{ color: currentLevel.color, fontSize: 13, fontWeight: 700 }}>
+                <span style={{ color: colors.text1, fontSize: 13, fontWeight: 700 }}>
                   {Math.round(dailyUsage)}%
                 </span>
               </div>
@@ -152,11 +157,14 @@ export function P2PTradingLevelPage() {
         {userLevel.currentLevel < 4 && (
           <TrCard className="p-3" accentBorder="rgba(139,92,246,0.3)">
             <div className="flex items-center gap-2">
-              <TrendingUp size={14} color="#8B5CF6" />
+              <TrendingUp size={14} color="var(--tr-accent)" />
               <span style={{ color: colors.text1, fontSize: 12, fontWeight: 600 }}>
                 Tiến trình lên Lv.{userLevel.currentLevel + 1}
               </span>
-              <span className="ml-auto" style={{ color: '#8B5CF6', fontSize: 12, fontWeight: 700 }}>
+              <span
+                className="ml-auto"
+                style={{ color: 'var(--tr-accent-text)', fontSize: 12, fontWeight: 700 }}
+              >
                 {Math.round(userLevel.nextLevelProgress * 100)}%
               </span>
             </div>
@@ -203,13 +211,15 @@ export function P2PTradingLevelPage() {
                         Lv.{level.id} {level.nameVi}
                       </span>
                       {isCurrent && (
-                        <span style={{ color: '#10B981', fontSize: 10, fontWeight: 700 }}>
+                        <span
+                          style={{ color: 'var(--tr-success-text)', fontSize: 10, fontWeight: 700 }}
+                        >
                           ĐANG DÙNG
                         </span>
                       )}
-                      {isPassed && <CheckCircle size={14} color="#10B981" />}
+                      {isPassed && <CheckCircle size={14} color="var(--tr-success-text)" />}
                     </div>
-                    <p style={{ color: level.color, fontSize: 11, fontWeight: 600 }}>
+                    <p style={{ color: colors.text2, fontSize: 11, fontWeight: 600 }}>
                       Phí {fmtPct(level.fee, 2)} · Hạn mức {fmtVnd(level.dailyLimit)} đ/ngày
                     </p>
                   </div>

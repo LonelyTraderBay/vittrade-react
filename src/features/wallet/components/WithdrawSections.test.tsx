@@ -94,6 +94,15 @@ describe('WithdrawSections', () => {
 
     expect(screen.getByText(/SMS \(\+84/)).toBeInTheDocument();
     expect(screen.getByText('Mã xác minh gồm sáu chữ số.')).toBeInTheDocument();
+    expect(screen.getByLabelText('Mã xác minh 2FA')).toHaveAttribute('aria-invalid', 'true');
+    expect(screen.getByLabelText('Mã xác minh 2FA')).toHaveAttribute(
+      'aria-describedby',
+      'withdraw-code-error',
+    );
+    expect(screen.getByText('Mã xác minh gồm sáu chữ số.')).toHaveAttribute(
+      'id',
+      'withdraw-code-error',
+    );
 
     fireEvent.change(screen.getByLabelText('Mã xác minh 2FA'), {
       target: { value: '12x345678' },

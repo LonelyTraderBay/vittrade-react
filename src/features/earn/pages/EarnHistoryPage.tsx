@@ -82,7 +82,7 @@ export function EarnHistoryPage({ domain }: { domain: EarnDomain }) {
     <PageLayout>
       <Header title={title} subtitle={`Giao dịch ${domainLabel} của bạn`} back />
       <PageContent gap="relaxed">
-        <div className="flex gap-2 overflow-x-auto" aria-label="Lọc loại giao dịch">
+        <div role="group" className="flex gap-2 overflow-x-auto" aria-label="Lọc loại giao dịch">
           {(Object.keys(operationLabels) as OperationFilter[]).map((filter) => (
             <button
               key={filter}
@@ -114,17 +114,17 @@ export function EarnHistoryPage({ domain }: { domain: EarnDomain }) {
             }
           />
         ) : (
-          <div className="flex flex-col gap-3" aria-label={`Giao dịch ${domainLabel}`}>
+          <div role="list" className="flex flex-col gap-3" aria-label={`Giao dịch ${domainLabel}`}>
             {filteredTransactions.map((transaction) => {
               const isSubscription = transaction.operation === 'subscribe';
               const Icon = isSubscription ? ArrowUpRight : ArrowDownLeft;
               return (
-                <TrCard key={transaction.id} className="p-4">
+                <TrCard key={transaction.id} role="listitem" className="p-4">
                   <div className="flex items-start gap-3">
                     <div
                       className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full"
                       style={{
-                        color: isSubscription ? '#10B981' : colors.primary,
+                        color: isSubscription ? 'var(--tr-success-text)' : colors.primary,
                         background: isSubscription
                           ? 'rgba(16,185,129,0.12)'
                           : colors.primaryAlpha12,
@@ -142,10 +142,10 @@ export function EarnHistoryPage({ domain }: { domain: EarnDomain }) {
                           style={{
                             color:
                               transaction.status === 'completed'
-                                ? '#059669'
+                                ? 'var(--tr-success-text)'
                                 : transaction.status === 'failed'
-                                  ? '#DC2626'
-                                  : '#D97706',
+                                  ? 'var(--tr-error-text)'
+                                  : 'var(--tr-warning-text)',
                             background:
                               transaction.status === 'completed'
                                 ? 'rgba(16,185,129,0.12)'

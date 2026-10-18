@@ -75,7 +75,7 @@ export function TradingOrderEntryPanel({
   const { hapticSelection } = useHaptic();
   const [showAdvancedTypes, setShowAdvancedTypes] = useState(false);
   const [trailingDelta, setTrailingDelta] = useState('2');
-  const sideColor = side === 'buy' ? '#10B981' : '#EF4444';
+  const sideColor = side === 'buy' ? c.buy : c.sell;
   const formatNum = (value: string) => value.replace(/[^\d.]/g, '');
   return (
     <PageContent gap="default">
@@ -91,8 +91,8 @@ export function TradingOrderEntryPanel({
           }}
           className="flex-1 h-11 flex items-center justify-center font-bold transition-all"
           style={{
-            background: side === 'buy' ? '#10B981' : c.surface2,
-            color: side === 'buy' ? '#fff' : c.text2,
+            background: side === 'buy' ? c.buy : c.surface2,
+            color: side === 'buy' ? 'var(--tr-text-on-color)' : c.text2,
             fontSize: 14,
           }}
         >
@@ -105,7 +105,7 @@ export function TradingOrderEntryPanel({
           }}
           className="flex-1 h-11 flex items-center justify-center font-bold transition-all"
           style={{
-            background: side === 'sell' ? '#EF4444' : c.surface2,
+            background: side === 'sell' ? c.sell : c.surface2,
             color: side === 'sell' ? '#fff' : c.text2,
             fontSize: 14,
           }}
@@ -150,7 +150,7 @@ export function TradingOrderEntryPanel({
             className="px-3 py-2 rounded-lg"
             style={{
               background: showAdvancedTypes ? 'rgba(139,92,246,0.1)' : c.surface2,
-              color: showAdvancedTypes ? '#8B5CF6' : c.text3,
+              color: showAdvancedTypes ? 'var(--tr-accent-text)' : c.text3,
               border: `1px solid ${showAdvancedTypes ? 'rgba(139,92,246,0.3)' : c.borderSolid}`,
               fontSize: 11,
               fontWeight: 600,
@@ -175,7 +175,7 @@ export function TradingOrderEntryPanel({
                   className="px-3 py-1.5 rounded-lg transition-all"
                   style={{
                     background: isActive ? 'rgba(139,92,246,0.15)' : c.surface2,
-                    color: isActive ? '#8B5CF6' : c.text2,
+                    color: isActive ? 'var(--tr-accent-text)' : c.text2,
                     border: `1px solid ${isActive ? 'rgba(139,92,246,0.4)' : c.borderSolid}`,
                     fontSize: 12,
                     fontWeight: isActive ? 700 : 500,
@@ -441,8 +441,8 @@ export function TradingOrderEntryPanel({
               background: !canPlace
                 ? c.surface2
                 : side === 'buy'
-                  ? 'linear-gradient(135deg, #10B981 0%, #059669 100%)'
-                  : 'linear-gradient(135deg, #EF4444 0%, #dc2626 100%)',
+                  ? 'linear-gradient(135deg, var(--tr-buy) 0%, var(--tr-buy-dark) 100%)'
+                  : 'linear-gradient(135deg, var(--tr-sell) 0%, var(--tr-sell-dark) 100%)',
               color: !canPlace ? c.text3 : '#fff',
               boxShadow: !canPlace
                 ? 'none'

@@ -20,6 +20,78 @@ describe('ABTestAnalyticsService', () => {
     return service;
   }
 
+  it.each([
+    [20, 0.95],
+    [19, 0.9],
+    [17, 0.8],
+  ])(
+    'reports the confidence band for 10/100 versus %i/100 conversions',
+    (conversions, confidence) => {
+      const service = createService();
+      vi.spyOn(dcaAnalytics, 'trackEvent').mockImplementation(() => undefined);
+      for (let index = 0; index < 100; index += 1) {
+        for (const [id, count] of [
+          ['full', 10],
+          ['compact', conversions],
+        ] as const) {
+          const user = `${id}-${index}`;
+          service.trackExposure(WALLET_SHORTCUT_TEST.id, id, user);
+          if (index < count)
+            service.trackConversion(WALLET_SHORTCUT_TEST.id, 'Click-Through Rate', user);
+        }
+      }
+      const result = service.getTestResults(WALLET_SHORTCUT_TEST);
+      expect(result.confidence).toBe(confidence);
+      expect(result.significance).toBe(confidence);
+      expect(result.variants.map((variant) => variant.revenue)).toEqual([undefined, undefined]);
+      expect(result.winner).toBe(
+        confidence >= WALLET_SHORTCUT_TEST.targetSignificance ? 'compact' : undefined,
+      );
+    },
+  );
+
+  it('does not claim a winner when two exposed cohorts have no conversions', () => {
+    const service = createService();
+    vi.spyOn(dcaAnalytics, 'trackEvent').mockImplementation(() => undefined);
+    for (let index = 0; index < 100; index += 1) {
+      service.trackExposure(WALLET_SHORTCUT_TEST.id, 'full', `full-${index}`);
+      service.trackExposure(WALLET_SHORTCUT_TEST.id, 'compact', `compact-${index}`);
+    }
+    expect(service.getTestResults(WALLET_SHORTCUT_TEST)).toMatchObject({
+      significance: 0,
+      confidence: 0,
+      winner: undefined,
+    });
+  });
+
+  it('counts zero-valued conversions without reporting zero revenue', () => {
+    const service = createService();
+    vi.spyOn(dcaAnalytics, 'trackEvent').mockImplementation(() => undefined);
+    service.trackExposure(WALLET_SHORTCUT_TEST.id, 'full', 'zero-revenue-user');
+    service.trackConversion(WALLET_SHORTCUT_TEST.id, 'Click-Through Rate', 'zero-revenue-user', 0);
+
+    expect(service.getTestResults(WALLET_SHORTCUT_TEST).variants[0]).toMatchObject({
+      exposures: 1,
+      conversions: 1,
+      revenue: undefined,
+      arpu: undefined,
+    });
+  });
+
+  it('returns no comparison when a test only defines a control variant', () => {
+    const service = createService();
+    expect(
+      service.getTestResults({
+        ...WALLET_SHORTCUT_TEST,
+        variants: [WALLET_SHORTCUT_TEST.variants[0]],
+      }),
+    ).toMatchObject({
+      significance: 0,
+      confidence: 0,
+      winner: undefined,
+    });
+  });
+
   it('records one exposure per user and associates conversions with the assigned variant', () => {
     const service = createService();
     const trackEvent = vi.spyOn(dcaAnalytics, 'trackEvent').mockImplementation(() => undefined);

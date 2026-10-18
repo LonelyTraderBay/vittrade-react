@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-10-14T08:03:00.000Z",
+  "sourceHead": "9a2b4cfddcf0c9de0cdb27071fc13c78598ec8d3",
+  "kind": "local_e2e_runner_incomplete",
+  "environment": "Windows local; Node v24.19.0; Playwright Chromium; repository run-with-artifacts wrapper; local production preview with API fixtures; no backend/staging.",
+  "runs": [
+    {
+      "id": "2026-10-14T07-59-25-821Z-playwright-b24a5aae-4d15-4da5-80ad-b0be663db002",
+      "command": "npm.cmd run test:e2e",
+      "reporterOutput": "60 passing case markers and 4 configured skips were printed; no final Playwright summary was captured.",
+      "manifestStatus": "running",
+      "childClosed": false,
+      "exitCode": null,
+      "finishedAt": null
+    },
+    {
+      "id": "2026-10-14T08-02-54-015Z-playwright-3090cd65-dbe5-49f7-a088-cc44cfee452a",
+      "command": "npm.cmd run test:e2e -- --reporter=dot",
+      "reporterOutput": "The dot reporter emitted test progress and 4 configured skips; no final Playwright summary was captured.",
+      "manifestStatus": "running",
+      "childClosed": false,
+      "exitCode": null,
+      "finishedAt": null
+    }
+  ],
+  "expected": "The repository E2E command exits normally, records a terminal run manifest and produces a final Playwright summary on the current source.",
+  "actual": "Both attempts emitted test progress but remained without a terminal Playwright summary, child close, exit code or finalized run manifest. They were interrupted after waiting; the artifacts remain preserved with status=running and childClosed=false.",
+  "result": "fail",
+  "limitations": [
+    "This records an incomplete local test harness run, not an assertion failure or a product defect attribution.",
+    "Do not count the printed case markers or configured skips as a successful E2E run.",
+    "A prior local E2E on iteration 61 passed 60 cases with 4 configured skips, but it is not exact-source or hosted-CI evidence for this iteration."
+  ],
+  "artifacts": [
+    ".artifacts/runs/2026-10-14T07-59-25-821Z-playwright-b24a5aae-4d15-4da5-80ad-b0be663db002/run.json",
+    ".artifacts/runs/2026-10-14T08-02-54-015Z-playwright-3090cd65-dbe5-49f7-a088-cc44cfee452a/run.json"
+  ]
+}

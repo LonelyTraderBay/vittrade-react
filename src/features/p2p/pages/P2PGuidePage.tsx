@@ -152,7 +152,7 @@ export function P2PGuidePage() {
                   className="w-10 h-10 rounded-xl flex items-center justify-center"
                   style={{ background: 'rgba(16,185,129,0.12)' }}
                 >
-                  <Zap size={18} color="#10B981" />
+                  <Zap size={18} color="var(--tr-success-text)" />
                 </div>
                 <div>
                   <p style={{ color: c.text1, fontSize: 14, fontWeight: 700 }}>Bắt đầu ngay!</p>
@@ -189,7 +189,7 @@ export function P2PGuidePage() {
                     className="rounded-xl px-3 py-2.5"
                     style={{ background: c.surface2 }}
                   >
-                    <span style={{ color: '#3B82F6', fontSize: 11, fontWeight: 700 }}>
+                    <span style={{ color: 'var(--tr-link)', fontSize: 11, fontWeight: 700 }}>
                       {item.term}:{' '}
                     </span>
                     <span style={{ color: c.text2, fontSize: 11, lineHeight: 1.6 }}>
@@ -214,8 +214,8 @@ export function P2PGuidePage() {
               }}
             >
               <div className="flex items-center gap-2.5 mb-2">
-                <Shield size={16} color="#EF4444" />
-                <span style={{ color: '#EF4444', fontSize: 14, fontWeight: 700 }}>
+                <Shield size={16} color="var(--tr-error-text)" />
+                <span style={{ color: 'var(--tr-error-text)', fontSize: 14, fontWeight: 700 }}>
                   An toàn giao dịch
                 </span>
               </div>
@@ -248,8 +248,8 @@ export function P2PGuidePage() {
             {/* Emergency */}
             <TrCard className="p-4" accentBorder="rgba(239,68,68,0.3)">
               <div className="flex items-center gap-2 mb-2">
-                <AlertTriangle size={14} color="#EF4444" />
-                <span style={{ color: '#EF4444', fontSize: 13, fontWeight: 700 }}>
+                <AlertTriangle size={14} color="var(--tr-error-text)" />
+                <span style={{ color: 'var(--tr-error-text)', fontSize: 13, fontWeight: 700 }}>
                   Nghi ngờ lừa đảo?
                 </span>
               </div>
@@ -320,7 +320,7 @@ export function P2PGuidePage() {
                         style={{
                           fontSize: 10,
                           fontWeight: 700,
-                          color: '#3B82F6',
+                          color: 'var(--tr-link)',
                           letterSpacing: 0.5,
                         }}
                       >
@@ -414,7 +414,7 @@ function FaqItem({
             transition: 'background 150ms ease',
           }}
         >
-          <HelpCircle size={13} color={isOpen ? '#3B82F6' : c.text3} />
+          <HelpCircle size={13} color={isOpen ? 'var(--tr-link)' : c.text3} />
         </div>
         <span
           className="flex-1 text-left"

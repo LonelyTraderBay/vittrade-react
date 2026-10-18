@@ -49,7 +49,12 @@ export function ProtectedRoute({
     hasPermission(permission),
   );
   if (!hasRequiredRoles || !hasRequiredPermissions) {
-    return <div role="alert">Bạn không có quyền truy cập chức năng này.</div>;
+    return (
+      <div role="alert">
+        <h1>Không có quyền truy cập</h1>
+        <p>Bạn không có quyền truy cập chức năng này.</p>
+      </div>
+    );
   }
 
   return <Outlet />;

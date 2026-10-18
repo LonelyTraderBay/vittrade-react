@@ -1,0 +1,140 @@
+{
+  "schemaVersion": 1,
+  "itemId": "C05.03",
+  "observedAt": "2026-10-13T22:48:12.796Z",
+  "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
+  "sourceState": "Dirty local working tree; reports bind current code through the iteration session source hashes.",
+  "dirtyFileHashes": {
+    "src/app/components/layout/PlatformSwitcher.tsx": "86c81c99ff493b799d34a34dabf59208341131fc17ccf069de2c3431a750e845",
+    "src/app/components/layout/RootLayout.tsx": "9d0e6078b25c2248bc6e214d1c5e9697b908a812fa43858b79d4c436cc9e1870",
+    "src/app/routes.ts": "bf67ffd9f2f82639de32f9e7844e59c7d624fa7c1d3f801c3efe97cc29b4f5c0",
+    "src/app/components/layout/WebShell.tsx": "b8a677a9415f951b8bd259fb3b56d1f54f3b36c34cc1f388907676c2a67b9c2c",
+    "src/app/components/layout/BottomNav.tsx": "057e3e3fc3419388bb99e11916b3cbd55ee9461df5f05200993926acca1fd267",
+    "src/app/components/layout/PlatformSwitcher.test.tsx": "b27315e5c00f3bae7f4a1139ca8704439b9dbda1bf5ee8287fa7d62d2251d258",
+    "src/app/components/layout/BottomNav.test.tsx": "f73c6f59c130fce9d835b1ec471c5891be26c29963ea897e4ba916bdcf4a5599",
+    "src/app/components/layout/WebShell.test.tsx": "8b22942ccef1425a5342e4813ebfab97b5e7986d5632161a48de777243b8af15",
+    "src/app/router/route-contract.test.ts": "5ee85a1f2cb7ac266137c28af25b38e6ab6fab2f04a91c2a9038561af6e0d637"
+  },
+  "review": {
+    "scope": "Responsive route review for the 372 canonical /w route entries at mobile and tablet viewport widths; additional visual samples reviewed separately.",
+    "interpretation": "The scanner records 328 pathname changes when the selected shell has the same route renderer; route-contract owner tests require same-renderer identity and retain web-only routes. These are shell path transitions, not 404 observations.",
+    "mobile": {
+      "environment": {
+        "baseUrl": "http://127.0.0.1:4173",
+        "browser": "Playwright Chromium",
+        "viewport": "390x844 mobile light theme",
+        "externalRequestsBlocked": true,
+        "backend": "not contacted; local Vite/MSW only",
+        "accessibility": "axe not run; @axe-core/playwright absent"
+      },
+      "report": "C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\10\\14\\01a13394-3caa-7930-a58f-e3e6c61b066f\\vittrade-audit\\implementation\\mobile-final-iteration55-style-fix\\mobile-route-review.json",
+      "sha256": "8b75d6307c54e5a34e98c8f3e3debb0c3b23bdb1dcb113f34d70f49e6b6a5d13",
+      "routes": 372,
+      "pathChanges": 328,
+      "notFound": 0,
+      "horizontalOverflow": 0,
+      "pageErrors": 0,
+      "consoleErrors": 19,
+      "consoleStatusCounts": {
+        "404": 10,
+        "503": 9
+      },
+      "apiResponsesByStatus": {
+        "200": 102,
+        "404": 10,
+        "503": 9
+      },
+      "fixedCollisions": 0,
+      "hiddenOverflowCandidates": 15,
+      "externalRequests": 3
+    },
+    "tablet": {
+      "environment": {
+        "baseUrl": "http://127.0.0.1:4173",
+        "browser": "Playwright Chromium",
+        "viewport": "900x900 tablet-width light theme",
+        "externalRequestsBlocked": true,
+        "backend": "not contacted; local Vite/MSW only",
+        "accessibility": "axe not run; @axe-core/playwright absent"
+      },
+      "report": "C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\10\\14\\01a13394-3caa-7930-a58f-e3e6c61b066f\\vittrade-audit\\implementation\\tablet-final-iteration55-style-fix\\mobile-route-review.json",
+      "sha256": "0d6582b6bdbc5e0016f671bb018d5de78ea12a027bc8c281313b7ecc1762476e",
+      "routes": 372,
+      "pathChanges": 328,
+      "notFound": 0,
+      "horizontalOverflow": 0,
+      "pageErrors": 0,
+      "consoleErrors": 19,
+      "consoleStatusCounts": {
+        "404": 10,
+        "503": 9
+      },
+      "apiResponsesByStatus": {
+        "200": 102,
+        "404": 10,
+        "503": 9
+      },
+      "fixedCollisions": 0,
+      "hiddenOverflowCandidates": 36,
+      "externalRequests": 3
+    },
+    "browserRootCauseAndFix": {
+      "finding": "Tablet route traversal produced 2 React style conflict warnings when full-bleed and standard WebShell children reused a div with conflicting inline padding shorthand/longhand properties.",
+      "repair": "Full-bleed mobile clearance now uses the existing Tailwind pb-24 utility instead of an inline paddingBottom property; WebShell owner test asserts the class.",
+      "beforeConsoleErrorCount": 21,
+      "afterConsoleErrorCount": 19,
+      "remainingErrors": "19 local MSW responses: 10 fixture-item 404 and 9 mock-source 503. All external requests were blocked by the scan; backend was not contacted."
+    },
+    "targetedFullBleedMobile": {
+      "report": "C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\10\\14\\01a13394-3caa-7930-a58f-e3e6c61b066f\\vittrade-audit\\implementation\\mobile-webshell-clearance-iteration55-final\\webshell-mobile-clearance.json",
+      "reportSha256": "1e2a389793778e5387abfe487e5a7a2baf03234e2ee1831415911c1d36e00bce",
+      "screenshot": "C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\10\\14\\01a13394-3caa-7930-a58f-e3e6c61b066f\\vittrade-audit\\implementation\\mobile-webshell-clearance-iteration55-final\\web-only-fullbleed-analytics-mobile.png",
+      "screenshotSha256": "bbd5d4a22a3825ce32341fd21df7a012289e27ca3bcce98e61ad6da0bcdbb08a",
+      "expected": {
+        "path": "/w/trade/analytics",
+        "computedPaddingBottom": "96px",
+        "navVisible": true
+      },
+      "actual": {
+        "path": "/w/trade/analytics",
+        "h1": [
+          "Trade Analytics"
+        ],
+        "webShell": true,
+        "fullBleedClearanceClass": true,
+        "computedPaddingBottom": "96px",
+        "navVisible": true,
+        "navBottom": 844,
+        "viewportHeight": 844,
+        "documentWidth": 390,
+        "pageErrors": [],
+        "consoleErrors": [],
+        "externalRequestCount": 0
+      },
+      "result": "pass"
+    },
+    "visualReview": {
+      "representativeScreenshotsReviewed": 14,
+      "additionalScreenshotsReviewed": [
+        "web-only-address-book-mobile.png",
+        "dca-dynamic-amount-mobile.png",
+        "103-w_markets_movers.png",
+        "352-w_wallet.png",
+        "137-w_p2p_chat_p2p001.png",
+        "032-w_auth_2fa-setup.png",
+        "tablet-final-iteration55-style-fix/001-w_address-book.png",
+        "tablet-final-iteration55-style-fix/137-w_p2p_chat_p2p001.png",
+        "web-only-fullbleed-analytics-mobile.png"
+      ],
+      "findings": "Address values and long market/wallet labels show ellipsis; screen-reader-only labels remain visually 1px; representative address-book and P2P tablet captures remain readable. 15 mobile and 36 tablet hidden-overflow candidates remain in the report and are not blanket-cleared by the visual sample."
+    },
+    "accessibility": {
+      "status": "not_run",
+      "reason": "@axe-core/playwright is absent in the local dependency tree; no package installed."
+    },
+    "environmentLimit": "Local Vite/MSW only; API calls were mocked, non-local browser requests blocked, and backend/staging was not contacted."
+  },
+  "result": "pass",
+  "artifact": "C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\10\\14\\01a13394-3caa-7930-a58f-e3e6c61b066f\\vittrade-audit\\implementation\\mobile-final-iteration55-style-fix\\mobile-route-review.json; C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\10\\14\\01a13394-3caa-7930-a58f-e3e6c61b066f\\vittrade-audit\\implementation\\tablet-final-iteration55-style-fix\\mobile-route-review.json; C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\10\\14\\01a13394-3caa-7930-a58f-e3e6c61b066f\\vittrade-audit\\implementation\\mobile-webshell-clearance-iteration55-final\\webshell-mobile-clearance.json; C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\10\\14\\01a13394-3caa-7930-a58f-e3e6c61b066f\\vittrade-audit\\implementation\\mobile-webshell-clearance-iteration55-final\\web-only-fullbleed-analytics-mobile.png",
+  "notes": "Technical route/viewport sweep only. The generic report pathChanges count does not represent a wrong-page count. C05.03 formal acceptance stays 0/128; no axe run, exhaustive screenshot acceptance or human sign-off is claimed."
+}

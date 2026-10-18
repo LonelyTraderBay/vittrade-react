@@ -5,6 +5,23 @@ import { CoachmarkService, type CoachmarkScreen } from './CoachmarkService';
 describe('CoachmarkService storage', () => {
   afterEach(() => vi.restoreAllMocks());
 
+  it.each([
+    null,
+    [],
+    {},
+    { seen: 'home-modules-overview', dismissed: [], disabled: false, lastShown: 0 },
+    { seen: [], dismissed: [1], disabled: false, lastShown: 0 },
+    { seen: [], dismissed: [], disabled: 'false', lastShown: 0 },
+    { seen: [], dismissed: [], disabled: false, lastShown: 'yesterday' },
+  ])('recovers from structurally invalid persisted state: %j', (stored) => {
+    vi.spyOn(browserStorage.local, 'getItem').mockReturnValue(JSON.stringify(stored));
+    vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+    const service = new CoachmarkService();
+    expect(service.getState()).toEqual({ seen: [], dismissed: [], disabled: false, lastShown: 0 });
+    expect(() => service.getForScreen('home')).not.toThrow();
+    expect(service.hasUnseenForScreen('home')).toBe(true);
+  });
+
   it('restores persisted coachmark state and saves updates through browser storage', () => {
     vi.spyOn(browserStorage.local, 'getItem').mockReturnValue(
       JSON.stringify({ seen: [], dismissed: [], disabled: false, lastShown: 0 }),

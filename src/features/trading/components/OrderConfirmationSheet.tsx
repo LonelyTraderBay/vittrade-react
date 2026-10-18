@@ -8,6 +8,7 @@ import type { TPSLValues } from '../model/trading-types';
 export interface OrderConfirmationSheetProps {
   open: boolean;
   isPlacing: boolean;
+  canWriteTrading: boolean;
   side: OrderSide;
   pair: { symbol: string; baseAsset: string };
   orderTypeLabel: string;
@@ -23,6 +24,7 @@ export interface OrderConfirmationSheetProps {
 export function OrderConfirmationSheet({
   open,
   isPlacing,
+  canWriteTrading,
   side,
   pair,
   orderTypeLabel,
@@ -40,6 +42,11 @@ export function OrderConfirmationSheet({
   return (
     <BottomSheetV2 open={open} onClose={onClose} title="Xác nhận lệnh" preventClose={isPlacing}>
       <div className="flex flex-col gap-4">
+        {!canWriteTrading && (
+          <p role="alert" className="text-sm" style={{ color: colors.errorText }}>
+            Trading permission is required to place an order.
+          </p>
+        )}
         <div
           className="rounded-2xl p-4 flex flex-col gap-3"
           style={{ background: colors.surface2 }}
@@ -107,7 +114,7 @@ export function OrderConfirmationSheet({
         <button
           type="button"
           onClick={onConfirm}
-          disabled={isPlacing}
+          disabled={isPlacing || !canWriteTrading}
           data-testid="trade-confirm-submit"
           className="w-full rounded-2xl flex items-center justify-center gap-2 font-semibold text-white text-base ripple"
           style={{

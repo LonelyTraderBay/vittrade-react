@@ -171,7 +171,7 @@ export function QuickPairSwitcher({
                       className="w-8 h-8 rounded-full flex items-center justify-center"
                       style={{ background: pair.logoColor + '22' }}
                     >
-                      <span style={{ color: pair.logoColor, fontSize: 10, fontWeight: 700 }}>
+                      <span style={{ color: c.text1, fontSize: 10, fontWeight: 700 }}>
                         {pair.baseAsset.slice(0, 3)}
                       </span>
                     </div>
@@ -205,7 +205,7 @@ export function QuickPairSwitcher({
                     </p>
                     <p
                       style={{
-                        color: isPos ? '#10B981' : '#EF4444',
+                        color: isPos ? c.successText : c.errorText,
                         fontSize: 11,
                         fontFamily: 'monospace',
                       }}

@@ -81,7 +81,7 @@ interface TrCardProps {
   padding?: number | string;
   /** Vertical alignment when card has fixed/min height */
   contentAlign?: CardContentAlign;
-  /** HTML element to render */
+  /** HTML element to render; "button" always uses type="button". Use Button or CTAButton for form submission. */
   as?: BaseElement;
   /** Additional inline styles (merged after variant tokens) */
   style?: React.CSSProperties;
@@ -174,6 +174,14 @@ export function TrCard({
     ) : (
       children
     );
+
+  if (Component === 'button') {
+    return (
+      <button {...rest} type="button" className={classes} style={mergedStyle}>
+        {content}
+      </button>
+    );
+  }
 
   return (
     <Component className={classes} style={mergedStyle} {...rest}>

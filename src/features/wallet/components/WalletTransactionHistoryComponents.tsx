@@ -63,7 +63,7 @@ export function TransactionHistoryRow({
       <span style={{ color: colors.text2 }}>{transaction.asset}</span>
       <span
         className="text-right"
-        style={{ color: debit ? '#EF4444' : '#10B981', fontWeight: 600 }}
+        style={{ color: debit ? colors.errorText : colors.successText, fontWeight: 600 }}
       >
         {debit ? '-' : '+'}
         {formatAmount(transaction.amount)}

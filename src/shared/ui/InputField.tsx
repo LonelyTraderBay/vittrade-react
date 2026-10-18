@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useId, useState } from 'react';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { textRoleSize } from '@/shared/theme/typography';
 
@@ -14,7 +14,7 @@ export interface InputFieldProps extends Omit<
   'prefix'
 > {
   /** Optional label above input */
-  label?: string;
+  label?: React.ReactNode;
   /** Optional instructions connected to the input for visual and assistive-technology users */
   helper?: string;
   /** Error message (turns border red) */
@@ -47,9 +47,16 @@ export function InputField({
 }: InputFieldProps) {
   const c = useThemeColors();
   const [focused, setFocused] = useState(false);
-  const borderColor = error ? '#EF4444' : focused ? c.primary : c.borderSolid;
+  const borderColor = error ? 'var(--input-border-error)' : focused ? c.primary : c.borderSolid;
   const focusShadow = focused ? `0 0 0 2px ${error ? c.text1 : 'rgba(229, 138, 0, 0.25)'}` : 'none';
-  const inputId = id || (label ? `input-${label.replace(/\s+/g, '-').toLowerCase()}` : undefined);
+  const generatedId = useId();
+  const inputId =
+    id ||
+    (typeof label === 'string' && label
+      ? 'input-' + label.replace(/\s+/g, '-').toLowerCase()
+      : label
+        ? 'input-' + generatedId.replace(/:/g, '')
+        : undefined);
   const helperId = helper && inputId ? `${inputId}-helper` : undefined;
   const errorId = error && inputId ? `${inputId}-error` : undefined;
   const describedBy = [
@@ -158,7 +165,7 @@ export function InputWrapper({
 }: InputWrapperProps) {
   const c = useThemeColors();
   const [focused, setFocused] = useState(false);
-  const borderColor = error ? '#EF4444' : focused ? c.primary : c.borderSolid;
+  const borderColor = error ? 'var(--input-border-error)' : focused ? c.primary : c.borderSolid;
   const focusShadow = focused && !error ? '0 0 0 2px rgba(229, 138, 0, 0.25)' : 'none';
 
   return (
@@ -189,6 +196,15 @@ export function InputWrapper({
           ...style,
         }}
         onClick={onClick}
+        role={onClick ? 'button' : undefined}
+        aria-label={onClick ? label : undefined}
+        onKeyDown={(event) => {
+          if (event.target !== event.currentTarget || !onClick) return;
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            onClick();
+          }
+        }}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
         tabIndex={onClick ? 0 : undefined}

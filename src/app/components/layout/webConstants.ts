@@ -81,7 +81,7 @@ const EXPLICIT_FULL_BLEED = ['/w/scanner', '/w/trade/analytics'];
  */
 export function isFullBleedRoute(pathname: string): boolean {
   // Check explicit full-bleed routes first
-  if (EXPLICIT_FULL_BLEED.some((route) => pathname.startsWith(route))) {
+  if (EXPLICIT_FULL_BLEED.some((route) => pathname === route || pathname.startsWith(`${route}/`))) {
     return true;
   }
 
@@ -93,9 +93,7 @@ export function isFullBleedRoute(pathname: string): boolean {
       return false;
     }
     // Otherwise it's a trading pair page (full-bleed)
-    if (segment && segment.length > 0) {
-      return true;
-    }
+    return Boolean(segment);
   }
 
   return false;
