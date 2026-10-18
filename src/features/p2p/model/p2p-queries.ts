@@ -43,6 +43,11 @@ export const p2pQueryKeys = {
   twoFactorSettings: () => ['p2p', 'security', '2fa'] as const,
 };
 
+function requireP2PResourceId(id: string | undefined) {
+  if (!id?.trim()) throw new Error('P2P resource ID is required.');
+  return id;
+}
+
 export function useP2PAdsQuery(query: P2PAdsQuery = {}) {
   return useQuery({
     queryKey: p2pQueryKeys.ads(query),
@@ -175,9 +180,9 @@ export function useP2PChatMessageMutation(orderId: string | undefined) {
     }: {
       request: P2PChatMessageRequest;
       idempotencyKey: string;
-    }) => p2pApi.sendChatMessage(orderId!, request, idempotencyKey),
+    }) => p2pApi.sendChatMessage(requireP2PResourceId(orderId), request, idempotencyKey),
     onSuccess: (chat) => {
-      queryClient.setQueryData(p2pQueryKeys.chat(orderId ?? ''), chat);
+      queryClient.setQueryData(p2pQueryKeys.chat(orderId!), chat);
     },
   });
 }
@@ -270,10 +275,10 @@ export function useP2PMarkPaidMutation(orderId: string | undefined) {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({ idempotencyKey }: { idempotencyKey: string }) =>
-      p2pApi.markOrderPaid(orderId!, idempotencyKey),
+      p2pApi.markOrderPaid(requireP2PResourceId(orderId), idempotencyKey),
     onSuccess: async () => {
       await Promise.all([
-        queryClient.invalidateQueries({ queryKey: p2pQueryKeys.order(orderId ?? '') }),
+        queryClient.invalidateQueries({ queryKey: p2pQueryKeys.order(orderId!) }),
         queryClient.invalidateQueries({ queryKey: p2pQueryKeys.ordersRoot }),
       ]);
     },
@@ -289,10 +294,10 @@ export function useP2PReleaseOrderMutation(orderId: string | undefined) {
     }: {
       verificationToken: string;
       idempotencyKey: string;
-    }) => p2pApi.releaseOrder(orderId!, verificationToken, idempotencyKey),
+    }) => p2pApi.releaseOrder(requireP2PResourceId(orderId), verificationToken, idempotencyKey),
     onSuccess: async () => {
       await Promise.all([
-        queryClient.invalidateQueries({ queryKey: p2pQueryKeys.order(orderId ?? '') }),
+        queryClient.invalidateQueries({ queryKey: p2pQueryKeys.order(orderId!) }),
         queryClient.invalidateQueries({ queryKey: p2pQueryKeys.ordersRoot }),
       ]);
     },
@@ -301,14 +306,14 @@ export function useP2PReleaseOrderMutation(orderId: string | undefined) {
 
 export function useP2PReleaseChallengeMutation(orderId: string | undefined) {
   return useMutation({
-    mutationFn: () => p2pApi.createReleaseChallenge(orderId!),
+    mutationFn: () => p2pApi.createReleaseChallenge(requireP2PResourceId(orderId)),
   });
 }
 
 export function useP2PReleaseVerificationMutation(orderId: string | undefined) {
   return useMutation({
     mutationFn: ({ challengeId, code }: { challengeId: string; code: string }) =>
-      p2pApi.verifyReleaseChallenge(orderId!, challengeId, code),
+      p2pApi.verifyReleaseChallenge(requireP2PResourceId(orderId), challengeId, code),
   });
 }
 
@@ -398,10 +403,10 @@ export function useP2PCancelOrderMutation(orderId: string | undefined) {
     }: {
       request: P2PCancelOrderRequest;
       idempotencyKey: string;
-    }) => p2pApi.cancelOrder(orderId!, request, idempotencyKey),
+    }) => p2pApi.cancelOrder(requireP2PResourceId(orderId), request, idempotencyKey),
     onSuccess: async () => {
       await Promise.all([
-        queryClient.invalidateQueries({ queryKey: p2pQueryKeys.order(orderId ?? '') }),
+        queryClient.invalidateQueries({ queryKey: p2pQueryKeys.order(orderId!) }),
         queryClient.invalidateQueries({ queryKey: p2pQueryKeys.ordersRoot }),
       ]);
     },
@@ -417,10 +422,10 @@ export function useP2PRateOrderMutation(orderId: string | undefined) {
     }: {
       request: P2PRateOrderRequest;
       idempotencyKey: string;
-    }) => p2pApi.rateOrder(orderId!, request, idempotencyKey),
+    }) => p2pApi.rateOrder(requireP2PResourceId(orderId), request, idempotencyKey),
     onSuccess: async () => {
       await Promise.all([
-        queryClient.invalidateQueries({ queryKey: p2pQueryKeys.order(orderId ?? '') }),
+        queryClient.invalidateQueries({ queryKey: p2pQueryKeys.order(orderId!) }),
         queryClient.invalidateQueries({ queryKey: p2pQueryKeys.ordersRoot }),
       ]);
     },
@@ -436,10 +441,10 @@ export function useP2PPaymentProofMutation(orderId: string | undefined) {
     }: {
       request: P2PPaymentProofRequest;
       idempotencyKey: string;
-    }) => p2pApi.submitPaymentProof(orderId!, request, idempotencyKey),
+    }) => p2pApi.submitPaymentProof(requireP2PResourceId(orderId), request, idempotencyKey),
     onSuccess: async () => {
       await Promise.all([
-        queryClient.invalidateQueries({ queryKey: p2pQueryKeys.order(orderId ?? '') }),
+        queryClient.invalidateQueries({ queryKey: p2pQueryKeys.order(orderId!) }),
         queryClient.invalidateQueries({ queryKey: p2pQueryKeys.ordersRoot }),
       ]);
     },
@@ -525,9 +530,9 @@ export function useP2PDisputeMessageMutation(disputeId: string | undefined) {
     }: {
       request: P2PDisputeMessageRequest;
       idempotencyKey: string;
-    }) => p2pApi.sendDisputeMessage(disputeId!, request, idempotencyKey),
+    }) => p2pApi.sendDisputeMessage(requireP2PResourceId(disputeId), request, idempotencyKey),
     onSuccess: async (dispute) => {
-      queryClient.setQueryData(p2pQueryKeys.dispute(disputeId ?? ''), dispute);
+      queryClient.setQueryData(p2pQueryKeys.dispute(disputeId!), dispute);
       await queryClient.invalidateQueries({ queryKey: p2pQueryKeys.disputesRoot });
     },
   });
@@ -542,9 +547,9 @@ export function useP2PDisputeEscalationMutation(disputeId: string | undefined) {
     }: {
       request: P2PDisputeEscalationRequest;
       idempotencyKey: string;
-    }) => p2pApi.escalateDispute(disputeId!, request, idempotencyKey),
+    }) => p2pApi.escalateDispute(requireP2PResourceId(disputeId), request, idempotencyKey),
     onSuccess: async (dispute) => {
-      queryClient.setQueryData(p2pQueryKeys.dispute(disputeId ?? ''), dispute);
+      queryClient.setQueryData(p2pQueryKeys.dispute(disputeId!), dispute);
       await queryClient.invalidateQueries({ queryKey: p2pQueryKeys.disputesRoot });
     },
   });

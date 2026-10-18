@@ -136,6 +136,7 @@ export function StatusPill({
 
   return (
     <Tag
+      type={onClick ? 'button' : undefined}
       onClick={onClick}
       className={`inline-flex items-center shrink-0 ${className}`}
       style={{

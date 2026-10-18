@@ -1,0 +1,133 @@
+{
+  "observedAt": "2026-10-13T14:10:41.257Z",
+  "sourceHead": "511e003798d76c70178ff2551752d4c86436a95a",
+  "branch": "codex/frontend-readiness-remediation-20261013",
+  "commits": [
+    {
+      "priority": "P0",
+      "head": "511e003798d76c70178ff2551752d4c86436a95a",
+      "parent": "cf07c54809b248871d59a41627fbaf138b8383d3",
+      "message": "P0: lọc lỗi service release và bảo vệ dữ liệu chẩn đoán"
+    }
+  ],
+  "proofs": [
+    {
+      "path": "src/app/__tests__/service-diagnostics.test.tsx",
+      "blobId": "8225e3d164cae0ae408940084936e7995071e998",
+      "filteredBlobId": "8225e3d164cae0ae408940084936e7995071e998",
+      "committedSha256": "1eb7dbbcf2f77bcf3ed8acf49ca4ac83ec2e573597ea30bd715cf6974e0a5a15",
+      "workingSha256": "1eb7dbbcf2f77bcf3ed8acf49ca4ac83ec2e573597ea30bd715cf6974e0a5a15",
+      "sourceHead": "511e003798d76c70178ff2551752d4c86436a95a",
+      "priority": "P0",
+      "previous": {
+        "sourceHead": null,
+        "sha256": null
+      },
+      "currentFilteredBlobId": "8225e3d164cae0ae408940084936e7995071e998"
+    },
+    {
+      "path": "src/app/hooks/useLocalStorage.ts",
+      "blobId": "6347efe1adafffaae9e80b5adf66bbcdb9f0ce33",
+      "filteredBlobId": "6347efe1adafffaae9e80b5adf66bbcdb9f0ce33",
+      "committedSha256": "2f722d40668c73c45386b70fe3e8a9289e13bf59bb9ed68dd263298118d031e0",
+      "workingSha256": "2f722d40668c73c45386b70fe3e8a9289e13bf59bb9ed68dd263298118d031e0",
+      "sourceHead": "511e003798d76c70178ff2551752d4c86436a95a",
+      "priority": "P0",
+      "previous": {
+        "sourceHead": "075517d81f235e6096c09946a2383442a590cd26",
+        "sha256": "2d0d4d641dbc1410ed22863d0c210c9cf6938134e3ab41e9b0d2c36f50592e8d"
+      },
+      "currentFilteredBlobId": "6347efe1adafffaae9e80b5adf66bbcdb9f0ce33"
+    },
+    {
+      "path": "src/app/services/CoachmarkService.ts",
+      "blobId": "010d2948f9685b40c1d7ef85345e7f073a9dbf38",
+      "filteredBlobId": "010d2948f9685b40c1d7ef85345e7f073a9dbf38",
+      "committedSha256": "7659d8e9faaa405875ada5d0c5b1d6e16378877b0cb6e1650cb0fcf78cefed7c",
+      "workingSha256": "7659d8e9faaa405875ada5d0c5b1d6e16378877b0cb6e1650cb0fcf78cefed7c",
+      "sourceHead": "511e003798d76c70178ff2551752d4c86436a95a",
+      "priority": "P0",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "126ab2390c2b022916f9e8e8d904356b270e77906318fc3e9f62e783bdcf5065"
+      },
+      "currentFilteredBlobId": "010d2948f9685b40c1d7ef85345e7f073a9dbf38"
+    },
+    {
+      "path": "src/app/services/FeatureFlagService.ts",
+      "blobId": "72078eab51583b02213ac0bd7b415784a05b352c",
+      "filteredBlobId": "72078eab51583b02213ac0bd7b415784a05b352c",
+      "committedSha256": "9446b135a1d197f3d84164d088c64beb7624f66cf5292e47f70b6a7298c2165a",
+      "workingSha256": "9446b135a1d197f3d84164d088c64beb7624f66cf5292e47f70b6a7298c2165a",
+      "sourceHead": "511e003798d76c70178ff2551752d4c86436a95a",
+      "priority": "P0",
+      "previous": {
+        "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
+        "sha256": "d3ef4880c26f033907761ac07f4fea60005afddfae182969293b835241b7d2e1"
+      },
+      "currentFilteredBlobId": "72078eab51583b02213ac0bd7b415784a05b352c"
+    },
+    {
+      "path": "src/features/dca/model/dca-ab-test-analytics.ts",
+      "blobId": "f1aaa2ba51f29a5802442dc3ad75a7eac84e4a1e",
+      "filteredBlobId": "f1aaa2ba51f29a5802442dc3ad75a7eac84e4a1e",
+      "committedSha256": "3141267db1a6c10bab72cd3dfcda33f5b58908547f3594ce3c098ade7a7e1e32",
+      "workingSha256": "3141267db1a6c10bab72cd3dfcda33f5b58908547f3594ce3c098ade7a7e1e32",
+      "sourceHead": "511e003798d76c70178ff2551752d4c86436a95a",
+      "priority": "P0",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "51e815bf4fe03621da2e2e223672cb9ce242e5da205dd2dc0fce51f6432e842d"
+      },
+      "currentFilteredBlobId": "f1aaa2ba51f29a5802442dc3ad75a7eac84e4a1e"
+    },
+    {
+      "path": "src/features/dca/model/dca-analytics-service.ts",
+      "blobId": "d15e04f410d5e416e2b07b7738614157a5bbea48",
+      "filteredBlobId": "d15e04f410d5e416e2b07b7738614157a5bbea48",
+      "committedSha256": "5996d5a7123d99acaaa225f4f7cf5c5e508caedc731284622f438b8b12fa8594",
+      "workingSha256": "5996d5a7123d99acaaa225f4f7cf5c5e508caedc731284622f438b8b12fa8594",
+      "sourceHead": "511e003798d76c70178ff2551752d4c86436a95a",
+      "priority": "P0",
+      "previous": {
+        "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
+        "sha256": "3c2cbb0c1b6d53aca0fb6b2d1a3e95c2bb24d035bdad2b885d6565fb216b3707"
+      },
+      "currentFilteredBlobId": "d15e04f410d5e416e2b07b7738614157a5bbea48"
+    },
+    {
+      "path": "src/features/dca/model/dca-funnel-service.ts",
+      "blobId": "0eb4f2e584e45b1abe273655f577f379ca698882",
+      "filteredBlobId": "0eb4f2e584e45b1abe273655f577f379ca698882",
+      "committedSha256": "793737dd95aa6229b9c674ff36db352f2d14e6e7cd9ef4dd34d59b825619c287",
+      "workingSha256": "793737dd95aa6229b9c674ff36db352f2d14e6e7cd9ef4dd34d59b825619c287",
+      "sourceHead": "511e003798d76c70178ff2551752d4c86436a95a",
+      "priority": "P0",
+      "previous": {
+        "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
+        "sha256": "ccc9ba2c69a08c59c6655e3818478994d52c36315f28a8acea3b202924b92a89"
+      },
+      "currentFilteredBlobId": "0eb4f2e584e45b1abe273655f577f379ca698882"
+    },
+    {
+      "path": "src/features/dca/model/use-dca-funnel-tracking.ts",
+      "blobId": "41185a6e20828658546352907527c13b48f7866e",
+      "filteredBlobId": "41185a6e20828658546352907527c13b48f7866e",
+      "committedSha256": "117f66384c3df9c047bf52352bcfd3133bf8cd3b52a0d37850844333875f7570",
+      "workingSha256": "117f66384c3df9c047bf52352bcfd3133bf8cd3b52a0d37850844333875f7570",
+      "sourceHead": "511e003798d76c70178ff2551752d4c86436a95a",
+      "priority": "P0",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "307c23584b5b817d41918b57d67022af3cdd953511b0239c2328b1b12c39ab8c"
+      },
+      "currentFilteredBlobId": "41185a6e20828658546352907527c13b48f7866e"
+    }
+  ],
+  "limits": [
+    "8 actual local source/test/inventory blobs only. No push, PR, hosted CI or deployment.",
+    "Pre-commit runtime evidence retains the HEAD it actually observed; exact bytes match these actual committed objects after Git filtering.",
+    "Current strict-HEAD browser/build evidence must run on this final source commit.",
+    "Original baseline, catalogue history and backend/UAT/coverage criteria are preserved."
+  ]
+}

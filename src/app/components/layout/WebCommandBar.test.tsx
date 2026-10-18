@@ -2,6 +2,7 @@ import { act, fireEvent, screen } from '@testing-library/react';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
+import { WEB_AVATAR_GRADIENT } from '@/shared/theme/webTokens';
 import { renderWithProviders } from '@/test/test-utils';
 import { testAuthAdapter, testAuthSession } from '@/test/auth-test-adapter';
 import { WebCommandBar } from './WebCommandBar';
@@ -23,6 +24,12 @@ afterEach(() => {
 });
 
 describe('WebCommandBar', () => {
+  it('exposes the command bar as a named banner landmark', () => {
+    renderWithProviders(<WebCommandBar />);
+
+    expect(screen.getByRole('banner', { name: 'Thanh công cụ chính' })).toBeInTheDocument();
+  });
+
   it('shows labeled breadcrumbs and navigates from a parent breadcrumb', () => {
     renderWithProviders(<WebCommandBar />, {
       routerProps: { initialEntries: ['/w/markets/overview'] },
@@ -42,6 +49,15 @@ describe('WebCommandBar', () => {
     });
 
     expect(screen.getByRole('button', { name: 'DCA' })).toBeInTheDocument();
+    expect(screen.queryByText('Dashboard')).not.toBeInTheDocument();
+  });
+
+  it('shows a News breadcrumb instead of the dashboard fallback on /w/news', () => {
+    renderWithProviders(<WebCommandBar />, {
+      routerProps: { initialEntries: ['/w/news'] },
+    });
+
+    expect(screen.getByRole('button', { name: 'Tin tức' })).toBeInTheDocument();
     expect(screen.queryByText('Dashboard')).not.toBeInTheDocument();
   });
 
@@ -101,6 +117,10 @@ describe('WebCommandBar', () => {
   it('shows the dashboard at the root and navigates to notifications and profile', () => {
     renderWithProviders(<WebCommandBar />);
     expect(screen.getByText('Dashboard')).toBeInTheDocument();
+    const accountButton = screen.getByText(testAuthSession.user.fullName).closest('button');
+    const avatar = accountButton?.querySelector('div');
+    expect(avatar).toHaveStyle({ background: WEB_AVATAR_GRADIENT });
+    expect(avatar?.querySelector('span')).toHaveStyle({ color: '#fff' });
 
     fireEvent.click(screen.getByTitle('Thông báo'));
     expect(screen.getByTitle('Thông báo')).toBeInTheDocument();

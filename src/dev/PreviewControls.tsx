@@ -100,7 +100,6 @@ const domainLabels: Record<DevPreviewDomain, string> = {
 const shellStyle: CSSProperties = {
   position: 'fixed',
   right: 16,
-  bottom: 16,
   zIndex: 1200,
   width: 'min(360px, calc(100vw - 24px))',
   color: '#172033',
@@ -145,6 +144,7 @@ const actionStyle: CSSProperties = {
 
 export function PreviewControls() {
   const location = useLocation();
+  const isNarrowViewport = typeof window !== 'undefined' && window.innerWidth < 768;
   const storedScenario = getDevPreviewScenario();
   const { user, signIn, signOut } = useAuth();
   const navigate = useNavigate();
@@ -275,7 +275,13 @@ export function PreviewControls() {
               position: 'static',
               margin: '24px 16px 16px auto',
             }
-          : shellStyle
+          : {
+              ...shellStyle,
+              bottom:
+                typeof window !== 'undefined' && window.innerWidth < 768
+                  ? 'calc(88px + env(safe-area-inset-bottom, 0px))'
+                  : 16,
+            }
       }
     >
       <div
@@ -285,8 +291,11 @@ export function PreviewControls() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          gap: 10,
-          padding: '9px 12px',
+          gap: isNarrowViewport ? 6 : 10,
+          width: isNarrowViewport ? 'fit-content' : '100%',
+          maxWidth: '100%',
+          marginLeft: isNarrowViewport ? 'auto' : undefined,
+          padding: isNarrowViewport ? '5px 8px' : '9px 12px',
           border: '1px solid #f59e0b',
           borderRadius: 10,
           background: '#fffbeb',
@@ -294,11 +303,14 @@ export function PreviewControls() {
           boxShadow: '0 4px 18px rgba(15, 23, 42, .16)',
         }}
       >
-        <strong>DỮ LIỆU MÔ PHỎNG · KHÔNG PHẢI GIAO DỊCH THẬT</strong>
+        <strong style={{ fontSize: isNarrowViewport ? 9 : 13 }}>
+          DỮ LIỆU MÔ PHỎNG · KHÔNG GIAO DỊCH THẬT
+        </strong>
         <button
           type="button"
           aria-expanded={isOpen}
           aria-controls="dev-preview-panel"
+          aria-label={isOpen ? 'Thu gọn' : 'Mở công cụ xem trước'}
           onClick={() => setIsOpen((open) => !open)}
           style={{
             flex: '0 0 auto',
@@ -308,9 +320,16 @@ export function PreviewControls() {
             background: '#fff',
             color: '#78350f',
             cursor: 'pointer',
+            fontSize: isNarrowViewport ? 10 : undefined,
           }}
         >
-          {isOpen ? 'Thu gọn' : 'Mở công cụ xem trước'}
+          {isNarrowViewport
+            ? isOpen
+              ? 'Đóng'
+              : 'Mở'
+            : isOpen
+              ? 'Thu gọn'
+              : 'Mở công cụ xem trước'}
         </button>
       </div>
 

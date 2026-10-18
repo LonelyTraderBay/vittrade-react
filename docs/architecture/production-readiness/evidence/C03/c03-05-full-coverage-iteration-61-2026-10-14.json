@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-10-14T05:49:44.212Z",
+  "sourceHead": "57acaaa95f48a097258553c5d8a5e0455d2706dd",
+  "kind": "local_full_vitest_v8_coverage",
+  "command": "npm.cmd run test:coverage -- --reporter=dot",
+  "environment": "Windows local, Node v24.19.0, Vitest 4.1.11 with V8; no backend or staging.",
+  "run": {
+    "path": "C:/Users/Joker-PC/Documents/Projects/vittrade-react/.artifacts/runs/2026-10-14T05-48-43-604Z-vitest-5f41b9ea-2750-4085-99b4-c9e50b6d1346/run.json",
+    "bytes": 287686,
+    "sha256": "a173c399a9d238c76d26276247c612c33e974d18918a0bb255a3121f7aca45f0",
+    "id": "2026-10-14T05-48-43-604Z-vitest-5f41b9ea-2750-4085-99b4-c9e50b6d1346",
+    "status": "passed",
+    "exitCode": 0,
+    "manifestHead": "8c977839141d6997b9c150a5846b820961344fd9",
+    "finishedAt": "2026-10-14T05:49:44.212Z",
+    "sourceUnchanged": true,
+    "childClosed": true,
+    "authSessionSpecSnapshotHash": "775d0f30d3f5061c4cb154ffa6c7d60c27dac2b26ac3c971028a00e7ec54d93c"
+  },
+  "suite": {
+    "testFiles": "360/360 passed",
+    "tests": "3471/3471 passed",
+    "failed": 0,
+    "skipped": 0
+  },
+  "coverage": {
+    "reportPath": "C:/Users/Joker-PC/Documents/Projects/vittrade-react/.artifacts/runs/2026-10-14T05-48-43-604Z-vitest-5f41b9ea-2750-4085-99b4-c9e50b6d1346/coverage/coverage-final.json",
+    "bytes": 3830214,
+    "sha256": "ef2c17bda92353c37a57f7e0457874a49ffb87edbe982f50e37d920a4e0e3576",
+    "entries": 440,
+    "measurableFiles": 408,
+    "gaps": 0,
+    "noExecutableCounterFiles": 32,
+    "counters": {
+      "statements": "12445/12445 (100%)",
+      "branches": "10286/10286 (100%)",
+      "functions": "3973/3973 (100%)",
+      "lines": "11511/11511 (100%)"
+    },
+    "thresholdOrDenominatorChanged": false
+  },
+  "sourceProvenance": {
+    "srcFilesInRunSnapshot": 905,
+    "srcFilesMatchingCommit": "905/905",
+    "testSpecSnapshotHash": "775d0f30d3f5061c4cb154ffa6c7d60c27dac2b26ac3c971028a00e7ec54d93c",
+    "authSessionTestBlobInCommit": "775d0f30d3f5061c4cb154ffa6c7d60c27dac2b26ac3c971028a00e7ec54d93c",
+    "testBlobMatchesRunSnapshot": true,
+    "runManifestHeadBeforeTestOnlyCommit": "8c977839141d6997b9c150a5846b820961344fd9"
+  },
+  "expected": "All configured Vitest tests pass; every measurable source file has complete statement/branch/function coverage without changing thresholds or denominator.",
+  "actual": "The completed run passed all 360 files and 3471 tests. It reported 440 coverage entries: 408 measurable with 0 gaps and 32 with no executable counters. All four aggregate counters are 100%. The E2E test file snapshot hash matches its subsequent test-only commit; src hashes match 905/905.",
+  "result": "pass",
+  "limitations": [
+    "Local test/coverage evidence only; not hosted CI, backend/staging, UAT or production certification.",
+    "The 32 no-counter entries remain non-measurable and are not counted as 100%-covered files."
+  ]
+}

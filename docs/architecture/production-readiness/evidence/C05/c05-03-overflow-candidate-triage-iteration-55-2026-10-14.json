@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "itemId": "C05.03",
+  "observedAt": "2026-10-13T23:10:18.626Z",
+  "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
+  "sourceState": "No runtime source changed during this follow-up; current local Chromium report candidates were mapped to owner JSX and shell structure.",
+  "dirtyFileHashes": {
+    "src/app/components/layout/WebShell.tsx": "b8a677a9415f951b8bd259fb3b56d1f54f3b36c34cc1f388907676c2a67b9c2c",
+    "src/app/components/dev/RouteChecker.tsx": "ae7520cc1b41c57d31ab4e5e87d93242f675270039e339601fcebf9845047bb5",
+    "src/features/wallet/pages/AddressBookPage.tsx": "50eda6fd9e230849f15b0e67b9623ea9aa8e01cc4a6512434083318488978977",
+    "src/shared/ui/layout/Header.tsx": "2f37d6d3c826c7739adcdd5a6c8ef84f9882044a74afeb0d1c71208729fac1dc",
+    "src/features/market/pages/MarketMoversPage.tsx": "6abf9787adc98d96af698db16203750ff2fd37792660b73322377d150092b7ae",
+    "src/features/arena/pages/ArenaDiscoveryPage.tsx": "08cbdbc389d3703bf513fd6f2c960f73285808f800b89270905f5197fefa3203",
+    "src/features/auth/components/Web2FASetupStepIndicator.tsx": "cd56eebf08dcc2600035ffaaaac216e01b1bdeca782765094aae38a277f7bc0a",
+    "src/features/p2p/pages/P2PChatPage.tsx": "248dc19bca916de38d33a2774484dbedf2686387cd7a4306fb6331c132814ad2"
+  },
+  "review": {
+    "scope": "Source-triage all hiddenOverflow DOM entries from both iteration55 responsive reports.",
+    "reports": {
+      "mobile": {
+        "path": "C:/Users/Joker-PC/.codex/visualizations/2026/10/14/01a13394-3caa-7930-a58f-e3e6c61b066f/vittrade-audit/implementation/mobile-final-iteration55-style-fix/mobile-route-review.json",
+        "sha256": "8b75d6307c54e5a34e98c8f3e3debb0c3b23bdb1dcb113f34d70f49e6b6a5d13",
+        "routes": 372,
+        "candidates": 15
+      },
+      "tablet": {
+        "path": "C:/Users/Joker-PC/.codex/visualizations/2026/10/14/01a13394-3caa-7930-a58f-e3e6c61b066f/vittrade-audit/implementation/tablet-final-iteration55-style-fix/mobile-route-review.json",
+        "sha256": "0d6582b6bdbc5e0016f671bb018d5de78ea12a027bc8c281313b7ecc1762476e",
+        "routes": 372,
+        "candidates": 36
+      }
+    },
+    "mobile": {
+      "classified": 15,
+      "details": [
+        {
+          "route": "/w/address-book and /w/profile/security/withdrawal-whitelist",
+          "count": 8,
+          "reason": "Long address text uses truncate for narrow display; AddressBookPage keeps the full text in the DOM and exposes a separate Sao chép action."
+        },
+        {
+          "route": "/w/arena",
+          "count": 1,
+          "reason": "Search label is sr-only for assistive technology."
+        },
+        {
+          "route": "/w/auth/2fa-setup",
+          "count": 2,
+          "reason": "Inactive 2FA step names use sr-only sm:not-sr-only at narrow widths."
+        },
+        {
+          "route": "/w/p2p/chat/p2p001",
+          "count": 1,
+          "reason": "Conversation h1 is sr-only but remains a semantic heading."
+        },
+        {
+          "route": "/w/dev/route-checker",
+          "count": 1,
+          "reason": "Development-only route; long paths explicitly use overflow hidden, text-overflow ellipsis and nowrap."
+        },
+        {
+          "route": "/w/markets/movers",
+          "count": 1,
+          "reason": "Mover name is intentionally truncated in a compact row while the symbol remains visible."
+        },
+        {
+          "route": "/w/wallet",
+          "count": 1,
+          "reason": "Wallet subtitle uses the shared Header block-truncate layout."
+        }
+      ]
+    },
+    "tablet": {
+      "classified": 36,
+      "distinctRoutes": 35,
+      "reason": "All candidates are the WebShell main-area flex wrapper with overflow-hidden; its child content region has its own overflow-y-auto scroller. The detector reads vertical scrollHeight on the wrapper, not document horizontal overflow or loss of nested-scroll access."
+    },
+    "reportContext": {
+      "mobile": {
+        "notFound": 0,
+        "documentHorizontalOverflow": 0,
+        "pageErrors": 0,
+        "fixedCollisions": 0
+      },
+      "tablet": {
+        "notFound": 0,
+        "documentHorizontalOverflow": 0,
+        "pageErrors": 0,
+        "fixedCollisions": 0
+      }
+    },
+    "interpretation": "All 15 mobile and 36 tablet detector candidates are source-classified as deliberate truncation/assistive semantics or the documented nested-scroll layout. This is source-backed detector triage, not route-by-route screenshot acceptance, axe analysis, or human sign-off."
+  },
+  "result": "pass",
+  "artifact": "C:/Users/Joker-PC/.codex/visualizations/2026/10/14/01a13394-3caa-7930-a58f-e3e6c61b066f/vittrade-audit/implementation/mobile-final-iteration55-style-fix/mobile-route-review.json; C:/Users/Joker-PC/.codex/visualizations/2026/10/14/01a13394-3caa-7930-a58f-e3e6c61b066f/vittrade-audit/implementation/tablet-final-iteration55-style-fix/mobile-route-review.json",
+  "notes": "UI acceptance remains 0/128. Axe remains not_run because @axe-core/playwright is absent; backend/staging remains outside local Vite/MSW scope."
+}

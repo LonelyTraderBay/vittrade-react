@@ -65,7 +65,7 @@ const branch = execFileSync('git', ['branch', '--show-current'], {
   cwd: root,
   encoding: 'utf8',
 }).trim();
-const expectedAttemptsPerQuery = Number(process.env.WALLET_ERROR_EXPECTED_ATTEMPTS ?? 6);
+const expectedAttemptsPerQuery = Number(process.env.WALLET_ERROR_EXPECTED_ATTEMPTS ?? 3);
 assert.ok(Number.isInteger(expectedAttemptsPerQuery) && expectedAttemptsPerQuery > 0);
 const sourceHashes = Object.fromEntries(
   [...new Set([...sourcePaths, runnerRelativePath])]

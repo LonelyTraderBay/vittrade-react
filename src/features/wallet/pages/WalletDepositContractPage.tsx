@@ -2,7 +2,9 @@ import { useEffect, useMemo, useState } from 'react';
 import { AlertTriangle, Check, Copy, Loader2, RefreshCw } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
 import { useParams } from 'react-router';
+import { CTAButton } from '@/shared/ui/CTAButton';
 import { ErrorState } from '@/shared/ui/ErrorState';
+import { IconButton } from '@/shared/ui/IconButton';
 import { Header } from '@/shared/ui/layout/Header';
 import { PageContent } from '@/shared/ui/layout/PageContent';
 import { PageLayout } from '@/shared/ui/layout/PageLayout';
@@ -136,8 +138,8 @@ export function WalletDepositContractPage() {
           className="flex items-start gap-2 rounded-2xl px-4 py-3"
           style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.25)' }}
         >
-          <AlertTriangle size={17} color="#EF4444" className="mt-0.5 shrink-0" />
-          <p className="text-xs leading-5" style={{ color: '#F87171' }}>
+          <AlertTriangle size={17} color={colors.errorText} className="mt-0.5 shrink-0" />
+          <p className="text-xs leading-5" style={{ color: colors.errorText }}>
             Send only {asset} through {selectedNetwork.name}. Sending through another network may
             permanently lose your funds. Minimum deposit: {selectedNetwork.minDeposit} {asset}.
           </p>
@@ -151,8 +153,8 @@ export function WalletDepositContractPage() {
               border: '1px solid rgba(245,158,11,0.35)',
             }}
           >
-            <AlertTriangle size={17} color="#F59E0B" className="mt-0.5 shrink-0" />
-            <p className="text-xs leading-5" style={{ color: '#D97706' }}>
+            <AlertTriangle size={17} color={colors.warningText} className="mt-0.5 shrink-0" />
+            <p className="text-xs leading-5" style={{ color: colors.warningText }}>
               {selectedNetwork.memoLabel ?? 'Memo'} is required for this network. Include it when
               sending funds or the deposit may not be credited.
             </p>
@@ -160,8 +162,14 @@ export function WalletDepositContractPage() {
         )}
 
         <TrCard className="flex flex-col items-center gap-4 p-5">
-          <div className="rounded-2xl bg-white p-4" aria-label="Deposit QR code">
-            <QRCodeSVG value={selectedNetwork.address} size={188} level="M" includeMargin />
+          <div className="rounded-2xl bg-white p-4" role="img" aria-label="Deposit address QR code">
+            <QRCodeSVG
+              value={selectedNetwork.address}
+              size={188}
+              level="M"
+              includeMargin
+              aria-hidden="true"
+            />
           </div>
           <CopyableValue
             label={`${asset} deposit address`}
@@ -180,7 +188,7 @@ export function WalletDepositContractPage() {
         </TrCard>
 
         {copyError && (
-          <p role="alert" className="text-center text-xs" style={{ color: '#EF4444' }}>
+          <p role="alert" className="text-center text-xs" style={{ color: colors.errorText }}>
             {copyError}
           </p>
         )}
@@ -195,19 +203,15 @@ export function WalletDepositContractPage() {
           <DetailRow label="Minimum deposit" value={`${selectedNetwork.minDeposit} ${asset}`} />
         </TrCard>
 
-        <button
-          type="button"
+        <CTAButton
+          variant="secondary"
+          density="standard"
+          fullWidth
           onClick={() => void networksQuery.refetch()}
-          className="flex h-12 items-center justify-center gap-2 rounded-2xl"
-          style={{
-            background: colors.surface2,
-            border: `1px solid ${colors.borderSolid}`,
-            color: colors.text2,
-          }}
         >
-          <RefreshCw size={16} />
-          Refresh deposit instructions
-        </button>
+          <RefreshCw size={16} aria-hidden="true" />
+          <span>Refresh deposit instructions</span>
+        </CTAButton>
       </PageContent>
     </PageLayout>
   );
@@ -240,16 +244,19 @@ function CopyableValue({
         >
           {value}
         </code>
-        <button
-          type="button"
+        <IconButton
+          icon={copied ? Check : Copy}
           aria-label={`Copy ${label}`}
           onClick={onCopy}
-          className="shrink-0 rounded-lg p-2"
-          style={{ color: copied ? '#10B981' : colors.primary }}
-        >
-          {copied ? <Check size={16} /> : <Copy size={16} />}
-        </button>
+          variant="transparent"
+          size="md"
+          className="shrink-0"
+          style={{ color: copied ? colors.successText : colors.primary }}
+        />
       </div>
+      <span className="sr-only" role="status" aria-live="polite">
+        {copied ? `Copied ${label}` : ''}
+      </span>
     </div>
   );
 }

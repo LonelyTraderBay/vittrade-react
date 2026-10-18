@@ -131,9 +131,9 @@ describe('Market sectors contract page', () => {
 
     expect(await screen.findByRole('button', { name: /Layer One/ })).toBeInTheDocument();
     await userEvent.click(screen.getByRole('button', { name: /Layer One/ }));
-    expect(await screen.findByText('Layer One', { selector: 'span' })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { level: 1, name: 'Layer One' })).toBeInTheDocument();
 
-    expect(await screen.findByText('-1.50%')).toHaveStyle({ color: 'rgb(239, 68, 68)' });
+    expect(await screen.findByText('-1.50%')).toHaveStyle({ color: 'var(--tr-error-text)' });
     await userEvent.click(await screen.findByRole('button', { name: /BTC\/USDT/ }));
     expect(screen.getByTestId('location')).toHaveTextContent('/w/pair/btc-usdt');
   });
@@ -189,7 +189,7 @@ describe('Market sectors contract page', () => {
     await user.click(screen.getByRole('button', { name: 'Thử lại' }));
     const comparison = await screen.findByRole('button', { name: /Layer 1/ });
     await user.click(comparison);
-    expect(await screen.findByText('Layer One', { selector: 'span' })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { level: 1, name: 'Layer One' })).toBeInTheDocument();
     await user.click(screen.getByRole('button', { name: 'Quay lại ngành' }));
 
     expect(await screen.findByRole('button', { name: /Layer One/ })).toBeInTheDocument();

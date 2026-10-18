@@ -5,6 +5,8 @@ import { Header } from '@/shared/ui/layout/Header';
 import { PageContent } from '@/shared/ui/layout/PageContent';
 import { PageLayout } from '@/shared/ui/layout/PageLayout';
 import { TrCard } from '@/shared/ui/TrCard';
+import { CTAButton } from '@/shared/ui/CTAButton';
+import { SearchBar } from '@/shared/ui/SearchBar';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { useRoutePrefix } from '@/shared/navigation/useRoutePrefix';
 import { useAuth } from '@/shared/session/useAuth';
@@ -121,27 +123,31 @@ export function WalletTransactionHistoryContractPage() {
             ))}
           </div>
           <form
-            className="mt-3 flex gap-2"
+            className="mt-3"
             onSubmit={(event) => {
               event.preventDefault();
               resetCursor(() => setAssetFilter(assetInput.trim().toUpperCase()));
             }}
           >
-            <input
-              aria-label="Filter by asset"
+            <SearchBar
               value={assetInput}
-              onChange={(event) => setAssetInput(event.target.value)}
+              onChange={setAssetInput}
               placeholder="Asset symbol, e.g. BTC"
-              className="min-w-0 flex-1 rounded-lg px-3 py-2 text-sm outline-none"
-              style={{ background: colors.surface2, color: colors.text1 }}
+              ariaLabel="Filter by asset"
+              right={
+                <CTAButton
+                  type="submit"
+                  variant="secondary"
+                  density="compact"
+                  fullWidth={false}
+                  bg={colors.primary}
+                  textColor="var(--tr-text-on-color)"
+                  className="px-3"
+                >
+                  Apply
+                </CTAButton>
+              }
             />
-            <button
-              type="submit"
-              className="rounded-lg px-3 py-2 text-xs font-semibold"
-              style={{ background: colors.primary, color: '#fff' }}
-            >
-              Apply
-            </button>
           </form>
         </TrCard>
 

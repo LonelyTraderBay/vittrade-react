@@ -104,17 +104,33 @@ describe('AddressBookPage', () => {
 
     expect(await screen.findByText('BTC chính')).toBeInTheDocument();
     expect(screen.getByText('ETH lạnh')).toBeInTheDocument();
+    expect(
+      (screen.getByText('Tổng địa chỉ').previousElementSibling as HTMLElement).style.color,
+    ).toBe('var(--tr-info)');
+    const favoriteMetricLabel = screen
+      .getAllByText('Yêu thích')
+      .find((element) => element.tagName === 'P');
+    expect(favoriteMetricLabel).toBeDefined();
+    expect((favoriteMetricLabel!.previousElementSibling as HTMLElement).style.color).toBe(
+      'var(--tr-warning-text)',
+    );
+    expect((screen.getByText('Whitelist').previousElementSibling as HTMLElement).style.color).toBe(
+      'var(--tr-success-text)',
+    );
     const search = screen.getByRole('textbox', { name: 'Tìm địa chỉ hoặc tên' });
     await user.type(search, 'btc chính');
     expect(screen.getByText('BTC chính')).toBeInTheDocument();
     expect(screen.queryByText('ETH lạnh')).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Xóa tìm kiếm' })).toBeInTheDocument();
 
-    await user.clear(search);
+    await user.click(screen.getByRole('button', { name: 'Xóa tìm kiếm' }));
+    expect(search).toHaveValue('');
+    expect(document.activeElement).toBe(search);
     await user.type(search, '0x1234');
     expect(screen.queryByText('BTC chính')).not.toBeInTheDocument();
     expect(screen.getByText('ETH lạnh')).toBeInTheDocument();
 
-    await user.clear(search);
+    await user.click(screen.getByRole('button', { name: 'Xóa tìm kiếm' }));
     await user.click(screen.getByRole('button', { name: 'BTC' }));
     expect(screen.getByText('BTC chính')).toBeInTheDocument();
     expect(screen.queryByText('ETH lạnh')).not.toBeInTheDocument();

@@ -42,15 +42,13 @@ export function TPSLForm({
   const slNum = parseFloat(values.slPrice || '0');
 
   const calc = useMemo(() => {
-    if (!entryPrice || !amount) return null;
+    if (entryPrice <= 0 || amount <= 0) return null;
 
     const tpPnl = side === 'buy' ? (tpNum - entryPrice) * amount : (entryPrice - tpNum) * amount;
     const slPnl = side === 'buy' ? (slNum - entryPrice) * amount : (entryPrice - slNum) * amount;
 
-    const tpPct =
-      entryPrice > 0 ? ((tpNum - entryPrice) / entryPrice) * 100 * (side === 'buy' ? 1 : -1) : 0;
-    const slPct =
-      entryPrice > 0 ? ((slNum - entryPrice) / entryPrice) * 100 * (side === 'buy' ? 1 : -1) : 0;
+    const tpPct = ((tpNum - entryPrice) / entryPrice) * 100 * (side === 'buy' ? 1 : -1);
+    const slPct = ((slNum - entryPrice) / entryPrice) * 100 * (side === 'buy' ? 1 : -1);
 
     const reward = Math.abs(tpPnl);
     const risk = Math.abs(slPnl);

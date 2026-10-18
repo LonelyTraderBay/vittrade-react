@@ -104,6 +104,7 @@ export function DCACreatePlanSheet({
             {AVAILABLE_COINS.map((coin) => (
               <button
                 key={coin.symbol}
+                disabled={isCreating}
                 onClick={() => setCoinSymbol(coin.symbol)}
                 className="p-3 rounded-xl border-2 transition-all"
                 style={{
@@ -138,6 +139,7 @@ export function DCACreatePlanSheet({
             {FREQUENCY_OPTIONS.map((option) => (
               <button
                 key={option.value}
+                disabled={isCreating}
                 onClick={() => setFrequency(option.value)}
                 className="h-11 rounded-xl border-2 transition-all text-[14px] font-medium"
                 style={{
@@ -163,6 +165,7 @@ export function DCACreatePlanSheet({
             <input
               type="text"
               value={amount}
+              disabled={isCreating}
               onChange={(e) => {
                 const value = e.target.value.replace(/\D/g, '');
                 setAmount(value);
@@ -199,6 +202,7 @@ export function DCACreatePlanSheet({
             {AMOUNT_PRESETS.map((preset) => (
               <button
                 key={preset}
+                disabled={isCreating}
                 onClick={() => setAmount(preset.toString())}
                 className="h-9 rounded-lg text-[12px] font-medium transition-colors"
                 style={{ background: c.surface2, color: c.text1 }}

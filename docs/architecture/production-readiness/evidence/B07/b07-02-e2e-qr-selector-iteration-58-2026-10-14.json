@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-14T03:08:27.474Z",
+  "priorHostedRun": {
+    "id": 38499945830,
+    "runNumber": 53,
+    "url": "https://github.com/LonelyTraderBay/vittrade-react/actions/runs/38499945830",
+    "headSha": "07e40d2534559744f0915f8884227b70de6513b6",
+    "status": "completed",
+    "conclusion": "failure",
+    "createdAt": "2026-10-14T02:13:54Z",
+    "updatedAt": "2026-10-14T02:33:52Z",
+    "failedStep": "E2E smoke and accessibility",
+    "tests": {
+      "passed": 58,
+      "failed": 1,
+      "skipped": 4
+    },
+    "rootCause": "The E2E test looked for label “Deposit QR code”; the current image accessibility name is “Deposit address QR code”. E2E assertions before this point and unit/coverage steps passed; dependent later gates were skipped.",
+    "fixedByCommit": "6b335a20acb9dfaef1b269ca5c2aefd1a9550ef1",
+    "fixedLocator": "getByRole('img', { name: 'Deposit address QR code' })",
+    "workflowJobStepsUrl": "https://api.github.com/repos/LonelyTraderBay/vittrade-react/actions/runs/38499945830/jobs"
+  },
+  "localE2e": {
+    "runId": "2026-10-14T02-47-18-864Z-playwright-08990f01-1a84-4937-b87b-6048766bd3b6",
+    "startedAt": "2026-10-14T02:47:18.864Z",
+    "finishedAt": "2026-10-14T02:49:36.025Z",
+    "runManifest": ".artifacts/runs/2026-10-14T02-47-18-864Z-playwright-08990f01-1a84-4937-b87b-6048766bd3b6/run.json",
+    "runManifestSha256": "72a5b5ede5ea3743e821730b38a2a9cdd99cf22510a4d475508e97ef3c848586",
+    "status": "passed",
+    "exitCode": 0,
+    "sourceUnchanged": true,
+    "runHead": "5f6fcfddb05a692dc7e301a5e9b0fb1d27744e4a",
+    "testFileBytesMatchCommit": "4ee01cf13e9208e467ceea850a48418e09076812c1122522b0f969b07e8f68f6",
+    "tests": {
+      "passed": 59,
+      "failed": 0,
+      "skipped": 4,
+      "skipReason": "Existing local configuration skips four Auth registration API-mode cases; skipped cases are not counted as passed."
+    },
+    "mode": "Local Playwright against repository test harness; this is not a backend/staging run.",
+    "nonFatalConsoleObservations": [
+      "Two net::ERR_NAME_NOT_RESOLVED resource messages were seen during a trading E2E test; no assertion failed and the resource origin was not retained for classification."
+    ]
+  },
+  "focusedQrTest": "1/1 pass",
+  "localGates": {
+    "appTypecheck": "pass",
+    "nodeTypecheck": "pass",
+    "eslint": "0 errors / 0 warnings",
+    "lintWarningBudget": "0/0",
+    "formatCheck": "pass"
+  },
+  "limitations": [
+    "GitHub run #53 is historical and used the pre-fix SHA. The exact pushed-SHA workflow, artifacts and governance checks remain pending.",
+    "Four skipped Auth registration cases and external API/backend/staging behavior remain unverified."
+  ]
+}

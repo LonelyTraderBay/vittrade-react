@@ -53,7 +53,7 @@ function PasswordStrength({ password }: { password: string }) {
           <span
             key={check.label}
             className="h-1 flex-1 rounded-full"
-            style={{ background: index < strength ? '#10B981' : colors.borderSolid }}
+            style={{ background: index < strength ? colors.success : colors.borderSolid }}
           />
         ))}
       </div>
@@ -243,7 +243,8 @@ export function RegistrationForm() {
           onChange={(event) => updateDraft('acceptedTerms', event.target.checked)}
           aria-invalid={Boolean(errors.acceptedTerms)}
           aria-describedby={errors.acceptedTerms ? 'registration-terms-error' : undefined}
-          className="mt-1 h-4 w-4 accent-blue-500"
+          className="mt-1 h-4 w-4"
+          style={{ accentColor: colors.primary }}
         />
         <span>Tôi đã đọc và đồng ý với Điều khoản dịch vụ và Chính sách bảo mật của VitTrade.</span>
       </label>

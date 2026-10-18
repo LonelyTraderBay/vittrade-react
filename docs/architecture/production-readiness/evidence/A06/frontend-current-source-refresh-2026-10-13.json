@@ -1,0 +1,1308 @@
+{
+  "observedAt": "2026-10-13T06:16:24.036Z",
+  "sourceHead": "db9c9064fa3ba79bd76fb7acb1023d90486b6cbf",
+  "environment": "Windows / Node24.19.0 / Chromium / loopback4193 Vite and actual MSW",
+  "applicable": 81,
+  "refreshed": 81,
+  "previousSidecarsPreserved": 81,
+  "previousSidecarHashes": [
+    {
+      "id": "admin.empty",
+      "path": "docs/architecture/production-readiness/evidence/A06/admin-empty-browser-check-202610011402238.json",
+      "sha256": "73770d878c0c655e60c03e50647d6c5b8a89fbbabeff8fa1f132023217b1c658"
+    },
+    {
+      "id": "admin.error",
+      "path": "docs/architecture/production-readiness/evidence/A06/admin-error-browser-check-2026-10-01-refresh-auth-contract.json",
+      "sha256": "831db53bf85900d147c9753deb203cc3f6047c39ead76fe2e43d311af28b0129"
+    },
+    {
+      "id": "admin.forbidden",
+      "path": "docs/architecture/production-readiness/evidence/A06/admin-forbidden-browser-check-202610011402562.json",
+      "sha256": "b144d8a46038e0e681cf6445fd972b40c0e08b3b4f22d6c133d94df8e03ba781"
+    },
+    {
+      "id": "admin.loading",
+      "path": "docs/architecture/production-readiness/evidence/A06/admin-loading-browser-check-202610011402574.json",
+      "sha256": "78387759ffbd34cf6efeff6f896b8aebce79e347e68a2bc8dcf03addaf63183f"
+    },
+    {
+      "id": "admin.success",
+      "path": "docs/architecture/production-readiness/evidence/A06/admin-success-browser-check-202610011403057.json",
+      "sha256": "0e85cd62bc295a00b849efa7629f40385f8abe821df0933724a2e2f4a7dc2216"
+    },
+    {
+      "id": "admin.unauthorized",
+      "path": "docs/architecture/production-readiness/evidence/A06/admin-unauthorized-browser-check-2026-10-02-current-head.json",
+      "sha256": "dc4cbefc0279a56659f0c6a47bf5e01a98ca6d4fde4123ae4c5d6e33c3b7d91e"
+    },
+    {
+      "id": "arena.empty",
+      "path": "docs/architecture/production-readiness/evidence/A06/arena-empty-browser-check-202610021056337.json",
+      "sha256": "6b5ffd24791dee4f83bfc9fbb19fe4f3c6d1376743b9a16734d7083a88899d2a"
+    },
+    {
+      "id": "arena.error",
+      "path": "docs/architecture/production-readiness/evidence/A06/arena-error-browser-check-202610021152401.json",
+      "sha256": "a61af79e5e9ad67eac0ee190ad1ab194bb09bfffeb64e194715ba80799b17e69"
+    },
+    {
+      "id": "arena.loading",
+      "path": "docs/architecture/production-readiness/evidence/A06/arena-loading-browser-check-202610021152437.json",
+      "sha256": "b599824b54b7d5c13f07703be7d2d41fb04ec3e8c0c036c721cf3ea814fb8af0"
+    },
+    {
+      "id": "arena.success",
+      "path": "docs/architecture/production-readiness/evidence/A06/arena-success-browser-check-202610021056350.json",
+      "sha256": "3dff3dbf12018c060f92a3918c8c6d0438cb6b2edb1976ce43530c2c2db7b346"
+    },
+    {
+      "id": "auth.empty",
+      "path": "docs/architecture/production-readiness/evidence/A06/auth-empty-current-head-browser-check-202610021857280.json",
+      "sha256": "73a1527c2c93726af8a426ee5a52b7ef4e3b503ae13e743d00c225b64212bb76"
+    },
+    {
+      "id": "auth.error",
+      "path": "docs/architecture/production-readiness/evidence/A06/auth-error-current-head-browser-check-202610021859544.json",
+      "sha256": "768523f18be17eee5876bc0e19042c9d8027c500928fba3af61959accb44fb33"
+    },
+    {
+      "id": "auth.loading",
+      "path": "docs/architecture/production-readiness/evidence/A06/auth-loading-current-head-browser-check-202610021859557.json",
+      "sha256": "87a03f8b3ab8b5547dc5d75a27d76499f607195ddecb05cc594b4ef1abdd2807"
+    },
+    {
+      "id": "auth.success",
+      "path": "docs/architecture/production-readiness/evidence/A06/auth-success-current-head-browser-check-202610021859589.json",
+      "sha256": "23ae39113fd52e336591f7c1d30d1ec9b091eb9f9efe2f3ea0e44978bceca04b"
+    },
+    {
+      "id": "auth.unauthorized",
+      "path": "docs/architecture/production-readiness/evidence/A06/auth-unauthorized-current-head-browser-check-202610021900000.json",
+      "sha256": "24997ae93dca0335a5bccaee95260b55cc2dd3b5c61d7f01b27d697ccaac8e1f"
+    },
+    {
+      "id": "dca.empty",
+      "path": "docs/architecture/production-readiness/evidence/A06/dca-empty-current-head-browser-check-202610021150310.json",
+      "sha256": "e3f0d3a39e190f613b0ac92e32b6ff88b9b35cc4572043694e3e64f383837bbb"
+    },
+    {
+      "id": "dca.error",
+      "path": "docs/architecture/production-readiness/evidence/A06/dca-error-current-head-browser-check-202610011403302.json",
+      "sha256": "0e5408e33dd864a1584659b4256b6d632b8609d7d160d91d03ef3877ecd6a82c"
+    },
+    {
+      "id": "dca.loading",
+      "path": "docs/architecture/production-readiness/evidence/A06/dca-loading-current-head-browser-check-202610011403344.json",
+      "sha256": "e5c6a57a4a1e45ebd7fd6ec861064253664082f705d27f9eb30f7d2aa07cea31"
+    },
+    {
+      "id": "dca.success",
+      "path": "docs/architecture/production-readiness/evidence/A06/dca-success-current-head-browser-check-202610011403379.json",
+      "sha256": "b975e26d48f16379462cefa3cc42595c8887e2c88f2f22a102d114ba5090db2e"
+    },
+    {
+      "id": "dca.unauthorized",
+      "path": "docs/architecture/production-readiness/evidence/A06/dca-unauthorized-current-head-browser-check-202610021900012.json",
+      "sha256": "b8bce3301fcb2bc96a8fed4c5233e8334f8c1c02094396422e7c047f2bad4ae9"
+    },
+    {
+      "id": "discovery.empty",
+      "path": "docs/architecture/production-readiness/evidence/A06/discovery-empty-current-head-browser-check-202610011403456.json",
+      "sha256": "e3f395af6670d2a7ffd91dea4138432183188a4ec6a1e963bd47b168fe0fb094"
+    },
+    {
+      "id": "discovery.error",
+      "path": "docs/architecture/production-readiness/evidence/A06/discovery-error-current-head-browser-check-202610011403469.json",
+      "sha256": "8dd4a27ee5f889b000110de13e729cd19931b03c754cb7582fcf9afb560bd990"
+    },
+    {
+      "id": "discovery.loading",
+      "path": "docs/architecture/production-readiness/evidence/A06/discovery-loading-current-head-browser-check-202610011403508.json",
+      "sha256": "0b692652101b1aa82c29fda5c78ed4a196b0ce63f28a1bd7f2965434ab6940b5"
+    },
+    {
+      "id": "discovery.success",
+      "path": "docs/architecture/production-readiness/evidence/A06/discovery-success-current-head-browser-check-202610011403544.json",
+      "sha256": "96e1d9c31dd80e1b2db8ca4694867cd271723fd1471eb55bb406e638b32ffcfc"
+    },
+    {
+      "id": "earn.empty",
+      "path": "docs/architecture/production-readiness/evidence/A06/earn-empty-current-head-browser-check-202610011403560.json",
+      "sha256": "e9007b61577a43c3661de07f93e5b2b94ff01e67622c225b3b51244d3d90206c"
+    },
+    {
+      "id": "earn.error",
+      "path": "docs/architecture/production-readiness/evidence/A06/earn-error-current-head-browser-check-202610020915171.json",
+      "sha256": "6fd566dd1c4bd49bedb227a6be9c843160bf7eeab7f6698d494972fd112c4384"
+    },
+    {
+      "id": "earn.loading",
+      "path": "docs/architecture/production-readiness/evidence/A06/earn-loading-current-head-browser-check-202610011404100.json",
+      "sha256": "4e0eebc9afd4d427e87df03013674209a1ca330c27b40cf5af0b195cfe9540eb"
+    },
+    {
+      "id": "earn.pending",
+      "path": "docs/architecture/production-readiness/evidence/A06/earn-pending-current-head-browser-check-202610020915553.json",
+      "sha256": "b96501aed106ef809da3ce0fdca461a2028dae8367eb93ec94cf5ac85c21dd2c"
+    },
+    {
+      "id": "earn.success",
+      "path": "docs/architecture/production-readiness/evidence/A06/earn-success-current-head-browser-check-202610011404268.json",
+      "sha256": "fd1cf1bf6d9955515cb2768dc5ceef85643a732497b8450b2166838d26f862e6"
+    },
+    {
+      "id": "earn.unauthorized",
+      "path": "docs/architecture/production-readiness/evidence/A06/earn-unauthorized-current-head-browser-check-202610021900025.json",
+      "sha256": "6ccf1b4ad93612321dd5490e883a0c0a74d57f959e9a37481e0dd3fe301c8170"
+    },
+    {
+      "id": "launchpad.empty",
+      "path": "docs/architecture/production-readiness/evidence/A06/launchpad-empty-current-head-browser-check-202610021900039.json",
+      "sha256": "48575dd8376d87b9b003e201064bad02d24887543ce8be24718d7452564676fb"
+    },
+    {
+      "id": "launchpad.error",
+      "path": "docs/architecture/production-readiness/evidence/A06/launchpad-error-current-head-browser-check-202610021900051.json",
+      "sha256": "f9bc92e9b55c0e85486d6c0c2d96f42124349d55f8d6e8bf8556b8a9041c1b0c"
+    },
+    {
+      "id": "launchpad.loading",
+      "path": "docs/architecture/production-readiness/evidence/A06/launchpad-loading-current-head-browser-check-202610021900110.json",
+      "sha256": "75980e1c1cbc7b31463e611b4a64195a5b0d7d7c8fb9617d03d34c2a99da4a6d"
+    },
+    {
+      "id": "launchpad.success",
+      "path": "docs/architecture/production-readiness/evidence/A06/launchpad-success-current-head-browser-check-202610021900140.json",
+      "sha256": "ebeba1d4846c3cd0e9b649a2db4308a7cbd5b0e2b7056eb47b0cc4b744c68f20"
+    },
+    {
+      "id": "p2p.duplicate",
+      "path": "docs/architecture/production-readiness/evidence/A06/p2p-duplicate-browser-check-2026-10-01.json",
+      "sha256": "145918d18e44e81e1fa40130ed1bbf617605c5fab7050480cef085a334b7e0a4"
+    },
+    {
+      "id": "p2p.empty",
+      "path": "docs/architecture/production-readiness/evidence/A06/p2p-empty-browser-check-2026-10-01-refresh-auth-contract.json",
+      "sha256": "6ea024a33f21cb118ef9fc7bd5546ac34b00c5e1ebdd19b35185caa6342732ff"
+    },
+    {
+      "id": "p2p.error",
+      "path": "docs/architecture/production-readiness/evidence/A06/p2p-error-browser-check-2026-10-01-refresh-auth-contract.json",
+      "sha256": "d242ae9b76fd2fd373477bdc595622eb59d5d66fa1c2524edda3c2756e79d981"
+    },
+    {
+      "id": "p2p.forbidden",
+      "path": "docs/architecture/production-readiness/evidence/A06/p2p-forbidden-browser-check-2026-10-01.json",
+      "sha256": "c8fe30accb927065275728588c68ace5f186e3fdf07a7b18594af5883e4685eb"
+    },
+    {
+      "id": "p2p.loading",
+      "path": "docs/architecture/production-readiness/evidence/A06/p2p-loading-browser-check-2026-10-01-refresh-auth-contract.json",
+      "sha256": "37117b97151c4bcd9670f4d6c3330af678955e1e50f97d6e86987517f9a7ee89"
+    },
+    {
+      "id": "p2p.pending",
+      "path": "docs/architecture/production-readiness/evidence/A06/p2p-pending-browser-check-2026-10-01.json",
+      "sha256": "2a5bbc09f0ad6d06c79445f5b47d0b440d4c210448feb7e95647b08d5c5adef4"
+    },
+    {
+      "id": "p2p.success",
+      "path": "docs/architecture/production-readiness/evidence/A06/p2p-success-browser-check-2026-10-01-refresh-auth-contract.json",
+      "sha256": "533ad2331a1a8db832309dd7dc60439d1f4d60d7c2a94d4d78a87ac89e30f03e"
+    },
+    {
+      "id": "p2p.unauthorized",
+      "path": "docs/architecture/production-readiness/evidence/A06/p2p-unauthorized-browser-check-2026-10-02.json",
+      "sha256": "3e929a08d64ab8733861f84832f6580b06f707b04b7718c605b01812057f9a99"
+    },
+    {
+      "id": "predictions.empty",
+      "path": "docs/architecture/production-readiness/evidence/A06/predictions-empty-browser-check-2026-10-01.json",
+      "sha256": "bba3b8aa1dc89c236c003139c527410c65d63e2183ed540fcbc8f7f4df88360a"
+    },
+    {
+      "id": "predictions.error",
+      "path": "docs/architecture/production-readiness/evidence/A06/predictions-error-browser-check-fresh-2026-10-02.json",
+      "sha256": "71bb11a409a91d195e64c0deee4e96d2baf3bb6dbd239e9058f9696aa8e21fa2"
+    },
+    {
+      "id": "predictions.loading",
+      "path": "docs/architecture/production-readiness/evidence/A06/predictions-loading-browser-check-2026-10-01.json",
+      "sha256": "412df9613a84f485b215aa41642f7d3c4c650cd81182acc96eb8b6a6a8ca3152"
+    },
+    {
+      "id": "predictions.pending",
+      "path": "docs/architecture/production-readiness/evidence/A06/predictions-pending-browser-check-2026-10-01.json",
+      "sha256": "ddfb61534ed69deefcfd03b2753abfd3a6cd20dd93bcae3b793a6a4ed963c031"
+    },
+    {
+      "id": "predictions.success",
+      "path": "docs/architecture/production-readiness/evidence/A06/predictions-success-browser-check-2026-10-01.json",
+      "sha256": "a0825af9ec8012ef15306253ba4827ac2f2075ab0efc24043713dbf8341bba38"
+    },
+    {
+      "id": "predictions.unauthorized",
+      "path": "docs/architecture/production-readiness/evidence/A06/predictions-unauthorized-browser-check-2026-10-02-contract-scoped.json",
+      "sha256": "c9839a6d7478ca0a3df255ae8236e19a98d42809c1a71ace75bb9be9760fce09"
+    },
+    {
+      "id": "profile.empty",
+      "path": "docs/architecture/production-readiness/evidence/A06/profile-empty-browser-check-2026-10-01-1790863610275.json",
+      "sha256": "9101f3b0336cafe87400a473d51d094219fac0b538d0291c18bf283e0f99dbeb"
+    },
+    {
+      "id": "profile.error",
+      "path": "docs/architecture/production-readiness/evidence/A06/profile-error-current-head-browser-check-2026-10-01.json",
+      "sha256": "1e8d9cc1e831620d15934f0c9bf6b84939379a1267491ad22eda8b7c0f2ff014"
+    },
+    {
+      "id": "profile.loading",
+      "path": "docs/architecture/production-readiness/evidence/A06/profile-loading-browser-check-2026-10-01-1790863619177.json",
+      "sha256": "d475c9487976af8a0dd7ad437a620d9c5638bbf0ba4732a06dfb8f9b08bbb900"
+    },
+    {
+      "id": "profile.success",
+      "path": "docs/architecture/production-readiness/evidence/A06/profile-success-browser-check-2026-10-01-1790863628148.json",
+      "sha256": "8aead16615c67113c80396a539e5284c977f6ff25fa2800b9998140ac8fdf1d0"
+    },
+    {
+      "id": "profile.unauthorized",
+      "path": "docs/architecture/production-readiness/evidence/A06/profile-unauthorized-browser-check-2026-10-02-contract-scoped.json",
+      "sha256": "4a915f53b8ba3e35fe8433172c168a77ed2f978ad7ad390bf3cc0ca41ed54c41"
+    },
+    {
+      "id": "referral.empty",
+      "path": "docs/architecture/production-readiness/evidence/A06/referral-empty-browser-check-2026-10-01-1790863629728.json",
+      "sha256": "34b1a02a94c357b77804fdef2343be898fc6f02e4cc155ad7d489f4926e912fb"
+    },
+    {
+      "id": "referral.error",
+      "path": "docs/architecture/production-readiness/evidence/A06/referral-error-browser-check-2026-10-01-1790863630831.json",
+      "sha256": "622be800026ed93d49c5380c1effc490a47807536a2ee53cf1ec5b30fa391606"
+    },
+    {
+      "id": "referral.loading",
+      "path": "docs/architecture/production-readiness/evidence/A06/referral-loading-browser-check-2026-10-01-1790863633619.json",
+      "sha256": "afcab8819742b78667981c2f6d39393fabf80db65a635a4e310a9e7876c12ace"
+    },
+    {
+      "id": "referral.success",
+      "path": "docs/architecture/production-readiness/evidence/A06/referral-success-browser-check-2026-10-01-1790863636830.json",
+      "sha256": "9f918656a08001d5701fa9157a364044fec00d18c63565c51d767445f5bea350"
+    },
+    {
+      "id": "referral.unauthorized",
+      "path": "docs/architecture/production-readiness/evidence/A06/referral-unauthorized-browser-check-2026-10-02-contract-scoped.json",
+      "sha256": "7dbec3c9713a33984ebcc3a1d5bf346f148a80cb12a6f07673315cc9a952658a"
+    },
+    {
+      "id": "support.empty",
+      "path": "docs/architecture/production-readiness/evidence/A06/support-empty-browser-check-2026-10-02-1790941981520.json",
+      "sha256": "97513e3e824efbc798aaab84f372b00f474aafa13d5892fe94346a8b8677797f"
+    },
+    {
+      "id": "support.error",
+      "path": "docs/architecture/production-readiness/evidence/A06/support-error-browser-check-2026-10-02-1790941983873.json",
+      "sha256": "5da5f5a443454fa821827ea614e73438faf114e415625e7d5e20bc5890f9300d"
+    },
+    {
+      "id": "support.loading",
+      "path": "docs/architecture/production-readiness/evidence/A06/support-loading-browser-check-2026-10-02-1790941991721.json",
+      "sha256": "7d3c2c66cd6ec27bec6702a9af7944c8d7485420247373fa3572b1143f60e7b5"
+    },
+    {
+      "id": "support.pending",
+      "path": "docs/architecture/production-readiness/evidence/A06/support-pending-browser-check-2026-10-02.json",
+      "sha256": "71f5b8d549e6a5ef03385f4de62b92d243918dc2de48daccc8374c7b75fea920"
+    },
+    {
+      "id": "support.success",
+      "path": "docs/architecture/production-readiness/evidence/A06/support-success-browser-check-2026-10-02-1790942009100.json",
+      "sha256": "d4e859a120c0daaeb065ea88b2249c1de3271b84801a87d73f5867f0baea7808"
+    },
+    {
+      "id": "trading.empty",
+      "path": "docs/architecture/production-readiness/evidence/A06/trading-empty-browser-check-2026-10-01.json",
+      "sha256": "32ce7f35f9da196cb0281aee154a06645e2fc93411f481b426cd56cad99eae84"
+    },
+    {
+      "id": "trading.error",
+      "path": "docs/architecture/production-readiness/evidence/A06/trading-error-browser-check-2026-10-01.json",
+      "sha256": "01191861861274b7b0d83a0285ba35c60b2500e682b967e2a795f215f360d585"
+    },
+    {
+      "id": "trading.forbidden",
+      "path": "docs/architecture/production-readiness/evidence/A06/trading-forbidden-browser-check-2026-10-01.json",
+      "sha256": "017df8f668278a20a19d7e783185b7633682b32254e64592cc77ad649d00be99"
+    },
+    {
+      "id": "trading.loading",
+      "path": "docs/architecture/production-readiness/evidence/A06/trading-loading-browser-check-2026-10-01.json",
+      "sha256": "0abee8b0d5b4348460cdb6cfb70f2a20edd43a64b06316dea07748e22001b325"
+    },
+    {
+      "id": "trading.pending",
+      "path": "docs/architecture/production-readiness/evidence/A06/trading-pending-browser-check-2026-10-01.json",
+      "sha256": "6a54c6d7eb0fd233db2118a7d073c6c79c02f52c7a34720b0160a38b90c1f06a"
+    },
+    {
+      "id": "trading.success",
+      "path": "docs/architecture/production-readiness/evidence/A06/trading-success-browser-check-2026-10-01.json",
+      "sha256": "ac5a39cdb8300d100d1ab99d0f50bbc642a03dd4a5c6a87009efed76570f3884"
+    },
+    {
+      "id": "trading.unauthorized",
+      "path": "docs/architecture/production-readiness/evidence/A06/trading-unauthorized-browser-check-2026-10-02.json",
+      "sha256": "29f18b086a548127e971b527de18e34d7d4d24f0b5fa97448d0d8793bb24021c"
+    },
+    {
+      "id": "wallet.empty",
+      "path": "docs/architecture/production-readiness/evidence/A06/wallet-empty-current-head-browser-check-202610011408359.json",
+      "sha256": "cc461524b7e531b7e5ee4e75bbe1b8d7ae31c546ebebc5dd1cf145833410eb83"
+    },
+    {
+      "id": "wallet.forbidden",
+      "path": "docs/architecture/production-readiness/evidence/A06/wallet-forbidden-current-head-browser-check-202610011408374.json",
+      "sha256": "1c9d12c6d5fbee03d8dce766edfc6e948cb317739418e33206dfdfb11a1f1d77"
+    },
+    {
+      "id": "wallet.unauthorized",
+      "path": "docs/architecture/production-readiness/evidence/A06/wallet-unauthorized-current-head-browser-check-202610021900239.json",
+      "sha256": "cce80fecc5c92ba264bf81da512f09d9490d934cd67be179b8cf3096e4bc1cc4"
+    },
+    {
+      "id": "wallet.success",
+      "path": "docs/architecture/production-readiness/evidence/A06/wallet-success-current-head-browser-check-202610011408576.json",
+      "sha256": "557631096e927d9714489ae705d411993505b473b75adcef35a69303c7c2187e"
+    },
+    {
+      "id": "wallet.loading",
+      "path": "docs/architecture/production-readiness/evidence/A06/wallet-loading-current-head-browser-check-202610011408588.json",
+      "sha256": "086651ee19af2273fa818dddad9fc31a6f0f852a3896a12c9d689c57e5c7a909"
+    },
+    {
+      "id": "wallet.error",
+      "path": "docs/architecture/production-readiness/evidence/A06/wallet-error-current-head-browser-check-202610011416222.json",
+      "sha256": "e27bda475d82b680b529fb2bb0da55646448c36761adb7c12f293a7459adf04c"
+    },
+    {
+      "id": "wallet.pending",
+      "path": "docs/architecture/production-readiness/evidence/A06/wallet-pending-current-head-browser-check-202610020918296.json",
+      "sha256": "fe55adb7650ca2aaf330415605c8b71af42b0430324214aa96c74e585679ea64"
+    },
+    {
+      "id": "market.empty",
+      "path": "docs/architecture/production-readiness/evidence/A06/market-empty-current-head-browser-check-20261002091623.json",
+      "sha256": "268bc8288fc3eb2f883dc5e9870012de1bb2b3a32af3d15f9b0f45dcd1dfa4e0"
+    },
+    {
+      "id": "market.error",
+      "path": "docs/architecture/production-readiness/evidence/A06/market-error-current-head-browser-check-20261002091630.json",
+      "sha256": "a21ee2e3520e532e8853c2e9037674da1b2413168887b6c5a878a4b032d9b724"
+    },
+    {
+      "id": "market.loading",
+      "path": "docs/architecture/production-readiness/evidence/A06/market-loading-current-head-browser-check-20261002190036.json",
+      "sha256": "74da79c32bbc2353d7e2a737d6356840ef7dbb5260b73806eaffa946424fa215"
+    },
+    {
+      "id": "market.success",
+      "path": "docs/architecture/production-readiness/evidence/A06/market-success-current-head-browser-check-20261002190135.json",
+      "sha256": "9a2f5516798b860d3b6aa2241aa4f88c37bf90af7a327c6c25f7daccf9cea009"
+    }
+  ],
+  "sourceInputs": [
+    {
+      "id": "admin.forbidden",
+      "path": "docs/architecture/production-readiness/evidence/A06/admin-forbidden-browser-check-202610130607590.json",
+      "sha256": "ba43f4964805b35d2826d8953a995c5f24fcbc95b7538dd4fb19b515e4027028",
+      "sourceHashCount": 17,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-admin-forbidden-overview-202610130607590.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-admin-forbidden-funnel-202610130607590.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-admin-forbidden-ab-tests-202610130607590.png"
+      ]
+    },
+    {
+      "id": "admin.empty",
+      "path": "docs/architecture/production-readiness/evidence/A06/admin-empty-browser-check-202610130607590.json",
+      "sha256": "dbee19c4fe4b3940aecc582459586270e9a75864f7d5297da577d63b8eee5441",
+      "sourceHashCount": 17,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-admin-empty-funnel-202610130607590.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-admin-empty-ab-tests-202610130607590.png"
+      ]
+    },
+    {
+      "id": "admin.success",
+      "path": "docs/architecture/production-readiness/evidence/A06/admin-success-browser-check-202610130608007.json",
+      "sha256": "178248f21b279e46865a5fca7fea176b2e49bc26f6985c850d058b41fc1560ae",
+      "sourceHashCount": 17,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-admin-success-overview-202610130608007.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-admin-success-funnel-202610130608007.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-admin-success-ab-tests-202610130608007.png"
+      ]
+    },
+    {
+      "id": "admin.unauthorized",
+      "path": "docs/architecture/production-readiness/evidence/A06/admin-unauthorized-browser-check-2026-10-13-remediation-1791871672034.json",
+      "sha256": "1108d86ab96985fc198c4822b549349b501c140f393c19ac0d9c9dc3d369a8a9",
+      "sourceHashCount": 24,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-admin-unauthorized-overview-2026-10-13-remediation-1791871672034.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-admin-unauthorized-funnel-2026-10-13-remediation-1791871672034.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-admin-unauthorized-ab-tests-2026-10-13-remediation-1791871672034.png"
+      ]
+    },
+    {
+      "id": "admin.error",
+      "path": "docs/architecture/production-readiness/evidence/A06/admin-error-browser-check-2026-10-13-remediation-1791871672034.json",
+      "sha256": "25e48fd3b47962ce168a5693f11f6e636ec76f25d87b26ddc3d291386c9206fe",
+      "sourceHashCount": 19,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-admin-error-overview-2026-10-13-remediation-1791871672034.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-admin-error-funnel-2026-10-13-remediation-1791871672034.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-admin-error-ab-tests-2026-10-13-remediation-1791871672034.png"
+      ]
+    },
+    {
+      "id": "arena.empty",
+      "path": "docs/architecture/production-readiness/evidence/A06/arena-empty-browser-check-202610130608046.json",
+      "sha256": "5ccf73bd6483dba4d06c6642984c93725e37b5f2e7570b1a2ea34ea7bbfb5457",
+      "sourceHashCount": 14,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-arena-empty-challenges-202610130608046.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-arena-empty-modes-202610130608046.png"
+      ]
+    },
+    {
+      "id": "arena.error",
+      "path": "docs/architecture/production-readiness/evidence/A06/arena-error-browser-check-202610130608056.json",
+      "sha256": "748bc9bd8c90b6c35e29fd9eb91172ab7784703e64f18a63f1a3d11e97117203",
+      "sourceHashCount": 17,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-arena-error-discovery-202610130608056.png"
+      ]
+    },
+    {
+      "id": "arena.loading",
+      "path": "docs/architecture/production-readiness/evidence/A06/arena-loading-browser-check-202610130608061.json",
+      "sha256": "1a9cfae0d270e70b3107ad638705ebc17adb196d5a90b14cbbea2176bf965e62",
+      "sourceHashCount": 15,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-arena-loading-discovery-202610130608061.png"
+      ]
+    },
+    {
+      "id": "admin.loading",
+      "path": "docs/architecture/production-readiness/evidence/A06/admin-loading-browser-check-202610130608007.json",
+      "sha256": "fc526a2243cc07b7d29e9653f25f102e1caf84b4470f8b4aa526ba904b1f17ad",
+      "sourceHashCount": 17,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-admin-loading-overview-202610130608007.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-admin-loading-funnel-202610130608007.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-admin-loading-ab-tests-202610130608007.png"
+      ]
+    },
+    {
+      "id": "arena.success",
+      "path": "docs/architecture/production-readiness/evidence/A06/arena-success-browser-check-202610130608087.json",
+      "sha256": "8e27a1c0b5df166895f62969196c4f1723e85d9dd43452d5dbfa6ccd61f39a65",
+      "sourceHashCount": 19,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-arena-success-discovery-202610130608087.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-arena-success-mode-202610130608087.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-arena-success-challenge-202610130608087.png"
+      ]
+    },
+    {
+      "id": "auth.error",
+      "path": "docs/architecture/production-readiness/evidence/A06/auth-error-current-head-browser-check-202610130608094.json",
+      "sha256": "e73c3863a17c2d5aca4d1375bc7a7a7ae6bb7f17d1c9ef3454c0dc819b7990d2",
+      "sourceHashCount": 12,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-auth-error-current-head-202610130608094.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-auth-error-retry-current-head-202610130608094.png"
+      ]
+    },
+    {
+      "id": "auth.empty",
+      "path": "docs/architecture/production-readiness/evidence/A06/auth-empty-current-head-browser-check-202610130608094.json",
+      "sha256": "8b238f82b31601987c85b6e0e7cf002740065a8cfeadd4088294fd73473f7f76",
+      "sourceHashCount": 17,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-auth-empty-current-head-202610130608094.png"
+      ]
+    },
+    {
+      "id": "auth.success",
+      "path": "docs/architecture/production-readiness/evidence/A06/auth-success-current-head-browser-check-202610130608111.json",
+      "sha256": "636588626e5db1d2af2cbe41592d344e79e15cdb95172e89d22dd0a4a443b309",
+      "sourceHashCount": 15,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-auth-success-current-head-202610130608111.png"
+      ]
+    },
+    {
+      "id": "auth.unauthorized",
+      "path": "docs/architecture/production-readiness/evidence/A06/auth-unauthorized-current-head-browser-check-202610130608118.json",
+      "sha256": "3cd44a7baeb6db702fa7ffd5d9d930c9c7a143e93c09075ea18d1ac3b6a089ba",
+      "sourceHashCount": 15,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-auth-unauthorized-current-head-202610130608118.png"
+      ]
+    },
+    {
+      "id": "auth.loading",
+      "path": "docs/architecture/production-readiness/evidence/A06/auth-loading-current-head-browser-check-202610130608106.json",
+      "sha256": "a6b7ecea0ccf16ce6fa9a4a5013af929b0015f2819b4d057df177998ce063c68",
+      "sourceHashCount": 17,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-auth-loading-current-head-202610130608106.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-auth-loading-login-current-head-202610130608106.png"
+      ]
+    },
+    {
+      "id": "dca.empty",
+      "path": "docs/architecture/production-readiness/evidence/A06/dca-empty-current-head-browser-check-202610130608129.json",
+      "sha256": "37618244ebf28322b6a419a38f7ea7464442aef31e67b7ad377abf16d6612949",
+      "sourceHashCount": 17,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-dca-empty-current-head-202610130608129.png"
+      ]
+    },
+    {
+      "id": "dca.loading",
+      "path": "docs/architecture/production-readiness/evidence/A06/dca-loading-current-head-browser-check-202610130608145.json",
+      "sha256": "1f3056414de0c40b725945c88c6977fe155487c308e170e6819c6a978bca06ad",
+      "sourceHashCount": 15,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-dca-loading-current-head-202610130608145.png"
+      ]
+    },
+    {
+      "id": "dca.error",
+      "path": "docs/architecture/production-readiness/evidence/A06/dca-error-current-head-browser-check-202610130608137.json",
+      "sha256": "f253583d855796750131fca6419544ce171c32f2c03c85ae6a15c641ef5c7450",
+      "sourceHashCount": 17,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-dca-error-current-head-202610130608137.png"
+      ]
+    },
+    {
+      "id": "dca.unauthorized",
+      "path": "docs/architecture/production-readiness/evidence/A06/dca-unauthorized-current-head-browser-check-202610130608180.json",
+      "sha256": "4c779fe9f97e46dc200af38d1727bd3c1c137ae0505810a3ace9e96c658293c9",
+      "sourceHashCount": 19,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-dca-unauthorized-current-head-202610130608180.png"
+      ]
+    },
+    {
+      "id": "discovery.empty",
+      "path": "docs/architecture/production-readiness/evidence/A06/discovery-empty-current-head-browser-check-202610130608186.json",
+      "sha256": "e6da78680992616ccc691619bea031c06b173fd1c08ad3f3f8e97db4c441a769",
+      "sourceHashCount": 14,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-discovery-empty-current-head-202610130608186.png"
+      ]
+    },
+    {
+      "id": "dca.success",
+      "path": "docs/architecture/production-readiness/evidence/A06/dca-success-current-head-browser-check-202610130608154.json",
+      "sha256": "2c0cd5b5e93fdb79a4fc32556506625c58d3c595e361c47679a400bfcfc3a807",
+      "sourceHashCount": 18,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-dca-success-plans-current-head-202610130608154.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-dca-success-plan-created-current-head-202610130608154.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-dca-success-plan-paused-current-head-202610130608154.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-dca-success-backend-required-current-head-202610130608154.png"
+      ]
+    },
+    {
+      "id": "discovery.success",
+      "path": "docs/architecture/production-readiness/evidence/A06/discovery-success-current-head-browser-check-202610130608223.json",
+      "sha256": "a142e9290072076d31ec9e961e7269ab4e39d067f0fd1a3222c15c2a9a86ff5c",
+      "sourceHashCount": 14,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-discovery-success-current-head-202610130608223.png"
+      ]
+    },
+    {
+      "id": "discovery.loading",
+      "path": "docs/architecture/production-readiness/evidence/A06/discovery-loading-current-head-browser-check-202610130608205.json",
+      "sha256": "094889679a5b6f7b288c1f06c77c26b100af03ae4c9d1d7ded7eb3facd0f093c",
+      "sourceHashCount": 14,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-discovery-loading-current-head-202610130608205.png"
+      ]
+    },
+    {
+      "id": "discovery.error",
+      "path": "docs/architecture/production-readiness/evidence/A06/discovery-error-current-head-browser-check-202610130608199.json",
+      "sha256": "9ca0e034966b501d04c4731890c8ee430279bb8eb58c019c07be402616bebb1d",
+      "sourceHashCount": 14,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-discovery-error-current-head-202610130608199.png"
+      ]
+    },
+    {
+      "id": "earn.empty",
+      "path": "docs/architecture/production-readiness/evidence/A06/earn-empty-current-head-browser-check-202610130608239.json",
+      "sha256": "e3b6d454d7e9ce67b5e1439f06ac67a409b8c87d692d3f840c0105d2597b2ad9",
+      "sourceHashCount": 16,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-earn-empty-portfolio-current-head-202610130608239.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-earn-empty-history-current-head-202610130608239.png"
+      ]
+    },
+    {
+      "id": "earn.pending",
+      "path": "docs/architecture/production-readiness/evidence/A06/earn-pending-current-head-browser-check-202610130608260.json",
+      "sha256": "1a6c1b74bd466a71b02ef2f6ca5718d6fa9e1053e69e1fd732e544c15e85e575",
+      "sourceHashCount": 23,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-earn-pending-products-current-head-202610130608260.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-earn-pending-subscription-current-head-202610130608260.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-earn-pending-redemption-current-head-202610130608260.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-earn-pending-history-current-head-202610130608260.png"
+      ]
+    },
+    {
+      "id": "earn.success",
+      "path": "docs/architecture/production-readiness/evidence/A06/earn-success-current-head-browser-check-202610130608285.json",
+      "sha256": "a0824ff0e885b9173325d1797dd8bafefe8d095ca9d09a0504e95f16d8cafec3",
+      "sourceHashCount": 17,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-earn-success-products-current-head-202610130608285.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-earn-success-subscription-current-head-202610130608285.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-earn-success-redemption-current-head-202610130608285.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-earn-success-history-current-head-202610130608285.png"
+      ]
+    },
+    {
+      "id": "earn.unauthorized",
+      "path": "docs/architecture/production-readiness/evidence/A06/earn-unauthorized-current-head-browser-check-202610130608304.json",
+      "sha256": "f1366ce5c76e58e844a7401f08b6af83fd22973be1fbc2514e835e9c89260bfb",
+      "sourceHashCount": 22,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-earn-unauthorized-snapshot-current-head-202610130608304.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-earn-unauthorized-history-current-head-202610130608304.png"
+      ]
+    },
+    {
+      "id": "launchpad.empty",
+      "path": "docs/architecture/production-readiness/evidence/A06/launchpad-empty-current-head-browser-check-202610130608321.json",
+      "sha256": "eb79f33270b5982cf78d68144528be3a6c8d11c30908b6a65c39b91f4d30c3a8",
+      "sourceHashCount": 26,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-launchpad-empty-current-head-202610130608321.png"
+      ]
+    },
+    {
+      "id": "earn.error",
+      "path": "docs/architecture/production-readiness/evidence/A06/earn-error-current-head-browser-check-202610130608242.json",
+      "sha256": "b34c0fe9c670ee5541f41748029335f189895f0f6668c58e530f0b089e93629c",
+      "sourceHashCount": 21,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-earn-error-snapshot-current-head-202610130608242.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-earn-error-snapshot-retry-current-head-202610130608242.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-earn-error-history-current-head-202610130608242.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-earn-error-history-retry-current-head-202610130608242.png"
+      ]
+    },
+    {
+      "id": "earn.loading",
+      "path": "docs/architecture/production-readiness/evidence/A06/earn-loading-current-head-browser-check-202610130608247.json",
+      "sha256": "8e5e623d344d3af7091469f87ed929d7f097880302c41937c848272e2d3f7d55",
+      "sourceHashCount": 18,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-earn-loading-snapshot-current-head-202610130608247.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-earn-loading-subscription-current-head-202610130608247.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-earn-loading-redemption-current-head-202610130608247.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-earn-loading-history-current-head-202610130608247.png"
+      ]
+    },
+    {
+      "id": "launchpad.error",
+      "path": "docs/architecture/production-readiness/evidence/A06/launchpad-error-current-head-browser-check-202610130608335.json",
+      "sha256": "69e9994d11ae1490edec267fdee84a11cfce52446b99965bdb991f4e2227fda4",
+      "sourceHashCount": 19,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-launchpad-error-recoverable-current-head-202610130608335.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-launchpad-error-retry-current-head-202610130608335.png"
+      ]
+    },
+    {
+      "id": "launchpad.success",
+      "path": "docs/architecture/production-readiness/evidence/A06/launchpad-success-current-head-browser-check-202610130608393.json",
+      "sha256": "66d9e521d2d142df087d22b86df68af1039642cd981e656773d1ad14287c9002",
+      "sourceHashCount": 25,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-launchpad-success-project-list-current-head-202610130608393.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-launchpad-success-project-detail-current-head-202610130608393.png"
+      ]
+    },
+    {
+      "id": "launchpad.loading",
+      "path": "docs/architecture/production-readiness/evidence/A06/launchpad-loading-current-head-browser-check-202610130608376.json",
+      "sha256": "1223d61765ed26e9e848ec5ed7a4789681d825a6137bca9e8b6347e9bae0f759",
+      "sourceHashCount": 26,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-launchpad-loading-current-head-202610130608376.png"
+      ]
+    },
+    {
+      "id": "p2p.empty",
+      "path": "docs/architecture/production-readiness/evidence/A06/p2p-empty-browser-check-2026-10-13-remediation-1791871672034.json",
+      "sha256": "eaad6f6a84cf8e842d65f0f1c7b0e95000026b275c33d98157caea39e3cbc0e3",
+      "sourceHashCount": 11,
+      "screenshotPaths": []
+    },
+    {
+      "id": "p2p.forbidden",
+      "path": "docs/architecture/production-readiness/evidence/A06/p2p-forbidden-browser-check-2026-10-13-remediation-1791871672034.json",
+      "sha256": "c328e9ef29215ead61fe12ec33eb5ecdcafcee51522d175714169ae2aea550bf",
+      "sourceHashCount": 11,
+      "screenshotPaths": []
+    },
+    {
+      "id": "p2p.duplicate",
+      "path": "docs/architecture/production-readiness/evidence/A06/p2p-duplicate-browser-check-2026-10-13-remediation-1791871672034.json",
+      "sha256": "06ddcda1cb7d6e114fb0ed119680f48d3a3e16cfc18bda39f5e9434759bd9e0b",
+      "sourceHashCount": 13,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-p2p-duplicate-create-2026-10-13-remediation-1791871672034.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-p2p-duplicate-mark-paid-2026-10-13-remediation-1791871672034.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-p2p-duplicate-release-2026-10-13-remediation-1791871672034.png"
+      ]
+    },
+    {
+      "id": "p2p.loading",
+      "path": "docs/architecture/production-readiness/evidence/A06/p2p-loading-browser-check-2026-10-13-remediation-1791871672034.json",
+      "sha256": "202801634bc3b71ef3118d50a82ada041e345b671a1c52dfcf67d61d74e6682b",
+      "sourceHashCount": 11,
+      "screenshotPaths": []
+    },
+    {
+      "id": "p2p.error",
+      "path": "docs/architecture/production-readiness/evidence/A06/p2p-error-browser-check-2026-10-13-remediation-1791871672034.json",
+      "sha256": "e8b66d514091e70370e65a4f08701ca3e2530d52b486f76d0b0f9697e1960013",
+      "sourceHashCount": 11,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-p2p-error-before-retry-2026-10-13-remediation-1791871672034.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-p2p-error-after-retry-2026-10-13-remediation-1791871672034.png"
+      ]
+    },
+    {
+      "id": "p2p.success",
+      "path": "docs/architecture/production-readiness/evidence/A06/p2p-success-browser-check-2026-10-13-remediation-1791871672034.json",
+      "sha256": "b6b79a3b9b2bebf68f701f54b468bf3fb6a2945a6d8db179dbc6ee6263c63b74",
+      "sourceHashCount": 12,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-p2p-success-escrow-paid-2026-10-13-remediation-1791871672034.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-p2p-success-order-created-2026-10-13-remediation-1791871672034.png"
+      ]
+    },
+    {
+      "id": "p2p.unauthorized",
+      "path": "docs/architecture/production-readiness/evidence/A06/p2p-unauthorized-browser-check-2026-10-13-remediation-1791871672034.json",
+      "sha256": "829416aeb677597ac90d1149b3d7bf08991f5dcc6b41daecb5370ee6e1c7ed66",
+      "sourceHashCount": 13,
+      "screenshotPaths": []
+    },
+    {
+      "id": "predictions.empty",
+      "path": "docs/architecture/production-readiness/evidence/A06/predictions-empty-browser-check-2026-10-13-remediation-1791871672034.json",
+      "sha256": "59ffcf99b10d6ddc09751332b0ad9cb37f69d8462101d3032442b76360884bd2",
+      "sourceHashCount": 17,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-predictions-empty-events-2026-10-13-remediation-1791871672034.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-predictions-empty-portfolio-2026-10-13-remediation-1791871672034.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-predictions-empty-rewards-2026-10-13-remediation-1791871672034.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-predictions-empty-leaderboard-2026-10-13-remediation-1791871672034.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-predictions-empty-activity-2026-10-13-remediation-1791871672034.png"
+      ]
+    },
+    {
+      "id": "p2p.pending",
+      "path": "docs/architecture/production-readiness/evidence/A06/p2p-pending-browser-check-2026-10-13-remediation-1791871672034.json",
+      "sha256": "3c6fc94d65b2501b36056cc435d70eb02f563d1a153818b2969ea033d5a90671",
+      "sourceHashCount": 13,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-p2p-pending-create-inflight-2026-10-13-remediation-1791871672034.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-p2p-pending-created-order-2026-10-13-remediation-1791871672034.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-p2p-pending-mark-paid-inflight-2026-10-13-remediation-1791871672034.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-p2p-pending-release-inflight-2026-10-13-remediation-1791871672034.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-p2p-pending-released-2026-10-13-remediation-1791871672034.png"
+      ]
+    },
+    {
+      "id": "predictions.pending",
+      "path": "docs/architecture/production-readiness/evidence/A06/predictions-pending-browser-check-2026-10-13-remediation-1791871672034.json",
+      "sha256": "51ace3cfe9660fe54c20775aad58f5a5e9d5692175bbf3a9890fc921c1e9bf2b",
+      "sourceHashCount": 16,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-predictions-pending-order-2026-10-13-remediation-1791871672034.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-predictions-pending-receipt-2026-10-13-remediation-1791871672034.png"
+      ]
+    },
+    {
+      "id": "predictions.success",
+      "path": "docs/architecture/production-readiness/evidence/A06/predictions-success-browser-check-2026-10-13-remediation-1791871672034.json",
+      "sha256": "5426bbb40eef00ede0cb2492c7fdb907141c04ed3e3742a70a7b27b0ec51ec23",
+      "sourceHashCount": 17,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-predictions-success-events-2026-10-13-remediation-1791871672034.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-predictions-success-event-2026-10-13-remediation-1791871672034.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-predictions-success-receipt-2026-10-13-remediation-1791871672034.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-predictions-success-portfolio-2026-10-13-remediation-1791871672034.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-predictions-success-rewards-2026-10-13-remediation-1791871672034.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-predictions-success-leaderboard-2026-10-13-remediation-1791871672034.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-predictions-success-activity-2026-10-13-remediation-1791871672034.png"
+      ]
+    },
+    {
+      "id": "predictions.error",
+      "path": "docs/architecture/production-readiness/evidence/A06/predictions-error-browser-check-fresh-2026-10-13-remediation-1791871672034.json",
+      "sha256": "8d096f6a17dc4d6961b0fb0266026be42079eed0f6d51ff9b0c3b2b3ac44a5f1",
+      "sourceHashCount": 20,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-predictions-error-events-fresh-2026-10-13-remediation-1791871672034.png"
+      ]
+    },
+    {
+      "id": "predictions.unauthorized",
+      "path": "docs/architecture/production-readiness/evidence/A06/predictions-unauthorized-browser-check-2026-10-13-remediation-1791871672034-remediation-1791871672034.json",
+      "sha256": "0f127368ac77c94689bbeb65f0b1b9991020fa24686b96ddd6bd8ff8aab1d2b4",
+      "sourceHashCount": 17,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-predictions-unauthorized-events-2026-10-13-remediation-1791871672034-remediation-1791871672034.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-predictions-unauthorized-portfolio-2026-10-13-remediation-1791871672034-remediation-1791871672034.png"
+      ]
+    },
+    {
+      "id": "profile.empty",
+      "path": "docs/architecture/production-readiness/evidence/A06/profile-empty-browser-check-2026-10-13-1791871736731.json",
+      "sha256": "25a8ad751b6061e1577f60c483a2541f3ae60f3e1d1072b8b129230da1d174b4",
+      "sourceHashCount": 21,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-profile-empty-devices-2026-10-13-1791871736731.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-profile-empty-activity-2026-10-13-1791871736731.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-profile-empty-subaccounts-2026-10-13-1791871736731.png"
+      ]
+    },
+    {
+      "id": "predictions.loading",
+      "path": "docs/architecture/production-readiness/evidence/A06/predictions-loading-browser-check-2026-10-13-remediation-1791871672034.json",
+      "sha256": "753d5041590dbe74e587525d0466b1a575f650af1cfd78826065f0415b0708fc",
+      "sourceHashCount": 17,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-predictions-loading-events-2026-10-13-remediation-1791871672034.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-predictions-loading-event-2026-10-13-remediation-1791871672034.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-predictions-loading-portfolio-2026-10-13-remediation-1791871672034.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-predictions-loading-rewards-2026-10-13-remediation-1791871672034.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-predictions-loading-leaderboard-2026-10-13-remediation-1791871672034.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-predictions-loading-activity-2026-10-13-remediation-1791871672034.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-predictions-loading-receipt-2026-10-13-remediation-1791871672034.png"
+      ]
+    },
+    {
+      "id": "profile.success",
+      "path": "docs/architecture/production-readiness/evidence/A06/profile-success-browser-check-2026-10-13-1791871745463.json",
+      "sha256": "fc1b8ab31bd2b02a5dff2b5cc2431b9255fe61cc653115e6e0c2068f0ebe9ece",
+      "sourceHashCount": 22,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-profile-success-edit-2026-10-13-1791871745463.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-profile-success-devices-2026-10-13-1791871745463.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-profile-success-activity-2026-10-13-1791871745463.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-profile-success-sub-accounts-2026-10-13-1791871745463.png"
+      ]
+    },
+    {
+      "id": "profile.loading",
+      "path": "docs/architecture/production-readiness/evidence/A06/profile-loading-browser-check-2026-10-13-1791871738893.json",
+      "sha256": "6ba78a4bc74a7c78a3f0c9fcb1980f7e3a5a2236542ed32190ff422ac4c6a564",
+      "sourceHashCount": 22,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-profile-loading-edit-2026-10-13-1791871738893.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-profile-loading-devices-2026-10-13-1791871738893.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-profile-loading-activity-2026-10-13-1791871738893.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-profile-loading-subaccounts-2026-10-13-1791871738893.png"
+      ]
+    },
+    {
+      "id": "referral.empty",
+      "path": "docs/architecture/production-readiness/evidence/A06/referral-empty-browser-check-2026-10-13-1791871747314.json",
+      "sha256": "97f838e15a5f5e6104b006b6623dfca837f2aaf41f0016a47746f944e9fb7109",
+      "sourceHashCount": 20,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-referral-empty-2026-10-13-1791871747314.png"
+      ]
+    },
+    {
+      "id": "profile.unauthorized",
+      "path": "docs/architecture/production-readiness/evidence/A06/profile-unauthorized-browser-check-2026-10-13-remediation-1791871672034.json",
+      "sha256": "c643359fc7166304fddcde68d07d841b828ab026af82d5b1f6d0754001c00238",
+      "sourceHashCount": 23,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-profile-unauthorized-profile-2026-10-13-remediation-1791871672034.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-profile-unauthorized-devices-2026-10-13-remediation-1791871672034.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-profile-unauthorized-activity-2026-10-13-remediation-1791871672034.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-profile-unauthorized-subaccounts-2026-10-13-remediation-1791871672034.png"
+      ]
+    },
+    {
+      "id": "referral.error",
+      "path": "docs/architecture/production-readiness/evidence/A06/referral-error-browser-check-2026-10-13-1791871748353.json",
+      "sha256": "6df60c74bb6e5e790a97b79aff642fd40a0c32b1f12fe67ec0427977af5e5446",
+      "sourceHashCount": 23,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-referral-error-2026-10-13-1791871748353.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-referral-error-after-retry-2026-10-13-1791871748353.png"
+      ]
+    },
+    {
+      "id": "referral.loading",
+      "path": "docs/architecture/production-readiness/evidence/A06/referral-loading-browser-check-2026-10-13-1791871748756.json",
+      "sha256": "965a15a3525b78fc259c8c907ca9ccfc5265f8f86bf23ac13496379a4cf2fa57",
+      "sourceHashCount": 20,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-referral-loading-pending-2026-10-13-1791871748756.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-referral-loading-resolved-2026-10-13-1791871748756.png"
+      ]
+    },
+    {
+      "id": "referral.success",
+      "path": "docs/architecture/production-readiness/evidence/A06/referral-success-browser-check-2026-10-13-1791871751322.json",
+      "sha256": "e69cdd9deffa2f6600bbc21f1a7b91fdd3e1a4d4a41ceb12e72a10be0fc60def",
+      "sourceHashCount": 20,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-referral-success-2026-10-13-1791871751322.png"
+      ]
+    },
+    {
+      "id": "referral.unauthorized",
+      "path": "docs/architecture/production-readiness/evidence/A06/referral-unauthorized-browser-check-2026-10-13-remediation-1791871672034.json",
+      "sha256": "2cb3eb8a094b798daf21610a2cd49e8d822fe7d338d0d97f2a27705f00a547cf",
+      "sourceHashCount": 25,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-referral-unauthorized-success-2026-10-13-remediation-1791871672034.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-referral-unauthorized-login-2026-10-13-remediation-1791871672034.png"
+      ]
+    },
+    {
+      "id": "support.empty",
+      "path": "docs/architecture/production-readiness/evidence/A06/support-empty-browser-check-2026-10-13-remediation-1791871672034.json",
+      "sha256": "8761643a6083f97a4c628186bcef0dea8429a5b7f2dea6fe7a3a6324e6bff499",
+      "sourceHashCount": 25,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-support-empty-news-2026-10-13-remediation-1791871672034.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-support-empty-notifications-2026-10-13-remediation-1791871672034.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-support-empty-help-2026-10-13-remediation-1791871672034.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-support-empty-tickets-2026-10-13-remediation-1791871672034.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-support-empty-created-ticket-2026-10-13-remediation-1791871672034.png"
+      ]
+    },
+    {
+      "id": "support.error",
+      "path": "docs/architecture/production-readiness/evidence/A06/support-error-browser-check-2026-10-13-remediation-1791871672034.json",
+      "sha256": "bc758a4759ea3006bad7a992eea628ee0dc00ae3e42b64009bc6ee357ca52b6c",
+      "sourceHashCount": 26,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-support-error-news-2026-10-13-remediation-1791871672034.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-support-error-notifications-2026-10-13-remediation-1791871672034.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-support-error-help-2026-10-13-remediation-1791871672034.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-support-error-tickets-2026-10-13-remediation-1791871672034.png"
+      ]
+    },
+    {
+      "id": "support.loading",
+      "path": "docs/architecture/production-readiness/evidence/A06/support-loading-browser-check-2026-10-13-remediation-1791871672034.json",
+      "sha256": "05bd3d03f3e46d5ebbe69237ec0849c3455e18bcb88202a467a5488d511e4a0e",
+      "sourceHashCount": 25,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-support-loading-news-2026-10-13-remediation-1791871672034.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-support-loading-notifications-2026-10-13-remediation-1791871672034.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-support-loading-help-2026-10-13-remediation-1791871672034.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-support-loading-tickets-2026-10-13-remediation-1791871672034.png"
+      ]
+    },
+    {
+      "id": "support.pending",
+      "path": "docs/architecture/production-readiness/evidence/A06/support-pending-browser-check-2026-10-13-remediation-1791871672034.json",
+      "sha256": "2ec27a5eb2a38361b61467023d4ff10d671469d3c5e14a97afecbfb8d6a3db6e",
+      "sourceHashCount": 22,
+      "screenshotPaths": []
+    },
+    {
+      "id": "support.success",
+      "path": "docs/architecture/production-readiness/evidence/A06/support-success-browser-check-2026-10-13-1791871761205.json",
+      "sha256": "8369cd4591b311b93150c2c47c17fa96c3527914f58fac10f2c1368f39f5a3b7",
+      "sourceHashCount": 29,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-support-success-news-2026-10-13-1791871761205.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-support-success-notifications-2026-10-13-1791871761205.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-support-success-help-2026-10-13-1791871761205.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-support-success-tickets-2026-10-13-1791871761205.png"
+      ]
+    },
+    {
+      "id": "trading.empty",
+      "path": "docs/architecture/production-readiness/evidence/A06/trading-empty-browser-check-2026-10-13-remediation-1791871672034.json",
+      "sha256": "17c3fe303d6a67d4310954dce70065d096044f9d3c5121d7ed7c3d91f1c0b044",
+      "sourceHashCount": 19,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-trading-empty-open-orders-2026-10-13-remediation-1791871672034.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-trading-empty-history-2026-10-13-remediation-1791871672034.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-trading-empty-positions-2026-10-13-remediation-1791871672034.png"
+      ]
+    },
+    {
+      "id": "trading.forbidden",
+      "path": "docs/architecture/production-readiness/evidence/A06/trading-forbidden-browser-check-2026-10-13-remediation-1791871672034.json",
+      "sha256": "865d2c6bceece49fcd6b8a6b541d9c2a8cbf6fa9e8caf86e269c9c5e56957063",
+      "sourceHashCount": 14,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-trading-forbidden-positions-2026-10-13-remediation-1791871672034.png"
+      ]
+    },
+    {
+      "id": "trading.error",
+      "path": "docs/architecture/production-readiness/evidence/A06/trading-error-browser-check-2026-10-13-remediation-1791871672034.json",
+      "sha256": "f12da03bbf18b66db46202f2e7cd38afbe62f9e8748d429d5669f6e3e5fcef90",
+      "sourceHashCount": 16,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-trading-error-positions-2026-10-13-remediation-1791871672034.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-trading-error-positions-retry-2026-10-13-remediation-1791871672034.png"
+      ]
+    },
+    {
+      "id": "trading.pending",
+      "path": "docs/architecture/production-readiness/evidence/A06/trading-pending-browser-check-2026-10-13-remediation-1791871672034.json",
+      "sha256": "119ac317803402dce6f5091a4707b1f9fdc614f82b1835d31be1555bb3f52230",
+      "sourceHashCount": 19,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-trading-pending-place-2026-10-13-remediation-1791871672034.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-trading-pending-modify-2026-10-13-remediation-1791871672034.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-trading-pending-cancel-2026-10-13-remediation-1791871672034.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-trading-pending-history-2026-10-13-remediation-1791871672034.png"
+      ]
+    },
+    {
+      "id": "trading.unauthorized",
+      "path": "docs/architecture/production-readiness/evidence/A06/trading-unauthorized-browser-check-2026-10-13-remediation-1791871672034.json",
+      "sha256": "26c7dc262dc8f4c2f76f3310a699b2881ed774bfa60f61997cacd41333e87c4e",
+      "sourceHashCount": 14,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-trading-unauthorized-login-2026-10-13-remediation-1791871672034.png"
+      ]
+    },
+    {
+      "id": "wallet.empty",
+      "path": "docs/architecture/production-readiness/evidence/A06/wallet-empty-current-head-browser-check-202610130609369.json",
+      "sha256": "b7ef7c3fe913468664b30cd2b8b7c0ea4a8886da3cd1aafc4f125692c35b4e99",
+      "sourceHashCount": 17,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-wallet-empty-overview-202610130609369.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-wallet-empty-history-202610130609369.png"
+      ]
+    },
+    {
+      "id": "trading.success",
+      "path": "docs/architecture/production-readiness/evidence/A06/trading-success-browser-check-2026-10-13-remediation-1791871672034.json",
+      "sha256": "0549c537c60a2d7c589305dabe6f5235e1f24baf576627b4d8763988d117191b",
+      "sourceHashCount": 41,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-trading-success-status-2026-10-13-remediation-1791871672034.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-trading-success-copy-2026-10-13-remediation-1791871672034.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-trading-success-order-receipt-2026-10-13-remediation-1791871672034.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-trading-success-positions-unavailable-2026-10-13-remediation-1791871672034.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-trading-success-analytics-2026-10-13-remediation-1791871672034.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-trading-success-order-history-2026-10-13-remediation-1791871672034.png"
+      ]
+    },
+    {
+      "id": "trading.loading",
+      "path": "docs/architecture/production-readiness/evidence/A06/trading-loading-browser-check-2026-10-13-remediation-1791871672034.json",
+      "sha256": "b1c6081142f7d6c002916795c6f8f592e60f2ea6131c45aa8c0255abdcaca185",
+      "sourceHashCount": 19,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-trading-loading-openOrders-2026-10-13-remediation-1791871672034.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-trading-loading-orderHistory-2026-10-13-remediation-1791871672034.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-trading-loading-positions-2026-10-13-remediation-1791871672034.png"
+      ]
+    },
+    {
+      "id": "wallet.forbidden",
+      "path": "docs/architecture/production-readiness/evidence/A06/wallet-forbidden-current-head-browser-check-202610130609383.json",
+      "sha256": "1ba9aa39215e39cc96f4034381e0a3cc14d0f34f4867b8e29e4e1019b1cf9507",
+      "sourceHashCount": 22,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-wallet-forbidden-overview-202610130609383.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-wallet-forbidden-history-202610130609383.png"
+      ]
+    },
+    {
+      "id": "wallet.success",
+      "path": "docs/architecture/production-readiness/evidence/A06/wallet-success-current-head-browser-check-202610130609444.json",
+      "sha256": "52be7bfe9eee7f138d3cc67d9932e16b38e6bb46759c274c5632c2229a41e04d",
+      "sourceHashCount": 22,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-wallet-success-overview-202610130609444.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-wallet-success-history-202610130609444.png"
+      ]
+    },
+    {
+      "id": "wallet.error",
+      "path": "docs/architecture/production-readiness/evidence/A06/wallet-error-current-head-browser-check-202610130609458.json",
+      "sha256": "4f36f3e92db6b879f00a567c072943176548439931768a794ef343fd6fe74054",
+      "sourceHashCount": 24,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-wallet-error-overview-202610130609458.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-wallet-error-overview-retry-202610130609458.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-wallet-error-history-202610130609458.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-wallet-error-history-retry-202610130609458.png"
+      ]
+    },
+    {
+      "id": "wallet.loading",
+      "path": "docs/architecture/production-readiness/evidence/A06/wallet-loading-current-head-browser-check-202610130609457.json",
+      "sha256": "9762cfc15ecab0043ff3f8cdaac8c47e4dd72d4cc72cb6d41d130537fbf9a05e",
+      "sourceHashCount": 22,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-wallet-loading-overview-pending-202610130609457.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-wallet-loading-overview-resolved-202610130609457.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-wallet-loading-history-pending-202610130609457.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-wallet-loading-history-resolved-202610130609457.png"
+      ]
+    },
+    {
+      "id": "wallet.unauthorized",
+      "path": "docs/architecture/production-readiness/evidence/A06/wallet-unauthorized-current-head-browser-check-202610130609390.json",
+      "sha256": "537c86d040345aeeb0a61f772a75508cc7f2a7f16ef35458f8b1fe1b51e31efa",
+      "sourceHashCount": 21,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-wallet-unauthorized-overview-202610130609390.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-wallet-unauthorized-history-202610130609390.png"
+      ]
+    },
+    {
+      "id": "market.empty",
+      "path": "docs/architecture/production-readiness/evidence/A06/market-empty-current-head-browser-check-20261013060951.json",
+      "sha256": "db2e5637a86a3aca2800ba4d0d768bf36857742cb6e972c11346409eaed723ae",
+      "sourceHashCount": 17,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-market-empty-current-head-20261013060951.png"
+      ]
+    },
+    {
+      "id": "wallet.pending",
+      "path": "docs/architecture/production-readiness/evidence/A06/wallet-pending-current-head-browser-check-202610130609506.json",
+      "sha256": "309c43335796be35812b2a9f7c65b9ac6f86833be93bb721c57c06692a07fb69",
+      "sourceHashCount": 21,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-wallet-pending-transfer-inflight-202610130609506.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-wallet-pending-transfer-receipt-202610130609506.png"
+      ]
+    },
+    {
+      "id": "market.success",
+      "path": "docs/architecture/production-readiness/evidence/A06/market-success-current-head-browser-check-20261013060954.json",
+      "sha256": "d907796d5fe05ab9cf9331a679b06934891b4c1f907506be29a5b67273dc9986",
+      "sourceHashCount": 43,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-market-success-home-20261013060954.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-overview-20261013060954.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-movers-20261013060954.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-news-20261013060954.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-calendar-20261013060954.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-correlations-20261013060954.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-unlocks-20261013060954.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-derivatives-20261013060954.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-social-sentiment-20261013060954.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-signals-20261013060954.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-alerts-20261013060954.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-screener-20261013060954.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-watchlist-20261013060954.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-success-pair-btcusdt-20261013060954.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-depth-20261013060954.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-success-trade-advanced-chart-btcusdt-20261013060954.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-success-pair-btcusdt-info-20261013060954.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-sectors-20261013060954.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-heatmap-20261013060954.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-success-markets-compare-20261013060954.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-success-market-writes-complete-20261013060954.png"
+      ]
+    },
+    {
+      "id": "market.error",
+      "path": "docs/architecture/production-readiness/evidence/A06/market-error-current-head-browser-check-20261013060952.json",
+      "sha256": "234692d3869f7fb2efa0276036f65e2a18f90d89eb3f2060e69dbc1a27a49bc4",
+      "sourceHashCount": 80,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-market-error-home-20261013060952.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-error-overview-20261013060952.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-error-markets-movers-20261013060952.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-error-markets-news-20261013060952.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-error-pair-btcusdt-20261013060952.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-error-markets-depth-20261013060952.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-error-trade-advanced-chart-btcusdt-20261013060952.png"
+      ]
+    },
+    {
+      "id": "market.loading",
+      "path": "docs/architecture/production-readiness/evidence/A06/market-loading-current-head-browser-check-20261013060952.json",
+      "sha256": "f8bd1242b73845cad313210cf7ea70009de10181e840b007ee30680bc6a63638",
+      "sourceHashCount": 21,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-market-loading-current-head-markets-movers-20261013060952.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-loading-current-head-markets-news-20261013060952.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-loading-current-head-markets-calendar-20261013060952.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-loading-current-head-markets-correlations-20261013060952.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-loading-current-head-markets-unlocks-20261013060952.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-loading-current-head-markets-derivatives-20261013060952.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-loading-current-head-markets-social-sentiment-20261013060952.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-loading-current-head-markets-signals-20261013060952.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-loading-current-head-markets-alerts-20261013060952.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-loading-current-head-pair-btcusdt-20261013060952.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-loading-current-head-trade-advanced-chart-btcusdt-20261013060952.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-loading-current-head-20261013060952.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-loading-complete-current-head-20261013060952.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-loading-home-current-head-20261013060952.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-loading-pending-current-head-createMarketPriceAlert-20261013060952.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-loading-pending-current-head-updateMarketPriceAlert-20261013060952.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-loading-pending-current-head-deleteMarketPriceAlert-20261013060952.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-loading-pending-current-head-deleteMarketWatchlistItem-20261013060952.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-loading-pending-current-head-addMarketWatchlistItem-20261013060952.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-market-loading-pending-current-head-updateMarketWatchlistItem-20261013060952.png"
+      ]
+    },
+    {
+      "id": "profile.error",
+      "path": "docs/architecture/production-readiness/evidence/A06/profile-error-current-head-browser-check-2026-10-13-remediation-1791871924011.json",
+      "sha256": "8e629fc79f9599e325173a8c24dd341eb76dfeed7b1ae003136469d9075788d6",
+      "sourceHashCount": 26,
+      "screenshotPaths": [
+        "docs/architecture/production-readiness/evidence/A06/preview-profile-error-current-head-profile-2026-10-13-remediation-1791871924011.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-profile-error-current-head-devices-2026-10-13-remediation-1791871924011.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-profile-error-current-head-activity-2026-10-13-remediation-1791871924011.png",
+        "docs/architecture/production-readiness/evidence/A06/preview-profile-error-current-head-subaccounts-2026-10-13-remediation-1791871924011.png"
+      ]
+    }
+  ],
+  "batchEvidence": {
+    "final80": "C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\10\\13\\01a13394-3caa-7930-a58f-e3e6c61b066f\\vittrade-audit\\implementation\\scenario-refresh-final\\batch-report.json",
+    "finalProfile": "C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\10\\13\\01a13394-3caa-7930-a58f-e3e6c61b066f\\vittrade-audit\\implementation\\scenario-profile-error-final\\batch-report.json",
+    "originalFailedBatch": "C:\\Users\\Joker-PC\\.codex\\visualizations\\2026\\10\\13\\01a13394-3caa-7930-a58f-e3e6c61b066f\\vittrade-audit\\implementation\\scenario-refresh\\batch-report.json",
+    "diagnosticNamingCollision": "The isolated second batch overwrote five current-day diagnostic Profile output paths from its first batch. No original repository sidecar was changed. A new uniquely named Profile browser run passed; its artifacts are the published evidence. Second batch exit1 is retained and is not described as an all-green batch."
+  },
+  "limits": [
+    "Original aggregate scenarios/sourceHashes/HEAD remain historical; only sidecar registrations change.",
+    "81 refreshed source-input reports are local fixture evidence, not full-operation coverage, backend, staging or UAT.",
+    "25 unsupported/contract-dependent scenario rows stay not_verified; matrix classification must come from its generator.",
+    "No source catalogue assigns uncommitted bytes to HEAD."
+  ]
+}

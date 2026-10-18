@@ -61,6 +61,8 @@ interface SearchBarProps {
   onChange: (value: string) => void;
   /** Placeholder text */
   placeholder?: string;
+  /** Accessible name when it differs from the placeholder. */
+  ariaLabel?: string;
   /** Visual variant */
   variant?: SearchBarVariant;
   /** Auto focus on mount */
@@ -100,6 +102,7 @@ export function SearchBar({
   value,
   onChange,
   placeholder = 'Tìm kiếm...',
+  ariaLabel,
   variant = 'default',
   autoFocus = false,
   debounce = 0,
@@ -175,6 +178,7 @@ export function SearchBar({
       {/* Back button (header variant) */}
       {variant === 'header' && onBack && (
         <button
+          type="button"
           onClick={onBack}
           className="shrink-0 flex items-center justify-center active:opacity-60"
           style={{ width: 36, height: 36, borderRadius: 10 }}
@@ -186,7 +190,7 @@ export function SearchBar({
 
       {/* Search input container */}
       <div
-        className="flex items-center gap-2 flex-1"
+        className="tr-search-bar-control flex items-center gap-2 flex-1"
         style={{
           height,
           paddingLeft: 12,
@@ -213,17 +217,18 @@ export function SearchBar({
             fontSize: variant === 'compact' ? φ.xs : φ.sm,
           }}
           enterKeyHint="search"
-          aria-label={placeholder}
+          aria-label={ariaLabel ?? placeholder}
         />
 
         {/* Clear button */}
         {hasValue && !disabled && (
           <button
+            type="button"
             onClick={handleClear}
             className="shrink-0 flex items-center justify-center rounded-full active:opacity-60"
             style={{
-              width: 20,
-              height: 20,
+              width: 24,
+              height: 24,
               background: c.surface3,
             }}
             aria-label="Xóa tìm kiếm"
@@ -236,6 +241,7 @@ export function SearchBar({
       {/* Filter toggle button */}
       {showFilter && !right && (
         <button
+          type="button"
           onClick={onFilterToggle}
           className="shrink-0 flex items-center justify-center"
           style={{
