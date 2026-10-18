@@ -48,23 +48,27 @@
     }
   ],
   "checkpoint": {
-    "updatedAt": "2026-10-18T07:12:12.948Z",
+    "updatedAt": "2026-10-18T08:23:00.000Z",
     "lastCompletedTask": "C03",
     "activeTask": "C06",
     "activeStep": "C06.13",
     "nextTask": "C06",
     "nextStep": "C06.13",
-    "nextAction": "Run check-tracking and review this tracker-only final record; create one DCO Vietnamese tracker commit. Recheck the remote branch is exactly e1272d0bc795f2bb40384c98e44f212a4e2a1288 before fast-forward push. Require exact PR #3 run #162 to pass every required step and verify artifact download digest, six stable 1,151-hash manifests, readiness ledger and synthetic merge parents/tree/signature. Do not select another C06.13 consumer until #162 passes; keep C06.13 and WebLogin page/route in_progress. After #162, remeasure inventory and choose the next consumer from the current code.",
+    "nextAction": "Run node docs/architecture/production-readiness/check-tracking.mjs after the self-audit and inspect exact paths/hashes. Commit source+ledger in Vietnamese with DCO. Confirm origin/codex/frontend-readiness-remediation-20261013 still equals 40092bb2ab354b57bb89073bc71ca719cc15e2eb, push fast-forward only, then require exact PR #3 CI #163 (34/34 and hosted wallet test across six URLs) plus artifact digest, six stable manifests, readiness ledger and synthetic merge provenance. Record tracker-only closeout and require exact #164, then final tracker record and exact #165. Do not select the next consumer until #165 passes.",
     "changedFiles": [
+      "src/features/wallet/pages/AddressBookPage.tsx",
+      "src/features/wallet/pages/AddressBookPage.test.tsx",
+      "tests/e2e/wallet-contract.spec.ts",
+      "docs/architecture/page-inventory.json",
       "docs/architecture/production-readiness/TRACKING.json"
     ],
     "pendingChecks": [
-      "C06.13 source+ledger SHA 21170a1a2b23d3556089c3625ecf9f0ca74eec9a passed exact PR #3 run #160 (34/34); EV-20261018-206 records artifact/manifests/readiness/merge provenance.",
-      "Tracker-only closeout SHA e1272d0bc795f2bb40384c98e44f212a4e2a1288 passed exact PR #3 run #161 (34/34); EV-20261018-207 records artifact/manifests/readiness/merge provenance.",
-      "Create a final tracker-only DCO record for #161; push fast-forward only if origin/codex/frontend-readiness-remediation-20261013 still equals e1272d0bc795f2bb40384c98e44f212a4e2a1288; require exact run #162 and independently verify all workflow/artifact/manifest/ledger/merge gates.",
-      "Only after #162 passes, remeasure current inventory and route/page pool and select another C06.13 consumer; keep this page/route partial migration open until full acceptance.",
-      "Preserve EV-187 local full-suite FAIL with root cause unconfirmed, EV-195 local Playwright INCOMPLETE, the default-config no-tests invocation, EV-203 startup timeout, EV-204 unchanged retry PASS, and EV-205 corrected test assertion history.",
-      "Do not decrement the 126-page/420-route rollout pool or mark PAGE-0dd6553ac858/ROUTE-1f4f526bb861 done; project-wide runtime, manual AT/WCAG, backend/staging, production and UAT remain unverified."
+      "EV-20261018-208 verifies exact predecessor #162 PASS on 40092bb2ab354b57bb89073bc71ca719cc15e2eb with all 34 workflow steps and artifact/manifest/merge provenance.",
+      "EV-20261018-209 records 14/14 focused tests and local static/type/inventory PASS at the source commit; C06.13 page remains partial.",
+      "EV-20261018-210 records local wallet E2E INCOMPLETE; exact six-alias hosted E2E on source+ledger head #163 is mandatory.",
+      "EV-20261018-211 preserves the initial self-catalog error and corrected checker passes; exact hosted #163 and its artifact/provenance verification remain mandatory.",
+      "Preserve EV-20261018-187 local full-suite FAIL (cause unconfirmed), EV-20261018-195 Playwright INCOMPLETE, EV-20261018-203 startup timeout and all five AddressBook runner attempts.",
+      "Do not decrement the 126-page/420-active-route C06 rollout pool or mark AddressBook/whitelist pages/routes done; theme/state/manual AT/WCAG/backend/staging/production/UAT remain open."
     ],
     "blockers": [],
     "notes": "C06.02 exact run #64 PASS at SHA 278700733d6d623fb2bfa06bf07426b2e5117feb; see EV-20261015-018. C06.03 source code SHA 6192a3fd8c6fc44ddfd1b0f6a7780b9252947a8e, generated inventory SHA 7565177eee029b0cf7077fab3e180c3d086f6aae; focused/static/local browser measurements and limitations in EV-019, local full-suite infra failure EV-020, GitHub #65 attempts EV-021/022, canonical inventory refresh EV-023. C06.03 completed after exact run #67 on reconciled SHA ff4fd4186e0667f550056294677ee3c8cbbf1c1b passed all 34 steps; artifact digest matched GitHub (EV-026/027). Post-commit tracker/inventory/remote checks pass at that SHA (EV-028). Runtime sample remains 2/428 routes; not a full UI or WCAG certification. Runtime sample is 2 of 428 route declarations, one viewport, light/dark default states only; do not claim complete UI/WCAG/production acceptance. Local tracker reconciliation now passes on the draft payload (EV-20261015-025); run #66 completed with a provenance-ledger failure; #67 passed; #68 failed the registration viewport browser assertion; #69 passed both auth browser steps but failed the source ledger on one stale test pointer, now corrected here. Run #70 on exact head a60536243646a52c523fe7bcad8e0c7c0615b9e7 failed one DCA retry test on attempt 1, then passed 34/34 on retry attempt 2; both artifact checksums matched GitHub metadata (EV-032/033). The cause of attempt 1 is unproven and no DCA code changed. Run #71 attempt 1 failed the coverage-instrumented DCA retry test; retry attempt 2 passed all 34 steps on the same head and the artifact digest matched GitHub (EV-20261015-034/035). Cause remains unproven; no DCA source/test changed. This tracker closeout SHA requires run #72 and matching artifact verification before C06.04. Run #73 (38733172486) followed PR head cede813253dc618c5203f23d29ef41007a467b7c and tested merge e85ee318b0f52b8e77dc81749bba8ec19f0c9520; 27/34 success, 1 page-size failure (637/600), 6 skipped; artifact digest d32b9f72914675c2a17ccece304bea61522e2431ddafd37b270c45bcff694842 verified. Correction eaa519b985196a913a3b8738479eb64e28694e21 restored the 597-line baseline test file and moved added validation coverage to a separate file; 25/25 focused tests and all local gates pass. Await #74, then tracker closeout #75.\nRun #74 (#38737864687) PASS on PR branch head 6a13762117c5b9b36244cdf6e3fb37d5a3c6d1ac; workflow tested synthetic merge bcbc526b77881611bd1ad10e6e057a9e404a822b with parents db9c9064fa3ba79bd76fb7acb1023d90486b6cbf and 6a13762117c5b9b36244cdf6e3fb37d5a3c6d1ac. 34/34 workflow steps passed, artifact 11975419220 SHA-256 dd905ae34e5bede1e1b257c0553e6a2924364c3ae49575ead64f80f0feb11e2a matched GitHub metadata, and branch/merge trees are identical. Exact tracker closeout run #75 remains mandatory before C06.05.\nRun #75 (#38743473240) on exact tracker head c7929d88219ba65043013c3bd5be9fd8b598699d passed 34/34 steps, 0 failed/skipped; downloaded artifact 11979157518 SHA-256 ba6a9550710fc4a78ca7dbe74ee992d283ce27e0dc364e61fe66f278baad30f0 matched GitHub metadata (EV-20261015-045), resolving the prior C06.04 gate. C06.05 source aefbd0ba41e0affac75c8f9a17ad5a42dca5dce7 is locally verified (EV-20261015-046); exact PR head #76 and tracker closeout #77 remain pending.\nGitHub PR run #76 (#38752709501) on exact branch head 79e2f4a09fa7923c0679ba5a9001a6aca3996e04 passed 34/34 steps, 0 failed/skipped. Synthetic merge fb2da6a3edda0efaaac3d8db38c96be643c0619f has exact base/head parents and its complete tree equals the branch tree. Downloaded artifact 11984670179 SHA-256 b13f33b594ebd34ff4a9f766ae239b821b048220b098736589817cfae52074ff matches GitHub metadata (EV-20261015-047). C06.05 is complete; tracker-only closeout run #77 remains required before C06.06.\nRun #77 (#38757818159) at predecessor head 15fc3c2d711cb79f7d323e9d12e2662046f7a3a8 passed 34/34 with merge provenance and artifact digest verified (EV-20261015-048). C06.06 source 8fedabba77bdff3e145201a8d07eb857c792a860 local checks pass (EV-20261015-049); no runtime/UI visual or Axe coverage is claimed. Exact PR #78 and tracker closeout #79 remain mandatory before C06.07.\nRun #78 (#38766820907) on exact PR head 2a316156cfa01af4fdf30a4da502408d554fc6e8 passed 34/34 steps with 0 failed/skipped. Synthetic merge ff5ed6c9e99fdba66290e79dc0162596d1126058 has base/head parents and tree 018ce6f897dc1d85d4a2fbb93e18966b6cfd9d5e equal to branch tree. Artifact 11991391925 (33749891 bytes) downloaded SHA-256 b80643efc5cdb60c91180c45639033602f11dbd70cc359432b926dae00617015 matches GitHub metadata (EV-20261015-050).\nRun #79 (#38772463588) exact head 7f9f0940b12b48b139fea106446ef6712fa1ec74 PASS 34/34, 0 failed/skipped; merge parents/tree and artifact 11994216815 SHA-256 0b2df467ca9afc2fa660d84c37a30878af7c224b6cad4245de9e9f9c93dd9caa verified (EV-20261016-051). C06.07 source commit 562054439ffc939f9f7d9380affe96ae5da6c408; local/runtime evidence EV-052–054. Exact #80 and closeout #81 remain mandatory before C06.08.\nRun #80 (38784161668) exact PR head 1901a29bc6e72cd4ddf3de25bd0b042730c1fcdd PASS 34/34, 0 fail/skipped; merge bea58f9a779e0b780c90cc654396e41f8c43ce3a parents/tree và artifact 11999150720 SHA-256 360382d1f72e329319258db97f9849dec56900456e092f08038083b3b2f09441 đã xác minh (EV-20261016-055). C06.07 source implementation hoàn tất; tracker-only closeout và exact run #81 còn bắt buộc trước C06.08.\nC06.07 history: tracker-closeout PR run #81 failed only SavingsDCAContractPage.test.tsx retry-dialog timing (EV-20261016-056); artifact and merge provenance independently checked. Test-only commit 517cb7dbdcea80b8788ede0cdb4f3463fffae7dc waits for dialog exit/reopen and passes local 17/17 plus Prettier (EV-20261016-057). PR run #82 source-only is currently in_progress; do not enter C06.08 until exact source+ledger and separate tracker closeout runs pass all 34 steps with provenance and digest.\nRun #82 on source-only SHA 517cb7... completed with 26 success/1 failure/7 skipped; only readiness source ledger failed because the DCA test file fingerprint was stale. Local ledger now catalogues the exact source hash and passes 0 errors. Merge parent/tree and downloaded artifact digest 3a816278a900caefbb6b94c0ca3398e3c2bc0301a19ae5f210fb7746dff107ac were verified (EV-20261016-058). New exact source+ledger and separate tracker closeout gates remain before C06.08.\nRun #85 (38805445379) exact source+ledger SHA b63662fee31f5347f04b94b7c68b268c74cab6e4 PASS: 34/34 workflow steps, zero failed/skipped steps; E2E smoke 62 pass/4 skipped, Auth API 34 pass, Auth mock 41 pass. Merge ce0eec5a3bd17607e9aefe245917a6c3b516a381 parents/tree and artifact 12006909605 size/digest verified (EV-20261016-062). Local plan/ledger checks and cleanup are recorded as EV-20261016-063. Exact #86 and separate tracker-only #87 remain mandatory before C06.08.\nRun #86 (38811361559) on exact source+ledger SHA ad7fbe7b163ffe4af7f3187ad9291c248819b4b4 PASS: 34/34 workflow steps; Vitest 363 files/3489 tests; E2E 62 pass/4 skipped; Auth API 34; Auth mock 41. Merge 4450241f0dfff6147834c2c8301af490096a9ef5 parents/tree and artifact 12011060489 size/SHA verified (EV-20261016-064). Keep C06.07 open for tracker-only exact #87.\nLocal closeout validation EV-20261016-065 PASS: tracker 0 errors, Prettier PLAN.md and diff check pass; cleanup deleted 0 files/bytes, retained 18 protected/active outputs with 0 errors.\nC06.07 is done: source+protocol run #86 and tracker-only run #87 passed exact-head GitHub verification (EV-064/066). Current tracker completion record requires exact #88 before C06.08; no C06.08 implementation has begun.\nC06.07 final tracker-closeout SHA 843d2aa passed exact run #88 (EV-068). C06.08 started with a focused CTAButton safe-default contract; local source and integration tests passed (EV-069), and exact #89 is required before the next primitive slice.\nRun #91 (38831335254) passed on exact tracker-closeout head a3ee0902b06655d6044c409f9d83b8d6dab80caa, 34/34 steps, 0 failed/skipped. Merge 4c9aaf4184e53349896c07dc0f771e7874eb4341 has exact base/head parents and identical tree; artifact 12017943357 SHA-256 c3b4eded252b29e19e63cd8061ff7e55bdd24402a9dbc942490c24e774591f92 matched GitHub. Six manifests passed, source unchanged, 1143/1143 hashes stable (EV-072). Await exact tracker-only run #92 before next primitive; product-wide UI/WCAG, all-route runtime, backend/staging, production and UAT remain unverified.\nC06.08 InputField semantic-token slice: source commit 42899e4b418a6ff1b86f7aaed326a38997f05f5c; local tests/checks pass (EV-075). Exact run #93 (EV-074) failed solely at readiness source ledger on six stale fingerprints; CI behavior/browser tests passed, dependent build gates were skipped.\nRun #94 attempt 1 failed the Coverage gate without a terminal test summary (EV-076). Retry attempt 2 on the same exact source+ledger head d32457c4f50a9f283005d030229e203d967813f8 passed 34/34 CI steps; coverage and artifact provenance are measured in EV-077. Four configured E2E cases remain skipped; this is not full-route, manual WCAG, backend or production acceptance. A separate docs/tracker closeout will lock the re-audit inputs and update the AI prompt; exact run #95 is the gate before another primitive.\nC06.08 same-input re-audit protocol is now recorded in the canonical PLAN and referenced by the AI prompt. The docs source commit is 0362c23cb19c63aa513ae9802c14d43e10107fbc; run #94 evidence EV-076/077 remains attached. Exact PR run #95 is still mandatory before the next primitive; no whole-product, all-route, manual WCAG, backend/staging, UAT or production certification is implied. Self-audit payload before CHANGE-093: SHA-256 e58da2b9c8fa3a80de3986d4217fdb01d6088874b572f432efabd76dc16fda9b; final ledger hash is in C:/Users/Joker-PC/.codex/visualizations/2026/10/16/c06-08/c06-08-run95-local-final-manifest.json.\nRun #95 evidence EV-079: exact PR head, all 34 CI steps, 6 runner manifests, test/coverage counts, synthetic merge provenance and artifact digest were verified. Run #96 is the gate for the tracker closeout SHA; no further primitive starts before it passes. Self-audit payload before CHANGE-094: SHA-256 da9420a5d432da4dcc84b8c01b62d2c1f26423a9ec1fb2ce4515a68ed6c19f58; final tracker hash is in C:/Users/Joker-PC/.codex/visualizations/2026/10/16/c06-08/c06-08-run95-closeout-manifest.json. Commit ad7039ca38a75ef770fd228f58923a530802a23b (tracker closeout run #99) thiếu Signed-off-by dù PLAN yêu cầu git commit -s; đã push và không rewrite/amend theo quy định. Ghi nhận sai lệch tại EV-20261016-087; mọi commit từ lát cắt này trở đi dùng -s. Exact source+ledger run #100 PASS at fced2a1484e043f46df51c25b28d4994a2271094 (EV-20261016-090); tracker-only closeout remains required before another primitive. Exact tracker-closeout run #101 PASS at c30cae56b8a35ee6f3d9c06dca2ea3d0cdb1333f (EV-20261016-092); next primitive is eligible for measured inspection only. Exact tracker-closeout run #102 PASS at 2c95fd68663b4c07397651e402cc54b120579bf2 (EV-20261016-094); next primitive is eligible for measured inspection only. Exact tracker-closeout run #103 PASS at 603bbe9e1b9729d4f7f01e9313e8ebd18c20f4d5 (EV-20261016-096); next primitive is eligible for measured inspection only. Exact tracker-closeout run #104 PASS at 032a426eb2472c0cb5f728535e119d2c5a654d10 (EV-20261016-098); next primitive is eligible for measured inspection only. Exact tracker-closeout run #105 PASS at d52db5c7214af5074cdd9fe4b991d47601afe87f (EV-20261016-100); next primitive is eligible for measured inspection only. Exact tracker-closeout run #106 PASS at 5eafc063c48bb0fc1fa2609ecdce4fa44f490ea4 (EV-20261016-102); next primitive is eligible for measured inspection only. C06.08 exact run #108 is not acceptance: source tests and earlier policies passed but the source-ledger fingerprint was stale; artifact/merge provenance is verified and ledger correction plus runs #109/#110 are required. Exact run #109 passed all 34 steps on tracker-correction SHA 96344212b73333530fbd4a2530ec8b751db4f378; six run manifests, artifact digest and merge provenance verified (EV-20261016-108). Tracker-only closeout and exact run #110 remain before C06.08 completion. C06.08 source+ledger #109 and tracker-closeout #110 both passed exact SHA with artifact/merge provenance (EV-108/110). Completion record now marks C06.08 done; exact run #111 remains the gate before C06.09 begins.\nC06.09: source 0e60b30f and route matrix 95e4058 are pushed; local browser runner incomplete; exact #112/#113 exposed stale source pointers, now reconciled to path-specific Git blobs with prior pointers preserved.\nC06.09 source+ledger run #114 attempt 2 and exact provenance pass (EV-118); attempt 1 auth viewport failure and incomplete local replay are retained (EV-117/119). Tracker-only closeout run #115 is the next gate; C06.10 remains unstarted. Current follow-up (2026-10-17): GitHub run #117 attempt 1 failed on old SHA 3e4c3049; corrected source c0bcc2e1 and route-matrix commit a02686ec pass measured local source/static checks. Exact source+ledger and tracker-only GitHub gates remain pending; C06.10 has not started. Exact C06 source+ledger run #118 passed on 03a5c694: 34/34, 0 failed/skipped; 33,556,246-byte artifact digest and merge parents/tree verified; 6/6 hosted manifests passed. Tracker-only closeout is the sole gate before C06.10.\nRun #122 (38978152765) exact head 687579cb failed Auth API registration 320px clipping: 33/34 browser tests passed, 16 post-failure steps skipped (EV-138). Shared WebAuthFormShell min-width correction 6f63d9ae and local test results are recorded in EV-139. Exact source+ledger #123 and tracker-only #124 are mandatory before C06.11.\n\nRun #126 (38988501474) was re-verified from GitHub: exact head, 34/34 steps, artifact digest, six manifests with identical 1,148-entry source maps, readiness source ledger, and merge ancestry/tree pass (EV-20261017-144). This checkpoint refresh is a tracker-only commit; its own exact run #127 remains a prerequisite to C06.11.\n2026-10-17: C06.10 exact completion-record run #127 PASS (EV-20261017-145); C06.11 source commit fe9d51c735efc9e875660f0f0ef994abf4fe23b0 local acceptance PASS (EV-146/147). Exact current tracker-reconciliation and subsequent closeout GitHub runs remain mandatory.\nC06.11 exact tracker-only run #130 passed on 2c16bcf3419ebc5c90712f25a63d825cf25d2c90 (EV-20261017-152); C06.11 is done. The new tracker completion-record SHA must pass exact run #131 before C06.12. All-route runtime, product-wide manual WCAG, backend/staging, production and UAT remain unverified.\nC06.11 final tracker closeout exact run #131 on cbad9a2c PASS 34/34; artifact digest, 6 manifests with identical 1,151-source-hash maps, readiness ledger and synthetic merge tree verified (EV-157). C06.12 source+ledger exact run #132 on ef491f13 PASS 34/34; artifact digest, 6 manifests with identical 1,151-source-hash maps, readiness ledger and merge provenance verified (EV-158). C06.12 remains in_progress pending tracker-only closeout run #133 and completion-record exact run #134. Local Playwright EV-155 remains incomplete; local direct runtime EV-154 covers four USDT shell aliases on synthetic fixtures; backend/staging, all-route runtime, product-wide WCAG/AT, production and UAT remain unverified.\n2026-10-17: exact completion-record run #134 PASS on 57d2cd72 (EV-160). C06.13 inventory is reconciled across 130 active pages/428 routes, with 0/428 route runtime (EV-161). This record is the C06.13 kickoff; exact run #135 is the gate before its first source edit.\n2026-10-17: exact C06.13 kickoff #135 passed (EV-162); first AddressAddPage source 51d5d11bc8223fafcadded8751c583776c71348c and local static/runtime/build evidence EV-163/164 recorded. Current focused route runtime is 1/428; remaining 427 declarations are not runtime-certified.\n2026-10-17: PasswordResetPages source bc1a9151 dùng shared InputField; local checks EV-167/runtime EV-168 pass; predecessor #137 EV-166 pass. Còn 126 page files/420 route declarations; exact source+ledger #138 và tracker-only #139 là gate trước consumer tiếp theo.\n2026-10-17: C06.13 source+ledger #138 exact SHA 4dd203be PASS EV-169, artifact/manifest/ledger/merge provenance verified. Tracker-only closeout #139 remains mandatory before the next consumer.\nC06.13 tracker closeout SHA 14ea5e79 passed exact run #139: 34/34, artifact 12101456659 digest verified, six manifests with 1,151 stable hashes, readiness ledger errorCount=0, merge tree/source tree and GitHub signature verified (EV-170). This next tracker-only completion-record commit must pass exact run #140 before the next consumer is inspected.\nRun #143 failed due a stale hardcoded MFA URL expectation at 390px; corrected test-only in edf83831. Local focused/full retry checks passed; first local timeout retained. Exact #144 source+ledger and #145 tracker-closeout gates remain.\nSource+ledger #144 PASS; exact tracker-only #145 and final ledger-record #146 remain sequential gates before the next C06.13 consumer.\nSource+ledger run #144 and tracker-closeout run #145 passed; record EV-180, then exact final tracker SHA run #146 is the last dependency gate before measuring the next consumer.\nExact tracker-record #146 passed; record EV-181, then require exact run #147 on the record SHA before next-consumer measurement.\n2026-10-18: EV-182 records prior exact #147 PASS; EV-183 records current wallet-transfer field/layout local acceptance. Source is split across commits 3e148 and c14dd; tracker pointers bind each path to its actual path-specific commit. Exact new source+ledger and sequential tracker-only GitHub gates remain open.\n2026-10-18: EV-184 documents the exact #148 Linux geometry failure; EV-185 documents the corrected local 390x844 runtime measurement and focused/static PASS. Source commit 701aaaf0e285f12ae66bbcebb4f17449ce814e03 is not yet hosted-gated. Keep page/route and C06.13 in_progress; preserve the 126-page/420-route migration pool.\n2026-10-18: EV-186 closes the generated inventory freshness gap caused by the code line-count change; page/route totals remain unchanged.\n2026-10-17: EV-189 independently verifies exact PR run #150 PASS (34/34 steps), including 367/367 unit/integration files, 3,520/3,520 tests, explicit E2E/API skips, artifact digest, six stable manifests, readiness ledger and exact merge provenance. EV-187 local Windows full-suite FAIL remains open; final exact run #151 gates the next consumer.\n2026-10-17T23:25:31.593Z: C06.13: EV-192 xác nhận exact GitHub run #152 (39076343359) PASS trên SHA 6a1a800bee9afeabf3b81bb6ed992db75e6c8cbb: 34/34 workflow steps; E2E smoke 65/69 (4 test-level skips), API-mode 34/34, dev mock 41/41; artifact, sáu manifest, readiness ledger và merge provenance đã kiểm tra. Hosted smoke had 4 conditional skips and 2 host-resolution browser resource errors; API-mode 34/34 and dev mock 41/41 pass. Keep all-route runtime, manual AT, product-wide WCAG, backend/staging/production/UAT unverified.\n2026-10-17T23:52:15.012Z: C06.13: EV-193 xác nhận exact GitHub run #153 (39079017708) PASS trên SHA f33c353c12e70743a49f527067f1109288e5d469: 34/34 workflow steps, artifact 12118209447 khớp digest, 6/6 manifests × 1,151 hashes ổn định, readiness errorCount=0, merge parents/tree/signature khớp. API-mode browser contract had one 320px responsive clipping retry (33 pass, 1 flaky); cause not proven. Preserve four smoke skips and two DNS resource errors. Require final tracker-record exact #154 before next consumer; keep global runtime/WCAG/backend/UAT open.\nC06.13 #154 correction recorded 2026-10-18T00:38:32.735Z: old exact run failed one withdrawal receipt E2E after the synthetic request succeeded; test-only phone-shell setup correction is 20840d75. Scoped tests 24/24 and static checks pass; local E2E remains incomplete, no page/route acceptance is inferred.\n2026-10-18T02:29:22Z: C06.13 EV-197/198/199: attempt 1 exact #156 coverage FAIL chưa rõ nguyên nhân; local same-SHA coverage và GitHub attempt 2 PASS. Artifact #2, sáu manifest × 1,151 hash, readiness ledger errorCount=0 và merge provenance đã xác minh. Final tracker-record exact #157 chặn đo/chọn consumer kế tiếp; C06.13 vẫn in_progress.\nC06.13 checkpoint 2026-10-18: exact run #158 and current inventory/source measurements recorded as EV-201; local focused/auth browser baseline is EV-202–204. Source remains unchanged. Next exact-head gate is #159 on the tracker-only DCO commit before WebLoginPage implementation. EV-20261018-205: exact local runtime hashes match source commit d6d8e4fefa951ec51c8e76d02d58ed70c3a8d63e; the existing C06 protocol in docs/ai/PRODUCTION-READINESS-PROMPT.md §10 already defines sequence, exact-SHA gates, retries and recheck. No duplicate plan document created.\nEV-20261018-206: source+ledger run #160 PASS on exact SHA 21170a1a; 34/34 steps; artifact digest, six manifests x 1,151 stable hashes, readiness ledger and merge provenance verified. Current checkpoint is tracker-only #161 then final record #162; no next consumer yet.\nEV-20261018-207: tracker-only closeout run #161 PASS on exact SHA e1272d0b; 34/34 steps; artifact digest, six manifests x 1,151 stable hashes, readiness ledger and merge provenance verified. Final exact gate is #162 before selecting another consumer.",
@@ -127,7 +131,15 @@
         ],
         "reason": "C06.06 tracker-closeout #79 passed and released C06.07; measured local source/runtime checks are recorded, remote exact-head gates remain mandatory."
       }
-    ]
+    ],
+    "manifestPath": "C:/CodexEvidence/vittrade-react/2026-10-18/c06-13-weblogin-inputfield/github-run-162-verification.json",
+    "validation": {
+      "predecessor": "PASS: exact PR #3 run #162; 34/34 workflow steps; artifact, manifests, readiness source ledger and synthetic merge verified (EV-20261018-208).",
+      "localSlice": "PASS: AddressBook/SearchBar focused 14/14; app/node typecheck; scoped lint/format; inventory 130/428/150/0/32/28; diff check (EV-20261018-209).",
+      "browser": "INCOMPLETE: local runner did not close; final six-alias test must pass on exact hosted source+ledger SHA #163 (EV-20261018-210).",
+      "limits": "Do not decrement the C06.13 page/route rollout pool or claim page acceptance, product-wide WCAG, backend/staging, production or UAT.",
+      "selfAudit": "PASS: corrected check-tracking and post-EV211 rerun each returned errorCount=0; initial self-catalog failure is retained in EV-211."
+    }
   },
   "tasks": [
     {
@@ -19675,9 +19687,13 @@
             "EV-20261018-204",
             "EV-20261018-205",
             "EV-20261018-206",
-            "EV-20261018-207"
+            "EV-20261018-207",
+            "EV-20261018-208",
+            "EV-20261018-209",
+            "EV-20261018-210",
+            "EV-20261018-211"
           ],
-          "notes": "C06.13 inventory baseline EV-161 ghi 130 page files/428 route declarations. Sau hai pilot pages ban đầu, pool còn 128/425; AddressAddPage source commit 51d5d11b chuẩn hóa 1 page/1 route declaration (4 aliases), còn 127/424. Trang đặt lại mật khẩu chuẩn hóa trong source commit bc1a91517369b221e5982b96c27bc831fbc2e71c: 1 page/4 route declarations/8 URL aliases, dùng InputField và giữ nguyên OTP/API payload; local static/full-suite/build EV-167, Chromium EV-168. Exact predecessor closeout #137 PASS (EV-166). Source+ledger commit 4dd203be1c20248b174703b876306a3899e296b0 exact GitHub run #138 PASS (EV-169); tracker-only closeout SHA 14ea5e79db4aeb9da2219688182d6e7b70f10d4d exact GitHub run #139 PASS (EV-170): mỗi gate 34/34, artifact digest khớp, sáu manifest mỗi run có 1,151 hashes ổn định, readiness ledger errorCount=0, PR head/merge tree/signature khớp. Giữ C06.13 in_progress: còn 126 page files/420 route declarations trong rollout pool; runtime evidence 5/428 declarations và 12 URL aliases. Exact run #140 PASS đã mở cổng consumer tiếp theo (EV-171). Shared RegistrationForm được đo trên /auth/register, /t/auth/register, /r/auth/register và /w/auth/register: 8/8 shell-theme semantic color matches, 52 Axe scans/0 violations; local checks ghi tại EV-172, timeout attempt đầu giữ tại EV-173. Runtime evidence tăng từ 5 lên 7/428 route declarations và từ 12 lên 16 URL aliases. Pool migration vẫn 126 page files/420 route declarations vì lát cắt này sửa shared component, chưa hoàn tất hai page implementation. C06.13 remains in_progress; exact source+ledger #141 PASS (EV-20261017-174). Tracker-only closeout #142 phải PASS trước consumer kế tiếp. Backend/staging/production/UAT, route-wide runtime và product-wide manual WCAG chưa xác minh. Local check-tracking and architecture/route consistency checks PASS after this source ledger update (EV-172); the hosted exact-SHA gate remains pending. Exact tracker-only closeout run #142 (39041268597) PASS trên d07b52ccc6781f9cc0e6f4ebc58368108feb9567, EV-20261017-175: 34/34; artifact/manifests/readiness ledger/merge provenance khớp. C06.13 giữ in_progress; bắt buộc tracker-only exact run #143 trước consumer kế tiếp. Pool vẫn 126 pages/420 route declarations; runtime toàn tuyến, backend/staging/production/UAT và product-wide manual WCAG còn mở.\n2026-10-17 run #143 thất bại vì test hardcode /w/home tại 390px; trace/code xác nhận phone shell về /home theo viewport.loginHomeRoute. Sửa test-only ở edf83831f7ed4780873506cdd1b590d35a92c4de. Local: MFA 6/6, AccountLocked isolated 5/5, full suite lần đầu 40/41 timeout chưa rõ nguyên nhân (được giữ lại), retry 41/41; TypeScript app/node, ESLint, Prettier, inventory, frozen route matrix, diff PASS. Exact source+ledger #144 rồi tracker-only #145 phải PASS trước consumer mới; giữ C06.13 in_progress.\nExact source+ledger #144 PASS (EV-179); tracker-only commit + exact #145 vẫn bắt buộc. Sau đó ghi nhận #145 và kiểm tra tracker record trên exact #146 trước khi chọn consumer. C06.13 vẫn in_progress; chưa có tuyên bố sản phẩm hoàn tất.\nExact source+ledger #144 và tracker-closeout #145 đều PASS. Commit này ghi kết quả #145; exact #146 trên chính SHA cuối còn bắt buộc trước khi chọn consumer. C06.13 không đóng toàn bộ rollout.\nExact source+ledger #144, tracker closeout #145 và final tracker-record #146 đều PASS. Ghi EV-181; exact #147 trên tracker SHA cập nhật là gate cuối trước khi đo/sửa consumer tiếp. C06.13 vẫn in_progress.\n2026-10-18: GitHub predecessor #147 PASS (EV-182); wallet transfer field + mobile action target verified locally (EV-183). Final local focused 44/44, Playwright 9/9, typecheck, inventory, dependency, page-size, ESLint, Prettier pass. The overlap fix belongs to both shared bottom-navigation owners; pool remains 126 page files/420 route declarations because the page-level state matrix is incomplete. Exact new source+ledger run #148, tracker-only closeout and final tracker-record gates remain before next consumer.\n2026-10-18: exact PR run #148 failed only at the mobile CTA/navigation E2E geometry (EV-184): 9.89px overlap on Chromium/Linux. Corrected phone-shell spacing via existing PageContent tight preset; local 5/5 focused files (38/38 tests), wallet-contract E2E 9/9, measured 31.109px clearance at 390x844, typecheck, architecture, ESLint and Prettier pass (EV-185). Exact hosted source+ledger, tracker-closeout and final tracker-record SHA gates remain before another consumer.\n2026-10-18: after EV-185, architecture:inventory:check detected the generated line count was stale; the owner generator refreshed the file and the subsequent check passed with 130/428/150/0/32/28 inventory totals (EV-186). This does not close the page or route.\nEV-187 records a local full-suite FAIL (363/367 files and 3,514/3,520 tests passed; six failed; root cause unconfirmed). EV-188 records exact PR source gate #149 PASS: 34/34, artifact SHA-256 matched, six stable 1,151-hash manifests, readiness errorCount=0 and exact merge provenance. Keep page/route in_progress and require tracker-only #150, then final tracker-record #151 before next consumer.\nEV-189 confirms exact tracker-closeout run #150 passed all 34 workflow steps with downloaded artifact digest, six stable 1,151-hash manifests, readiness errorCount=0, and verified exact merge provenance. Windows local full-suite failure EV-187 remains unconfirmed; the 126-page/420-route pool and product-wide verification remain open. Require final tracker record and exact run #151 before the next consumer.\nC06.13: EV-192 xác nhận exact GitHub run #152 (39076343359) PASS trên SHA 6a1a800bee9afeabf3b81bb6ed992db75e6c8cbb: 34/34 workflow steps; E2E smoke 65/69 (4 test-level skips), API-mode 34/34, dev mock 41/41; artifact, sáu manifest, readiness ledger và merge provenance đã kiểm tra. E2E smoke retained 4 conditional test skips and 2 non-blocking host-resolution console errors; endpoint attribution remains unverified. Run #153 tracker-only closeout and exact #154 final-record gate remain required.\nC06.13: EV-193 xác nhận exact GitHub run #153 (39079017708) PASS trên SHA f33c353c12e70743a49f527067f1109288e5d469: 34/34 workflow steps, artifact 12118209447 khớp digest, 6/6 manifests × 1,151 hashes ổn định, readiness errorCount=0, merge parents/tree/signature khớp. Hosted run also reports one flaky API-mode registration responsive test at 320px (initial clipping assertion, retry pass; root cause unconfirmed), four conditional smoke skips and two browser resource host-resolution errors. Keep as follow-up evidence; no UI page acceptance or route coverage increase.\nEV-194 records exact hosted #154 FAIL on the prior SHA: the mocked withdrawal POST returned 201 and success feedback appeared, but the expected in-memory receipt was absent after a responsive shell remount. Test-only correction 20840d75 selects phone viewport before navigation and asserts the phone route. EV-195: focused Wallet tests 24/24, both typechecks, scoped ESLint/Prettier and diff check PASS; local Playwright attempt remains INCOMPLETE with a running manifest and is not counted as PASS. C06.13/page/route remain in_progress; no route coverage increment. Push source+ledger and require exact-head GitHub CI/artifact/manifests/readiness/merge gates, then separate tracker closeout and exact gate before another consumer.\nEV-20261018-196: corrected source+ledger exact PR #155 PASS on 0df7c0dbd722bdaa1f502b0d0ed22ff05bb36f47; 34/34 workflow steps, 6/6 stable runner snapshots × 1,151 hashes, artifact digest/readiness ledger/merge provenance verified. Keep C06.13 open for tracker-only #156 and final record #157 exact-SHA gates.\nC06.13 closeout: EV-200 independently verifies exact PR #3 run #157 on tracker head 0120ac57490367ae161f84d5a3f98307470a21fc: 34/34 workflow steps, artifact digest, six manifests × 1,151 identical source hashes, readiness ledger errorCount=0, and exact merge parents/tree/signature. EV-197/198/199 retain #156 attempt 1 FAIL (cause unconfirmed), local same-SHA coverage PASS, and attempt 2 PASS. C06.13 remains in_progress; the next gate is a separate tracker-only DCO commit and exact run #158. Only after #158 passes may the live inventory/page-route pool be remeasured and another consumer selected. Preserve EV-187 local full-suite FAIL and EV-195 Playwright INCOMPLETE; no route-count increase is claimed.\n2026-10-18: EV-201 records exact PR #3 run #158 PASS on 367a7d94, artifact/manifests/readiness/merge provenance, and post-gate source measurements. Inventory is 130 page files/428 route declarations, 1,465 URL registrations/1,396 unique; the C06.13 rollout denominator remains 126/420. Next candidate is active WebLoginPage at /w/auth/login, one resolved URL, UI status todo; InputField has 8 direct source consumers and TrInput one. Local focused baseline Vitest is 49/49 PASS (EV-202). Auth mock browser attempt 1 is 2/3 with unresolved Vite startup requests (EV-203); unchanged retry is 3/3 PASS (EV-204). A misconfigured default-config Playwright invocation remains incomplete and not counted. Require tracker-only DCO closeout and exact PR run #159 before changing source; preserve EV-187 and EV-195. EV-20261018-205: commit d6d8e4fefa951ec51c8e76d02d58ed70c3a8d63e migrates /w/auth/login to InputField compact; local tests 26/26, auth-mock E2E 3/3, 12 Web Axe cells 0 violations with computed 48/10/14/10px geometry across light/dark and 320/1440; four shell flow routes and 32 shared LoginPage Axe cells pass. Exact runner and source hash provenance is in local-verification.json. WebLogin page/route remain in_progress; C06.13 rollout pool stays 126 pages/420 active declarations pending full page acceptance. Exact #160/#161/#162 gates are required before another consumer.",
+          "notes": "C06.13 inventory baseline EV-161 ghi 130 page files/428 route declarations. Sau hai pilot pages ban đầu, pool còn 128/425; AddressAddPage source commit 51d5d11b chuẩn hóa 1 page/1 route declaration (4 aliases), còn 127/424. Trang đặt lại mật khẩu chuẩn hóa trong source commit bc1a91517369b221e5982b96c27bc831fbc2e71c: 1 page/4 route declarations/8 URL aliases, dùng InputField và giữ nguyên OTP/API payload; local static/full-suite/build EV-167, Chromium EV-168. Exact predecessor closeout #137 PASS (EV-166). Source+ledger commit 4dd203be1c20248b174703b876306a3899e296b0 exact GitHub run #138 PASS (EV-169); tracker-only closeout SHA 14ea5e79db4aeb9da2219688182d6e7b70f10d4d exact GitHub run #139 PASS (EV-170): mỗi gate 34/34, artifact digest khớp, sáu manifest mỗi run có 1,151 hashes ổn định, readiness ledger errorCount=0, PR head/merge tree/signature khớp. Giữ C06.13 in_progress: còn 126 page files/420 route declarations trong rollout pool; runtime evidence 5/428 declarations và 12 URL aliases. Exact run #140 PASS đã mở cổng consumer tiếp theo (EV-171). Shared RegistrationForm được đo trên /auth/register, /t/auth/register, /r/auth/register và /w/auth/register: 8/8 shell-theme semantic color matches, 52 Axe scans/0 violations; local checks ghi tại EV-172, timeout attempt đầu giữ tại EV-173. Runtime evidence tăng từ 5 lên 7/428 route declarations và từ 12 lên 16 URL aliases. Pool migration vẫn 126 page files/420 route declarations vì lát cắt này sửa shared component, chưa hoàn tất hai page implementation. C06.13 remains in_progress; exact source+ledger #141 PASS (EV-20261017-174). Tracker-only closeout #142 phải PASS trước consumer kế tiếp. Backend/staging/production/UAT, route-wide runtime và product-wide manual WCAG chưa xác minh. Local check-tracking and architecture/route consistency checks PASS after this source ledger update (EV-172); the hosted exact-SHA gate remains pending. Exact tracker-only closeout run #142 (39041268597) PASS trên d07b52ccc6781f9cc0e6f4ebc58368108feb9567, EV-20261017-175: 34/34; artifact/manifests/readiness ledger/merge provenance khớp. C06.13 giữ in_progress; bắt buộc tracker-only exact run #143 trước consumer kế tiếp. Pool vẫn 126 pages/420 route declarations; runtime toàn tuyến, backend/staging/production/UAT và product-wide manual WCAG còn mở.\n2026-10-17 run #143 thất bại vì test hardcode /w/home tại 390px; trace/code xác nhận phone shell về /home theo viewport.loginHomeRoute. Sửa test-only ở edf83831f7ed4780873506cdd1b590d35a92c4de. Local: MFA 6/6, AccountLocked isolated 5/5, full suite lần đầu 40/41 timeout chưa rõ nguyên nhân (được giữ lại), retry 41/41; TypeScript app/node, ESLint, Prettier, inventory, frozen route matrix, diff PASS. Exact source+ledger #144 rồi tracker-only #145 phải PASS trước consumer mới; giữ C06.13 in_progress.\nExact source+ledger #144 PASS (EV-179); tracker-only commit + exact #145 vẫn bắt buộc. Sau đó ghi nhận #145 và kiểm tra tracker record trên exact #146 trước khi chọn consumer. C06.13 vẫn in_progress; chưa có tuyên bố sản phẩm hoàn tất.\nExact source+ledger #144 và tracker-closeout #145 đều PASS. Commit này ghi kết quả #145; exact #146 trên chính SHA cuối còn bắt buộc trước khi chọn consumer. C06.13 không đóng toàn bộ rollout.\nExact source+ledger #144, tracker closeout #145 và final tracker-record #146 đều PASS. Ghi EV-181; exact #147 trên tracker SHA cập nhật là gate cuối trước khi đo/sửa consumer tiếp. C06.13 vẫn in_progress.\n2026-10-18: GitHub predecessor #147 PASS (EV-182); wallet transfer field + mobile action target verified locally (EV-183). Final local focused 44/44, Playwright 9/9, typecheck, inventory, dependency, page-size, ESLint, Prettier pass. The overlap fix belongs to both shared bottom-navigation owners; pool remains 126 page files/420 route declarations because the page-level state matrix is incomplete. Exact new source+ledger run #148, tracker-only closeout and final tracker-record gates remain before next consumer.\n2026-10-18: exact PR run #148 failed only at the mobile CTA/navigation E2E geometry (EV-184): 9.89px overlap on Chromium/Linux. Corrected phone-shell spacing via existing PageContent tight preset; local 5/5 focused files (38/38 tests), wallet-contract E2E 9/9, measured 31.109px clearance at 390x844, typecheck, architecture, ESLint and Prettier pass (EV-185). Exact hosted source+ledger, tracker-closeout and final tracker-record SHA gates remain before another consumer.\n2026-10-18: after EV-185, architecture:inventory:check detected the generated line count was stale; the owner generator refreshed the file and the subsequent check passed with 130/428/150/0/32/28 inventory totals (EV-186). This does not close the page or route.\nEV-187 records a local full-suite FAIL (363/367 files and 3,514/3,520 tests passed; six failed; root cause unconfirmed). EV-188 records exact PR source gate #149 PASS: 34/34, artifact SHA-256 matched, six stable 1,151-hash manifests, readiness errorCount=0 and exact merge provenance. Keep page/route in_progress and require tracker-only #150, then final tracker-record #151 before next consumer.\nEV-189 confirms exact tracker-closeout run #150 passed all 34 workflow steps with downloaded artifact digest, six stable 1,151-hash manifests, readiness errorCount=0, and verified exact merge provenance. Windows local full-suite failure EV-187 remains unconfirmed; the 126-page/420-route pool and product-wide verification remain open. Require final tracker record and exact run #151 before the next consumer.\nC06.13: EV-192 xác nhận exact GitHub run #152 (39076343359) PASS trên SHA 6a1a800bee9afeabf3b81bb6ed992db75e6c8cbb: 34/34 workflow steps; E2E smoke 65/69 (4 test-level skips), API-mode 34/34, dev mock 41/41; artifact, sáu manifest, readiness ledger và merge provenance đã kiểm tra. E2E smoke retained 4 conditional test skips and 2 non-blocking host-resolution console errors; endpoint attribution remains unverified. Run #153 tracker-only closeout and exact #154 final-record gate remain required.\nC06.13: EV-193 xác nhận exact GitHub run #153 (39079017708) PASS trên SHA f33c353c12e70743a49f527067f1109288e5d469: 34/34 workflow steps, artifact 12118209447 khớp digest, 6/6 manifests × 1,151 hashes ổn định, readiness errorCount=0, merge parents/tree/signature khớp. Hosted run also reports one flaky API-mode registration responsive test at 320px (initial clipping assertion, retry pass; root cause unconfirmed), four conditional smoke skips and two browser resource host-resolution errors. Keep as follow-up evidence; no UI page acceptance or route coverage increase.\nEV-194 records exact hosted #154 FAIL on the prior SHA: the mocked withdrawal POST returned 201 and success feedback appeared, but the expected in-memory receipt was absent after a responsive shell remount. Test-only correction 20840d75 selects phone viewport before navigation and asserts the phone route. EV-195: focused Wallet tests 24/24, both typechecks, scoped ESLint/Prettier and diff check PASS; local Playwright attempt remains INCOMPLETE with a running manifest and is not counted as PASS. C06.13/page/route remain in_progress; no route coverage increment. Push source+ledger and require exact-head GitHub CI/artifact/manifests/readiness/merge gates, then separate tracker closeout and exact gate before another consumer.\nEV-20261018-196: corrected source+ledger exact PR #155 PASS on 0df7c0dbd722bdaa1f502b0d0ed22ff05bb36f47; 34/34 workflow steps, 6/6 stable runner snapshots × 1,151 hashes, artifact digest/readiness ledger/merge provenance verified. Keep C06.13 open for tracker-only #156 and final record #157 exact-SHA gates.\nC06.13 closeout: EV-200 independently verifies exact PR #3 run #157 on tracker head 0120ac57490367ae161f84d5a3f98307470a21fc: 34/34 workflow steps, artifact digest, six manifests × 1,151 identical source hashes, readiness ledger errorCount=0, and exact merge parents/tree/signature. EV-197/198/199 retain #156 attempt 1 FAIL (cause unconfirmed), local same-SHA coverage PASS, and attempt 2 PASS. C06.13 remains in_progress; the next gate is a separate tracker-only DCO commit and exact run #158. Only after #158 passes may the live inventory/page-route pool be remeasured and another consumer selected. Preserve EV-187 local full-suite FAIL and EV-195 Playwright INCOMPLETE; no route-count increase is claimed.\n2026-10-18: EV-201 records exact PR #3 run #158 PASS on 367a7d94, artifact/manifests/readiness/merge provenance, and post-gate source measurements. Inventory is 130 page files/428 route declarations, 1,465 URL registrations/1,396 unique; the C06.13 rollout denominator remains 126/420. Next candidate is active WebLoginPage at /w/auth/login, one resolved URL, UI status todo; InputField has 8 direct source consumers and TrInput one. Local focused baseline Vitest is 49/49 PASS (EV-202). Auth mock browser attempt 1 is 2/3 with unresolved Vite startup requests (EV-203); unchanged retry is 3/3 PASS (EV-204). A misconfigured default-config Playwright invocation remains incomplete and not counted. Require tracker-only DCO closeout and exact PR run #159 before changing source; preserve EV-187 and EV-195. EV-20261018-205: commit d6d8e4fefa951ec51c8e76d02d58ed70c3a8d63e migrates /w/auth/login to InputField compact; local tests 26/26, auth-mock E2E 3/3, 12 Web Axe cells 0 violations with computed 48/10/14/10px geometry across light/dark and 320/1440; four shell flow routes and 32 shared LoginPage Axe cells pass. Exact runner and source hash provenance is in local-verification.json. WebLogin page/route remain in_progress; C06.13 rollout pool stays 126 pages/420 active declarations pending full page acceptance. Exact #160/#161/#162 gates are required before another consumer.\n2026-10-18 AddressBook: source commit 8f2f8eb91d7442c6dcfc43d7b0e3a937b4a17cce thay ô tìm kiếm tự dựng 52px bằng shared SearchBar default 44px; giữ query/filter/API/payload. Unit 14/14 và static/type/inventory checks PASS (EV-209). Route inventory có 3 route declarations/6 resolved URLs; E2E mở đủ 6 alias. Local runner có 5 attempt, exact six-alias runtime chưa được chấp nhận do child process không đóng (EV-210); bắt buộc exact PR #163. Giữ 126 page/420 route rollout pool; PAGE-44ecf5a1e58f, PAGE-e4ddc60fea97 và 3 routes ở in_progress.\nEV-211 records the initial one-error self-catalog failure and corrected local checker PASS (errorCount=0); no checker exception was added. Exact hosted #163 remains required. Final local check-tracking rerun after EV-211/self-audit passed with errorCount=0; initial self-catalog failure retained in EV-211. Exact PR #163 remains the next hosted gate.",
           "execution": {
             "instructionsRef": "PLAN.md#frontend-ui-ux-ds-migration-20261015",
             "fileSelection": "files[].executionScope.stepIds includes C06.13",
@@ -20437,7 +20453,11 @@
         "EV-20261018-199",
         "EV-20261018-200",
         "EV-20261018-206",
-        "EV-20261018-207"
+        "EV-20261018-207",
+        "EV-20261018-208",
+        "EV-20261018-209",
+        "EV-20261018-210",
+        "EV-20261018-211"
       ],
       "changeIds": [
         "CHANGE-20261015-001",
@@ -20663,7 +20683,12 @@
         "CHANGE-20261018-272",
         "CHANGE-20261018-273",
         "CHANGE-20261018-282",
-        "CHANGE-20261018-283"
+        "CHANGE-20261018-283",
+        "CHANGE-20261018-284",
+        "CHANGE-20261018-285",
+        "CHANGE-20261018-286",
+        "CHANGE-20261018-287",
+        "CHANGE-20261018-288"
       ],
       "blockers": [],
       "startedAt": "2026-10-15T01:47:05.375Z",
@@ -30205,9 +30230,12 @@
         }
       },
       "ui": {
-        "status": "todo",
-        "evidenceIds": [],
-        "notes": ""
+        "status": "in_progress",
+        "evidenceIds": [
+          "EV-20261018-209",
+          "EV-20261018-210"
+        ],
+        "notes": " | C06.13 AddressBook shared search source migrated; local unit/static checks pass, while six-alias browser run awaits exact hosted gate. Page-level theme/state/manual visual review and user acceptance remain open."
       },
       "connection": {
         "status": "todo",
@@ -31099,9 +31127,12 @@
         }
       },
       "ui": {
-        "status": "todo",
-        "evidenceIds": [],
-        "notes": ""
+        "status": "in_progress",
+        "evidenceIds": [
+          "EV-20261018-209",
+          "EV-20261018-210"
+        ],
+        "notes": " | C06.13 AddressBook shared search source migrated; local unit/static checks pass, while six-alias browser run awaits exact hosted gate. Page-level theme/state/manual visual review and user acceptance remain open."
       },
       "connection": {
         "status": "todo",
@@ -47827,9 +47858,12 @@
       ],
       "scenarios": [],
       "ui": {
-        "status": "todo",
-        "evidenceIds": [],
-        "notes": ""
+        "status": "in_progress",
+        "evidenceIds": [
+          "EV-20261018-209",
+          "EV-20261018-210"
+        ],
+        "notes": " | C06.13 SearchBar owner change; local browser gate incomplete, exact hosted six-alias test pending. Route remains partial."
       },
       "backend": {
         "status": "todo",
@@ -57616,9 +57650,12 @@
       ],
       "scenarios": [],
       "ui": {
-        "status": "todo",
-        "evidenceIds": [],
-        "notes": ""
+        "status": "in_progress",
+        "evidenceIds": [
+          "EV-20261018-209",
+          "EV-20261018-210"
+        ],
+        "notes": " | C06.13 SearchBar owner change; local browser gate incomplete, exact hosted six-alias test pending. Route remains partial."
       },
       "backend": {
         "status": "todo",
@@ -63513,9 +63550,12 @@
       ],
       "scenarios": [],
       "ui": {
-        "status": "todo",
-        "evidenceIds": [],
-        "notes": ""
+        "status": "in_progress",
+        "evidenceIds": [
+          "EV-20261018-209",
+          "EV-20261018-210"
+        ],
+        "notes": " | C06.13 SearchBar owner change; local browser gate incomplete, exact hosted six-alias test pending. Route remains partial."
       },
       "backend": {
         "status": "todo",
@@ -75712,7 +75752,7 @@
         "C06"
       ],
       "disposition": "changed",
-      "reason": "Regenerated during A07.05 after route/mock source changes; records React.createElement layout routes and current auth mock references without dropping route records.; Regenerate inventory after Market routes changed; retain canonical generator serialization.; Regenerated from current source under A08.01; current inventory is recorded in EV-20260929-439. | Regenerate the documented page inventory from current source; the only page-record delta is SupportContractPage line count 129 to 130. | Regenerate the checked route inventory after the Earn receipt route change. | Re-generated under A06.03 after the inventory check identified stale Earn receipt route and page line counts. Current local commit individually verified; earlier WIP deferral is historical. | 14/10/2026: canonical inventory regenerated and committed at 2bb952da13d13eec4275ad3aec5a2328346a07c0; current Git blob and working SHA-256 verified, prior pointer retained. | Regenerate architecture inventory from current source and reconcile its path-specific Git blob. | Iteration 59: regenerated after P1 added one source line; totals remain 130 pages/428 routes/149 components/32 services/28 mocks. | Iteration 61: Tạo lại inventory chuẩn sau thay đổi số dòng của heading có ngữ cảnh; chỉ generator chính thức cập nhật số đo. | Iteration 62: generator chính thức đồng bộ line count/dependency của 7 page sau source changes. | C06.03: Sinh lại inventory chuẩn sau khi login page đổi consumer sang CTAButton. C06.08: Tái sinh page inventory do LoginPage.tsx giảm hai dòng; tổng 130 page và 428 route không đổi. | C06.09: Page gutter contract and shell ownership regression; visual values and exceptions remain documented without changing brand or business behavior. | C06.11: source đã kiểm chứng trong commit fe9d51c7. | Tạo lại inventory bằng generator chính thức sau thay đổi consumer Auth; totals 130/428/150/0/32/28. C06.13 EV-20261018-205: C06.13: chỉ tái sinh page inventory bằng owner generator sau thay đổi line count; tổng vẫn 130 pages/428 route declarations/150 components.",
+      "reason": "Regenerated during A07.05 after route/mock source changes; records React.createElement layout routes and current auth mock references without dropping route records.; Regenerate inventory after Market routes changed; retain canonical generator serialization.; Regenerated from current source under A08.01; current inventory is recorded in EV-20260929-439. | Regenerate the documented page inventory from current source; the only page-record delta is SupportContractPage line count 129 to 130. | Regenerate the checked route inventory after the Earn receipt route change. | Re-generated under A06.03 after the inventory check identified stale Earn receipt route and page line counts. Current local commit individually verified; earlier WIP deferral is historical. | 14/10/2026: canonical inventory regenerated and committed at 2bb952da13d13eec4275ad3aec5a2328346a07c0; current Git blob and working SHA-256 verified, prior pointer retained. | Regenerate architecture inventory from current source and reconcile its path-specific Git blob. | Iteration 59: regenerated after P1 added one source line; totals remain 130 pages/428 routes/149 components/32 services/28 mocks. | Iteration 61: Tạo lại inventory chuẩn sau thay đổi số dòng của heading có ngữ cảnh; chỉ generator chính thức cập nhật số đo. | Iteration 62: generator chính thức đồng bộ line count/dependency của 7 page sau source changes. | C06.03: Sinh lại inventory chuẩn sau khi login page đổi consumer sang CTAButton. C06.08: Tái sinh page inventory do LoginPage.tsx giảm hai dòng; tổng 130 page và 428 route không đổi. | C06.09: Page gutter contract and shell ownership regression; visual values and exceptions remain documented without changing brand or business behavior. | C06.11: source đã kiểm chứng trong commit fe9d51c7. | Tạo lại inventory bằng generator chính thức sau thay đổi consumer Auth; totals 130/428/150/0/32/28. C06.13 EV-20261018-205: C06.13: chỉ tái sinh page inventory bằng owner generator sau thay đổi line count; tổng vẫn 130 pages/428 route declarations/150 components. | Tái sinh inventory bằng generator owner sau thay đổi line count và dependency; tổng vẫn 130 page/428 route.",
       "evidenceIds": [
         "EV-20260928-015",
         "EV-20260928-016",
@@ -75756,7 +75796,8 @@
         "EV-20261018-183",
         "EV-20261018-185",
         "EV-20261018-186",
-        "EV-20261018-205"
+        "EV-20261018-205",
+        "EV-20261018-209"
       ],
       "changeIds": [
         "CHANGE-20260928-990",
@@ -75784,7 +75825,8 @@
         "CHANGE-20261017-228",
         "CHANGE-20261018-245",
         "CHANGE-20261018-258",
-        "CHANGE-20261018-280"
+        "CHANGE-20261018-280",
+        "CHANGE-20261018-287"
       ],
       "executionScope": {
         "ownerTaskId": "B10",
@@ -75823,9 +75865,9 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedAt": "2026-10-18T05:50:56.659Z",
-      "cataloguedSourceHead": "d6d8e4fefa951ec51c8e76d02d58ed70c3a8d63e",
-      "cataloguedSha256": "005f866808c6ee45fbb8549fe00b8b80debf0ebf1af9cb1dd5ebf5f1c7510fc8",
+      "cataloguedAt": "2026-10-18T08:17:18.000Z",
+      "cataloguedSourceHead": "8f2f8eb91d7442c6dcfc43d7b0e3a937b4a17cce",
+      "cataloguedSha256": "df6219e5397d22d6356d01b22c7b08186d3b7964648bf0f59493c6731d91bdd6",
       "cataloguedSourceHistory": [
         {
           "sourceHead": "309a2003749c2b1874e75af501fa6c3ea1e37c18",
@@ -75938,6 +75980,13 @@
           "supersededAt": "2026-10-18T05:50:56.659Z",
           "evidenceId": "EV-20261018-205",
           "reason": "Preserved previous source pointer before cataloguing the verified C06.13 WebLogin/InputField commit d6d8e4fefa951ec51c8e76d02d58ed70c3a8d63e."
+        },
+        {
+          "sourceHead": "d6d8e4fefa951ec51c8e76d02d58ed70c3a8d63e",
+          "sha256": "005f866808c6ee45fbb8549fe00b8b80debf0ebf1af9cb1dd5ebf5f1c7510fc8",
+          "supersededAt": "2026-10-18T08:17:18.000Z",
+          "evidenceId": "EV-20261018-209",
+          "reason": "Giữ con trỏ source trước khi catalog commit C06.13 AddressBook 8f2f8eb91d7442c6dcfc43d7b0e3a937b4a17cce."
         }
       ]
     },
@@ -133750,7 +133799,7 @@
         "C06"
       ],
       "disposition": "changed",
-      "reason": "Register EV-013 full suite, MarketSentiment owner slice and DCA next target. EV-20261010-014 registers the DCA overlay full-suite slice and P2P next target. | EV-015 registers the full-suite counters, owner slice, evidence artifact and checkpoint. | EV-016 registers measured counters, scope and checkpoint. | EV-017 registers measured counters, scope and checkpoint. | EV-018 registers measured counters, scope and checkpoint. | EV-019 registers measured counters, scope and checkpoint. | EV-020 registers measured counters, scope and checkpoint. | EV-021 registers measured counters, scope and checkpoint. | EV-022 registers measured counters, scope and checkpoint. | EV-023 registers measured counters, owner scope, and checkpoint. | EV-024 registers measured counters, owner scope, and checkpoint. | EV-025 registers measured counters, owner scope, and checkpoint. | EV-026 maps the owner test to C03.05 and registers measured counters. | EV-027 maps the owner test to C03.05 and registers measured counters. | EV-028 maps the P2P create-ad owner test to C03.05 and registers measured counters. | EV-029 maps the Coachmark owner test to C03.05 and registers measured counters. | EV-030 maps the P2P achievements source and owner test to C03.05 and registers measured counters. | EV-031 maps the Trade Analytics owner test to C03.05 and registers measured counters. | EV-20261011-064 registers the current local full-suite report, exact dirty-status/mismatch inventory, and C03 checkpoint. | EV-20261011-065 records the P2P coverage iteration, full-suite counters, source change and next TabletTopBar checkpoint. | EV-20261011-066 records TabletTopBar owner coverage, full-suite counters, worktree-only test provenance and next SwipeBack checkpoint. | EV-20261011-067 records SwipeBack gesture coverage, source/test hashes, full-suite counters and PasswordChange next slice. | EV-20261011-068 records PasswordChangePage coverage, owner-test hash delta, full-suite counters and OrdersHistory next slice. | User-authorized unused-output retention EV-20261012-008; previous catalogue retained until reviewed Git delivery. | DECISION-20261013-002: docs-only remediation planning; no runtime source edited. | EV-20261014-001/002/003: record coverage, wide UI and checker evidence without rebasing dirty source provenance. | Iteration55 ledger payload records new coverage, responsive review and environment blocker evidence; self-audit change will be recorded after the actual payload snapshot. | EV-20261014-009: record source-based responsive candidate classification without changing source fingerprints. | CHANGE-20261014-036: preserve and audit the final overflow-triage payload. | Record exact post-audit gates and self-audit the inventory-pointer/evidence reconciliation. | EV-20261014-012–014: register full coverage, exact source provenance and hosted CI #51 result. | Iteration 62: ghi source hashes, coverage/UI/E2E evidence, blocker status và checkpoint. | C06.01: đăng ký 15-step scope, route/page matrix, local validation, và provenance audit. | C06.02 self-audit round 5: records exact-SHA CI regression/fix, local and hosted verification, preserves old file snapshots, and rebinds 11 actual source blobs to a29a255e. | EV-20261015-016 records exact pushed-SHA CI #62 success and verified downloaded artifact digest. | C06.03: ghi provenance, evidence và checkpoint theo exact commit; self-audit archive được lưu ngoài repository. | C06.03 closeout records both exact-SHA run #71 attempts and verified artifact digests (EV-20261015-034/035); attempt 1 failed one coverage test, attempt 2 passed 34/34; first-attempt cause remains unproven and no DCA code/test changed. C06.04 stays gated on run #72 for the resulting tracker SHA. | C06.05: Ghi nhận run #75 đã qua, kết quả kiểm thử local và cổng exact-SHA #76/#77. | C06.05: Run #76 exact PR head passed 34/34 with merge/tree and artifact digest verified; run #77 gates tracker closeout. | C06.06: Ghi nhận contract review, source SHA và gate local; exact #78/#79 còn bắt buộc. | C06.06: Ghi nhận exact PR run #78 PASS; tracker closeout #79 còn bắt buộc trước C06.07. | C06.07: ghi run #79, source/local/runtime/build evidence và checkpoint cho bước token/theme. | C06.07: exact PR run #80 PASS 34/34; merge provenance/artifact digest recorded in EV-20261016-055; tracker closeout run #81 remains mandatory. | C06.07: bind DCA fingerprint to 1a04ce3; record #83/#84; require exact #85/#86 before C06.08. | C06.08: record shared action type contract, measured source fingerprints and exact #96 prerequisite. | EV-20261016-082: prepared-ledger consistency check passed; final self-audit is checked again. | C06.08: exact run #97 passed 34/34 with artifact and synthetic merge provenance; tracker-only run #98 gates the next primitive. | EV-20261016-084: run #97 closeout checker passed; final self-audit checked again. | C06.08: exact tracker-closeout run #98 passed 34/34 with downloaded artifact digest, six runner manifests and synthetic merge provenance; exact #99 gates the next primitive. | EV-20261016-086: run #98 closeout checker passed; final self-audit checked again. | EV-20261016-089: corrected prepared-ledger consistency check passed; final self-audit rechecked. | EV-20261016-090: exact PR run #100 and downloaded artifact provenance passed; tracker-only closeout #101 remains pending. | EV-20261016-091: exact run #100 closeout payload checker passed; final self-audit checked again. | EV-20261016-092: exact tracker-closeout PR run #101 and downloaded artifact provenance passed; next primitive may begin with measured inventory. | EV-20261016-093: exact run #101 tracker-closeout payload checker passed; final self-audit checked again. | EV-20261016-094: exact tracker-closeout PR run #102 and downloaded artifact provenance passed; next primitive may begin with measured inventory. | EV-20261016-095: exact run #102 closeout payload checker passed; final self-audit checked again. | EV-20261016-096: exact tracker-closeout PR run #103 and downloaded artifact provenance passed; next primitive may begin with measured inventory. | EV-20261016-097: exact run #103 closeout payload checker passed; final self-audit checked again. | EV-20261016-098: exact tracker-closeout PR run #104 and downloaded artifact provenance passed; next primitive may begin with measured inventory. | EV-20261016-099: exact run #104 closeout payload checker passed; final self-audit checked again. | EV-20261016-100: exact tracker-closeout PR run #105 and downloaded artifact provenance passed; next primitive may begin with measured inventory. | EV-20261016-101: exact run #105 closeout payload checker passed; final self-audit checked again. | EV-20261016-102: exact tracker-closeout PR run #106 and downloaded artifact provenance passed; next primitive may begin with measured inventory. | EV-20261016-103: exact run #106 closeout payload checker passed; final self-audit checked again. | EV-20261016-121 records exact run #115 artifact/merge provenance; EV-20261016-122 records the completion-record precommit check. | EV-20261017-126 records C06.09 source+ledger local self-audit. | C06 corrective source+ledger: ghi nhận run #117 fail, local checks, route matrix và gate exact-SHA còn mở. | EV-20261017-132: ghi nhận exact PR run #118 pass, manifest/artifact digest và synthetic merge provenance; giữ gate tracker-only closeout. | C06.10: registers measured AST guardrail, baseline blob and exact GitHub/local evidence. | CHANGE-20261017-177: ghi exact CI timeout #123, local coverage và cổng #124/#125. | C06.12: record measured source, runtime, test, static-gate and incomplete-run evidence; preserve exact source/ledger sequence. | CHANGE-20261017-234: ghi EV-171 exact #140, EV-172 local Auth runtime/static PASS, EV-173 timeout attempt, source/test fingerprints và exact #141/#142 gates. | CHANGE-20261017-235: lưu kết quả check-tracking errorCount=0 và ghi nhận final self-audit/next exact gate. | CHANGE-20261017-236: map TRACKING.json self-audit and evidence ledger to C06.13 execution scope. | EV-187 ghi full-suite Windows FAIL được giữ nguyên; EV-188 ghi exact PR #149 PASS và provenance; CHANGE-20261018-260 tự kiểm toán cập nhật này. | C06.13: ghi EV-190 exact GitHub #151, EV-191 local OTP acceptance, source catalog và gate #152; giữ nguyên page/route pool và trạng thái rollout. | C06.13: exact source+ledger run #155, artifact, six stable 1,151-hash runner snapshots, readiness ledger and merge provenance recorded in EV-20261018-196. | CHANGE-20261018-272: ghi nhận attempt 1 exact run #156 fail chưa rõ nguyên nhân, local coverage reproduction và attempt 2 exact-head PASS với artifact/manifests/readiness/merge provenance; giữ C06.13 mở và khóa consumer kế tiếp sau #157.",
+      "reason": "Register EV-013 full suite, MarketSentiment owner slice and DCA next target. EV-20261010-014 registers the DCA overlay full-suite slice and P2P next target. | EV-015 registers the full-suite counters, owner slice, evidence artifact and checkpoint. | EV-016 registers measured counters, scope and checkpoint. | EV-017 registers measured counters, scope and checkpoint. | EV-018 registers measured counters, scope and checkpoint. | EV-019 registers measured counters, scope and checkpoint. | EV-020 registers measured counters, scope and checkpoint. | EV-021 registers measured counters, scope and checkpoint. | EV-022 registers measured counters, scope and checkpoint. | EV-023 registers measured counters, owner scope, and checkpoint. | EV-024 registers measured counters, owner scope, and checkpoint. | EV-025 registers measured counters, owner scope, and checkpoint. | EV-026 maps the owner test to C03.05 and registers measured counters. | EV-027 maps the owner test to C03.05 and registers measured counters. | EV-028 maps the P2P create-ad owner test to C03.05 and registers measured counters. | EV-029 maps the Coachmark owner test to C03.05 and registers measured counters. | EV-030 maps the P2P achievements source and owner test to C03.05 and registers measured counters. | EV-031 maps the Trade Analytics owner test to C03.05 and registers measured counters. | EV-20261011-064 registers the current local full-suite report, exact dirty-status/mismatch inventory, and C03 checkpoint. | EV-20261011-065 records the P2P coverage iteration, full-suite counters, source change and next TabletTopBar checkpoint. | EV-20261011-066 records TabletTopBar owner coverage, full-suite counters, worktree-only test provenance and next SwipeBack checkpoint. | EV-20261011-067 records SwipeBack gesture coverage, source/test hashes, full-suite counters and PasswordChange next slice. | EV-20261011-068 records PasswordChangePage coverage, owner-test hash delta, full-suite counters and OrdersHistory next slice. | User-authorized unused-output retention EV-20261012-008; previous catalogue retained until reviewed Git delivery. | DECISION-20261013-002: docs-only remediation planning; no runtime source edited. | EV-20261014-001/002/003: record coverage, wide UI and checker evidence without rebasing dirty source provenance. | Iteration55 ledger payload records new coverage, responsive review and environment blocker evidence; self-audit change will be recorded after the actual payload snapshot. | EV-20261014-009: record source-based responsive candidate classification without changing source fingerprints. | CHANGE-20261014-036: preserve and audit the final overflow-triage payload. | Record exact post-audit gates and self-audit the inventory-pointer/evidence reconciliation. | EV-20261014-012–014: register full coverage, exact source provenance and hosted CI #51 result. | Iteration 62: ghi source hashes, coverage/UI/E2E evidence, blocker status và checkpoint. | C06.01: đăng ký 15-step scope, route/page matrix, local validation, và provenance audit. | C06.02 self-audit round 5: records exact-SHA CI regression/fix, local and hosted verification, preserves old file snapshots, and rebinds 11 actual source blobs to a29a255e. | EV-20261015-016 records exact pushed-SHA CI #62 success and verified downloaded artifact digest. | C06.03: ghi provenance, evidence và checkpoint theo exact commit; self-audit archive được lưu ngoài repository. | C06.03 closeout records both exact-SHA run #71 attempts and verified artifact digests (EV-20261015-034/035); attempt 1 failed one coverage test, attempt 2 passed 34/34; first-attempt cause remains unproven and no DCA code/test changed. C06.04 stays gated on run #72 for the resulting tracker SHA. | C06.05: Ghi nhận run #75 đã qua, kết quả kiểm thử local và cổng exact-SHA #76/#77. | C06.05: Run #76 exact PR head passed 34/34 with merge/tree and artifact digest verified; run #77 gates tracker closeout. | C06.06: Ghi nhận contract review, source SHA và gate local; exact #78/#79 còn bắt buộc. | C06.06: Ghi nhận exact PR run #78 PASS; tracker closeout #79 còn bắt buộc trước C06.07. | C06.07: ghi run #79, source/local/runtime/build evidence và checkpoint cho bước token/theme. | C06.07: exact PR run #80 PASS 34/34; merge provenance/artifact digest recorded in EV-20261016-055; tracker closeout run #81 remains mandatory. | C06.07: bind DCA fingerprint to 1a04ce3; record #83/#84; require exact #85/#86 before C06.08. | C06.08: record shared action type contract, measured source fingerprints and exact #96 prerequisite. | EV-20261016-082: prepared-ledger consistency check passed; final self-audit is checked again. | C06.08: exact run #97 passed 34/34 with artifact and synthetic merge provenance; tracker-only run #98 gates the next primitive. | EV-20261016-084: run #97 closeout checker passed; final self-audit checked again. | C06.08: exact tracker-closeout run #98 passed 34/34 with downloaded artifact digest, six runner manifests and synthetic merge provenance; exact #99 gates the next primitive. | EV-20261016-086: run #98 closeout checker passed; final self-audit checked again. | EV-20261016-089: corrected prepared-ledger consistency check passed; final self-audit rechecked. | EV-20261016-090: exact PR run #100 and downloaded artifact provenance passed; tracker-only closeout #101 remains pending. | EV-20261016-091: exact run #100 closeout payload checker passed; final self-audit checked again. | EV-20261016-092: exact tracker-closeout PR run #101 and downloaded artifact provenance passed; next primitive may begin with measured inventory. | EV-20261016-093: exact run #101 tracker-closeout payload checker passed; final self-audit checked again. | EV-20261016-094: exact tracker-closeout PR run #102 and downloaded artifact provenance passed; next primitive may begin with measured inventory. | EV-20261016-095: exact run #102 closeout payload checker passed; final self-audit checked again. | EV-20261016-096: exact tracker-closeout PR run #103 and downloaded artifact provenance passed; next primitive may begin with measured inventory. | EV-20261016-097: exact run #103 closeout payload checker passed; final self-audit checked again. | EV-20261016-098: exact tracker-closeout PR run #104 and downloaded artifact provenance passed; next primitive may begin with measured inventory. | EV-20261016-099: exact run #104 closeout payload checker passed; final self-audit checked again. | EV-20261016-100: exact tracker-closeout PR run #105 and downloaded artifact provenance passed; next primitive may begin with measured inventory. | EV-20261016-101: exact run #105 closeout payload checker passed; final self-audit checked again. | EV-20261016-102: exact tracker-closeout PR run #106 and downloaded artifact provenance passed; next primitive may begin with measured inventory. | EV-20261016-103: exact run #106 closeout payload checker passed; final self-audit checked again. | EV-20261016-121 records exact run #115 artifact/merge provenance; EV-20261016-122 records the completion-record precommit check. | EV-20261017-126 records C06.09 source+ledger local self-audit. | C06 corrective source+ledger: ghi nhận run #117 fail, local checks, route matrix và gate exact-SHA còn mở. | EV-20261017-132: ghi nhận exact PR run #118 pass, manifest/artifact digest và synthetic merge provenance; giữ gate tracker-only closeout. | C06.10: registers measured AST guardrail, baseline blob and exact GitHub/local evidence. | CHANGE-20261017-177: ghi exact CI timeout #123, local coverage và cổng #124/#125. | C06.12: record measured source, runtime, test, static-gate and incomplete-run evidence; preserve exact source/ledger sequence. | CHANGE-20261017-234: ghi EV-171 exact #140, EV-172 local Auth runtime/static PASS, EV-173 timeout attempt, source/test fingerprints và exact #141/#142 gates. | CHANGE-20261017-235: lưu kết quả check-tracking errorCount=0 và ghi nhận final self-audit/next exact gate. | CHANGE-20261017-236: map TRACKING.json self-audit and evidence ledger to C06.13 execution scope. | EV-187 ghi full-suite Windows FAIL được giữ nguyên; EV-188 ghi exact PR #149 PASS và provenance; CHANGE-20261018-260 tự kiểm toán cập nhật này. | C06.13: ghi EV-190 exact GitHub #151, EV-191 local OTP acceptance, source catalog và gate #152; giữ nguyên page/route pool và trạng thái rollout. | C06.13: exact source+ledger run #155, artifact, six stable 1,151-hash runner snapshots, readiness ledger and merge provenance recorded in EV-20261018-196. | CHANGE-20261018-272: ghi nhận attempt 1 exact run #156 fail chưa rõ nguyên nhân, local coverage reproduction và attempt 2 exact-head PASS với artifact/manifests/readiness/merge provenance; giữ C06.13 mở và khóa consumer kế tiếp sau #157. | Ghi evidence exact #162, C06.13 AddressBook SearchBar và local gate. | Self-audit is proven through change.afterHashRecovery; this planPrefix ledger is excluded from static source catalog to avoid a self-referential commit hash.",
       "evidenceIds": [
         "EV-20261001-034",
         "EV-20261001-035",
@@ -133977,7 +134026,11 @@
         "EV-20261018-197",
         "EV-20261018-198",
         "EV-20261018-199",
-        "EV-20261018-200"
+        "EV-20261018-200",
+        "EV-20261018-208",
+        "EV-20261018-209",
+        "EV-20261018-210",
+        "EV-20261018-211"
       ],
       "changeIds": [
         "CHANGE-20261001-0316",
@@ -134202,9 +134255,10 @@
         "CHANGE-20261018-270",
         "CHANGE-20261018-271",
         "CHANGE-20261018-272",
-        "CHANGE-20261018-273"
+        "CHANGE-20261018-273",
+        "CHANGE-20261018-288"
       ],
-      "cataloguedAt": "2026-10-01T04:02:26.000Z",
+      "cataloguedAt": null,
       "executionScope": {
         "ownerTaskId": "B10",
         "role": "documentation_or_ledger",
@@ -134428,7 +134482,16 @@
           "U15.06"
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
-      }
+      },
+      "cataloguedSourceHistory": [
+        {
+          "supersededAt": "2026-10-18T08:17:18.000Z",
+          "evidenceId": "EV-20261018-208",
+          "reason": "Giữ con trỏ trước khi ghi ledger C06.13 cho source commit 8f2f8eb91d7442c6dcfc43d7b0e3a937b4a17cce."
+        }
+      ],
+      "cataloguedSourceHead": null,
+      "cataloguedSha256": null
     },
     {
       "path": "docs/architecture/production-readiness/UI-ACCEPTANCE.md",
@@ -169518,14 +169581,16 @@
         "C06"
       ],
       "disposition": "changed",
-      "reason": " | Iteration 62: sửa accessibility semantics/tương phản và khóa bằng regression test; không đổi API/backend.",
+      "reason": " | Iteration 62: sửa accessibility semantics/tương phản và khóa bằng regression test; không đổi API/backend. | Khóa hành vi xóa nội dung và khôi phục focus của SearchBar dùng chung cùng logic lọc địa chỉ/mạng hiện có.",
       "evidenceIds": [
         "EV-20261012-002",
         "EV-20261014-032",
-        "EV-20261014-033"
+        "EV-20261014-033",
+        "EV-20261018-209"
       ],
       "changeIds": [
-        "CHANGE-20261014-135"
+        "CHANGE-20261014-135",
+        "CHANGE-20261018-285"
       ],
       "executionScope": {
         "ownerTaskId": "U04",
@@ -169542,9 +169607,9 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "d3c8a578beb939cc4f7bc57178a5bf0c37f454de",
-      "cataloguedSha256": "5ded181deb605b3d5713afe78b014e9472a64221a781cbaec51e2ed368a5dcf2",
-      "cataloguedAt": "2026-10-14T08:27:55.150Z",
+      "cataloguedSourceHead": "8f2f8eb91d7442c6dcfc43d7b0e3a937b4a17cce",
+      "cataloguedSha256": "d4e67c57a83cd5b60ba202deb4e4e3a11833354b1c9ea1b3bd806f862ab14de6",
+      "cataloguedAt": "2026-10-18T08:17:18.000Z",
       "cataloguedSourceHistory": [
         {
           "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
@@ -169552,6 +169617,13 @@
           "supersededAt": "2026-10-14T08:27:55.150Z",
           "evidenceId": "EV-20261014-032",
           "reason": "Giữ lại catalogue trước Iteration 62; chuyển con trỏ sang Git snapshot chứa source đã commit."
+        },
+        {
+          "sourceHead": "d3c8a578beb939cc4f7bc57178a5bf0c37f454de",
+          "sha256": "5ded181deb605b3d5713afe78b014e9472a64221a781cbaec51e2ed368a5dcf2",
+          "supersededAt": "2026-10-18T08:17:18.000Z",
+          "evidenceId": "EV-20261018-209",
+          "reason": "Giữ con trỏ source trước khi catalog commit C06.13 AddressBook 8f2f8eb91d7442c6dcfc43d7b0e3a937b4a17cce."
         }
       ]
     },
@@ -169565,15 +169637,18 @@
         "C06"
       ],
       "disposition": "changed",
-      "reason": " | Iteration 62: sửa accessibility semantics/tương phản và khóa bằng regression test; không đổi API/backend.",
+      "reason": " | Iteration 62: sửa accessibility semantics/tương phản và khóa bằng regression test; không đổi API/backend. | Dùng SearchBar dùng chung thay cho ô tìm kiếm tự dựng 52px; giữ nguyên state lọc, truy vấn và hợp đồng dữ liệu.",
       "evidenceIds": [
         "EV-20261012-002",
         "EV-20261014-010",
         "EV-20261014-032",
-        "EV-20261014-033"
+        "EV-20261014-033",
+        "EV-20261018-209",
+        "EV-20261018-210"
       ],
       "changeIds": [
-        "CHANGE-20261014-136"
+        "CHANGE-20261014-136",
+        "CHANGE-20261018-284"
       ],
       "executionScope": {
         "ownerTaskId": "U04",
@@ -169590,8 +169665,8 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "d3c8a578beb939cc4f7bc57178a5bf0c37f454de",
-      "cataloguedSha256": "a9b109f0681f83b6b04cca5b5673fb2db51b7e84b99438669f32406fe6a58cb5",
+      "cataloguedSourceHead": "8f2f8eb91d7442c6dcfc43d7b0e3a937b4a17cce",
+      "cataloguedSha256": "e41c8e3285574fb3679566d2604a2350d63ebefd16c65bcf615003dc8540bcb8",
       "cataloguedSourceHistory": [
         {
           "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
@@ -169606,9 +169681,16 @@
           "supersededAt": "2026-10-14T08:27:55.150Z",
           "evidenceId": "EV-20261014-032",
           "reason": "Giữ lại catalogue trước Iteration 62; chuyển con trỏ sang Git snapshot chứa source đã commit."
+        },
+        {
+          "sourceHead": "d3c8a578beb939cc4f7bc57178a5bf0c37f454de",
+          "sha256": "a9b109f0681f83b6b04cca5b5673fb2db51b7e84b99438669f32406fe6a58cb5",
+          "supersededAt": "2026-10-18T08:17:18.000Z",
+          "evidenceId": "EV-20261018-209",
+          "reason": "Giữ con trỏ source trước khi catalog commit C06.13 AddressBook 8f2f8eb91d7442c6dcfc43d7b0e3a937b4a17cce."
         }
       ],
-      "cataloguedAt": "2026-10-14T08:27:55.150Z"
+      "cataloguedAt": "2026-10-18T08:17:18.000Z"
     },
     {
       "path": "src/features/wallet/pages/asset-detail-formatters.ts",
@@ -176773,7 +176855,7 @@
         "C06"
       ],
       "disposition": "changed",
-      "reason": "Iteration 58: correct the stale QR image locator and verify local E2E. | C06.12: browser contract locks withdrawal field tokens, type sizes, error association and focus ring. | C06.13: chuyển trường OTP rút tiền sang shared InputField; giữ nguyên xác thực 6 chữ số, error association và payload nghiệp vụ. | C06.13 correction after exact #154 failure: initialize phone viewport before first navigation and assert the precise phone-shell pathname; no product behavior changed.",
+      "reason": "Iteration 58: correct the stale QR image locator and verify local E2E. | C06.12: browser contract locks withdrawal field tokens, type sizes, error association and focus ring. | C06.13: chuyển trường OTP rút tiền sang shared InputField; giữ nguyên xác thực 6 chữ số, error association và payload nghiệp vụ. | C06.13 correction after exact #154 failure: initialize phone viewport before first navigation and assert the precise phone-shell pathname; no product behavior changed. | Kiểm thử SearchBar và dữ liệu fixture qua đủ 6 URL đã resolve; xác nhận 44px, focus ring, no-results và clear.",
       "evidenceIds": [
         "EV-20261014-020",
         "EV-20261014-021",
@@ -176787,7 +176869,8 @@
         "EV-20261018-191",
         "EV-20261018-194",
         "EV-20261018-195",
-        "EV-20261018-196"
+        "EV-20261018-196",
+        "EV-20261018-210"
       ],
       "changeIds": [
         "CHANGE-20261014-066",
@@ -176798,7 +176881,8 @@
         "CHANGE-20261018-257",
         "CHANGE-20261018-263",
         "CHANGE-20261018-269",
-        "CHANGE-20261018-270"
+        "CHANGE-20261018-270",
+        "CHANGE-20261018-286"
       ],
       "executionScope": {
         "ownerTaskId": "C03",
@@ -176822,8 +176906,8 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "20840d755708ccdb96a3744c24be836fa12f00b5",
-      "cataloguedSha256": "2dc8180699e4dc6ee233f2664074d2c15ea7f63f69615c4b7a780058911dc41c",
+      "cataloguedSourceHead": "8f2f8eb91d7442c6dcfc43d7b0e3a937b4a17cce",
+      "cataloguedSha256": "e2e4a5f245faff2c92f0c118475d6d5bd4e4f0ada0698cdb6e6e06eb55afcb2b",
       "cataloguedSourceHistory": [
         {
           "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
@@ -176873,9 +176957,16 @@
           "supersededAt": "2026-10-18T00:38:32.735Z",
           "evidenceId": "EV-20261018-191",
           "reason": "Preserve the exact prior committed OTP test source fingerprint before recording the responsive-shell test correction."
+        },
+        {
+          "sourceHead": "20840d755708ccdb96a3744c24be836fa12f00b5",
+          "sha256": "2dc8180699e4dc6ee233f2664074d2c15ea7f63f69615c4b7a780058911dc41c",
+          "supersededAt": "2026-10-18T08:17:18.000Z",
+          "evidenceId": "EV-20261018-210",
+          "reason": "Giữ con trỏ source trước khi catalog commit C06.13 AddressBook 8f2f8eb91d7442c6dcfc43d7b0e3a937b4a17cce."
         }
       ],
-      "cataloguedAt": "2026-10-18T00:38:32.735Z"
+      "cataloguedAt": "2026-10-18T08:17:18.000Z"
     },
     {
       "path": "tsconfig.json",
@@ -315733,6 +315824,91 @@
         "EV-20261018-207"
       ],
       "commit": null
+    },
+    {
+      "id": "CHANGE-20261018-284",
+      "taskId": "C06",
+      "stepId": "C06.13",
+      "path": "src/features/wallet/pages/AddressBookPage.tsx",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "C06.13 Wallet Address Book: Dùng SearchBar dùng chung thay cho ô tìm kiếm tự dựng 52px; giữ nguyên state lọc, truy vấn và hợp đồng dữ liệu.",
+      "beforeHash": "a9b109f0681f83b6b04cca5b5673fb2db51b7e84b99438669f32406fe6a58cb5",
+      "afterHash": "e41c8e3285574fb3679566d2604a2350d63ebefd16c65bcf615003dc8540bcb8",
+      "evidenceIds": [
+        "EV-20261018-209",
+        "EV-20261018-210"
+      ],
+      "commit": "8f2f8eb91d7442c6dcfc43d7b0e3a937b4a17cce"
+    },
+    {
+      "id": "CHANGE-20261018-285",
+      "taskId": "C06",
+      "stepId": "C06.13",
+      "path": "src/features/wallet/pages/AddressBookPage.test.tsx",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "C06.13 Wallet Address Book: Khóa hành vi xóa nội dung và khôi phục focus của SearchBar dùng chung cùng logic lọc địa chỉ/mạng hiện có.",
+      "beforeHash": "5ded181deb605b3d5713afe78b014e9472a64221a781cbaec51e2ed368a5dcf2",
+      "afterHash": "d4e67c57a83cd5b60ba202deb4e4e3a11833354b1c9ea1b3bd806f862ab14de6",
+      "evidenceIds": [
+        "EV-20261018-209"
+      ],
+      "commit": "8f2f8eb91d7442c6dcfc43d7b0e3a937b4a17cce"
+    },
+    {
+      "id": "CHANGE-20261018-286",
+      "taskId": "C06",
+      "stepId": "C06.13",
+      "path": "tests/e2e/wallet-contract.spec.ts",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "C06.13 Wallet Address Book: Kiểm thử SearchBar và dữ liệu fixture qua đủ 6 URL đã resolve; xác nhận 44px, focus ring, no-results và clear.",
+      "beforeHash": "2dc8180699e4dc6ee233f2664074d2c15ea7f63f69615c4b7a780058911dc41c",
+      "afterHash": "e2e4a5f245faff2c92f0c118475d6d5bd4e4f0ada0698cdb6e6e06eb55afcb2b",
+      "evidenceIds": [
+        "EV-20261018-210"
+      ],
+      "commit": "8f2f8eb91d7442c6dcfc43d7b0e3a937b4a17cce"
+    },
+    {
+      "id": "CHANGE-20261018-287",
+      "taskId": "C06",
+      "stepId": "C06.13",
+      "path": "docs/architecture/page-inventory.json",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "C06.13 Wallet Address Book: Tái sinh inventory bằng generator owner sau thay đổi line count và dependency; tổng vẫn 130 page/428 route.",
+      "beforeHash": "005f866808c6ee45fbb8549fe00b8b80debf0ebf1af9cb1dd5ebf5f1c7510fc8",
+      "afterHash": "df6219e5397d22d6356d01b22c7b08186d3b7964648bf0f59493c6731d91bdd6",
+      "evidenceIds": [
+        "EV-20261018-209"
+      ],
+      "commit": "8f2f8eb91d7442c6dcfc43d7b0e3a937b4a17cce"
+    },
+    {
+      "id": "CHANGE-20261018-288",
+      "taskId": "C06",
+      "stepId": "C06.13",
+      "path": "docs/architecture/production-readiness/TRACKING.json",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "C06.13 self-audit: ghi EV-208 exact #162, EV-209 source/static acceptance, EV-210 incomplete browser gate và EV-211 checker correction; 4 path-specific source changes, 2 page/3 route in_progress; archive business payload chính xác trước self-record. Initial self-catalog failure and both draft archives are preserved. Final post-EV211 checker result and initial self-catalog failure are retained; payload archive refreshed before self-record. Final check result retained and duplicate checkpoint pending entries removed; new business-payload recovery archive saved before self-record.",
+      "beforeHash": "5acaaf91c386bc3215e1087126def11679c9d96b64c785a0ad3bb4dfdb013aee",
+      "afterHash": "ef0445aba2c72c923a23c180933cb6c6fb9c17e7e2f2ed1b259df63bf3680aaf",
+      "afterHashRecovery": {
+        "kind": "actual_written_business_payload_before_self_audit_change_record",
+        "archivePath": "C:/CodexEvidence/vittrade-react/2026-10-18/c06-13-addressbook-search/tracking-payload-before-self-audit-CHANGE-20261018-288-pending-dedup.json",
+        "archiveSha256": "ef0445aba2c72c923a23c180933cb6c6fb9c17e7e2f2ed1b259df63bf3680aaf",
+        "payloadSha256": "ef0445aba2c72c923a23c180933cb6c6fb9c17e7e2f2ed1b259df63bf3680aaf"
+      },
+      "evidenceIds": [
+        "EV-20261018-208",
+        "EV-20261018-209",
+        "EV-20261018-210",
+        "EV-20261018-211"
+      ],
+      "commit": null
     }
   ],
   "evidence": [
@@ -353424,6 +353600,84 @@
       "artifact": "C:/CodexEvidence/vittrade-react/2026-10-18/c06-13-weblogin-inputfield/github-run-161-verification.json",
       "artifactSha256": "aadc13bcf53998c4b5de3ab3f8d4c36de303b036fbc0d3959e2a9960d7e37425",
       "notes": "Raw downloaded workflow ZIP is C:/CodexEvidence/vittrade-react/2026-10-18/c06-13-weblogin-inputfield/github-run-161.zip; SHA-256 matches GitHub artifact digest. C06.13 and WebLogin page/route remain in_progress; the final tracker-record exact run #162 is still required before selecting another consumer."
+    },
+    {
+      "id": "EV-20261018-208",
+      "taskId": "C06",
+      "stepId": "C06.13",
+      "kind": "weblogin_final_record_exact_github_gate_passed_before_addressbook_slice",
+      "commandOrSteps": "GitHub Actions PR #3 CI run #162 (39106826006): verify exact head, all jobs/steps, downloadable artifact digest, six runner manifests/source hash maps, readiness ledger, and synthetic merge provenance.",
+      "environment": "GitHub Actions ubuntu-latest / Node 22; artifact downloaded and SHA-256 checked from Windows managed worktree.",
+      "observedAt": "2026-10-18T07:49:25.428Z",
+      "sourceHead": "40092bb2ab354b57bb89073bc71ca719cc15e2eb",
+      "dirtyFileHashes": {},
+      "expected": "Final tracker-record commit for prior C06.13 consumer passes exact current SHA before selecting AddressBook as the next consumer.",
+      "actual": "PASS: exact PR #3 run #162 on 40092bb2ab354b57bb89073bc71ca719cc15e2eb; 34/34 workflow steps, 0 failed/skipped. Artifact 12129672353, 33,850,330 bytes, downloaded SHA-256 6e5ebfbb69b512d2013d926a19e5d50b654f9f63073ec3d097017262a305d951 matches GitHub metadata. Six manifests pass/childClosed/sourceUnchanged, each 1,151 hashes; shared map fingerprint fa077c3d3e669c558e86e2016c245920ea300d383f83db04e5a5c91d1b610439. Readiness ledger errorCount=0 on exact head. Synthetic merge cce07e04b1db4f0f87fe4e76afbc3eb57af1540f tree 73be67ebee2c3b4a0a2853c357d8f4a25bdd04e0 matches PR head; signature valid.",
+      "result": "pass",
+      "artifact": "C:/CodexEvidence/vittrade-react/2026-10-18/c06-13-weblogin-inputfield/github-run-162-verification.json",
+      "artifactSha256": "817d6929a8835ad60eb759a04833a6acb1042d725333c076ce8b6682a67f708a",
+      "notes": "This opens the next ordered C06.13 consumer only; it does not close WebLogin route/page or broader C06."
+    },
+    {
+      "id": "EV-20261018-209",
+      "taskId": "C06",
+      "stepId": "C06.13",
+      "kind": "addressbook_shared_search_local_focused_and_static_acceptance",
+      "commandOrSteps": "scripts/run-with-artifacts.mjs vitest run --reporter=dot src/features/wallet/pages/AddressBookPage.test.tsx src/shared/ui/SearchBar.test.tsx; tsc --noEmit -p tsconfig.json; tsc --noEmit -p tsconfig.node.json; eslint on the three changed TS/TSX files; prettier --check on those three files; scripts/generate-architecture-inventory.mjs --check; git diff --check.",
+      "environment": "Windows managed worktree; Node v24.19.0; Vitest 4.1.11; repository ESLint/Prettier versions; local synthetic fixtures.",
+      "observedAt": "2026-10-18T08:15:36.000Z",
+      "sourceHead": "40092bb2ab354b57bb89073bc71ca719cc15e2eb",
+      "dirtyFileHashes": {
+        "src/features/wallet/pages/AddressBookPage.tsx": "e41c8e3285574fb3679566d2604a2350d63ebefd16c65bcf615003dc8540bcb8",
+        "src/features/wallet/pages/AddressBookPage.test.tsx": "d4e67c57a83cd5b60ba202deb4e4e3a11833354b1c9ea1b3bd806f862ab14de6",
+        "tests/e2e/wallet-contract.spec.ts": "e2e4a5f245faff2c92f0c118475d6d5bd4e4f0ada0698cdb6e6e06eb55afcb2b",
+        "docs/architecture/page-inventory.json": "df6219e5397d22d6356d01b22c7b08186d3b7964648bf0f59493c6731d91bdd6"
+      },
+      "expected": "AddressBookPage consumes the existing public SearchBar contract, preserves filtering, and its focused tests/type/static/inventory checks pass without changing wallet business/API behavior.",
+      "actual": "PASS: focused tests 2 files/14 of 14; app and Node typechecks; scoped ESLint and Prettier; architecture inventory check 130 pages/428 routes/150 components/0 data modules/32 services/28 mocks; git diff --check. Owner generator refreshed only page inventory line/dependency metadata. A separate exploratory Prettier check on generated page-inventory.json failed at HEAD too; that owner-generated output was not manually reformatted.",
+      "result": "pass",
+      "artifact": "C:/CodexEvidence/vittrade-react/2026-10-18/c06-13-addressbook-search/local-verification.json",
+      "artifactSha256": "bc42aff9540aef2f91efbab772468b9d1bf7a6f851f968c9454239e7936d5349",
+      "notes": "SearchBar uses the existing 44px default; unit tests verify clear empties the query and returns focus. Synthetic local checks do not prove backend behavior. Tracking checker is run after recording this evidence."
+    },
+    {
+      "id": "EV-20261018-210",
+      "taskId": "C06",
+      "stepId": "C06.13",
+      "kind": "addressbook_alias_browser_gate_local_incomplete",
+      "commandOrSteps": "Playwright wallet-contract spec through scripts/run-with-artifacts.mjs across local API-mode build, attempted five times while fixing request interception; see attempt manifest paths and hashes in local-verification.json.",
+      "environment": "Windows local; Chromium; Vite API-mode build with synthetic Playwright route interception at https://e2e.test.",
+      "observedAt": "2026-10-18T08:15:36.000Z",
+      "sourceHead": "40092bb2ab354b57bb89073bc71ca719cc15e2eb",
+      "dirtyFileHashes": {
+        "tests/e2e/wallet-contract.spec.ts": "e2e4a5f245faff2c92f0c118475d6d5bd4e4f0ada0698cdb6e6e06eb55afcb2b",
+        "src/features/wallet/pages/AddressBookPage.tsx": "e41c8e3285574fb3679566d2604a2350d63ebefd16c65bcf615003dc8540bcb8"
+      },
+      "expected": "Exact final six-alias test completes, every route/state/geometry assertion passes, and the artifact runner reaches terminal PASS with childClosed=true.",
+      "actual": "FAIL (verification gate only; no product failure inferred): five attempts are retained. One used the wrong API path and exited 1; two intermediate matchers routed document navigation to JSON. Two corrected attempts produced test-level output 1/1 for the earlier four-path variant and measured the 44px control, focus ring and viewport bounds, but both runner manifests stayed status=running with childClosed=false. The final six-path spec adds the two remaining registered aliases and was not accepted as a local browser result. Exact hosted PR run #163 must execute and prove all six paths before this slice advances.",
+      "result": "fail",
+      "artifact": "C:/CodexEvidence/vittrade-react/2026-10-18/c06-13-addressbook-search/local-verification.json",
+      "artifactSha256": "bc42aff9540aef2f91efbab772468b9d1bf7a6f851f968c9454239e7936d5349",
+      "notes": "All incomplete manifests are preserved under .artifacts/runs. No port/process remains owned by this test; no production backend or data was contacted."
+    },
+    {
+      "id": "EV-20261018-211",
+      "taskId": "C06",
+      "stepId": "C06.13",
+      "kind": "tracking_self_audit_pointer_correction_checker_pass",
+      "commandOrSteps": "node docs/architecture/production-readiness/check-tracking.mjs; node scripts/generate-architecture-inventory.mjs --check.",
+      "environment": "Windows managed worktree; Node v24.19.0; source commit 8f2f8eb91d7442c6dcfc43d7b0e3a937b4a17cce.",
+      "observedAt": "2026-10-18T08:22:18.000Z",
+      "sourceHead": "8f2f8eb91d7442c6dcfc43d7b0e3a937b4a17cce",
+      "dirtyFileHashes": {
+        "docs/architecture/production-readiness/TRACKING.json": "cd70fa79c87149b5c02b2ca46be87aac3b0a48e786536682c47c48995182c1fb"
+      },
+      "expected": "The final ledger self-audit is consistent with the existing checker without adding exceptions or rebasing unrelated source catalogues.",
+      "actual": "PASS after correction: initial draft (SHA c207bfb0...) had one self-catalog pointer error. After clearing the current static pointer only for this planPrefix ledger, preserving its old pointer in catalog history, and verifying the written payload through CHANGE-288.afterHashRecovery, check-tracking passed with errorCount=0 on SHA 85246583.... A final rerun after EV-211 and self-audit were present also passed with errorCount=0 on SHA cd70fa79.... Inventory remained 130/428/150/0/32/28. Both initial failed and intermediate business-payload archives are preserved in the report.",
+      "result": "pass",
+      "artifact": "C:/CodexEvidence/vittrade-react/2026-10-18/c06-13-addressbook-search/tracking-self-audit-check-final.json",
+      "artifactSha256": "3287c3ec0269080f41b9417df5f337fdee850b7b14c866c8b4f4fc2f240c3c75",
+      "notes": "The first self-catalog failure is preserved; corrected precommit and post-EV211 checks passed. Exact hosted #163 readiness gate remains required."
     }
   ],
   "decisions": [
@@ -378734,6 +378988,54 @@
         "trackerCloseout": "PASS: exact run #161; 34/34 steps; artifact digest; six stable manifests x 1,151 hashes; readiness ledger; synthetic merge provenance.",
         "limits": "The final tracker-record exact run #162 remains required. C06.13 page/route, route-wide runtime, manual AT/WCAG, backend/staging, production and UAT are not closed."
       }
+    },
+    {
+      "id": "SESSION-20261018-026",
+      "startedAt": "2026-10-18T07:49:25.428Z",
+      "endedAt": "2026-10-18T08:23:00.000Z",
+      "sourceHeadBefore": "40092bb2ab354b57bb89073bc71ca719cc15e2eb",
+      "sourceHeadAfter": "8f2f8eb91d7442c6dcfc43d7b0e3a937b4a17cce",
+      "taskIds": [
+        "C06"
+      ],
+      "stepIds": [
+        "C06.13"
+      ],
+      "changeIds": [
+        "CHANGE-20261018-284",
+        "CHANGE-20261018-285",
+        "CHANGE-20261018-286",
+        "CHANGE-20261018-287"
+      ],
+      "filesTouched": [
+        "src/features/wallet/pages/AddressBookPage.tsx",
+        "src/features/wallet/pages/AddressBookPage.test.tsx",
+        "tests/e2e/wallet-contract.spec.ts",
+        "docs/architecture/page-inventory.json",
+        "docs/architecture/production-readiness/TRACKING.json"
+      ],
+      "evidenceIds": [
+        "EV-20261018-208",
+        "EV-20261018-209",
+        "EV-20261018-210",
+        "EV-20261018-211"
+      ],
+      "elapsedMinutes": 32,
+      "remainingWork": [
+        "Run final tracker self-audit/check-tracking and review exact source/ledger diff.",
+        "Push the two DCO commits by fast-forward; require exact PR #3 run #163 with full hosted E2E, artifact/manifests/readiness/merge provenance.",
+        "After #163 pass, separately record tracker closeout and require #164; record final gate and require #165 before next consumer.",
+        "Keep all page/state/theme/manual accessibility/backend/staging/production/UAT and 126-page/420-route scope open."
+      ],
+      "blockers": [],
+      "nextAction": "Create source+ledger tracker commit after check-tracking passes; verify remote remains exactly 40092bb2ab354b57bb89073bc71ca719cc15e2eb, push fast-forward, then verify exact #163. Do not select another consumer until tracker-only closeout #164 and final-record #165 pass.",
+      "manifestPath": "C:/CodexEvidence/vittrade-react/2026-10-18/c06-13-addressbook-search/local-verification.json",
+      "validation": {
+        "local": "Focused 14/14, both typechecks, scoped lint/format, inventory and diff checks PASS; local Playwright INCOMPLETE and not accepted.",
+        "predecessor": "Exact #162 PASS, report SHA-256 817d6929a8835ad60eb759a04833a6acb1042d725333c076ce8b6682a67f708a.",
+        "limits": "Mock/synthetic data only; six-alias browser result, page-level theme/full state matrix, manual AT/WCAG, backend/staging, production and UAT remain unverified.",
+        "tracking": "PASS: corrected checker and post-EV211 rerun both errorCount=0; initial self-catalog failure retained in EV-211."
+      }
     }
   ],
   "templates": {
@@ -379604,5 +379906,5 @@
       "updatedAt": "2026-10-17T02:16:03.000Z"
     }
   },
-  "remainingWork": "Coverage local đạt 362/362 test files, 3477/3477 tests và 100% trên 408 measurable files; 32 entries không có executable counter. C05.03 chưa xong: Axe có 1655/1656 incomplete evaluation, screenshot baseline 14/128, formal acceptance 0/128. B07.02 chưa xong: hai local E2E attempt không có terminal summary; exact pushed-SHA workflow/artifact/governance chưa xác minh. Backend/staging B05 và C05.04/.05 blocked; backend 0/154, 25/106 contract-dependent, UAT 0/128; thiếu các owner, host/version, quyền test, endpoint, telemetry/privacy và SLO đã nêu.\nC06.04 source correction is verified: GitHub PR run #74 passed 34/34 workflow steps with 0 failures/skips; artifact 11975419220 digest dd905ae34e5bede1e1b257c0553e6a2924364c3ae49575ead64f80f0feb11e2a matches GitHub metadata; merge bcbc526b77881611bd1ad10e6e057a9e404a822b includes branch head 6a13762117c5b9b36244cdf6e3fb37d5a3c6d1ac and its tree is identical. The tracker closeout commit requires its own exact-current-state run #75 and matching artifact verification before C06.05 begins. Local Playwright teardown remains incomplete; hosted E2E passed. Backend/staging, production, UAT, route-wide runtime and product-wide WCAG remain unverified.\nC06.05 local status: source commit aefbd0ba and focused checks pass; run #75 for prior tracker head c7929d8 passed with 34/34 and verified artifact digest. Exact PR source+ledger run #76 passed 34/34 with artifact and merge-tree verification (EV-047); tracker-only closeout run #77 remains required before C06.06. Local browser evidence uses mocked APIs only; backend/staging, production, UAT, all-route runtime and product-wide WCAG remain unverified.\nC06.06 local evidence is EV-20261015-049; no route runtime, visual or Axe acceptance is inferred. Require exact pushed-head #78 and separate tracker closeout #79 before C06.07.\nC06.06: exact PR run #78 PASS 34/34 and artifact/merge provenance verified (EV-20261015-050); tracker closeout and exact run #79 remain before C06.07.\nC06.07 implementation: source+ledger SHA 1901a29bc6e72cd4ddf3de25bd0b042730c1fcdd passed exact run #80 (34/34), synthetic merge/tree and downloaded artifact digest verified (EV-20261016-055). Tracker-only closeout exact run #81 remains a hard gate before C06.08. One route runtime sample only; product-wide UI/WCAG, backend/staging, production and UAT remain open.\nC06.07 reopened after tracker-closeout run #81 failed the DCA cancellation retry test (EV-20261016-056). Test-only source commit 517cb7dbdcea80b8788ede0cdb4f3463fffae7dc is locally verified 17/17 plus Prettier (EV-20261016-057); source-only run #82 and new source+ledger plus tracker-closeout gates remain. One route runtime sample only; product-wide UI/WCAG, backend/staging, production and UAT remain open.\nC06.07: source-only run #82 failed only readiness source ledger due stale DCA test fingerprint; EV-058 records verified run, merge and artifact. Current ledger correction passes locally; exact source+ledger run #83 and tracker-only closeout run #84 remain. No C06.08 work begins before both pass.\nC06.07 remains open after source+ledger run #85 PASS and exact merge/artifact verification (EV-20261016-062). The C06 execution-protocol/evidence commit requires exact #86; a separate tracker-only closeout requires exact #87 before C06.08. Backend/staging, production, UAT, all-route runtime and product-wide WCAG remain unverified.\nC06.07: protocol and ledger source commit ad7fbe7b163ffe4af7f3187ad9291c248819b4b4 passed exact GitHub #86, 34/34 steps and verified merge/artifact provenance (EV-20261016-064). Separate tracker-only #87 remains mandatory; C06.08 has not started. Runtime route coverage, backend/staging, production, UAT and product-wide WCAG are still unverified.\nC06.07 tracker-only closeout preparation is locally verified (EV-20261016-065); cleanup deleted 0 files/bytes and preserved all 18 retained runs. Exact PR run #87 with merge/artifact provenance remains required before C06.08.\nC06.07 is complete after exact #87 PASS on tracker-closeout SHA a203c05b0e02978b47b6523089d942181b8f25e9 (EV-066). C06.08 remains not started until this tracker completion record passes exact #88 with merge/artifact provenance. Product-wide UI/WCAG, all-route runtime, backend/staging, production and UAT remain unverified.\nC06.08 first CTAButton slice is locally verified (EV-069); exact run #89 plus provenance is the gate before another primitive change. The #88 completion-record run (EV-068) passed on the exact C06.07 closeout SHA.\nC06.08 CTAButton source+ledger #89 and tracker-closeout #90 passed on exact heads with merge/artifact provenance (EV-070/071); the next primitive is now eligible for measured inspection.\nC06.08 follow-up: source test commit ae5bbbccf94fe53b2a3a18286de079a4333fcca9 passes local focused/full tests; exact GitHub run #108 found one stale DCA test fingerprint in readiness ledger (EV-106). Run #109 with corrected preserved-history fingerprint, then exact tracker closeout #110, before further C06.08 work. Route runtime 0/428; all-route UI/WCAG, backend/staging, production and UAT remain unverified.\nC06.08 tracker correction exact PR run #109 passed 34/34 on 96344212b73333530fbd4a2530ec8b751db4f378; artifact, six manifests and merge provenance are verified (EV-20261016-108). The step remains in progress pending tracker-only closeout commit and exact run #110. Route runtime remains 0/428; product-wide UI/WCAG, backend/staging, production and UAT remain unverified.\nC06.08 complete after exact source+ledger #109 and tracker-closeout #110 both passed with artifact/manifests/merge provenance. Completion-record commit must pass exact run #111 before C06.09 implementation starts. All-route runtime remains 0/428; product-wide WCAG, backend/staging, production and UAT remain unverified.\nC06.09 closed after exact source+ledger #114 and tracker-closeout #115 PASS with artifact/manifest/merge provenance (EV-118/121). This completion-record tracker SHA must pass exact run #116 before C06.10 starts. Full route runtime remains 0/428; product-wide WCAG, backend/staging, production and UAT remain open.\nC06 follow-up: run #117 attempt 1 failed on old head 3e4c3049 (EV-127). Corrected source c0bcc2e1 plus route-matrix a02686ec has local tests/static/build evidence EV-128/130; local Playwright remains incomplete EV-129. Exact current source+ledger CI and separate tracker-closeout CI are mandatory before C06.10; route runtime 0/428 and product-wide WCAG/backend/staging/production/UAT remain unverified.\nC06 current source+ledger SHA 03a5c694 passed exact PR run #118 (34/34 steps, artifact digest and synthetic merge verified; EV-20261017-132). The required separate tracker-only closeout exact run is pending before C06.10. Route runtime 0/428 and product-wide WCAG/backend/staging/production/UAT remain unverified.\nC06.11 is in progress after predecessor #127. Source fe9d51c7 has local focused/static/build gates and 7 Market runtime alias/viewport cases verified; exact pushed-SHA GitHub and tracker-closeout gates remain. Local evidence uses synthetic API fixtures only; full 428-route runtime, product-wide WCAG/manual assistive technology, backend/staging, production and UAT remain open.\nC06.11: exact prior run #128 failed Market E2E at the default 30s budget/ambiguous post-delete locator (EV-148); correction a25a3788 fixes both and the local measured 7-alias/14-Axe matrix passes in 34.4s (EV-150). A separate local CI-profile attempt was interrupted before terminal state and is retained as incomplete (EV-149). Update ledger to a25, push source+ledger, and require the exact corrected-head hosted run with artifact/manifests/merge provenance. Full 428-route runtime, product-wide manual WCAG, backend/staging, production and UAT remain unverified.\nC06.11 source+ledger run #129 and tracker-only closeout run #130 passed on exact heads; C06.11 is recorded done (EV-20261017-151/152). The tracker completion-record commit still requires exact PR #3 run #131, artifact digest, six manifests/source ledger and merge provenance before C06.12 starts. Local Market browser evidence covers 7/428 route declarations with synthetic fixtures; all-route runtime, product-wide manual WCAG/assistive technology, backend/staging, production and UAT remain unverified.\nC06.12 is in progress: exact source commit a0ccdb29 and local evidence EV-153–156. Local Playwright runner is incomplete, preserved and not PASS. Push source+ledger; require exact hosted workflow/artifact/manifests/source-ledger/merge verification; then commit tracker-only closeout and require its exact hosted gate before C06.13. Full route/state/role/locale, product-wide manual WCAG/AT, backend/staging, production and UAT remain unverified.\nC06.12 source+ledger run #132 and tracker-reconciliation run #133 passed on exact PR heads; this completion-record commit requires exact run #134 before C06.13. The local Playwright wrapper remains incomplete and hosted browser fixtures are synthetic; backend/staging, production, UAT, all-route runtime and product-wide WCAG remain unverified.\nC06.13 current measured progress: AddressAddPage và PasswordResetPages đã migration local (EV-163/164/167/168); source+ledger SHA 4dd203be đã pass exact GitHub #138 (EV-169), gồm 34/34 checks, artifact/manifests/source ledger/merge provenance. Tracker-only closeout #139 là gate còn lại trước consumer kế tiếp. Pool sau hai original pilots và hai source slices: 126 page files/420 route declarations; runtime evidence 5/428 declarations/12 shell URLs. Backend/staging, production, UAT, route-wide runtime và product-wide manual WCAG vẫn chưa xác minh.\nC06.13 source+ledger #138 and tracker-only closeout #139 passed exact SHA gates with artifact/manifests/ledger/merge provenance (EV-169/170). This tracker completion record requires exact run #140 before selecting or editing the next consumer. Keep C06.13 in_progress; current migration pool 126 page files/420 route declarations and runtime sample 5/428 declarations/12 aliases; product-wide UI/WCAG, backend/staging, production and UAT remain unverified.\nC06.13 wallet transfer field and mobile CTA/navigation interaction: local source/static/runtime acceptance PASS for one route declaration and four shell aliases; route/page remain in_progress, pool remains 126 page files/420 active route declarations. Exact current pushed-SHA GitHub, tracker-only closeout and final tracker-record gates are pending. Backend, production, UAT, full route runtime, untested form states, manual assistive technology and product-wide WCAG remain unverified.\nC06.13 correction after exact run #148 failure: existing PageContent tight=8px is used for phone shell; local 390x844 clearance improved from -9.890625px hosted failure to +31.109375px synthetic local runtime (EV-184/185). The one route declaration/four aliases remain a partial page slice. Require exact pushed source+ledger run #149, tracker-only #150, final tracker-record #151. Backend/staging/production/UAT, all-route runtime, transfer error/permission/locale state coverage, manual AT and product-wide WCAG remain open.\nArchitecture inventory freshness was restored through its owning generator and rechecked (EV-186); source+ledger #149 and tracker closeout #150 passed (EV-188/189); the final tracker-record exact run #151 still gates the next consumer.\nC06.13 current slice: wallet withdrawal OTP source commit 9887f1483a19ef736da9b8a00616ba7588f00fac has local E2E/focused verification EV-191; exact #151 predecessor recorded as EV-190. Push source+ledger only if origin remains 14bd4af, then sequential exact #152/#153/#154 gates before next consumer. Keep the 126-page/420-route pool, product-wide accessibility and backend/production/UAT open."
+  "remainingWork": "Coverage local đạt 362/362 test files, 3477/3477 tests và 100% trên 408 measurable files; 32 entries không có executable counter. C05.03 chưa xong: Axe có 1655/1656 incomplete evaluation, screenshot baseline 14/128, formal acceptance 0/128. B07.02 chưa xong: hai local E2E attempt không có terminal summary; exact pushed-SHA workflow/artifact/governance chưa xác minh. Backend/staging B05 và C05.04/.05 blocked; backend 0/154, 25/106 contract-dependent, UAT 0/128; thiếu các owner, host/version, quyền test, endpoint, telemetry/privacy và SLO đã nêu.\nC06.04 source correction is verified: GitHub PR run #74 passed 34/34 workflow steps with 0 failures/skips; artifact 11975419220 digest dd905ae34e5bede1e1b257c0553e6a2924364c3ae49575ead64f80f0feb11e2a matches GitHub metadata; merge bcbc526b77881611bd1ad10e6e057a9e404a822b includes branch head 6a13762117c5b9b36244cdf6e3fb37d5a3c6d1ac and its tree is identical. The tracker closeout commit requires its own exact-current-state run #75 and matching artifact verification before C06.05 begins. Local Playwright teardown remains incomplete; hosted E2E passed. Backend/staging, production, UAT, route-wide runtime and product-wide WCAG remain unverified.\nC06.05 local status: source commit aefbd0ba and focused checks pass; run #75 for prior tracker head c7929d8 passed with 34/34 and verified artifact digest. Exact PR source+ledger run #76 passed 34/34 with artifact and merge-tree verification (EV-047); tracker-only closeout run #77 remains required before C06.06. Local browser evidence uses mocked APIs only; backend/staging, production, UAT, all-route runtime and product-wide WCAG remain unverified.\nC06.06 local evidence is EV-20261015-049; no route runtime, visual or Axe acceptance is inferred. Require exact pushed-head #78 and separate tracker closeout #79 before C06.07.\nC06.06: exact PR run #78 PASS 34/34 and artifact/merge provenance verified (EV-20261015-050); tracker closeout and exact run #79 remain before C06.07.\nC06.07 implementation: source+ledger SHA 1901a29bc6e72cd4ddf3de25bd0b042730c1fcdd passed exact run #80 (34/34), synthetic merge/tree and downloaded artifact digest verified (EV-20261016-055). Tracker-only closeout exact run #81 remains a hard gate before C06.08. One route runtime sample only; product-wide UI/WCAG, backend/staging, production and UAT remain open.\nC06.07 reopened after tracker-closeout run #81 failed the DCA cancellation retry test (EV-20261016-056). Test-only source commit 517cb7dbdcea80b8788ede0cdb4f3463fffae7dc is locally verified 17/17 plus Prettier (EV-20261016-057); source-only run #82 and new source+ledger plus tracker-closeout gates remain. One route runtime sample only; product-wide UI/WCAG, backend/staging, production and UAT remain open.\nC06.07: source-only run #82 failed only readiness source ledger due stale DCA test fingerprint; EV-058 records verified run, merge and artifact. Current ledger correction passes locally; exact source+ledger run #83 and tracker-only closeout run #84 remain. No C06.08 work begins before both pass.\nC06.07 remains open after source+ledger run #85 PASS and exact merge/artifact verification (EV-20261016-062). The C06 execution-protocol/evidence commit requires exact #86; a separate tracker-only closeout requires exact #87 before C06.08. Backend/staging, production, UAT, all-route runtime and product-wide WCAG remain unverified.\nC06.07: protocol and ledger source commit ad7fbe7b163ffe4af7f3187ad9291c248819b4b4 passed exact GitHub #86, 34/34 steps and verified merge/artifact provenance (EV-20261016-064). Separate tracker-only #87 remains mandatory; C06.08 has not started. Runtime route coverage, backend/staging, production, UAT and product-wide WCAG are still unverified.\nC06.07 tracker-only closeout preparation is locally verified (EV-20261016-065); cleanup deleted 0 files/bytes and preserved all 18 retained runs. Exact PR run #87 with merge/artifact provenance remains required before C06.08.\nC06.07 is complete after exact #87 PASS on tracker-closeout SHA a203c05b0e02978b47b6523089d942181b8f25e9 (EV-066). C06.08 remains not started until this tracker completion record passes exact #88 with merge/artifact provenance. Product-wide UI/WCAG, all-route runtime, backend/staging, production and UAT remain unverified.\nC06.08 first CTAButton slice is locally verified (EV-069); exact run #89 plus provenance is the gate before another primitive change. The #88 completion-record run (EV-068) passed on the exact C06.07 closeout SHA.\nC06.08 CTAButton source+ledger #89 and tracker-closeout #90 passed on exact heads with merge/artifact provenance (EV-070/071); the next primitive is now eligible for measured inspection.\nC06.08 follow-up: source test commit ae5bbbccf94fe53b2a3a18286de079a4333fcca9 passes local focused/full tests; exact GitHub run #108 found one stale DCA test fingerprint in readiness ledger (EV-106). Run #109 with corrected preserved-history fingerprint, then exact tracker closeout #110, before further C06.08 work. Route runtime 0/428; all-route UI/WCAG, backend/staging, production and UAT remain unverified.\nC06.08 tracker correction exact PR run #109 passed 34/34 on 96344212b73333530fbd4a2530ec8b751db4f378; artifact, six manifests and merge provenance are verified (EV-20261016-108). The step remains in progress pending tracker-only closeout commit and exact run #110. Route runtime remains 0/428; product-wide UI/WCAG, backend/staging, production and UAT remain unverified.\nC06.08 complete after exact source+ledger #109 and tracker-closeout #110 both passed with artifact/manifests/merge provenance. Completion-record commit must pass exact run #111 before C06.09 implementation starts. All-route runtime remains 0/428; product-wide WCAG, backend/staging, production and UAT remain unverified.\nC06.09 closed after exact source+ledger #114 and tracker-closeout #115 PASS with artifact/manifest/merge provenance (EV-118/121). This completion-record tracker SHA must pass exact run #116 before C06.10 starts. Full route runtime remains 0/428; product-wide WCAG, backend/staging, production and UAT remain open.\nC06 follow-up: run #117 attempt 1 failed on old head 3e4c3049 (EV-127). Corrected source c0bcc2e1 plus route-matrix a02686ec has local tests/static/build evidence EV-128/130; local Playwright remains incomplete EV-129. Exact current source+ledger CI and separate tracker-closeout CI are mandatory before C06.10; route runtime 0/428 and product-wide WCAG/backend/staging/production/UAT remain unverified.\nC06 current source+ledger SHA 03a5c694 passed exact PR run #118 (34/34 steps, artifact digest and synthetic merge verified; EV-20261017-132). The required separate tracker-only closeout exact run is pending before C06.10. Route runtime 0/428 and product-wide WCAG/backend/staging/production/UAT remain unverified.\nC06.11 is in progress after predecessor #127. Source fe9d51c7 has local focused/static/build gates and 7 Market runtime alias/viewport cases verified; exact pushed-SHA GitHub and tracker-closeout gates remain. Local evidence uses synthetic API fixtures only; full 428-route runtime, product-wide WCAG/manual assistive technology, backend/staging, production and UAT remain open.\nC06.11: exact prior run #128 failed Market E2E at the default 30s budget/ambiguous post-delete locator (EV-148); correction a25a3788 fixes both and the local measured 7-alias/14-Axe matrix passes in 34.4s (EV-150). A separate local CI-profile attempt was interrupted before terminal state and is retained as incomplete (EV-149). Update ledger to a25, push source+ledger, and require the exact corrected-head hosted run with artifact/manifests/merge provenance. Full 428-route runtime, product-wide manual WCAG, backend/staging, production and UAT remain unverified.\nC06.11 source+ledger run #129 and tracker-only closeout run #130 passed on exact heads; C06.11 is recorded done (EV-20261017-151/152). The tracker completion-record commit still requires exact PR #3 run #131, artifact digest, six manifests/source ledger and merge provenance before C06.12 starts. Local Market browser evidence covers 7/428 route declarations with synthetic fixtures; all-route runtime, product-wide manual WCAG/assistive technology, backend/staging, production and UAT remain unverified.\nC06.12 is in progress: exact source commit a0ccdb29 and local evidence EV-153–156. Local Playwright runner is incomplete, preserved and not PASS. Push source+ledger; require exact hosted workflow/artifact/manifests/source-ledger/merge verification; then commit tracker-only closeout and require its exact hosted gate before C06.13. Full route/state/role/locale, product-wide manual WCAG/AT, backend/staging, production and UAT remain unverified.\nC06.12 source+ledger run #132 and tracker-reconciliation run #133 passed on exact PR heads; this completion-record commit requires exact run #134 before C06.13. The local Playwright wrapper remains incomplete and hosted browser fixtures are synthetic; backend/staging, production, UAT, all-route runtime and product-wide WCAG remain unverified.\nC06.13 current measured progress: AddressAddPage và PasswordResetPages đã migration local (EV-163/164/167/168); source+ledger SHA 4dd203be đã pass exact GitHub #138 (EV-169), gồm 34/34 checks, artifact/manifests/source ledger/merge provenance. Tracker-only closeout #139 là gate còn lại trước consumer kế tiếp. Pool sau hai original pilots và hai source slices: 126 page files/420 route declarations; runtime evidence 5/428 declarations/12 shell URLs. Backend/staging, production, UAT, route-wide runtime và product-wide manual WCAG vẫn chưa xác minh.\nC06.13 source+ledger #138 and tracker-only closeout #139 passed exact SHA gates with artifact/manifests/ledger/merge provenance (EV-169/170). This tracker completion record requires exact run #140 before selecting or editing the next consumer. Keep C06.13 in_progress; current migration pool 126 page files/420 route declarations and runtime sample 5/428 declarations/12 aliases; product-wide UI/WCAG, backend/staging, production and UAT remain unverified.\nC06.13 wallet transfer field and mobile CTA/navigation interaction: local source/static/runtime acceptance PASS for one route declaration and four shell aliases; route/page remain in_progress, pool remains 126 page files/420 active route declarations. Exact current pushed-SHA GitHub, tracker-only closeout and final tracker-record gates are pending. Backend, production, UAT, full route runtime, untested form states, manual assistive technology and product-wide WCAG remain unverified.\nC06.13 correction after exact run #148 failure: existing PageContent tight=8px is used for phone shell; local 390x844 clearance improved from -9.890625px hosted failure to +31.109375px synthetic local runtime (EV-184/185). The one route declaration/four aliases remain a partial page slice. Require exact pushed source+ledger run #149, tracker-only #150, final tracker-record #151. Backend/staging/production/UAT, all-route runtime, transfer error/permission/locale state coverage, manual AT and product-wide WCAG remain open.\nArchitecture inventory freshness was restored through its owning generator and rechecked (EV-186); source+ledger #149 and tracker closeout #150 passed (EV-188/189); the final tracker-record exact run #151 still gates the next consumer.\nC06.13 current slice: wallet withdrawal OTP source commit 9887f1483a19ef736da9b8a00616ba7588f00fac has local E2E/focused verification EV-191; exact #151 predecessor recorded as EV-190. Push source+ledger only if origin remains 14bd4af, then sequential exact #152/#153/#154 gates before next consumer. Keep the 126-page/420-route pool, product-wide accessibility and backend/production/UAT open.\nC06.13 AddressBook slice (EV-208–210): exact predecessor #162 passed; source commit 8f2f8eb91d7442c6dcfc43d7b0e3a937b4a17cce replaces the local 52px search with shared SearchBar, 14/14 focused tests and local static checks pass. Three route declarations expose six resolved URLs; final E2E covers all six but Windows local Playwright lifecycle stayed incomplete, so hosted exact #163 is required. Keep two wallet page records and three route records in_progress; denominator remains 126 page files/420 active route declarations."
 }
