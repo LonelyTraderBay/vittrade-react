@@ -938,9 +938,23 @@ test('supports accessible keyboard registration across Web widths @auth-api', as
       width: document.documentElement.clientWidth,
       scrollWidth: document.documentElement.scrollWidth,
     }));
+    const formBounds = await page.locator('form').evaluate((form) => {
+      const bounds = form.getBoundingClientRect();
+      return { left: bounds.left, right: bounds.right };
+    });
     const visibility = await Promise.all(
       primaryControls.map(({ locator }) => measureHorizontalVisibility(locator)),
     );
+    const controlBounds = primaryControls.map(({ name }, index) => {
+      const { left, right, width } = visibility[index].element;
+      return {
+        name,
+        left,
+        right,
+        width,
+        withinForm: left >= formBounds.left && right <= formBounds.right,
+      };
+    });
     expect(
       document.scrollWidth,
       `Web registration overflows at ${viewport.width}px`,
@@ -954,6 +968,11 @@ test('supports accessible keyboard registration across Web widths @auth-api', as
     expect(
       clippedControls,
       `Web registration controls clip at ${viewport.width}px: ${clippedControls.join(', ') || 'none'}; geometry=${JSON.stringify(clippingDiagnostics)}`,
+    ).toEqual([]);
+    const formOverflow = controlBounds.filter(({ withinForm }) => !withinForm);
+    expect(
+      formOverflow,
+      `Web registration controls escape the form content at ${viewport.width}px: ${JSON.stringify(formOverflow)}`,
     ).toEqual([]);
 
     if (viewport.width === 320 || viewport.width === 1440) {
@@ -988,6 +1007,8 @@ test('supports accessible keyboard registration across Web widths @auth-api', as
       route: '/w/auth/register',
       viewport,
       document,
+      formBounds,
+      primaryControlBounds: controlBounds,
       clippedPrimaryControlCount: visibility.filter((measurement) => !measurement.visible).length,
       focusOrder: expectedTabOrder,
       selectedChannel: 'email',

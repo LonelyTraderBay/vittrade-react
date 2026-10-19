@@ -130,7 +130,7 @@ export function RegistrationForm() {
   };
 
   return (
-    <form className="grid gap-4" onSubmit={(event) => void submit(event)} noValidate>
+    <form className="grid grid-cols-1 gap-4" onSubmit={(event) => void submit(event)} noValidate>
       <div className="grid grid-cols-2 gap-2" role="group" aria-label="Kênh đăng ký">
         {(['email', 'phone'] as const).map((channel) => (
           <button
