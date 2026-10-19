@@ -17,21 +17,51 @@ const session = {
   accessToken: 'registration-e2e-memory-token',
 };
 
-async function isFullyVisibleHorizontally(element: Locator): Promise<boolean> {
+async function measureHorizontalVisibility(element: Locator) {
   return element.evaluate((node) => {
     const visibleBounds = {
       left: 0,
       right: document.documentElement.clientWidth,
     };
+    const clippingAncestors: Array<{
+      tagName: string;
+      className: string;
+      overflowX: string;
+      left: number;
+      right: number;
+    }> = [];
     for (let ancestor = node.parentElement; ancestor; ancestor = ancestor.parentElement) {
-      if (getComputedStyle(ancestor).overflowX === 'visible') continue;
+      const overflowX = getComputedStyle(ancestor).overflowX;
+      if (overflowX === 'visible') continue;
       const bounds = ancestor.getBoundingClientRect();
       visibleBounds.left = Math.max(visibleBounds.left, bounds.left);
       visibleBounds.right = Math.min(visibleBounds.right, bounds.right);
+      clippingAncestors.push({
+        tagName: ancestor.tagName.toLowerCase(),
+        className: String(ancestor.className),
+        overflowX,
+        left: bounds.left,
+        right: bounds.right,
+      });
     }
     const bounds = node.getBoundingClientRect();
-    return bounds.left >= visibleBounds.left && bounds.right <= visibleBounds.right;
+    return {
+      visible: bounds.left >= visibleBounds.left && bounds.right <= visibleBounds.right,
+      element: {
+        tagName: node.tagName.toLowerCase(),
+        className: String(node.className),
+        left: bounds.left,
+        right: bounds.right,
+        width: bounds.width,
+      },
+      visibleBounds,
+      clippingAncestors,
+    };
   });
+}
+
+async function isFullyVisibleHorizontally(element: Locator): Promise<boolean> {
+  return (await measureHorizontalVisibility(element)).visible;
 }
 
 test.beforeEach(({ baseURL }) => {
@@ -908,19 +938,22 @@ test('supports accessible keyboard registration across Web widths @auth-api', as
       width: document.documentElement.clientWidth,
       scrollWidth: document.documentElement.scrollWidth,
     }));
-    const visible = await Promise.all(
-      primaryControls.map(({ locator }) => isFullyVisibleHorizontally(locator)),
+    const visibility = await Promise.all(
+      primaryControls.map(({ locator }) => measureHorizontalVisibility(locator)),
     );
     expect(
       document.scrollWidth,
       `Web registration overflows at ${viewport.width}px`,
     ).toBeLessThanOrEqual(document.width);
     const clippedControls = primaryControls
-      .filter((_, index) => !visible[index])
+      .filter((_, index) => !visibility[index].visible)
       .map(({ name: controlName }) => controlName);
+    const clippingDiagnostics = primaryControls.flatMap(({ name }, index) =>
+      visibility[index].visible ? [] : [{ name, ...visibility[index] }],
+    );
     expect(
       clippedControls,
-      `Web registration controls clip at ${viewport.width}px: ${clippedControls.join(', ') || 'none'}`,
+      `Web registration controls clip at ${viewport.width}px: ${clippedControls.join(', ') || 'none'}; geometry=${JSON.stringify(clippingDiagnostics)}`,
     ).toEqual([]);
 
     if (viewport.width === 320 || viewport.width === 1440) {
@@ -955,7 +988,7 @@ test('supports accessible keyboard registration across Web widths @auth-api', as
       route: '/w/auth/register',
       viewport,
       document,
-      clippedPrimaryControlCount: visible.filter((isVisible) => !isVisible).length,
+      clippedPrimaryControlCount: visibility.filter((measurement) => !measurement.visible).length,
       focusOrder: expectedTabOrder,
       selectedChannel: 'email',
     });
