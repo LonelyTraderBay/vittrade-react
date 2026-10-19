@@ -79,6 +79,7 @@ export function P2PChatPage() {
 
   return (
     <PageLayout variant="flush">
+      <h1 className="sr-only">Cuộc trò chuyện P2P với {chat.counterparty}</h1>
       <Header variant="custom" breadcrumb>
         <div
           className="flex items-center gap-3 px-4 py-3"
@@ -103,14 +104,14 @@ export function P2PChatPage() {
             <p style={{ color: colors.text1, fontSize: 14, fontWeight: 700 }}>
               {chat.counterparty}
             </p>
-            <p style={{ color: '#10B981', fontSize: 10 }}>Kênh giao dịch được bảo vệ</p>
+            <p style={{ color: colors.successText, fontSize: 10 }}>Kênh giao dịch được bảo vệ</p>
           </div>
           <button
             type="button"
-            onClick={() => navigate(`${prefix}/p2p/order/${order.id}`)}
+            onClick={() => navigate(`${prefix}/p2p/order/${encodeURIComponent(order.id)}`)}
             aria-label="Open P2P order"
             className="rounded-lg px-2.5 py-1.5 text-xs"
-            style={{ background: colors.primaryAlpha12, color: colors.primary }}
+            style={{ background: colors.primaryAlpha12, color: colors.warningText }}
           >
             Order
           </button>
@@ -125,7 +126,7 @@ export function P2PChatPage() {
         }}
       >
         <ShieldCheck size={14} color="#10B981" />
-        <span style={{ color: '#10B981', fontSize: 10, fontWeight: 600 }}>
+        <span style={{ color: colors.successText, fontSize: 10, fontWeight: 600 }}>
           {chat.e2eEncrypted ? 'Tin nhắn được mã hóa đầu cuối' : 'Kênh chat bảo vệ'}
         </span>
         <Lock size={10} color="#10B981" />
@@ -148,7 +149,7 @@ export function P2PChatPage() {
                 className="text-center rounded-xl p-2"
                 style={{ background: colors.primaryAlpha12 }}
               >
-                <p style={{ color: colors.primary, fontSize: 11 }}>{message.text}</p>
+                <p style={{ color: colors.warningText, fontSize: 11 }}>{message.text}</p>
                 <p style={{ color: colors.text3, fontSize: 9, marginTop: 2 }}>{message.sentAt}</p>
               </div>
             );
@@ -159,7 +160,7 @@ export function P2PChatPage() {
                 <div
                   className="rounded-2xl px-4 py-2.5"
                   style={{
-                    background: isUser ? '#3B82F6' : colors.surface2,
+                    background: isUser ? '#1d4ed8' : colors.surface2,
                     color: isUser ? '#fff' : colors.text1,
                     borderRadius: isUser ? '18px 18px 4px 18px' : '18px 18px 18px 4px',
                   }}
@@ -188,12 +189,12 @@ export function P2PChatPage() {
         }}
       >
         {error && (
-          <p role="alert" style={{ color: '#EF4444', fontSize: 11, marginBottom: 8 }}>
+          <p role="alert" style={{ color: colors.errorText, fontSize: 11, marginBottom: 8 }}>
             {error}
           </p>
         )}
         {!canWriteChat && (
-          <p role="alert" style={{ color: '#EF4444', fontSize: 11, marginBottom: 8 }}>
+          <p role="alert" style={{ color: colors.errorText, fontSize: 11, marginBottom: 8 }}>
             P2P chat write permission is required to send messages.
           </p>
         )}
@@ -221,7 +222,7 @@ export function P2PChatPage() {
             aria-label="Send chat message"
             className="w-10 h-10 rounded-xl flex items-center justify-center"
             style={{
-              background: input.trim() ? '#3B82F6' : colors.surface2,
+              background: input.trim() ? '#1d4ed8' : colors.surface2,
               opacity: input.trim() && !messageMutation.isPending ? 1 : 0.6,
             }}
           >

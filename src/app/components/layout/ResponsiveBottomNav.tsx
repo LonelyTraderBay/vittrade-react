@@ -64,7 +64,7 @@ export function ResponsiveBottomNav() {
                     width: 52,
                     height: 52,
                     borderRadius: 16,
-                    marginTop: -22,
+                    marginTop: 0,
                     background: `linear-gradient(135deg, ${c.primary} 0%, ${c.primaryDark} 100%)`,
                     boxShadow: [
                       `0 4px 16px ${c.primaryAlpha40}`,

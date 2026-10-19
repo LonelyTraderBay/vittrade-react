@@ -15,6 +15,129 @@ describe('FeatureFlagService storage', () => {
     vi.restoreAllMocks();
   });
 
+  it('preserves valid serialized dates, variants, metadata and forward-compatible flag fields', () => {
+    const expiresAt = new Date('2099-01-01T00:00:00.000Z');
+    const flag = {
+      ...makeFlag('valid_flag', {
+        expiresAt,
+        variants: [{ key: 'one', name: 'One', weight: 1, value: 'variant-value' }],
+        metadata: { owner: 'test-owner' },
+      }),
+      futureField: 'preserved',
+    };
+    vi.spyOn(browserStorage.local, 'getItem').mockImplementation((key) =>
+      key === 'feature_flags_cache'
+        ? JSON.stringify({ flags: { valid_flag: flag }, timestamp: Date.now() })
+        : null,
+    );
+    const service = new FeatureFlagService({ cache: true, refreshInterval: 0 });
+    services.push(service);
+    expect(service.getAllFlags().valid_flag).toMatchObject({
+      expiresAt,
+      metadata: { owner: 'test-owner' },
+      futureField: 'preserved',
+    });
+    expect(service.getValue('valid_flag', 'fallback')).toBe('variant-value');
+  });
+
+  it('treats an explicitly supplied prototype-named override as an own value', () => {
+    vi.spyOn(browserStorage.local, 'getItem').mockReturnValue(null);
+    const service = new FeatureFlagService({ cache: false, refreshInterval: 0 });
+    services.push(service);
+    service.override('__proto__', false);
+    expect(service.isEnabled('__proto__')).toBe(false);
+    expect(service.getValue('__proto__', 'fallback')).toBe(false);
+    service.clearOverrides();
+    expect(service.getValue('__proto__', 'fallback')).toBe('fallback');
+  });
+
+  it.each(['toString', 'constructor', 'valueOf'])(
+    'does not treat an inherited %s property as a feature override',
+    (key) => {
+      vi.spyOn(browserStorage.local, 'getItem').mockReturnValue(null);
+      const service = new FeatureFlagService({ cache: false, refreshInterval: 0 });
+      services.push(service);
+      expect(service.isEnabled(key)).toBe(false);
+      expect(service.getValue(key, 'fallback')).toBe('fallback');
+      expect(service.getVariant(key)).toBe('control');
+    },
+  );
+
+  it.each([
+    makeFlag('unsafe_flag', { enabled: 'yes' as unknown as boolean }),
+    makeFlag('unsafe_flag', { userSegments: {} as string[] }),
+    makeFlag('unsafe_flag', { variants: {} as FeatureFlag['variants'] }),
+  ])('rejects a cached flag whose JSON shape violates its runtime contract: %j', (flag) => {
+    vi.spyOn(browserStorage.local, 'getItem').mockImplementation((key) =>
+      key === 'feature_flags_cache'
+        ? JSON.stringify({ flags: { unsafe_flag: flag }, timestamp: Date.now() })
+        : null,
+    );
+    vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    const service = new FeatureFlagService({ cache: true, refreshInterval: 0 });
+    services.push(service);
+    expect(service.getAllFlags()).not.toHaveProperty('unsafe_flag');
+    expect(service.getAllFlags()).toHaveProperty('dca_enabled');
+  });
+
+  it.each([null, { 'dca_shortcut_variant:user-1': 17 }, { 'dca_shortcut_variant:user-1': {} }])(
+    'rejects assignments with invalid persisted shape: %j',
+    (assignments) => {
+      vi.spyOn(browserStorage.local, 'getItem').mockImplementation((key) =>
+        key === 'feature_flag_assignments' ? JSON.stringify(assignments) : null,
+      );
+      vi.spyOn(console, 'error').mockImplementation(() => undefined);
+      const service = new FeatureFlagService({ cache: true, refreshInterval: 0 });
+      services.push(service);
+      expect(typeof service.getVariant('dca_shortcut_variant', { userId: 'user-1' })).toBe(
+        'string',
+      );
+    },
+  );
+
+  it.each([
+    makeFlag('unsafe_flag', { enabled: 'yes' as unknown as boolean }),
+    makeFlag('unsafe_flag', { userSegments: {} as string[] }),
+    makeFlag('unsafe_flag', { variants: {} as FeatureFlag['variants'] }),
+  ])('preserves default flags when remote configuration has an invalid shape: %j', async (flag) => {
+    vi.spyOn(browserStorage.local, 'getItem').mockReturnValue(null);
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue({
+      ok: true,
+      json: async () => ({ unsafe_flag: flag }),
+    } as Response);
+    vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    const service = new FeatureFlagService({
+      cache: false,
+      refreshInterval: 0,
+      remoteConfigUrl: '/test-flags',
+    });
+    services.push(service);
+    await service.refresh();
+    expect(service.getAllFlags()).not.toHaveProperty('unsafe_flag');
+    expect(service.getAllFlags()).toHaveProperty('dca_enabled');
+  });
+
+  it.each([403, 503])(
+    'rejects an unsuccessful HTTP %s config even when its body resembles flags',
+    async (status) => {
+      vi.spyOn(browserStorage.local, 'getItem').mockReturnValue(null);
+      vi.spyOn(globalThis, 'fetch').mockImplementation(
+        async () =>
+          new Response(JSON.stringify({ unsafe_flag: makeFlag('unsafe_flag') }), { status }),
+      );
+      vi.spyOn(console, 'error').mockImplementation(() => undefined);
+      const service = new FeatureFlagService({
+        cache: false,
+        refreshInterval: 0,
+        remoteConfigUrl: '/test-flags',
+      });
+      services.push(service);
+      await service.refresh();
+      expect(service.getAllFlags()).not.toHaveProperty('unsafe_flag');
+      expect(service.getAllFlags()).toHaveProperty('dca_enabled');
+    },
+  );
+
   it('persists QA overrides in session storage and removes them when cleared', () => {
     const setItem = vi.spyOn(browserStorage.session, 'setItem').mockReturnValue(true);
     const removeItem = vi.spyOn(browserStorage.session, 'removeItem').mockReturnValue(true);
@@ -249,6 +372,7 @@ describe('FeatureFlagService storage', () => {
     vi.spyOn(browserStorage.local, 'getItem').mockReturnValue(null);
     const setItem = vi.spyOn(browserStorage.local, 'setItem').mockReturnValue(true);
     const fetchMock = vi.spyOn(globalThis, 'fetch').mockResolvedValue({
+      ok: true,
       json: async () => ({ remote_flag: remoteFlag }),
     } as Response);
     const service = new FeatureFlagService({
@@ -275,6 +399,7 @@ describe('FeatureFlagService storage', () => {
     vi.spyOn(browserStorage.local, 'getItem').mockReturnValue(null);
     const setItem = vi.spyOn(browserStorage.local, 'setItem').mockReturnValue(true);
     const fetchMock = vi.spyOn(globalThis, 'fetch').mockResolvedValue({
+      ok: true,
       json: async () => ({}),
     } as Response);
     const log = vi.spyOn(console, 'log').mockImplementation(() => undefined);
@@ -411,6 +536,7 @@ describe('FeatureFlagService storage', () => {
       throw new Error('local storage unavailable');
     });
     vi.spyOn(globalThis, 'fetch').mockResolvedValue({
+      ok: true,
       json: async () => ({ remote_flag: makeFlag('remote_flag') }),
     } as Response);
     const error = vi.spyOn(console, 'error').mockImplementation(() => undefined);

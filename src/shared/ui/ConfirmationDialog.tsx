@@ -154,6 +154,7 @@ export function ConfirmationDialog({
       {/* Buttons */}
       <div className="flex gap-3">
         <button
+          type="button"
           onClick={onClose}
           className="flex-1 py-3 rounded-xl font-semibold text-sm"
           style={{ background: c.surface2, color: c.text2, border: `1px solid ${c.borderSolid}` }}
@@ -161,6 +162,7 @@ export function ConfirmationDialog({
           {cancelText}
         </button>
         <button
+          type="button"
           onClick={() => {
             onConfirm();
             onClose();

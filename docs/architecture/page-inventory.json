@@ -10,15 +10,15 @@
     "src/app/services"
   ],
   "summary": {
-    "pageCount": 129,
-    "routeCount": 427,
-    "componentCount": 149,
+    "pageCount": 130,
+    "routeCount": 428,
+    "componentCount": 151,
     "dataModuleCount": 0,
     "serviceCount": 32,
     "mockCount": 28,
     "pageStatus": {
       "production": 0,
-      "integration-pending": 125,
+      "integration-pending": 126,
       "demo": 2,
       "deprecated": 0,
       "not-implemented": 2
@@ -30,7 +30,7 @@
       "features/wallet": 16,
       "features/admin": 4,
       "features/arena": 2,
-      "features/auth": 13,
+      "features/auth": 14,
       "features/discovery": 1,
       "features/earn": 5,
       "features/launchpad": 1,
@@ -254,13 +254,14 @@
       "domain": "responsive",
       "owner": "app/platform",
       "status": "demo",
-      "lines": 592,
+      "lines": 593,
       "routePaths": [
         "r",
         "r/shell"
       ],
       "dependencies": {
         "localImports": [
+          "@/shared/theme/webTokens",
           "@/shared/ui/layout/PageLayout"
         ],
         "mockReferences": [],
@@ -276,7 +277,7 @@
       "domain": "admin",
       "owner": "features/admin",
       "status": "integration-pending",
-      "lines": 64,
+      "lines": 70,
       "routePaths": [
         "admin/abtests"
       ],
@@ -304,7 +305,7 @@
       "domain": "admin",
       "owner": "features/admin",
       "status": "integration-pending",
-      "lines": 55,
+      "lines": 61,
       "routePaths": [
         "admin/funnels"
       ],
@@ -332,7 +333,7 @@
       "domain": "admin",
       "owner": "features/admin",
       "status": "integration-pending",
-      "lines": 59,
+      "lines": 65,
       "routePaths": [
         "admin",
         "admin/analytics"
@@ -360,12 +361,15 @@
       "domain": "admin",
       "owner": "features/admin",
       "status": "not-implemented",
-      "lines": 21,
+      "lines": 31,
       "routePaths": [],
       "dependencies": {
         "localImports": [
           "@/shared/api/api-error",
-          "@/shared/ui/ErrorState"
+          "@/shared/ui/ErrorState",
+          "@/shared/ui/layout/Header",
+          "@/shared/ui/layout/PageContent",
+          "@/shared/ui/layout/PageLayout"
         ],
         "mockReferences": [],
         "directRuntimeAccess": {
@@ -380,7 +384,7 @@
       "domain": "arena",
       "owner": "features/arena",
       "status": "integration-pending",
-      "lines": 362,
+      "lines": 377,
       "routePaths": [
         "arena/challenge/:challengeId",
         "arena/join/:challengeId",
@@ -412,7 +416,7 @@
       "domain": "arena",
       "owner": "features/arena",
       "status": "integration-pending",
-      "lines": 229,
+      "lines": 231,
       "routePaths": [
         "arena"
       ],
@@ -437,22 +441,51 @@
       }
     },
     {
+      "path": "src/features/auth/pages/AccountLockedPage.tsx",
+      "domain": "auth",
+      "owner": "features/auth",
+      "status": "integration-pending",
+      "lines": 88,
+      "routePaths": [
+        "account-locked"
+      ],
+      "dependencies": {
+        "localImports": [
+          "@/shared/hooks/useThemeColors",
+          "@/shared/navigation/useRoutePrefix",
+          "@/shared/ui/CTAButton",
+          "@/shared/ui/layout/Header",
+          "@/shared/ui/layout/PageContent",
+          "@/shared/ui/layout/PageLayout"
+        ],
+        "mockReferences": [],
+        "directRuntimeAccess": {
+          "fetch": false,
+          "websocket": false,
+          "storage": false
+        }
+      }
+    },
+    {
       "path": "src/features/auth/pages/LoginPage.tsx",
       "domain": "auth",
       "owner": "features/auth",
       "status": "integration-pending",
-      "lines": 218,
+      "lines": 219,
       "routePaths": [
         "login"
       ],
       "dependencies": {
         "localImports": [
+          "@/shared/api/api-error",
           "@/shared/config/env",
           "@/shared/hooks/useThemeColors",
+          "@/shared/lib/string",
           "@/shared/navigation/useRoutePrefix",
           "@/shared/session/useAuth",
           "@/shared/ui/CTAButton",
           "@/shared/ui/InputField",
+          "@/shared/ui/auth/AuthBrandMark",
           "@/shared/ui/layout/PageContent",
           "@/shared/ui/layout/PageLayout"
         ],
@@ -471,7 +504,7 @@
       "domain": "auth",
       "owner": "features/auth",
       "status": "integration-pending",
-      "lines": 271,
+      "lines": 280,
       "routePaths": [
         "otp"
       ],
@@ -501,7 +534,7 @@
       "domain": "auth",
       "owner": "features/auth",
       "status": "integration-pending",
-      "lines": 203,
+      "lines": 225,
       "routePaths": [
         "profile/security/change-password"
       ],
@@ -529,7 +562,7 @@
       "domain": "auth",
       "owner": "features/auth",
       "status": "integration-pending",
-      "lines": 363,
+      "lines": 428,
       "routePaths": [
         "forgot-password",
         "reset-password"
@@ -539,6 +572,7 @@
           "../api/password-reset-api",
           "@/shared/hooks/useThemeColors",
           "@/shared/navigation/useRoutePrefix",
+          "@/shared/theme/typography",
           "@/shared/ui/CTAButton",
           "@/shared/ui/InputField",
           "@/shared/ui/layout/Header",
@@ -584,7 +618,7 @@
       "domain": "auth",
       "owner": "features/auth",
       "status": "integration-pending",
-      "lines": 342,
+      "lines": 361,
       "routePaths": [
         "2fa-setup"
       ],
@@ -635,7 +669,7 @@
       "domain": "auth",
       "owner": "features/auth",
       "status": "integration-pending",
-      "lines": 142,
+      "lines": 160,
       "routePaths": [
         "account-locked"
       ],
@@ -658,7 +692,7 @@
       "domain": "auth",
       "owner": "features/auth",
       "status": "integration-pending",
-      "lines": 436,
+      "lines": 476,
       "routePaths": [
         "success"
       ],
@@ -681,7 +715,7 @@
       "domain": "auth",
       "owner": "features/auth",
       "status": "integration-pending",
-      "lines": 464,
+      "lines": 408,
       "routePaths": [
         "login"
       ],
@@ -692,6 +726,8 @@
           "@/shared/hooks/useThemeColors",
           "@/shared/session/useAuth",
           "@/shared/theme/webTokens",
+          "@/shared/ui/CTAButton",
+          "@/shared/ui/InputField",
           "@/shared/ui/auth/WebAuthBrandPanel"
         ],
         "mockReferences": [
@@ -709,7 +745,7 @@
       "domain": "auth",
       "owner": "features/auth",
       "status": "integration-pending",
-      "lines": 570,
+      "lines": 556,
       "routePaths": [
         "otp"
       ],
@@ -762,7 +798,7 @@
       "domain": "auth",
       "owner": "features/auth",
       "status": "integration-pending",
-      "lines": 395,
+      "lines": 396,
       "routePaths": [
         "session-expired"
       ],
@@ -820,7 +856,7 @@
       "domain": "dca",
       "owner": "features/dca",
       "status": "integration-pending",
-      "lines": 582,
+      "lines": 597,
       "routePaths": [
         "dca"
       ],
@@ -858,7 +894,7 @@
       "domain": "dca",
       "owner": "features/dca",
       "status": "integration-pending",
-      "lines": 265,
+      "lines": 345,
       "routePaths": [
         "earn/savings/dca"
       ],
@@ -888,7 +924,7 @@
       "domain": "discovery",
       "owner": "features/discovery",
       "status": "integration-pending",
-      "lines": 348,
+      "lines": 375,
       "routePaths": [
         "search",
         "topic/:topicId",
@@ -951,7 +987,7 @@
       "domain": "earn",
       "owner": "features/earn",
       "status": "integration-pending",
-      "lines": 265,
+      "lines": 276,
       "routePaths": [
         "earn",
         "earn/savings",
@@ -985,7 +1021,7 @@
       "domain": "earn",
       "owner": "features/earn",
       "status": "integration-pending",
-      "lines": 361,
+      "lines": 384,
       "routePaths": [
         "earn/:domain/receipt",
         "earn/savings/product/:productId",
@@ -1048,7 +1084,7 @@
       "domain": "earn",
       "owner": "features/earn",
       "status": "integration-pending",
-      "lines": 133,
+      "lines": 157,
       "routePaths": [
         "earn/savings/portfolio"
       ],
@@ -1080,7 +1116,7 @@
       "domain": "launchpad",
       "owner": "features/launchpad",
       "status": "integration-pending",
-      "lines": 292,
+      "lines": 302,
       "routePaths": [
         "launchpad",
         "launchpad/:id",
@@ -1111,7 +1147,7 @@
       "domain": "market",
       "owner": "features/market",
       "status": "integration-pending",
-      "lines": 218,
+      "lines": 229,
       "routePaths": [
         "markets/advanced-charts",
         "trade/advanced-chart/:pairId"
@@ -1255,7 +1291,7 @@
       "domain": "market",
       "owner": "features/market",
       "status": "integration-pending",
-      "lines": 197,
+      "lines": 206,
       "routePaths": [
         "markets/calendar"
       ],
@@ -1282,7 +1318,7 @@
       "domain": "market",
       "owner": "features/market",
       "status": "integration-pending",
-      "lines": 170,
+      "lines": 169,
       "routePaths": [
         "markets/heatmap"
       ],
@@ -1311,7 +1347,7 @@
       "domain": "market",
       "owner": "features/market",
       "status": "integration-pending",
-      "lines": 297,
+      "lines": 308,
       "routePaths": [
         "home"
       ],
@@ -1341,7 +1377,7 @@
       "domain": "market",
       "owner": "features/market",
       "status": "integration-pending",
-      "lines": 207,
+      "lines": 248,
       "routePaths": [
         "markets"
       ],
@@ -1349,6 +1385,7 @@
         "localImports": [
           "../components/MarketListSections",
           "../lib/mutation-attempts",
+          "../model/market-list-options",
           "@/features/market",
           "@/features/market/components/DiscoverMoreSection",
           "@/shared/constants/toastMessages",
@@ -1358,6 +1395,7 @@
           "@/shared/hooks/useThemeColors",
           "@/shared/navigation/useRoutePrefix",
           "@/shared/session/useAuth",
+          "@/shared/theme/legacyTypography",
           "@/shared/ui/layout/PageContent",
           "@/shared/ui/layout/PageLayout"
         ],
@@ -1374,7 +1412,7 @@
       "domain": "market",
       "owner": "features/market",
       "status": "integration-pending",
-      "lines": 251,
+      "lines": 258,
       "routePaths": [
         "markets/movers"
       ],
@@ -1404,7 +1442,7 @@
       "domain": "market",
       "owner": "features/market",
       "status": "integration-pending",
-      "lines": 229,
+      "lines": 231,
       "routePaths": [
         "markets/news"
       ],
@@ -1432,7 +1470,7 @@
       "domain": "market",
       "owner": "features/market",
       "status": "integration-pending",
-      "lines": 340,
+      "lines": 349,
       "routePaths": [
         "markets/overview"
       ],
@@ -1462,7 +1500,7 @@
       "domain": "market",
       "owner": "features/market",
       "status": "integration-pending",
-      "lines": 433,
+      "lines": 442,
       "routePaths": [
         "markets/alerts"
       ],
@@ -1492,7 +1530,7 @@
       "domain": "market",
       "owner": "features/market",
       "status": "integration-pending",
-      "lines": 205,
+      "lines": 211,
       "routePaths": [
         "markets/screener",
         "scanner"
@@ -1606,7 +1644,7 @@
       "domain": "market",
       "owner": "features/market",
       "status": "integration-pending",
-      "lines": 416,
+      "lines": 434,
       "routePaths": [
         "pair/:pairId"
       ],
@@ -1639,7 +1677,7 @@
       "domain": "market",
       "owner": "features/market",
       "status": "integration-pending",
-      "lines": 211,
+      "lines": 222,
       "routePaths": [
         "pair/:pairId/info"
       ],
@@ -1696,7 +1734,7 @@
       "domain": "market",
       "owner": "features/market",
       "status": "integration-pending",
-      "lines": 302,
+      "lines": 315,
       "routePaths": [
         "markets/watchlist"
       ],
@@ -1758,7 +1796,7 @@
       "domain": "p2p",
       "owner": "features/p2p",
       "status": "integration-pending",
-      "lines": 169,
+      "lines": 177,
       "routePaths": [
         "p2p/achievements"
       ],
@@ -1813,7 +1851,7 @@
       "domain": "p2p",
       "owner": "features/p2p",
       "status": "integration-pending",
-      "lines": 238,
+      "lines": 256,
       "routePaths": [
         "p2p/ad/:id"
       ],
@@ -1844,7 +1882,7 @@
       "domain": "p2p",
       "owner": "features/p2p",
       "status": "integration-pending",
-      "lines": 172,
+      "lines": 197,
       "routePaths": [
         "p2p/blacklist/add"
       ],
@@ -1905,7 +1943,7 @@
       "domain": "p2p",
       "owner": "features/p2p",
       "status": "integration-pending",
-      "lines": 235,
+      "lines": 236,
       "routePaths": [
         "p2p/chat/:orderId"
       ],
@@ -1963,7 +2001,7 @@
       "domain": "p2p",
       "owner": "features/p2p",
       "status": "integration-pending",
-      "lines": 242,
+      "lines": 245,
       "routePaths": [
         "p2p/dashboard"
       ],
@@ -1991,7 +2029,7 @@
       "domain": "p2p",
       "owner": "features/p2p",
       "status": "integration-pending",
-      "lines": 264,
+      "lines": 267,
       "routePaths": [
         "p2p/dispute/detail/:id"
       ],
@@ -2021,7 +2059,7 @@
       "domain": "p2p",
       "owner": "features/p2p",
       "status": "integration-pending",
-      "lines": 256,
+      "lines": 261,
       "routePaths": [
         "p2p/disputes"
       ],
@@ -2051,11 +2089,12 @@
       "domain": "p2p",
       "owner": "features/p2p",
       "status": "not-implemented",
-      "lines": 374,
+      "lines": 406,
       "routePaths": [],
       "dependencies": {
         "localImports": [
           "../model/p2p-order-action-queries",
+          "../model/p2p-types",
           "@/shared/api/api-error",
           "@/shared/hooks/useThemeColors",
           "@/shared/navigation/useRoutePrefix",
@@ -2079,7 +2118,7 @@
       "domain": "p2p",
       "owner": "features/p2p",
       "status": "integration-pending",
-      "lines": 204,
+      "lines": 230,
       "routePaths": [
         "p2p/express/confirm"
       ],
@@ -2110,7 +2149,7 @@
       "domain": "p2p",
       "owner": "features/p2p",
       "status": "integration-pending",
-      "lines": 254,
+      "lines": 261,
       "routePaths": [
         "p2p/express"
       ],
@@ -2140,7 +2179,7 @@
       "domain": "p2p",
       "owner": "features/p2p",
       "status": "integration-pending",
-      "lines": 458,
+      "lines": 498,
       "routePaths": [
         "p2p/fraud-prevention"
       ],
@@ -2268,7 +2307,7 @@
       "domain": "p2p",
       "owner": "features/p2p",
       "status": "integration-pending",
-      "lines": 260,
+      "lines": 263,
       "routePaths": [
         "p2p/merchant/:merchantId"
       ],
@@ -2329,7 +2368,7 @@
       "domain": "p2p",
       "owner": "features/p2p",
       "status": "integration-pending",
-      "lines": 409,
+      "lines": 487,
       "routePaths": [
         "p2p/order/cancel/:orderId",
         "p2p/order/proof/:orderId",
@@ -2363,7 +2402,7 @@
       "domain": "p2p",
       "owner": "features/p2p",
       "status": "integration-pending",
-      "lines": 276,
+      "lines": 286,
       "routePaths": [
         "p2p/my-orders",
         "p2p/order-room"
@@ -2487,7 +2526,7 @@
       "domain": "p2p",
       "owner": "features/p2p",
       "status": "integration-pending",
-      "lines": 171,
+      "lines": 174,
       "routePaths": [
         "p2p/reviews"
       ],
@@ -2516,7 +2555,7 @@
       "domain": "p2p",
       "owner": "features/p2p",
       "status": "integration-pending",
-      "lines": 275,
+      "lines": 285,
       "routePaths": [
         "p2p/trading-level"
       ],
@@ -2544,7 +2583,7 @@
       "domain": "predictions",
       "owner": "features/predictions",
       "status": "integration-pending",
-      "lines": 435,
+      "lines": 467,
       "routePaths": [
         "activity",
         "breaking",
@@ -2695,7 +2734,7 @@
       "domain": "profile",
       "owner": "features/profile",
       "status": "integration-pending",
-      "lines": 111,
+      "lines": 116,
       "routePaths": [
         "profile"
       ],
@@ -2779,7 +2818,7 @@
       "domain": "referral",
       "owner": "features/referral",
       "status": "integration-pending",
-      "lines": 156,
+      "lines": 161,
       "routePaths": [
         "referral"
       ],
@@ -2920,7 +2959,7 @@
       "domain": "trading",
       "owner": "features/trading",
       "status": "integration-pending",
-      "lines": 157,
+      "lines": 161,
       "routePaths": [
         "trade/copy-trading/active",
         "trade/copy/active"
@@ -2951,7 +2990,7 @@
       "domain": "trading",
       "owner": "features/trading",
       "status": "integration-pending",
-      "lines": 148,
+      "lines": 155,
       "routePaths": [
         "trade/copy-provider/:providerId/configuration",
         "trade/copy/provider/:providerId/configuration"
@@ -2982,7 +3021,7 @@
       "domain": "trading",
       "owner": "features/trading",
       "status": "integration-pending",
-      "lines": 166,
+      "lines": 173,
       "routePaths": [
         "trade/copy-provider/:providerId/confirmation",
         "trade/copy/provider/:providerId/confirmation"
@@ -3105,7 +3144,7 @@
       "domain": "trading",
       "owner": "features/trading",
       "status": "integration-pending",
-      "lines": 181,
+      "lines": 193,
       "routePaths": [
         "trade/copy",
         "trade/copy-trading",
@@ -3168,7 +3207,7 @@
       "domain": "trading",
       "owner": "features/trading",
       "status": "integration-pending",
-      "lines": 256,
+      "lines": 260,
       "routePaths": [
         "trade/order-receipt"
       ],
@@ -3198,7 +3237,7 @@
       "domain": "trading",
       "owner": "features/trading",
       "status": "integration-pending",
-      "lines": 316,
+      "lines": 351,
       "routePaths": [
         "trade/orders",
         "trade/orders-history"
@@ -3226,7 +3265,7 @@
       "domain": "trading",
       "owner": "features/trading",
       "status": "integration-pending",
-      "lines": 109,
+      "lines": 116,
       "routePaths": [
         "trade/copy-provider/:providerId/assessment",
         "trade/copy/provider/:providerId/assessment"
@@ -3284,7 +3323,7 @@
       "domain": "trading",
       "owner": "features/trading",
       "status": "integration-pending",
-      "lines": 199,
+      "lines": 206,
       "routePaths": [
         "trade/copy-trading/leaderboard"
       ],
@@ -3313,7 +3352,7 @@
       "domain": "trading",
       "owner": "features/trading",
       "status": "integration-pending",
-      "lines": 277,
+      "lines": 293,
       "routePaths": [
         "trade/analytics"
       ],
@@ -3391,7 +3430,7 @@
       "domain": "trading",
       "owner": "features/trading",
       "status": "integration-pending",
-      "lines": 273,
+      "lines": 277,
       "routePaths": [
         "trade/trader/:traderId"
       ],
@@ -3420,7 +3459,7 @@
       "domain": "trading",
       "owner": "features/trading",
       "status": "integration-pending",
-      "lines": 91,
+      "lines": 112,
       "routePaths": [
         "trade/copy-performance/:copyId",
         "trade/copy/performance/:copyId"
@@ -3449,7 +3488,7 @@
       "domain": "wallet",
       "owner": "features/wallet",
       "status": "integration-pending",
-      "lines": 285,
+      "lines": 268,
       "routePaths": [
         "wallet/address-book/add"
       ],
@@ -3461,6 +3500,7 @@
           "@/shared/navigation/useRoutePrefix",
           "@/shared/session/useAuth",
           "@/shared/ui/CTAButton",
+          "@/shared/ui/InputField",
           "@/shared/ui/TrCard",
           "@/shared/ui/layout/Header",
           "@/shared/ui/layout/PageContent",
@@ -3479,7 +3519,7 @@
       "domain": "wallet",
       "owner": "features/wallet",
       "status": "integration-pending",
-      "lines": 431,
+      "lines": 408,
       "routePaths": [
         "address-book",
         "wallet/address-book"
@@ -3495,6 +3535,7 @@
           "@/shared/session/useAuth",
           "@/shared/ui/ConfirmationDialog",
           "@/shared/ui/ErrorState",
+          "@/shared/ui/SearchBar",
           "@/shared/ui/TrCard",
           "@/shared/ui/layout/Header",
           "@/shared/ui/layout/PageContent",
@@ -3513,7 +3554,7 @@
       "domain": "wallet",
       "owner": "features/wallet",
       "status": "integration-pending",
-      "lines": 436,
+      "lines": 438,
       "routePaths": [
         "wallet/asset/:assetId"
       ],
@@ -3547,7 +3588,7 @@
       "domain": "wallet",
       "owner": "features/wallet",
       "status": "integration-pending",
-      "lines": 564,
+      "lines": 596,
       "routePaths": [
         "wallet/dust-converter"
       ],
@@ -3612,7 +3653,7 @@
       "domain": "wallet",
       "owner": "features/wallet",
       "status": "integration-pending",
-      "lines": 87,
+      "lines": 89,
       "routePaths": [
         "wallet/pending-deposits"
       ],
@@ -3642,7 +3683,7 @@
       "domain": "wallet",
       "owner": "features/wallet",
       "status": "integration-pending",
-      "lines": 282,
+      "lines": 296,
       "routePaths": [
         "markets/portfolio-tracker",
         "portfolio/analytics",
@@ -3703,7 +3744,7 @@
       "domain": "wallet",
       "owner": "features/wallet",
       "status": "integration-pending",
-      "lines": 268,
+      "lines": 303,
       "routePaths": [
         "wallet/deposit",
         "wallet/deposit/:asset"
@@ -3714,7 +3755,10 @@
           "../model/wallet-types",
           "@/shared/hooks/useThemeColors",
           "@/shared/session/useAuth",
+          "@/shared/theme/colors",
+          "@/shared/ui/CTAButton",
           "@/shared/ui/ErrorState",
+          "@/shared/ui/IconButton",
           "@/shared/ui/TrCard",
           "@/shared/ui/layout/Header",
           "@/shared/ui/layout/PageContent",
@@ -3733,7 +3777,7 @@
       "domain": "wallet",
       "owner": "features/wallet",
       "status": "integration-pending",
-      "lines": 430,
+      "lines": 436,
       "routePaths": [
         "wallet"
       ],
@@ -3764,7 +3808,7 @@
       "domain": "wallet",
       "owner": "features/wallet",
       "status": "integration-pending",
-      "lines": 232,
+      "lines": 238,
       "routePaths": [
         "wallet/history"
       ],
@@ -3778,7 +3822,9 @@
           "@/shared/hooks/useThemeColors",
           "@/shared/navigation/useRoutePrefix",
           "@/shared/session/useAuth",
+          "@/shared/ui/CTAButton",
           "@/shared/ui/ErrorState",
+          "@/shared/ui/SearchBar",
           "@/shared/ui/TrCard",
           "@/shared/ui/layout/Header",
           "@/shared/ui/layout/PageContent",
@@ -3797,7 +3843,7 @@
       "domain": "wallet",
       "owner": "features/wallet",
       "status": "integration-pending",
-      "lines": 366,
+      "lines": 380,
       "routePaths": [
         "wallet/transfer"
       ],
@@ -3810,8 +3856,10 @@
           "@/shared/lib/formatNumber",
           "@/shared/navigation/useRoutePrefix",
           "@/shared/session/useAuth",
+          "@/shared/theme/typography",
           "@/shared/ui/CTAButton",
           "@/shared/ui/ErrorState",
+          "@/shared/ui/InputField",
           "@/shared/ui/TrCard",
           "@/shared/ui/layout/Header",
           "@/shared/ui/layout/PageContent",
@@ -3851,7 +3899,7 @@
       "domain": "wallet",
       "owner": "features/wallet",
       "status": "integration-pending",
-      "lines": 266,
+      "lines": 307,
       "routePaths": [
         "wallet/withdraw",
         "wallet/withdraw/:asset"
@@ -3861,6 +3909,7 @@
           "../components/WithdrawSections",
           "../model/wallet-queries",
           "../model/wallet-types",
+          "@/shared/api/api-error",
           "@/shared/constants/toastMessages",
           "@/shared/hooks/useActionToast",
           "@/shared/hooks/useHaptic",
@@ -3930,6 +3979,14 @@
       "developmentOnly": false,
       "source": "src/app/routes.ts",
       "pageTarget": "src/features/auth/pages/Web2FASetupPage.tsx"
+    },
+    {
+      "path": "account-locked",
+      "component": "AccountLockedPage",
+      "target": "@/features/auth/pages/AccountLockedPage",
+      "developmentOnly": false,
+      "source": "src/app/routeConfig.ts",
+      "pageTarget": "src/features/auth/pages/AccountLockedPage.tsx"
     },
     {
       "path": "account-locked",
@@ -7473,6 +7530,10 @@
       "domain": "platform"
     },
     {
+      "path": "src/shared/ui/auth/AuthBrandMark.tsx",
+      "domain": "platform"
+    },
+    {
       "path": "src/shared/ui/auth/WebAuthBrandPanel.tsx",
       "domain": "platform"
     },
@@ -7518,6 +7579,10 @@
     },
     {
       "path": "src/shared/ui/layout/PageLayout.tsx",
+      "domain": "platform"
+    },
+    {
+      "path": "src/shared/ui/layout/pageGutter.ts",
       "domain": "platform"
     },
     {

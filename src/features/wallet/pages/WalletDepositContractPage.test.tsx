@@ -77,7 +77,7 @@ describe('Wallet deposit contract page', () => {
     });
 
     expect(await screen.findByLabelText('Deposit network')).toHaveValue('ethereum');
-    expect(screen.getByLabelText('Deposit QR code')).toBeInTheDocument();
+    expect(screen.getByRole('img', { name: 'Deposit address QR code' })).toBeInTheDocument();
     expect(screen.getByText(networks.networks[0].address)).toBeInTheDocument();
     expect(screen.getByText('12 confirmations')).toBeInTheDocument();
   });
@@ -95,6 +95,32 @@ describe('Wallet deposit contract page', () => {
     expect(screen.getByRole('button', { name: 'Copy Memo' })).toBeInTheDocument();
   });
 
+  it('uses shared semantic theme tokens for deposit status surfaces', async () => {
+    installHandlers();
+
+    renderWithProviders(<WalletDepositContractPage />);
+    const networkSelect = await screen.findByLabelText('Deposit network');
+
+    expect(screen.getByText('Network available').previousElementSibling).toHaveStyle({
+      background: 'var(--tr-buy)',
+    });
+    const errorSurface = screen.getByText(/Send only USDT through Ethereum/).parentElement;
+    expect(errorSurface?.getAttribute('style')).toContain(
+      'color-mix(in srgb, var(--tr-sell) 8%, transparent)',
+    );
+    expect(errorSurface?.getAttribute('style')).toContain(
+      'border: 1px solid color-mix(in srgb, var(--tr-sell) 25%, transparent)',
+    );
+
+    await userEvent.selectOptions(networkSelect, 'tron');
+
+    const warningSurface = screen.getByText(/Memo is required for this network/).parentElement;
+    expect(warningSurface?.getAttribute('style')).toContain('background: var(--tr-warning-bg)');
+    expect(warningSurface?.getAttribute('style')).toContain(
+      'border: 1px solid var(--tr-warning-border)',
+    );
+  });
+
   it('copies the server-provided address through the browser clipboard', async () => {
     installHandlers();
     const writeText = vi.fn().mockResolvedValue(undefined);
@@ -108,9 +134,74 @@ describe('Wallet deposit contract page', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Copy USDT deposit address' }));
 
     expect(writeText).toHaveBeenCalledWith(networks.networks[0].address);
+    expect(screen.getByText('Copied USDT deposit address')).toBeInTheDocument();
     await userEvent.selectOptions(screen.getByLabelText('Deposit network'), 'tron');
     await userEvent.click(screen.getByRole('button', { name: 'Copy Memo' }));
     expect(writeText).toHaveBeenCalledWith(networks.networks[1].memo);
+    expect(screen.getByText('Copied Memo')).toBeInTheDocument();
+  });
+
+  it('clears copy feedback when the selected deposit network changes', async () => {
+    installHandlers();
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText },
+    });
+
+    renderWithProviders(<WalletDepositContractPage />);
+    const networkSelect = await screen.findByLabelText('Deposit network');
+    await userEvent.click(screen.getByRole('button', { name: 'Copy USDT deposit address' }));
+    expect(screen.getByText('Copied USDT deposit address')).toBeInTheDocument();
+
+    await userEvent.selectOptions(networkSelect, 'tron');
+
+    expect(screen.queryByText('Copied USDT deposit address')).not.toBeInTheDocument();
+  });
+
+  it('does not announce a late clipboard result for a different selected network', async () => {
+    installHandlers();
+    let resolveClipboardWrite: (() => void) | undefined;
+    const writeText = vi.fn(
+      () =>
+        new Promise<void>((resolve) => {
+          resolveClipboardWrite = resolve;
+        }),
+    );
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText },
+    });
+
+    renderWithProviders(<WalletDepositContractPage />);
+    const networkSelect = await screen.findByLabelText('Deposit network');
+    await userEvent.click(screen.getByRole('button', { name: 'Copy USDT deposit address' }));
+    await userEvent.selectOptions(networkSelect, 'tron');
+
+    await act(async () => {
+      resolveClipboardWrite?.();
+    });
+
+    expect(screen.queryByText('Copied USDT deposit address')).not.toBeInTheDocument();
+    expect(screen.queryByText('Copied Memo')).not.toBeInTheDocument();
+  });
+
+  it('clears clipboard errors when the selected deposit network changes', async () => {
+    installHandlers();
+    const writeText = vi.fn().mockRejectedValue(new Error('Clipboard denied'));
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText },
+    });
+
+    renderWithProviders(<WalletDepositContractPage />);
+    const networkSelect = await screen.findByLabelText('Deposit network');
+    await userEvent.click(screen.getByRole('button', { name: 'Copy USDT deposit address' }));
+    expect(await screen.findByRole('alert')).toHaveTextContent('Clipboard access is unavailable');
+
+    await userEvent.selectOptions(networkSelect, 'tron');
+
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
   });
 
   it('shows a recovery action after a contract permission error', async () => {
@@ -163,6 +254,36 @@ describe('Wallet deposit contract page', () => {
     await waitFor(() => expect(requests).toBe(2));
   });
 
+  it('marks the shared refresh action busy while a refetch is pending', async () => {
+    let requests = 0;
+    let finishRefresh: (() => void) | undefined;
+    server.use(
+      http.get('*/wallet/deposit/networks', async () => {
+        requests += 1;
+        if (requests === 1) return HttpResponse.json(networks);
+        await new Promise<void>((resolve) => {
+          finishRefresh = resolve;
+        });
+        return HttpResponse.json(networks);
+      }),
+    );
+
+    renderWithProviders(<WalletDepositContractPage />);
+    await screen.findByLabelText('Deposit network');
+    const refresh = screen.getByRole('button', { name: 'Refresh deposit instructions' });
+    await userEvent.click(refresh);
+    await waitFor(() => expect(requests).toBe(2));
+
+    expect(refresh).toBeDisabled();
+    expect(refresh).toHaveAttribute('aria-busy', 'true');
+
+    await act(async () => {
+      finishRefresh?.();
+    });
+    await waitFor(() => expect(refresh).toBeEnabled());
+    expect(refresh).toHaveAttribute('aria-busy', 'false');
+  });
+
   it('clears the copied indicator after two seconds', async () => {
     installHandlers();
     const setTimeoutSpy = vi.spyOn(window, 'setTimeout');
@@ -177,6 +298,7 @@ describe('Wallet deposit contract page', () => {
     const copyButton = screen.getByRole('button', { name: 'Copy USDT deposit address' });
     await userEvent.click(copyButton);
     expect(copyButton.querySelector('svg')).toHaveClass('lucide-check');
+    expect(screen.getByText('Copied USDT deposit address')).toBeInTheDocument();
 
     const resetCopiedIndicator = setTimeoutSpy.mock.calls.find(([, delay]) => delay === 2_000)?.[0];
     if (typeof resetCopiedIndicator !== 'function') {
@@ -184,6 +306,7 @@ describe('Wallet deposit contract page', () => {
     }
     act(() => resetCopiedIndicator());
     expect(copyButton.querySelector('svg')).toHaveClass('lucide-copy');
+    expect(screen.queryByText('Copied USDT deposit address')).not.toBeInTheDocument();
     setTimeoutSpy.mockRestore();
   });
 });

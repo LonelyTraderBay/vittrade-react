@@ -1,0 +1,288 @@
+{
+  "observedAt": "2026-10-13T11:09:43.366Z",
+  "sourceHead": "47cc88c570e6e742f514e512ea3b03017d45370d",
+  "branch": "codex/frontend-readiness-remediation-20261013",
+  "scope": "17 previously deferred source paths only; individual actual commit/blob proofs.",
+  "commits": [
+    {
+      "priority": "P0",
+      "head": "be2a19334d4ffe5f8153f4847f83eb60c7b0a226",
+      "parent": "db9c9064fa3ba79bd76fb7acb1023d90486b6cbf",
+      "message": "P0: phân loại lỗi rút tiền và chặn gửi trùng"
+    },
+    {
+      "priority": "P1",
+      "head": "eee2cf56ffa31103e14809a4e77cd145089ec5c8",
+      "parent": "be2a19334d4ffe5f8153f4847f83eb60c7b0a226",
+      "message": "P1: giữ trạng thái form, sửa Auth và bảo vệ telemetry"
+    },
+    {
+      "priority": "P2",
+      "head": "47cc88c570e6e742f514e512ea3b03017d45370d",
+      "parent": "eee2cf56ffa31103e14809a4e77cd145089ec5c8",
+      "message": "P2: đồng bộ kiến trúc và inventory với source đã kiểm chứng"
+    }
+  ],
+  "proofs": [
+    {
+      "path": "src/features/wallet/components/WithdrawSections.tsx",
+      "blobId": "d5e0ac7bc7b373d5d6ff33fee209eb0523d34205",
+      "committedSha256": "a9c4c535d7b38d3bb5e59667b3b2792ec072e841d3f24fec3f9f882d95389f37",
+      "workingSha256": "a9c4c535d7b38d3bb5e59667b3b2792ec072e841d3f24fec3f9f882d95389f37",
+      "filteredBlobId": "d5e0ac7bc7b373d5d6ff33fee209eb0523d34205",
+      "sourceHead": "be2a19334d4ffe5f8153f4847f83eb60c7b0a226",
+      "priority": "P0",
+      "previous": {
+        "sourceHead": "db9c9064fa3ba79bd76fb7acb1023d90486b6cbf",
+        "sha256": "db019d239991436fb920c9290642297fe72ecf7773b38859af9855fe5909afe4"
+      },
+      "currentFilteredBlobId": "d5e0ac7bc7b373d5d6ff33fee209eb0523d34205",
+      "equal": true
+    },
+    {
+      "path": "src/features/wallet/pages/WithdrawPage.additional.test.tsx",
+      "blobId": "cc3bb987e7ff651a0dd394526f575ef770c0bed4",
+      "committedSha256": "08cc3e3281e3e7c0ec8e4b634dd9849cf5562b1eb878382eb039d76fb397f8b9",
+      "workingSha256": "08cc3e3281e3e7c0ec8e4b634dd9849cf5562b1eb878382eb039d76fb397f8b9",
+      "filteredBlobId": "cc3bb987e7ff651a0dd394526f575ef770c0bed4",
+      "sourceHead": "be2a19334d4ffe5f8153f4847f83eb60c7b0a226",
+      "priority": "P0",
+      "previous": {
+        "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
+        "sha256": "4b40730747d310aadde68d3ebeb2b603967f46e2723c8a7d44a29e0675668db8"
+      },
+      "currentFilteredBlobId": "cc3bb987e7ff651a0dd394526f575ef770c0bed4",
+      "equal": true
+    },
+    {
+      "path": "src/features/wallet/pages/WithdrawPage.test.tsx",
+      "blobId": "c44235a72799a7efffbbcd0c5b88eab5b306a124",
+      "committedSha256": "e48212c113d9c2896502db3630dfa6a320c91f1e71e4d3961bdf06b5526b1e84",
+      "workingSha256": "e48212c113d9c2896502db3630dfa6a320c91f1e71e4d3961bdf06b5526b1e84",
+      "filteredBlobId": "c44235a72799a7efffbbcd0c5b88eab5b306a124",
+      "sourceHead": "be2a19334d4ffe5f8153f4847f83eb60c7b0a226",
+      "priority": "P0",
+      "previous": {
+        "sourceHead": "db9c9064fa3ba79bd76fb7acb1023d90486b6cbf",
+        "sha256": "1c22a8bcb2a9d1d8b7a131b2d70c19bacc3c8683413c778c078036efc58dc251"
+      },
+      "currentFilteredBlobId": "c44235a72799a7efffbbcd0c5b88eab5b306a124",
+      "equal": true
+    },
+    {
+      "path": "src/features/wallet/pages/WithdrawPage.tsx",
+      "blobId": "4675d82f1a119013e20213bf67eee4e02dce76ec",
+      "committedSha256": "c342d6c0d7f0ea7c2dc5fcf66ba4aa339d1a4af541131cf0ffe599ba63c6d0d8",
+      "workingSha256": "c342d6c0d7f0ea7c2dc5fcf66ba4aa339d1a4af541131cf0ffe599ba63c6d0d8",
+      "filteredBlobId": "4675d82f1a119013e20213bf67eee4e02dce76ec",
+      "sourceHead": "be2a19334d4ffe5f8153f4847f83eb60c7b0a226",
+      "priority": "P0",
+      "previous": {
+        "sourceHead": "db9c9064fa3ba79bd76fb7acb1023d90486b6cbf",
+        "sha256": "1d5e4882e7de45d9ef5f7ffb35e1598e4bdd7bfb0ae52ae3dba690658ca5c0c0"
+      },
+      "currentFilteredBlobId": "4675d82f1a119013e20213bf67eee4e02dce76ec",
+      "equal": true
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "blobId": "3916f9a12b8f210512bc3e17433311b655400d5f",
+      "committedSha256": "fd84d6b654a5f17274722b233ccae837838844fb919569ef4298a79cdf09b47e",
+      "workingSha256": "fd84d6b654a5f17274722b233ccae837838844fb919569ef4298a79cdf09b47e",
+      "filteredBlobId": "3916f9a12b8f210512bc3e17433311b655400d5f",
+      "sourceHead": "eee2cf56ffa31103e14809a4e77cd145089ec5c8",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "db9c9064fa3ba79bd76fb7acb1023d90486b6cbf",
+        "sha256": "587e8395c73a73a81221b66866f3ff82d8d1bc7fd18c46c91bcb78e5eeb38f88"
+      },
+      "currentFilteredBlobId": "3916f9a12b8f210512bc3e17433311b655400d5f",
+      "equal": true
+    },
+    {
+      "path": "src/app/__tests__/App.test.tsx",
+      "blobId": "e8517dda65e2d05d46c484c14a01514841cd2cb2",
+      "committedSha256": "d7c6eaa338dbee1da363dd862b4b0df14f6686f95ff5bef4bbc38bd1b9c714fe",
+      "workingSha256": "d7c6eaa338dbee1da363dd862b4b0df14f6686f95ff5bef4bbc38bd1b9c714fe",
+      "filteredBlobId": "e8517dda65e2d05d46c484c14a01514841cd2cb2",
+      "sourceHead": "eee2cf56ffa31103e14809a4e77cd145089ec5c8",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "8043237da13b12252a6c5c38a486d2b93f11140fbb88eef920b45794347fb587"
+      },
+      "currentFilteredBlobId": "e8517dda65e2d05d46c484c14a01514841cd2cb2",
+      "equal": true
+    },
+    {
+      "path": "src/app/components/layout/PlatformSwitcher.test.tsx",
+      "blobId": "f110f7caccebd4662ffb6a5e743ee98bcaf73a55",
+      "committedSha256": "1b549046c9279267e23c0c664dbca18c4ab3178e82ba48a7b938919e6aeeafe9",
+      "workingSha256": "1b549046c9279267e23c0c664dbca18c4ab3178e82ba48a7b938919e6aeeafe9",
+      "filteredBlobId": "f110f7caccebd4662ffb6a5e743ee98bcaf73a55",
+      "sourceHead": "eee2cf56ffa31103e14809a4e77cd145089ec5c8",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "db9c9064fa3ba79bd76fb7acb1023d90486b6cbf",
+        "sha256": "e5350ea94eb4683e935443131f98cbe57bca41abbfe789b752d7c771fbc23e80"
+      },
+      "currentFilteredBlobId": "f110f7caccebd4662ffb6a5e743ee98bcaf73a55",
+      "equal": true
+    },
+    {
+      "path": "src/app/components/layout/PlatformSwitcher.tsx",
+      "blobId": "159370af83e4cf9ca190663498b2ddc311d4304e",
+      "committedSha256": "c7fad1269a6396f287e679d0251e327ee10f751cc1ef08b7eb8e05cb438bf5f9",
+      "workingSha256": "c7fad1269a6396f287e679d0251e327ee10f751cc1ef08b7eb8e05cb438bf5f9",
+      "filteredBlobId": "159370af83e4cf9ca190663498b2ddc311d4304e",
+      "sourceHead": "eee2cf56ffa31103e14809a4e77cd145089ec5c8",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "db9c9064fa3ba79bd76fb7acb1023d90486b6cbf",
+        "sha256": "3b7d724c6abc80f419bd5a2d8110fecfb45452c8f38545824811ec6d4bfa40f6"
+      },
+      "currentFilteredBlobId": "159370af83e4cf9ca190663498b2ddc311d4304e",
+      "equal": true
+    },
+    {
+      "path": "src/app/components/layout/ResponsiveShell.test.tsx",
+      "blobId": "0b852de1ef86581f84c22fc8f9377917f2253b92",
+      "committedSha256": "fdec098901f01658cbb4714510681b2bc0f23ad405193fea484c7fed6fb88958",
+      "workingSha256": "fdec098901f01658cbb4714510681b2bc0f23ad405193fea484c7fed6fb88958",
+      "filteredBlobId": "0b852de1ef86581f84c22fc8f9377917f2253b92",
+      "sourceHead": "eee2cf56ffa31103e14809a4e77cd145089ec5c8",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
+        "sha256": "3081e719f0ca8d80aef7c5458ab74e70478c548718e13c0c8d980bf1a5e86f0d"
+      },
+      "currentFilteredBlobId": "0b852de1ef86581f84c22fc8f9377917f2253b92",
+      "equal": true
+    },
+    {
+      "path": "src/app/components/layout/ResponsiveShell.tsx",
+      "blobId": "4727098c33ffb1ffd8c477bd5f10288dbff309f4",
+      "committedSha256": "950c495d6b69035ca42cfbdd2e152a962d6bffb9c815eebe78d2381610eb10c3",
+      "workingSha256": "950c495d6b69035ca42cfbdd2e152a962d6bffb9c815eebe78d2381610eb10c3",
+      "filteredBlobId": "4727098c33ffb1ffd8c477bd5f10288dbff309f4",
+      "sourceHead": "eee2cf56ffa31103e14809a4e77cd145089ec5c8",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "db9c9064fa3ba79bd76fb7acb1023d90486b6cbf",
+        "sha256": "cc2dd1535c92ad5792883b9e35c83de8f1987732f15ca9fb91519a3a194e9a2d"
+      },
+      "currentFilteredBlobId": "4727098c33ffb1ffd8c477bd5f10288dbff309f4",
+      "equal": true
+    },
+    {
+      "path": "src/app/contexts/AuthSessionProvider.test.tsx",
+      "blobId": "3de01100917592906882241d8a05b4d0ba0c2365",
+      "committedSha256": "61ff3d2968efc04cda84a963a0511c38fcb2a3483109b96e7b8ca74ee028ca13",
+      "workingSha256": "61ff3d2968efc04cda84a963a0511c38fcb2a3483109b96e7b8ca74ee028ca13",
+      "filteredBlobId": "3de01100917592906882241d8a05b4d0ba0c2365",
+      "sourceHead": "eee2cf56ffa31103e14809a4e77cd145089ec5c8",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "fb05cd8183dd86267de057aa4c6741230fce9b1c",
+        "sha256": "f28288c0914ee99fb6762dca0508d5cd0a1225dd8089c12e93786a14302e65c2"
+      },
+      "currentFilteredBlobId": "3de01100917592906882241d8a05b4d0ba0c2365",
+      "equal": true
+    },
+    {
+      "path": "src/shared/telemetry/telemetry.test.ts",
+      "blobId": "1ae03b67dbaad3e547d0cb16d8642e1cab5fa889",
+      "committedSha256": "13a10a521b5146aa689d4d3b9ec6f2d7076d1ba0b8406075b1ae965874d1241b",
+      "workingSha256": "13a10a521b5146aa689d4d3b9ec6f2d7076d1ba0b8406075b1ae965874d1241b",
+      "filteredBlobId": "1ae03b67dbaad3e547d0cb16d8642e1cab5fa889",
+      "sourceHead": "eee2cf56ffa31103e14809a4e77cd145089ec5c8",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": null,
+        "sha256": null
+      },
+      "currentFilteredBlobId": "1ae03b67dbaad3e547d0cb16d8642e1cab5fa889",
+      "equal": true
+    },
+    {
+      "path": "src/shared/telemetry/telemetry.ts",
+      "blobId": "29c9c416de4d993f608db607ff0d1c1dde4eaf1a",
+      "committedSha256": "efdce8bb002e0d80802338d916577f37e058fdeb52f4423b863cf8ca0256d6c4",
+      "workingSha256": "efdce8bb002e0d80802338d916577f37e058fdeb52f4423b863cf8ca0256d6c4",
+      "filteredBlobId": "29c9c416de4d993f608db607ff0d1c1dde4eaf1a",
+      "sourceHead": "eee2cf56ffa31103e14809a4e77cd145089ec5c8",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "cf23e55b668e646ab4971be02f21de25ab6024cdc245ca64bb0333de616afc07"
+      },
+      "currentFilteredBlobId": "29c9c416de4d993f608db607ff0d1c1dde4eaf1a",
+      "equal": true
+    },
+    {
+      "path": "tests/e2e/auth-password-change-mock.spec.ts",
+      "blobId": "4c8fc619a08b1172c9a77312353e2fcf2781a84a",
+      "committedSha256": "91689a79d23e0285fd6fe22ca0165dd9fe7c52bee2f499e9f60a6790e00d2d84",
+      "workingSha256": "91689a79d23e0285fd6fe22ca0165dd9fe7c52bee2f499e9f60a6790e00d2d84",
+      "filteredBlobId": "4c8fc619a08b1172c9a77312353e2fcf2781a84a",
+      "sourceHead": "eee2cf56ffa31103e14809a4e77cd145089ec5c8",
+      "priority": "P1",
+      "previous": {
+        "sourceHead": "db9c9064fa3ba79bd76fb7acb1023d90486b6cbf",
+        "sha256": "ff6ee311b648f5ad0d0a17a01eea6acd32df64f28efea0e60bd56d7f576d1305"
+      },
+      "currentFilteredBlobId": "4c8fc619a08b1172c9a77312353e2fcf2781a84a",
+      "equal": true
+    },
+    {
+      "path": "ARCHITECTURE.md",
+      "blobId": "824abdb1ddf69e210eedf53f86c118374b999589",
+      "committedSha256": "2b06d74b25b212e4499f12fd24afac33280e4df9c776b92ddc7fe642f52242b1",
+      "workingSha256": "2b06d74b25b212e4499f12fd24afac33280e4df9c776b92ddc7fe642f52242b1",
+      "filteredBlobId": "824abdb1ddf69e210eedf53f86c118374b999589",
+      "sourceHead": "47cc88c570e6e742f514e512ea3b03017d45370d",
+      "priority": "P2",
+      "previous": {
+        "sourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+        "sha256": "dae3c1dc0ac08a87455842062bee43d4a13a12def48059fd9bb8aff986a958ef"
+      },
+      "currentFilteredBlobId": "824abdb1ddf69e210eedf53f86c118374b999589",
+      "equal": true
+    },
+    {
+      "path": "docs/PROJECT_CONTEXT.md",
+      "blobId": "fb20ee2354a8c548d7e41f885ce802e2c40bb5bf",
+      "committedSha256": "5653f3200a6aecbae6ef9a79c6dd706d0c5d08f62143988c5c3dbb5c919afd40",
+      "workingSha256": "5653f3200a6aecbae6ef9a79c6dd706d0c5d08f62143988c5c3dbb5c919afd40",
+      "filteredBlobId": "fb20ee2354a8c548d7e41f885ce802e2c40bb5bf",
+      "sourceHead": "47cc88c570e6e742f514e512ea3b03017d45370d",
+      "priority": "P2",
+      "previous": {
+        "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+        "sha256": "6393762c45859788839a62815ed06b8204437d695d65c878719f67dc9f6f2f6e"
+      },
+      "currentFilteredBlobId": "fb20ee2354a8c548d7e41f885ce802e2c40bb5bf",
+      "equal": true
+    },
+    {
+      "path": "docs/architecture/page-inventory.json",
+      "blobId": "b281a2300ab21b2c2d50d3a77b41fac57ec66012",
+      "committedSha256": "8746b8d0e7d8ca33304529e1bbab827aa5bc4307ef6c975397e2d64df31f03c7",
+      "workingSha256": "8746b8d0e7d8ca33304529e1bbab827aa5bc4307ef6c975397e2d64df31f03c7",
+      "filteredBlobId": "b281a2300ab21b2c2d50d3a77b41fac57ec66012",
+      "sourceHead": "47cc88c570e6e742f514e512ea3b03017d45370d",
+      "priority": "P2",
+      "previous": {
+        "sourceHead": "309a2003749c2b1874e75af501fa6c3ea1e37c18",
+        "sha256": "16d9ca9826b652f8b74596a909bfaf2fa1d8e367b9c4184e10e6f4c93a2ed349"
+      },
+      "currentFilteredBlobId": "b281a2300ab21b2c2d50d3a77b41fac57ec66012",
+      "equal": true
+    }
+  ],
+  "limits": [
+    "Local commits only; no push/PR/deployment or hosted CI in this action.",
+    "Existing local test evidence retains its original HEAD and exact working-byte hashes; committing does not rerun tests or turn them into hosted proof.",
+    "Historical baseline, old changes and external acceptance remain intact."
+  ]
+}

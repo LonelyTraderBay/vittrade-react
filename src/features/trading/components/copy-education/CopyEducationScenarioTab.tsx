@@ -200,9 +200,9 @@ export function CopyEducationScenarioTab() {
           <p style={{ color: c.warningText, fontSize: 11, lineHeight: 1.5 }}>
             {selectedScenario === 'profit' && (
               <>
-                Provider lời 30%, nhưng bạn chỉ lời ~22% do phí (platform + performance + trading)
-                và slippage.
-                <strong> Gap ~8% là chi phí thực tế của Copy Trading.</strong>
+                Provider lời 30%, bạn lời 27.6% trong mô phỏng này: chênh lệch 2.4 điểm phần trăm so
+                với vốn ban đầu.
+                <strong> Đây là chi phí giả định, không phải biểu phí thực tế.</strong>
               </>
             )}
             {selectedScenario === 'loss' && (

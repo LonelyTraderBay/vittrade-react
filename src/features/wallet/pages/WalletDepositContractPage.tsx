@@ -1,12 +1,15 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { AlertTriangle, Check, Copy, Loader2, RefreshCw } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
 import { useParams } from 'react-router';
+import { CTAButton } from '@/shared/ui/CTAButton';
 import { ErrorState } from '@/shared/ui/ErrorState';
+import { IconButton } from '@/shared/ui/IconButton';
 import { Header } from '@/shared/ui/layout/Header';
 import { PageContent } from '@/shared/ui/layout/PageContent';
 import { PageLayout } from '@/shared/ui/layout/PageLayout';
 import { TrCard } from '@/shared/ui/TrCard';
+import { ALPHA, withAlpha } from '@/shared/theme/colors';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { useAuth } from '@/shared/session/useAuth';
 import { useWalletDepositNetworksQuery } from '../model/wallet-queries';
@@ -22,8 +25,11 @@ export function WalletDepositContractPage() {
   const networksQuery = useWalletDepositNetworksQuery(asset, canReadWallet);
   const networks = networksQuery.data ?? EMPTY_NETWORKS;
   const [selectedNetworkId, setSelectedNetworkId] = useState('');
-  const [copied, setCopied] = useState<'address' | 'memo'>();
-  const [copyError, setCopyError] = useState('');
+  const [copied, setCopied] = useState<
+    { selectionKey: string; kind: 'address' | 'memo' } | undefined
+  >();
+  const [copyError, setCopyError] = useState<{ selectionKey: string; message: string }>();
+  const copyRequestIdRef = useRef(0);
 
   useEffect(() => {
     if (networks.length > 0 && !networks.some((network) => network.id === selectedNetworkId)) {
@@ -37,10 +43,17 @@ export function WalletDepositContractPage() {
     return () => window.clearTimeout(timeout);
   }, [copied]);
 
+  useEffect(() => {
+    copyRequestIdRef.current += 1;
+    setCopied(undefined);
+    setCopyError(undefined);
+  }, [asset]);
+
   const selectedNetwork = useMemo(
     () => networks.find((network) => network.id === selectedNetworkId) ?? networks[0],
     [networks, selectedNetworkId],
   );
+  const selectionKey = `${asset}:${selectedNetwork?.id ?? selectedNetworkId}`;
 
   if (!canReadWallet) {
     return (
@@ -88,13 +101,20 @@ export function WalletDepositContractPage() {
   }
 
   const hasMemo = Boolean(selectedNetwork.memo);
-  const copyValue = async (value: string, kind: 'address' | 'memo') => {
+  const copyValue = async (value: string, kind: 'address' | 'memo', key: string) => {
+    const requestId = ++copyRequestIdRef.current;
     try {
       await navigator.clipboard.writeText(value);
-      setCopyError('');
-      setCopied(kind);
+      if (copyRequestIdRef.current !== requestId) return;
+      setCopyError(undefined);
+      setCopied({ selectionKey: key, kind });
     } catch {
-      setCopyError('Clipboard access is unavailable. Select the value and copy it manually.');
+      if (copyRequestIdRef.current !== requestId) return;
+      setCopied(undefined);
+      setCopyError({
+        selectionKey: key,
+        message: 'Clipboard access is unavailable. Select the value and copy it manually.',
+      });
     }
   };
 
@@ -114,7 +134,13 @@ export function WalletDepositContractPage() {
             id="deposit-network"
             aria-label="Deposit network"
             value={selectedNetwork.id}
-            onChange={(event) => setSelectedNetworkId(event.target.value)}
+            onChange={(event) => {
+              const nextNetworkId = event.target.value;
+              copyRequestIdRef.current += 1;
+              setSelectedNetworkId(nextNetworkId);
+              setCopied(undefined);
+              setCopyError(undefined);
+            }}
             className="mt-2 w-full rounded-xl px-3 py-3 text-sm outline-none"
             style={{ background: colors.surface2, color: colors.text1 }}
           >
@@ -125,7 +151,7 @@ export function WalletDepositContractPage() {
             ))}
           </select>
           <div className="mt-3 flex items-center gap-2 text-xs" style={{ color: colors.text3 }}>
-            <span className="h-2 w-2 rounded-full" style={{ background: '#10B981' }} />
+            <span className="h-2 w-2 rounded-full" style={{ background: colors.success }} />
             <span>Network available</span>
             <span>·</span>
             <span>{selectedNetwork.confirmations} confirmations</span>
@@ -134,10 +160,13 @@ export function WalletDepositContractPage() {
 
         <div
           className="flex items-start gap-2 rounded-2xl px-4 py-3"
-          style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.25)' }}
+          style={{
+            background: withAlpha(colors.error, ALPHA.muted),
+            border: `1px solid ${withAlpha(colors.error, ALPHA.medium)}`,
+          }}
         >
-          <AlertTriangle size={17} color="#EF4444" className="mt-0.5 shrink-0" />
-          <p className="text-xs leading-5" style={{ color: '#F87171' }}>
+          <AlertTriangle size={17} color={colors.errorText} className="mt-0.5 shrink-0" />
+          <p className="text-xs leading-5" style={{ color: colors.errorText }}>
             Send only {asset} through {selectedNetwork.name}. Sending through another network may
             permanently lose your funds. Minimum deposit: {selectedNetwork.minDeposit} {asset}.
           </p>
@@ -147,12 +176,12 @@ export function WalletDepositContractPage() {
           <div
             className="flex items-start gap-2 rounded-2xl px-4 py-3"
             style={{
-              background: 'rgba(245,158,11,0.1)',
-              border: '1px solid rgba(245,158,11,0.35)',
+              background: colors.warningBg,
+              border: `1px solid ${colors.warningBorder}`,
             }}
           >
-            <AlertTriangle size={17} color="#F59E0B" className="mt-0.5 shrink-0" />
-            <p className="text-xs leading-5" style={{ color: '#D97706' }}>
+            <AlertTriangle size={17} color={colors.warningText} className="mt-0.5 shrink-0" />
+            <p className="text-xs leading-5" style={{ color: colors.warningText }}>
               {selectedNetwork.memoLabel ?? 'Memo'} is required for this network. Include it when
               sending funds or the deposit may not be credited.
             </p>
@@ -160,28 +189,34 @@ export function WalletDepositContractPage() {
         )}
 
         <TrCard className="flex flex-col items-center gap-4 p-5">
-          <div className="rounded-2xl bg-white p-4" aria-label="Deposit QR code">
-            <QRCodeSVG value={selectedNetwork.address} size={188} level="M" includeMargin />
+          <div className="rounded-2xl bg-white p-4" role="img" aria-label="Deposit address QR code">
+            <QRCodeSVG
+              value={selectedNetwork.address}
+              size={188}
+              level="M"
+              includeMargin
+              aria-hidden="true"
+            />
           </div>
           <CopyableValue
             label={`${asset} deposit address`}
             value={selectedNetwork.address}
-            copied={copied === 'address'}
-            onCopy={() => void copyValue(selectedNetwork.address, 'address')}
+            copied={copied?.selectionKey === selectionKey && copied.kind === 'address'}
+            onCopy={() => void copyValue(selectedNetwork.address, 'address', selectionKey)}
           />
           {hasMemo && selectedNetwork.memo && (
             <CopyableValue
               label={selectedNetwork.memoLabel ?? 'Memo'}
               value={selectedNetwork.memo}
-              copied={copied === 'memo'}
-              onCopy={() => void copyValue(selectedNetwork.memo!, 'memo')}
+              copied={copied?.selectionKey === selectionKey && copied.kind === 'memo'}
+              onCopy={() => void copyValue(selectedNetwork.memo!, 'memo', selectionKey)}
             />
           )}
         </TrCard>
 
-        {copyError && (
-          <p role="alert" className="text-center text-xs" style={{ color: '#EF4444' }}>
-            {copyError}
+        {copyError?.selectionKey === selectionKey && (
+          <p role="alert" className="text-center text-xs" style={{ color: colors.errorText }}>
+            {copyError.message}
           </p>
         )}
 
@@ -195,19 +230,16 @@ export function WalletDepositContractPage() {
           <DetailRow label="Minimum deposit" value={`${selectedNetwork.minDeposit} ${asset}`} />
         </TrCard>
 
-        <button
-          type="button"
+        <CTAButton
+          variant="secondary"
+          density="standard"
+          fullWidth
+          loading={networksQuery.isFetching}
           onClick={() => void networksQuery.refetch()}
-          className="flex h-12 items-center justify-center gap-2 rounded-2xl"
-          style={{
-            background: colors.surface2,
-            border: `1px solid ${colors.borderSolid}`,
-            color: colors.text2,
-          }}
         >
-          <RefreshCw size={16} />
-          Refresh deposit instructions
-        </button>
+          <RefreshCw size={16} aria-hidden="true" />
+          <span>Refresh deposit instructions</span>
+        </CTAButton>
       </PageContent>
     </PageLayout>
   );
@@ -240,16 +272,19 @@ function CopyableValue({
         >
           {value}
         </code>
-        <button
-          type="button"
+        <IconButton
+          icon={copied ? Check : Copy}
           aria-label={`Copy ${label}`}
           onClick={onCopy}
-          className="shrink-0 rounded-lg p-2"
-          style={{ color: copied ? '#10B981' : colors.primary }}
-        >
-          {copied ? <Check size={16} /> : <Copy size={16} />}
-        </button>
+          variant="transparent"
+          size="md"
+          className="shrink-0"
+          style={{ color: copied ? colors.successText : colors.primary }}
+        />
       </div>
+      <span className="sr-only" role="status" aria-live="polite">
+        {copied ? `Copied ${label}` : ''}
+      </span>
     </div>
   );
 }

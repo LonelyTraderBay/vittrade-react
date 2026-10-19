@@ -1,7 +1,7 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { screen } from '@testing-library/react';
+import { act, fireEvent, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Route, Routes } from 'react-router';
 import { renderWithProviders } from '@/test/test-utils';
@@ -135,6 +135,70 @@ function renderEarn(
 }
 
 describe('Earn page contract boundary', () => {
+  it.each(['subscribe', 'redeem'] as const)(
+    'guards synchronous duplicate %s and locks the pending action sheet',
+    async (operation) => {
+      let calls = 0;
+      let release!: () => void;
+      const pending = new Promise<void>((resolve) => {
+        release = resolve;
+      });
+      server.use(
+        http.get('*/earn/snapshot', () => HttpResponse.json(redemptionSnapshot)),
+        http.post(
+          `*/earn/${operation === 'subscribe' ? 'subscriptions' : 'redemptions'}`,
+          async () => {
+            calls += 1;
+            await pending;
+            return HttpResponse.json({
+              id: 'receipt-guard',
+              operation,
+              productId: 'product-1',
+              positionId: 'position-1',
+              asset: 'USDT',
+              amount: 100,
+              status: 'completed',
+              createdAt: '2026-10-13T10:00:00.000Z',
+            });
+          },
+        ),
+      );
+      renderEarn();
+      await screen.findByRole('button', { name: /Stable Savings/i });
+      if (operation === 'redeem') {
+        fireEvent.click(screen.getByRole('tab', { name: 'Của tôi (1)' }));
+        fireEvent.click(screen.getByRole('button', { name: 'Rút vốn' }));
+      } else {
+        fireEvent.click(screen.getByRole('button', { name: /Stable Savings/i }));
+        fireEvent.click(screen.getByRole('checkbox'));
+      }
+      fireEvent.change(screen.getByLabelText('Số lượng'), { target: { value: '100' } });
+      const submit = screen.getByRole('button', {
+        name: operation === 'subscribe' ? 'Xác nhận đăng ký' : 'Xác nhận rút vốn',
+      });
+      act(() => {
+        fireEvent.click(submit);
+        fireEvent.click(submit);
+      });
+      try {
+        await waitFor(() => expect(calls).toBe(1));
+        expect(screen.getByRole('button', { name: /^Đóng$/ })).toBeDisabled();
+        expect(screen.getByLabelText('Số lượng')).toBeDisabled();
+        expect(screen.getByRole('button', { name: 'MAX' })).toBeDisabled();
+      } finally {
+        release();
+      }
+      expect(
+        await screen.findByText(
+          operation === 'subscribe'
+            ? 'Đăng ký sản phẩm thành công.'
+            : 'Yêu cầu rút vốn đã được ghi nhận.',
+        ),
+      ).toBeInTheDocument();
+      expect(calls).toBe(1);
+    },
+  );
+
   it('filters each domain, browses back from an empty portfolio, and navigates between wrappers', async () => {
     server.use(http.get('*/earn/snapshot', () => HttpResponse.json(mixedSnapshot)));
 

@@ -49,6 +49,27 @@ const overview: P2POverviewResponse = {
 };
 
 describe('P2P trading level contract page', () => {
+  it('renders past, current and future server levels safely when the daily limit is zero', async () => {
+    const level = overview.tradingLevels[0];
+    server.use(
+      http.get('*/p2p/overview', () =>
+        HttpResponse.json({
+          ...overview,
+          userLevel: { ...overview.userLevel, currentLevel: 9, dailyLimit: 0, dailyUsed: 0 },
+          tradingLevels: [
+            level,
+            { ...level, id: 9, nameVi: 'Chuyên gia' },
+            { ...level, id: 10, nameVi: 'Cấp tiếp theo' },
+          ],
+        }),
+      ),
+    );
+    const { container } = renderWithProviders(<P2PTradingLevelPage />);
+    expect(await screen.findByText('Lv.10 Cấp tiếp theo')).toBeInTheDocument();
+    expect(screen.getAllByText('Lv.9 Chuyên gia')).toHaveLength(2);
+    expect(screen.getByText('Lv.1 Khởi đầu')).toBeInTheDocument();
+    expect(container.innerHTML).not.toMatch(/NaN|Infinity/);
+  });
   it('renders the server-owned current level and limits', async () => {
     server.use(http.get('*/p2p/overview', () => HttpResponse.json(overview)));
     renderWithProviders(<P2PTradingLevelPage />);

@@ -65,7 +65,8 @@ const allScenarioOperationIds = [
   'getAdminAbTest',
   'updateAdminFeatureFlag',
 ];
-const expectedAttemptsPerCycle = Number(process.env.ADMIN_ERROR_EXPECTED_ATTEMPTS ?? 6);
+// Admin disables Query retries; the shared GET client owns its three bounded attempts.
+const expectedAttemptsPerCycle = Number(process.env.ADMIN_ERROR_EXPECTED_ATTEMPTS ?? 3);
 assert.ok(Number.isInteger(expectedAttemptsPerCycle) && expectedAttemptsPerCycle > 0);
 const requestCounts = Object.fromEntries(Object.keys(operationPaths).map((id) => [id, 0]));
 const requests = [];

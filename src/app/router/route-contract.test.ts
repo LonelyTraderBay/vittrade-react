@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import type { RouteObject } from 'react-router';
 import { createProtectedRoutes, createPublicRoutes, type ShellOverrides } from '../routeConfig';
 import { collectRoutePaths } from './index';
+import { isAppRouteEquivalent } from '../routes';
 
 const Stub = () => null;
 const overrides: ShellOverrides = {
@@ -25,6 +26,28 @@ function collectPaths(routes: RouteObject[], parent = ''): string[] {
 }
 
 describe('public route contract', () => {
+  it('preserves root indexes and empty child segments without inventing an additional slash', () => {
+    expect(
+      collectRoutePaths([
+        { index: true },
+        { path: '', children: [] },
+        { children: [{ index: true }] },
+        { path: '/w/', children: [{ path: '/' }, { index: true }, { path: 'trade' }] },
+      ]),
+    ).toEqual(['/', '/w', '/w/', '/w/trade']);
+  });
+
+  it('collects pathless layouts without treating them as paths and removes duplicate templates', () => {
+    expect(
+      collectRoutePaths([
+        { children: [] },
+        { children: [{ path: '/nested', children: [{ path: 'child' }] }] },
+        { path: 'duplicate' },
+        { path: 'duplicate' },
+      ]),
+    ).toEqual(['/duplicate', '/nested', '/nested/child']);
+  });
+
   it('keeps the market landing page public while gating contract-secured predictions', () => {
     const paths = collectPaths(createPublicRoutes(overrides));
     expect(paths).toEqual(expect.arrayContaining(['home', 'markets']));
@@ -118,5 +141,13 @@ describe('platform router topology', () => {
         '/dev/performance-monitor',
       ]),
     );
+  });
+
+  it('switches shells only when both paths resolve to the same page component', () => {
+    expect(isAppRouteEquivalent('/w/markets', '/markets')).toBe(true);
+    expect(isAppRouteEquivalent('/w/trade/copy', '/trade/copy')).toBe(false);
+    expect(isAppRouteEquivalent('/w/trade/orders', '/trade/orders')).toBe(false);
+    expect(isAppRouteEquivalent('/w/trade/analytics', '/trade/analytics')).toBe(false);
+    expect(isAppRouteEquivalent('/w/address-book', '/address-book')).toBe(false);
   });
 });

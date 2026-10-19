@@ -243,7 +243,7 @@ describe('Discovery contract pages', () => {
       { routerProps: { initialEntries: ['/w/topic/not-a-topic'] } },
     );
 
-    expect(await screen.findByRole('heading', { name: 'Crypto' })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: 'Crypto', level: 2 })).toBeInTheDocument();
     expect(screen.getByText('Crypto topics')).toBeInTheDocument();
     expect(screen.getByText('Prediction markets (1)')).toBeInTheDocument();
     expect(screen.getByText('Arena rooms and modes (2)')).toBeInTheDocument();
@@ -252,7 +252,7 @@ describe('Discovery contract pages', () => {
 
     await userEvent.click(screen.getByRole('button', { name: 'macro' }));
     expect(screen.getByTestId('location')).toHaveTextContent('/w/topic/macro');
-    expect(await screen.findByRole('heading', { name: 'Crypto' })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: 'Crypto', level: 2 })).toBeInTheDocument();
     expect(requestedTopics).toEqual(['crypto', 'macro']);
   });
 
@@ -280,7 +280,7 @@ describe('Discovery contract pages', () => {
     expect(await screen.findByText('Có lỗi xảy ra')).toBeInTheDocument();
     retryAllowed = true;
     await userEvent.click(screen.getByRole('button', { name: 'Thử lại' }));
-    expect(await screen.findByRole('heading', { name: 'Crypto' })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: 'Crypto', level: 2 })).toBeInTheDocument();
     expect(requests).toBe(2);
   });
 

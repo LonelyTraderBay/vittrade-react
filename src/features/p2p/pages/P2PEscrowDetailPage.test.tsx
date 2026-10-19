@@ -68,6 +68,25 @@ function EscrowRouteHarness() {
 }
 
 describe('P2P escrow detail contract page', () => {
+  it('accepts the scoped mark-paid permission without granting other P2P actions', async () => {
+    server.use(http.get('*/p2p/orders/order-1', () => HttpResponse.json(baseOrder)));
+    const markPaidOnlyAdapter: AuthAdapter = {
+      ...testAuthAdapter,
+      initialSession: {
+        ...testAuthAdapter.initialSession!,
+        user: {
+          ...testAuthAdapter.initialSession!.user,
+          permissions: ['p2p:mark-paid'],
+        },
+      },
+    };
+
+    renderEscrow(markPaidOnlyAdapter);
+
+    expect(await screen.findByRole('button', { name: 'Mark order paid' })).toBeEnabled();
+    expect(screen.queryByRole('button', { name: 'Start escrow release' })).not.toBeInTheDocument();
+  });
+
   it('executes mark-paid, challenge, verification and release transitions', async () => {
     const paidOrder = { ...baseOrder, status: 'paid' as const };
     const releasedOrder = { ...baseOrder, status: 'released' as const };

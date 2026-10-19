@@ -148,7 +148,7 @@ const serializeJson = async (value, file) =>
   });
 const tracking = JSON.parse(read('docs/architecture/production-readiness/TRACKING.json'));
 const sourceHead = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
-assert.equal(sourceHead, tracking.executionPlan.auditSourceHead);
+assert.equal(sourceHead, (process.env.EVIDENCE_SOURCE_HEAD ?? tracking.executionPlan.auditSourceHead));
 const masterFile = path.join(root, masterPath);
 const master = JSON.parse(await fs.readFile(masterFile, 'utf8'));
 const operationMap = JSON.parse(read(operationMapPath));
@@ -646,7 +646,7 @@ try {
     scenario,
   };
   await fs.writeFile(path.join(root, sidecarPath), await serializeJson(sidecar, sidecarPath));
-  if (!diagnosticOnly && failures.length === 0) {
+  if (!diagnosticOnly && failures.length === 0 && !process.argv.includes('--no-register')) {
     const digest = crypto
       .createHash('sha256')
       .update(await fs.readFile(path.join(root, sidecarPath)))

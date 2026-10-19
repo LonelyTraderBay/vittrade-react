@@ -1,0 +1,85 @@
+{
+  "observedAt": "2026-10-13T07:03:06.890Z",
+  "sourceHead": "db9c9064fa3ba79bd76fb7acb1023d90486b6cbf",
+  "matrixSummary": {
+    "domains": 15,
+    "trackedOperations": 154,
+    "exactHandlerMappings": 154,
+    "operationsWithDirectSharedHandlerTestReferences": 21,
+    "scenariosDefined": 106,
+    "scenarioRowsWithFreshBrowserEvidence": 81,
+    "scenarioRowsFullyCoveredByFreshBrowserEvidence": 38,
+    "uniqueOperationsWithFreshBrowserEvidence": 88,
+    "runtimeEvidenceFresh": false,
+    "currentHead": "db9c9064fa3ba79bd76fb7acb1023d90486b6cbf",
+    "runtimeEvidenceRevision": "historical_baseline",
+    "freshScenarioEvidenceSidecars": 81,
+    "registeredScenarioEvidenceSidecars": 81,
+    "historicalBaselineScenarioEvidenceSidecars": 0,
+    "historicalBaselineSidecarsWithCurrentSourceHashes": 0,
+    "sourceHashStaleScenarioEvidenceSidecars": 0,
+    "financialDomainsWithPendingUnknownDuplicateCases": [
+      "earn",
+      "p2p",
+      "predictions",
+      "trading",
+      "wallet"
+    ]
+  },
+  "uiScope": {
+    "activeRouteDeclarations": 428,
+    "retiredRouteDeclarationsExcluded": [
+      {
+        "routeId": "ROUTE-076da8bdac7d",
+        "path": "arena",
+        "reason": "Source registration is now represented by the canonical routeConfig/createProtectedRoutes route; this is a ledger identity reconciliation, not URL removal."
+      }
+    ],
+    "urlRegistrations": 1465,
+    "uniqueResolvedUrlSamples": 1396,
+    "shellUrlRegistrations": {
+      "phone": 354,
+      "tablet": 349,
+      "web": 411,
+      "responsive": 351
+    },
+    "routeDeclarationsWithPageRecords": 418,
+    "routeDeclarationsWithoutPageRecords": 10,
+    "routeDeclarationsWithDirectScenarioLinks": 11,
+    "scenarioLinks": 26,
+    "scenarioCandidates": 338,
+    "routeDeclarationsWithAnyScenarioReference": 55,
+    "personaMappingsAssigned": 17,
+    "trackedPageRecords": 331,
+    "userAcceptedPages": 0,
+    "userAcceptanceScopePages": 128,
+    "backendOperationsVerified": 0,
+    "backendOperationsTotal": 154,
+    "activeRoutesWithHistoricalPreviewUrlParity": 426,
+    "activeRoutesComparedToHistoricalResolver": 428,
+    "activeRouteDeclarationsWithStaleResolverSource": 224,
+    "activeRouteDeclarationsWithMatchingResolverSource": 204
+  },
+  "generators": [
+    "node evidence/A06/generate-scenario-matrix.mjs --check",
+    "node evidence/C05/generate-ui-acceptance-index.mjs --check"
+  ],
+  "generatedFiles": [
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/scenario-matrix-2026-09-28.json",
+      "sha256": "6a11b163738f1701f7cc144d6bb6cfecb1d78ff6cbd3b063fc6fcb5336064e40"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/C05/ui-acceptance-index-2026-09-29.json",
+      "sha256": "29001c980d22227e84d0e3f807eff7dc9b807bc14f34f9d1e6e667415c4da5b3"
+    },
+    {
+      "path": "docs/architecture/production-readiness/UI-ACCEPTANCE.md",
+      "sha256": "ac16d896ef3801d5678f719cf1833954d42d69031ba98f837305639187aa420a"
+    }
+  ],
+  "historicalSidecarsPreserved": 81,
+  "limits": [
+    "Index completion only; 25 contract rows, broader UI review and user acceptance remain open."
+  ]
+}

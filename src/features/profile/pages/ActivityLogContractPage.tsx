@@ -41,7 +41,7 @@ export function ActivityLogContractPage() {
               className="rounded-lg px-3 py-2"
               style={{
                 background: filter === item ? colors.primary : colors.surface2,
-                color: filter === item ? '#fff' : colors.text2,
+                color: filter === item ? 'var(--tr-text-on-color)' : colors.text2,
                 fontSize: 11,
               }}
             >
@@ -70,7 +70,7 @@ export function ActivityLogContractPage() {
                 </div>
                 <span
                   style={{
-                    color: log.status === 'success' ? colors.success : '#EF4444',
+                    color: log.status === 'success' ? colors.success : 'var(--tr-error-text)',
                     fontSize: 11,
                   }}
                 >

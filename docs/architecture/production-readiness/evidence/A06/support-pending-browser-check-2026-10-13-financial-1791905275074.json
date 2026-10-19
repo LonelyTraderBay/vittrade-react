@@ -1,0 +1,296 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-13T15:29:59.511Z",
+  "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
+  "branch": "",
+  "origin": "http://127.0.0.1:4193",
+  "browser": "Chromium via Playwright",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "scenario": {
+    "id": "support.pending",
+    "status": "passed",
+    "persona": "support (development preview)",
+    "route": "/w/support",
+    "operationIds": ["createSupportTicket"],
+    "observedOperationIds": ["createSupportTicket"],
+    "expectedDomainOperationCount": 1,
+    "coverage": "full_scenario_operations_browser_observed",
+    "delayHarnessScenario": "support.loading"
+  },
+  "operationFlow": {
+    "requestCount": 1,
+    "responseCount": 1,
+    "responseStatus": 201,
+    "responseElapsedMs": 2019,
+    "pendingUiElapsedMs": 72,
+    "idempotencyKeyPresent": true,
+    "pendingButtonDisabled": true,
+    "formDisabledDuringRequest": true,
+    "responseHadNotSettledAtPendingCapture": true,
+    "duplicateSubmissionCount": 0,
+    "createdTicketRenderedAfter201": true,
+    "durableServerPendingStatusClaimed": false,
+    "screenshots": {
+      "pending": "preview-support-pending-2026-10-13-financial-1791905275074.png",
+      "completed": "preview-support-pending-completed-2026-10-13-financial-1791905275074.png"
+    }
+  },
+  "fixtureBoundary": {
+    "serviceWorkerControlled": true,
+    "personaAndDelayScenarioApplied": true,
+    "allObservedResponsesFromServiceWorker": true,
+    "externalApiOrigins": [],
+    "unrelatedApiFailureCount": 2,
+    "realBackendRequestSent": false,
+    "note": "The existing Support loading preview delays API requests by 2 seconds, including ticket creation, then delegates to the ordinary local MSW 201 handler. This measures client request-in-flight UI only; it does not assert a durable server pending status."
+  },
+  "apiRequests": [
+    {
+      "method": "GET",
+      "path": "/api/auth/session",
+      "operationId": null,
+      "startedAt": 1791905400097,
+      "idempotencyKeyPresent": false
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/pairs",
+      "operationId": null,
+      "startedAt": 1791905400346,
+      "idempotencyKeyPresent": false
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/logout",
+      "operationId": null,
+      "startedAt": 1791905400707,
+      "idempotencyKeyPresent": false
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/pairs",
+      "operationId": null,
+      "startedAt": 1791905400707,
+      "idempotencyKeyPresent": false
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/login",
+      "operationId": null,
+      "startedAt": 1791905400721,
+      "idempotencyKeyPresent": false
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/pairs",
+      "operationId": null,
+      "startedAt": 1791905400723,
+      "idempotencyKeyPresent": false
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/pairs",
+      "operationId": null,
+      "startedAt": 1791905400738,
+      "idempotencyKeyPresent": false
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/watchlist",
+      "operationId": null,
+      "startedAt": 1791905400738,
+      "idempotencyKeyPresent": false
+    },
+    {
+      "method": "GET",
+      "path": "/api/notifications",
+      "operationId": "listNotifications",
+      "startedAt": 1791905400738,
+      "idempotencyKeyPresent": false
+    },
+    {
+      "method": "GET",
+      "path": "/api/notifications",
+      "operationId": "listNotifications",
+      "startedAt": 1791905400821,
+      "idempotencyKeyPresent": false
+    },
+    {
+      "method": "GET",
+      "path": "/api/support/tickets",
+      "operationId": "listSupportTickets",
+      "startedAt": 1791905400868,
+      "idempotencyKeyPresent": false
+    },
+    {
+      "method": "POST",
+      "path": "/api/support/tickets",
+      "operationId": "createSupportTicket",
+      "startedAt": 1791905402954,
+      "idempotencyKeyPresent": true
+    },
+    {
+      "method": "GET",
+      "path": "/api/support/tickets",
+      "operationId": "listSupportTickets",
+      "startedAt": 1791905404974,
+      "idempotencyKeyPresent": false
+    }
+  ],
+  "apiResponses": [
+    {
+      "method": "GET",
+      "path": "/api/auth/session",
+      "operationId": null,
+      "status": 401,
+      "fromServiceWorker": true,
+      "elapsedMs": 34,
+      "idempotencyKeyPresent": false
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/pairs",
+      "operationId": null,
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 5,
+      "idempotencyKeyPresent": false
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/logout",
+      "operationId": null,
+      "status": 204,
+      "fromServiceWorker": true,
+      "elapsedMs": 14,
+      "idempotencyKeyPresent": false
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/pairs",
+      "operationId": null,
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 3,
+      "idempotencyKeyPresent": false
+    },
+    {
+      "method": "POST",
+      "path": "/api/auth/login",
+      "operationId": null,
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 6,
+      "idempotencyKeyPresent": false
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/pairs",
+      "operationId": null,
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 7,
+      "idempotencyKeyPresent": false
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/watchlist",
+      "operationId": null,
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 7,
+      "idempotencyKeyPresent": false
+    },
+    {
+      "method": "GET",
+      "path": "/api/notifications",
+      "operationId": "listNotifications",
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 7,
+      "idempotencyKeyPresent": false
+    },
+    {
+      "method": "GET",
+      "path": "/api/notifications",
+      "operationId": "listNotifications",
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 2018,
+      "idempotencyKeyPresent": false
+    },
+    {
+      "method": "GET",
+      "path": "/api/support/tickets",
+      "operationId": "listSupportTickets",
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 2019,
+      "idempotencyKeyPresent": false
+    },
+    {
+      "method": "POST",
+      "path": "/api/support/tickets",
+      "operationId": "createSupportTicket",
+      "status": 201,
+      "fromServiceWorker": true,
+      "elapsedMs": 2019,
+      "idempotencyKeyPresent": true
+    },
+    {
+      "method": "GET",
+      "path": "/api/support/tickets",
+      "operationId": "listSupportTickets",
+      "status": 200,
+      "fromServiceWorker": true,
+      "elapsedMs": 2007,
+      "idempotencyKeyPresent": false
+    }
+  ],
+  "apiFailures": [
+    {
+      "method": "POST",
+      "path": "/api/auth/logout",
+      "operationId": null,
+      "failure": "net::ERR_ABORTED",
+      "hadResponse": true
+    },
+    {
+      "method": "GET",
+      "path": "/api/market/pairs",
+      "operationId": null,
+      "failure": "net::ERR_ABORTED",
+      "hadResponse": false
+    }
+  ],
+  "supportApiFailures": [],
+  "unexpectedSupportRequests": [],
+  "pageErrors": [],
+  "sourceHashes": {
+    "contracts/openapi/support.yaml": "765533b6f9f9892ac7ec2fa70031b54c53daf07ff5c77775fca155e23ef58d5a",
+    "src/app/routeConfig.ts": "675ea95ec4831b9d0caf1cbf68524efaebda8ed9b970b5dad129bdd55f28bac9",
+    "src/app/routes.ts": "c93a80e123fd95c3abd246aeb00589a51f5ff4560e794e87f70f7ff96248c0d5",
+    "src/app/components/layout/WebSidebar.tsx": "be4d7c10c7378290dc69516cd66c071e3e821215afbd97c3bc508d437c37362c",
+    "src/dev/PreviewControls.tsx": "a318fb182dda24c9b8d2103ae4b40eeecb7c3eded57332aad3c5bc8a1836a54c",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/handlers.ts": "9d1ea085bab944b0bd0e59a665222113cb7bb661bbcd2408f09c6adf08cd3ea9",
+    "src/dev/mocks/personas.ts": "6189b9cbfb9765f5c442c52a089d30b5be171170fe054ef6bf2faffbbb53dccd",
+    "src/dev/mocks/preview-scenario-handler.ts": "1b05e3e420b1df43de6d2e37533d4d8dbcd203fedb70ca59a65a4a62179396f5",
+    "src/dev/mocks/scenario-runtime.ts": "446d43808b478a1eaca07faa29d690c49c8e7ffb21fc1f12d2de2feb524e2e50",
+    "src/features/support/api/support-api.ts": "60b08b775dfb638f873e71dae62158ea5bbf0526fceea48a6758fee049ec1726",
+    "src/features/support/model/support-queries.ts": "47e0a0c29f2ce527e6d23db3f8cdff902de2a4fd2eedc183cee52bdab91748c4",
+    "src/features/support/model/support-types.ts": "adfc8a68c8b4e5b757ae52c1ae6ef24d176ee66922d84b6d385ad99c18c8cc84",
+    "src/features/support/pages/SupportContractPage.tsx": "2199a7e3758fca690ad8b013e2ba8c51c70c068a973d611989132b562ffe778b",
+    "src/shared/api/app-client.ts": "038ad4426147147f31f44fab94770860991ef90aaa8ed394ec2a4940c83c7b81",
+    "src/shared/api/client.ts": "882197549d075a8be1f495c7d2271dcbf1530ff1606190531da59b75020977bb",
+    "src/shared/api/http-client.ts": "12a04035eac23a2999f8c7a76aafa32966585402c06d98f451ef33eb8601cf42",
+    "src/shared/api/query-client.ts": "b2b0e5fe60f7ade24017f12859fa1b68bd2de143868c42e37df51a71ee259ac2",
+    "src/shared/session/useAuth.ts": "65d58cfe61d4618a1849da066ecd4d6ae7c94c036af7361a91a1383a6b383e0b",
+    "src/main.tsx": "c150098914a25b7e0630d66f480ffbfe4160e96a8bdb54262b5ad4b5b33719e6",
+    "docs/architecture/production-readiness/evidence/A06/generate-scenario-matrix.mjs": "d4d32249afc14a3466043caf3e0a063a25c0aa7893e32fdeb5f0e1ec5d7e5df3",
+    "docs/architecture/production-readiness/evidence/A06/run-support-pending-browser-check.mjs": "cb7e26dd9c0029133d6d9b310388fb518f18ece5563e9c04e1289739a03934cd"
+  }
+}

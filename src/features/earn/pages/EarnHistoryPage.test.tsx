@@ -1,5 +1,5 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
-import { fireEvent, screen, waitFor } from '@testing-library/react';
+import { fireEvent, screen, waitFor, within } from '@testing-library/react';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import { renderWithProviders } from '@/test/test-utils';
@@ -72,6 +72,9 @@ describe('Savings history contract page', () => {
     expect(await screen.findByText('Đăng ký · USDT Flexible')).toBeInTheDocument();
     expect(screen.getByText('Rút vốn · USDT Flexible')).toBeInTheDocument();
     expect(screen.getByText('Đang xử lý')).toBeInTheDocument();
+    expect(screen.getByRole('group', { name: 'Lọc loại giao dịch' })).toBeInTheDocument();
+    const transactionList = screen.getByRole('list', { name: 'Giao dịch tiết kiệm' });
+    expect(within(transactionList).getAllByRole('listitem')).toHaveLength(2);
     fireEvent.click(screen.getByRole('button', { name: 'Đăng ký' }));
     expect(screen.queryByText('Rút vốn · USDT Flexible')).not.toBeInTheDocument();
     expect(screen.getByText('Đăng ký · USDT Flexible')).toBeInTheDocument();
@@ -88,6 +91,21 @@ describe('Savings history contract page', () => {
     renderWithProviders(<SavingsHistoryPage />);
 
     expect(await screen.findByText('Chưa có giao dịch tiết kiệm')).toBeInTheDocument();
+  });
+
+  it('explains when a valid history list has no transactions for the selected filter', async () => {
+    server.use(
+      http.get('*/earn/transactions', () =>
+        HttpResponse.json({ items: [firstPage.items[0]], nextCursor: 'opaque-next-page' }),
+      ),
+    );
+
+    renderWithProviders(<SavingsHistoryPage />);
+    expect(await screen.findByText('Đăng ký · USDT Flexible')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Rút vốn' }));
+
+    expect(await screen.findByText('Không có kết quả')).toBeInTheDocument();
+    expect(screen.getByText('Thử chọn một loại giao dịch khác.')).toBeInTheDocument();
   });
 
   it('uses the same typed history boundary for staking transactions', async () => {
