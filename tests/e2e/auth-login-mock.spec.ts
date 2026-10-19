@@ -1,5 +1,6 @@
 import { expect, test, type Locator } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+import { ALPHA, withAlpha } from '../../src/shared/theme/colors';
 
 async function readCompactFieldGeometry(input: Locator) {
   return input.evaluate((element) => {
@@ -401,6 +402,42 @@ test('LoginPage shared shells pass light/dark Axe states @auth-login-mock', asyn
         await page.setViewportSize({ width: shell.width, height: 900 });
         await page.goto(shell.route);
         await expect(page.getByRole('heading', { name: 'VitTrade' })).toBeVisible();
+        const brandTypography = await page
+          .getByRole('heading', { name: 'VitTrade' })
+          .evaluate((element) => {
+            const style = getComputedStyle(element);
+            return {
+              fontSize: style.fontSize,
+              fontWeight: style.fontWeight,
+              lineHeightRatio: Number(
+                (parseFloat(style.lineHeight) / parseFloat(style.fontSize)).toFixed(3),
+              ),
+            };
+          });
+        expect(brandTypography).toEqual({
+          fontSize: '26px',
+          fontWeight: '700',
+          lineHeightRatio: 1.272,
+        });
+        const subtitleTypography = await page
+          .getByText('Giao dịch thông minh, an toàn, tốc độ', { exact: true })
+          .evaluate((element) => {
+            const style = getComputedStyle(element);
+            return {
+              fontSize: style.fontSize,
+              fontWeight: style.fontWeight,
+              lineHeightRatio: Number(
+                (parseFloat(style.lineHeight) / parseFloat(style.fontSize)).toFixed(3),
+              ),
+            };
+          });
+        expect(subtitleTypography).toEqual({
+          fontSize: '13px',
+          fontWeight: '400',
+          lineHeightRatio: 1.5,
+        });
+        let errorSurface: { background: string; border: string; textFontSize: string } | null =
+          null;
         await page.evaluate((activeTheme) => {
           document.documentElement.classList.toggle('dark', activeTheme === 'dark');
           document.documentElement.classList.toggle('light', activeTheme === 'light');
@@ -458,9 +495,38 @@ test('LoginPage shared shells pass light/dark Axe states @auth-login-mock', asyn
           );
           await page.getByTestId('auth-submit').click();
           expect((await responsePromise).status()).toBe(401);
-          await expect(page.getByRole('alert')).toHaveText(
+          const alert = page.getByRole('alert');
+          await expect(alert).toHaveText(
             'Đăng nhập thất bại. Vui lòng kiểm tra thông tin và thử lại.',
           );
+          const actualSurface = await alert.evaluate((element) => {
+            const style = getComputedStyle(element);
+            const text = element.querySelector('span');
+            if (!text) throw new Error('Login error alert has no message text.');
+            return {
+              background: style.backgroundColor,
+              border: style.borderTopColor,
+              textFontSize: getComputedStyle(text).fontSize,
+            };
+          });
+          errorSurface = actualSurface;
+          const expectedSurface = await page.evaluate(
+            ({ background, border }) => {
+              const probe = document.createElement('div');
+              probe.style.backgroundColor = background;
+              probe.style.border = `1px solid ${border}`;
+              document.body.append(probe);
+              const style = getComputedStyle(probe);
+              const result = { background: style.backgroundColor, border: style.borderTopColor };
+              probe.remove();
+              return result;
+            },
+            {
+              background: withAlpha('var(--tr-sell)', ALPHA.muted),
+              border: withAlpha('var(--tr-sell)', ALPHA.border),
+            },
+          );
+          expect(actualSurface).toMatchObject({ ...expectedSurface, textFontSize: '12px' });
         }
 
         const result = await new AxeBuilder({ page })
@@ -472,6 +538,9 @@ test('LoginPage shared shells pass light/dark Axe states @auth-login-mock', asyn
           viewportWidth: shell.width,
           theme,
           state,
+          brandTypography,
+          subtitleTypography,
+          errorSurface,
           violationCount: result.violations.length,
           violations: result.violations.map(({ id, impact, nodes }) => ({
             id,

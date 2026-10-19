@@ -583,13 +583,6 @@
     "src/features/auth/pages/AccountLockedPage.tsx": {
       "named-color-utility|outline|outline-blue-50": 1
     },
-    "src/features/auth/pages/LoginPage.tsx": {
-      "color-prop-literal|color|#3b82f6": 1,
-      "color-prop-literal|stroke|#fff": 1,
-      "color-prop-literal|stroke|rgba(255,255,255,0.5)": 1,
-      "inline-style-color|background|linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)": 1,
-      "inline-style-color|background|rgba(239,68,68,0.1)": 1
-    },
     "src/features/auth/pages/OTPPage.tsx": {
       "color-prop-literal|color|#3b82f6": 1,
       "inline-style-color|background|rgba(239,68,68,0.1)": 1,

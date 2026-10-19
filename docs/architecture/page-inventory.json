@@ -471,7 +471,7 @@
       "domain": "auth",
       "owner": "features/auth",
       "status": "integration-pending",
-      "lines": 219,
+      "lines": 220,
       "routePaths": [
         "login"
       ],
@@ -483,6 +483,8 @@
           "@/shared/lib/string",
           "@/shared/navigation/useRoutePrefix",
           "@/shared/session/useAuth",
+          "@/shared/theme/colors",
+          "@/shared/theme/typography",
           "@/shared/ui/CTAButton",
           "@/shared/ui/InputField",
           "@/shared/ui/auth/AuthBrandMark",

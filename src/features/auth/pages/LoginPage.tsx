@@ -8,6 +8,8 @@ import { PageLayout } from '@/shared/ui/layout/PageLayout';
 import { useAuth } from '@/shared/session/useAuth';
 import { env, isProductionBuild } from '@/shared/config/env';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
+import { ALPHA, withAlpha } from '@/shared/theme/colors';
+import { textRoleStyle } from '@/shared/theme/typography';
 import { useRoutePrefix } from '@/shared/navigation/useRoutePrefix';
 import { isApiError } from '@/shared/api/api-error';
 import { isEmail } from '@/shared/lib/string';
@@ -87,8 +89,8 @@ export function LoginPage() {
           <div className="mb-4">
             <AuthBrandMark size="lg" />
           </div>
-          <h1 style={{ color: colors.text1, fontSize: 26, fontWeight: 700 }}>VitTrade</h1>
-          <p style={{ color: colors.text2, fontSize: 13, marginTop: 4 }}>
+          <h1 style={{ color: colors.text1, ...textRoleStyle('pageTitle') }}>VitTrade</h1>
+          <p className="mt-1" style={{ color: colors.text2, ...textRoleStyle('subtitle') }}>
             Giao dịch thông minh, an toàn, tốc độ
           </p>
         </div>
@@ -149,11 +151,14 @@ export function LoginPage() {
           {error && !emailFieldError && !passwordFieldError && (
             <div
               className="flex items-center gap-2 rounded-xl px-3 py-2"
-              style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)' }}
+              style={{
+                background: withAlpha(colors.error, ALPHA.muted),
+                border: `1px solid ${withAlpha(colors.error, ALPHA.border)}`,
+              }}
               role="alert"
             >
               <AlertCircle size={14} color={colors.errorText} />
-              <span style={{ color: colors.errorText, fontSize: 13 }}>{error}</span>
+              <span style={{ color: colors.errorText, ...textRoleStyle('caption') }}>{error}</span>
             </div>
           )}
 
@@ -161,7 +166,7 @@ export function LoginPage() {
             type="button"
             onClick={() => navigate(`${prefix}/auth/forgot-password`)}
             className="text-right"
-            style={{ color: colors.link, fontSize: 13 }}
+            style={{ color: colors.link, ...textRoleStyle('button') }}
           >
             Quên mật khẩu?
           </button>
@@ -172,7 +177,7 @@ export function LoginPage() {
 
           <div className="flex items-center gap-3">
             <div className="h-px flex-1" style={{ background: colors.borderSolid }} />
-            <span style={{ color: colors.text2, fontSize: 12 }}>hoặc</span>
+            <span style={{ color: colors.text2, ...textRoleStyle('caption') }}>hoặc</span>
             <div className="h-px flex-1" style={{ background: colors.borderSolid }} />
           </div>
 
@@ -180,26 +185,22 @@ export function LoginPage() {
             <CTAButton
               type="button"
               onClick={handleDemoLogin}
-              variant="ghost"
-              bg={colors.surface2}
-              textColor={colors.text1}
-              style={{
-                border: `1.5px solid ${colors.borderSolid}`,
-                fontSize: 15,
-                boxShadow: 'none',
-              }}
+              variant="secondary"
+              style={{ border: `1.5px solid ${colors.borderSolid}` }}
             >
-              <Fingerprint size={20} color="#3B82F6" />
+              <Fingerprint size={20} color={colors.info} />
               Đăng nhập Demo
             </CTAButton>
           )}
 
           <div className="flex items-center justify-center gap-1 pt-2">
-            <span style={{ color: colors.text2, fontSize: 13 }}>Chưa có tài khoản?</span>
+            <span style={{ color: colors.text2, ...textRoleStyle('caption') }}>
+              Chưa có tài khoản?
+            </span>
             <button
               type="button"
               onClick={() => navigate(`${prefix}/auth/register`)}
-              style={{ color: colors.link, fontSize: 13, fontWeight: 600 }}
+              style={{ color: colors.link, ...textRoleStyle('button') }}
             >
               Đăng ký ngay
             </button>
@@ -207,7 +208,7 @@ export function LoginPage() {
         </form>
 
         <div className="mt-auto pt-8 text-center">
-          <p style={{ color: colors.text2, fontSize: 11 }}>
+          <p style={{ color: colors.text2, ...textRoleStyle('caption') }}>
             Bằng cách đăng nhập, bạn đồng ý với Điều khoản dịch vụ và Chính sách bảo mật của
             VitTrade.
           </p>

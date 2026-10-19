@@ -308,6 +308,12 @@ describe('shared theme token contracts', () => {
       expect(textRoleSize(role)).toBe(textRoleStyle(role).fontSize);
       expect(textRoleWeight(role)).toBe(textRoleStyle(role).fontWeight);
     }
+    expect(textRoleStyle('pageTitle')).toEqual({
+      fontSize: 26,
+      fontWeight: 700,
+      lineHeight: 1.272,
+    });
+    expect(textRoleStyle('subtitle')).toEqual({ fontSize: 13, fontWeight: 400, lineHeight: 1.5 });
     expect(textRoleSpec('missing' as keyof typeof VitTextRoles)).toMatchObject(VitTextRoles.body);
   });
 

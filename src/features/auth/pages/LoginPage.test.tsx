@@ -312,8 +312,14 @@ describe('auth LoginPage', () => {
       },
     );
 
-    expect(screen.getByRole('button', { name: 'Đăng nhập Demo' })).toBeInTheDocument();
-    await user.click(screen.getByRole('button', { name: 'Đăng nhập Demo' }));
+    const demoButton = screen.getByRole('button', { name: 'Đăng nhập Demo' });
+    expect(demoButton.style.background).toBe('var(--tr-surface-2)');
+    expect(demoButton.style.color).toBe('var(--tr-text-1)');
+    expect(demoButton.style.fontSize).toBe('16px');
+    expect(demoButton.style.border).toBe('1.5px solid var(--tr-border-solid)');
+    expect(demoButton.style.boxShadow).toBe('');
+    expect(demoButton.querySelector('svg')?.getAttribute('stroke')).toBe('var(--tr-info)');
+    await user.click(demoButton);
     await waitFor(() =>
       expect(login).toHaveBeenCalledWith({ email: 'demo@vittrade.vn', password: 'demo' }),
     );
