@@ -366,6 +366,90 @@ test.describe('wallet contract smoke on local API-mode build', () => {
     await expect(page.getByText('12 confirmations')).toBeVisible();
   });
 
+  test('resolves deposit status surfaces through semantic tokens in dark and light themes', async ({
+    page,
+  }) => {
+    await page.route('**/auth/session', (route) => route.fulfill({ json: session }));
+    await page.route('**/wallet/deposit/networks**', (route) =>
+      route.fulfill({
+        json: {
+          networks: [
+            ...depositNetworks.networks,
+            {
+              id: 'tron',
+              name: 'Tron',
+              fee: '1 USDT',
+              minDeposit: 5,
+              address: 'TQ8k2n3exampleaddress1234567890',
+              arrivalTime: '~1 minute',
+              confirmations: 20,
+              memo: '123456',
+            },
+          ],
+        },
+      }),
+    );
+
+    await page.goto('/wallet/deposit/USDT');
+    await expect(page.getByLabel('Deposit network')).toHaveValue('ethereum');
+    await page.getByLabel('Deposit network').selectOption('tron');
+    await expect(page.getByText(/Memo is required for this network/)).toBeVisible();
+
+    const readThemeStyles = async (theme: 'dark' | 'light') => {
+      await page.locator('html').evaluate((element, nextTheme) => {
+        element.classList.remove('dark', 'light');
+        element.classList.add(nextTheme);
+      }, theme);
+
+      return page.evaluate(() => {
+        const paragraphs = [...document.querySelectorAll('p')];
+        const errorMessage = paragraphs.find((paragraph) =>
+          paragraph.textContent?.includes('Send only'),
+        );
+        const warningMessage = paragraphs.find((paragraph) =>
+          paragraph.textContent?.includes('Memo is required'),
+        );
+        const availableLabel = [...document.querySelectorAll('span')].find(
+          (span) => span.textContent?.trim() === 'Network available',
+        );
+        const errorSurface = errorMessage?.parentElement;
+        const warningSurface = warningMessage?.parentElement;
+        const successDot = availableLabel?.parentElement?.querySelector('span');
+
+        if (!errorMessage || !warningMessage || !errorSurface || !warningSurface || !successDot) {
+          throw new Error('Expected all deposit status surfaces to be rendered.');
+        }
+
+        return {
+          errorInlineStyle: errorSurface.getAttribute('style') ?? '',
+          errorBackground: getComputedStyle(errorSurface).backgroundColor,
+          errorBorder: getComputedStyle(errorSurface).borderTopColor,
+          errorText: getComputedStyle(errorMessage).color,
+          warningInlineStyle: warningSurface.getAttribute('style') ?? '',
+          warningBackground: getComputedStyle(warningSurface).backgroundColor,
+          success: getComputedStyle(successDot).backgroundColor,
+        };
+      });
+    };
+
+    const dark = await readThemeStyles('dark');
+    const light = await readThemeStyles('light');
+
+    for (const styles of [dark, light]) {
+      expect(styles.errorInlineStyle).toContain('var(--tr-sell) 8%');
+      expect(styles.errorInlineStyle).toContain('var(--tr-sell) 25%');
+      expect(styles.errorBackground).not.toBe('rgba(0, 0, 0, 0)');
+      expect(styles.errorBorder).not.toBe('rgba(0, 0, 0, 0)');
+      expect(styles.warningInlineStyle).toContain('var(--tr-warning-bg)');
+      expect(styles.warningInlineStyle).toContain('var(--tr-warning-border)');
+      expect(styles.warningBackground).not.toBe('rgba(0, 0, 0, 0)');
+    }
+    expect(dark.errorText).not.toBe(light.errorText);
+    expect(dark.errorBackground).not.toBe(light.errorBackground);
+    expect(dark.errorBorder).not.toBe(light.errorBorder);
+    expect(dark.success).not.toBe(light.success);
+  });
+
   test('keeps deposit action targets reachable across shell aliases and viewports', async ({
     page,
   }) => {

@@ -9,6 +9,7 @@ import { Header } from '@/shared/ui/layout/Header';
 import { PageContent } from '@/shared/ui/layout/PageContent';
 import { PageLayout } from '@/shared/ui/layout/PageLayout';
 import { TrCard } from '@/shared/ui/TrCard';
+import { ALPHA, withAlpha } from '@/shared/theme/colors';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { useAuth } from '@/shared/session/useAuth';
 import { useWalletDepositNetworksQuery } from '../model/wallet-queries';
@@ -150,7 +151,7 @@ export function WalletDepositContractPage() {
             ))}
           </select>
           <div className="mt-3 flex items-center gap-2 text-xs" style={{ color: colors.text3 }}>
-            <span className="h-2 w-2 rounded-full" style={{ background: '#10B981' }} />
+            <span className="h-2 w-2 rounded-full" style={{ background: colors.success }} />
             <span>Network available</span>
             <span>·</span>
             <span>{selectedNetwork.confirmations} confirmations</span>
@@ -159,7 +160,10 @@ export function WalletDepositContractPage() {
 
         <div
           className="flex items-start gap-2 rounded-2xl px-4 py-3"
-          style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.25)' }}
+          style={{
+            background: withAlpha(colors.error, ALPHA.muted),
+            border: `1px solid ${withAlpha(colors.error, ALPHA.medium)}`,
+          }}
         >
           <AlertTriangle size={17} color={colors.errorText} className="mt-0.5 shrink-0" />
           <p className="text-xs leading-5" style={{ color: colors.errorText }}>
@@ -172,8 +176,8 @@ export function WalletDepositContractPage() {
           <div
             className="flex items-start gap-2 rounded-2xl px-4 py-3"
             style={{
-              background: 'rgba(245,158,11,0.1)',
-              border: '1px solid rgba(245,158,11,0.35)',
+              background: colors.warningBg,
+              border: `1px solid ${colors.warningBorder}`,
             }}
           >
             <AlertTriangle size={17} color={colors.warningText} className="mt-0.5 shrink-0" />

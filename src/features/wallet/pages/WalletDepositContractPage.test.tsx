@@ -95,6 +95,32 @@ describe('Wallet deposit contract page', () => {
     expect(screen.getByRole('button', { name: 'Copy Memo' })).toBeInTheDocument();
   });
 
+  it('uses shared semantic theme tokens for deposit status surfaces', async () => {
+    installHandlers();
+
+    renderWithProviders(<WalletDepositContractPage />);
+    const networkSelect = await screen.findByLabelText('Deposit network');
+
+    expect(screen.getByText('Network available').previousElementSibling).toHaveStyle({
+      background: 'var(--tr-buy)',
+    });
+    const errorSurface = screen.getByText(/Send only USDT through Ethereum/).parentElement;
+    expect(errorSurface?.getAttribute('style')).toContain(
+      'color-mix(in srgb, var(--tr-sell) 8%, transparent)',
+    );
+    expect(errorSurface?.getAttribute('style')).toContain(
+      'border: 1px solid color-mix(in srgb, var(--tr-sell) 25%, transparent)',
+    );
+
+    await userEvent.selectOptions(networkSelect, 'tron');
+
+    const warningSurface = screen.getByText(/Memo is required for this network/).parentElement;
+    expect(warningSurface?.getAttribute('style')).toContain('background: var(--tr-warning-bg)');
+    expect(warningSurface?.getAttribute('style')).toContain(
+      'border: 1px solid var(--tr-warning-border)',
+    );
+  });
+
   it('copies the server-provided address through the browser clipboard', async () => {
     installHandlers();
     const writeText = vi.fn().mockResolvedValue(undefined);
