@@ -1,3 +1,5 @@
+import { WEB_AUTH_BRAND_MARK } from '@/shared/theme/webTokens';
+
 interface AuthBrandMarkProps {
   /** Size variants preserve the established Auth layouts. */
   size: 'sm' | 'md' | 'lg';
@@ -36,21 +38,21 @@ export function AuthBrandMark({ size }: AuthBrandMarkProps) {
         width: dimensions.container,
         height: dimensions.container,
         borderRadius: dimensions.borderRadius,
-        background: 'linear-gradient(135deg, #3B82F6 0%, #1d4ed8 100%)',
+        background: WEB_AUTH_BRAND_MARK.gradient,
         boxShadow: dimensions.boxShadow,
       }}
     >
       <svg width={dimensions.icon} height={dimensions.icon} viewBox="0 0 36 36" fill="none">
         <path
           d="M6 18L14 10L20 16L28 8"
-          stroke="#fff"
+          stroke={WEB_AUTH_BRAND_MARK.primaryStroke}
           strokeWidth="3"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
         <path
           d="M6 26L14 18L20 24L30 14"
-          stroke="rgba(255,255,255,0.5)"
+          stroke={WEB_AUTH_BRAND_MARK.secondaryStroke}
           strokeWidth="2.5"
           strokeLinecap="round"
           strokeLinejoin="round"

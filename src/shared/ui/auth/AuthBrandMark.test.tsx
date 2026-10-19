@@ -1,5 +1,6 @@
 import { render } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
+import { WEB_AUTH_BRAND_MARK } from '@/shared/theme/webTokens';
 import { AuthBrandMark } from './AuthBrandMark';
 
 describe('AuthBrandMark', () => {
@@ -17,10 +18,18 @@ describe('AuthBrandMark', () => {
       width: `${containerSize}px`,
       height: `${containerSize}px`,
       borderRadius: `${radius}px`,
-      background: 'linear-gradient(135deg, #3B82F6 0%, #1d4ed8 100%)',
+      background: WEB_AUTH_BRAND_MARK.gradient,
     });
     expect(icon).toHaveAttribute('width', String(iconSize));
     expect(icon).toHaveAttribute('height', String(iconSize));
     expect(icon?.querySelectorAll('path')).toHaveLength(2);
+  });
+
+  it('keeps the existing Auth identity in shared web theme tokens', () => {
+    expect(WEB_AUTH_BRAND_MARK).toEqual({
+      gradient: 'linear-gradient(135deg, #3B82F6 0%, #1d4ed8 100%)',
+      primaryStroke: '#fff',
+      secondaryStroke: 'rgba(255,255,255,0.5)',
+    });
   });
 });
