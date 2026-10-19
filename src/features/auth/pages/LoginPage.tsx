@@ -11,6 +11,7 @@ import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { useRoutePrefix } from '@/shared/navigation/useRoutePrefix';
 import { isApiError } from '@/shared/api/api-error';
 import { isEmail } from '@/shared/lib/string';
+import { AuthBrandMark } from '@/shared/ui/auth/AuthBrandMark';
 
 /** Trang đăng nhập theo contract; adapter chịu trách nhiệm tạo session và chuẩn hóa lỗi. */
 export function LoginPage() {
@@ -83,29 +84,8 @@ export function LoginPage() {
     <PageLayout>
       <PageContent gap={16}>
         <div className="flex flex-col items-center pb-8 pt-10">
-          <div
-            className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl"
-            style={{
-              background: 'linear-gradient(135deg, #3B82F6 0%, #1d4ed8 100%)',
-              boxShadow: '0 8px 32px rgba(59,130,246,0.4)',
-            }}
-          >
-            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" aria-hidden="true">
-              <path
-                d="M6 18L14 10L20 16L28 8"
-                stroke="#fff"
-                strokeWidth="3"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M6 26L14 18L20 24L30 14"
-                stroke="rgba(255,255,255,0.5)"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+          <div className="mb-4">
+            <AuthBrandMark size="lg" />
           </div>
           <h1 style={{ color: colors.text1, fontSize: 26, fontWeight: 700 }}>VitTrade</h1>
           <p style={{ color: colors.text2, fontSize: 13, marginTop: 4 }}>
