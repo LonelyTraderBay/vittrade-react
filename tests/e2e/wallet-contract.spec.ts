@@ -366,6 +366,60 @@ test.describe('wallet contract smoke on local API-mode build', () => {
     await expect(page.getByText('12 confirmations')).toBeVisible();
   });
 
+  test('shows a visible shared focus ring on the deposit network select', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.route('**/auth/session', (route) => route.fulfill({ json: session }));
+    await page.route('**/wallet/deposit/networks**', (route) =>
+      route.fulfill({ json: depositNetworks }),
+    );
+
+    await page.goto('/r/wallet/deposit/USDT');
+    const network = page.getByLabel('Deposit network');
+    await expect(network).toHaveValue('ethereum');
+
+    let focusedId = '';
+    for (let attempt = 0; attempt < 40 && focusedId !== 'deposit-network'; attempt += 1) {
+      await page.keyboard.press('Tab');
+      focusedId = await page.evaluate(
+        () => (document.activeElement as HTMLElement | null)?.id ?? '',
+      );
+    }
+    await expect(network).toBeFocused();
+
+    const measurements = await page.evaluate(() => {
+      const control = document.getElementById('deposit-network');
+      if (!control) throw new Error('Deposit network select is missing.');
+      const themes = ['dark', 'light'] as const;
+      return themes.map((theme) => {
+        document.documentElement.classList.remove('dark', 'light');
+        document.documentElement.classList.add(theme);
+        const style = getComputedStyle(control);
+        const probe = document.createElement('span');
+        probe.style.color = 'var(--tr-primary)';
+        document.body.append(probe);
+        const primary = getComputedStyle(probe).color;
+        probe.remove();
+        return {
+          theme,
+          outlineColor: style.outlineColor,
+          outlineStyle: style.outlineStyle,
+          outlineWidth: style.outlineWidth,
+          outlineOffset: style.outlineOffset,
+          primary,
+        };
+      });
+    });
+
+    console.log(`C06_NATIVE_SELECT_FOCUS ${JSON.stringify(measurements)}`);
+    expect(measurements).toHaveLength(2);
+    for (const measurement of measurements) {
+      expect(measurement.outlineColor).toBe(measurement.primary);
+      expect(measurement.outlineStyle).toBe('solid');
+      expect(measurement.outlineWidth).toBe('2px');
+      expect(measurement.outlineOffset).toBe('2px');
+    }
+  });
+
   test('resolves deposit status surfaces through semantic tokens in dark and light themes', async ({
     page,
   }) => {

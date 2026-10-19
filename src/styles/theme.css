@@ -1273,6 +1273,7 @@ a:hover {
 /* ---- Focus-visible for accessibility (keyboard nav) ---- */
 button:focus-visible,
 a:focus-visible,
+select:focus-visible,
 [role='button']:focus-visible {
   outline: 2px solid var(--tr-primary);
   outline-offset: 2px;
