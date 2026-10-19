@@ -366,58 +366,91 @@ test.describe('wallet contract smoke on local API-mode build', () => {
     await expect(page.getByText('12 confirmations')).toBeVisible();
   });
 
-  test('shows a visible shared focus ring on the deposit network select', async ({ page }) => {
-    await page.setViewportSize({ width: 390, height: 844 });
+  test('shows a visible shared focus ring on the deposit network select across route aliases', async ({
+    page,
+  }, testInfo) => {
+    test.setTimeout(60_000);
     await page.route('**/auth/session', (route) => route.fulfill({ json: session }));
     await page.route('**/wallet/deposit/networks**', (route) =>
       route.fulfill({ json: depositNetworks }),
     );
 
-    await page.goto('/r/wallet/deposit/USDT');
-    const network = page.getByLabel('Deposit network');
-    await expect(network).toHaveValue('ethereum');
+    const routes = [
+      { path: '/wallet/deposit', viewport: { width: 390, height: 844 } },
+      { path: '/wallet/deposit/USDT', viewport: { width: 390, height: 844 } },
+      { path: '/t/wallet/deposit', viewport: { width: 768, height: 1024 } },
+      { path: '/t/wallet/deposit/USDT', viewport: { width: 768, height: 1024 } },
+      { path: '/w/wallet/deposit', viewport: { width: 1280, height: 900 } },
+      { path: '/w/wallet/deposit/USDT', viewport: { width: 1280, height: 900 } },
+      { path: '/r/wallet/deposit', viewport: { width: 390, height: 844 } },
+      { path: '/r/wallet/deposit/USDT', viewport: { width: 390, height: 844 } },
+    ] as const;
+    const measurements: Array<{
+      route: string;
+      viewport: string;
+      theme: 'dark' | 'light';
+      outlineColor: string;
+      outlineStyle: string;
+      outlineWidth: string;
+      outlineOffset: string;
+      primary: string;
+    }> = [];
 
-    let focusedId = '';
-    for (let attempt = 0; attempt < 40 && focusedId !== 'deposit-network'; attempt += 1) {
-      await page.keyboard.press('Tab');
-      focusedId = await page.evaluate(
-        () => (document.activeElement as HTMLElement | null)?.id ?? '',
-      );
-    }
-    await expect(network).toBeFocused();
+    for (const route of routes) {
+      await page.setViewportSize(route.viewport);
+      await page.goto(route.path);
+      const network = page.getByLabel('Deposit network');
+      await expect(network).toHaveValue('ethereum');
 
-    const measurements = await page.evaluate(() => {
-      const control = document.getElementById('deposit-network');
-      if (!control) throw new Error('Deposit network select is missing.');
-      const themes = ['dark', 'light'] as const;
-      return themes.map((theme) => {
-        document.documentElement.classList.remove('dark', 'light');
-        document.documentElement.classList.add(theme);
-        const style = getComputedStyle(control);
-        const probe = document.createElement('span');
-        probe.style.color = 'var(--tr-primary)';
-        document.body.append(probe);
-        const primary = getComputedStyle(probe).color;
-        probe.remove();
-        return {
-          theme,
-          outlineColor: style.outlineColor,
-          outlineStyle: style.outlineStyle,
-          outlineWidth: style.outlineWidth,
-          outlineOffset: style.outlineOffset,
-          primary,
+      let focusedId = '';
+      for (let attempt = 0; attempt < 80 && focusedId !== 'deposit-network'; attempt += 1) {
+        await page.keyboard.press('Tab');
+        focusedId = await page.evaluate(
+          () => (document.activeElement as HTMLElement | null)?.id ?? '',
+        );
+      }
+      await expect(network).toBeFocused();
+
+      for (const theme of ['dark', 'light'] as const) {
+        const measurement = await page.evaluate((selectedTheme) => {
+          const control = document.getElementById('deposit-network');
+          if (!control) throw new Error('Deposit network select is missing.');
+          document.documentElement.classList.remove('dark', 'light');
+          document.documentElement.classList.add(selectedTheme);
+          const style = getComputedStyle(control);
+          const probe = document.createElement('span');
+          probe.style.color = 'var(--tr-primary)';
+          document.body.append(probe);
+          const primary = getComputedStyle(probe).color;
+          probe.remove();
+          return {
+            theme: selectedTheme,
+            outlineColor: style.outlineColor,
+            outlineStyle: style.outlineStyle,
+            outlineWidth: style.outlineWidth,
+            outlineOffset: style.outlineOffset,
+            primary,
+          };
+        }, theme);
+        const observed = {
+          route: route.path,
+          viewport: `${route.viewport.width}x${route.viewport.height}`,
+          ...measurement,
         };
-      });
-    });
-
-    console.log(`C06_NATIVE_SELECT_FOCUS ${JSON.stringify(measurements)}`);
-    expect(measurements).toHaveLength(2);
-    for (const measurement of measurements) {
-      expect(measurement.outlineColor).toBe(measurement.primary);
-      expect(measurement.outlineStyle).toBe('solid');
-      expect(measurement.outlineWidth).toBe('2px');
-      expect(measurement.outlineOffset).toBe('2px');
+        measurements.push(observed);
+        expect(observed.outlineColor).toBe(observed.primary);
+        expect(observed.outlineStyle).toBe('solid');
+        expect(observed.outlineWidth).toBe('2px');
+        expect(observed.outlineOffset).toBe('2px');
+      }
     }
+
+    expect(measurements).toHaveLength(routes.length * 2);
+    await testInfo.attach('deposit-network-focus-runtime.json', {
+      body: JSON.stringify(measurements, null, 2),
+      contentType: 'application/json',
+    });
+    console.log(`C06_NATIVE_SELECT_FOCUS ${JSON.stringify(measurements)}`);
   });
 
   test('resolves deposit status surfaces through semantic tokens in dark and light themes', async ({
