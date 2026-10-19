@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
-  "sourceHead": "926e1e6925d6b58789d1100110e70cc82aab4755",
+  "sourceHead": "42b3f6a7f4ec4a87f1047f60738c4c595b00f19e",
   "inventorySource": "docs/architecture/page-inventory.json",
   "trackingSource": "docs/architecture/production-readiness/TRACKING.json",
   "scope": {
     "inventory": {
       "pageFiles": 130,
       "activeRouteDeclarations": 428,
-      "componentFiles": 150,
+      "componentFiles": 151,
       "dataModules": 0,
       "services": 32,
       "mocks": 28,
