@@ -1155,4 +1155,117 @@ test.describe('wallet contract smoke on local API-mode build', () => {
 
     console.log(`C06_ADDRESS_BOOK_SEARCH ${JSON.stringify(measurements)}`);
   });
+
+  test('address-add semantic feedback follows theme tokens across shell aliases', async ({
+    page,
+  }, testInfo) => {
+    await page.route('**/auth/session', (route) => route.fulfill({ json: session }));
+
+    const samples = [
+      { shell: 'default', path: '/wallet/address-book/add', width: 390, height: 844 },
+      { shell: 'tablet', path: '/t/wallet/address-book/add', width: 768, height: 1024 },
+      { shell: 'web', path: '/w/wallet/address-book/add', width: 1280, height: 800 },
+      { shell: 'responsive', path: '/r/wallet/address-book/add', width: 390, height: 844 },
+    ];
+    const measurements: Array<Record<string, unknown>> = [];
+
+    for (const sample of samples) {
+      await page.setViewportSize({ width: sample.width, height: sample.height });
+      await page.goto(sample.path);
+      expect(new URL(page.url()).pathname).toBe(sample.path);
+      await expect(page.getByRole('heading', { name: 'Thêm địa chỉ mới' })).toBeVisible();
+
+      for (const theme of ['light', 'dark'] as const) {
+        await page.evaluate((mode) => {
+          document.documentElement.classList.remove('dark', 'light');
+          document.documentElement.classList.add(mode);
+        }, theme);
+
+        const whitelistToggle = page.getByRole('button', { name: /Thêm vào Whitelist/ });
+        if ((await whitelistToggle.getAttribute('aria-pressed')) !== 'true') {
+          await whitelistToggle.click();
+        }
+        const confirmationToggle = page.getByRole('button', {
+          name: /Tôi xác nhận địa chỉ ví/,
+        });
+        if ((await confirmationToggle.getAttribute('aria-pressed')) !== 'true') {
+          await confirmationToggle.click();
+        }
+
+        const visual = await page.evaluate(() => {
+          const warningText = Array.from(document.querySelectorAll('p')).find((element) =>
+            element.textContent?.startsWith('Kiểm tra kỹ địa chỉ và mạng lưới.'),
+          );
+          const warning = warningText?.parentElement;
+          const whitelist = Array.from(document.querySelectorAll('button')).find((element) =>
+            element.textContent?.includes('Thêm vào Whitelist'),
+          );
+          const whitelistTrack = whitelist?.querySelector('span:last-child');
+          const confirmation = Array.from(document.querySelectorAll('button')).find((element) =>
+            element.textContent?.includes('Tôi xác nhận địa chỉ ví'),
+          );
+          const confirmationIndicator = confirmation?.querySelector('span');
+          const resolve = (property: string, token: string) => {
+            const probe = document.createElement('span');
+            probe.style.setProperty(property, `var(${token})`);
+            document.body.append(probe);
+            const value = getComputedStyle(probe).getPropertyValue(property).trim();
+            probe.remove();
+            return value;
+          };
+
+          return {
+            warningBackground: warning ? getComputedStyle(warning).backgroundColor : null,
+            warningBorder: warning ? getComputedStyle(warning).borderTopColor : null,
+            warningIcon: warning?.querySelector('svg')
+              ? getComputedStyle(warning.querySelector('svg')!).stroke
+              : null,
+            whitelistIcon: whitelist?.querySelector('svg')
+              ? getComputedStyle(whitelist.querySelector('svg')!).stroke
+              : null,
+            whitelistSurface: whitelist?.querySelector('div')
+              ? getComputedStyle(whitelist.querySelector('div')!).backgroundColor
+              : null,
+            whitelistTrack: whitelistTrack
+              ? getComputedStyle(whitelistTrack).backgroundColor
+              : null,
+            confirmationBackground: confirmationIndicator
+              ? getComputedStyle(confirmationIndicator).backgroundColor
+              : null,
+            confirmationBorder: confirmationIndicator
+              ? getComputedStyle(confirmationIndicator).borderTopColor
+              : null,
+            expectedWarningBackground: resolve('background-color', '--tr-warning-bg'),
+            expectedWarningBorder: resolve('border-top-color', '--tr-warning-border'),
+            expectedWarningText: resolve('color', '--tr-warning-text'),
+            expectedSuccess: resolve('color', '--tr-buy'),
+            expectedSuccessSurface: resolve('background-color', '--tr-buy-alpha-10'),
+          };
+        });
+
+        expect(visual.warningBackground).toBe(visual.expectedWarningBackground);
+        expect(visual.warningBorder).toBe(visual.expectedWarningBorder);
+        expect(visual.warningIcon).toBe(visual.expectedWarningText);
+        expect(visual.whitelistIcon).toBe(visual.expectedSuccess);
+        expect(visual.whitelistSurface).toBe(visual.expectedSuccessSurface);
+        expect(visual.whitelistTrack).toBe(visual.expectedSuccess);
+        expect(visual.confirmationBackground).toBe(visual.expectedSuccess);
+        expect(visual.confirmationBorder).toBe(visual.expectedSuccess);
+        measurements.push({ ...sample, theme, ...visual });
+
+        if (sample.shell === 'responsive') {
+          await testInfo.attach(`address-add-${theme}-phone.png`, {
+            body: await page.screenshot({ animations: 'disabled' }),
+            contentType: 'image/png',
+          });
+        }
+      }
+    }
+
+    const light = measurements.find((measurement) => measurement.theme === 'light');
+    const dark = measurements.find((measurement) => measurement.theme === 'dark');
+    expect(light?.whitelistIcon).not.toBe(dark?.whitelistIcon);
+    expect(light?.warningIcon).not.toBe(dark?.warningIcon);
+    console.log(`C06_ADDRESS_ADD_THEME_TOKENS ${JSON.stringify(measurements)}`);
+  });
 });

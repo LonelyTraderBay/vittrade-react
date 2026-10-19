@@ -201,9 +201,9 @@ export function AddressAddPage() {
           >
             <div
               className="w-10 h-10 rounded-2xl flex items-center justify-center"
-              style={{ background: whitelisted ? 'rgba(16,185,129,0.1)' : colors.surface2 }}
+              style={{ background: whitelisted ? colors.buyAlpha10 : colors.surface2 }}
             >
-              <Shield size={18} color={whitelisted ? '#10B981' : colors.text3} />
+              <Shield size={18} color={whitelisted ? colors.success : colors.text3} />
             </div>
             <div className="flex-1 text-left">
               <p style={{ color: colors.text1, fontSize: 14, fontWeight: 600 }}>
@@ -216,7 +216,7 @@ export function AddressAddPage() {
             <span
               className="w-11 h-6 rounded-full relative"
               style={{
-                background: whitelisted ? '#10B981' : colors.surface2,
+                background: whitelisted ? colors.success : colors.surface2,
                 border: `1px solid ${colors.borderSolid}`,
               }}
             >
@@ -229,9 +229,9 @@ export function AddressAddPage() {
         </TrCard>
         <div
           className="flex items-start gap-3 rounded-2xl px-4 py-3"
-          style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.15)' }}
+          style={{ background: colors.warningBg, border: `1px solid ${colors.warningBorder}` }}
         >
-          <AlertTriangle size={16} color="#F59E0B" />
+          <AlertTriangle size={16} color={colors.warningText} />
           <p style={{ color: colors.text2, fontSize: 12, lineHeight: 1.6 }}>
             Kiểm tra kỹ địa chỉ và mạng lưới. Gửi sai địa chỉ có thể mất tài sản vĩnh viễn.
           </p>
@@ -245,8 +245,8 @@ export function AddressAddPage() {
           <span
             className="w-6 h-6 rounded-lg border-2 flex items-center justify-center shrink-0"
             style={{
-              borderColor: confirmed ? '#10B981' : colors.borderSolid,
-              background: confirmed ? '#10B981' : 'transparent',
+              borderColor: confirmed ? colors.success : colors.borderSolid,
+              background: confirmed ? colors.success : 'transparent',
             }}
           >
             {confirmed && <CheckCircle size={14} color="#fff" />}
