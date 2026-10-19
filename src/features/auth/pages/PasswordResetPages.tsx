@@ -356,8 +356,8 @@ function PasswordForm({
           const pass = rule.test(newPassword);
           return (
             <div key={rule.id} className="flex items-center gap-2">
-              <Check size={12} color={pass ? '#10B981' : colors.text3} />
-              <span style={{ color: pass ? '#10B981' : colors.text2, fontSize: 12 }}>
+              <Check size={12} color={pass ? colors.successText : colors.text3} />
+              <span style={{ color: pass ? colors.successText : colors.text2, fontSize: 12 }}>
                 {rule.label}
               </span>
             </div>
@@ -404,7 +404,7 @@ function SuccessState({
         className="flex h-24 w-24 items-center justify-center rounded-full"
         style={{ background: 'rgba(16,185,129,0.15)', border: '2px solid rgba(16,185,129,0.4)' }}
       >
-        <CheckCircle size={48} color="#10B981" />
+        <CheckCircle size={48} color={colors.successText} />
       </div>
       <div className="text-center">
         <h2
