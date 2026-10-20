@@ -11,6 +11,7 @@ import { useEffect, useState } from 'react';
 import { BottomSheetV2 } from '@/shared/ui/BottomSheetV2';
 import type { CreateDCAPlanRequest, DCAFrequency } from '../model/dca-types';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
+import { textRoleStyle } from '@/shared/theme/typography';
 
 /**
  * DCACreatePlanSheet Props
@@ -18,8 +19,11 @@ import { useThemeColors } from '@/shared/hooks/useThemeColors';
 export interface DCACreatePlanSheetProps {
   open: boolean;
   onClose: () => void;
-  onCreate: (request: CreateDCAPlanRequest) => Promise<void>;
+  /** Only confirmed success permits resetting the draft; false also covers an unknown outcome. */
+  onCreate: (request: CreateDCAPlanRequest) => Promise<boolean>;
   isCreating?: boolean;
+  /** Derived from the owner's mutation; keep failure feedback inside the open modal. */
+  creationUnconfirmed?: boolean;
   /** Preselected coin symbol (for deep linking from wallet) */
   preselectedCoin?: string | null;
 }
@@ -57,6 +61,7 @@ export function DCACreatePlanSheet({
   onClose,
   onCreate,
   isCreating,
+  creationUnconfirmed = false,
   preselectedCoin,
 }: DCACreatePlanSheetProps) {
   const c = useThemeColors();
@@ -75,7 +80,7 @@ export function DCACreatePlanSheet({
       amountPerPurchase: parseInt(amount),
     };
 
-    await onCreate(request);
+    if (!(await onCreate(request))) return;
 
     // Reset form
     setCoinSymbol('BTC');
@@ -266,6 +271,12 @@ export function DCACreatePlanSheet({
         </div>
 
         {/* Create Button */}
+        {creationUnconfirmed && (
+          <p role="alert" style={{ ...textRoleStyle('body'), color: c.errorText }}>
+            Chưa nhận được xác nhận tạo kế hoạch. Dữ liệu đã được giữ nguyên. Hãy kiểm tra danh sách
+            kế hoạch trước khi thử lại.
+          </p>
+        )}
         <button
           onClick={handleCreate}
           disabled={isCreating || !amount || parseInt(amount) < 10000}

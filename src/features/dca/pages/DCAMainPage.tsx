@@ -161,7 +161,7 @@ function DCAPageContent({ isEnabled, isDevelopment, analytics, funnels }: DCAMai
     canManageDCA,
   ]);
 
-  const handleCreatePlan = async (request: CreateDCAPlanRequest) => {
+  const handleCreatePlan = async (request: CreateDCAPlanRequest): Promise<boolean> => {
     if (
       !canManageDCA ||
       !isDCAEnabled ||
@@ -169,7 +169,7 @@ function DCAPageContent({ isEnabled, isDevelopment, analytics, funnels }: DCAMai
       !Number.isFinite(request.amountPerPurchase) ||
       request.amountPerPurchase <= 0
     )
-      return;
+      return false;
     actionInFlight.current = true;
     const signature = JSON.stringify(request);
     const key = createAttemptKeys.current.get(signature) ?? crypto.randomUUID();
@@ -196,8 +196,10 @@ function DCAPageContent({ isEnabled, isDevelopment, analytics, funnels }: DCAMai
       createAttemptKeys.current.delete(signature);
       setCreateSheetOpen(false);
       setPreselectedCoin(null);
+      return true;
     } catch {
       toast.error('Không thể tạo kế hoạch. Vui lòng thử lại.');
+      return false;
     } finally {
       actionInFlight.current = false;
     }
@@ -538,6 +540,7 @@ function DCAPageContent({ isEnabled, isDevelopment, analytics, funnels }: DCAMai
         }}
         onCreate={handleCreatePlan}
         isCreating={isCreating}
+        creationUnconfirmed={createPlanMutation.isError}
         preselectedCoin={preselectedCoin}
       />
 

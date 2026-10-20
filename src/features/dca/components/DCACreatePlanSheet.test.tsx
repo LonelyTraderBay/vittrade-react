@@ -6,8 +6,35 @@ import type { CreateDCAPlanRequest } from '../model/dca-types';
 import { DCACreatePlanSheet } from './DCACreatePlanSheet';
 
 describe('DCACreatePlanSheet', () => {
+  it('retains a non-default intent when creation is not confirmed', async () => {
+    const onCreate = vi.fn(async (_request: CreateDCAPlanRequest) => false);
+    const user = userEvent.setup();
+    renderWithProviders(<DCACreatePlanSheet open onClose={() => undefined} onCreate={onCreate} />);
+
+    const amount = await screen.findByPlaceholderText('500.000');
+    await user.click(screen.getByRole('button', { name: /Solana/ }));
+    await user.click(screen.getByRole('button', { name: 'Hàng ngày' }));
+    await user.clear(amount);
+    await user.type(amount, '1234567');
+    const submit = screen.getByRole('button', { name: 'Tạo Kế Hoạch' });
+    await user.click(submit);
+
+    expect(amount).toHaveValue('1234567');
+    expect(screen.getByText('Coin:').parentElement).toHaveTextContent('SOL');
+    expect(screen.getByText('Tần suất:').parentElement).toHaveTextContent('Hàng ngày');
+    await user.click(submit);
+    expect(onCreate).toHaveBeenCalledTimes(2);
+    for (const call of onCreate.mock.calls) {
+      expect(call[0]).toEqual({
+        coinSymbol: 'SOL',
+        frequency: 'daily',
+        amountPerPurchase: 1234567,
+      });
+    }
+  });
+
   it('preselects a coin, formats input, applies every preset, and resets after creation', async () => {
-    const onCreate = vi.fn<(_: CreateDCAPlanRequest) => Promise<void>>().mockResolvedValue();
+    const onCreate = vi.fn<(_: CreateDCAPlanRequest) => Promise<boolean>>().mockResolvedValue(true);
     const user = userEvent.setup();
     const view = renderWithProviders(
       <DCACreatePlanSheet
@@ -87,7 +114,7 @@ describe('DCACreatePlanSheet', () => {
 
   it('disables invalid amounts and prevents closing while creation is pending', async () => {
     const onClose = vi.fn();
-    const onCreate = vi.fn<(_: CreateDCAPlanRequest) => Promise<void>>().mockResolvedValue();
+    const onCreate = vi.fn<(_: CreateDCAPlanRequest) => Promise<boolean>>().mockResolvedValue(true);
     const user = userEvent.setup();
     const view = renderWithProviders(
       <DCACreatePlanSheet open onClose={onClose} onCreate={onCreate} preselectedCoin={null} />,
