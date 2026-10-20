@@ -1,5 +1,7 @@
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { lstatSync, mkdtempSync, readFileSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { dirname, join, resolve } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import test from 'node:test';
@@ -262,3 +264,84 @@ test('immutable scope artifact proves runtime equivalence and rejects stale/tamp
     verifyReuseArtifact(bytes, artifact, { ...sourceRun, run_attempt: 2 }, 'abc', 'fp', python),
   );
 });
+
+for (const auditExit of [0, 17]) {
+  test(`static CI preserves early evidence and audit exit ${auditExit}`, (t) => {
+    const workflow = readFileSync(new URL('../.github/workflows/ci.yml', import.meta.url), 'utf8');
+    const section = workflow.split('\n  static:\n')[1]?.split('\n  unit:\n')[0];
+    assert.ok(section, 'Static job must exist');
+    const block = (name) => {
+      const step = section.split(`      - name: ${name}\n`)[1]?.split('      - name:')[0];
+      const run = step?.split('        run: |\n')[1];
+      assert.ok(run, `Missing executable step: ${name}`);
+      return run
+        .split('\n')
+        .map((line) => line.replace(/^ {10}/, ''))
+        .join('\n');
+    };
+    const initialize = block('Initialize static verification context');
+    const audit = block('Dependency audit');
+    assert.ok(
+      section.indexOf('Initialize static verification context') < section.indexOf('Setup Node'),
+    );
+    const retention = section
+      .split('      - name: Preserve verification reports\n')[1]
+      ?.split('      - name:')[0];
+    assert.ok(retention?.includes('if: always()'));
+    const uploadPaths = retention
+      ?.split('          path: |\n')[1]
+      ?.split('          retention-days:')[0];
+    assert.ok(uploadPaths?.includes('.artifacts/ci/static-context.json'));
+    assert.ok(uploadPaths?.includes('.artifacts/ci/dependency-audit.log'));
+    const workspace = mkdtempSync(join(tmpdir(), 'vittrade-ci-audit-'));
+    t.after(() => {
+      const absolute = resolve(workspace);
+      assert.equal(dirname(absolute), resolve(tmpdir()));
+      assert.ok(absolute.startsWith(join(resolve(tmpdir()), 'vittrade-ci-audit-')));
+      assert.equal(lstatSync(absolute).isSymbolicLink(), false);
+      rmSync(absolute, { recursive: true, force: true });
+    });
+    const bash =
+      process.env.CI_SCOPE_TEST_BASH ||
+      (process.platform === 'win32' ? 'C:/Program Files/Git/bin/bash.exe' : 'bash');
+    const execute = (script) =>
+      spawnSync(bash, ['--noprofile', '--norc', '-c', script], {
+        cwd: workspace,
+        encoding: 'utf8',
+        env: {
+          ...process.env,
+          BASH_ENV: '',
+          GITHUB_SHA: 'a'.repeat(40),
+          GITHUB_RUN_ID: '42',
+          GITHUB_RUN_ATTEMPT: '1',
+        },
+      });
+    const initialized = execute(initialize);
+    assert.equal(initialized.status, 0, initialized.stderr || initialized.error?.message);
+    const context = JSON.parse(
+      readFileSync(join(workspace, '.artifacts/ci/static-context.json'), 'utf8'),
+    );
+    assert.deepEqual(context, {
+      schemaVersion: 1,
+      phase: 'started',
+      checkoutSha: 'a'.repeat(40),
+      runId: '42',
+      attempt: '1',
+    });
+    const mock = `npm() { printf 'controlled audit output\\n'; return ${auditExit}; }\n`;
+    const result = execute(mock + audit);
+    assert.equal(result.status, auditExit, result.stderr || result.error?.message);
+    assert.match(
+      readFileSync(join(workspace, '.artifacts/ci/dependency-audit.log'), 'utf8'),
+      /controlled audit output/,
+    );
+    if (auditExit !== 0) {
+      const masked = execute(mock + audit.replace('set -euo pipefail', 'set -eu'));
+      assert.equal(
+        masked.status,
+        0,
+        'Negative control must expose the missing pipefail failure mask',
+      );
+    }
+  });
+}

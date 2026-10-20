@@ -55,6 +55,12 @@ jobs:
           # The source ledger verifies historical Git blobs, not only the latest checkout.
           fetch-depth: 0
 
+      - name: Initialize static verification context
+        run: |
+          set -euo pipefail
+          mkdir -p .artifacts/ci
+          printf '{"schemaVersion":1,"phase":"started","checkoutSha":"%s","runId":"%s","attempt":"%s"}\n' "$GITHUB_SHA" "$GITHUB_RUN_ID" "$GITHUB_RUN_ATTEMPT" > .artifacts/ci/static-context.json
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -80,7 +86,9 @@ jobs:
         run: npm run format:check
 
       - name: Dependency audit
-        run: npm run audit:high
+        run: |
+          set -euo pipefail
+          npm run audit:high 2>&1 | tee .artifacts/ci/dependency-audit.log
 
       - name: Dependency license policy
         run: npm run licenses:check
@@ -143,6 +151,8 @@ jobs:
           # Select only run evidence; hidden project config and cache are excluded.
           include-hidden-files: true
           path: |
+            .artifacts/ci/static-context.json
+            .artifacts/ci/dependency-audit.log
             .artifacts/runs/**/run.json
             .artifacts/runs/**/coverage/**
             .artifacts/runs/**/playwright-report/**
