@@ -4,18 +4,18 @@
 
 ## 1. Nguồn hướng dẫn và thứ tự đọc
 
-| Nguồn                                                                  | Nội dung chịu trách nhiệm                                                        |
-| ---------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
-| [AGENTS.md](../../AGENTS.md) và hướng dẫn gần khu vực sửa              | Quy định cho AI, thiết kế, thay đổi tối thiểu và mức độ kiểm chứng.              |
-| [AI_RULES.md](../../AI_RULES.md), bộ Universal 3.1                      | Quy tắc dùng chung; giữ nguyên cùng [prompt bootstrap](../../PROJECT_BOOTSTRAP_PROMPT.txt). |
-| [PROJECT_CONTEXT.md](../PROJECT_CONTEXT.md)                            | Hồ sơ khảo sát, nguồn, thành phần, lệnh và giới hạn; không phải sổ tiến độ.      |
-| [ARCHITECTURE.md](../../ARCHITECTURE.md)                               | Quyền sở hữu feature, ranh giới module và chiều phụ thuộc.                       |
-| [Guidelines.md](../../guidelines/Guidelines.md)                        | Hành vi và quy ước thiết kế UI của sản phẩm.                                     |
-| [contracts/README.md](../../contracts/README.md) và contract liên quan | Hợp đồng API và quy tắc tích hợp.                                                |
-| Tài liệu này                                                           | Cách thực hiện, chọn skill, kiểm chứng và bàn giao.                              |
-| [PLAN.md](../architecture/production-readiness/PLAN.md)                | Phạm vi roadmap, ưu tiên, phụ thuộc, từng bước và điều kiện nghiệm thu.          |
-| [TRACKING.json](../architecture/production-readiness/TRACKING.json)    | Nguồn duy nhất của trạng thái triển khai, file đã sửa, bằng chứng và checkpoint. |
-| [SCOPE.md](../architecture/production-readiness/SCOPE.md)              | Danh mục tra cứu page/route/API; đối chiếu source hiện tại khi có drift.         |
+| Nguồn                                                                  | Nội dung chịu trách nhiệm                                                                   |
+| ---------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| [AGENTS.md](../../AGENTS.md) và hướng dẫn gần khu vực sửa              | Quy định cho AI, thiết kế, thay đổi tối thiểu và mức độ kiểm chứng.                         |
+| [AI_RULES.md](../../AI_RULES.md), bộ Universal 3.1                     | Quy tắc dùng chung; giữ nguyên cùng [prompt bootstrap](../../PROJECT_BOOTSTRAP_PROMPT.txt). |
+| [PROJECT_CONTEXT.md](../PROJECT_CONTEXT.md)                            | Hồ sơ khảo sát, nguồn, thành phần, lệnh và giới hạn; không phải sổ tiến độ.                 |
+| [ARCHITECTURE.md](../../ARCHITECTURE.md)                               | Quyền sở hữu feature, ranh giới module và chiều phụ thuộc.                                  |
+| [Guidelines.md](../../guidelines/Guidelines.md)                        | Hành vi và quy ước thiết kế UI của sản phẩm.                                                |
+| [contracts/README.md](../../contracts/README.md) và contract liên quan | Hợp đồng API và quy tắc tích hợp.                                                           |
+| Tài liệu này                                                           | Cách thực hiện, chọn skill, kiểm chứng và bàn giao.                                         |
+| [PLAN.md](../architecture/production-readiness/PLAN.md)                | Phạm vi roadmap, ưu tiên, phụ thuộc, từng bước và điều kiện nghiệm thu.                     |
+| [TRACKING.json](../architecture/production-readiness/TRACKING.json)    | Nguồn duy nhất của trạng thái triển khai, file đã sửa, bằng chứng và checkpoint.            |
+| [SCOPE.md](../architecture/production-readiness/SCOPE.md)              | Danh mục tra cứu page/route/API; đối chiếu source hiện tại khi có drift.                    |
 
 Đọc `AGENTS.md`, HỢP ĐỒNG DÙNG CHUNG/KHỞI ĐỘNG của `AI_RULES.md`, hồ sơ và workflow khi bắt đầu; chọn các mục AI_RULES theo lộ trình nhiệm vụ. Sau đó đọc checkpoint và chỉ những phần kiến trúc, contract, task, source/test liên quan. Với yêu cầu phân tích, giữ phạm vi chỉ đọc. Với yêu cầu thực hiện, tiếp tục công việc đã được giao mà không hỏi lại sau mỗi bước. Bootstrap chỉ khảo sát và cập nhật tài liệu; không tự tiếp tục triển khai roadmap dù checkpoint còn việc.
 
@@ -118,6 +118,11 @@ Khi thêm hoặc sửa màn hình:
 
 Lệnh phải được đối chiếu với [package.json](../../package.json) hiện tại trước khi chạy. Trên Windows PowerShell dùng `npm.cmd`/`npx.cmd` khi execution policy chặn wrapper `.ps1`. Không tự cài lại dependency hoặc ghi đè `.env.local` nếu chưa cần.
 
+Với C06, áp dụng protocol commit/CI theo phạm vi tại PLAN mục 13 (cập nhật 20/10/2026).
+`scripts/ci-scope.mjs` sở hữu classifier và aggregate; chỉ ledger đủ source-equivalence
+proof mới được tái sử dụng runtime evidence. Không sao chép allowlist hay tiêu chí
+đóng sổ sang một nguồn quy định khác.
+
 ```powershell
 git status --short
 git diff --stat
@@ -154,15 +159,15 @@ và xác nhận child đã đóng bình thường. Runner tự cleanup khi child
 run đã kết thúc trước lượt chạy mới. Manifest kết thúc được ghi atomically;
 cleanup không sửa manifest hoặc bytes của bằng chứng.
 
-| Điều kiện | Kết quả của cleanup |
-| --- | --- |
-| Run hoàn tất, owner/child đã dừng, metadata đầy đủ | Chỉ xem xét `cache/` và `dist/` trong đúng run. |
-| Production build thành công mới nhất | Giữ `dist/` cho preview/gates đến khi có build thay thế thành công. |
-| Run lỗi hoặc source thay đổi trong lúc chạy | Chỉ dọn cache; giữ `dist/` để chẩn đoán. |
-| Run/consumer còn sống, signal/error, metadata thiếu/hỏng, run legacy | Giữ output; không suy đã hết sử dụng từ tuổi file hoặc PID owner đơn lẻ. |
-| Run được source/tài liệu/evidence hiện tại tham chiếu hoặc có file Git quản lý | Giữ toàn bộ output của run. |
-| Coverage, report, screenshot/video/trace, golden, contract, `run.json` | Luôn giữ; nằm ngoài danh sách được tự xóa. |
-| Root `dist/coverage`, dependency, Temp, Git, worktree | Nằm ngoài phạm vi cleanup tự động. |
+| Điều kiện                                                                      | Kết quả của cleanup                                                      |
+| ------------------------------------------------------------------------------ | ------------------------------------------------------------------------ |
+| Run hoàn tất, owner/child đã dừng, metadata đầy đủ                             | Chỉ xem xét `cache/` và `dist/` trong đúng run.                          |
+| Production build thành công mới nhất                                           | Giữ `dist/` cho preview/gates đến khi có build thay thế thành công.      |
+| Run lỗi hoặc source thay đổi trong lúc chạy                                    | Chỉ dọn cache; giữ `dist/` để chẩn đoán.                                 |
+| Run/consumer còn sống, signal/error, metadata thiếu/hỏng, run legacy           | Giữ output; không suy đã hết sử dụng từ tuổi file hoặc PID owner đơn lẻ. |
+| Run được source/tài liệu/evidence hiện tại tham chiếu hoặc có file Git quản lý | Giữ toàn bộ output của run.                                              |
+| Coverage, report, screenshot/video/trace, golden, contract, `run.json`         | Luôn giữ; nằm ngoài danh sách được tự xóa.                               |
+| Root `dist/coverage`, dependency, Temp, Git, worktree                          | Nằm ngoài phạm vi cleanup tự động.                                       |
 
 Cleanup và việc tạo run/mở consumer dùng chung khóa độc quyền ngắn trong
 `.artifacts/lifecycle.lock`. Preview và artifact gates giữ consumer lease có

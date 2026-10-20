@@ -5,9 +5,46 @@ on:
     branches: [main]
   pull_request:
 
+permissions:
+  contents: read
+  actions: read
+
 jobs:
-  verify:
-    name: Production gates
+  scope:
+    name: CI scope
+    runs-on: ubuntu-latest
+    outputs:
+      mode: ${{ steps.classify.outputs.mode }}
+      reused_run_id: ${{ steps.classify.outputs.reused_run_id }}
+      runtime_fingerprint: ${{ steps.classify.outputs.runtime_fingerprint }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      - name: Verify CI scope and failure handling
+        run: node --test scripts/ci-scope.test.mjs
+      - name: Classify inputs and previous exact-source gate
+        id: classify
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node scripts/ci-scope.mjs classify
+      - name: Preserve verification reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-scope-${{ github.sha }}-${{ github.run_attempt }}
+          include-hidden-files: true
+          path: .artifacts/ci/**
+          retention-days: 7
+          if-no-files-found: error
+
+  static:
+    name: Static and build gates
+    needs: scope
+    if: needs.scope.outputs.mode == 'full'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -28,9 +65,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Install Playwright browser
-        run: npx playwright install --with-deps chromium
-
       - name: Typecheck
         run: npm run typecheck
 
@@ -42,21 +76,6 @@ jobs:
 
       - name: Format check
         run: npm run format:check
-
-      - name: Unit and integration tests
-        run: npm run test:run
-
-      - name: Coverage gate
-        run: npm run test:coverage -- --reporter=dot
-
-      - name: E2E smoke and accessibility
-        run: npm run test:e2e
-
-      - name: Auth registration API-mode browser contract
-        run: npm run test:e2e -- --config playwright.auth-api.config.ts
-
-      - name: Auth development mock browser contract
-        run: npm run test:e2e -- --config playwright.auth-mock.config.ts
 
       - name: Dependency audit
         run: npm run audit:high
@@ -109,12 +128,12 @@ jobs:
       - name: Bundle budget
         run: npm run bundle:check
 
-      - name: Preserve verification reports on success or failure
+      - name: Preserve verification reports
         if: always()
         id: verification-artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: production-gates-${{ github.sha }}-${{ github.run_attempt }}
+          name: production-static-${{ github.sha }}-${{ github.run_attempt }}
           # Select only run evidence; hidden project config and cache are excluded.
           include-hidden-files: true
           path: |
@@ -124,7 +143,7 @@ jobs:
             .artifacts/runs/**/test-results/**
             .artifacts/cleanup-report.json
           retention-days: 7
-          if-no-files-found: warn
+          if-no-files-found: error
 
       - name: Record verification artifact digest
         if: always() && steps.verification-artifacts.outcome == 'success'
@@ -133,3 +152,132 @@ jobs:
           ARTIFACT_DIGEST: ${{ steps.verification-artifacts.outputs.artifact-digest }}
         run: |
           printf 'Verification artifact ID: %s\n\nSHA-256: `%s`\n' "$ARTIFACT_ID" "$ARTIFACT_DIGEST" >> "$GITHUB_STEP_SUMMARY"
+
+  unit:
+    name: Unit and coverage
+    needs: scope
+    if: needs.scope.outputs.mode == 'full'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      # test:coverage executes the same complete suite as test:run; scope tests
+      # enforce command parity. Assertions and coverage thresholds are unchanged.
+      - name: Unit, integration and coverage gate
+        run: npm run test:coverage -- --reporter=dot
+      - name: Preserve verification reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-unit-${{ github.sha }}-${{ github.run_attempt }}
+          include-hidden-files: true
+          path: |
+            .artifacts/runs/**/run.json
+            .artifacts/runs/**/coverage/**
+            .artifacts/cleanup-report.json
+          retention-days: 7
+          if-no-files-found: error
+
+  browser:
+    name: Browser ${{ matrix.suite }}
+    needs: scope
+    if: needs.scope.outputs.mode == 'full'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - suite: smoke
+            config: playwright.config.ts
+          - suite: auth-api
+            config: playwright.auth-api.config.ts
+          - suite: auth-mock
+            config: playwright.auth-mock.config.ts
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+      - name: Browser contract
+        run: npm run test:e2e -- --config ${{ matrix.config }}
+      - name: Preserve verification reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-browser-${{ matrix.suite }}-${{ github.sha }}-${{ github.run_attempt }}
+          include-hidden-files: true
+          path: |
+            .artifacts/runs/**/run.json
+            .artifacts/runs/**/playwright-report/**
+            .artifacts/runs/**/test-results/**
+            .artifacts/cleanup-report.json
+          retention-days: 7
+          if-no-files-found: error
+
+  metadata:
+    name: Progress metadata gate
+    needs: scope
+    if: needs.scope.outputs.mode == 'metadata-only'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - name: Verify metadata text and ledger
+        run: |
+          mkdir -p .artifacts/ci
+          node scripts/check-git-eol.mjs
+          git diff --check HEAD^ HEAD
+          npx prettier --check --ignore-path /dev/null docs/architecture/production-readiness/TRACKING.json
+          node docs/architecture/production-readiness/check-tracking.mjs | tee .artifacts/ci/readiness.txt
+      - name: Preserve verification reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-metadata-${{ github.sha }}-${{ github.run_attempt }}
+          include-hidden-files: true
+          path: .artifacts/ci/**
+          retention-days: 7
+          if-no-files-found: error
+
+  verify:
+    # Stable required-check name; conditional jobs cannot silently bypass it.
+    name: Production gates
+    needs: [scope, static, unit, browser, metadata]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      - name: Verify every applicable gate
+        env:
+          CI_NEEDS: ${{ toJSON(needs) }}
+        run: node scripts/ci-scope.mjs gate
+      - name: Preserve verification reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-gate-${{ github.sha }}-${{ github.run_attempt }}
+          include-hidden-files: true
+          path: .artifacts/ci/**
+          retention-days: 7
+          if-no-files-found: error
