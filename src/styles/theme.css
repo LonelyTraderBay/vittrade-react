@@ -231,6 +231,7 @@
   /* VitTrade semantic radius */
   --tr-radius-input: var(--tr-radius-lg); /* 14px */
   --tr-radius-cta: var(--tr-radius-lg); /* 14px */
+  --tr-radius-card-sm: 12px; /* compact card role; distinct from foundation sm */
   --tr-radius-card: var(--tr-radius-xl); /* 16px */
   --tr-radius-card-lg: var(--tr-radius-3xl); /* 24px */
   --tr-radius-chip: var(--tr-radius-md); /* 8px */

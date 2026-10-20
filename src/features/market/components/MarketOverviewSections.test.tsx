@@ -92,11 +92,11 @@ describe('Market overview presentation sections', () => {
 
     const positiveChange = screen
       .getByText('Positive change')
-      .closest('.rounded-2xl')
+      .closest('[data-slot="tr-card"]')
       ?.querySelector('p:last-of-type');
     const negativeChange = screen
       .getByText('Negative change')
-      .closest('.rounded-2xl')
+      .closest('[data-slot="tr-card"]')
       ?.querySelector('p:last-of-type');
     expect(positiveChange).toHaveStyle({ color: 'var(--tr-success-text)' });
     expect(positiveChange).toHaveTextContent('+2.50%');

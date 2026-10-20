@@ -41,14 +41,14 @@ export function radiusValue(token: VitRadius | number): number {
 export function radiusClass(token: VitRadius): string {
   const map: Record<VitRadius, string> = {
     none: 'rounded-none',
-    xs: 'rounded-[2px]',
-    sm: 'rounded-sm',
-    md: 'rounded-lg',
-    lg: 'rounded-xl',
-    xl: 'rounded-2xl',
-    '2xl': 'rounded-[21px]',
-    '3xl': 'rounded-3xl',
+    xs: 'rounded-[var(--tr-radius-xs)]',
+    sm: 'rounded-[var(--tr-radius-sm)]',
+    md: 'rounded-[var(--tr-radius-md)]',
+    lg: 'rounded-[var(--tr-radius-lg)]',
+    xl: 'rounded-[var(--tr-radius-xl)]',
+    '2xl': 'rounded-[var(--tr-radius-2xl)]',
+    '3xl': 'rounded-[var(--tr-radius-3xl)]',
     full: 'rounded-full',
   };
-  return map[token] ?? 'rounded-lg';
+  return map[token] ?? map.md;
 }

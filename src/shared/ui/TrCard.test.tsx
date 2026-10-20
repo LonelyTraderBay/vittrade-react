@@ -1,6 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { fireEvent } from '@testing-library/react';
 import { renderWithTheme, screen } from '@/test/test-utils';
+import { radiusClass, VitRadii } from '@/shared/theme/radii';
 import { TrCard, TrCardStat } from '@/shared/ui/TrCard';
 
 /**
@@ -11,6 +12,25 @@ import { TrCard, TrCardStat } from '@/shared/ui/TrCard';
  */
 
 describe('TrCard', () => {
+  it.each(Object.keys(VitRadii) as (keyof typeof VitRadii)[])(
+    'uses the foundation radius %s ahead of the card role',
+    (radius) => {
+      renderWithTheme(
+        <TrCard radius={radius} rounded="lg">
+          Radius
+        </TrCard>,
+      );
+      expect(screen.getByText('Radius')).toHaveClass(radiusClass(radius));
+      expect(screen.getByText('Radius')).toHaveAttribute('data-slot', 'tr-card');
+      expect(screen.getByText('Radius')).not.toHaveClass('rounded-[var(--tr-radius-card-lg)]');
+    },
+  );
+
+  it('uses a dedicated marker for button cards without inheriting generic card hover selectors', () => {
+    renderWithTheme(<TrCard as="button">Action</TrCard>);
+    expect(screen.getByRole('button', { name: 'Action' })).toHaveAttribute('data-slot', 'tr-card');
+  });
+
   it('supports CSS padding overrides and radius tokens', () => {
     renderWithTheme(
       <TrCard padding="12px 20px" radius="full">
@@ -113,22 +133,22 @@ describe('TrCard', () => {
   });
 
   describe('Border Radius', () => {
-    it('should apply md (rounded-2xl) by default', () => {
+    it('should apply md (rounded-[var(--tr-radius-card)]) by default', () => {
       const { container } = renderWithTheme(<TrCard>Content</TrCard>);
       const card = container.firstChild as HTMLElement;
-      expect(card.className).toContain('rounded-2xl');
+      expect(card.className).toContain('rounded-[var(--tr-radius-card)]');
     });
 
     it('should apply sm border radius', () => {
       const { container } = renderWithTheme(<TrCard rounded="sm">Content</TrCard>);
       const card = container.firstChild as HTMLElement;
-      expect(card.className).toContain('rounded-xl');
+      expect(card.className).toContain('rounded-[var(--tr-radius-card-sm)]');
     });
 
     it('should apply lg border radius', () => {
       const { container } = renderWithTheme(<TrCard rounded="lg">Content</TrCard>);
       const card = container.firstChild as HTMLElement;
-      expect(card.className).toContain('rounded-3xl');
+      expect(card.className).toContain('rounded-[var(--tr-radius-card-lg)]');
     });
   });
 

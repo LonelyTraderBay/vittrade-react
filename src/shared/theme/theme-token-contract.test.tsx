@@ -288,8 +288,15 @@ describe('shared theme token contracts', () => {
     expect(VitRadiusAlias.card).toBe(VitRadii.xl);
     for (const token of Object.keys(VitRadii) as (keyof typeof VitRadii)[]) {
       expect(radiusClass(token)).toMatch(/^rounded/);
+      expect(themeVariables(':root').get(`--tr-radius-${token}`)).toBe(`${VitRadii[token]}px`);
+      if (token !== 'none' && token !== 'full') {
+        expect(radiusClass(token)).toBe(`rounded-[var(--tr-radius-${token})]`);
+      }
     }
-    expect(radiusClass('unknown' as keyof typeof VitRadii)).toBe('rounded-lg');
+    expect(radiusClass('unknown' as keyof typeof VitRadii)).toBe(radiusClass('md'));
+    expect(themeVariables(':root').get('--tr-radius-card-sm')).toBe('12px');
+    expect(themeVariables(':root').get('--tr-radius-card')).toBe('var(--tr-radius-xl)');
+    expect(themeVariables(':root').get('--tr-radius-card-lg')).toBe('var(--tr-radius-3xl)');
   });
 
   it('resolves all typography roles and numeric fallbacks', () => {
