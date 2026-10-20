@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { execFileSync } from 'node:child_process';
 
 const scriptDirectory = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(scriptDirectory, '../../../../..');
@@ -23,8 +24,27 @@ if (!/^[a-f0-9]{40}$/.test(sourceHead ?? ''))
 if (write === check) throw new Error('Pass exactly one of --write or --check.');
 
 const readJson = (file) => JSON.parse(fs.readFileSync(path.join(root, file), 'utf8'));
-const inventory = readJson('docs/architecture/page-inventory.json');
-const tracking = readJson('docs/architecture/production-readiness/TRACKING.json');
+const liveInventory = readJson('docs/architecture/page-inventory.json');
+const liveTracking = readJson('docs/architecture/production-readiness/TRACKING.json');
+// This file describes a historical baseline, not today's module counts or runtime coverage.
+// Pin both JSON inputs and file existence to that Git revision; never trust counts from the artifact itself.
+const gitInput = (...args) =>
+  execFileSync('git', args, {
+    cwd: root,
+    encoding: 'utf8',
+    maxBuffer: 64 * 1024 * 1024,
+    stdio: ['ignore', 'pipe', 'pipe'],
+  });
+let inventory, tracking, baselinePaths;
+try {
+  inventory = JSON.parse(gitInput('show', `${sourceHead}:docs/architecture/page-inventory.json`));
+  tracking = JSON.parse(
+    gitInput('show', `${sourceHead}:docs/architecture/production-readiness/TRACKING.json`),
+  );
+  baselinePaths = new Set(gitInput('ls-tree', '-r', '--name-only', '-z', sourceHead).split('\0'));
+} catch (error) {
+  throw new Error(`Cannot read baseline Git inputs at ${sourceHead}`, { cause: error });
+}
 const currentRoutes = tracking.routes.filter((route) => route.lifecycle === 'active');
 const currentPages = tracking.pages.filter((page) => page.lifecycle === 'active');
 const plannedPages = tracking.pages.filter((page) => page.lifecycle === 'planned');
@@ -193,47 +213,77 @@ const dimensionDefinitions = {
   },
 };
 
-const routes = currentRoutes.map((route) => {
-  const pageTargets = (route.pageIds ?? []).map((id) => {
-    const page = pagesById.get(id);
+function routeRows(routeRecords, pageRecords, pathExists) {
+  return routeRecords.map((route) => {
+    const pageTargets = (route.pageIds ?? []).map((id) => {
+      const page = pageRecords.get(id);
+      if (!page) throw new Error(`Incomplete live route/page binding: ${route.id} -> ${id}`);
+      return {
+        pageId: id,
+        lifecycle: page.lifecycle,
+        path: page.path,
+        pathExistsAtBaseline: pathExists(page.path),
+      };
+    });
+    const resolvedUrls = [...(route.resolvedUrls ?? [])].sort();
+    const registeredShells = [...new Set(resolvedUrls.map(shellForUrl))].sort();
+    const pilotOwnerStep =
+      route.path.includes('markets') || route.path.includes('market')
+        ? 'C06.11'
+        : route.path.includes('withdraw')
+          ? 'C06.12'
+          : 'C06.13';
     return {
-      pageId: id,
-      lifecycle: page.lifecycle,
-      path: page.path,
-      pathExistsAtBaseline: fs.existsSync(path.join(root, page.path)),
+      routeId: route.id,
+      registry: route.source,
+      declaredPath: route.path,
+      component: route.component,
+      target: route.target ?? null,
+      classification: route.classification,
+      developmentOnly: Boolean(route.developmentOnly),
+      resolvedUrls,
+      registeredShells,
+      pageTargets,
+      personaMappingStatus: route.personaMapping?.status ?? 'not_recorded',
+      coverage: {
+        interactionStates: dimensionDefinitions.interactionStates.status,
+        viewport: dimensionDefinitions.viewport.status,
+        theme: dimensionDefinitions.theme.status,
+        locale: dimensionDefinitions.locale.status,
+        roleAndFeatureFlags: dimensionDefinitions.roleAndFeatureFlags.status,
+        runtime: dimensionDefinitions.runtime.status,
+        ownerStep: pilotOwnerStep,
+      },
     };
   });
-  const resolvedUrls = [...(route.resolvedUrls ?? [])].sort();
-  const registeredShells = [...new Set(resolvedUrls.map(shellForUrl))].sort();
-  const pilotOwnerStep =
-    route.path.includes('markets') || route.path.includes('market')
-      ? 'C06.11'
-      : route.path.includes('withdraw')
-        ? 'C06.12'
-        : 'C06.13';
-  return {
-    routeId: route.id,
-    registry: route.source,
-    declaredPath: route.path,
-    component: route.component,
-    target: route.target ?? null,
-    classification: route.classification,
-    developmentOnly: Boolean(route.developmentOnly),
-    resolvedUrls,
-    registeredShells,
-    pageTargets,
-    personaMappingStatus: route.personaMapping?.status ?? 'not_recorded',
-    coverage: {
-      interactionStates: dimensionDefinitions.interactionStates.status,
-      viewport: dimensionDefinitions.viewport.status,
-      theme: dimensionDefinitions.theme.status,
-      locale: dimensionDefinitions.locale.status,
-      roleAndFeatureFlags: dimensionDefinitions.roleAndFeatureFlags.status,
-      runtime: dimensionDefinitions.runtime.status,
-      ownerStep: pilotOwnerStep,
-    },
+}
+const routes = routeRows(currentRoutes, pagesById, (file) => baselinePaths.has(file));
+
+if (check) {
+  const liveRoutes = liveTracking.routes.filter((route) => route.lifecycle === 'active');
+  const livePages = liveTracking.pages.filter((page) => page.lifecycle === 'active');
+  const sameMultiset = (left, right, key) => {
+    const a = multiset(left, key),
+      b = multiset(right, key);
+    return a.size === b.size && [...a].every(([value, count]) => b.get(value) === count);
   };
-});
+  if (!sameMultiset(liveInventory.routes, liveRoutes, routeKey))
+    throw new Error('Live route identity mismatch between inventory and ledger.');
+  if (
+    !sameMultiset(liveInventory.pages, livePages, (page) => page.path) ||
+    !sameMultiset(livePages, currentPages, (page) =>
+      JSON.stringify([page.id, page.path, page.lifecycle]),
+    )
+  )
+    throw new Error('Live page inventory differs from the locked baseline.');
+  const liveRows = routeRows(
+    liveRoutes,
+    new Map(liveTracking.pages.map((page) => [page.id, page])),
+    (file) => fs.existsSync(path.join(root, file)),
+  );
+  if (JSON.stringify(liveRows) !== JSON.stringify(routes))
+    throw new Error('Live route URLs, owners or declarations differ from the locked baseline.');
+}
 
 const plannedWithRoutes = plannedPages.filter((page) => (page.routeIds ?? []).length > 0);
 const linkedPlannedRouteIds = new Set(plannedWithRoutes.flatMap((page) => page.routeIds));
@@ -257,7 +307,7 @@ const matrix = {
       activePageRecords: currentPages.length,
       plannedPageRecords: plannedPages.length,
       plannedPageRecordsWithMissingSource: plannedPages.filter(
-        (page) => !fs.existsSync(path.join(root, page.path)),
+        (page) => !baselinePaths.has(page.path),
       ).length,
       plannedPageRecordsWithRouteLinks: plannedWithRoutes.length,
       uniqueRouteRowsLinkedFromPlannedPages: linkedPlannedRouteIds.size,

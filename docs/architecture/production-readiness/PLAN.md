@@ -470,6 +470,13 @@ cùng nhánh). Ma trận inventory/route đối chiếu tại
 source, 428/428 active route declaration khớp inventory, 1.465 URL registration,
 1.396 URL duy nhất; runtime route rows trong bước baseline là **0/428**.
 
+Ma trận C06.01 giữ nguyên thống kê lịch sử tại `sourceHead`: generator đọc inventory,
+ledger và danh sách path từ Git revision đó. Chế độ `--check` đồng thời đối chiếu
+route/URL/owner/page hiện hành với topology đã khóa, không ghi lại artifact. Thêm
+module shared không biến số component lịch sử thành số hiện tại; số hiện tại do
+inventory generator/check giữ. Test `scripts/route-matrix.test.mjs` phải từ chối
+sửa snapshot/count/runtime coverage, đổi topology hoặc thiếu Git input baseline.
+
 **Đo lại trước khi tiếp tục C06.13 — 19/10/2026:** trên source HEAD
 `926e1e6925d6b58789d1100110e70cc82aab4755` (exact PR #3 run #175 đã PASS),
 `node scripts/generate-architecture-inventory.mjs --check` PASS với **130 page
