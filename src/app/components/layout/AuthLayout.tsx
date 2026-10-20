@@ -12,6 +12,7 @@ export function AuthLayout() {
       style={{
         width: '100%',
         height: '100%',
+        maxHeight: '100dvh',
         background: c.bg,
         overscrollBehavior: 'none',
         transition: 'background var(--tr-duration-slow) ease',
@@ -19,9 +20,8 @@ export function AuthLayout() {
     >
       <StatusBar />
       <div
-        className="flex-1 overflow-y-auto scrollbar-none"
+        className="min-h-0 flex-1 overflow-y-auto scrollbar-none"
         style={{
-          overscrollBehaviorY: 'contain',
           WebkitOverflowScrolling: 'touch',
           paddingBottom: DEVICE.HOME_INDICATOR,
         }}

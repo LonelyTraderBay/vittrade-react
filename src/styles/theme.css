@@ -800,27 +800,6 @@
   }
 
   /* ========================================
-     MOBILE CRITICAL FIX 7: Landscape Lock Warning
-     ============================================= */
-  @media (orientation: landscape) and (max-height: 500px) {
-    body::before {
-      content: '📱 Vui lòng xoay dọc màn hình để sử dụng tốt nhất';
-      position: fixed;
-      inset: 0;
-      z-index: 99999;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(11, 14, 23, 0.97);
-      color: #8b95b3;
-      font-size: 15px;
-      text-align: center;
-      padding: 24px;
-      backdrop-filter: blur(20px);
-    }
-  }
-
-  /* ========================================
      MOBILE CRITICAL FIX 8: Safe Content Padding
      ============================================= */
   .safe-bottom {
