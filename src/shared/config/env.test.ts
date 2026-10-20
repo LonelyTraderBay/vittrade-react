@@ -1,6 +1,28 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 describe('runtime environment boundary', () => {
+  it('keeps devtools off for a production build even when its mode label is test', async () => {
+    vi.stubEnv('MODE', 'test');
+    vi.stubEnv('DEV', false);
+    vi.stubEnv('PROD', true);
+    vi.stubEnv('VITE_ENABLE_DEVTOOLS', undefined);
+    expect((await import('./env')).env.enableDevtools).toBe(false);
+  });
+
+  it.each(['development', 'staging', 'production', 'test'] as const)(
+    'defaults devtools off outside the test runner and honors explicit opt-in in %s',
+    async (mode) => {
+      vi.stubEnv('MODE', mode);
+      vi.stubEnv('DEV', mode === 'development');
+      vi.stubEnv('PROD', mode === 'production');
+      vi.stubEnv('VITE_ENABLE_DEVTOOLS', undefined);
+      expect((await import('./env')).env.enableDevtools).toBe(mode === 'test');
+      vi.resetModules();
+      vi.stubEnv('VITE_ENABLE_DEVTOOLS', 'true');
+      expect((await import('./env')).env.enableDevtools).toBe(true);
+    },
+  );
+
   beforeEach(() => vi.resetModules());
   afterEach(() => vi.unstubAllEnvs());
 

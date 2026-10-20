@@ -32,6 +32,7 @@ Mở PowerShell tại thư mục gốc repository. Dùng Node theo `.nvmrc` và 
 Script npm hiện có được dùng như sau:
 
     $env:VITE_DATA_SOURCE = 'mock'
+    $env:VITE_ENABLE_DEVTOOLS = 'true' # opt-in cho walkthrough persona/scenario bên dưới
     $env:VITE_API_BASE_URL = ''
     $env:VITE_WS_URL = ''
     npm.cmd run dev -- --host 127.0.0.1 --port 4173 --strictPort
@@ -43,7 +44,9 @@ Giữ cửa sổ PowerShell đang chạy. Mở trình duyệt tại:
 
 Thoát bằng **Ctrl+C**. Nếu cổng **4173** đã có chương trình khác, đổi tham số port thành **4174** rồi mở đúng cổng mới trong trình duyệt. Tắt server trước khi đổi VITE_DATA_SOURCE; cấu hình được đọc lúc Vite khởi động.
 
-Khi mock hoạt động, góc dưới bên phải có cảnh báo “DỮ LIỆU MÔ PHỎNG · KHÔNG PHẢI GIAO DỊCH THẬT”. Nếu cảnh báo không hiện, đừng coi dữ liệu đang thấy là fixture đã xác minh; kiểm tra URL, biến VITE_DATA_SOURCE và cấu hình server.
+Khi mock hoạt động, góc dưới bên phải có cảnh báo “DỮ LIỆU MÔ PHỎNG · KHÔNG GIAO DỊCH THẬT”. Nếu cảnh báo không hiện, đừng coi dữ liệu đang thấy là fixture đã xác minh; kiểm tra URL, biến VITE_DATA_SOURCE và cấu hình server.
+
+Mặc định development tắt công cụ chẩn đoán (`VITE_ENABLE_DEVTOOLS=false` trong `.env.example`). Cảnh báo mock vẫn hiển thị; scenario đã lưu không tác động khi flag tắt. Chỉ bật flag cho walkthrough cần persona/scenario, rồi khởi động lại Vite; bật lại là chủ ý cho phép dùng scenario đang lưu. Vitest giữ mặc định bật để fixture tests hiện hành có hiệu lực. Profile Playwright auth-mock bật flag rõ ràng để giữ các ca persona/lỗi/thử lại; profile `playwright.preview-defaults.config.ts` bắt buộc flag false và kiểm tra scenario lưu cũ bị bỏ qua trên bốn shell. CI phải chạy cả hai lượt, không thay thế lượt này bằng lượt kia.
 
 ## 2. Persona đăng nhập mẫu
 

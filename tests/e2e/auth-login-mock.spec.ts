@@ -304,7 +304,7 @@ test('Web login has no axe violations in settled light and dark states @auth-log
           await Promise.all(
             document.getAnimations().map((animation) => animation.finished.catch(() => undefined)),
           );
-          await new Promise<void>((resolve) => requestAnimationFrame(resolve));
+          await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
         });
 
         const email = page.getByTestId('auth-email');
@@ -446,7 +446,7 @@ test('LoginPage shared shells pass light/dark Axe states @auth-login-mock', asyn
           await Promise.all(
             document.getAnimations().map((animation) => animation.finished.catch(() => undefined)),
           );
-          await new Promise<void>((resolve) => requestAnimationFrame(resolve));
+          await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
         });
 
         if (state === 'empty-submit-validation') {

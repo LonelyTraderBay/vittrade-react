@@ -168,6 +168,26 @@ test('coverage uses the identical Vitest invocation plus instrumentation', () =>
   assert.ok(workflow.includes('if: always()'));
 });
 
+test('auth mock CI retains diagnostic contracts and separately verifies disabled defaults', () => {
+  const workflow = readFileSync(new URL('../.github/workflows/ci.yml', import.meta.url), 'utf8');
+  const step = workflow.split('      - name: Browser contract\n')[1]?.split('      - name:')[0];
+  assert.ok(step?.includes('set -euo pipefail'));
+  assert.ok(
+    step?.includes('VITE_ENABLE_DEVTOOLS=true npm run test:e2e -- --config "$BROWSER_CONFIG"'),
+  );
+  assert.ok(
+    step?.includes(
+      'VITE_ENABLE_DEVTOOLS=false npm run test:e2e -- --config playwright.preview-defaults.config.ts',
+    ),
+  );
+  const profile = readFileSync(
+    new URL('../playwright.preview-defaults.config.ts', import.meta.url),
+    'utf8',
+  );
+  assert.ok(profile.includes("process.env.VITE_ENABLE_DEVTOOLS !== 'false'"));
+  assert.ok(profile.includes("testMatch: '**/auth-devtools-disabled-mock.spec.ts'"));
+});
+
 test('ledger format preserves canonical writer bytes and rejects malformed/reformatted JSON', () => {
   const canonical = JSON.stringify({ evidenceIds: ['EV-1'], value: 'Tiếng Việt' }, null, 2) + '\n';
   assert.doesNotThrow(() => verifyLedgerFormat(canonical));

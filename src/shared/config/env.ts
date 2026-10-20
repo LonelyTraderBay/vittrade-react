@@ -88,7 +88,7 @@ export const env: AppEnv = {
   apiBaseUrl: raw.VITE_API_BASE_URL?.trim() || '',
   wsUrl: raw.VITE_WS_URL?.trim() || '',
   enableAnalytics: parseFlag(raw.VITE_ENABLE_ANALYTICS, false),
-  enableDevtools: parseFlag(raw.VITE_ENABLE_DEVTOOLS, !isProd),
+  enableDevtools: parseFlag(raw.VITE_ENABLE_DEVTOOLS, mode === 'test' && !isProd),
 };
 
 /** Fail fast at application startup instead of silently calling a placeholder backend. */

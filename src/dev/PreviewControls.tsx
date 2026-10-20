@@ -306,34 +306,36 @@ export function PreviewControls() {
         <strong style={{ fontSize: isNarrowViewport ? 9 : 13 }}>
           DỮ LIỆU MÔ PHỎNG · KHÔNG GIAO DỊCH THẬT
         </strong>
-        <button
-          type="button"
-          aria-expanded={isOpen}
-          aria-controls="dev-preview-panel"
-          aria-label={isOpen ? 'Thu gọn' : 'Mở công cụ xem trước'}
-          onClick={() => setIsOpen((open) => !open)}
-          style={{
-            flex: '0 0 auto',
-            padding: '4px 7px',
-            border: '1px solid #b45309',
-            borderRadius: 6,
-            background: '#fff',
-            color: '#78350f',
-            cursor: 'pointer',
-            fontSize: isNarrowViewport ? 10 : undefined,
-          }}
-        >
-          {isNarrowViewport
-            ? isOpen
-              ? 'Đóng'
-              : 'Mở'
-            : isOpen
-              ? 'Thu gọn'
-              : 'Mở công cụ xem trước'}
-        </button>
+        {env.enableDevtools && (
+          <button
+            type="button"
+            aria-expanded={isOpen}
+            aria-controls="dev-preview-panel"
+            aria-label={isOpen ? 'Thu gọn' : 'Mở công cụ xem trước'}
+            onClick={() => setIsOpen((open) => !open)}
+            style={{
+              flex: '0 0 auto',
+              padding: '4px 7px',
+              border: '1px solid #b45309',
+              borderRadius: 6,
+              background: '#fff',
+              color: '#78350f',
+              cursor: 'pointer',
+              fontSize: isNarrowViewport ? 10 : undefined,
+            }}
+          >
+            {isNarrowViewport
+              ? isOpen
+                ? 'Đóng'
+                : 'Mở'
+              : isOpen
+                ? 'Thu gọn'
+                : 'Mở công cụ xem trước'}
+          </button>
+        )}
       </div>
 
-      {isOpen && (
+      {env.enableDevtools && isOpen && (
         <section id="dev-preview-panel" aria-label="Công cụ xem trước" style={panelStyle}>
           <p style={{ margin: '0 0 12px' }}>
             Phiên hiện tại: <strong>{user?.email ?? 'khách chưa đăng nhập'}</strong>

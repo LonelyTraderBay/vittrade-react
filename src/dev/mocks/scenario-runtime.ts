@@ -1,3 +1,5 @@
+import { env } from '@/shared/config/env';
+
 const DEFAULT_SEED = 0x51f15e;
 export const DEV_PREVIEW_SCENARIO_STORAGE_KEY = 'vittrade.dev-preview.scenario';
 
@@ -105,7 +107,7 @@ export function resetDevMockRuntime(): void {
 }
 
 export function getDevPreviewScenario(): DevPreviewScenario | null {
-  return activePreviewScenario;
+  return env.enableDevtools ? activePreviewScenario : null;
 }
 
 export function setDevPreviewScenario(scenario: DevPreviewScenario | null): void {

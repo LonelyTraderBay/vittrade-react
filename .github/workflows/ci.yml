@@ -217,7 +217,17 @@ jobs:
       - name: Install Playwright browser
         run: npx playwright install --with-deps chromium
       - name: Browser contract
-        run: npm run test:e2e -- --config ${{ matrix.config }}
+        env:
+          BROWSER_PROFILE: ${{ matrix.suite }}
+          BROWSER_CONFIG: ${{ matrix.config }}
+        run: |
+          set -euo pipefail
+          if [ "$BROWSER_PROFILE" = "auth-mock" ]; then
+            VITE_ENABLE_DEVTOOLS=true npm run test:e2e -- --config "$BROWSER_CONFIG"
+            VITE_ENABLE_DEVTOOLS=false npm run test:e2e -- --config playwright.preview-defaults.config.ts
+          else
+            npm run test:e2e -- --config "$BROWSER_CONFIG"
+          fi
       - name: Preserve verification reports
         if: always()
         uses: actions/upload-artifact@v4

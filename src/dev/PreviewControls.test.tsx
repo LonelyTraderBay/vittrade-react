@@ -1,3 +1,4 @@
+import { env } from '@/shared/config/env';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { act, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -16,6 +17,11 @@ import {
   setDevPreviewScenario,
 } from './mocks/scenario-runtime';
 import { PreviewControls } from './PreviewControls';
+
+const originalDevtoolsEnabled = env.enableDevtools;
+function setDevtoolsEnabled(value: boolean) {
+  Object.defineProperty(env, 'enableDevtools', { configurable: true, value });
+}
 
 function CurrentPath() {
   const location = useLocation();
@@ -68,11 +74,25 @@ async function openControls(user: ReturnType<typeof userEvent.setup>) {
 }
 
 describe('development mock preview controls', () => {
+  it('keeps the mock warning while disabling diagnostic controls and stored scenarios', () => {
+    setDevPreviewScenario({ domain: 'wallet', state: 'forbidden' });
+    setDevtoolsEnabled(false);
+    renderPreview();
+    expect(screen.getByRole('status', { name: 'Mock data warning' })).toHaveTextContent(
+      'DỮ LIỆU MÔ PHỎNG · KHÔNG GIAO DỊCH THẬT',
+    );
+    expect(screen.queryByRole('button', { name: 'Mở công cụ xem trước' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('region', { name: 'Công cụ xem trước' })).not.toBeInTheDocument();
+    expect(getDevPreviewScenario()).toBeNull();
+  });
+
   beforeEach(() => {
+    setDevtoolsEnabled(true);
     queryClient.clear();
     resetDevMockRuntime();
   });
   afterEach(() => {
+    setDevtoolsEnabled(originalDevtoolsEnabled);
     queryClient.clear();
     resetDevMockRuntime();
     vi.unstubAllGlobals();
