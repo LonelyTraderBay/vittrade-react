@@ -1,5 +1,5 @@
 import React, { useRef, useCallback, useState, useEffect, useContext, Suspense } from 'react';
-import { Outlet, useLocation, useNavigate } from 'react-router';
+import { useLocation, useNavigate, useOutlet } from 'react-router';
 import { BottomNav } from './BottomNav';
 import { StatusBar } from './StatusBar';
 import { UIContext } from '../../contexts/ui-context';
@@ -51,6 +51,8 @@ export function AppLayout() {
   const uiCtx = useContext(UIContext);
   const isOffline = uiCtx?.isOffline ?? false;
   const location = useLocation();
+  // The exiting animation owns a route snapshot, rather than a live Outlet context.
+  const outlet = useOutlet();
   const navigate = useNavigate();
   const { isAuthenticated, signOut } = useAuth();
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -166,9 +168,7 @@ export function AppLayout() {
           <ErrorBoundary section="Trang">
             {/* Page transition animation */}
             <PageTransition>
-              <Suspense fallback={<PageLoadingFallback />}>
-                <Outlet />
-              </Suspense>
+              <Suspense fallback={<PageLoadingFallback />}>{outlet}</Suspense>
             </PageTransition>
           </ErrorBoundary>
         </SwipeBack>

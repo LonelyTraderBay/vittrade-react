@@ -42,10 +42,15 @@ và checkpoint của [TRACKING](docs/architecture/production-readiness/TRACKING.
   draft và tác vụ đang chờ. Portal của sheet nằm trong frame ổn định. Regression
   kiểm cả adaptive/centered và resize thật; không lọc kích thước viewport hoặc
   thêm delay để che remount.
+- [Phone AppLayout](src/app/components/layout/AppLayout.tsx) lấy snapshot bằng
+  `useOutlet()` trước khi truyền vào `PageTransition`. Cây đang chạy exit giữ
+  route cũ tới khi animation kết thúc; không đặt `Outlet` đọc context hiện hành
+  bên trong cây được giữ lại. Trang mới chỉ mount trong cây mới, để dữ liệu vừa
+  nhập và dialog không bị remount khi người dùng tương tác ngay sau điều hướng.
 - [Telemetry](src/shared/telemetry/telemetry.ts) giới hạn dữ liệu và cô lập lỗi
   sink. Chưa có provider được cấu hình ở bootstrap; sink test cục bộ không chứng
   minh delivery hoặc alert. Quyết định provider/privacy thuộc B04.
-- [CI](.github/workflows/ci.yml) giữ ba profile browser, kiểm inventory/contract
+- [CI](.github/workflows/ci.yml) giữ các profile browser trong workflow hiện hành, kiểm inventory/contract
   và sổ nguồn bằng Git blob thật; report được lưu kể cả khi fail. Cấu hình đã sửa
   chưa thay cho kết quả Node 22/Ubuntu trên commit được giao.
 

@@ -1,7 +1,7 @@
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import { lazy } from 'react';
 import type { ComponentType, ReactNode } from 'react';
-import { MemoryRouter, Route, Routes, useLocation } from 'react-router';
+import { MemoryRouter, Route, Routes, useLocation, useNavigate } from 'react-router';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { UIContext } from '../../contexts/ui-context';
 import { AppLayout } from './AppLayout';
@@ -14,6 +14,7 @@ const pullToRefreshMock = vi.hoisted(() => ({
   onRefresh: undefined as (() => Promise<void> | void) | undefined,
 }));
 const hapticMock = vi.hoisted(() => ({ hapticLight: vi.fn() }));
+const transitionMock = vi.hoisted(() => ({ hold: false }));
 
 const NeverLoadedPage = lazy(() => new Promise<{ default: ComponentType }>(() => {}));
 
@@ -44,9 +45,16 @@ vi.mock('../mobile/ScrollToTopFAB', () => ({ ScrollToTopFAB: () => null }));
 vi.mock('../mobile/SwipeBack', () => ({
   SwipeBack: ({ children }: { children: ReactNode }) => <>{children}</>,
 }));
-vi.mock('../mobile/PageTransition', () => ({
-  PageTransition: ({ children }: { children: ReactNode }) => <>{children}</>,
-}));
+vi.mock('../mobile/PageTransition', async () => {
+  const { useRef } = await import('react');
+  return {
+    PageTransition: ({ children }: { children: ReactNode }) => {
+      const retained = useRef(children);
+      if (!transitionMock.hold) retained.current = children;
+      return <>{retained.current}</>;
+    },
+  };
+});
 vi.mock('@/shared/ui/OfflineBanner', () => ({
   OfflineBanner: ({ isReconnecting }: { isReconnecting?: boolean }) => (
     <div data-testid="offline-banner" data-reconnecting={Boolean(isReconnecting)} />
@@ -121,6 +129,7 @@ afterEach(() => {
   authState.signOut.mockReset();
   pullToRefreshMock.onRefresh = undefined;
   hapticMock.hapticLight.mockReset();
+  transitionMock.hold = false;
 });
 
 describe('AppLayout session timeout', () => {
@@ -212,5 +221,35 @@ describe('AppLayout session timeout', () => {
     } finally {
       window.innerWidth = previousWidth;
     }
+  });
+});
+
+describe('AppLayout outgoing route ownership', () => {
+  it('keeps the outgoing route until the transition releases its child snapshot', () => {
+    function FirstPage() {
+      const navigate = useNavigate();
+      return <button onClick={() => navigate('/second')}>First route</button>;
+    }
+    const tree = () => (
+      <MemoryRouter initialEntries={['/first']}>
+        <Routes>
+          <Route element={<AppLayout />}>
+            <Route path="/first" element={<FirstPage />} />
+            <Route path="/second" element={<h1>Second route</h1>} />
+          </Route>
+        </Routes>
+        <CurrentPath />
+      </MemoryRouter>
+    );
+    const view = render(tree());
+    transitionMock.hold = true;
+    fireEvent.click(screen.getByRole('button', { name: 'First route' }));
+    expect(screen.getByLabelText('Current path')).toHaveTextContent('/second');
+    // AnimatePresence retains the previous child while its exit animation is active.
+    expect(screen.getByRole('button', { name: 'First route' })).toBeInTheDocument();
+    expect(screen.queryByRole('heading', { name: 'Second route' })).not.toBeInTheDocument();
+    transitionMock.hold = false;
+    view.rerender(tree());
+    expect(screen.getByRole('heading', { name: 'Second route' })).toBeInTheDocument();
   });
 });
