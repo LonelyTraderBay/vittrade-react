@@ -64,6 +64,7 @@ export function WithdrawPage() {
   const [confirmOpen, setConfirmOpen] = useState(false);
   const withdrawalAttempt = useRef<{ signature: string; key: string } | null>(null);
   const submissionInFlight = useRef(false);
+  const invalidFieldToFocus = useRef<string | null>(null);
 
   const clearErrors = (...fields: string[]) => {
     setErrors((current) => {
@@ -88,6 +89,14 @@ export function WithdrawPage() {
   const received = Math.max(0, amountValue - fee);
   const busy =
     challengeMutation.isPending || verificationMutation.isPending || withdrawalMutation.isPending;
+
+  useEffect(() => {
+    // Consume only a failed validation attempt. Clearing errors while typing
+    // must not move focus into another field that is still invalid.
+    const field = invalidFieldToFocus.current;
+    invalidFieldToFocus.current = null;
+    if (field) document.getElementById(`withdraw-${field}`)?.focus();
+  }, [errors]);
 
   if (!canReadWallet) {
     return (
@@ -141,6 +150,8 @@ export function WithdrawPage() {
     } else if (amountValue > assetData.available) {
       next.amount = 'Số dư không đủ.';
     }
+    invalidFieldToFocus.current =
+      ['address', 'memo', 'amount'].find((field) => Boolean(next[field])) ?? null;
     setErrors(next);
     return Object.keys(next).length === 0;
   };

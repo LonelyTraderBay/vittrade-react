@@ -326,6 +326,7 @@ export function WithdrawalForm({
 
       <InputField
         id="withdraw-address"
+        required
         label="Địa chỉ ví nhận"
         value={address}
         disabled={!canWithdraw}
@@ -338,6 +339,7 @@ export function WithdrawalForm({
       {selectedNetwork.requiresMemo && (
         <InputField
           id="withdraw-memo"
+          required={selectedNetwork.requiresMemo}
           label={selectedNetwork.memoLabel ?? 'Memo'}
           value={memo}
           disabled={!canWithdraw}
@@ -350,6 +352,7 @@ export function WithdrawalForm({
 
       <InputField
         id="withdraw-amount"
+        required
         label="Số lượng rút"
         type="number"
         disabled={!canWithdraw}

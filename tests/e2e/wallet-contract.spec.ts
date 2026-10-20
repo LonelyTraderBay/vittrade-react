@@ -982,6 +982,7 @@ test.describe('wallet contract smoke on local API-mode build', () => {
       .toContain('rgba(229, 138, 0, 0.25)');
     await page.getByRole('button', { name: /Tiếp tục/ }).click();
     await expect(addressField).toHaveAttribute('aria-invalid', 'true');
+    await expect(addressField).toBeFocused();
     await expect(addressField).toHaveAttribute('aria-describedby', 'withdraw-address-error');
     await expect(page.locator('#withdraw-address-error')).toHaveAttribute('role', 'alert');
     await expect(amountField).toHaveAttribute('aria-invalid', 'true');

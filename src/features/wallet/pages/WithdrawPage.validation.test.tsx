@@ -78,6 +78,9 @@ describe('WithdrawPage validation accessibility', () => {
 
     const address = screen.getByLabelText('Địa chỉ ví nhận');
     const amount = screen.getByLabelText('Số lượng rút');
+    expect(address).toBeRequired();
+    expect(amount).toBeRequired();
+    expect(address).toHaveFocus();
     expect(address).toHaveAttribute('aria-invalid', 'true');
     expect(address).toHaveAttribute('aria-describedby', 'withdraw-address-error');
     expect(screen.getByText('Địa chỉ ví không hợp lệ.')).toHaveAttribute(
@@ -91,6 +94,9 @@ describe('WithdrawPage validation accessibility', () => {
     expect(address).toHaveAttribute('aria-invalid', 'false');
     expect(address).not.toHaveAttribute('aria-describedby');
     expect(screen.getByText('Nhập số tiền cần rút.')).toBeVisible();
+    expect(address).toHaveFocus();
+    await userEvent.click(continueButton());
+    expect(amount).toHaveFocus();
   });
 
   it('clears dependent network and minimum-amount errors on network change or correction', async () => {
@@ -106,6 +112,8 @@ describe('WithdrawPage validation accessibility', () => {
     await userEvent.click(continueButton());
 
     expect(await screen.findByText('Memo là bắt buộc cho mạng này.')).toBeVisible();
+    expect(screen.getByLabelText('Memo')).toBeRequired();
+    expect(screen.getByLabelText('Memo')).toHaveFocus();
     expect(screen.getByLabelText('Memo')).toHaveAttribute(
       'aria-describedby',
       'withdraw-memo-error',
@@ -127,6 +135,7 @@ describe('WithdrawPage validation accessibility', () => {
     await userEvent.selectOptions(network, 'tag-network');
     await userEvent.click(continueButton());
     await userEvent.type(screen.getByLabelText('Memo'), 'tag-123');
+    expect(screen.getByLabelText('Memo')).toHaveFocus();
     expect(screen.queryByText('Memo là bắt buộc cho mạng này.')).not.toBeInTheDocument();
     expect(screen.getByText('Tối thiểu 5 USDT.')).toBeVisible();
     await userEvent.click(screen.getByRole('button', { name: 'Tất cả' }));

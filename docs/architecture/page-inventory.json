@@ -3901,7 +3901,7 @@
       "domain": "wallet",
       "owner": "features/wallet",
       "status": "integration-pending",
-      "lines": 307,
+      "lines": 318,
       "routePaths": [
         "wallet/withdraw",
         "wallet/withdraw/:asset"
