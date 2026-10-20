@@ -1,5 +1,9 @@
 import React from 'react';
-import { SectionHeader, type SectionHeaderVariant } from '@/shared/ui/SectionHeader';
+import {
+  SectionHeader,
+  type SectionHeaderProps,
+  type SectionHeaderVariant,
+} from '@/shared/ui/SectionHeader';
 import { type VitDensity } from '@/shared/theme/density';
 import { pageInlineGutterStyle } from './pageGutter';
 
@@ -170,6 +174,8 @@ export function PageContent({
 interface PageSectionProps {
   /** Section label (optional, shows accent bar) */
   label?: string;
+  /** Semantic level, forwarded to SectionHeader; visual typography stays unchanged. */
+  headingLevel?: SectionHeaderProps['headingLevel'];
   /** Section header variant */
   variant?: SectionHeaderVariant;
   /** Accent bar color (default: primary amber) */
@@ -190,6 +196,7 @@ interface PageSectionProps {
 
 export function PageSection({
   label,
+  headingLevel,
   variant = 'accentBar',
   accentColor,
   gap = 'tight',
@@ -206,6 +213,7 @@ export function PageSection({
       {label && (
         <SectionHeader
           title={label}
+          headingLevel={headingLevel}
           variant={variant}
           accentColor={accentColor}
           density={density}

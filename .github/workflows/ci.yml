@@ -225,6 +225,7 @@ jobs:
           if [ "$BROWSER_PROFILE" = "auth-mock" ]; then
             VITE_ENABLE_DEVTOOLS=true npm run test:e2e -- --config "$BROWSER_CONFIG"
             VITE_ENABLE_DEVTOOLS=false npm run test:e2e -- --config playwright.preview-defaults.config.ts
+            VITE_ENABLE_DEVTOOLS=true npm run test:e2e -- --config playwright.ui-mock.config.ts
           else
             npm run test:e2e -- --config "$BROWSER_CONFIG"
           fi

@@ -1349,7 +1349,7 @@
       "domain": "market",
       "owner": "features/market",
       "status": "integration-pending",
-      "lines": 308,
+      "lines": 296,
       "routePaths": [
         "home"
       ],

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { renderWithProviders } from '@/test/test-utils';
-import { PageContent } from './PageContent';
+import { PageContent, PageSection } from './PageContent';
 import { PAGE_INLINE_GUTTER_CSS_VAR, SHELL_PAGE_GUTTER_OWNER_STYLE } from './pageGutter';
 
 describe('PageContent gutter contract', () => {
@@ -57,5 +57,26 @@ describe('PageContent gutter contract', () => {
     expect(container.querySelector('.full-bleed-gutter')?.getAttribute('style')).toContain(
       'padding-inline: 0px',
     );
+  });
+});
+
+describe('PageSection semantic heading contract', () => {
+  it.each([2, 3, 4] as const)(
+    'forwards heading level %i without changing title styling',
+    (level) => {
+      const { getByRole } = renderWithProviders(
+        <PageSection label="Thanh khoản" headingLevel={level}>
+          Body
+        </PageSection>,
+      );
+      expect(getByRole('heading', { level, name: 'Thanh khoản' })).toHaveStyle({
+        fontSize: '14px',
+        fontWeight: 700,
+      });
+    },
+  );
+  it('preserves the existing h3 default for unchanged consumers', () => {
+    const { getByRole } = renderWithProviders(<PageSection label="Mặc định">Body</PageSection>);
+    expect(getByRole('heading', { level: 3, name: 'Mặc định' })).toBeVisible();
   });
 });

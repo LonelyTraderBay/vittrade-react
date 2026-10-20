@@ -1364,6 +1364,10 @@ Ví dụ sửa tài liệu dựa trên implementation thật (chưa thay đổi 
 <Header title="Trading Bots" back breadcrumb />
 ```
 
+`PageSection.headingLevel` chuyển tiếp hợp đồng semantic level của SectionHeader; mặc định h3 được giữ để không đổi consumer hiện hành. Trang chọn level theo cấu trúc nội dung, không theo cỡ chữ. Market Home dùng level 2 sau page title h1; typography không đổi.
+
+Market Home giữ pattern hàng quote gọn riêng cho summary cards; không đồng nhất với MarketItem có sparkline/favorite. Hàng quote dùng native Link và cùng URL formatter, accessible name chứa đủ symbol/giá. Nội dung được wrap theo độ rộng card bằng flex max-content basis; khi thiếu chỗ giá xuống dòng, không cắt hoặc giảm precision để vừa bố cục. Regression tại `tests/e2e/ui-market-home-mock.spec.ts` kiểm text bounds, hai phía breakpoint, hai theme, text spacing/resize, keyboard và route Back qua MSW development. Đây là kiểm kỹ thuật, không thay AT/UAT hoặc nghiệm thu toàn bộ UI.
+
 ### 21.12 Quy trình AI, ngoại lệ và cập nhật contract
 
 **PROPOSED — MUST trước khi AI tạo/sửa trang:**

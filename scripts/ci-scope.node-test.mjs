@@ -188,6 +188,20 @@ test('auth mock CI retains diagnostic contracts and separately verifies disabled
   assert.ok(profile.includes("testMatch: '**/auth-devtools-disabled-mock.spec.ts'"));
 });
 
+test('UI rollout runs in development MSW without replacing existing browser contracts', () => {
+  const workflow = readFileSync(new URL('../.github/workflows/ci.yml', import.meta.url), 'utf8');
+  assert.ok(
+    workflow.includes(
+      'VITE_ENABLE_DEVTOOLS=true npm run test:e2e -- --config playwright.ui-mock.config.ts',
+    ),
+  );
+  const ui = readFileSync(new URL('../playwright.ui-mock.config.ts', import.meta.url), 'utf8');
+  const smoke = readFileSync(new URL('../playwright.config.ts', import.meta.url), 'utf8');
+  assert.ok(ui.includes("testMatch: '**/ui-*-mock.spec.ts'"));
+  assert.ok(ui.includes('authMockConfig'));
+  assert.ok(smoke.includes("'**/ui-*-mock.spec.ts'"));
+});
+
 test('ledger format preserves canonical writer bytes and rejects malformed/reformatted JSON', () => {
   const canonical = JSON.stringify({ evidenceIds: ['EV-1'], value: 'Tiếng Việt' }, null, 2) + '\n';
   assert.doesNotThrow(() => verifyLedgerFormat(canonical));
