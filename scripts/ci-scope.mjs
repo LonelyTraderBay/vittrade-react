@@ -97,6 +97,15 @@ export function verifyGate(needs) {
   return { mode, required, notApplicable, reusedRunId: scope.outputs.reused_run_id || null };
 }
 
+export function verifyLedgerFormat(text) {
+  // Existing ledger writers use this serialization, including self-audit hashes.
+  // A different formatter would rewrite unrelated history/evidence bytes.
+  if (text !== JSON.stringify(JSON.parse(text), null, 2) + '\n')
+    throw new Error(
+      'Ledger must use its existing JSON.stringify two-space serialization and final LF',
+    );
+}
+
 const git = (args) => execFileSync('git', args, { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
 const fingerprint = (ref) => runtimeFingerprint(git(['ls-tree', '-r', '-z', ref]));
 const revision = (ref) => git(['rev-parse', ref]).trim();
@@ -190,6 +199,8 @@ if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.ar
       report('gate', { result: 'fail', error: error.message, needs });
       throw error;
     }
-  } else if (process.argv[2] === 'classify') await classify();
+  } else if (process.argv[2] === 'ledger-format')
+    verifyLedgerFormat(readFileSync(metadataPath, 'utf8'));
+  else if (process.argv[2] === 'classify') await classify();
   else throw new Error('Expected classify or gate');
 }

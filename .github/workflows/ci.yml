@@ -245,7 +245,7 @@ jobs:
           mkdir -p .artifacts/ci
           node scripts/check-git-eol.mjs
           git diff --check HEAD^ HEAD
-          npx prettier --check --ignore-path /dev/null docs/architecture/production-readiness/TRACKING.json
+          node scripts/ci-scope.mjs ledger-format
           node docs/architecture/production-readiness/check-tracking.mjs | tee .artifacts/ci/readiness.txt
       - name: Preserve verification reports
         if: always()

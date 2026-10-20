@@ -8,6 +8,7 @@ import {
   runtimeFingerprint,
   selectScope,
   verifyGate,
+  verifyLedgerFormat,
 } from './ci-scope.mjs';
 
 const input = {
@@ -154,4 +155,17 @@ test('coverage uses the identical Vitest invocation plus instrumentation', () =>
   assert.ok(workflow.includes('npm run test:coverage -- --reporter=dot'));
   assert.ok(!workflow.includes('npm run test:run'));
   assert.ok(workflow.includes('if: always()'));
+});
+
+test('ledger format preserves canonical writer bytes and rejects malformed/reformatted JSON', () => {
+  const canonical = JSON.stringify({ evidenceIds: ['EV-1'], value: 'Tiếng Việt' }, null, 2) + '\n';
+  assert.doesNotThrow(() => verifyLedgerFormat(canonical));
+  for (const invalid of [
+    '{',
+    canonical.trim(),
+    canonical.replaceAll('\n', '\r\n'),
+    '{"value":1}\n',
+  ]) {
+    assert.throws(() => verifyLedgerFormat(invalid));
+  }
 });
