@@ -14,6 +14,12 @@ afterEach(() => {
 });
 
 describe('Header', () => {
+  it('does not infer a breadcrumb merely from a back action', () => {
+    renderWithProviders(<Header variant="standard" back title="Details" />);
+    expect(screen.getByRole('button', { name: 'Quay lại' })).toBeInTheDocument();
+    expect(screen.queryByRole('navigation', { name: 'breadcrumb' })).not.toBeInTheDocument();
+  });
+
   it.each(['page', 'standard'] as const)(
     '%s variant uses the shared shell-owned gutter contract',
     (variant) => {

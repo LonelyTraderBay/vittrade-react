@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router';
 import { ErrorState } from '@/shared/ui/ErrorState';
 import { isApiError } from '@/shared/api/api-error';
 import { Header } from '@/shared/ui/layout/Header';
+import { PageContent } from '@/shared/ui/layout/PageContent';
 import { PageLayout } from '@/shared/ui/layout/PageLayout';
 import { SparklineChart } from '@/shared/ui/charts/SparklineChart';
 import { TrCard } from '@/shared/ui/TrCard';
@@ -170,6 +171,7 @@ export function WatchlistPage() {
           </span>
         </div>
       </div>
+      {/* The dense list region owns 12px gaps and 24px trailing clearance. */}
       {entries.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-20 gap-3">
           <Star size={48} color={colors.borderSolid} />
@@ -187,11 +189,11 @@ export function WatchlistPage() {
           )}
         </div>
       ) : (
-        <div className="px-5 py-3">
+        <PageContent padding="default" gap={12} className="pb-6">
           {entries.map(({ entry, pair }) => {
             const positive = pair.change24h >= 0;
             return (
-              <TrCard key={entry.id} className="mb-3 p-4">
+              <TrCard key={entry.id} className="p-4">
                 <div className="flex items-center gap-3">
                   <button
                     onClick={() => navigate(`${prefix}/pair/${encodeURIComponent(pair.id)}`)}
@@ -307,7 +309,7 @@ export function WatchlistPage() {
               </TrCard>
             );
           })}
-        </div>
+        </PageContent>
       )}
     </PageLayout>
   );

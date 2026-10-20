@@ -109,6 +109,10 @@ jobs:
       - name: Production mock import budget
         run: npm run production-mock-imports:check
 
+      - name: Design system changed-code guard
+        run: |
+          node --input-type=module -e 'import { checkDesignSystemDiff } from "./scripts/check-design-system-diff.mjs"; const report = checkDesignSystemDiff(); console.log(JSON.stringify(report, null, 2)); if (!report.passed) process.exit(1);'
+
       - name: Production route boundaries
         run: npm run production-routes:check
 

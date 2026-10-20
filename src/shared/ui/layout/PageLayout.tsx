@@ -7,13 +7,14 @@ import { pageInlineGutterStyle } from './pageGutter';
  *  PageLayout — Enterprise Standard Page Wrapper
  * ══════════════════════════════════════════════════════════════
  *
- *  THE canonical layout wrapper for every page in the app.
+ *  Canonical content-page wrapper; route/auth/immersive adapters may delegate
+ *  to a documented layout owner (see page-layout-contract.test.ts).
  *  Enforces consistent structure that works correctly inside
  *  AppLayout's scroll container.
  *
  *  CONSTRAINTS (from Guidelines.md + codebase rules):
  *  ─────────────────────────────────────────────────────────
- *  ✓  flex flex-col + min-h-full — fills scroll container
+ *  ✓  flex flex-col + minHeight: 100% — fills scroll container
  *  ✓  pb-8 (32px) bottom padding — content never hidden by BottomNav
  *  ✓  background: c.bg — semantic token, auto dark/light
  *  ✗  NEVER h-screen / h-full + overflow-y-auto

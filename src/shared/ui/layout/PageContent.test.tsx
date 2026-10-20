@@ -4,6 +4,29 @@ import { PageContent } from './PageContent';
 import { PAGE_INLINE_GUTTER_CSS_VAR, SHELL_PAGE_GUTTER_OWNER_STYLE } from './pageGutter';
 
 describe('PageContent gutter contract', () => {
+  it.each([
+    ['compact', 'pt-2', 8],
+    ['standard', 'pt-3', 16],
+    ['relaxed', 'pt-4', 24],
+    ['hero', 'pt-4', 24],
+    ['tool', 'pt-2', 8],
+  ] as const)('maps %s density through the existing presets', (density, padding, gap) => {
+    const { container } = renderWithProviders(<PageContent density={density}>Content</PageContent>);
+    expect(container.firstChild).toHaveClass(padding);
+    expect(container.firstChild).toHaveStyle({ gap: `${gap}px` });
+  });
+
+  it('lets explicit presets and measured gaps win over density', () => {
+    const { container } = renderWithProviders(
+      <PageContent density="hero" padding="none" gap={12} fullBleed grow>
+        Content
+      </PageContent>,
+    );
+    expect(container.firstChild).toHaveClass('flex-1');
+    expect(container.firstChild).not.toHaveClass('pt-4');
+    expect(container.firstChild).toHaveStyle({ gap: '12px', paddingInline: '0px', minHeight: '0' });
+  });
+
   it('uses the shell gutter when provided and preserves the 20px standalone fallback', () => {
     const { container } = renderWithProviders(
       <>

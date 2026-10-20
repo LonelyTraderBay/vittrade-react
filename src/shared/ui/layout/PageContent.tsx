@@ -8,7 +8,7 @@ import { pageInlineGutterStyle } from './pageGutter';
  *  PageContent — Enterprise Standard Content Area
  * ══════════════════════════════════════════════════════════════
  *
- *  Standardizes the content area between Header and StickyFooter.
+ *  Owns one continuous content region between Header and StickyFooter.
  *  Enforces consistent horizontal padding and vertical spacing
  *  across all pages.
  *
@@ -43,7 +43,7 @@ import { pageInlineGutterStyle } from './pageGutter';
  *  </PageContent>
  *
  *  // Page with flush-to-edge hero section
- *  <PageContent padding="none">
+ *  <PageContent padding="none" fullBleed>
  *    <HeroBanner />  // full width
  *  </PageContent>
  *  <PageContent>     // back to standard padding

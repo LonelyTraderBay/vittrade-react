@@ -1736,7 +1736,7 @@
       "domain": "market",
       "owner": "features/market",
       "status": "integration-pending",
-      "lines": 315,
+      "lines": 317,
       "routePaths": [
         "markets/watchlist"
       ],
@@ -1753,6 +1753,7 @@
           "@/shared/ui/TrCard",
           "@/shared/ui/charts/SparklineChart",
           "@/shared/ui/layout/Header",
+          "@/shared/ui/layout/PageContent",
           "@/shared/ui/layout/PageLayout"
         ],
         "mockReferences": [],
@@ -2194,6 +2195,7 @@
           "@/shared/navigation/useRoutePrefix",
           "@/shared/ui/TrCard",
           "@/shared/ui/layout/Header",
+          "@/shared/ui/layout/PageContent",
           "@/shared/ui/layout/PageLayout"
         ],
         "mockReferences": [],

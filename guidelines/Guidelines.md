@@ -1274,6 +1274,10 @@ Chọn đúng TabBar variant:
 - Không suy ra density từ kích thước viewport. `density` trong `PageContent` chỉ ánh xạ preset padding/gap; `src/shared/theme/density.ts` là metrics cho control/card và không phải spacing scale tổng quát.
 - Giữ `0`, tỷ lệ, `calc()`, kích thước dựa trên dữ liệu và vị trí runtime khi chúng biểu diễn hình học/thao tác, không phải lựa chọn spacing tùy tiện.
 
+Các pattern numeric hiện được giữ có chủ đích: danh sách dữ liệu `WatchlistPage` dùng gap12px, top12px và trailing24px để thay margin từng card; filter band giữ padding nội bộ20px riêng. `P2PFraudPreventionPage` giữ gap21px của nội dung giáo dục, top16px; trailing44px thay chuỗi padding16 + gap21 + spacer8 (45px cũ, chủ ý giảm1px). Đây là spacing theo vùng, không phải gutter thứ hai. `tests/e2e/layout-migration.spec.ts` đo hai phía breakpoint768/1024 ở light/dark; không suy rộng thành mọi route/viewport.
+
+`page-layout-contract.test.ts` kiểm page inventory bằng import/JSX alias và danh sách owner ngoại lệ phải còn hiệu lực. `design-system-legacy-guard.test.ts` giữ baseline đo được4 consumer typography legacy,2 consumer Fibonacci spacing,1 consumer CTA color override và95 mảnh selector CSS theo class shape; không tăng vi phạm mới. Các baseline là nợ cần giảm theo C06.14/C06.15, không phải mẫu thiết kế được duyệt. Thêm ngoại lệ hoặc đổi public contract phải qua quy trình review/CODEOWNERS hiện có, có lý do, phạm vi, test và điều kiện xem lại. Full CI còn chạy AST changed-code guard hiện có tại `scripts/check-design-system-diff.mjs`; guard tự động không thay review về semantics, dynamic consumers hay UI thật.
+
 ### 21.7 PageSection with Labels
 
 **SHOULD**
