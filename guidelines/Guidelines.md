@@ -1368,6 +1368,8 @@ Ví dụ sửa tài liệu dựa trên implementation thật (chưa thay đổi 
 
 Market Home giữ pattern hàng quote gọn riêng cho summary cards; không đồng nhất với MarketItem có sparkline/favorite. Hàng quote dùng native Link và cùng URL formatter, accessible name chứa đủ symbol/giá. Nội dung được wrap theo độ rộng card bằng flex max-content basis; khi thiếu chỗ giá xuống dòng, không cắt hoặc giảm precision để vừa bố cục. Regression tại `tests/e2e/ui-market-home-mock.spec.ts` kiểm text bounds, hai phía breakpoint, hai theme, text spacing/resize, keyboard và route Back qua MSW development. Đây là kiểm kỹ thuật, không thay AT/UAT hoặc nghiệm thu toàn bộ UI.
 
+Development preview giữ cảnh báo dữ liệu mô phỏng. `RootLayout.tsx` truyền `bottomNavigationVisible` theo shell đang chạy tới `PreviewControls.tsx`; preview chừa vị trí phía trên navigation khi cần, độc lập với typography hẹp/rộng. Responsive shell còn navigation dưới ở 768–1023px, trong khi Tablet shell dùng sidebar; không suy navigation chỉ từ ngưỡng 768px. `tests/e2e/ui-preview-navigation-mock.spec.ts` đo hit target và giao hình học, click chuột thật, keyboard và resize qua breakpoint. Đây là ngoại lệ bố cục của preview, không thay đổi navigation hoặc business contract của sản phẩm.
+
 ### 21.12 Quy trình AI, ngoại lệ và cập nhật contract
 
 **PROPOSED — MUST trước khi AI tạo/sửa trang:**

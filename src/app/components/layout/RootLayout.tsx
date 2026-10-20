@@ -5,6 +5,7 @@ import { MobileFrame } from './MobileFrame';
 import { ErrorBoundary } from '../mobile/ErrorBoundary';
 import { ThemedToaster } from '@/shared/ui/ThemedToaster';
 import { PlatformSwitcher } from './PlatformSwitcher';
+import { useBreakpoint } from '../../hooks/useBreakpoint';
 
 /**
  * ══════════════════════════════════════════════════════════
@@ -28,10 +29,11 @@ export function RootLayout({
   developmentPreviewControls: DevelopmentPreviewControls,
   isEquivalentRoute,
 }: {
-  developmentPreviewControls?: React.ComponentType;
+  developmentPreviewControls?: React.ComponentType<{ bottomNavigationVisible?: boolean }>;
   isEquivalentRoute?: (currentPathname: string, targetPathname: string) => boolean;
 }) {
   const location = useLocation();
+  const { isDesktop, isMobile } = useBreakpoint();
 
   // Determine which platform shell we're in
   const isTabletRoute = location.pathname.startsWith('/t/') || location.pathname === '/t';
@@ -44,6 +46,8 @@ export function RootLayout({
   // Tablet, Web, Responsive routes render full viewport
   const needsMobileFrame =
     !isTabletRoute && !isWebRoute && !isResponsiveRoute && !isStandaloneRoute;
+  const bottomNavigationVisible =
+    needsMobileFrame || (isResponsiveRoute && !isDesktop) || (isWebRoute && isMobile);
 
   return (
     <ErrorBoundary section="VitTrade App">
@@ -64,7 +68,7 @@ export function RootLayout({
         />
         {DevelopmentPreviewControls ? (
           <React.Suspense fallback={null}>
-            <DevelopmentPreviewControls />
+            <DevelopmentPreviewControls bottomNavigationVisible={bottomNavigationVisible} />
           </React.Suspense>
         ) : null}
       </AppProvider>

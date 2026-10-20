@@ -36,6 +36,7 @@ function renderPreview(
       user: { ...TEST_AUTH_USER, id: 'dev-developer', email: 'developer@vittrade.local' },
     },
   }),
+  bottomNavigationVisible?: boolean,
 ) {
   const adapter: AuthAdapter = {
     ...testAuthAdapter,
@@ -49,7 +50,7 @@ function renderPreview(
         path: '*',
         element: (
           <>
-            <PreviewControls />
+            <PreviewControls bottomNavigationVisible={bottomNavigationVisible} />
             <CurrentPath />
           </>
         ),
@@ -116,6 +117,25 @@ describe('development mock preview controls', () => {
     });
     router.dispose();
   });
+
+  it.each([true, false])(
+    'uses shell navigation visibility %s on a tablet viewport',
+    async (visible) => {
+      Object.defineProperty(window, 'innerWidth', { configurable: true, value: 768 });
+      const { router } = renderPreview(undefined, visible);
+      await act(async () => {
+        await router.navigate('/r/home');
+      });
+      expect(screen.getByTestId('dev-preview-controls')).toHaveStyle({
+        bottom: visible ? 'calc(88px + env(safe-area-inset-bottom, 0px))' : '16px',
+      });
+      // Wide warning typography is independent of the navigation placement.
+      expect(screen.getByRole('status', { name: 'Mock data warning' })).toHaveStyle({
+        padding: '9px 12px',
+      });
+      router.dispose();
+    },
+  );
 
   it('shows the mock warning and switches persona through the auth adapter after clearing account data', async () => {
     const user = userEvent.setup();

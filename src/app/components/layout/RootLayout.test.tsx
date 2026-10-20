@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import { lazy, type ComponentType } from 'react';
 import type { ReactNode } from 'react';
 import { MemoryRouter, Route, Routes } from 'react-router';
@@ -85,6 +85,45 @@ describe('RootLayout platform shells', () => {
       'data-preview-controls-visible',
       'false',
     );
+  });
+
+  it.each([
+    ['/home', 390, true],
+    ['/r/home', 767, true],
+    ['/r/home', 768, true],
+    ['/r/home', 1023, true],
+    ['/r/home', 1024, false],
+    ['/w/home', 390, true],
+    ['/w/home', 1440, false],
+    ['/t/home', 768, false],
+  ])('reports actual shell navigation at %s, width %i', (path, width, expected) => {
+    const previousWidth = window.innerWidth;
+    Object.defineProperty(window, 'innerWidth', { configurable: true, value: width });
+    const PreviewControl = ({ bottomNavigationVisible }: { bottomNavigationVisible?: boolean }) => (
+      <output data-testid="preview-navigation">{String(bottomNavigationVisible)}</output>
+    );
+    const view = render(
+      <MemoryRouter initialEntries={[path]}>
+        <Routes>
+          <Route element={<RootLayout developmentPreviewControls={PreviewControl} />}>
+            <Route path="*" element={<div>Route content</div>} />
+          </Route>
+        </Routes>
+      </MemoryRouter>,
+    );
+    try {
+      expect(screen.getByTestId('preview-navigation')).toHaveTextContent(String(expected));
+      if (path === '/r/home' && width === 768) {
+        act(() => {
+          Object.defineProperty(window, 'innerWidth', { configurable: true, value: 1024 });
+          window.dispatchEvent(new Event('resize'));
+        });
+        expect(screen.getByTestId('preview-navigation')).toHaveTextContent('false');
+      }
+    } finally {
+      view.unmount();
+      Object.defineProperty(window, 'innerWidth', { configurable: true, value: previousWidth });
+    }
   });
 
   it.each(['/home', '/markets'])('wraps phone route %s in MobileFrame', (path) => {

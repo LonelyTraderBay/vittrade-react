@@ -142,9 +142,14 @@ const actionStyle: CSSProperties = {
   cursor: 'pointer',
 };
 
-export function PreviewControls() {
+export function PreviewControls({
+  bottomNavigationVisible,
+}: {
+  bottomNavigationVisible?: boolean;
+} = {}) {
   const location = useLocation();
   const isNarrowViewport = typeof window !== 'undefined' && window.innerWidth < 768;
+  const clearBottomNavigation = bottomNavigationVisible ?? isNarrowViewport;
   const storedScenario = getDevPreviewScenario();
   const { user, signIn, signOut } = useAuth();
   const navigate = useNavigate();
@@ -277,10 +282,7 @@ export function PreviewControls() {
             }
           : {
               ...shellStyle,
-              bottom:
-                typeof window !== 'undefined' && window.innerWidth < 768
-                  ? 'calc(88px + env(safe-area-inset-bottom, 0px))'
-                  : 16,
+              bottom: clearBottomNavigation ? 'calc(88px + env(safe-area-inset-bottom, 0px))' : 16,
             }
       }
     >
