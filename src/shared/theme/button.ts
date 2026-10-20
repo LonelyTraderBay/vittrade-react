@@ -14,6 +14,7 @@ export const ButtonGradients = {
   success: 'linear-gradient(135deg, #10B981 0%, #059669 100%)',
   danger: 'linear-gradient(135deg, #DC2626 0%, #991B1B 100%)',
   warning: 'linear-gradient(135deg, #F59E0B 0%, #D97706 100%)',
+  info: 'linear-gradient(135deg, #3B82F6 0%, #5B94F5 100%)',
   ghost: 'transparent',
 } as const;
 
@@ -25,6 +26,7 @@ export const ButtonTextColors = {
   success: '#111827',
   danger: '#FFFFFF',
   warning: '#111827',
+  info: '#111827',
 } as const;
 
 export const ButtonShadows = {
@@ -32,6 +34,7 @@ export const ButtonShadows = {
   success: '0 4px 16px rgba(16,185,129,0.3)',
   danger: '0 4px 16px rgba(220,38,38,0.3)',
   warning: '0 4px 16px rgba(245,158,11,0.3)',
+  info: '0 4px 16px rgba(59,130,246,0.3)',
   ghost: 'none',
 } as const;
 

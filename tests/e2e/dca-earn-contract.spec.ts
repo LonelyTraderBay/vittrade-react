@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { ButtonGradients, ButtonTextColors } from '../../src/shared/theme/button';
 
 const session = {
   user: {
@@ -106,7 +107,20 @@ test.describe('DCA and Earn contract smoke on staging build', () => {
     await page.getByRole('button', { name: 'Cancel' }).click();
     const confirmCancellation = page.getByRole('button', { name: 'Xác nhận hủy' });
     await expect(confirmCancellation).toBeVisible();
-    await confirmCancellation.click({ force: true });
+    const actionStyle = await confirmCancellation.evaluate((element) => ({
+      background: getComputedStyle(element).backgroundImage,
+      color: getComputedStyle(element).color,
+    }));
+    const rgb = (hex: string) =>
+      `rgb(${hex
+        .match(/[\da-f]{2}/gi)!
+        .map((value) => parseInt(value, 16))
+        .join(', ')})`;
+    const stops = ButtonGradients.danger.match(/#[\da-f]{6}/gi)!;
+    expect(actionStyle.background).toContain(rgb(stops[0]));
+    expect(actionStyle.background).toContain(rgb(stops[1]));
+    expect(actionStyle.color).toBe(rgb(ButtonTextColors.danger));
+    await confirmCancellation.click();
     await expect.poll(() => deleteCalled).toBe(true);
   });
 

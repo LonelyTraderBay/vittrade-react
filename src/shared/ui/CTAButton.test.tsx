@@ -94,7 +94,7 @@ describe('CTAButton', () => {
   });
 
   it('keeps every gradient CTA above 4.5:1 across interpolated color stops', () => {
-    for (const variant of ['primary', 'success', 'danger', 'warning'] as const) {
+    for (const variant of ['primary', 'success', 'danger', 'warning', 'info'] as const) {
       const stops = ButtonGradients[variant].match(/#[0-9a-f]{6}/gi)!;
       expect(stops.length, `${variant} gradient stops`).toBeGreaterThanOrEqual(2);
 
