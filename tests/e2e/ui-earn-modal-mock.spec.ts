@@ -274,6 +274,15 @@ for (const mode of ['light', 'dark'] as const) {
         await expect(submit).toBeDisabled();
         await expect(amount).toBeDisabled();
         await expect(dialog.getByRole('button', { name: 'Đóng', exact: true })).toBeDisabled();
+        await expect(dialog).toBeFocused();
+        for (const key of ['Tab', 'Shift+Tab']) {
+          for (let i = 0; i < 8; i++) {
+            await page.keyboard.press(key);
+            expect(
+              await dialog.evaluate((element) => element.contains(document.activeElement)),
+            ).toBe(true);
+          }
+        }
         await page.keyboard.press('Escape');
         await page.locator('[data-bottom-sheet-overlay]').click({ position: { x: 4, y: 4 } });
         await expect(dialog).toBeVisible();

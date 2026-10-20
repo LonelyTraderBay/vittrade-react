@@ -260,6 +260,22 @@ export function BottomSheetV2({
     wasOpenRef.current = modalOpen;
   }, [modalOpen]);
 
+  useLayoutEffect(() => {
+    if (!modalOpen || !preventClose) return;
+    const panel = sheetRef.current;
+    const focused = document.activeElement;
+    if (!panel || panel.closest('[aria-hidden="true"], [inert]')) return;
+
+    // A disabled focused action can leave BODY active; Radix cannot refocus that action.
+    // Preserve usable fields and focus in another dialog instead of taking it from them.
+    if (
+      focused === document.body ||
+      (focused instanceof HTMLElement && panel.contains(focused) && focused.matches(':disabled'))
+    ) {
+      panel.focus({ preventScroll: true });
+    }
+  }, [modalOpen, preventClose]);
+
   // Read the latest portal ref at the frame, including a panel mounted after this effect.
   const isPanelConnected = useCallback(() => Boolean(sheetRef.current?.isConnected), []);
 

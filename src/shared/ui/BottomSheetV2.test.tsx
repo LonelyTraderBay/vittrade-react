@@ -207,6 +207,71 @@ describe('BottomSheetV2', () => {
     fireEvent.keyDown(screen.getByRole('dialog', { name: 'Dialog' }), { key: 'Tab' });
   });
 
+  for (const variant of ['bottom', 'center'] as const) {
+    it(`keeps focus in the ${variant} panel when its focused action becomes disabled`, async () => {
+      const sheet = (pending: boolean) => (
+        <StrictMode>
+          <BottomSheetV2
+            open
+            variant={variant}
+            onClose={() => undefined}
+            title="Pending action"
+            showCloseButton={false}
+            preventClose={pending}
+          >
+            <button disabled={pending}>Submit</button>
+          </BottomSheetV2>
+        </StrictMode>
+      );
+      const { rerender } = renderWithProviders(sheet(false));
+      const dialog = screen.getByRole('dialog', { name: 'Pending action' });
+      const submit = screen.getByRole('button', { name: 'Submit' });
+      submit.focus();
+      rerender(sheet(true));
+
+      expect(submit).toBeDisabled();
+      expect(dialog).toHaveFocus();
+      const user = userEvent.setup();
+      await user.tab();
+      expect(dialog).toHaveFocus();
+      await user.tab({ shift: true });
+      expect(dialog).toHaveFocus();
+    });
+  }
+
+  it('preserves focus in an enabled field when close prevention starts', () => {
+    const sheet = (pending: boolean) => (
+      <BottomSheetV2 open onClose={() => undefined} title="Editable draft" preventClose={pending}>
+        <input aria-label="Draft" defaultValue="12.3456789" />
+      </BottomSheetV2>
+    );
+    const { rerender } = renderWithProviders(sheet(false));
+    const input = screen.getByRole('textbox', { name: 'Draft' });
+    input.focus();
+    rerender(sheet(true));
+    expect(input).toHaveFocus();
+    expect(input).toHaveValue('12.3456789');
+  });
+
+  it('does not take focus from a child dialog when its parent starts preventing close', () => {
+    const sheets = (pending: boolean, childOpen: boolean) => (
+      <BottomSheetV2 open onClose={() => undefined} title="Parent" preventClose={pending}>
+        <button disabled={pending}>Parent action</button>
+        {childOpen && (
+          <BottomSheetV2 open onClose={() => undefined} title="Child">
+            <input aria-label="Child field" />
+          </BottomSheetV2>
+        )}
+      </BottomSheetV2>
+    );
+    const { rerender } = renderWithProviders(sheets(false, false));
+    rerender(sheets(false, true));
+    const input = screen.getByRole('textbox', { name: 'Child field' });
+    input.focus();
+    rerender(sheets(true, true));
+    expect(input).toHaveFocus();
+  });
+
   it('closes on Escape when dismissal is allowed', () => {
     const onClose = vi.fn();
     renderWithProviders(

@@ -1374,6 +1374,8 @@ Wallet transfer nối lỗi số tiền tại `getWalletTransferValidationError`
 
 Auth dùng `features/auth/lib/login-return-path.ts` để đọc `location.state.from` của ProtectedRoute hoặc `returnTo` của Web session-expired. Chỉ nhận URL cục bộ, giữ nguyên query/hash và precision trong URL; đích ngoài origin, đường dẫn lỗi hoặc vòng lặp Auth/Onboarding quay về home của shell. ProtectedRoute giữ prefix phone/tablet/web/responsive khi đưa tới login. Login và login-MFA truyền cùng context qua OTP, lỗi mã, restart sau 429 và hết hạn; chỉ quay về đích khi xác thực thành công. Không truyền context này vào luồng đăng ký hoặc thay API/session/permission contract. `tests/e2e/ui-auth-return-mock.spec.ts` kiểm qua development MSW; đây không phải bằng chứng backend hoặc chính sách hủy request khi rời form.
 
+`BottomSheetV2` giữ focus khi chuyển sang `preventClose`: nếu control đang có focus bị disabled hoặc focus rơi về `body`, primitive đưa focus về panel để Tab/Shift+Tab không đi ra nền. Không lấy focus khỏi field còn hoạt động hoặc dialog con; panel đang ẩn hay inert không được nhận focus. Consumer vẫn sở hữu trạng thái disabled, request, dữ liệu nhập và phản hồi lỗi; `preventClose` không tự vô hiệu hóa field nghiệp vụ. Regression nằm tại `src/shared/ui/BottomSheetV2.test.tsx` (bottom/center, StrictMode, field hợp lệ, dialog con) và các ca pending trong `tests/e2e/ui-earn-modal-mock.spec.ts` (keyboard, close guards, payload, draft và retry key).
+
 ### 21.12 Quy trình AI, ngoại lệ và cập nhật contract
 
 **PROPOSED — MUST trước khi AI tạo/sửa trang:**
