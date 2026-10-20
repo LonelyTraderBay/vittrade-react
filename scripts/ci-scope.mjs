@@ -29,15 +29,15 @@ export function runtimeFingerprint(treeOutput) {
   return createHash('sha256').update(entries.sort().join('\0')).digest('hex');
 }
 
-export function hasFullGate(run, jobs, head, pullNumber, baseSha) {
+export function hasFullGate(run, jobs, head, pullNumber) {
   return (
     run.head_sha === head &&
     run.event === 'pull_request' &&
     run.path === '.github/workflows/ci.yml' &&
     run.conclusion === 'success' &&
-    run.pull_requests?.some(
-      (pr) => pr.number === pullNumber && pr.base?.sha === baseSha && pr.head?.sha === head,
-    ) &&
+    // Related PR refs are mutable even on historical run API responses.
+    // Bind source to run.head_sha; bind tested inputs to the immutable artifact.
+    run.pull_requests?.some((pr) => pr.number === pullNumber) &&
     fullJobNames.every((name) => {
       const matches = jobs.filter((job) => job.name === name);
       return (
@@ -51,6 +51,40 @@ export function hasFullGate(run, jobs, head, pullNumber, baseSha) {
       );
     })
   );
+}
+
+export function readScopeArchive(bytes, python = 'python3') {
+  const result = spawnSync(
+    python,
+    [
+      '-c',
+      'import io,sys,zipfile\nwith zipfile.ZipFile(io.BytesIO(sys.stdin.buffer.read())) as z:\n names=[i for i in z.infolist() if i.filename.endswith("/scope.json") or i.filename=="scope.json"]\n assert len(names)==1 and names[0].file_size < 2000000\n sys.stdout.buffer.write(z.read(names[0]))',
+    ],
+    { input: bytes, encoding: 'utf8', maxBuffer: 2_000_000 },
+  );
+  if (result.status !== 0) throw new Error('Cannot verify immutable scope archive');
+  return JSON.parse(result.stdout);
+}
+
+export function verifyReuseArtifact(bytes, artifact, run, head, expectedFingerprint, python) {
+  if (
+    artifact.expired ||
+    artifact.workflow_run?.id !== run.id ||
+    bytes.length !== artifact.size_in_bytes ||
+    `sha256:${createHash('sha256').update(bytes).digest('hex')}` !== artifact.digest
+  )
+    throw new Error('Previous scope artifact identity/bytes/digest mismatch');
+  const scope = readScopeArchive(bytes, python);
+  if (
+    scope.mode !== 'full' ||
+    scope.head !== head ||
+    scope.headFingerprint !== expectedFingerprint ||
+    scope.checkoutFingerprint !== expectedFingerprint ||
+    !/^[a-f0-9]{40}$/.test(scope.checkout ?? '') ||
+    artifact.name !== `production-scope-${scope.checkout}-${run.run_attempt}`
+  )
+    throw new Error('Previous tested runtime inputs are not equivalent to source');
+  return scope;
 }
 
 export function selectScope(input) {
@@ -114,7 +148,7 @@ function report(name, value) {
   writeFileSync(`.artifacts/ci/${name}.json`, JSON.stringify(value, null, 2) + '\n');
 }
 
-async function previousFullRun(head, pullNumber, baseSha) {
+async function previousFullRun(head, pullNumber, expectedFingerprint) {
   const repository = process.env.GITHUB_REPOSITORY;
   if (!/^[\w.-]+\/[\w.-]+$/.test(repository ?? '') || !process.env.GITHUB_TOKEN) return null;
   const api = async (endpoint) => {
@@ -143,11 +177,43 @@ async function previousFullRun(head, pullNumber, baseSha) {
       const jobs = await api(
         `actions/runs/${run.id}/attempts/${run.run_attempt}/jobs?per_page=100`,
       );
-      if (
-        jobs.total_count === jobs.jobs.length &&
-        hasFullGate(run, jobs.jobs, head, pullNumber, baseSha)
-      )
+      if (jobs.total_count === jobs.jobs.length && hasFullGate(run, jobs.jobs, head, pullNumber)) {
+        const artifacts = await api(`actions/runs/${run.id}/artifacts?per_page=100`);
+        const candidates = artifacts.artifacts.filter(
+          (artifact) =>
+            artifact.name.startsWith('production-scope-') &&
+            artifact.name.endsWith(`-${run.run_attempt}`),
+        );
+        if (candidates.length !== 1 || candidates[0].size_in_bytes > 2_000_000) continue;
+        const artifact = candidates[0];
+        const response = await fetch(
+          `${process.env.GITHUB_API_URL || 'https://api.github.com'}/repos/${repository}/actions/artifacts/${artifact.id}/zip`,
+          {
+            headers: {
+              Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
+              Accept: 'application/vnd.github+json',
+            },
+            redirect: 'manual',
+            signal: AbortSignal.timeout(10_000),
+          },
+        );
+        let download = response;
+        if (response.status === 302) {
+          const location = new URL(response.headers.get('location'));
+          if (location.protocol !== 'https:') throw new Error('Unsafe artifact download scheme');
+          // Never forward the API token to the signed artifact storage URL.
+          download = await fetch(location, { signal: AbortSignal.timeout(30_000) });
+        }
+        if (!download.ok) throw new Error(`Artifact download: HTTP ${download.status}`);
+        verifyReuseArtifact(
+          Buffer.from(await download.arrayBuffer()),
+          artifact,
+          run,
+          head,
+          expectedFingerprint,
+        );
         return run.id;
+      }
     }
   } catch (error) {
     console.warn(`${error.message}; falling back to full CI.`);
@@ -178,7 +244,7 @@ async function classify() {
     input.provenRunId = await previousFullRun(
       before,
       event.pull_request.number,
-      event.pull_request.base.sha,
+      input.beforeFingerprint,
     );
   const result = { ...selectScope(input), head, before, checkout: revision('HEAD'), ...input };
   report('scope', result);

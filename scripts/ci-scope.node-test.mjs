@@ -1,5 +1,7 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { spawnSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import test from 'node:test';
 import {
   fullJobNames,
@@ -9,6 +11,7 @@ import {
   selectScope,
   verifyGate,
   verifyLedgerFormat,
+  verifyReuseArtifact,
 } from './ci-scope.mjs';
 
 const input = {
@@ -93,7 +96,15 @@ test('a complete exact-source full run is required, not a green metadata run', (
   assert.equal(hasFullGate(run, jobs(), 'abc', 3, 'base'), true);
   assert.equal(hasFullGate(run, jobs(), 'different', 3, 'base'), false);
   assert.equal(hasFullGate(run, jobs(), 'abc', 4, 'base'), false);
-  assert.equal(hasFullGate(run, jobs(), 'abc', 3, 'changed-base'), false);
+  assert.equal(
+    hasFullGate(
+      { ...run, pull_requests: [{ number: 3, head: { sha: 'new-pr-head' } }] },
+      jobs(),
+      'abc',
+      3,
+    ),
+    true,
+  );
   for (const delta of [
     { conclusion: 'failure' },
     { event: 'push' },
@@ -168,4 +179,52 @@ test('ledger format preserves canonical writer bytes and rejects malformed/refor
   ]) {
     assert.throws(() => verifyLedgerFormat(invalid));
   }
+});
+
+test('immutable scope artifact proves runtime equivalence and rejects stale/tampered evidence', () => {
+  const python = process.env.CI_SCOPE_TEST_PYTHON || 'python3';
+  const scope = {
+    mode: 'full',
+    head: 'abc',
+    headFingerprint: 'fp',
+    checkoutFingerprint: 'fp',
+    checkout: 'a'.repeat(40),
+  };
+  const result = spawnSync(
+    python,
+    [
+      '-c',
+      'import io,sys,zipfile\nb=io.BytesIO()\nwith zipfile.ZipFile(b,"w",zipfile.ZIP_DEFLATED) as z: z.writestr("ci/scope.json",sys.stdin.buffer.read())\nsys.stdout.buffer.write(b.getvalue())',
+    ],
+    { input: JSON.stringify(scope) },
+  );
+  assert.equal(result.status, 0);
+  const bytes = result.stdout;
+  const artifact = {
+    expired: false,
+    workflow_run: { id: 42 },
+    size_in_bytes: bytes.length,
+    digest: `sha256:${createHash('sha256').update(bytes).digest('hex')}`,
+    name: `production-scope-${scope.checkout}-1`,
+  };
+  const sourceRun = { id: 42, run_attempt: 1 };
+  assert.deepEqual(verifyReuseArtifact(bytes, artifact, sourceRun, 'abc', 'fp', python), scope);
+  for (const changed of [
+    { expired: true },
+    { digest: 'sha256:bad' },
+    { size_in_bytes: 1 },
+    { workflow_run: { id: 99 } },
+    { name: 'wrong' },
+  ]) {
+    assert.throws(() =>
+      verifyReuseArtifact(bytes, { ...artifact, ...changed }, sourceRun, 'abc', 'fp', python),
+    );
+  }
+  assert.throws(() => verifyReuseArtifact(bytes, artifact, sourceRun, 'other-head', 'fp', python));
+  assert.throws(() =>
+    verifyReuseArtifact(bytes, artifact, sourceRun, 'abc', 'other-fingerprint', python),
+  );
+  assert.throws(() =>
+    verifyReuseArtifact(bytes, artifact, { ...sourceRun, run_attempt: 2 }, 'abc', 'fp', python),
+  );
 });

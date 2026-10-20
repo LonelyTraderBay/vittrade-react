@@ -388,7 +388,12 @@ Với **mỗi lát cắt C06**, AI MUST thực hiện đúng chu trình sau và 
    luôn chạy full CI. `scripts/ci-scope.mjs` phải chứng minh fingerprint mọi Git
    input ngoài ledger giống source head cha và checkout merge đang test; base
    phải đã nằm trong source cha. GitHub phải xác nhận chính source cha có full
-   workflow thành công, đủ job và bước lưu artifact. Thiếu bằng chứng/API hoặc
+   workflow thành công, đủ job và bước lưu artifact. Tải scope artifact bất biến
+   của run đó, so bytes/SHA-256 và fingerprint checkout đã test với source cha;
+   không dùng `pull_requests[].head/base.sha` có thể thay đổi trong API run cũ
+   làm bằng chứng revision lịch sử. Python standard library trên runner chỉ đọc
+   JSON trong ZIP đã kiểm digest, không extract path hay thêm dependency.
+   Thiếu bằng chứng/API hoặc
    không khớp thì tự chạy full, không bỏ CI. Metadata SHA có checker/format/EOL,
    artifact và required aggregate riêng; runtime evidence được ghi rõ là tái
    sử dụng từ source SHA/run nào, không gọi đó là full test của SHA mới.
