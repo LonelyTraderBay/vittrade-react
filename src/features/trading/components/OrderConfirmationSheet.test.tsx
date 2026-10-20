@@ -1,5 +1,6 @@
 import { fireEvent, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
+import { ButtonGradients, ButtonShadows, ButtonTextColors } from '@/shared/theme/button';
 import { renderWithProviders } from '@/test/test-utils';
 import { OrderConfirmationSheet, type OrderConfirmationSheetProps } from './OrderConfirmationSheet';
 
@@ -32,6 +33,16 @@ function renderSheet(overrides: Partial<OrderConfirmationSheetProps> = {}) {
 }
 
 describe('OrderConfirmationSheet', () => {
+  it.each(['buy', 'sell'] as const)('uses the shared readable action pair for %s', (side) => {
+    renderSheet({ side });
+    const variant = side === 'buy' ? 'success' : 'danger';
+    expect(screen.getByTestId('trade-confirm-submit')).toHaveStyle({
+      background: ButtonGradients[variant],
+      color: ButtonTextColors[variant],
+      boxShadow: ButtonShadows[variant],
+    });
+  });
+
   it('summarizes a limit order, server-confirmed fee status, and configured TP/SL values', () => {
     renderSheet();
 

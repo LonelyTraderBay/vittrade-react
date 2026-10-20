@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { ButtonGradients, ButtonTextColors } from '../../src/shared/theme/button';
 
 const pair = {
   id: 'btc-usdt',
@@ -81,6 +82,7 @@ test.describe('trading contract smoke on staging build', () => {
   test('places an order through the production route and preserves the receipt transition', async ({
     page,
   }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
     let placedOrderBody: Record<string, unknown> | undefined;
     let placedOrderIdempotencyKey: string | undefined;
 
@@ -139,6 +141,19 @@ test.describe('trading contract smoke on staging build', () => {
     // The confirmation sheet uses a spring transform; dispatch the semantic click
     // from the browser event loop after the mounted button is attached and enabled.
     await expect(page.getByTestId('trade-confirm-submit')).toBeVisible();
+    const actionStyle = await page.getByTestId('trade-confirm-submit').evaluate((element) => ({
+      background: getComputedStyle(element).backgroundImage,
+      color: getComputedStyle(element).color,
+    }));
+    const rgb = (hex: string) =>
+      `rgb(${hex
+        .match(/[\da-f]{2}/gi)!
+        .map((value) => parseInt(value, 16))
+        .join(', ')})`;
+    for (const stop of ButtonGradients.success.match(/#[\da-f]{6}/gi)!) {
+      expect(actionStyle.background).toContain(rgb(stop));
+    }
+    expect(actionStyle.color).toBe(rgb(ButtonTextColors.success));
     await page.waitForFunction(() => {
       const submit = document.querySelector<HTMLButtonElement>(
         '[data-testid="trade-confirm-submit"]',
