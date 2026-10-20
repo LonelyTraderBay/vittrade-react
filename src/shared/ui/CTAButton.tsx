@@ -49,9 +49,12 @@ export function CTAButton({
   className = '',
   style,
   children,
+  label,
+  icon: Icon,
   ...rest
 }: CTAButtonProps) {
   const c = useThemeColors();
+  const content = children ?? label;
   const isDisabled = disabled || loading;
   const showDisabledStyles = Boolean(disabled);
   const variantBackground =
@@ -92,10 +95,13 @@ export function CTAButton({
             aria-hidden="true"
             className="inline-block w-5 h-5 rounded-full border-2 border-current border-t-transparent animate-spin"
           />
-          <span>{children}</span>
+          <span>{content}</span>
         </div>
       ) : (
-        children
+        <>
+          {Icon && <Icon size={18} aria-hidden="true" />}
+          {content}
+        </>
       )}
     </button>
   );

@@ -2,6 +2,7 @@ import { screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { renderWithTheme } from '@/test/test-utils';
 import { ButtonGradients, ButtonTextColors } from '@/shared/theme/button';
+import { Plus } from 'lucide-react';
 import { CTAButton } from './CTAButton';
 
 function luminance(hex: string) {
@@ -32,6 +33,29 @@ function interpolateHex(start: string, end: string, progress: number) {
 }
 
 describe('CTAButton', () => {
+  it('renders label and a decorative leading icon without leaking component props to the DOM', () => {
+    renderWithTheme(<CTAButton label="Create" icon={Plus} />);
+    const button = screen.getByRole('button', { name: 'Create' });
+    expect(button).not.toHaveAttribute('label');
+    expect(button).not.toHaveAttribute('icon');
+    expect(button.querySelector('svg')).toHaveAttribute('aria-hidden', 'true');
+  });
+
+  it('keeps label content while loading and gives explicit children precedence', () => {
+    const { rerender } = renderWithTheme(<CTAButton label="Saving" icon={Plus} loading />);
+    const button = screen.getByRole('button', { name: 'Saving' });
+    expect(button).toBeDisabled();
+    expect(button).toHaveAttribute('aria-busy', 'true');
+    expect(button.querySelector('svg')).toBeNull();
+    rerender(
+      <CTAButton label="Fallback" icon={Plus}>
+        Visible
+      </CTAButton>,
+    );
+    expect(screen.getByRole('button', { name: 'Visible' })).toBeEnabled();
+    expect(screen.queryByText('Fallback')).not.toBeInTheDocument();
+  });
+
   it('applies caller color overrides and supports content-width layout', () => {
     renderWithTheme(
       <CTAButton fullWidth={false} bg="#123456" textColor="#abcdef">

@@ -1,6 +1,7 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { createMemoryRouter, RouterProvider } from 'react-router';
 import { afterEach, describe, expect, it, vi } from 'vitest';
+import { ButtonGradients, ButtonTextColors } from '@/shared/theme/button';
 import { RouteErrorBoundary } from './RouteErrorBoundary';
 
 const { runtimeEnv, report } = vi.hoisted(() => ({
@@ -51,7 +52,19 @@ describe('route failure recovery', () => {
       const alert = await screen.findByRole('alert');
       expect(alert).not.toHaveTextContent('private-token');
       expect(alert).not.toHaveTextContent('private body');
-      expect(screen.getByRole('button', { name: 'Tải lại trang' })).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Tải lại trang' })).toHaveStyle({
+        background: ButtonGradients.primary,
+        color: ButtonTextColors.primary,
+        height: '36px',
+      });
+      expect(screen.getByRole('button', { name: 'Quay lại' })).toHaveStyle({
+        color: 'var(--tr-text-1)',
+        height: '36px',
+      });
+      expect(screen.getByRole('button', { name: 'Tải lại trang' })).toHaveAttribute(
+        'type',
+        'button',
+      );
       await waitFor(() => expect(report).toHaveBeenCalled());
     } finally {
       router.dispose();

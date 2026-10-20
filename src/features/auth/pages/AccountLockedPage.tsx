@@ -59,8 +59,6 @@ export function AccountLockedPage() {
           </CTAButton>
           <CTAButton
             variant="secondary"
-            bg={colors.surface}
-            textColor={colors.text1}
             style={{ border: `1px solid ${colors.borderSolid}` }}
             onClick={() => navigate(`${prefix}/auth/forgot-password`)}
           >
