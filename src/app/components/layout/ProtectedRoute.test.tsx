@@ -65,9 +65,13 @@ function renderRoute(
           >
             <Route path="/trade" element={<div>protected</div>} />
             <Route path="/r/trade" element={<div>responsive protected</div>} />
+            <Route path="/t/trade" element={<div>tablet protected</div>} />
+            <Route path="/w/trade" element={<div>web protected</div>} />
           </Route>
           <Route path="/auth/login" element={<LoginProbe />} />
           <Route path="/r/auth/login" element={<LoginProbe />} />
+          <Route path="/t/auth/login" element={<LoginProbe />} />
+          <Route path="/w/auth/login" element={<LoginProbe />} />
         </Routes>
       </MemoryRouter>
     </AuthSessionProvider>,
@@ -75,6 +79,14 @@ function renderRoute(
 }
 
 describe('ProtectedRoute', () => {
+  it.each(['/t', '/w'])('preserves the %s login shell and intended URL', (prefix) => {
+    renderRoute(null, `${prefix}/trade?symbol=BTC%2FUSDT#order-book`);
+    expect(screen.getByTestId('login')).toHaveAttribute('data-path', `${prefix}/auth/login`);
+    expect(screen.getByTestId('login')).toHaveTextContent(
+      `login:${prefix}/trade?symbol=BTC%2FUSDT#order-book`,
+    );
+  });
+
   it('redirects unauthenticated users and preserves query/hash state', () => {
     renderRoute(null, '/trade?symbol=BTC%2FUSDT#order-book');
 

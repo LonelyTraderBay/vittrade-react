@@ -1,6 +1,7 @@
 import React from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router';
 import { useAuth } from '@/shared/session/useAuth';
+import { useRoutePrefix } from '@/shared/navigation/useRoutePrefix';
 
 /**
  * ProtectedRoute — Gate for authenticated-only routes
@@ -18,6 +19,7 @@ export function ProtectedRoute({
 }: ProtectedRouteProps) {
   const { isLoading, isAuthenticated, user, hasRole, hasPermission } = useAuth();
   const location = useLocation();
+  const prefix = useRoutePrefix();
 
   if (isLoading) {
     return (
@@ -28,9 +30,7 @@ export function ProtectedRoute({
   }
 
   if (!isAuthenticated) {
-    // Determine if we're in responsive shell
-    const isResponsive = location.pathname.startsWith('/r/');
-    const loginPath = isResponsive ? '/r/auth/login' : '/auth/login';
+    const loginPath = `${prefix}/auth/login`;
     const returnTo = `${location.pathname}${location.search}${location.hash}`;
 
     return <Navigate to={loginPath} state={{ from: returnTo }} replace />;

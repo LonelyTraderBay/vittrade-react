@@ -1372,6 +1372,8 @@ Development preview giữ cảnh báo dữ liệu mô phỏng. `RootLayout.tsx` 
 
 Wallet transfer nối lỗi số tiền tại `getWalletTransferValidationError` (`features/wallet/model/validate-wallet-transfer.ts`) vào public prop `InputField.error`, giữ helper, accessible description và đưa focus về ô sai. Lỗi API/quyền vẫn là thông báo chung; không đánh dấu số tiền sai khi dịch vụ lỗi. API chuỗi `validateWalletTransfer` tiếp tục dùng cùng một validator để giữ tương thích. Regression tại `tests/e2e/ui-wallet-transfer-mock.spec.ts` kiểm form, payload/idempotency fixture, hit target CTA và giữ draft khi resize; đây là bằng chứng local/MSW, không xác nhận kết quả giao dịch backend.
 
+Auth dùng `features/auth/lib/login-return-path.ts` để đọc `location.state.from` của ProtectedRoute hoặc `returnTo` của Web session-expired. Chỉ nhận URL cục bộ, giữ nguyên query/hash và precision trong URL; đích ngoài origin, đường dẫn lỗi hoặc vòng lặp Auth/Onboarding quay về home của shell. ProtectedRoute giữ prefix phone/tablet/web/responsive khi đưa tới login. Login và login-MFA truyền cùng context qua OTP, lỗi mã, restart sau 429 và hết hạn; chỉ quay về đích khi xác thực thành công. Không truyền context này vào luồng đăng ký hoặc thay API/session/permission contract. `tests/e2e/ui-auth-return-mock.spec.ts` kiểm qua development MSW; đây không phải bằng chứng backend hoặc chính sách hủy request khi rời form.
+
 ### 21.12 Quy trình AI, ngoại lệ và cập nhật contract
 
 **PROPOSED — MUST trước khi AI tạo/sửa trang:**

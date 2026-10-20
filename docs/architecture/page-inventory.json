@@ -471,12 +471,13 @@
       "domain": "auth",
       "owner": "features/auth",
       "status": "integration-pending",
-      "lines": 220,
+      "lines": 225,
       "routePaths": [
         "login"
       ],
       "dependencies": {
         "localImports": [
+          "../lib/login-return-path",
           "@/shared/api/api-error",
           "@/shared/config/env",
           "@/shared/hooks/useThemeColors",
@@ -506,13 +507,14 @@
       "domain": "auth",
       "owner": "features/auth",
       "status": "integration-pending",
-      "lines": 280,
+      "lines": 303,
       "routePaths": [
         "otp"
       ],
       "dependencies": {
         "localImports": [
           "../lib/login-mfa-route-state",
+          "../lib/login-return-path",
           "../lib/registration-route-state",
           "@/shared/api/api-error",
           "@/shared/hooks/useThemeColors",
@@ -717,12 +719,13 @@
       "domain": "auth",
       "owner": "features/auth",
       "status": "integration-pending",
-      "lines": 408,
+      "lines": 412,
       "routePaths": [
         "login"
       ],
       "dependencies": {
         "localImports": [
+          "../lib/login-return-path",
           "@/shared/api/api-error",
           "@/shared/config/env",
           "@/shared/hooks/useThemeColors",
@@ -747,13 +750,14 @@
       "domain": "auth",
       "owner": "features/auth",
       "status": "integration-pending",
-      "lines": 556,
+      "lines": 589,
       "routePaths": [
         "otp"
       ],
       "dependencies": {
         "localImports": [
           "../lib/login-mfa-route-state",
+          "../lib/login-return-path",
           "../lib/registration-route-state",
           "../model/registration-types",
           "@/shared/api/api-error",

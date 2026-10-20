@@ -1,5 +1,5 @@
 import React, { useState, type FormEvent } from 'react';
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import { Eye, EyeOff, AlertCircle, Fingerprint, Lock, Mail, ArrowRight } from 'lucide-react';
 import { isApiError } from '@/shared/api/api-error';
 import { useAuth } from '@/shared/session/useAuth';
@@ -9,6 +9,7 @@ import { WEB_FONT, WEB_BUTTON } from '@/shared/theme/webTokens';
 import { WebAuthBrandPanel, WebAuthFormShell } from '@/shared/ui/auth/WebAuthBrandPanel';
 import { CTAButton } from '@/shared/ui/CTAButton';
 import { InputField } from '@/shared/ui/InputField';
+import { getLoginReturnPath } from '../lib/login-return-path';
 
 /**
  * WebLoginPage — Enterprise Desktop Login
@@ -25,6 +26,8 @@ const isAuthFixtureMode =
 
 export function WebLoginPage() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const returnTo = getLoginReturnPath(location.state, '/w/home');
   const { signIn } = useAuth();
   const c = useThemeColors();
   const [email, setEmail] = useState('');
@@ -56,11 +59,12 @@ export function WebLoginPage() {
           method: challenge.method,
           maskedDestination: challenge.maskedDestination,
           expiresAt: challenge.expiresAt,
+          ...(returnTo !== '/w/home' ? { from: returnTo } : {}),
         },
       });
       return;
     }
-    navigate('/w/home', { replace: true });
+    navigate(returnTo, { replace: true });
   };
 
   /* ─── Inline email validation on blur ─── */
@@ -109,7 +113,7 @@ export function WebLoginPage() {
     if (isAuthFixtureMode && email === 'device@test.com') {
       setIsLoading(false);
       navigate('/w/auth/device-trust', {
-        state: { email, returnTo: '/w/home' },
+        state: { email, returnTo },
       });
       return;
     }

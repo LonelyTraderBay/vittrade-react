@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import { AlertCircle, Eye, EyeOff, Fingerprint, Lock, Mail } from 'lucide-react';
 import { CTAButton } from '@/shared/ui/CTAButton';
 import { InputField } from '@/shared/ui/InputField';
@@ -14,15 +14,19 @@ import { useRoutePrefix } from '@/shared/navigation/useRoutePrefix';
 import { isApiError } from '@/shared/api/api-error';
 import { isEmail } from '@/shared/lib/string';
 import { AuthBrandMark } from '@/shared/ui/auth/AuthBrandMark';
+import { getLoginReturnPath } from '../lib/login-return-path';
 
 /** Trang đăng nhập theo contract; adapter chịu trách nhiệm tạo session và chuẩn hóa lỗi. */
 export function LoginPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { signIn } = useAuth();
   const colors = useThemeColors();
   const isAuthFixtureMode =
     !isProductionBuild && (env.isTest || (env.isDev && env.dataSource === 'mock'));
   const prefix = useRoutePrefix();
+  const defaultReturnTo = `${prefix}/home`;
+  const returnTo = getLoginReturnPath(location.state, defaultReturnTo);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -43,11 +47,12 @@ export function LoginPage() {
             method: challenge.method,
             maskedDestination: challenge.maskedDestination,
             expiresAt: challenge.expiresAt,
+            ...(returnTo !== defaultReturnTo ? { from: returnTo } : {}),
           },
         });
         return;
       }
-      navigate(`${prefix}/home`, { replace: true });
+      navigate(returnTo, { replace: true });
     } catch (loginError) {
       if (isApiError(loginError) && loginError.status === 423) {
         navigate(`${prefix}/auth/account-locked`, { replace: true });
