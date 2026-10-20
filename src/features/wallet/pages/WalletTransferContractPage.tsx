@@ -17,7 +17,10 @@ import {
   useWalletAssetsQuery,
   useWalletTransferMutation,
 } from '../model/wallet-queries';
-import { validateWalletTransfer } from '../model/validate-wallet-transfer';
+import {
+  getWalletTransferValidationError,
+  type WalletTransferValidationError,
+} from '../model/validate-wallet-transfer';
 import type { WalletAccountId, WalletTransferReceipt } from '../model/wallet-types';
 
 const EMPTY_VALUE = '—';
@@ -35,7 +38,9 @@ export function WalletTransferContractPage() {
   const [toWallet, setToWallet] = useState<WalletAccountId>('funding');
   const [assetSymbol, setAssetSymbol] = useState('USDT');
   const [amount, setAmount] = useState('');
-  const [validationError, setValidationError] = useState('');
+  const [validationError, setValidationError] = useState<
+    WalletTransferValidationError | { message: string; field?: never } | null
+  >(null);
   const [receipt, setReceipt] = useState<WalletTransferReceipt>();
   const transferAttempt = useRef<{ signature: string; key: string } | null>(null);
   const transferInFlight = useRef(false);
@@ -116,7 +121,7 @@ export function WalletTransferContractPage() {
 
   const submitTransfer = async () => {
     if (!canWriteWallet || samePendingTransfer || transferInFlight.current) return;
-    const nextError = validateWalletTransfer({
+    const nextError = getWalletTransferValidationError({
       fromWallet,
       toWallet,
       amount: amountValue,
@@ -124,7 +129,10 @@ export function WalletTransferContractPage() {
       assetSymbol: selectedAsset.symbol,
     });
     setValidationError(nextError);
-    if (nextError) return;
+    if (nextError) {
+      if (nextError.field === 'amount') document.getElementById('transfer-amount')?.focus();
+      return;
+    }
 
     transferInFlight.current = true;
     try {
@@ -152,7 +160,7 @@ export function WalletTransferContractPage() {
         setAmount('');
       }
     } catch {
-      setValidationError('The transfer could not be completed. Please try again.');
+      setValidationError({ message: 'The transfer could not be completed. Please try again.' });
     } finally {
       transferInFlight.current = false;
     }
@@ -210,7 +218,7 @@ export function WalletTransferContractPage() {
               onClick={() => {
                 setFromWallet(toWallet);
                 setToWallet(fromWallet);
-                setValidationError('');
+                setValidationError(null);
               }}
             >
               <ArrowDownUp size={17} />
@@ -257,7 +265,10 @@ export function WalletTransferContractPage() {
               type="button"
               className="text-xs font-semibold"
               style={{ color: colors.primary }}
-              onClick={() => setAmount(String(available))}
+              onClick={() => {
+                setAmount(String(available));
+                setValidationError(null);
+              }}
               disabled={submitting}
             >
               Max {fmtAmount(available)}
@@ -275,9 +286,10 @@ export function WalletTransferContractPage() {
             value={amount}
             onChange={(event) => {
               setAmount(event.target.value);
-              setValidationError('');
+              setValidationError(null);
             }}
             placeholder="0.00"
+            error={validationError?.field === 'amount' ? validationError.message : undefined}
             style={{ ...textRoleStyle('amountLarge'), color: colors.text1 }}
             suffix={
               <span className="font-semibold" style={{ color: colors.text2 }}>
@@ -299,9 +311,9 @@ export function WalletTransferContractPage() {
           </p>
         </div>
 
-        {validationError && (
+        {validationError && validationError.field !== 'amount' && (
           <p role="alert" className="text-sm" style={{ color: 'var(--tr-error-text)' }}>
-            {validationError}
+            {validationError.message}
           </p>
         )}
 

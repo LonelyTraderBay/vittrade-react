@@ -91,11 +91,21 @@ describe('Wallet transfer contract page', () => {
     installReadHandlers();
 
     renderWithProviders(<WalletTransferContractPage />);
-    await screen.findByLabelText('Transfer amount');
+    const amountInput = await screen.findByLabelText('Transfer amount');
 
     await userEvent.click(screen.getByRole('button', { name: 'Confirm transfer' }));
 
     expect(screen.getByRole('alert')).toHaveTextContent('Enter an amount greater than zero.');
+    expect(amountInput).toHaveAttribute('aria-invalid', 'true');
+    expect(amountInput).toHaveAttribute(
+      'aria-describedby',
+      'transfer-amount-helper transfer-amount-error',
+    );
+    expect(screen.getByRole('alert')).toHaveAttribute('id', 'transfer-amount-error');
+    expect(amountInput).toHaveFocus();
+    await userEvent.type(amountInput, '12.5');
+    expect(amountInput).toHaveAttribute('aria-invalid', 'false');
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
   });
 
   it('rejects transfers above the selected asset available balance', async () => {
@@ -117,6 +127,10 @@ describe('Wallet transfer contract page', () => {
       'The transfer amount exceeds the available balance.',
     );
     expect(transferRequests).toBe(0);
+    await userEvent.click(screen.getByRole('button', { name: /Max 75/ }));
+    expect(amountInput).toHaveValue(75);
+    expect(amountInput).toHaveAttribute('aria-invalid', 'false');
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
   });
 
   it('swaps wallet direction and submits the max available amount', async () => {
@@ -410,6 +424,12 @@ describe('Wallet transfer contract page', () => {
       expect(screen.getByRole('alert')).toHaveTextContent('could not be completed'),
     );
     expect(screen.queryByRole('status')).not.toBeInTheDocument();
+    expect(screen.getByLabelText('Transfer amount')).toHaveValue(12.5);
+    expect(screen.getByLabelText('Transfer amount')).toHaveAttribute('aria-invalid', 'false');
+    expect(screen.getByLabelText('Transfer amount')).toHaveAttribute(
+      'aria-describedby',
+      'transfer-amount-helper',
+    );
   });
 
   it('reuses the idempotency key when retrying the same transfer after a transient failure', async () => {

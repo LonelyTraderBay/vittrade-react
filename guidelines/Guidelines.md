@@ -1370,6 +1370,8 @@ Market Home giữ pattern hàng quote gọn riêng cho summary cards; không đ�
 
 Development preview giữ cảnh báo dữ liệu mô phỏng. `RootLayout.tsx` truyền `bottomNavigationVisible` theo shell đang chạy tới `PreviewControls.tsx`; preview chừa vị trí phía trên navigation khi cần, độc lập với typography hẹp/rộng. Responsive shell còn navigation dưới ở 768–1023px, trong khi Tablet shell dùng sidebar; không suy navigation chỉ từ ngưỡng 768px. `tests/e2e/ui-preview-navigation-mock.spec.ts` đo hit target và giao hình học, click chuột thật, keyboard và resize qua breakpoint. Đây là ngoại lệ bố cục của preview, không thay đổi navigation hoặc business contract của sản phẩm.
 
+Wallet transfer nối lỗi số tiền tại `getWalletTransferValidationError` (`features/wallet/model/validate-wallet-transfer.ts`) vào public prop `InputField.error`, giữ helper, accessible description và đưa focus về ô sai. Lỗi API/quyền vẫn là thông báo chung; không đánh dấu số tiền sai khi dịch vụ lỗi. API chuỗi `validateWalletTransfer` tiếp tục dùng cùng một validator để giữ tương thích. Regression tại `tests/e2e/ui-wallet-transfer-mock.spec.ts` kiểm form, payload/idempotency fixture, hit target CTA và giữ draft khi resize; đây là bằng chứng local/MSW, không xác nhận kết quả giao dịch backend.
+
 ### 21.12 Quy trình AI, ngoại lệ và cập nhật contract
 
 **PROPOSED — MUST trước khi AI tạo/sửa trang:**
