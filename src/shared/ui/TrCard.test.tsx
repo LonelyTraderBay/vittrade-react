@@ -43,6 +43,7 @@ describe('TrCard', () => {
       const { container } = renderWithTheme(<TrCard>Content</TrCard>);
       const card = container.firstChild as HTMLElement;
       expect(card.tagName).toBe('DIV');
+      expect(card).toHaveAttribute('data-slot', 'card');
     });
 
     it('should render as button when specified', () => {
@@ -89,22 +90,39 @@ describe('TrCard', () => {
   });
 
   describe('Border Radius', () => {
-    it('should apply md (rounded-2xl) by default', () => {
+    it('should apply the 16px card token by default', () => {
       const { container } = renderWithTheme(<TrCard>Content</TrCard>);
       const card = container.firstChild as HTMLElement;
-      expect(card.className).toContain('rounded-2xl');
+      expect(card.className).toContain('rounded-[var(--tr-radius-card)]');
     });
 
-    it('should apply sm border radius', () => {
+    it('should apply the 12px small card token', () => {
       const { container } = renderWithTheme(<TrCard rounded="sm">Content</TrCard>);
       const card = container.firstChild as HTMLElement;
-      expect(card.className).toContain('rounded-xl');
+      expect(card.className).toContain('rounded-[var(--tr-radius-card-sm)]');
     });
 
-    it('should apply lg border radius', () => {
+    it('should apply the 16px medium card token', () => {
+      const { container } = renderWithTheme(<TrCard rounded="md">Content</TrCard>);
+      const card = container.firstChild as HTMLElement;
+      expect(card.className).toContain('rounded-[var(--tr-radius-card)]');
+    });
+
+    it('should apply the 24px large card token', () => {
       const { container } = renderWithTheme(<TrCard rounded="lg">Content</TrCard>);
       const card = container.firstChild as HTMLElement;
-      expect(card.className).toContain('rounded-3xl');
+      expect(card.className).toContain('rounded-[var(--tr-radius-card-lg)]');
+    });
+
+    it('should prefer a VitTrade radius token over the legacy rounded prop', () => {
+      const { container } = renderWithTheme(
+        <TrCard rounded="lg" radius="md">
+          Token radius
+        </TrCard>,
+      );
+      const card = container.firstChild as HTMLElement;
+      expect(card.className).toContain('rounded-[var(--tr-radius-md)]');
+      expect(card.className).not.toContain('rounded-[var(--tr-radius-card-lg)]');
     });
   });
 

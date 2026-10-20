@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { isRouteErrorResponse, useNavigate, useRouteError } from 'react-router';
 import { env } from '@/shared/config/env';
+import { CTAButton } from '@/shared/ui/CTAButton';
 import { captureException } from '../../shared/telemetry/telemetry';
 
 /**
@@ -74,37 +75,25 @@ export function RouteErrorBoundary() {
       <h1 style={{ fontSize: 18, fontWeight: 700, margin: 0 }}>{title}</h1>
       <p style={{ fontSize: 14, opacity: 0.7, margin: 0, maxWidth: 420 }}>{detail}</p>
       <div style={{ display: 'flex', gap: 12, marginTop: 8 }}>
-        <button
+        <CTAButton
           type="button"
+          variant="ghost"
+          density="compact"
+          fullWidth={false}
           onClick={() => navigate(-1)}
-          style={{
-            padding: '10px 20px',
-            borderRadius: 10,
-            border: '1px solid rgba(255,255,255,0.15)',
-            background: 'transparent',
-            color: 'inherit',
-            fontSize: 14,
-            cursor: 'pointer',
-          }}
+          style={{ border: '1px solid rgba(255,255,255,0.15)' }}
         >
           Quay lại
-        </button>
-        <button
+        </CTAButton>
+        <CTAButton
           type="button"
+          variant="primary"
+          density="compact"
+          fullWidth={false}
           onClick={() => window.location.reload()}
-          style={{
-            padding: '10px 20px',
-            borderRadius: 10,
-            border: 'none',
-            background: '#3B82F6',
-            color: '#fff',
-            fontSize: 14,
-            fontWeight: 600,
-            cursor: 'pointer',
-          }}
         >
           Tải lại trang
-        </button>
+        </CTAButton>
       </div>
     </div>
   );

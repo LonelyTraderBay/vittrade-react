@@ -74,6 +74,9 @@ const GUARDED_FILES = [
   'src/app/pages/wallet/AssetDetailPage.tsx',
   'src/features/wallet/pages/WalletTransferContractPage.tsx',
   'src/features/market/pages/MarketListPage.tsx',
+  // UI consistency rollout: parent-owned gaps for repeated page sections.
+  'src/features/market/pages/WatchlistPage.tsx',
+  'src/features/p2p/pages/P2PFraudPreventionPage.tsx',
   'src/features/trading/pages/OrderReceiptPage.tsx',
   'src/features/auth/pages/RegisterPage.tsx',
 ];

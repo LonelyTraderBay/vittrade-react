@@ -142,7 +142,12 @@ const actionStyle: CSSProperties = {
   cursor: 'pointer',
 };
 
-export function PreviewControls() {
+interface PreviewControlsProps {
+  /** Hides interactive preview tools while preserving the mock warning. */
+  controlsEnabled?: boolean;
+}
+
+export function PreviewControls({ controlsEnabled = true }: PreviewControlsProps = {}) {
   const location = useLocation();
   const isNarrowViewport = typeof window !== 'undefined' && window.innerWidth < 768;
   const storedScenario = getDevPreviewScenario();
@@ -169,6 +174,7 @@ export function PreviewControls() {
 
   const isAuthOrSecurityRoute =
     /^(?:\/(?:t|w|r))?\/(?:auth(?:\/|$)|profile\/security(?:\/|$))/.test(location.pathname);
+  const showControls = controlsEnabled && env.enableDevtools;
 
   if (!isDevelopmentBuild || !env.isDev || env.dataSource !== 'mock') return null;
 
@@ -306,34 +312,36 @@ export function PreviewControls() {
         <strong style={{ fontSize: isNarrowViewport ? 9 : 13 }}>
           DỮ LIỆU MÔ PHỎNG · KHÔNG GIAO DỊCH THẬT
         </strong>
-        <button
-          type="button"
-          aria-expanded={isOpen}
-          aria-controls="dev-preview-panel"
-          aria-label={isOpen ? 'Thu gọn' : 'Mở công cụ xem trước'}
-          onClick={() => setIsOpen((open) => !open)}
-          style={{
-            flex: '0 0 auto',
-            padding: '4px 7px',
-            border: '1px solid #b45309',
-            borderRadius: 6,
-            background: '#fff',
-            color: '#78350f',
-            cursor: 'pointer',
-            fontSize: isNarrowViewport ? 10 : undefined,
-          }}
-        >
-          {isNarrowViewport
-            ? isOpen
-              ? 'Đóng'
-              : 'Mở'
-            : isOpen
-              ? 'Thu gọn'
-              : 'Mở công cụ xem trước'}
-        </button>
+        {showControls ? (
+          <button
+            type="button"
+            aria-expanded={isOpen}
+            aria-controls="dev-preview-panel"
+            aria-label={isOpen ? 'Thu gọn' : 'Mở công cụ xem trước'}
+            onClick={() => setIsOpen((open) => !open)}
+            style={{
+              flex: '0 0 auto',
+              padding: '4px 7px',
+              border: '1px solid #b45309',
+              borderRadius: 6,
+              background: '#fff',
+              color: '#78350f',
+              cursor: 'pointer',
+              fontSize: isNarrowViewport ? 10 : undefined,
+            }}
+          >
+            {isNarrowViewport
+              ? isOpen
+                ? 'Đóng'
+                : 'Mở'
+              : isOpen
+                ? 'Thu gọn'
+                : 'Mở công cụ xem trước'}
+          </button>
+        ) : null}
       </div>
 
-      {isOpen && (
+      {showControls && isOpen && (
         <section id="dev-preview-panel" aria-label="Công cụ xem trước" style={panelStyle}>
           <p style={{ margin: '0 0 12px' }}>
             Phiên hiện tại: <strong>{user?.email ?? 'khách chưa đăng nhập'}</strong>

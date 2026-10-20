@@ -40,91 +40,90 @@ export const MarketItem = memo(function MarketItem({
 
   return (
     <div
-      role="button"
-      tabIndex={0}
-      onClick={() => navigate(`${prefix}/pair/${encodeURIComponent(pair.id)}`)}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ')
-          navigate(`${prefix}/pair/${encodeURIComponent(pair.id)}`);
-      }}
-      className="flex items-center gap-3 px-5 w-full active:opacity-70 transition-opacity cursor-pointer"
+      className="grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-5"
       style={{
         paddingTop: 14,
         paddingBottom: 14,
         borderBottom: `1px solid ${c.divider}`,
       }}
-      aria-label={`${pair.symbol} — ${fmtPriceUtil(pair.price)}`}
     >
-      {/* Logo — 34px circle */}
-      <div
-        className="rounded-full flex items-center justify-center shrink-0"
-        style={{
-          width: 34,
-          height: 34,
-          background: hexToRgba(pair.logoColor, 15),
-          border: `1.5px solid ${hexToRgba(pair.logoColor, 30)}`,
-        }}
+      <button
+        type="button"
+        onClick={() => navigate(`${prefix}/pair/${encodeURIComponent(pair.id)}`)}
+        className="flex w-full min-w-0 cursor-pointer items-center gap-3 appearance-none border-0 bg-transparent p-0 text-left transition-opacity active:opacity-70 focus-visible:outline-2 focus-visible:outline-offset-2"
+        aria-label={`${pair.symbol} — ${fmtPriceUtil(pair.price)}`}
       >
-        <span style={{ color: c.text1, fontSize: 12, fontWeight: 700 }}>
-          {pair.baseAsset.slice(0, 3)}
-        </span>
-      </div>
-
-      {/* Name */}
-      <div className="flex flex-col items-start flex-1 min-w-0">
-        <span
-          className="text-truncate"
-          style={{ color: c.text1, fontSize: 14, fontWeight: 600, maxWidth: '100%' }}
+        {/* Logo — 34px circle */}
+        <div
+          className="rounded-full flex items-center justify-center shrink-0"
+          style={{
+            width: 34,
+            height: 34,
+            background: hexToRgba(pair.logoColor, 15),
+            border: `1.5px solid ${hexToRgba(pair.logoColor, 30)}`,
+          }}
         >
-          {pair.baseAsset}
-        </span>
-        <span className="text-truncate" style={{ color: c.text3, fontSize: 12, maxWidth: '100%' }}>
-          {pair.quoteAsset}
-        </span>
-      </div>
-
-      {/* Sparkline */}
-      {showSparkline && (
-        <div className="shrink-0">
-          <SparklineChart data={pair.sparklineData} isPositive={isPositive} />
+          <span style={{ color: c.text1, fontSize: 12, fontWeight: 700 }}>
+            {pair.baseAsset.slice(0, 3)}
+          </span>
         </div>
-      )}
 
-      {/* Price + Change */}
-      <div className="flex flex-col items-end shrink-0">
-        <span
-          style={{
-            color: c.text1,
-            fontSize: 14,
-            fontWeight: 600,
-            fontFamily: '-apple-system, BlinkMacSystemFont, "SF Mono", monospace',
-          }}
-        >
-          {fmtPriceUtil(pair.price)}
-        </span>
-        <span
-          className="rounded-lg px-2 py-1"
-          style={{
-            background: isPositive ? 'rgba(16,185,129,0.12)' : 'rgba(239,68,68,0.12)',
-            color: isPositive ? c.successText : c.errorText,
-            fontSize: 12,
-            fontWeight: 600,
-          }}
-        >
-          {fmtPct(pair.change24h)}
-        </span>
-      </div>
+        {/* Name */}
+        <div className="flex flex-col items-start flex-1 min-w-0">
+          <span
+            className="text-truncate"
+            style={{ color: c.text1, fontSize: 14, fontWeight: 600, maxWidth: '100%' }}
+          >
+            {pair.baseAsset}
+          </span>
+          <span
+            className="text-truncate"
+            style={{ color: c.text3, fontSize: 12, maxWidth: '100%' }}
+          >
+            {pair.quoteAsset}
+          </span>
+        </div>
+
+        {/* Sparkline */}
+        {showSparkline && (
+          <div className="shrink-0">
+            <SparklineChart data={pair.sparklineData} isPositive={isPositive} />
+          </div>
+        )}
+
+        {/* Price + Change */}
+        <div className="flex flex-col items-end shrink-0">
+          <span
+            style={{
+              color: c.text1,
+              fontSize: 14,
+              fontWeight: 600,
+              fontFamily: '-apple-system, BlinkMacSystemFont, "SF Mono", monospace',
+            }}
+          >
+            {fmtPriceUtil(pair.price)}
+          </span>
+          <span
+            className="rounded-lg px-2 py-1"
+            style={{
+              background: isPositive ? 'rgba(16,185,129,0.12)' : 'rgba(239,68,68,0.12)',
+              color: isPositive ? c.successText : c.errorText,
+              fontSize: 12,
+              fontWeight: 600,
+            }}
+          >
+            {fmtPct(pair.change24h)}
+          </span>
+        </div>
+      </button>
 
       {/* Star */}
       {onFavoriteToggle && (
         <button
           type="button"
           disabled={favoriteDisabled}
-          onClick={(e) => {
-            e.stopPropagation();
-            onFavoriteToggle(pair.id);
-          }}
-          className="ml-1 w-8 h-8 flex items-center justify-center shrink-0"
+          onClick={() => onFavoriteToggle(pair.id)}
+          className="flex h-8 w-8 shrink-0 items-center justify-center"
           aria-label={isFavorite ? 'Bỏ yêu thích' : 'Thêm vào yêu thích'}
         >
           <Star

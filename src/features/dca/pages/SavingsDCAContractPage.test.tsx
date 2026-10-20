@@ -2,7 +2,7 @@ import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import { toast } from 'sonner';
-import { fireEvent, screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { renderWithProviders } from '@/test/test-utils';
 import { testAuthAdapter } from '@/test/auth-test-adapter';
@@ -319,9 +319,8 @@ describe('Savings DCA contract page', () => {
       expect(screen.getByRole('heading', { name: 'Hủy kế hoạch DCA?' })).toBeVisible(),
     );
     expect(cancelRequests).toBe(0);
-    const confirmation = screen.getByRole('heading', { name: 'Hủy kế hoạch DCA?' });
     await user.click(screen.getByRole('button', { name: 'Giữ kế hoạch' }));
-    await waitForElementToBeRemoved(confirmation);
+    expect(screen.queryByRole('dialog', { name: 'Hủy kế hoạch DCA?' })).not.toBeInTheDocument();
     await user.click(screen.getByRole('button', { name: 'Cancel' }));
     await waitFor(() =>
       expect(screen.getByRole('heading', { name: 'Hủy kế hoạch DCA?' })).toBeVisible(),

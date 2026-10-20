@@ -2,12 +2,14 @@ import { AlertTriangle, Loader2 } from 'lucide-react';
 import { BottomSheetRow, BottomSheetV2 } from '@/shared/ui/BottomSheetV2';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { fmtUsd } from '@/shared/lib/formatNumber';
+import { ButtonGradients, ButtonTextColors } from '@/shared/theme/button';
 import type { OrderSide } from '../model/trading-types';
 import type { TPSLValues } from '../model/trading-types';
 
 export interface OrderConfirmationSheetProps {
   open: boolean;
   isPlacing: boolean;
+  canConfirm: boolean;
   side: OrderSide;
   pair: { symbol: string; baseAsset: string };
   orderTypeLabel: string;
@@ -23,6 +25,7 @@ export interface OrderConfirmationSheetProps {
 export function OrderConfirmationSheet({
   open,
   isPlacing,
+  canConfirm,
   side,
   pair,
   orderTypeLabel,
@@ -36,10 +39,20 @@ export function OrderConfirmationSheet({
 }: OrderConfirmationSheetProps) {
   const colors = useThemeColors();
   const sideColor = side === 'buy' ? '#10B981' : '#EF4444';
+  const actionVariant = side === 'buy' ? 'success' : 'danger';
 
   return (
     <BottomSheetV2 open={open} onClose={onClose} title="Xác nhận lệnh" preventClose={isPlacing}>
       <div className="flex flex-col gap-4">
+        {!canConfirm && (
+          <p
+            role="alert"
+            className="rounded-xl px-3 py-3"
+            style={{ background: colors.surface2, color: colors.danger }}
+          >
+            Tài khoản không có quyền đặt lệnh. Đóng xác nhận và kiểm tra phiên hoặc quyền tài khoản.
+          </p>
+        )}
         <div
           className="rounded-2xl p-4 flex flex-col gap-3"
           style={{ background: colors.surface2 }}
@@ -107,23 +120,19 @@ export function OrderConfirmationSheet({
         <button
           type="button"
           onClick={onConfirm}
-          disabled={isPlacing}
+          disabled={isPlacing || !canConfirm}
           data-testid="trade-confirm-submit"
-          className="w-full rounded-2xl flex items-center justify-center gap-2 font-semibold text-white text-base ripple"
+          className="w-full rounded-2xl flex items-center justify-center gap-2 font-semibold text-base ripple"
           style={{
             height: 52,
             borderRadius: 14,
-            background: isPlacing
-              ? colors.surface2
-              : side === 'buy'
-                ? 'linear-gradient(135deg, #10B981 0%, #059669 100%)'
-                : 'linear-gradient(135deg, #EF4444 0%, #dc2626 100%)',
+            background: isPlacing ? colors.surface2 : ButtonGradients[actionVariant],
             boxShadow: isPlacing
               ? 'none'
               : side === 'buy'
                 ? '0 4px 16px rgba(16,185,129,0.3)'
                 : '0 4px 16px rgba(239,68,68,0.3)',
-            color: isPlacing ? colors.text3 : '#fff',
+            color: isPlacing ? colors.text3 : ButtonTextColors[actionVariant],
           }}
         >
           {isPlacing ? (

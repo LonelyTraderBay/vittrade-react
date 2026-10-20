@@ -10,11 +10,21 @@
 import type { VitDensity } from './density';
 
 export const ButtonGradients = {
-  primary: 'linear-gradient(135deg, #E58A00 0%, #B96000 100%)',
+  primary: 'linear-gradient(135deg, #E58A00 0%, #C16600 100%)',
   success: 'linear-gradient(135deg, #10B981 0%, #059669 100%)',
-  danger: 'linear-gradient(135deg, #EF4444 0%, #DC2626 100%)',
+  danger: 'linear-gradient(135deg, #EF4444 0%, #E63D3D 100%)',
   warning: 'linear-gradient(135deg, #F59E0B 0%, #D97706 100%)',
+  info: 'linear-gradient(135deg, #3B82F6 0%, #5B94F5 100%)',
   ghost: 'transparent',
+} as const;
+
+/** Foreground colors paired with the colored action gradients above. */
+export const ButtonTextColors = {
+  primary: '#111111',
+  success: '#111111',
+  danger: '#111111',
+  warning: '#111111',
+  info: '#111111',
 } as const;
 
 export type ButtonGradientKey = keyof typeof ButtonGradients;
@@ -24,6 +34,7 @@ export const ButtonShadows = {
   success: '0 4px 16px rgba(16,185,129,0.3)',
   danger: '0 4px 16px rgba(239,68,68,0.3)',
   warning: '0 4px 16px rgba(245,158,11,0.3)',
+  info: '0 4px 16px rgba(59,130,246,0.3)',
   ghost: 'none',
 } as const;
 

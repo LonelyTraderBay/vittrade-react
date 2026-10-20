@@ -2,7 +2,7 @@ import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import { useLocation } from 'react-router';
-import { screen, waitFor, within } from '@testing-library/react';
+import { act, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useAuth } from '@/shared/session/useAuth';
 import { renderWithProviders } from '@/test/test-utils';
@@ -71,9 +71,14 @@ function RouteStateProbe() {
   );
 }
 
-function RefreshSessionButton() {
+function CaptureRefreshSession({
+  onReady,
+}: {
+  onReady: (refreshSession: ReturnType<typeof useAuth>['refreshSession']) => void;
+}) {
   const { refreshSession } = useAuth();
-  return <button onClick={() => void refreshSession()}>Refresh session</button>;
+  onReady(refreshSession);
+  return null;
 }
 
 describe('DCAMainPage additional coverage', () => {
@@ -258,6 +263,7 @@ describe('DCAMainPage additional coverage', () => {
       }),
     );
     const user = userEvent.setup();
+    let refreshSession: ReturnType<typeof useAuth>['refreshSession'] | undefined;
 
     renderWithProviders(
       <>
@@ -272,7 +278,7 @@ describe('DCAMainPage additional coverage', () => {
             trackPreselectedCoinUsed: vi.fn(),
           }}
         />
-        <RefreshSessionButton />
+        <CaptureRefreshSession onReady={(refresh) => (refreshSession = refresh)} />
       </>,
       { authAdapter: revocableAdapter },
     );
@@ -280,9 +286,11 @@ describe('DCAMainPage additional coverage', () => {
     await user.click(await screen.findByRole('button', { name: 'Xóa kế hoạch' }));
     await screen.findByRole('button', { name: /^Xóa$/ });
     permissions = [];
-    await user.click(screen.getByRole('button', { name: 'Refresh session' }));
+    await act(async () => {
+      await refreshSession?.();
+    });
     await waitFor(() =>
-      expect(screen.getByRole('button', { name: 'Xóa kế hoạch' })).toBeDisabled(),
+      expect(screen.getByRole('button', { name: 'Xóa kế hoạch', hidden: true })).toBeDisabled(),
     );
     await user.click(screen.getByRole('button', { name: /^Xóa$/ }));
 

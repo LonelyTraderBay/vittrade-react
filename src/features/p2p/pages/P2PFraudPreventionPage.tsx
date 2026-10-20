@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Header } from '@/shared/ui/layout/Header';
 import { PageLayout } from '@/shared/ui/layout/PageLayout';
+import { PageContent } from '@/shared/ui/layout/PageContent';
 import {
   Shield,
   ShieldAlert,
@@ -64,7 +65,7 @@ export function P2PFraudPreventionPage() {
     <PageLayout>
       <Header title="Phòng chống gian lận" subtitle="An toàn · P2P" back />
 
-      <div className="px-5 py-4 flex flex-col" style={{ gap: φSpace[5] }}>
+      <PageContent padding="relaxed" gap={φSpace[5]} className="pb-11">
         {/* ── Safety Score Banner ── */}
         <TrCard className="p-5">
           <div className="flex items-center justify-between mb-3">
@@ -489,9 +490,7 @@ export function P2PFraudPreventionPage() {
             claim bảo hiểm trong vòng 7 ngày và liên hệ hỗ trợ ngay.
           </p>
         </div>
-
-        <div style={{ height: 8 }} />
-      </div>
+      </PageContent>
     </PageLayout>
   );
 }

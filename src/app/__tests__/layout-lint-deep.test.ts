@@ -40,6 +40,9 @@ const GUARDED_FILES = [
   'src/app/pages/p2p/P2PHomePage.tsx',
   'src/features/p2p/pages/P2PMyAdsContractPage.tsx',
   'src/features/p2p/pages/P2PReviewsPage.tsx',
+  // UI consistency rollout: section roots keep spacing in their parent layout.
+  'src/features/p2p/pages/P2PFraudPreventionPage.tsx',
+  'src/features/market/pages/WatchlistPage.tsx',
   // P2P integration-status pages are feature-owned and read-only.
   'src/features/p2p/pages/P2PFrontendStatusPages.tsx',
   'src/features/profile/pages/ProfileContractPage.tsx',

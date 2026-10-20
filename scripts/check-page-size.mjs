@@ -16,7 +16,7 @@ function walk(directory) {
 }
 
 const featureViolations = walk(featurePagesRoot)
-  .filter((file) => file.includes(`${path.sep}pages${path.sep}`))
+  .filter((file) => file.includes(`${path.sep}pages${path.sep}`) && !/\.test\.(tsx|ts)$/.test(file))
   .map((file) => ({ file, lines: fs.readFileSync(file, 'utf8').split(/\r?\n/).length }))
   .filter(({ lines }) => lines > maxFeaturePageLines);
 

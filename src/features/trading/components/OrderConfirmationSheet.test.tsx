@@ -1,11 +1,13 @@
 import { fireEvent, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import { renderWithProviders } from '@/test/test-utils';
+import { ButtonGradients, ButtonTextColors } from '@/shared/theme/button';
 import { OrderConfirmationSheet, type OrderConfirmationSheetProps } from './OrderConfirmationSheet';
 
 const defaultProps: OrderConfirmationSheetProps = {
   open: true,
   isPlacing: false,
+  canConfirm: true,
   side: 'buy',
   pair: { symbol: 'BTC/USDT', baseAsset: 'BTC' },
   orderTypeLabel: 'Giới hạn',
@@ -55,6 +57,28 @@ describe('OrderConfirmationSheet', () => {
     renderSheet({ isPlacing: true });
 
     expect(screen.getByRole('button', { name: 'Đang đặt lệnh...' })).toBeDisabled();
+  });
+
+  it('explains when trading permission is lost while confirmation is open', () => {
+    renderSheet({ canConfirm: false });
+
+    expect(screen.getByRole('alert')).toHaveTextContent(
+      'Tài khoản không có quyền đặt lệnh. Đóng xác nhận và kiểm tra phiên hoặc quyền tài khoản.',
+    );
+    expect(screen.getByTestId('trade-confirm-submit')).toBeDisabled();
+  });
+
+  it.each([
+    ['buy', 'Xác nhận Mua', 'success'],
+    ['sell', 'Xác nhận Bán', 'danger'],
+  ] as const)('uses the shared %s action colors', (side, label, variant) => {
+    renderSheet({ side });
+
+    const action = screen.getByRole('button', { name: label });
+    expect(action).toHaveStyle({
+      background: ButtonGradients[variant],
+      color: ButtonTextColors[variant],
+    });
   });
 
   it('passes confirmation and close actions to the owning flow', () => {

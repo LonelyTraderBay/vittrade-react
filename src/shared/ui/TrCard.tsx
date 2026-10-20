@@ -17,7 +17,7 @@
  *    <TrCard variant="hero">Balance</TrCard>           // hero/portfolio
  *    <TrCard variant="inner">Sub-section</TrCard>      // nested element
  *    <TrCard hover>Clickable card</TrCard>              // standard + hover effect
- *    <TrCard rounded="lg">Featured</TrCard>             // rounded-3xl
+ *    <TrCard rounded="lg">Featured</TrCard>             // 24px card radius
  *    <TrCard accentBorder="rgba(16,185,129,0.2)">...</TrCard>  // custom border
  *    <TrCard as="button" onClick={...}>Tap me</TrCard>  // renders <button>
  */
@@ -25,7 +25,7 @@
 import React from 'react';
 import { useThemeColors, type ThemeColors } from '@/shared/hooks/useThemeColors';
 import { type VitDensity, resolveCardPadding } from '@/shared/theme/density';
-import { type VitRadius } from '@/shared/theme/radii';
+import { radiusClass as radiusTokenClass, type VitRadius } from '@/shared/theme/radii';
 
 /* ─── Variant Config ────────────────────────────── */
 
@@ -63,7 +63,7 @@ type BaseElement = 'div' | 'button' | 'section' | 'article';
 interface TrCardProps {
   /** Card pattern variant (default: 'standard') */
   variant?: CardVariant;
-  /** Border radius: 'md' = rounded-2xl (16px), 'lg' = rounded-3xl (24px), 'sm' = rounded-xl (12px) */
+  /** Card radius: sm = 12px, md = 16px, lg = 24px */
   rounded?: 'sm' | 'md' | 'lg';
   /** VitTrade radius token (wins over rounded if both provided) */
   radius?: VitRadius;
@@ -103,22 +103,10 @@ interface TrCardProps {
 /* ─── Radius Map ────────────────────────────────── */
 
 const RADIUS_MAP = {
-  sm: 'rounded-xl',
-  md: 'rounded-2xl',
-  lg: 'rounded-3xl',
+  sm: 'rounded-[var(--tr-radius-card-sm)]',
+  md: 'rounded-[var(--tr-radius-card)]',
+  lg: 'rounded-[var(--tr-radius-card-lg)]',
 } as const;
-
-const RADIUS_TOKEN_MAP: Record<VitRadius, string> = {
-  none: 'rounded-none',
-  xs: 'rounded-[2px]',
-  sm: 'rounded-sm',
-  md: 'rounded-lg',
-  lg: 'rounded-xl',
-  xl: 'rounded-2xl',
-  '2xl': 'rounded-[21px]',
-  '3xl': 'rounded-3xl',
-  full: 'rounded-full',
-};
 
 /* ─── Component ─────────────────────────────────── */
 
@@ -157,10 +145,10 @@ export function TrCard({
     ...style,
   };
 
-  const radiusClass = radius ? RADIUS_TOKEN_MAP[radius] : RADIUS_MAP[rounded];
+  const resolvedRadiusClass = radius ? radiusTokenClass(radius) : RADIUS_MAP[rounded];
 
   const classes = [
-    radiusClass,
+    resolvedRadiusClass,
     overflow ? 'overflow-hidden' : '',
     hover ? 'hover-card' : '',
     className,
@@ -176,7 +164,7 @@ export function TrCard({
     );
 
   return (
-    <Component className={classes} style={mergedStyle} {...rest}>
+    <Component className={classes} style={mergedStyle} {...rest} data-slot="card">
       {content}
     </Component>
   );

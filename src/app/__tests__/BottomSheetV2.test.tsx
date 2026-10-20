@@ -187,14 +187,14 @@ describe('BottomSheetV2', () => {
       const user = userEvent.setup();
       const handleClose = vi.fn();
 
-      const { container } = renderWithProviders(
+      renderWithProviders(
         <BottomSheetV2 open={true} onClose={handleClose}>
           <div>Content</div>
         </BottomSheetV2>,
       );
 
       // Find backdrop (first absolute div with blur)
-      const backdrop = container.querySelector('.absolute.inset-0');
+      const backdrop = portalRoot.querySelector('[data-state="open"].absolute.inset-0');
       if (backdrop) {
         await user.click(backdrop as HTMLElement);
         expect(handleClose).toHaveBeenCalled();
@@ -406,7 +406,8 @@ describe('BottomSheetV2', () => {
       expect(document.activeElement).toBeTruthy();
     });
 
-    it('wraps focus at the first and last controls when tabbing', () => {
+    it('wraps keyboard focus at the first and last controls', async () => {
+      const user = userEvent.setup();
       renderWithProviders(
         <BottomSheetV2 open={true} onClose={() => {}}>
           <button>First</button>
@@ -417,12 +418,31 @@ describe('BottomSheetV2', () => {
       const dialog = screen.getByRole('dialog');
       const controls = [...dialog.querySelectorAll<HTMLElement>('button')];
       controls[0].focus();
-      fireEvent.keyDown(dialog, { key: 'Tab', shiftKey: true });
+      await user.keyboard('{Shift>}{Tab}{/Shift}');
       expect(document.activeElement).toBe(controls.at(-1));
 
       controls.at(-1)?.focus();
-      fireEvent.keyDown(dialog, { key: 'Tab' });
+      await user.keyboard('{Tab}');
       expect(document.activeElement).toBe(controls[0]);
+    });
+
+    it('returns programmatic focus to the modal when the background is targeted', async () => {
+      renderWithProviders(
+        <>
+          <button data-testid="background-action">Background action</button>
+          <BottomSheetV2 open={true} onClose={() => {}}>
+            <button>Inside action</button>
+          </BottomSheetV2>
+        </>,
+      );
+
+      const dialog = screen.getByRole('dialog');
+      const backgroundAction = document.querySelector<HTMLButtonElement>(
+        '[data-testid="background-action"]',
+      );
+      backgroundAction?.focus();
+
+      await waitFor(() => expect(dialog.contains(document.activeElement)).toBe(true));
     });
   });
 
@@ -524,7 +544,8 @@ describe('BottomSheetV2', () => {
         </BottomSheetV2>,
       );
 
-      expect(screen.queryByText('Should not show')).not.toBeInTheDocument();
+      expect(screen.getByRole('dialog')).toHaveAttribute('aria-label', 'Should not show');
+      expect(screen.queryByRole('heading', { name: 'Should not show' })).not.toBeInTheDocument();
       expect(screen.getByText('Custom Header')).toBeInTheDocument();
     });
   });

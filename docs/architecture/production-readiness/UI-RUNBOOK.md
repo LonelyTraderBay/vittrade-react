@@ -34,6 +34,7 @@ Script npm hiện có được dùng như sau:
     $env:VITE_DATA_SOURCE = 'mock'
     $env:VITE_API_BASE_URL = ''
     $env:VITE_WS_URL = ''
+    $env:VITE_ENABLE_DEVTOOLS = 'true'
     npm.cmd run dev -- --host 127.0.0.1 --port 4173 --strictPort
 
 Giữ cửa sổ PowerShell đang chạy. Mở trình duyệt tại:
@@ -44,6 +45,8 @@ Giữ cửa sổ PowerShell đang chạy. Mở trình duyệt tại:
 Thoát bằng **Ctrl+C**. Nếu cổng **4173** đã có chương trình khác, đổi tham số port thành **4174** rồi mở đúng cổng mới trong trình duyệt. Tắt server trước khi đổi VITE_DATA_SOURCE; cấu hình được đọc lúc Vite khởi động.
 
 Khi mock hoạt động, góc dưới bên phải có cảnh báo “DỮ LIỆU MÔ PHỎNG · KHÔNG PHẢI GIAO DỊCH THẬT”. Nếu cảnh báo không hiện, đừng coi dữ liệu đang thấy là fixture đã xác minh; kiểm tra URL, biến VITE_DATA_SOURCE và cấu hình server.
+
+Trong cấu hình local mặc định, bảng chọn persona/kịch bản được ẩn; ứng dụng vẫn dùng fixture mock và giữ cảnh báo. Chỉ đặt `VITE_ENABLE_DEVTOOLS=true` khi cần chạy các walkthrough ở runbook này. Khi devtools tắt, trạng thái API mock đã lưu từ phiên trước không được áp dụng.
 
 ## 2. Persona đăng nhập mẫu
 

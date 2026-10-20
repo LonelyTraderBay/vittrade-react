@@ -51,7 +51,8 @@ describe('route failure recovery', () => {
       const alert = await screen.findByRole('alert');
       expect(alert).not.toHaveTextContent('private-token');
       expect(alert).not.toHaveTextContent('private body');
-      expect(screen.getByRole('button', { name: 'Tải lại trang' })).toBeInTheDocument();
+      const reloadButton = screen.getByRole('button', { name: 'Tải lại trang' });
+      expect(reloadButton).toHaveStyle({ color: 'rgb(17, 17, 17)' });
       await waitFor(() => expect(report).toHaveBeenCalled());
     } finally {
       router.dispose();

@@ -62,6 +62,7 @@ describe('runtime environment boundary', () => {
     const { env: developmentEnv, assertRuntimeEnv } = await import('./env');
 
     expect(developmentEnv.dataSource).toBe('mock');
+    expect(developmentEnv.enableDevtools).toBe(false);
     expect(assertRuntimeEnv).not.toThrow();
 
     vi.resetModules();

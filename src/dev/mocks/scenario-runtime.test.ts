@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { generateOrderBook } from './trading-fixtures';
 import {
   configureDevMockScenario,
@@ -11,7 +11,11 @@ import {
   setDevPreviewScenario,
 } from './scenario-runtime';
 
-afterEach(() => resetDevMockRuntime());
+afterEach(() => {
+  resetDevMockRuntime();
+  vi.unstubAllEnvs();
+  vi.resetModules();
+});
 
 describe('development mock scenario runtime', () => {
   it('replays IDs and seeded fixture values after a reset', () => {
@@ -61,5 +65,20 @@ describe('development mock scenario runtime', () => {
 
     expect(getDevPreviewScenario()).toBeNull();
     expect(localStorage.removeItem).toHaveBeenCalledWith('vittrade.dev-preview.scenario');
+  });
+
+  it('ignores persisted response overrides when devtools are disabled', async () => {
+    vi.stubEnv('MODE', 'development');
+    vi.stubEnv('DEV', true);
+    vi.stubEnv('PROD', false);
+    vi.stubEnv('VITE_DATA_SOURCE', 'mock');
+    vi.stubEnv('VITE_ENABLE_DEVTOOLS', 'false');
+    vi.resetModules();
+
+    const runtime = await import('./scenario-runtime');
+    runtime.setDevPreviewScenario({ domain: 'market', state: 'error' });
+
+    expect(runtime.getDevPreviewScenario()).toBeNull();
+    runtime.resetDevMockRuntime();
   });
 });

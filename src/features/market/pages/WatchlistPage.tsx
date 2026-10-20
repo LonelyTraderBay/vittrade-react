@@ -5,6 +5,7 @@ import { ErrorState } from '@/shared/ui/ErrorState';
 import { isApiError } from '@/shared/api/api-error';
 import { Header } from '@/shared/ui/layout/Header';
 import { PageLayout } from '@/shared/ui/layout/PageLayout';
+import { PageContent } from '@/shared/ui/layout/PageContent';
 import { SparklineChart } from '@/shared/ui/charts/SparklineChart';
 import { TrCard } from '@/shared/ui/TrCard';
 import { useRoutePrefix } from '@/shared/navigation/useRoutePrefix';
@@ -187,11 +188,11 @@ export function WatchlistPage() {
           )}
         </div>
       ) : (
-        <div className="px-5 py-3">
+        <PageContent padding="default" gap={12} className="pb-6">
           {entries.map(({ entry, pair }) => {
             const positive = pair.change24h >= 0;
             return (
-              <TrCard key={entry.id} className="mb-3 p-4">
+              <TrCard key={entry.id} className="p-4">
                 <div className="flex items-center gap-3">
                   <button
                     onClick={() => navigate(`${prefix}/pair/${encodeURIComponent(pair.id)}`)}
@@ -307,7 +308,7 @@ export function WatchlistPage() {
               </TrCard>
             );
           })}
-        </div>
+        </PageContent>
       )}
     </PageLayout>
   );

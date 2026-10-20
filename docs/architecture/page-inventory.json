@@ -445,7 +445,7 @@
       "domain": "auth",
       "owner": "features/auth",
       "status": "integration-pending",
-      "lines": 88,
+      "lines": 86,
       "routePaths": [
         "account-locked"
       ],
@@ -471,7 +471,7 @@
       "domain": "auth",
       "owner": "features/auth",
       "status": "integration-pending",
-      "lines": 241,
+      "lines": 239,
       "routePaths": [
         "login"
       ],
@@ -1728,7 +1728,7 @@
       "domain": "market",
       "owner": "features/market",
       "status": "integration-pending",
-      "lines": 315,
+      "lines": 316,
       "routePaths": [
         "markets/watchlist"
       ],
@@ -1745,6 +1745,7 @@
           "@/shared/ui/TrCard",
           "@/shared/ui/charts/SparklineChart",
           "@/shared/ui/layout/Header",
+          "@/shared/ui/layout/PageContent",
           "@/shared/ui/layout/PageLayout"
         ],
         "mockReferences": [],
@@ -2173,7 +2174,7 @@
       "domain": "p2p",
       "owner": "features/p2p",
       "status": "integration-pending",
-      "lines": 498,
+      "lines": 497,
       "routePaths": [
         "p2p/fraud-prevention"
       ],
@@ -2186,6 +2187,7 @@
           "@/shared/navigation/useRoutePrefix",
           "@/shared/ui/TrCard",
           "@/shared/ui/layout/Header",
+          "@/shared/ui/layout/PageContent",
           "@/shared/ui/layout/PageLayout"
         ],
         "mockReferences": [],
@@ -3884,7 +3886,7 @@
       "domain": "wallet",
       "owner": "features/wallet",
       "status": "integration-pending",
-      "lines": 287,
+      "lines": 300,
       "routePaths": [
         "wallet/withdraw",
         "wallet/withdraw/:asset"

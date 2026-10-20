@@ -1,5 +1,6 @@
 import React from 'react';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
+import { ButtonGradients, ButtonTextColors } from '@/shared/theme/button';
 import { BottomSheetV2 } from './BottomSheetV2';
 
 /**
@@ -65,33 +66,33 @@ const VARIANT_COLORS: Record<
   danger: {
     bg: 'rgba(239,68,68,0.1)',
     border: '1px solid rgba(239,68,68,0.2)',
-    btnBg: 'linear-gradient(135deg, #EF4444, #dc2626)',
+    btnBg: ButtonGradients.danger,
     btnBorder: 'none',
-    btnColor: '#fff',
+    btnColor: ButtonTextColors.danger,
     iconBg: 'rgba(239,68,68,0.1)',
   },
   warning: {
     bg: 'rgba(245,158,11,0.1)',
     border: '1px solid rgba(245,158,11,0.2)',
-    btnBg: 'linear-gradient(135deg, #F59E0B, #d97706)',
+    btnBg: ButtonGradients.warning,
     btnBorder: 'none',
-    btnColor: '#fff',
+    btnColor: ButtonTextColors.warning,
     iconBg: 'rgba(245,158,11,0.1)',
   },
   success: {
     bg: 'rgba(16,185,129,0.1)',
     border: '1px solid rgba(16,185,129,0.2)',
-    btnBg: 'linear-gradient(135deg, #10B981, #059669)',
+    btnBg: ButtonGradients.success,
     btnBorder: 'none',
-    btnColor: '#fff',
+    btnColor: ButtonTextColors.success,
     iconBg: 'rgba(16,185,129,0.12)',
   },
   info: {
     bg: 'rgba(59,130,246,0.1)',
     border: '1px solid rgba(59,130,246,0.2)',
-    btnBg: 'linear-gradient(135deg, #3B82F6, #1d4ed8)',
+    btnBg: ButtonGradients.info,
     btnBorder: 'none',
-    btnColor: '#fff',
+    btnColor: ButtonTextColors.info,
     iconBg: 'rgba(59,130,246,0.1)',
   },
 };

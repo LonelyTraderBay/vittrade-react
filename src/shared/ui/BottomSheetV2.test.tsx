@@ -1,4 +1,5 @@
 import { act, fireEvent, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { renderWithProviders } from '@/test/test-utils';
 import { BottomSheetRow, BottomSheetV2 } from './BottomSheetV2';
@@ -95,9 +96,10 @@ describe('BottomSheetV2', () => {
     expect(onClose).not.toHaveBeenCalled();
   });
 
-  it('uses center defaults, the default header, and reduced-motion transitions', () => {
+  it('uses center defaults, the default header, and reduced-motion transitions', async () => {
     reducedMotion.value = true;
     const onClose = vi.fn();
+    const user = userEvent.setup();
     renderWithProviders(
       <BottomSheetV2 open onClose={onClose} variant="center" title="Center">
         <p>Centered content</p>
@@ -110,7 +112,9 @@ describe('BottomSheetV2', () => {
     expect(screen.getByRole('button', { name: 'Đóng' })).toBeEnabled();
     fireEvent.click(dialog);
     expect(onClose).not.toHaveBeenCalled();
-    fireEvent.click(dialog.parentElement!.parentElement!.querySelector('[aria-hidden="true"]')!);
+    const backdrop = dialog.parentElement?.parentElement?.querySelector('[aria-hidden="true"]');
+    expect(backdrop).toBeInTheDocument();
+    await user.click(backdrop as HTMLElement);
     expect(onClose).toHaveBeenCalledOnce();
   });
 
@@ -312,6 +316,9 @@ describe('BottomSheetV2', () => {
         <button>Action</button>
       </BottomSheetV2>,
     );
+    expect(screen.queryByRole('dialog', { name: 'Focus' })).not.toBeInTheDocument();
+    expect(document.body).not.toHaveAttribute('data-scroll-locked');
+    expect(document.body).not.toHaveStyle({ pointerEvents: 'none' });
     expect(trigger).toHaveFocus();
     trigger.remove();
   });

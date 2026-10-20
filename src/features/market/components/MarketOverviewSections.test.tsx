@@ -90,14 +90,10 @@ describe('Market overview presentation sections', () => {
       </>,
     );
 
-    const positiveChange = screen
-      .getByText('Positive change')
-      .closest('.rounded-2xl')
-      ?.querySelector('p:last-of-type');
-    const negativeChange = screen
-      .getByText('Negative change')
-      .closest('.rounded-2xl')
-      ?.querySelector('p:last-of-type');
+    const getChangeText = (label: string) =>
+      screen.getByText(label).parentElement?.parentElement?.querySelector('p:last-of-type');
+    const positiveChange = getChangeText('Positive change');
+    const negativeChange = getChangeText('Negative change');
     expect(positiveChange).toHaveStyle({ color: 'var(--tr-success-text)' });
     expect(positiveChange).toHaveTextContent('+2.50%');
     expect(negativeChange).toHaveStyle({ color: 'var(--tr-error-text)' });

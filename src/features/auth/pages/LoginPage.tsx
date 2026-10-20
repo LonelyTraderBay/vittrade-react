@@ -202,9 +202,7 @@ export function LoginPage() {
             <CTAButton
               type="button"
               onClick={handleDemoLogin}
-              variant="ghost"
-              bg={colors.surface2}
-              textColor={colors.text1}
+              variant="secondary"
               style={{
                 border: `1.5px solid ${colors.borderSolid}`,
                 fontSize: 15,

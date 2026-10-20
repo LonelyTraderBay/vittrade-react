@@ -80,6 +80,19 @@ export function WithdrawPage() {
   const busy =
     challengeMutation.isPending || verificationMutation.isPending || withdrawalMutation.isPending;
 
+  useEffect(() => {
+    const firstInvalidFieldId = errors.address
+      ? 'withdraw-address'
+      : errors.memo
+        ? 'withdraw-memo'
+        : errors.amount
+          ? 'withdraw-amount'
+          : undefined;
+    if (firstInvalidFieldId) {
+      document.getElementById(firstInvalidFieldId)?.focus();
+    }
+  }, [errors]);
+
   if (!canReadWallet) {
     return (
       <PageLayout>

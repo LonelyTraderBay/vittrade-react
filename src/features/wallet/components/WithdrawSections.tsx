@@ -335,6 +335,7 @@ export function WithdrawalForm({
         <input
           id="withdraw-address"
           value={address}
+          required
           disabled={!canWithdraw}
           onChange={onAddressChange}
           placeholder={`Nhập địa chỉ ${asset}`}
@@ -344,9 +345,16 @@ export function WithdrawalForm({
             border: `1.5px solid ${errors.address ? colors.error : colors.borderSolid}`,
             color: colors.text1,
           }}
+          aria-invalid={Boolean(errors.address)}
+          aria-describedby={errors.address ? 'withdraw-address-error' : undefined}
         />
         {errors.address && (
-          <p style={{ color: colors.error, fontSize: 12, marginTop: 4 }}>{errors.address}</p>
+          <p
+            id="withdraw-address-error"
+            style={{ color: colors.error, fontSize: 12, marginTop: 4 }}
+          >
+            {errors.address}
+          </p>
         )}
       </div>
 
@@ -361,6 +369,7 @@ export function WithdrawalForm({
           <input
             id="withdraw-memo"
             value={memo}
+            required={selectedNetwork.requiresMemo}
             disabled={!canWithdraw}
             onChange={onMemoChange}
             placeholder={selectedNetwork.memoPlaceholder ?? 'Nhập memo'}
@@ -370,9 +379,13 @@ export function WithdrawalForm({
               border: `1.5px solid ${errors.memo ? colors.error : colors.borderSolid}`,
               color: colors.text1,
             }}
+            aria-invalid={Boolean(errors.memo)}
+            aria-describedby={errors.memo ? 'withdraw-memo-error' : undefined}
           />
           {errors.memo && (
-            <p style={{ color: colors.error, fontSize: 12, marginTop: 4 }}>{errors.memo}</p>
+            <p id="withdraw-memo-error" style={{ color: colors.error, fontSize: 12, marginTop: 4 }}>
+              {errors.memo}
+            </p>
           )}
         </div>
       )}
@@ -394,6 +407,7 @@ export function WithdrawalForm({
         <input
           id="withdraw-amount"
           type="number"
+          required
           disabled={!canWithdraw}
           min={selectedNetwork.minWithdraw}
           max={Math.min(selectedNetwork.maxWithdraw, assetData.available)}
@@ -409,9 +423,13 @@ export function WithdrawalForm({
             fontFamily: 'monospace',
             fontSize: 18,
           }}
+          aria-invalid={Boolean(errors.amount)}
+          aria-describedby={errors.amount ? 'withdraw-amount-error' : undefined}
         />
         {errors.amount && (
-          <p style={{ color: colors.error, fontSize: 12, marginTop: 4 }}>{errors.amount}</p>
+          <p id="withdraw-amount-error" style={{ color: colors.error, fontSize: 12, marginTop: 4 }}>
+            {errors.amount}
+          </p>
         )}
       </div>
 

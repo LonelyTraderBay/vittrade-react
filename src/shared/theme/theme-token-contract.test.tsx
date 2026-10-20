@@ -122,10 +122,26 @@ describe('shared theme token contracts', () => {
     expect(radiusValue(7)).toBe(7);
     expect(radiusValue('unknown' as keyof typeof VitRadii)).toBe(VitRadii.md);
     expect(VitRadiusAlias.card).toBe(VitRadii.xl);
-    for (const token of Object.keys(VitRadii) as (keyof typeof VitRadii)[]) {
-      expect(radiusClass(token)).toMatch(/^rounded/);
+    const root = themeBlock(':root');
+    const classes: Record<keyof typeof VitRadii, string> = {
+      none: 'rounded-none',
+      xs: 'rounded-[var(--tr-radius-xs)]',
+      sm: 'rounded-[var(--tr-radius-sm)]',
+      md: 'rounded-[var(--tr-radius-md)]',
+      lg: 'rounded-[var(--tr-radius-lg)]',
+      xl: 'rounded-[var(--tr-radius-xl)]',
+      '2xl': 'rounded-[var(--tr-radius-2xl)]',
+      '3xl': 'rounded-[var(--tr-radius-3xl)]',
+      full: 'rounded-full',
+    };
+    for (const [token, value] of Object.entries(VitRadii) as [keyof typeof VitRadii, number][]) {
+      expect(radiusClass(token)).toBe(classes[token]);
+      expect(root).toContain(`--tr-radius-${token}: ${value}px;`);
     }
-    expect(radiusClass('unknown' as keyof typeof VitRadii)).toBe('rounded-lg');
+    expect(root).toContain('--tr-radius-card-sm: 12px;');
+    expect(root).toContain('--tr-radius-card: var(--tr-radius-xl);');
+    expect(root).toContain('--tr-radius-card-lg: var(--tr-radius-3xl);');
+    expect(radiusClass('unknown' as keyof typeof VitRadii)).toBe(classes.md);
   });
 
   it('resolves all typography roles and numeric fallbacks', () => {

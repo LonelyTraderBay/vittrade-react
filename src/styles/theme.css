@@ -231,6 +231,7 @@
   /* VitTrade semantic radius */
   --tr-radius-input: var(--tr-radius-lg); /* 14px */
   --tr-radius-cta: var(--tr-radius-lg); /* 14px */
+  --tr-radius-card-sm: 12px; /* compact cards */
   --tr-radius-card: var(--tr-radius-xl); /* 16px */
   --tr-radius-card-lg: var(--tr-radius-3xl); /* 24px */
   --tr-radius-chip: var(--tr-radius-md); /* 8px */
@@ -1018,14 +1019,16 @@
 
 /* ---- Interactive Row / List Item Hover ---- */
 .hover-row,
-[data-slot='card'] > div,
+[data-slot='card'] > div[class*='flex'][class*='items-center'],
 .rounded-2xl > div[class*='flex'][class*='items-center'],
+[data-slot='card'] > button[class*='flex'],
 .rounded-2xl > button[class*='flex'] {
   transition: background-color var(--tr-duration-fast) ease;
 }
 
 .hover-row:hover,
-[data-slot='card'] > div:hover {
+[data-slot='card'] > div[class*='flex'][class*='items-center']:hover,
+[data-slot='card'] > button[class*='flex']:hover {
   background-color: var(--tr-border);
 }
 

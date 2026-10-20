@@ -7,15 +7,15 @@ import { type VitDensity } from '@/shared/theme/density';
  *  PageContent — Enterprise Standard Content Area
  * ══════════════════════════════════════════════════════════════
  *
- *  Standardizes the content area between Header and StickyFooter.
- *  Enforces consistent horizontal padding and vertical spacing
- *  across all pages.
+ *  Standardizes a continuous content area between shared page regions.
+ *  It owns the common gutter and sibling spacing; edge-to-edge sections
+ *  with different density may keep their own explicit layout boundary.
  *
  *  SPACING SYSTEM (Guidelines §2.3 — 4pt base grid, 8pt rhythm):
  *  ─────────────────────────────────────────────────────────────
  *  Horizontal padding: 20px (device standard, matching Header px-5)
  *  Vertical padding presets:
- *    "compact" — pt-2 pb-0 (12px top) — lists, dense content
+ *    "compact" — pt-2 pb-0 (8px top) — lists, dense content
  *    "default" — pt-3 pb-0 (12px top) — standard pages
  *    "relaxed" — pt-4 pb-0 (16px top) — forms, settings
  *    "none"    — no padding          — custom hero/gradient

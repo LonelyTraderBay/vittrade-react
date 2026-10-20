@@ -188,7 +188,16 @@ Duy trì system rõ ràng:
 - text nhỏ không bị nhạt quá
 - icon quan trọng không được chỉ dựa vào màu
 
-### 4.3 States
+### 4.3 Accessibility baseline
+
+**MUST**
+
+- Chữ thường đạt contrast tối thiểu **4.5:1**; chữ lớn đạt **3:1** theo WCAG 2.2 SC 1.4.3. Thành phần giao diện và đồ họa cần thiết đạt **3:1** theo tiêu chí tương ứng; không áp ngưỡng chữ cho mọi đối tượng.
+- Control có tên truy cập, thao tác bàn phím và focus-visible; trạng thái lỗi/liên kết phải được biểu đạt ngoài màu sắc.
+- Với web, target mặc định đáp ứng WCAG 2.2 AA SC 2.5.8 (**24×24 CSS px**) hoặc một ngoại lệ được tiêu chí cho phép; **44×44 CSS px** là mục tiêu sản phẩm có thể chọn thêm, không phải ngưỡng AA bắt buộc.
+- Overlay modal giữ focus trong dialog, đưa focus vào khi mở, trả focus khi đóng và ngăn tương tác nền theo primitive dùng chung.
+
+### 4.4 States
 
 **MUST**
 Mọi control quan trọng phải có:
@@ -200,7 +209,7 @@ Mọi control quan trọng phải có:
 - error
 - success
 
-### 4.4 Lists & cards
+### 4.5 Lists & cards
 
 **MUST**
 Cards và rows phải scan được nhanh:
@@ -1098,20 +1107,18 @@ thì luôn ưu tiên:
 ### 21.1 Layout Template System
 
 **MUST**
-Mọi page mới phải dùng `PageLayout` + `PageContent` từ `/src/app/components/layout/`:
+Page ứng dụng có nội dung cuộn thông thường phải dùng `PageLayout` + `PageContent` từ `src/shared/ui/layout/`. Shell của ứng dụng nằm riêng ở `src/app/components/layout/`; không import page-content primitive từ shell.
 
 ```tsx
-import {
-  PageLayout,
-  StickyFooter,
-} from "../../components/layout/PageLayout";
-import {
-  PageContent,
-  PageSection,
-} from "../../components/layout/PageContent";
-import { Header } from "../../components/layout/Header";
-import { TabBar } from "../../components/layout/TabBar";
+import { PageLayout, StickyFooter } from '@/shared/ui/layout/PageLayout';
+import { PageContent, PageSection } from '@/shared/ui/layout/PageContent';
+import { Header } from '@/shared/ui/layout/Header';
+import { TabBar } from '@/shared/ui/TabBar';
 ```
+
+`PageContent` là boundary cho một vùng nội dung liên tục có chung gutter/gap. Dùng preset khi các sibling chia sẻ cùng spacing role; giữ section riêng tự sở hữu gutter khi trang gồm toolbar/filter/row edge-to-edge với density khác nhau. `WatchlistPage` dùng `PageContent` cho danh sách card (gap 12px do parent sở hữu); `OrdersHistoryPage` giữ tabs/filter/rows theo section vì mỗi vùng có gutter và padding riêng. `P2PMarketplacePage` giữ `PullToRefresh` ở root; `P2PMarketplaceSections` sở hữu vùng nội dung bằng `PageContent`. Không thêm wrapper không có trách nhiệm layout chỉ để tăng số lần import.
+
+Auth Web và chart/trade immersive theo shell riêng. `src/features/dca/pages/DCAMainPage.tsx` và `src/features/p2p/pages/P2PMarketplacePage.tsx` giữ `PullToRefresh` làm root gesture/layout owner; nội dung DCA dùng `PageContent` trực tiếp, còn P2P giao vùng danh sách cho `src/features/p2p/components/P2PMarketplaceSections.tsx`. Không lồng `PageLayout` nếu chưa kiểm tra min-height, bottom inset và pull gesture trên runtime. `src/features/p2p/pages/P2P2FASettingsPage.tsx` giao vùng nội dung cho `src/features/p2p/components/P2P2FASettingsView.tsx`, nơi đang dùng `PageContent`. Các route adapter, Web auth shell, trang trade immersive và preview dev/legacy được liệt kê cùng owner trong `src/app/__tests__/page-layout-contract.test.ts`; không thêm ngoại lệ chỉ để né primitive. Ngoại lệ mới MUST nêu route/file, lý do, owner tại lớp hiện có, trạng thái cần kiểm tra và điều kiện xem xét lại trong cùng change/review.
 
 **MUST NOT**
 
@@ -1199,79 +1206,38 @@ Chỉ dùng các composition patterns sau:
 </PageLayout>
 ```
 
-### 21.4 Header Gold Standard & Pattern Reference
+### 21.4 Header API & Pattern Reference
 
-**MUST — GOLD STANDARD (Trading Bots pattern)**
+`Header` có ba API công khai: `page` (left-aligned), `standard` (centered title) và `custom` (nội dung do consumer composition). Implementation/test hiện xác nhận default là `page`; không đổi default toàn cục chỉ để khớp một mẫu trang.
 
-Tất cả inner/detail pages phải tuân theo mẫu chuẩn:
-
-```
-┌─────────────────────────────────────────┐
-│  [←]         Trading Bots         [ ]   │  ← glass bar, h=52px, centered title
-├─────────────────────────────────────────┤
-│  Giao dịch  ›  Bot giao dịch           │  ← breadcrumb auto (depth ≥ 2)
-└─────────────────────────────────────────┘
-```
-
-**Code mẫu chuẩn:**
+| Hành vi | Contract hiện tại |
+| --- | --- |
+| `variant` | Mặc định `page`; chọn `standard` tường minh khi trang cần title căn giữa; `custom` dành cho nội dung header do feature composition. |
+| `right` | Mặc định `none`. `page` không tạo placeholder khi không có action; `standard` giữ placeholder 36px để cân title. |
+| Breadcrumb | Tắt mặc định, kể cả khi có `back`. Chỉ render khi truyền `breadcrumb`; `breadcrumbMinDepth` mặc định là 2. |
+| Back | `back` hiển thị hành động quay lại; không tự bật breadcrumb. Giữ hành vi navigation/fallback hiện có. |
+| Title | `page` căn trái; `standard` căn giữa. Title dài phải wrap/truncate theo behavior của owner, không tạo header riêng tại page. |
 
 ```tsx
-// ✅ GOLD STANDARD — chỉ cần 2 props, breadcrumb tự bật
+// Header trái theo default, không breadcrumb; hợp với page/list thông thường.
 <Header title="Trading Bots" back />
 
-// Breadcrumb auto-enabled khi back=true (ẩn nếu depth < 2)
-// right defaults to 'none' (placeholder 36px bên phải)
-// variant defaults to 'standard' (centered title)
-// breadcrumbMinDepth defaults to 2
+// Title căn giữa và breadcrumb là hai lựa chọn tường minh.
+<Header variant="standard" title="Chi tiết lệnh" back breadcrumb />
 ```
 
-**Smart Defaults (đã built-in vào Header component):**
+**MUST**
 
-- `back={true}` → `breadcrumb` tự bật (auto-enabled)
-- `breadcrumbMinDepth` mặc định = `2` (chỉ hiện khi depth ≥ 2)
-- `right` mặc định = `'none'` (placeholder 36px giữ cân bằng)
-- `variant` mặc định = `'standard'` (centered title)
-- Muốn tắt breadcrumb: dùng `breadcrumb={false}`
+- Dùng `Header` cho header trang thuộc app shell; chọn `variant` theo hierarchy của sản phẩm và giữ default hiện có khi phù hợp.
+- Chỉ bật breadcrumb khi route có đường dẫn cha hữu ích; kiểm tra label/đường quay lại ở route thật.
+- Dùng `action` hoặc `right` API công khai cho thao tác header; icon-only action phải có accessible name.
+- Không coi một variant là chuẩn bắt buộc cho mọi trang; chart/immersive và module-specific navigation được giữ composition có chủ đích.
 
-**MUST NOT:**
+**MUST NOT**
 
-- Không tự tạo header div riêng — luôn dùng `<Header />`
-- Không dùng `right="none"` explicitly — đó là default
-- Không quên `back` cho inner pages — user phải quay lại được
-
-**Action prop (cho header có icon button bên phải):**
-
-```tsx
-import { Settings } from 'lucide-react';
-
-<Header
-  title="Security Center"
-  back
-  action={{ icon: Settings, onClick: () => navigate('/settings') }}
-/>
-```
-
-**MUST — Pattern Table:**
-
-| Page Type          | variant    | back | right/action  | breadcrumb   | badge |
-| ------------------ | ---------- | ---- | ------------- | ------------ | ----- |
-| Detail page        | `standard` | ✓    | —             | auto ✓       | —     |
-| Module index       | `page`     | ✗    | `bell`        | ✗            | —     |
-| Sub-module index   | `page`     | ✓    | `search`      | auto ✓       | —     |
-| Settings page      | `standard` | ✓    | —             | auto ✓       | —     |
-| Chart/Trade        | `custom`   | ✓    | custom        | auto ✓       | —     |
-| Form/Wizard        | `standard` | ✓    | —             | auto ✓       | —     |
-| Search page        | `standard` | ✓    | `search`      | auto ✓       | —     |
-| Deep nav (≥3 deep) | `standard` | ✓    | —             | auto ✓       | —     |
-| Orders list        | `standard` | ✓    | —             | auto ✓       | count |
-| With action button | `standard` | ✓    | `action={..}` | auto ✓       | —     |
-
-**Breadcrumb tự sinh từ route path:**
-
-- Route segment → Vietnamese label mapping tự động
-- Segment labels được config trong `Breadcrumb.tsx` (`SEGMENT_LABELS` + `CONTEXT_LABELS`)
-- Dynamic segments (IDs, UUIDs) tự phát hiện và hiển thị `...`
-- Clickable: user có thể tap vào segment cha để navigate ngược
+- Không tuyên bố `back` tự bật breadcrumb hoặc `right="none"` luôn có placeholder.
+- Không tự dựng header div để né API hiện có; nếu contract thiếu, mở rộng owner và test consumer trước.
+- Không đổi default/visual behavior toàn sản phẩm sem documentation-only migration; thay đổi như vậy cần consumer inventory, regression và review.
 
 ### 21.5 TabBar Variants
 
@@ -1342,3 +1308,55 @@ Khi refactor page cũ sang template system:
 - [ ] Xóa `useFadeInTab` nếu page đang dùng
 - [ ] Xóa `import { motion } from 'motion/react'` nếu chỉ dùng cho tab indicator
 - [ ] Verify: không có `h-screen` / `calc(100vh)` / `overflow-y: auto` bên trong layout
+
+### 21.10 Nguồn chuẩn token, layout và density
+
+Các giá trị dưới đây mô tả owner đang chạy trong ứng dụng. Không chép lại bảng giá trị token đầy đủ vào page hoặc tạo một file token thứ hai.
+
+| Trách nhiệm | Owner hiện có | Hợp đồng áp dụng |
+| --- | --- | --- |
+| Màu semantic/theme | `src/styles/theme.css`; `.light` là theme override. `src/main.tsx` nạp `src/styles/index.css`, stylesheet này nạp theme; `ThemeProvider`/`useThemeColors()` cung cấp theme và các giá trị CSS cho component. | Page dùng vai trò `--tr-*` hoặc `useThemeColors()`. Primitive riêng như CTA dùng `src/shared/theme/button.ts` và phải giữ test tương phản/contract. |
+| Radius | `src/shared/theme/radii.ts` cho API TypeScript; `--tr-radius-*` trong `src/styles/theme.css` cho CSS runtime. | Hai adapter hiện được đối chiếu bởi `src/shared/theme/theme-token-contract.test.tsx`; không khai báo radius nền tảng mới trong page. |
+| Border/elevation/control size | Semantic colors và surface/shadow vars tại `src/styles/theme.css` qua `src/shared/hooks/useThemeColors.ts`; `src/shared/theme/radii.ts`, `src/shared/theme/density.ts`, `src/shared/theme/button.ts`, `src/shared/ui/TrCard.tsx`. | Card/control dùng variant, radius, density API có sẵn. Giá trị component riêng chỉ thêm khi contract ổn định; không thêm biến nền tảng trùng vai trò. |
+| Density/control sizing | `src/shared/theme/density.ts` và component tokens tại `src/shared/theme/button.ts`. | Chọn density có tên (`compact`, `standard`, `relaxed`, `hero`, `tool`) theo nhu cầu thực tế; không tự đặt chiều cao control nền tảng ở page. |
+| Page gutter/section spacing | `src/shared/ui/layout/PageLayout.tsx`, `src/shared/ui/layout/PageContent.tsx`, `src/shared/theme/density.ts`; legacy Fibonacci scale tại `src/shared/lib/golden.ts` (`φSpace`). | `PageContent` sở hữu gutter ngang `px-5` (20px), trừ `fullBleed`; component sở hữu padding bên trong; parent `gap` sở hữu khoảng cách giữa sibling. `src/features/market/pages/WatchlistPage.tsx` dùng gap 12px thay cho margin-bottom 12px trên từng card. `src/features/p2p/pages/P2PFraudPreventionPage.tsx` giữ gap đặc thù 21px từ `φSpace[5]`; không dùng scale này cho layout mới nếu semantic preset hiện có đáp ứng. |
+| Typography | CSS roles `--tr-text-*` trong `src/styles/theme.css`; API role `VitTextRoles`/`textRoleStyle()` trong `src/shared/theme/typography.ts`. | Màn hình mới dùng role hiện có theo ý nghĩa. `src/shared/theme/legacyTypography.ts` là compatibility source cho consumer hiện hữu, không phải nơi thêm role mới. `src/shared/theme/webTokens.ts` giữ riêng density/typography của Web shell. |
+| Breakpoint/shell | `src/app/components/layout/device-layout.ts`, shell responsive hiện có và cấu hình CSS thực tế. | Route dùng shell và breakpoint đã có; chỉ thêm breakpoint khi có yêu cầu sản phẩm và kiểm tra hai phía ranh giới. |
+| Opacity/motion/icons/charts/z-index | `src/shared/theme/motion.ts`, `src/shared/theme/colors.ts`, `src/shared/theme/icons.ts`; CSS runtime tại `src/styles/theme.css`; chart mapping tại `src/shared/lib/charts/chartTheme.ts`. Z-index hiện do từng overlay/portal owner khai báo. | Dùng token/theme helper ở shared consumer; chart palette và onboarding overlay được giữ theo owner. Chưa có z-index semantic map thống nhất trong source; không tạo số chung mới khi chưa inventory stacking context/portal. |
+
+Giá trị density hiện được map tại owner như sau: `PageContent` compact/tool → padding compact + gap tight (8px); standard → default + default (12px trên, 16px giữa section); relaxed/hero → relaxed + relaxed (16px trên, 24px giữa section). Gutter mặc định là 20px; `PageLayout` default/surface/immersive giữ bottom inset 32px, còn `flush` không thêm inset. `CTAButton` có sizing riêng theo `density`; dùng API đó thay vì tự dựng nút cùng ý nghĩa. `φSpace` là thang Fibonacci cũ (3/5/8/13/21/34/55px), hiện còn dùng trong Coachmark/onboarding, một số nội dung P2P và màn hình `dev/legacy`; giữ consumer hiện hữu theo đúng hình học, không mở rộng thành nguồn spacing chung.
+
+Thang spacing nền tảng 4pt và nhịp 8pt hiện hữu không bắt buộc mọi vai trò phải là bội số 8: các preset 12px, 20px và giá trị hình học là hợp lệ khi đúng role. Không thay token/brand/font toàn cục chỉ để làm các số trông đồng đều. Literal động theo dữ liệu, chart/canvas geometry, `0`, `auto`, `100%`, grid fraction và giá trị third-party boundary được giữ khi có lý do.
+
+### 21.11 Catalog component dùng chung hiện có
+
+Đây là catalog của public module đang có, không phải yêu cầu mọi trang phải bọc thêm một wrapper. Dùng component có cùng trách nhiệm; giữ composition nghiệp vụ ở feature.
+
+| Nhóm | API/owner | Dùng khi | Contract và kiểm thử owner |
+| --- | --- | --- | --- |
+| Hành động | `src/shared/ui/button.tsx` (`Button`); `src/shared/ui/CTAButton.tsx`; `src/shared/ui/IconButton.tsx` | `Button` cho action thông thường; `CTAButton` cho CTA có intent/loading/density; `IconButton` cho action chỉ có icon khi có accessible label. | Không truyền style để lén đổi intent/focus/disabled. Test: `src/shared/ui/button.test.tsx`, `src/shared/ui/CTAButton.test.tsx`, `src/app/__tests__/IconButton.test.tsx`. |
+| Trường nhập | `src/shared/ui/TrInput.tsx`; `src/shared/ui/InputField.tsx` | Dùng `TrInput`/`TrTextarea` cho field của sản phẩm; `InputField` khi cần wrapper field có label/error/prefix/suffix. | Gắn label, helper và error với đúng control; giữ `aria-invalid`, disabled/readOnly và focus. Test: `src/shared/ui/TrInput.test.tsx`, `src/shared/ui/InputField.test.tsx`. |
+| Card và dữ liệu | `src/shared/ui/TrCard.tsx`; `src/shared/ui/InfoRow.tsx`; `src/shared/ui/StatusPill.tsx` | `TrCard` cho bề mặt card có density/radius/variant; `InfoRow` cho cặp nhãn/giá trị; `StatusPill` cho trạng thái đã biết. | Không dùng status color như màu trang trí; giữ nghĩa trạng thái. Test: `src/shared/ui/TrCard.test.tsx`, `src/shared/ui/InfoRow.test.tsx`; `StatusPill` hiện chưa có test owner riêng. |
+| Overlay/xác nhận | `src/shared/ui/BottomSheetV2.tsx`; `src/shared/ui/ConfirmationDialog.tsx` | Sheet/center modal dùng chung; xác nhận thao tác cần mô tả tác động và action. | Focus, Escape/dismiss theo `preventClose`, title/name và restore focus thuộc owner; không tự dựng modal bằng portal ở page. Test: `src/shared/ui/BottomSheetV2.test.tsx`, `src/shared/ui/ConfirmationDialog.test.tsx`. |
+| Bố cục | `src/shared/ui/layout/PageLayout.tsx`, `src/shared/ui/layout/PageContent.tsx`, `src/shared/ui/layout/Header.tsx`; `src/shared/ui/TabBar.tsx` | Page content, section, heading/navigation và tabs có cùng behavior. | Dùng variant/preset có tên; shell cấp ứng dụng tiếp tục thuộc `src/app/components/layout/`. Test: `src/shared/ui/layout/PageLayout.test.tsx`, `src/shared/ui/layout/PageContent.test.tsx`, `src/shared/ui/layout/Header.test.tsx`, `src/shared/ui/TabBar.test.tsx`. |
+| Trạng thái và phản hồi | `src/shared/ui/EmptyState.tsx`, `src/shared/ui/ErrorState.tsx`, `src/shared/ui/SkeletonBlock.tsx`, `src/shared/ui/ThemedToaster.tsx` | Empty/no-results, lỗi có retry, loading và feedback toàn cục. | Lỗi của field hiển thị gần field; toast không thay validation. Câu thông báo nêu kết quả và bước tiếp theo. Test owner hiện có: `src/shared/ui/EmptyState.test.tsx`, `src/shared/ui/SkeletonBlock.test.tsx`; chưa tìm thấy test riêng cho `ErrorState`/`ThemedToaster`. |
+| Tìm kiếm | `src/shared/ui/SearchBar.tsx` | Ô tìm kiếm có clear/debounce/keyboard theo API hiện có. | Giữ request cancellation/stale-result contract của feature; không nhân đôi search field chỉ để đổi màu. Test: `src/shared/ui/SearchBar.test.tsx`. |
+
+Không có Storybook/component-site trong cấu hình hiện tại được xác nhận là nguồn chuẩn; test owner và public module là catalog đang chạy. Khi đổi public contract, cập nhật test owner và mục này cùng change.
+
+`src/app/__tests__/page-layout-contract.test.ts` khóa inventory page vào shared primitives hoặc owner ngoại lệ đã nêu. `src/app/__tests__/design-system-legacy-guard.test.ts` ngăn thêm consumer sản phẩm mới của `legacyTypography`/`φSpace` và không cho tăng selector CSS suy luận variant từ hình dạng class. Các danh sách hiện tại là nợ cần giảm theo migration, không phải API mới được khuyến nghị; không mở rộng chúng để làm CI xanh.
+
+### 21.12 Quy tắc tạo/sửa UI và ngoại lệ
+
+**MUST**
+
+1. Đọc phần Guidelines áp dụng và tìm route/component có cùng hành vi trong source.
+2. Tra token, density, layout và public module ở bảng trên; tìm consumer trước khi kết luận thiếu component.
+3. Tái sử dụng component hiện có. Nếu hợp đồng chưa đáp ứng, ưu tiên thêm variant/slot có nghĩa vào owner và kiểm tra consumer bị ảnh hưởng.
+4. Chỉ tạo component mới khi trách nhiệm/hành vi khác biệt và có consumer dự kiến; component thuộc đúng tầng shared layout, shared primitive hay feature.
+5. Không copy shared component, khai báo lại màu/radius/spacing/typography nền tảng tại page, hoặc dùng selector CSS dựa vào hình dáng class của consumer để tạo variant.
+6. Không override nội bộ public component bằng CSS xuyên tầng. Nhu cầu lặp lại phải trở thành public prop/variant/slot có test; `className`/style cục bộ chỉ dùng cho composition và hình học đặc thù không phá hợp đồng.
+7. Kiểm tra state áp dụng, bàn phím/focus, theme, viewport hai phía breakpoint liên quan, text dài và consumer sibling.
+8. Khi đổi public contract, cập nhật owner tests, catalog này và gate hiện có; không cập nhật screenshot baseline chỉ để test xanh.
+
+**SHOULD** ghi ngoại lệ cùng change/review với phạm vi cụ thể, lý do sản phẩm, owner theo quy trình review hiện có, bằng chứng kiểm tra và điều kiện loại bỏ/xem xét lại. Không tự đặt owner mới; khi chưa xác định được owner theo quy trình sẵn có, giữ ngoại lệ ở trạng thái cần phân công.

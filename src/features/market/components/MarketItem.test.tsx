@@ -266,6 +266,32 @@ describe('MarketItem', () => {
       expect(mockNavigate).not.toHaveBeenCalled();
     });
 
+    it.each(['{Enter}', ' '])(
+      'toggles the star with keyboard input %s without navigating',
+      async (key) => {
+        const user = userEvent.setup();
+        const onFavoriteToggle = vi.fn();
+        renderWithProviders(<MarketItem pair={mockPair} onFavoriteToggle={onFavoriteToggle} />);
+
+        const star = screen.getByRole('button', { name: 'Thêm vào yêu thích' });
+        star.focus();
+        await user.keyboard(key);
+
+        expect(onFavoriteToggle).toHaveBeenCalledWith('BTCUSDT');
+        expect(mockNavigate).not.toHaveBeenCalled();
+      },
+    );
+
+    it('keeps the row action and favorite action as separate controls in tab order', async () => {
+      const user = userEvent.setup();
+      renderWithProviders(<MarketItem pair={mockPair} onFavoriteToggle={vi.fn()} />);
+
+      await user.tab();
+      expect(screen.getByRole('button', { name: 'BTCUSDT — 45,000.00' })).toHaveFocus();
+      await user.tab();
+      expect(screen.getByRole('button', { name: 'Thêm vào yêu thích' })).toHaveFocus();
+    });
+
     it('should show filled star for favorite pairs', () => {
       const onFavoriteToggle = vi.fn();
       renderWithProviders(
@@ -290,11 +316,11 @@ describe('MarketItem', () => {
       expect(screen.getByRole('button')).toBeInTheDocument();
     });
 
-    it('should have tabIndex 0', () => {
+    it('uses the native button tab order for pair navigation', () => {
       renderWithProviders(<MarketItem pair={mockPair} />);
 
       const row = screen.getByRole('button');
-      expect(row).toHaveAttribute('tabIndex', '0');
+      expect(row.tabIndex).toBe(0);
     });
 
     it('should be keyboard accessible', async () => {

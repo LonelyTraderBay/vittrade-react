@@ -23,6 +23,15 @@ describe('Header', () => {
     expect(container.querySelector('[aria-label="Quay lại"]')).not.toBeInTheDocument();
   });
 
+  it('does not infer a breadcrumb from the back action', () => {
+    renderWithProviders(<Header title="Lệnh" back />, {
+      routerProps: { initialEntries: ['/w/trading/orders/history'] },
+    });
+
+    expect(screen.getByRole('button', { name: 'Quay lại' })).toBeInTheDocument();
+    expect(screen.queryByRole('navigation', { name: 'breadcrumb' })).not.toBeInTheDocument();
+  });
+
   it('renders standard title badges and handles notification actions', () => {
     const onNotificationsClick = vi.fn();
     renderWithProviders(

@@ -30,6 +30,7 @@ function renderPreview(
       user: { ...TEST_AUTH_USER, id: 'dev-developer', email: 'developer@vittrade.local' },
     },
   }),
+  controlsEnabled = true,
 ) {
   const adapter: AuthAdapter = {
     ...testAuthAdapter,
@@ -43,7 +44,7 @@ function renderPreview(
         path: '*',
         element: (
           <>
-            <PreviewControls />
+            <PreviewControls controlsEnabled={controlsEnabled} />
             <CurrentPath />
           </>
         ),
@@ -94,6 +95,17 @@ describe('development mock preview controls', () => {
       width: 'fit-content',
       padding: '5px 8px',
     });
+    router.dispose();
+  });
+
+  it('keeps the mock warning while hiding preview controls when devtools are disabled', () => {
+    const { router } = renderPreview(undefined, false);
+
+    expect(screen.getByRole('status', { name: 'Mock data warning' })).toHaveTextContent(
+      'DỮ LIỆU MÔ PHỎNG · KHÔNG GIAO DỊCH THẬT',
+    );
+    expect(screen.queryByRole('button', { name: 'Mở công cụ xem trước' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('region', { name: 'Công cụ xem trước' })).not.toBeInTheDocument();
     router.dispose();
   });
 

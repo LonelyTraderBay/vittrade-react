@@ -243,7 +243,14 @@ describe('WithdrawPage', () => {
     expect(challengeRequested).toBe(false);
     expect(await screen.findByText('Địa chỉ ví không hợp lệ.')).toBeVisible();
     expect(screen.getByText('Nhập số tiền cần rút.')).toBeVisible();
-    expect(document.getElementById('withdraw-address')).toHaveValue('');
+    const addressInput = document.getElementById('withdraw-address') as HTMLInputElement;
+    const amountInput = document.getElementById('withdraw-amount') as HTMLInputElement;
+    expect(addressInput).toHaveValue('');
+    expect(addressInput).toHaveAttribute('aria-invalid', 'true');
+    expect(addressInput).toHaveAttribute('aria-describedby', 'withdraw-address-error');
+    expect(addressInput).toHaveFocus();
+    expect(amountInput).toHaveAttribute('aria-invalid', 'true');
+    expect(amountInput).toHaveAttribute('aria-describedby', 'withdraw-amount-error');
   });
 
   it('enforces both available-balance and network maximum limits before MFA', async () => {
@@ -348,6 +355,13 @@ describe('WithdrawPage', () => {
 
     expect(await screen.findByText('Memo là bắt buộc cho mạng này.')).toBeVisible();
     expect(screen.getByText('Tối thiểu 5 USDT.')).toBeVisible();
+    const memoInput = document.getElementById('withdraw-memo') as HTMLInputElement;
+    const amountInput = document.getElementById('withdraw-amount') as HTMLInputElement;
+    expect(memoInput).toHaveAttribute('aria-invalid', 'true');
+    expect(memoInput).toHaveAttribute('aria-describedby', 'withdraw-memo-error');
+    expect(memoInput).toHaveFocus();
+    expect(amountInput).toHaveAttribute('aria-invalid', 'true');
+    expect(amountInput).toHaveAttribute('aria-describedby', 'withdraw-amount-error');
 
     await userEvent.type(document.getElementById('withdraw-memo') as HTMLInputElement, 'tag-123');
     fireEvent.change(screen.getByLabelText('Số lượng rút'), { target: { value: '6' } });

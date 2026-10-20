@@ -6,9 +6,9 @@ import { useThemeColors } from '@/shared/hooks/useThemeColors';
  *  PageLayout — Enterprise Standard Page Wrapper
  * ══════════════════════════════════════════════════════════════
  *
- *  THE canonical layout wrapper for every page in the app.
- *  Enforces consistent structure that works correctly inside
- *  AppLayout's scroll container.
+ *  Canonical wrapper for standard app-shell pages with a shared
+ *  scrolling content region. Route adapters and immersive shells
+ *  may delegate layout ownership to their page-level composition.
  *
  *  CONSTRAINTS (from Guidelines.md + codebase rules):
  *  ─────────────────────────────────────────────────────────

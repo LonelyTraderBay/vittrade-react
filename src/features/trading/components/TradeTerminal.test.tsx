@@ -209,13 +209,14 @@ function OrderReceiptState() {
   );
 }
 
-function RevokeSessionControl() {
+function CaptureSignOut({
+  onReady,
+}: {
+  onReady: (signOut: ReturnType<typeof useAuth>['signOut']) => void;
+}) {
   const { signOut } = useAuth();
-  return (
-    <button type="button" onClick={() => void signOut()}>
-      Revoke trading session
-    </button>
-  );
+  onReady(signOut);
+  return null;
 }
 
 function useDefaultHandlers(openOrders: TradingOrder[] = [], orderHistory: TradingOrder[] = []) {
@@ -743,6 +744,7 @@ describe('TradeTerminal contract-backed order lifecycle', () => {
 
   it('rejects confirmation if the authenticated trading session ends while the sheet is open', async () => {
     const user = userEvent.setup();
+    let signOut: ReturnType<typeof useAuth>['signOut'] | undefined;
     let requests = 0;
     server.use(
       http.post('*/trading/orders', () => {
@@ -752,7 +754,7 @@ describe('TradeTerminal contract-backed order lifecycle', () => {
     );
     renderWithProviders(
       <>
-        <RevokeSessionControl />
+        <CaptureSignOut onReady={(revoke) => (signOut = revoke)} />
         <Routes>
           <Route path="/trade/:pairId" element={<TradeTerminal />} />
           <Route path="/trade/order-receipt" element={<OrderReceiptState />} />
@@ -765,13 +767,15 @@ describe('TradeTerminal contract-backed order lifecycle', () => {
     fireEvent.change(screen.getByTestId('trade-amount'), { target: { value: '0.1' } });
     await user.click(screen.getByRole('button', { name: /Đặt lệnh mua BTC\/USDT/i }));
     expect(await screen.findByRole('dialog')).toBeVisible();
-    await user.click(screen.getByRole('button', { name: 'Revoke trading session' }));
+    await act(async () => {
+      await signOut?.();
+    });
     await waitFor(() =>
-      expect(screen.getByRole('alert')).toHaveTextContent('Trading permission is required'),
+      expect(screen.getByRole('alert')).toHaveTextContent('Tài khoản không có quyền đặt lệnh'),
     );
-    await user.click(screen.getByTestId('trade-confirm-submit'));
 
     expect(requests).toBe(0);
+    expect(screen.getByTestId('trade-confirm-submit')).toBeDisabled();
     expect(screen.getByRole('dialog')).toBeVisible();
   });
 
