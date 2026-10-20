@@ -1,6 +1,7 @@
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { useState } from 'react';
+import { StrictMode, useState } from 'react';
+import userEvent from '@testing-library/user-event';
 import { renderWithProviders } from '@/test/test-utils';
 import { BottomSheetRow, BottomSheetV2 } from './BottomSheetV2';
 
@@ -368,6 +369,101 @@ describe('BottomSheetV2', () => {
     expect(screen.getByRole('button', { name: 'Open sheet' })).toBeInTheDocument();
     await waitFor(() => expect(trigger).toHaveFocus());
     trigger.remove();
+  });
+
+  it.each([false, true])(
+    'restores its trigger after conditional unmount (strict=%s)',
+    async (strict) => {
+      reducedMotion.value = true;
+      function ConditionalSheet() {
+        const [open, setOpen] = useState(false);
+        return (
+          <>
+            <button type="button" onClick={() => setOpen(true)}>
+              Open conditional sheet
+            </button>
+            {open && (
+              <BottomSheetV2 open onClose={() => setOpen(false)} title="Conditional">
+                <button>Action</button>
+              </BottomSheetV2>
+            )}
+          </>
+        );
+      }
+      const user = userEvent.setup();
+      renderWithProviders(
+        strict ? (
+          <StrictMode>
+            <ConditionalSheet />
+          </StrictMode>
+        ) : (
+          <ConditionalSheet />
+        ),
+      );
+      const trigger = screen.getByRole('button', { name: 'Open conditional sheet' });
+      await user.click(trigger);
+      const dialog = screen.getByRole('dialog', { name: 'Conditional' });
+      await waitFor(() => expect(dialog).toHaveFocus());
+      await user.click(screen.getByRole('button', { name: 'Đóng' }));
+      expect(screen.queryByRole('dialog', { name: 'Conditional' })).not.toBeInTheDocument();
+      await waitFor(() => expect(trigger).toHaveFocus());
+    },
+  );
+
+  it('does not steal focus when its unmount opens another modal', async () => {
+    reducedMotion.value = true;
+    function SequentialSheets() {
+      const [step, setStep] = useState(0);
+      return (
+        <>
+          <button onClick={() => setStep(1)}>Open sequence</button>
+          {step === 1 && (
+            <BottomSheetV2 open title="First" onClose={() => setStep(2)}>
+              First
+            </BottomSheetV2>
+          )}
+          {step === 2 && (
+            <BottomSheetV2 open title="Second" onClose={() => setStep(0)}>
+              Second
+            </BottomSheetV2>
+          )}
+        </>
+      );
+    }
+    const user = userEvent.setup();
+    renderWithProviders(<SequentialSheets />);
+    await user.click(screen.getByRole('button', { name: 'Open sequence' }));
+    await user.click(screen.getByRole('button', { name: 'Đóng' }));
+    const second = screen.getByRole('dialog', { name: 'Second' });
+    await new Promise<void>((resolve) =>
+      requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+    );
+    expect(second).toHaveFocus();
+  });
+
+  it('returns focus to the parent dialog after a conditional child unmounts', async () => {
+    reducedMotion.value = true;
+    function NestedSheets() {
+      const [child, setChild] = useState(false);
+      return (
+        <BottomSheetV2 open title="Parent" onClose={() => undefined}>
+          <button onClick={() => setChild(true)}>Open child</button>
+          {child && (
+            <BottomSheetV2 open title="Child" onClose={() => setChild(false)}>
+              Child
+            </BottomSheetV2>
+          )}
+        </BottomSheetV2>
+      );
+    }
+    const user = userEvent.setup();
+    renderWithProviders(<NestedSheets />);
+    const trigger = screen.getByRole('button', { name: 'Open child' });
+    await user.click(trigger);
+    const child = screen.getByRole('dialog', { name: 'Child' });
+    await user.click(screen.getByRole('button', { name: 'Đóng' }));
+    await waitFor(() => expect(child).not.toBeInTheDocument());
+    await waitFor(() => expect(trigger).toHaveFocus());
   });
 });
 

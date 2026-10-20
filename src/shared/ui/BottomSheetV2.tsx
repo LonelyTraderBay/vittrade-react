@@ -6,6 +6,15 @@ import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { useScrollLock } from '@/shared/hooks/useScrollLock';
 import { φElevation } from '@/shared/lib/golden';
 
+function restoreFocusIfSafe(previousFocus: HTMLElement | null) {
+  if (!previousFocus?.isConnected) return;
+  const hasOpenDialog = Boolean(document.querySelector('[role="dialog"][data-state="open"]'));
+  const targetInsideOpenDialog = Boolean(
+    previousFocus.closest('[role="dialog"][data-state="open"]'),
+  );
+  if (!hasOpenDialog || targetInsideOpenDialog) previousFocus.focus({ preventScroll: true });
+}
+
 /* ═══════════════════════════════════════════════════════════
    BottomSheetV2
    ═══════════════════════════════════════════════════════════
@@ -245,20 +254,24 @@ export function BottomSheetV2({
     } else if (!modalOpen && wasOpenRef.current) {
       const previousFocus = previousFocusRef.current;
       previousFocusRef.current = null;
-      const hasOpenDialog = Boolean(document.querySelector('[role="dialog"][data-state="open"]'));
-      const focusWasInsideOpenDialog = Boolean(
-        previousFocus?.closest('[role="dialog"][data-state="open"]'),
-      );
-
-      if (previousFocus?.isConnected && (!hasOpenDialog || focusWasInsideOpenDialog)) {
-        requestAnimationFrame(() => {
-          if (previousFocus.isConnected) previousFocus.focus({ preventScroll: true });
-        });
-      }
+      requestAnimationFrame(() => restoreFocusIfSafe(previousFocus));
     }
 
     wasOpenRef.current = modalOpen;
   }, [modalOpen]);
+
+  // Read the latest portal ref at the frame, including a panel mounted after this effect.
+  const isPanelConnected = useCallback(() => Boolean(sheetRef.current?.isConnected), []);
+
+  useEffect(() => {
+    return () => {
+      const previousFocus = previousFocusRef.current;
+      requestAnimationFrame(() => {
+        // Conditional consumers unmount while open. An effect replay keeps the panel connected.
+        if (!isPanelConnected()) restoreFocusIfSafe(previousFocus);
+      });
+    };
+  }, [isPanelConnected]);
 
   /* ─── onAfterOpen callback ─── */
   useEffect(() => {

@@ -13,6 +13,7 @@ import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { CTAButton } from '@/shared/ui/CTAButton';
 import { TrCard } from '@/shared/ui/TrCard';
 import { EmptyState } from '@/shared/ui/EmptyState';
+import { BottomSheetV2 } from '@/shared/ui/BottomSheetV2';
 import { formatAmount, riskColors, riskLabels } from '../lib/formatters';
 
 function formatDate(value?: string) {
@@ -255,99 +256,85 @@ export function EarnActionSheet({
   const canSubmit = parsedAmount > 0 && parsedAmount <= maxAmount && (isRedeem || agreed);
   const targetName = product?.name ?? position?.product ?? '';
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-end justify-center bg-black/60 p-4"
-      role="dialog"
-      aria-modal="true"
-      aria-label={isRedeem ? 'Rút vốn' : 'Đăng ký sản phẩm'}
+    <BottomSheetV2
+      open
+      onClose={onClose}
+      title={isRedeem ? 'Rút vốn' : 'Đăng ký sản phẩm'}
+      preventClose={pending}
     >
-      <div className="w-full max-w-lg rounded-3xl p-5" style={{ background: c.surface }}>
-        <div className="mb-4 flex items-center justify-between">
-          <div>
-            <p style={{ color: c.text1, fontSize: 18, fontWeight: 700 }}>
-              {isRedeem ? 'Rút vốn' : 'Đăng ký sản phẩm'}
-            </p>
-            <p style={{ color: c.text2, fontSize: 12 }}>
-              {targetName} · {target.asset}
-            </p>
-          </div>
-          <button aria-label="Đóng" onClick={onClose} disabled={pending}>
-            <X size={20} color={c.text3} />
-          </button>
+      <p className="mb-4" style={{ color: c.text2, fontSize: 12 }}>
+        {targetName} · {target.asset}
+      </p>
+      <div className="mb-4 rounded-2xl p-3" style={{ background: c.surface2 }}>
+        <div className="flex items-center justify-between">
+          <span style={{ color: c.text2, fontSize: 12 }}>Khả dụng</span>
+          <span style={{ color: c.text1, fontFamily: 'monospace', fontSize: 13, fontWeight: 600 }}>
+            {formatAmount(maxAmount)} {target.asset}
+          </span>
         </div>
-        <div className="mb-4 rounded-2xl p-3" style={{ background: c.surface2 }}>
-          <div className="flex items-center justify-between">
-            <span style={{ color: c.text2, fontSize: 12 }}>Khả dụng</span>
-            <span
-              style={{ color: c.text1, fontFamily: 'monospace', fontSize: 13, fontWeight: 600 }}
-            >
-              {formatAmount(maxAmount)} {target.asset}
-            </span>
-          </div>
-          <div className="mt-2 flex items-center justify-between">
-            <span style={{ color: c.text2, fontSize: 12 }}>APY</span>
-            <span style={{ color: c.successText, fontWeight: 700 }}>{target.apy}%</span>
-          </div>
+        <div className="mt-2 flex items-center justify-between">
+          <span style={{ color: c.text2, fontSize: 12 }}>APY</span>
+          <span style={{ color: c.successText, fontWeight: 700 }}>{target.apy}%</span>
         </div>
-        <label
-          className="mb-2 block"
-          htmlFor="earn-amount"
-          style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}
-        >
-          Số lượng
-        </label>
-        <div
-          className="mb-4 flex items-center gap-2 rounded-2xl p-3"
-          style={{ background: c.surface2, border: `1px solid ${c.border}` }}
-        >
-          <input
-            id="earn-amount"
-            disabled={pending}
-            inputMode="decimal"
-            value={amount}
-            onChange={(event) => setAmount(event.target.value)}
-            className="min-w-0 flex-1 bg-transparent text-lg outline-none"
-            placeholder="0.00"
-          />
-          <button
-            className="text-xs font-semibold text-blue-500"
-            disabled={pending}
-            onClick={() => setAmount(String(maxAmount))}
-          >
-            MAX
-          </button>
-        </div>
-        {!isRedeem && (
-          <label className="mb-4 flex items-start gap-2 text-xs" style={{ color: c.text2 }}>
-            <input
-              type="checkbox"
-              disabled={pending}
-              checked={agreed}
-              onChange={(event) => setAgreed(event.target.checked)}
-              className="mt-0.5"
-            />
-            Tôi đã đọc điều khoản, lợi suất và rủi ro của sản phẩm.
-          </label>
-        )}
-        {error && (
-          <p
-            role="alert"
-            className="mb-3 rounded-xl p-3 text-xs"
-            style={{ background: c.surface2, color: c.errorText }}
-          >
-            {error}
-          </p>
-        )}
-        <CTAButton
-          loading={pending}
-          disabled={!canSubmit}
-          variant={isRedeem ? 'danger' : 'success'}
-          onClick={() => onSubmit(parsedAmount)}
-        >
-          {isRedeem ? 'Xác nhận rút vốn' : 'Xác nhận đăng ký'}
-        </CTAButton>
       </div>
-    </div>
+      <label
+        className="mb-2 block"
+        htmlFor="earn-amount"
+        style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}
+      >
+        Số lượng
+      </label>
+      <div
+        className="mb-4 flex items-center gap-2 rounded-2xl p-3"
+        style={{ background: c.surface2, border: `1px solid ${c.border}` }}
+      >
+        <input
+          id="earn-amount"
+          disabled={pending}
+          inputMode="decimal"
+          value={amount}
+          onChange={(event) => setAmount(event.target.value)}
+          className="min-w-0 flex-1 bg-transparent text-lg outline-none"
+          placeholder="0.00"
+        />
+        <button
+          className="text-xs font-semibold text-blue-500"
+          disabled={pending}
+          onClick={() => setAmount(String(maxAmount))}
+        >
+          MAX
+        </button>
+      </div>
+      {!isRedeem && (
+        <label className="mb-4 flex items-start gap-2 text-xs" style={{ color: c.text2 }}>
+          <input
+            type="checkbox"
+            disabled={pending}
+            checked={agreed}
+            onChange={(event) => setAgreed(event.target.checked)}
+            className="mt-0.5"
+          />
+          Tôi đã đọc điều khoản, lợi suất và rủi ro của sản phẩm.
+        </label>
+      )}
+      {error && (
+        <p
+          role="alert"
+          className="mb-3 rounded-xl p-3 text-xs"
+          style={{ background: c.surface2, color: c.errorText }}
+        >
+          {error}
+        </p>
+      )}
+      <CTAButton
+        loading={pending}
+        disabled={!canSubmit}
+        variant={isRedeem ? 'danger' : 'success'}
+        onClick={() => onSubmit(parsedAmount)}
+      >
+        {isRedeem ? 'Xác nhận rút vốn' : 'Xác nhận đăng ký'}
+      </CTAButton>
+    </BottomSheetV2>
   );
 }
 

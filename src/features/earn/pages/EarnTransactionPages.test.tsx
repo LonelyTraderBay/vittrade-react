@@ -1,7 +1,7 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { fireEvent, screen } from '@testing-library/react';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Route, Routes, useLocation } from 'react-router';
 import { renderWithProviders } from '@/test/test-utils';
@@ -406,6 +406,49 @@ describe('Earn feature components', () => {
     await user.click(submit);
     expect(onSubmit).toHaveBeenCalledWith(250);
     await user.click(screen.getByRole('button', { name: 'Đóng' }));
+    expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
+  it('contains keyboard focus and guards dismissal while preserving a pending draft', async () => {
+    const user = userEvent.setup();
+    const onClose = vi.fn();
+    const onSubmit = vi.fn();
+    const sheet = (pending: boolean, error?: string) => (
+      <>
+        <button>Background action</button>
+        <EarnActionSheet
+          product={snapshot.products[0]}
+          balance={250}
+          pending={pending}
+          error={error}
+          onClose={onClose}
+          onSubmit={onSubmit}
+        />
+      </>
+    );
+    const view = renderWithProviders(sheet(false));
+    const dialog = screen.getByRole('dialog', { name: 'Đăng ký sản phẩm' });
+    await waitFor(() => expect(dialog.contains(document.activeElement)).toBe(true));
+    for (let index = 0; index < 8; index++) {
+      await user.tab({ shift: index % 2 === 1 });
+      expect(dialog.contains(document.activeElement)).toBe(true);
+    }
+    const amount = screen.getByRole('textbox', { name: 'Số lượng' });
+    await user.type(amount, '12.3456789');
+    await user.click(screen.getByRole('checkbox'));
+
+    view.rerender(sheet(true));
+    expect(amount).toBeDisabled();
+    await user.keyboard('{Escape}');
+    await user.click(screen.getByRole('button', { name: 'Đóng' }));
+    expect(onClose).not.toHaveBeenCalled();
+    expect(onSubmit).not.toHaveBeenCalled();
+
+    view.rerender(sheet(false, 'Request outcome is not confirmed'));
+    expect(amount).toHaveValue('12.3456789');
+    expect(screen.getByRole('checkbox')).toBeChecked();
+    expect(screen.getByRole('alert')).toHaveTextContent('Request outcome is not confirmed');
+    await user.keyboard('{Escape}');
     expect(onClose).toHaveBeenCalledTimes(1);
   });
 

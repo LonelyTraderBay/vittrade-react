@@ -4,6 +4,7 @@ import { setupServer } from 'msw/node';
 import { act, fireEvent, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Route, Routes } from 'react-router';
+import { useEffect } from 'react';
 import { renderWithProviders } from '@/test/test-utils';
 import { testAuthAdapter } from '@/test/auth-test-adapter';
 import { useAuth } from '@/shared/session/useAuth';
@@ -88,13 +89,14 @@ const mixedSnapshot: EarnSnapshot = {
   ],
 };
 
-function AuthSessionRefreshButton() {
+type RefreshSession = ReturnType<typeof useAuth>['refreshSession'];
+
+function AuthSessionRefreshProbe({ capture }: { capture: (refresh: RefreshSession) => void }) {
   const { refreshSession } = useAuth();
-  return (
-    <button onClick={() => void refreshSession()} type="button">
-      Refresh auth session
-    </button>
-  );
+  useEffect(() => {
+    capture(refreshSession);
+  }, [capture, refreshSession]);
+  return null;
 }
 
 function createMutableEarnAuthAdapter() {
@@ -122,16 +124,18 @@ function renderEarn(
   authAdapter: AuthAdapter = testAuthAdapter,
   domain: 'savings' | 'staking' = 'savings',
 ) {
-  return renderWithProviders(
+  let refreshFromProvider: RefreshSession = () => Promise.reject(new Error('No session'));
+  const view = renderWithProviders(
     <>
       <Routes>
         <Route path="/earn/:domain" element={<EarnPage domain={domain} />} />
         <Route path="/earn/:domain/receipt" element={<EarnReceiptPage />} />
       </Routes>
-      <AuthSessionRefreshButton />
+      <AuthSessionRefreshProbe capture={(refresh) => (refreshFromProvider = refresh)} />
     </>,
     { authAdapter, routerProps: { initialEntries: [`/earn/${domain}`] } },
   );
+  return { ...view, refreshSession: () => refreshFromProvider() };
 }
 
 describe('Earn page contract boundary', () => {
@@ -568,23 +572,24 @@ describe('Earn page contract boundary', () => {
 
     const user = userEvent.setup();
     const mutableAuth = createMutableEarnAuthAdapter();
-    renderEarn(mutableAuth.adapter);
+    const view = renderEarn(mutableAuth.adapter);
     await user.click(await screen.findByRole('button', { name: /Stable Savings/i }));
     await user.type(screen.getByRole('textbox', { name: 'Số lượng' }), '100');
     await user.click(screen.getByRole('checkbox'));
     mutableAuth.setPermissions(['earn:read']);
-    await user.click(screen.getByRole('button', { name: 'Refresh auth session' }));
+    // Session updates originate outside the modal; background fixture buttons must remain inert.
+    await act(async () => void (await view.refreshSession()));
     await user.click(screen.getByRole('button', { name: /Xác nhận đăng ký/i }));
     expect(screen.getByRole('dialog', { name: 'Đăng ký sản phẩm' })).toBeInTheDocument();
 
     await user.click(screen.getByRole('button', { name: 'Đóng' }));
     mutableAuth.setPermissions(['earn:write']);
-    await user.click(screen.getByRole('button', { name: 'Refresh auth session' }));
+    await act(async () => void (await view.refreshSession()));
     await user.click(screen.getByRole('tab', { name: 'Của tôi (1)' }));
     await user.click(await screen.findByRole('button', { name: 'Rút vốn' }));
     await user.type(screen.getByRole('textbox', { name: 'Số lượng' }), '50');
     mutableAuth.setPermissions(['earn:read']);
-    await user.click(screen.getByRole('button', { name: 'Refresh auth session' }));
+    await act(async () => void (await view.refreshSession()));
     await user.click(screen.getByRole('button', { name: 'Xác nhận rút vốn' }));
 
     expect(screen.getByRole('dialog', { name: 'Rút vốn' })).toBeInTheDocument();

@@ -1,6 +1,7 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 import { act, fireEvent, screen, waitFor, within } from '@testing-library/react';
 import { useLocation } from 'react-router';
+import { useEffect } from 'react';
 import { useAuth } from '@/shared/session/useAuth';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
@@ -38,13 +39,14 @@ function LocationProbe() {
   return <output data-testid="location">{pathname}</output>;
 }
 
-function SignOutControl() {
+type SignOut = ReturnType<typeof useAuth>['signOut'];
+
+function SignOutProbe({ capture }: { capture: (signOut: SignOut) => void }) {
   const { signOut } = useAuth();
-  return (
-    <button type="button" onClick={() => void signOut()}>
-      Expire test session
-    </button>
-  );
+  useEffect(() => {
+    capture(signOut);
+  }, [capture, signOut]);
+  return null;
 }
 
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
@@ -314,6 +316,7 @@ describe('Savings portfolio contract page', () => {
   });
 
   it('blocks redemption if the session loses permission while the action sheet is open', async () => {
+    let expireSession: SignOut | undefined;
     let redemptionCalls = 0;
     server.use(
       http.get('*/earn/snapshot', () => HttpResponse.json(snapshot)),
@@ -338,7 +341,7 @@ describe('Savings portfolio contract page', () => {
     renderWithProviders(
       <>
         <SavingsPortfolioPage />
-        <SignOutControl />
+        <SignOutProbe capture={(signOut) => (expireSession = signOut)} />
       </>,
       { authAdapter: adapterWithPermissions(['earn:read', 'earn:redeem']) },
     );
@@ -347,7 +350,11 @@ describe('Savings portfolio contract page', () => {
     fireEvent.click(screen.getByRole('button', { name: /R\u00fat v\u1ed1n/ }));
     expect(screen.getByRole('dialog')).toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole('button', { name: 'Expire test session' }));
+    // Model an external session expiration without bypassing the modal's inert background.
+    await act(async () => {
+      if (!expireSession) throw new Error('Auth sign-out probe is not ready');
+      await expireSession();
+    });
     expect(
       await screen.findByText(
         'Earn redemption permission is required to withdraw a flexible position.',
