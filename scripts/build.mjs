@@ -7,6 +7,8 @@ const typescriptCli = path.join(projectRoot, 'node_modules', 'typescript', 'bin'
 const viteCli = path.join(projectRoot, 'node_modules', 'vite', 'bin', 'vite.js');
 
 function run(label, args) {
+  const startedAt = performance.now();
+  console.log(`[build] Starting ${label}`);
   const result = spawnSync(process.execPath, args, {
     cwd: projectRoot,
     stdio: 'inherit',
@@ -20,6 +22,7 @@ function run(label, args) {
   if (result.status !== 0) {
     process.exit(result.status ?? 1);
   }
+  console.log(`[build] Finished ${label} in ${Math.round(performance.now() - startedAt)}ms`);
 }
 
 run('TypeScript app typecheck', [typescriptCli, '--noEmit', '-p', 'tsconfig.json']);

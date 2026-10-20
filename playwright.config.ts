@@ -56,6 +56,8 @@ export default defineConfig({
   ],
   webServer: {
     command: `${nodeExecutable} scripts/serve-e2e.mjs`,
+    // Preserve startup progress when readiness fails before the browser tests run.
+    stdout: 'pipe',
     // Wait for our preview process; another service can answer the port during the build.
     wait: { stdout: new RegExp(`Local:\\s+http:\\/\\/127\\.0\\.0\\.1:${previewPort}\\/`) },
     timeout: 120_000,
