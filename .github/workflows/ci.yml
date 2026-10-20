@@ -25,7 +25,7 @@ jobs:
         with:
           node-version-file: .nvmrc
       - name: Verify CI scope and failure handling
-        run: node --test scripts/ci-scope.test.mjs
+        run: node --test scripts/ci-scope.node-test.mjs
       - name: Classify inputs and previous exact-source gate
         id: classify
         env:
