@@ -50,18 +50,22 @@ for (const theme of ['light', 'dark'] as const) {
       }, theme);
 
       const planIcons = page.locator('span[role="img"][aria-label]');
-      await expect(planIcons.first()).toBeVisible();
+      // The default DCA fixture owns three plans; wait for every failed image to reach fallback.
+      await expect(planIcons).toHaveCount(3);
       const planCount = await planIcons.count();
-      const planBoxes = await planIcons.evaluateAll((elements) =>
-        elements.map((element) => {
-          const box = element.getBoundingClientRect();
-          return {
-            width: box.width,
-            height: box.height,
-            label: element.getAttribute('aria-label'),
-          };
-        }),
-      );
+      type IconBox = { width: number; height: number; label: string | null };
+      let planBoxes: IconBox[] = [];
+      await expect
+        .poll(async () => {
+          planBoxes = await planIcons.evaluateAll((elements) =>
+            elements.map((element) => {
+              const { width, height } = element.getBoundingClientRect();
+              return { width, height, label: element.getAttribute('aria-label') };
+            }),
+          );
+          return planBoxes.map(({ width, height }) => ({ width, height }));
+        })
+        .toEqual(Array.from({ length: planCount }, () => ({ width: 28, height: 28 })));
       expect(planCount).toBeGreaterThan(0);
       expect(planBoxes.every((box) => box.width === 28 && box.height === 28)).toBe(true);
 
@@ -73,27 +77,35 @@ for (const theme of ['light', 'dark'] as const) {
       await expect(dialog).toBeVisible();
       const pickerIcons = dialog.locator('span[role="img"][aria-label]');
       await expect(pickerIcons).toHaveCount(5);
-      // The centered sheet scales on entry; measure the final rendered boxes.
+      // Capture readiness and geometry together, then retain that exact accepted sample.
+      // A spring can cross scale=1 before settling; a second read can differ even 11ms later.
+      let pickerBoxes: IconBox[] = [];
+      let pickerMotion = { transform: '', opacity: '' };
       await expect
-        .poll(() =>
-          pickerIcons.evaluateAll((elements) =>
-            elements.map((element) => {
-              const { width, height } = element.getBoundingClientRect();
-              return { width, height };
-            }),
-          ),
-        )
-        .toEqual(Array.from({ length: 5 }, () => ({ width: 32, height: 32 })));
-      const pickerBoxes = await pickerIcons.evaluateAll((elements) =>
-        elements.map((element) => {
-          const box = element.getBoundingClientRect();
+        .poll(async () => {
+          const sample = await dialog.evaluate((panel) => {
+            const style = getComputedStyle(panel);
+            return {
+              transform: style.transform,
+              opacity: style.opacity,
+              boxes: [...panel.querySelectorAll('span[role="img"][aria-label]')].map((element) => {
+                const { width, height } = element.getBoundingClientRect();
+                return { width, height, label: element.getAttribute('aria-label') };
+              }),
+            };
+          });
+          pickerBoxes = sample.boxes;
+          pickerMotion = { transform: sample.transform, opacity: sample.opacity };
           return {
-            width: box.width,
-            height: box.height,
-            label: element.getAttribute('aria-label'),
+            ...pickerMotion,
+            boxes: pickerBoxes.map(({ width, height }) => ({ width, height })),
           };
-        }),
-      );
+        })
+        .toEqual({
+          transform: 'none',
+          opacity: '1',
+          boxes: Array.from({ length: 5 }, () => ({ width: 32, height: 32 })),
+        });
       expect(pickerBoxes.every((box) => box.width === 32 && box.height === 32)).toBe(true);
       const solana = dialog.getByRole('button', { name: /Solana/ });
       await solana.focus();
@@ -117,6 +129,7 @@ for (const theme of ['light', 'dark'] as const) {
             theme,
             planBoxes,
             pickerBoxes,
+            pickerMotion,
             imageRequests,
             avatarRequests,
             writes,
