@@ -353,6 +353,7 @@ export function PreviewControls({
             aria-label={isOpen ? 'Thu gọn' : 'Mở công cụ xem trước'}
             onClick={() => setIsOpen((open) => !open)}
             style={{
+              display: 'inline-grid',
               flex: '0 0 auto',
               padding: '4px 7px',
               border: '1px solid #b45309',
@@ -363,13 +364,19 @@ export function PreviewControls({
               fontSize: isNarrowViewport ? 10 : undefined,
             }}
           >
-            {isNarrowViewport
-              ? isOpen
-                ? 'Đóng'
-                : 'Mở'
-              : isOpen
-                ? 'Thu gọn'
-                : 'Mở công cụ xem trước'}
+            {/* Both labels size the same grid cell so disclosure never reflows its warning. */}
+            <span
+              aria-hidden="true"
+              style={{ gridArea: '1 / 1', visibility: isOpen ? 'hidden' : 'visible' }}
+            >
+              {isNarrowViewport ? 'Mở' : 'Mở công cụ xem trước'}
+            </span>
+            <span
+              aria-hidden="true"
+              style={{ gridArea: '1 / 1', visibility: isOpen ? 'visible' : 'hidden' }}
+            >
+              Thu gọn
+            </span>
           </button>
         )}
       </div>

@@ -141,6 +141,51 @@ for (const mode of ['light', 'dark'] as const) {
     });
   }
 
+  test(`Phone preview preserves flow under text spacing ${mode} @ui-mock`, async ({
+    page,
+  }, info) => {
+    await page.setViewportSize({ width: 320, height: 568 });
+    await openAs(page, '/dca', 'dca', mode);
+    const title = page.getByRole('heading', { name: 'Mua tự động (DCA)', exact: true });
+    await expect(title).toBeVisible();
+    const warning = page.getByRole('status', { name: 'Mock data warning' });
+    const trigger = page.getByRole('button', { name: 'Mở công cụ xem trước' });
+    const panel = page.getByRole('region', { name: 'Công cụ xem trước' });
+    const observations = [];
+    for (const spacing of [0, 0.02, 0.04, 0.06, 0.08, 0.1, 0.12]) {
+      await warning.locator('strong').evaluate((element, value) => {
+        element.style.letterSpacing = `${value}em`;
+      }, spacing);
+      await settle(page);
+      const before = {
+        title: await title.boundingBox(),
+        warning: await warning.boundingBox(),
+        trigger: await trigger.boundingBox(),
+      };
+      await trigger.press('Enter');
+      await expect(panel).toBeVisible();
+      await settle(page);
+      const after = {
+        title: await title.boundingBox(),
+        warning: await warning.boundingBox(),
+        trigger: await page.getByRole('button', { name: 'Thu gọn', exact: true }).boundingBox(),
+      };
+      observations.push({ spacing, before, after });
+      await writeFile(
+        info.outputPath('preview-text-spacing.json'),
+        JSON.stringify({ mode, observations }, null, 2),
+      );
+      expect(after).toEqual(before);
+      const close = page.getByRole('button', { name: 'Thu gọn', exact: true });
+      await expect(close.locator('span').filter({ visible: true })).toHaveText('Thu gọn');
+      await close.press('Space');
+      await expect(panel).toBeHidden();
+      expect(await title.boundingBox()).toEqual(before.title);
+      await expect(trigger).toBeFocused();
+    }
+    console.log('C06_PREVIEW_TEXT_SPACING', JSON.stringify({ mode, observations }));
+  });
+
   test(`Phone preview retains a Wallet draft through phone widths ${mode} @ui-mock`, async ({
     page,
   }) => {
