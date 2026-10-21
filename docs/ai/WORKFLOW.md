@@ -123,6 +123,8 @@ Với C06, áp dụng protocol gói nghiệm thu/commit/CI tại PLAN mục 13 (
 proof mới được tái sử dụng runtime evidence. Không sao chép allowlist hay tiêu chí
 đóng sổ sang một nguồn quy định khác.
 
+UI mock dùng `playwright.ui-mock.config.ts`: một worker local, hai worker khi có `CI`. Trước khi chạy nhiều worker, `scripts/ui-mock-e2e-global-setup.ts` tái sử dụng server mock hiện có rồi chờ form đăng nhập thật bằng một browser riêng; browser này được đóng trước khi test bắt đầu. Chỉ cache biên dịch Vite được làm nóng, không dùng lại cookie, session, MSW state hoặc page của bước chuẩn bị. Một worker tiếp tục setup cũ. Không dùng sleep hoặc tăng timeout/retry để che lỗi startup; readiness thất bại phải dọn browser/server và làm lane lỗi. Mọi test/threshold, bốn lane/năm cấu hình, artifact provenance và aggregate vẫn giữ nguyên. Đo tốc độ trên run hoàn tất, cùng source ứng dụng và corpus test; local benchmark không thay full exact-SHA GitHub hoặc chứng minh hiệu năng startup production.
+
 ```powershell
 git status --short
 git diff --stat
