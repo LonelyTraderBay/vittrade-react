@@ -52,6 +52,7 @@ export function Web2FASetupFlow() {
   }, [beginMfaSetup, setupAttempt]);
 
   useEffect(() => {
+    if (step === 1) inputRefs.current[0]?.focus();
     if (step === 2) backupHeadingRef.current?.focus();
   }, [step]);
 
@@ -200,7 +201,6 @@ export function Web2FASetupFlow() {
               copyError={copyError}
               handleCopyKey={handleCopyKey}
               setStep={setStepAndClearCopyError}
-              inputRefs={inputRefs}
             />
           </>
         )}

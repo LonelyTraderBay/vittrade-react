@@ -64,6 +64,36 @@ function renderSetup(authAdapter: AuthAdapter) {
 }
 
 describe('Web2FASetupFlow', () => {
+  it('focuses the first OTP field when the verification step mounts', async () => {
+    renderSetup(testAuthAdapter);
+    await screen.findByText('TEST-SECRET');
+
+    fireEvent.click(screen.getByRole('button', { name: 'Tiếp theo — Xác minh mã' }));
+
+    expect(screen.getByRole('textbox', { name: 'Mã xác thực 2FA, chữ số 1 trên 6' })).toHaveFocus();
+  });
+
+  it('does not steal OTP focus after the user has selected another digit', async () => {
+    const view = renderSetup(testAuthAdapter);
+    await screen.findByText('TEST-SECRET');
+
+    vi.useFakeTimers();
+    try {
+      fireEvent.click(screen.getByRole('button', { name: 'Tiếp theo — Xác minh mã' }));
+      const thirdDigit = screen.getByRole('textbox', {
+        name: 'Mã xác thực 2FA, chữ số 3 trên 6',
+      });
+      thirdDigit.focus();
+
+      act(() => vi.advanceTimersByTime(200));
+
+      expect(thirdDigit).toHaveFocus();
+    } finally {
+      view.unmount();
+      vi.useRealTimers();
+    }
+  });
+
   it('renders the empty-code fallback and loading state of the backup step', () => {
     const handleCopyBackupCodes = vi.fn();
     render(<LoadingBackupStepWithoutSetup handleCopyBackupCodes={handleCopyBackupCodes} />);
