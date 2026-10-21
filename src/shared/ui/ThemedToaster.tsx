@@ -33,7 +33,6 @@ export function ThemedToaster() {
           maxWidth: 340,
           padding: '10px 16px',
           boxShadow: c.cardShadow,
-          zIndex: 99999,
         },
         classNames: {
           success: 'themed-toast-success',

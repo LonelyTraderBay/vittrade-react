@@ -1376,6 +1376,8 @@ Auth dùng `features/auth/lib/login-return-path.ts` để đọc `location.state
 
 `BottomSheetV2` giữ focus khi chuyển sang `preventClose`: nếu control đang có focus bị disabled hoặc focus rơi về `body`, primitive đưa focus về panel để Tab/Shift+Tab không đi ra nền. Không lấy focus khỏi field còn hoạt động hoặc dialog con; panel đang ẩn hay inert không được nhận focus. Consumer vẫn sở hữu trạng thái disabled, request, dữ liệu nhập và phản hồi lỗi; `preventClose` không tự vô hiệu hóa field nghiệp vụ. Regression nằm tại `src/shared/ui/BottomSheetV2.test.tsx` (bottom/center, StrictMode, field hợp lệ, dialog con) và các ca pending trong `tests/e2e/ui-earn-modal-mock.spec.ts` (keyboard, close guards, payload, draft và retry key).
 
+`ThemedToaster` sở hữu theme và lớp của container; Sonner sở hữu z-index, vị trí, xếp chồng/mở rộng, animation và reduced motion của từng toast. Không đặt cùng z-index cho mọi item hoặc dùng keyframe global có `forwards` ghi đè transform của item. Consumer dùng public toast API cho nội dung/thời lượng hợp lệ, không sửa các giá trị nội bộ để vá một trang. Gradient phải giữ `background-color` surface đục; không dùng shorthand làm mất nền cơ sở. Kết quả axe `bgGradient` chưa đủ để nghiệm thu: phải đối chiếu từng node bằng phép đo gradient render từ computed style, không che hoặc sửa UI để lấy kết quả; loại `incomplete` khác vẫn bị chặn. `tests/e2e/ui-toast-stack-mock.spec.ts` kiểm tra 1/3/4 thông báo, mở rộng bằng pointer, theme từ control thật, focus của modal và reduced motion.
+
 ### 21.12 Quy trình AI, ngoại lệ và cập nhật contract
 
 **PROPOSED — MUST trước khi AI tạo/sửa trang:**
