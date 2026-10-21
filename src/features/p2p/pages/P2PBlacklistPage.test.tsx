@@ -1,7 +1,7 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { screen, waitFor } from '@testing-library/react';
+import { act, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Route, Routes } from 'react-router';
 import { renderWithProviders } from '@/test/test-utils';
@@ -187,5 +187,243 @@ describe('P2P blacklist contract page', () => {
     expect(
       await screen.findByRole('status', { name: 'No P2P blacklist entries' }),
     ).toBeInTheDocument();
+  });
+
+  it('keeps the search focused through a terminal read error and recovers by editing it', async () => {
+    server.use(
+      http.get('*/p2p/blacklist', ({ request }) =>
+        new URL(request.url).searchParams.get('search') === 'bad'
+          ? HttpResponse.json({ code: 'UNAVAILABLE' }, { status: 503 })
+          : HttpResponse.json({ items: [firstEntry], total: 1 }),
+      ),
+    );
+    const user = userEvent.setup();
+    renderWithProviders(<P2PBlacklistPage />);
+    await screen.findByText('scam-merchant');
+    const input = screen.getByRole('textbox', { name: 'Tìm người dùng đã chặn' });
+    await user.type(input, 'bad');
+    await screen.findByText('Không thể tải danh sách chặn');
+    expect(input).toHaveFocus();
+    expect(input).toHaveValue('bad');
+    await user.clear(input);
+    await screen.findByText('scam-merchant');
+    expect(input).toHaveFocus();
+  });
+
+  it('keeps the pending confirmation locked and rejects repeated captured activations', async () => {
+    let release = () => {};
+    const pending = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    let calls = 0;
+    server.use(
+      http.get('*/p2p/blacklist', () => HttpResponse.json({ items: [firstEntry], total: 1 })),
+      http.delete('*/p2p/blacklist/:id', async () => {
+        calls++;
+        await pending;
+        return new HttpResponse(null, { status: 204 });
+      }),
+    );
+    const user = userEvent.setup();
+    renderWithProviders(<P2PBlacklistPage />);
+    await user.click(
+      await screen.findByRole('button', { name: 'Remove scam-merchant from P2P blacklist' }),
+    );
+    const confirm = screen.getByRole('button', { name: 'Bỏ chặn' });
+    try {
+      await user.click(confirm);
+      invokeStaleReactHandler(confirm, 'onClick');
+      invokeStaleReactHandler(confirm, 'onClick');
+      await waitFor(() => expect(calls).toBe(1));
+      expect(screen.getByRole('dialog', { name: 'Bỏ chặn người dùng?' })).toBeInTheDocument();
+      expect(confirm).toBeDisabled();
+      expect(screen.getByRole('button', { name: 'Huỷ' })).toBeDisabled();
+      await user.keyboard('{Escape}');
+      expect(screen.getByRole('dialog', { name: 'Bỏ chặn người dùng?' })).toBeInTheDocument();
+    } finally {
+      await act(async () => release());
+    }
+  });
+
+  it('keeps failure feedback and the target, then retries manually with the same key', async () => {
+    const keys: string[] = [];
+    let items = [firstEntry];
+    server.use(
+      http.get('*/p2p/blacklist', () => HttpResponse.json({ items, total: items.length })),
+      http.delete('*/p2p/blacklist/:id', ({ request }) => {
+        keys.push(request.headers.get('Idempotency-Key')!);
+        if (keys.length === 1) return HttpResponse.json({ code: 'UNAVAILABLE' }, { status: 503 });
+        items = [];
+        return new HttpResponse(null, { status: 204 });
+      }),
+    );
+    const user = userEvent.setup();
+    renderWithProviders(<P2PBlacklistPage />);
+    await user.click(
+      await screen.findByRole('button', { name: 'Remove scam-merchant from P2P blacklist' }),
+    );
+    await user.click(screen.getByRole('button', { name: 'Bỏ chặn' }));
+    expect(await screen.findByRole('alert')).toHaveTextContent('Không thể bỏ chặn người dùng');
+    expect(screen.getByRole('dialog', { name: 'Bỏ chặn người dùng?' })).toHaveTextContent(
+      'scam-merchant',
+    );
+    expect(keys).toHaveLength(1);
+    await user.click(screen.getByRole('button', { name: 'Bỏ chặn' }));
+    await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
+    expect(keys).toHaveLength(2);
+    expect(keys[0]).toMatch(/^p2p-blacklist-remove-blacklist-1-/);
+    expect(keys[1]).toBe(keys[0]);
+  });
+
+  it('marks previous-query rows as updating and blocks their remove actions', async () => {
+    let release = () => {};
+    const pending = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    server.use(
+      http.get('*/p2p/blacklist', async ({ request }) => {
+        if (new URL(request.url).searchParams.get('search')) await pending;
+        return HttpResponse.json({ items: [firstEntry], total: 1 });
+      }),
+    );
+    const user = userEvent.setup();
+    renderWithProviders(<P2PBlacklistPage />);
+    const remove = await screen.findByRole('button', {
+      name: 'Remove scam-merchant from P2P blacklist',
+    });
+    try {
+      await user.type(screen.getByRole('textbox', { name: 'Tìm người dùng đã chặn' }), 'new');
+      expect(screen.getByText('scam-merchant')).toBeInTheDocument();
+      expect(remove).toBeDisabled();
+      expect(
+        screen.getByRole('status', { name: 'Đang cập nhật danh sách chặn' }),
+      ).toBeInTheDocument();
+    } finally {
+      await act(async () => release());
+    }
+  });
+
+  it('returns focus to the workspace after a successful removal whose list refresh fails', async () => {
+    let removed = false;
+    server.use(
+      http.get('*/p2p/blacklist', () =>
+        removed
+          ? HttpResponse.json({ code: 'UNAVAILABLE' }, { status: 503 })
+          : HttpResponse.json({ items: [firstEntry], total: 1 }),
+      ),
+      http.delete('*/p2p/blacklist/:id', () => {
+        removed = true;
+        return new HttpResponse(null, { status: 204 });
+      }),
+    );
+    const user = userEvent.setup();
+    renderWithProviders(<P2PBlacklistPage />);
+    await user.click(
+      await screen.findByRole('button', { name: 'Remove scam-merchant from P2P blacklist' }),
+    );
+    await user.click(screen.getByRole('button', { name: 'Bỏ chặn' }));
+    await screen.findByText('Không thể tải danh sách chặn');
+    await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
+    await waitFor(() =>
+      expect(screen.getByRole('region', { name: 'Danh sách người dùng đã chặn' })).toHaveFocus(),
+    );
+  });
+
+  it('cancels without a request and returns focus to the row', async () => {
+    let calls = 0;
+    server.use(
+      http.get('*/p2p/blacklist', () => HttpResponse.json({ items: [firstEntry], total: 1 })),
+      http.delete('*/p2p/blacklist/:id', () => {
+        calls++;
+        return new HttpResponse(null, { status: 204 });
+      }),
+    );
+    const user = userEvent.setup();
+    renderWithProviders(<P2PBlacklistPage />);
+    const opener = await screen.findByRole('button', {
+      name: 'Remove scam-merchant from P2P blacklist',
+    });
+    await user.click(opener);
+    await user.click(screen.getByRole('button', { name: 'Huỷ' }));
+    await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
+    await waitFor(() => expect(opener).toHaveFocus());
+    expect(calls).toBe(0);
+  });
+
+  it('clears old feedback on reopen while retaining the key of an unsuccessful intent', async () => {
+    const keys: string[] = [];
+    let items = [firstEntry];
+    server.use(
+      http.get('*/p2p/blacklist', () => HttpResponse.json({ items, total: items.length })),
+      http.delete('*/p2p/blacklist/:id', ({ request }) => {
+        keys.push(request.headers.get('Idempotency-Key')!);
+        if (keys.length === 1) return HttpResponse.json({ code: 'UNAVAILABLE' }, { status: 503 });
+        items = [];
+        return new HttpResponse(null, { status: 204 });
+      }),
+    );
+    const user = userEvent.setup();
+    renderWithProviders(<P2PBlacklistPage />);
+    const name = 'Remove scam-merchant from P2P blacklist';
+    await user.click(await screen.findByRole('button', { name }));
+    await user.click(screen.getByRole('button', { name: 'Bỏ chặn' }));
+    await screen.findByRole('alert');
+    await user.click(screen.getByRole('button', { name: 'Huỷ' }));
+    await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
+    await user.click(screen.getByRole('button', { name }));
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Bỏ chặn' }));
+    await screen.findByRole('status', { name: 'No P2P blacklist entries' });
+    expect(keys).toHaveLength(2);
+    expect(keys[1]).toBe(keys[0]);
+  });
+
+  it('cancels the previous search and keeps the latest rows after its late handler completes', async () => {
+    let release = () => {};
+    const gate = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    let started = false;
+    let aborted = false;
+    let finished = false;
+    server.use(
+      http.get('*/p2p/blacklist', async ({ request }) => {
+        const search = new URL(request.url).searchParams.get('search');
+        if (search === 'old') {
+          started = true;
+          request.signal.addEventListener(
+            'abort',
+            () => {
+              aborted = true;
+            },
+            { once: true },
+          );
+          await gate;
+          finished = true;
+        }
+        const items = search === 'new' ? [secondEntry] : [firstEntry];
+        return HttpResponse.json({ items, total: 1 });
+      }),
+    );
+    const user = userEvent.setup();
+    renderWithProviders(<P2PBlacklistPage />);
+    await screen.findByText('scam-merchant');
+    const input = screen.getByRole('textbox', { name: 'Tìm người dùng đã chặn' });
+    try {
+      await user.type(input, 'old');
+      await waitFor(() => expect(started).toBe(true));
+      await user.clear(input);
+      await user.type(input, 'new');
+      await screen.findByText('slow-merchant');
+      expect(aborted).toBe(true);
+      await act(async () => release());
+      await waitFor(() => expect(finished).toBe(true));
+      expect(screen.getByText('slow-merchant')).toBeInTheDocument();
+      expect(screen.queryByText('scam-merchant')).not.toBeInTheDocument();
+      expect(input).toHaveValue('new');
+      expect(input).toHaveFocus();
+    } finally {
+      await act(async () => release());
+    }
   });
 });

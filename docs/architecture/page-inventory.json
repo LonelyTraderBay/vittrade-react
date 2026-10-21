@@ -1923,7 +1923,7 @@
       "domain": "p2p",
       "owner": "features/p2p",
       "status": "integration-pending",
-      "lines": 253,
+      "lines": 341,
       "routePaths": [
         "p2p/blacklist"
       ],
@@ -1934,8 +1934,10 @@
           "@/shared/hooks/useThemeColors",
           "@/shared/navigation/useRoutePrefix",
           "@/shared/session/useAuth",
-          "@/shared/ui/ConfirmationDialog",
+          "@/shared/ui/BottomSheetV2",
+          "@/shared/ui/CTAButton",
           "@/shared/ui/ErrorState",
+          "@/shared/ui/SearchBar",
           "@/shared/ui/TrCard",
           "@/shared/ui/layout/Header",
           "@/shared/ui/layout/PageContent",
