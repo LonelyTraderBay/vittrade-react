@@ -330,7 +330,7 @@ hiện hành, không thay C01/C03/C05, các task feature U01–U15 hoặc checkp
 Mỗi step phải gắn file bằng `files[].executionScope.stepIds`, có evidence/checkpoint
 và qua `check-tracking.mjs` trước khi được coi là hoàn tất.
 
-#### Giao thức thi công, commit và nghiệm thu C06 — cập nhật ngày 20/10/2026
+#### Giao thức thi công, commit và nghiệm thu C06 — cập nhật ngày 21/10/2026
 
 Giao thức này áp dụng riêng cho C06.01–C06.15 trên nhánh remediation hiện hành.
 Người dùng đã yêu cầu AI tự thực hiện tuần tự, đo trên code thật, tạo commit ký
@@ -342,24 +342,45 @@ push, deploy hay thao tác làm thay đổi dữ liệu dịch vụ. Quy tắc m
 rủi ro, giữ commit/push từng phần, không bỏ kiểm tra và đối chiếu 54 file WIP
 với code mới trước khi chuyển phần còn thiếu.
 
-Với **mỗi lát cắt C06**, AI MUST thực hiện đúng chu trình sau và ghi kết quả vào
+Ngày 21/10/2026, người dùng duyệt giao theo **gói nghiệm thu hợp lý**, thay cho
+commit/push sau mỗi chỉnh sửa nhỏ. Một gói giải quyết một mục tiêu hành vi hoặc
+hợp đồng, gồm owner, consumer trực tiếp, regression và tài liệu cần thiết; có
+tiêu chí nghiệm thu và phạm vi rollback chung. Số file, số dòng, một finding hay
+một dòng checklist không tự xác định ranh giới commit. Nhiều biểu hiện cùng
+nguyên nhân SHOULD được xử lý chung; thay đổi độc lập, rủi ro/rollback khác nhau,
+CI/checker và sản phẩm mà chúng kiểm chứng MUST được tách thành gói riêng.
+
+Mặc định một gói có một commit hoàn chỉnh. Khi catalogue cần SHA/blob source đã
+tồn tại, MAY dùng cặp source + ledger của cùng gói, push chung một lần. Đây vẫn
+là một gói và một candidate nghiệm thu; không giả định mỗi SHA trung gian đã chạy
+full CI. Không sửa mô hình provenance, amend hoặc rewrite lịch sử chỉ để giảm
+số commit. Các commit đã push được giữ nguyên.
+
+Với **mỗi gói nghiệm thu C06** ("lát cắt" bên dưới), AI MUST thực hiện đúng chu trình sau và ghi kết quả vào
 `TRACKING.json`; không được bỏ qua bước vì một lần chạy trước đã xanh:
 
 1. **Xác nhận checkpoint:** đọc trạng thái task/step, dependency, `nextAction`,
    SHA/branch, `git status` (staged, unstaged, untracked) và scope trong tracker.
    Bảo toàn mọi thay đổi không thuộc lát cắt; không dùng reset/clean hay format
    toàn repo. Đọc script/config trước khi chạy lệnh có thể ghi output.
-2. **Chọn đúng một đơn vị công việc:** chỉ bắt đầu step có dependency hoàn tất;
+2. **Chọn đúng một đơn vị công việc:** ghi mục tiêu, owner/consumers, contract giữ
+   nguyên, tiêu chí nghiệm thu và rollback trước khi sửa; chỉ bắt đầu step có dependency hoàn tất;
    kiểm chứng consumer/call site và giữ nguyên business/API/permission/data
    contracts. Gộp implementation với regression test trực tiếp; không kèm việc
-   độc lập chỉ để giảm số commit. Khi một finding cần quyết định visual/brand,
+   độc lập chỉ để giảm số commit. MAY hoàn thiện nhiều substep/finding cùng hợp
+   đồng trong một gói; không chờ hosted CI giữa những chỉnh sửa nội bộ đó. Khi một finding cần quyết định visual/brand,
    không tự thay đổi ngoài contract đã được duyệt.
-3. **Đo local trên bytes cuối:** chạy test owner và mọi kiểm tra liên quan theo
+3. **Đo local trên bytes cuối:** trong khi sửa, dùng kiểm tra owner/trạng thái bị
+   ảnh hưởng để phát hiện lỗi sớm; không chạy full suite sau mỗi file/chỉnh sửa.
+   Trước giao candidate ổn định, chạy test owner và mọi kiểm tra liên quan theo
    script đã đọc; tối thiểu gồm checker tracker, `git diff --check`, typecheck/
    lint/format/inventory khi file bị ảnh hưởng. Ghi command, revision, tử số/
    mẫu số, exit code, test skip có cấu hình và artifact hash. FAIL/timeout/incomplete
-   không phải PASS; giữ log/output được workflow bảo vệ, tìm root cause, sửa bằng
-   commit riêng nếu cần và chạy lại toàn bộ gate liên quan.
+   không phải PASS; giữ log/output được workflow bảo vệ, tìm root cause và chạy
+   lại gate liên quan. Lỗi phát hiện trước giao được sửa trong cùng gói; lỗi sau
+   push được sửa bằng commit bổ sung có phạm vi rõ. Chỉ tái sử dụng kết quả khi
+   source fingerprint, config và điều kiện liên quan không đổi; không gán bằng
+   chứng cũ cho bytes mới.
 4. **Rà và giao source:** xác nhận diff chỉ chứa file do lát cắt sở hữu, test có ý
    nghĩa, không chứa secret/output ngoài ý muốn; tạo một commit coherent bằng
    `git commit -s` với subject/body tiếng Việt nêu rõ hành vi và phạm vi. Không
@@ -369,8 +390,13 @@ Với **mỗi lát cắt C06**, AI MUST thực hiện đúng chu trình sau và 
    mới, có thể tạo source commit cục bộ rồi commit ledger của cùng lát cắt trước
    một lần push; không gom step độc lập. Source commit vẫn chứa test/consumer
    bắt buộc, đủ review và rollback.
-5. **Nghiệm thu GitHub exact-SHA:** chờ workflow bắt đầu từ đúng PR head của commit
-   vừa push; đối chiếu tất cả required checks và step, nêu riêng PASS/FAIL/SKIP
+   Không commit chỉ vì vừa sửa xong một file. Tracking là hồ sơ của gói, không
+   phải task ưu tiên thấp tách khỏi nghiệm thu source. Ghi tổng hợp một lần/gói
+   và tham chiếu log/artifact chi tiết; đọc task/checkpoint bằng selector, không
+   nạp toàn bộ TRACKING mỗi substep. Không tạo sổ tiến độ song song.
+5. **Nghiệm thu GitHub exact-SHA:** một lần push candidate ổn định của gói; chờ
+   workflow bắt đầu từ đúng PR head vừa push. Full CI chứng minh head candidate,
+   không mặc nhiên chứng minh mọi commit trung gian. Đối chiếu tất cả required checks và step, nêu riêng PASS/FAIL/SKIP
    cùng phạm vi full/metadata-only. Không dùng số step cố định sau khi workflow
    đổi cấu trúc. Required check tổng hợp giữ tên `Production gates`, luôn chạy
    và từ chối job bắt buộc fail/cancel/missing. Job không áp dụng chỉ được skip
@@ -379,7 +405,10 @@ Với **mỗi lát cắt C06**, AI MUST thực hiện đúng chu trình sau và 
    merge tree bằng tree của head. Tải artifact verification, so sánh byte count và
    SHA-256 với GitHub metadata; xác nhận artifact/run thuộc đúng workflow, attempt
    và SHA. Không coi CI của SHA cha, rerun khác head hoặc artifact thiếu provenance
-   là nghiệm thu.
+   là nghiệm thu. Một lượt full CI thành công là mặc định cho candidate ổn định,
+   không phải hạn ngạch: failure, source/config mới hoặc nghi vấn phải được xử lý
+   và kiểm lại. Không skip CI, hạ assertion hay mở rộng metadata allowlist để
+   giảm thời gian. Chỉ chuyển gói phụ thuộc sau khi gate hiện hành đạt.
 6. **Đóng checkpoint theo phạm vi:** sau khi source SHA và artifact đã xác minh,
    cập nhật evidence/change/checkpoint/nextAction trong `TRACKING.json`, chạy
    checker, rà diff và commit/push phần ledger thực sự cần thiết bằng tiếng Việt.
@@ -401,6 +430,9 @@ Với **mỗi lát cắt C06**, AI MUST thực hiện đúng chu trình sau và 
    ghi CI của commit ghi CI; proof sau push lưu trong artifact/manifest bất biến
    và được tham chiếu ở công việc thực tiếp theo. Nếu source+ledger đã đủ bằng
    chứng, không bắt buộc thêm closeout rỗng.
+   Đo số gói hoàn tất, commit/push/full-run mỗi gói, thời gian chờ, lần mở lại và
+   regression; không dùng riêng số commit giảm làm bằng chứng hiệu quả. Không
+   gán tỷ lệ tiết kiệm thời gian/token khi chưa có số đo so sánh tương đương.
 7. **Xử lý trở ngại:** nếu một gate fail, step hiện tại vẫn mở; không sang dependency
    kế, không hạ assertion/ngưỡng hoặc đổi baseline để làm xanh. Có thể tiếp tục
    công việc độc lập không phụ thuộc gate đó, ghi blocker/nextAction cụ thể và giữ
@@ -739,38 +771,17 @@ acceptance của dependency pass**:
 
 #### Commit, push và GitHub gate cho từng lát cắt
 
-Người dùng đã yêu cầu tự commit/push từng công việc hoàn thành, tách theo thứ tự
-ưu tiên và ghi chú tiếng Việt. Áp dụng trong C06 như sau; không mở rộng thành
-quyền deploy hoặc quyền commit thay đổi ngoài migration:
+Áp dụng duy nhất **Giao thức thi công, commit và nghiệm thu C06 — cập nhật ngày
+21/10/2026** ở đầu mục 13. "Lát cắt" là gói nghiệm thu có mục tiêu/contract và
+rollback chung; không phải mỗi file, finding hay substep. Hướng dẫn tại đây không
+tạo thêm chu kỳ commit/push hoặc yêu cầu full CI cho từng SHA trung gian.
 
-1. Một commit cho một C06 step hoặc một nhóm trực tiếp không thể tách mà vẫn giữ
-   invariant; thứ tự dependency trước consumer. Không dồn nhiều priority/task vào
-   một commit. Subject tiếng Việt, scope rõ, ví dụ `fix(a11y): giữ focus cho
-bottom sheet` hoặc `fix(ui): chuẩn hóa action của danh sách thị trường`.
-2. Trước staging, liệt kê path thuộc step và path dirty ngoài scope. Stage path cụ
-   thể; đọc staged diff/stat và `git diff --cached --check`. Không stage `git add
--A`, không commit 54 path đang dirty theo baseline trừ khi từng path được chứng
-   minh thuộc chính step, test pass và có record owner. Nếu index đã có staged
-   work không thuộc step, giữ nguyên và dùng index/worktree isolation hoặc dừng
-   commit task này an toàn; không reset index người khác.
-3. Commit chỉ sau local acceptance pass. Tôn trọng hooks, ký commit/DCO và branch
-   policy hiện có; không bỏ qua hook/check hoặc force push. Push fast-forward lên
-   nhánh task đã xác định; không push thẳng `main` trừ khi quy trình repo yêu cầu
-   và có thẩm quyền. Mỗi commit có SHA riêng, file list, subject tiếng Việt và
-   local verification trong TRACKING/evidence.
-4. `.github/workflows/ci.yml:3–5` hiện chỉ chạy `push` trên `main` và chạy trên
-   `pull_request`; push branch feature một mình không bảo đảm GitHub CI chạy.
-   Trước C06, xác định PR theo quy trình repo. Nếu cần PR để trigger required
-   checks thì tạo/cập nhật PR draft theo quy trình của branch, không coi upload
-   thành công là CI pass. Kiểm tra exact head SHA, mọi required job conclusion,
-   test artifact/report và workflow còn chạy; dùng GitHub status API/`gh` hiện có.
-   Lưu run ID, SHA, jobs, conclusion, artifacts và enforcement evidence. Không suy
-   branch protection từ quyền push hoặc HTTP 403.
-5. Sau từng commit: push, chờ required checks terminal, ghi PASS/FAIL/SKIPPED/
-   BLOCKED trên exact SHA rồi mới sang step phụ thuộc. CI lỗi: sửa trong cùng
-   task bằng commit sửa riêng, push và chờ lại. GitHub unavailable/required check
-   không cấu hình/quyền thiếu: giữ commit, ghi blocker; không giả pass, không
-   chuyển dependency. Việc độc lập không phụ thuộc được tiếp tục. Không auto deploy.
+Trước staging, liệt kê path thuộc gói và path dirty ngoài scope; stage path cụ
+thể, đọc staged diff và `git diff --cached --check`. Không `git add -A`/`git add .`,
+reset index người khác hoặc suy 54 path baseline còn là WIP hiện tại. Giữ hooks,
+DCO, thông điệp tiếng Việt, branch/PR hiện hữu và push fast-forward đã được giao;
+không force-push, merge hoặc deploy. Push feature branch chỉ trigger CI khi
+workflow/PR thực sự áp dụng; không suy enforcement từ quyền push hoặc HTTP 403.
 
 #### Nhất quán khi người dùng yêu cầu kiểm tra lại
 

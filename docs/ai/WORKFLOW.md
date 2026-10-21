@@ -118,7 +118,7 @@ Khi thêm hoặc sửa màn hình:
 
 Lệnh phải được đối chiếu với [package.json](../../package.json) hiện tại trước khi chạy. Trên Windows PowerShell dùng `npm.cmd`/`npx.cmd` khi execution policy chặn wrapper `.ps1`. Không tự cài lại dependency hoặc ghi đè `.env.local` nếu chưa cần.
 
-Với C06, áp dụng protocol commit/CI theo phạm vi tại PLAN mục 13 (cập nhật 20/10/2026).
+Với C06, áp dụng protocol gói nghiệm thu/commit/CI tại PLAN mục 13 (cập nhật 21/10/2026).
 `scripts/ci-scope.mjs` sở hữu classifier và aggregate; chỉ ledger đủ source-equivalence
 proof mới được tái sử dụng runtime evidence. Không sao chép allowlist hay tiêu chí
 đóng sổ sang một nguồn quy định khác.

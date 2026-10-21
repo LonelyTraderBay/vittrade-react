@@ -116,11 +116,11 @@ Mọi kết quả dùng một trong `PASS`, `FAIL`, `NOT RUN`, `BLOCKED`, `N/A` 
 
 ### 10.4. Commit, push và GitHub gate sau mỗi lát cắt
 
-Sau khi local acceptance đạt, gom đúng một step và ledger/evidence của chính step đó. Review `git diff` và hash file; stage bằng danh sách path tường minh, không `git add -A`/`git add .`; giữ nguyên mọi dirty/untracked file không thuộc scope. Tạo commit có dòng `Signed-off-by` (`git commit -s`) với thông điệp tiếng Việt nêu loại thay đổi và C06 step. Push fast-forward lên đúng branch đã được giao; không force-push.
+Áp dụng đơn vị gói nghiệm thu và chu trình commit/push tại protocol C06 trong PLAN (cập nhật 21/10/2026); không coi mỗi file, finding hay substep là một lần giao hàng. Implementation, consumer, regression và tài liệu trực tiếp đi cùng mục tiêu/rollback; ngoại lệ source + ledger theo provenance được push chung. Review/staging, DCO tiếng Việt và exact-SHA gate tuân theo cùng nguồn này; không tạo quy trình commit cạnh tranh trong prompt.
 
 Với mỗi lát cắt được đẩy, chờ workflow GitHub hoàn tất và kiểm **đúng pushed HEAD SHA** theo protocol C06 trong PLAN: trạng thái run, phạm vi full/metadata-only, mọi job/step bắt buộc, số bước successful/failed/skipped và lý do không áp dụng, artifact còn tải được và digest metadata khớp bytes tải về, các manifest/source-ledger gate và synthetic merge parents/tree nếu CI dùng pull-request merge. Ghi run ID, SHA, job names, artifact ID/digest, kết quả và nguồn tra trong TRACKING/evidence. “Push thành công”, PR mở hoặc một check xanh không đồng nghĩa toàn bộ gate đã đạt.
 
-Áp dụng đúng điều kiện tái sử dụng runtime evidence và đóng sổ tại PLAN, không tự mở rộng metadata allowlist hoặc tạo vòng lặp commit chỉ để ghi CI của commit trước. Source/policy/config/unknown paths giữ full CI; metadata-only vẫn có gate đúng SHA và nguồn evidence được tái sử dụng rõ ràng. Nếu CI thất bại, sửa trong cùng step bằng commit nhỏ riêng, push và xác minh lại; không xóa thất bại cũ. Nếu GitHub/check/artifact không khả dụng, đánh dấu BLOCKED/NOT RUN với bằng chứng; không gọi pass và chỉ tiếp tục công việc độc lập được PLAN cho phép. Không merge hoặc deploy.
+Áp dụng đúng điều kiện tái sử dụng runtime evidence, sửa failure trước/sau push và đóng sổ tại PLAN; không tự mở rộng metadata allowlist hoặc tạo vòng lặp commit chỉ để ghi CI của commit trước. Source/policy/config/unknown paths giữ full CI; metadata-only vẫn có gate đúng SHA và nguồn evidence được tái sử dụng rõ ràng. Không xóa thất bại cũ. Nếu GitHub/check/artifact không khả dụng, đánh dấu BLOCKED/NOT RUN với bằng chứng; không gọi pass và chỉ tiếp tục công việc độc lập được PLAN cho phép. Không merge hoặc deploy.
 
 ### 10.5. Recheck lặp lại cho kết quả nhất quán
 
