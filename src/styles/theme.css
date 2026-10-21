@@ -1270,7 +1270,8 @@ a:hover {
 button:focus-visible,
 a:focus-visible,
 select:focus-visible,
-[role='button']:focus-visible {
+[role='button']:focus-visible,
+[data-sonner-toast]:focus-visible {
   outline: 2px solid var(--tr-primary);
   outline-offset: 2px;
   border-radius: 8px;

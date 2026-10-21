@@ -1,5 +1,6 @@
 import React from 'react';
 import { ChevronUp } from 'lucide-react';
+import { ButtonHeights } from '@/shared/theme/button';
 
 interface ScrollToTopFABProps {
   visible: boolean;
@@ -9,19 +10,23 @@ interface ScrollToTopFABProps {
 /**
  * Enterprise Fintech — Scroll-to-Top FAB
  * Hiện khi scroll > 300px, ẩn khi ở top
- * Positioned trên BottomNav (bottom: 96px)
+ * AppLayout owns the positioning frame. Reserve the existing 96px navigation
+ * clearance, one standard action row, and a 16px gap above that row.
  */
 export function ScrollToTopFAB({ visible, onClick }: ScrollToTopFABProps) {
   return (
     <button
+      type="button"
+      disabled={!visible}
+      aria-hidden={!visible}
       onClick={onClick}
       aria-label="Cuộn lên đầu trang"
-      className="fixed z-30 flex items-center justify-center rounded-full shadow-lg"
+      className="absolute z-30 flex items-center justify-center rounded-full shadow-lg"
       style={{
         width: 40,
         height: 40,
         right: 16,
-        bottom: 96,
+        bottom: 96 + ButtonHeights.standard + 16,
         background: 'rgba(59,130,246,0.9)',
         border: '1px solid rgba(59,130,246,0.4)',
         boxShadow: '0 4px 20px rgba(59,130,246,0.3)',
@@ -29,7 +34,7 @@ export function ScrollToTopFAB({ visible, onClick }: ScrollToTopFABProps) {
         opacity: visible ? 1 : 0,
         transform: visible ? 'scale(1) translateY(0)' : 'scale(0.6) translateY(20px)',
         transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
-        pointerEvents: visible ? 'auto' : 'none',
+        pointerEvents: visible ? undefined : 'none',
       }}
     >
       <ChevronUp size={20} color="#fff" strokeWidth={2.5} />

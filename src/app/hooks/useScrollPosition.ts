@@ -60,7 +60,8 @@ export function useScrollPosition(scrollRef?: React.RefObject<HTMLElement | null
   const scrollToTop = useCallback(() => {
     const el = scrollRef?.current;
     if (el) {
-      el.scrollTo({ top: 0, behavior: 'smooth' });
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      el.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
     }
   }, [scrollRef]);
 

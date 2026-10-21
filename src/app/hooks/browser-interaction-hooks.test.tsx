@@ -181,6 +181,22 @@ describe('useScrollPosition', () => {
     act(() => result.current.scrollToTop());
     expect(element.scrollTo).toHaveBeenCalledWith({ top: 0, behavior: 'smooth' });
   });
+
+  it('reads the current reduced-motion preference for each scroll action', () => {
+    let reduce = true;
+    const matchMedia = vi.fn(() => ({ matches: reduce }));
+    vi.stubGlobal('matchMedia', matchMedia);
+    const element = document.createElement('div');
+    element.scrollTo = vi.fn();
+    const { result } = renderHook(() => useScrollPosition({ current: element }));
+
+    act(() => result.current.scrollToTop());
+    expect(element.scrollTo).toHaveBeenLastCalledWith({ top: 0, behavior: 'auto' });
+    expect(matchMedia).toHaveBeenCalledWith('(prefers-reduced-motion: reduce)');
+    reduce = false;
+    act(() => result.current.scrollToTop());
+    expect(element.scrollTo).toHaveBeenLastCalledWith({ top: 0, behavior: 'smooth' });
+  });
 });
 
 describe('usePullToRefresh', () => {
