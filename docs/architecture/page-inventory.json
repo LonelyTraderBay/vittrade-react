@@ -12,7 +12,7 @@
   "summary": {
     "pageCount": 130,
     "routeCount": 428,
-    "componentCount": 154,
+    "componentCount": 155,
     "dataModuleCount": 0,
     "serviceCount": 32,
     "mockCount": 28,
@@ -2415,7 +2415,7 @@
       "domain": "p2p",
       "owner": "features/p2p",
       "status": "integration-pending",
-      "lines": 286,
+      "lines": 281,
       "routePaths": [
         "p2p/my-orders",
         "p2p/order-room"
@@ -2427,6 +2427,7 @@
           "@/shared/hooks/useThemeColors",
           "@/shared/navigation/useRoutePrefix",
           "@/shared/ui/ErrorState",
+          "@/shared/ui/FilterButton",
           "@/shared/ui/TrCard",
           "@/shared/ui/layout/Header",
           "@/shared/ui/layout/PageContent",
@@ -2747,7 +2748,7 @@
       "domain": "profile",
       "owner": "features/profile",
       "status": "integration-pending",
-      "lines": 116,
+      "lines": 117,
       "routePaths": [
         "profile"
       ],
@@ -2757,6 +2758,7 @@
           "@/shared/hooks/useThemeColors",
           "@/shared/navigation/useRoutePrefix",
           "@/shared/session/useAuth",
+          "@/shared/theme/colors",
           "@/shared/ui/ErrorState",
           "@/shared/ui/TrCard",
           "@/shared/ui/layout/Header",
@@ -3821,7 +3823,7 @@
       "domain": "wallet",
       "owner": "features/wallet",
       "status": "integration-pending",
-      "lines": 238,
+      "lines": 233,
       "routePaths": [
         "wallet/history"
       ],
@@ -3837,6 +3839,7 @@
           "@/shared/session/useAuth",
           "@/shared/ui/CTAButton",
           "@/shared/ui/ErrorState",
+          "@/shared/ui/FilterButton",
           "@/shared/ui/SearchBar",
           "@/shared/ui/TrCard",
           "@/shared/ui/layout/Header",
@@ -3856,7 +3859,7 @@
       "domain": "wallet",
       "owner": "features/wallet",
       "status": "integration-pending",
-      "lines": 392,
+      "lines": 393,
       "routePaths": [
         "wallet/transfer"
       ],
@@ -3869,6 +3872,7 @@
           "@/shared/lib/formatNumber",
           "@/shared/navigation/useRoutePrefix",
           "@/shared/session/useAuth",
+          "@/shared/theme/colors",
           "@/shared/theme/typography",
           "@/shared/ui/CTAButton",
           "@/shared/ui/ErrorState",
@@ -7476,6 +7480,10 @@
     },
     {
       "path": "src/shared/ui/ErrorState.tsx",
+      "domain": "platform"
+    },
+    {
+      "path": "src/shared/ui/FilterButton.tsx",
       "domain": "platform"
     },
     {

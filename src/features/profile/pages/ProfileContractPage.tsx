@@ -6,6 +6,7 @@ import { PageLayout } from '@/shared/ui/layout/PageLayout';
 import { TrCard } from '@/shared/ui/TrCard';
 import { useRoutePrefix } from '@/shared/navigation/useRoutePrefix';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
+import { withAlpha } from '@/shared/theme/colors';
 import { useAuth } from '@/shared/session/useAuth';
 import { useProfileQuery } from '../model/profile-queries';
 
@@ -90,8 +91,8 @@ export function ProfileContractPage() {
           className="w-full rounded-2xl px-4 py-3 text-sm font-semibold"
           style={{
             color: colors.errorText,
-            background: `${colors.danger}12`,
-            border: `1px solid ${colors.danger}40`,
+            background: withAlpha(colors.danger, '12'),
+            border: `1px solid ${withAlpha(colors.danger, '40')}`,
           }}
           onClick={() => {
             void signOut().then(() => navigate(`${prefix}/auth/login`, { replace: true }));

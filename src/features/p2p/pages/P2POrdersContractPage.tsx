@@ -13,6 +13,7 @@ import { Header } from '@/shared/ui/layout/Header';
 import { PageContent } from '@/shared/ui/layout/PageContent';
 import { PageLayout } from '@/shared/ui/layout/PageLayout';
 import { TrCard } from '@/shared/ui/TrCard';
+import { FilterButton } from '@/shared/ui/FilterButton';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { useRoutePrefix } from '@/shared/navigation/useRoutePrefix';
 import { useP2POrdersQuery } from '../model/p2p-order-queries';
@@ -122,20 +123,14 @@ export function P2POrdersContractPage() {
         </div>
 
         <TrCard className="p-3">
-          <div className="flex flex-wrap gap-2">
+          <div role="group" aria-label="Order status" className="flex flex-wrap gap-2">
             {TABS.map((item) => (
-              <button
+              <FilterButton
                 key={item.id}
-                type="button"
+                selected={tab === item.id}
+                label={item.label}
                 onClick={() => setTab(item.id)}
-                className="rounded-lg px-3 py-2 text-xs font-semibold"
-                style={{
-                  background: tab === item.id ? `${colors.primary}20` : colors.surface2,
-                  color: tab === item.id ? colors.primary : colors.text3,
-                }}
-              >
-                {item.label}
-              </button>
+              />
             ))}
           </div>
           <div className="mt-3 flex gap-2">

@@ -11,6 +11,7 @@ import { fmtAmount, fmtUsd } from '@/shared/lib/formatNumber';
 import { useRoutePrefix } from '@/shared/navigation/useRoutePrefix';
 import { textRoleStyle } from '@/shared/theme/typography';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
+import { withAlpha } from '@/shared/theme/colors';
 import { useAuth } from '@/shared/session/useAuth';
 import {
   useWalletAccountsQuery,
@@ -302,7 +303,7 @@ export function WalletTransferContractPage() {
 
         <div
           className="flex items-start gap-2 rounded-xl px-4 py-2"
-          style={{ background: `${colors.primary}14` }}
+          style={{ background: withAlpha(colors.primary, '14') }}
         >
           <Info size={15} color={colors.primary} className="mt-0.5 shrink-0" />
           <p className="text-xs leading-5" style={{ color: colors.text2 }}>

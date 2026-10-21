@@ -76,6 +76,37 @@ function filterTransactions(request: Request) {
 }
 
 describe('Wallet transaction history contract page', () => {
+  it('keeps filter controls and keyboard focus mounted while a new filter request is pending', async () => {
+    let release!: () => void;
+    const pending = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    let filteredRequest = false;
+    server.use(
+      http.get('*/wallet/transactions', async ({ request }) => {
+        if (new URL(request.url).searchParams.get('type') === 'withdraw') {
+          filteredRequest = true;
+          await pending;
+        }
+        return HttpResponse.json(filterTransactions(request));
+      }),
+    );
+    renderWithProviders(<WalletTransactionHistoryContractPage />);
+    expect(await screen.findByText('+100', { exact: true })).toBeInTheDocument();
+    const button = screen.getByRole('button', { name: 'Withdrawal' });
+    try {
+      await userEvent.click(button);
+      await waitFor(() => expect(filteredRequest).toBe(true));
+      expect(button).toBeInTheDocument();
+      expect(button).toHaveFocus();
+    } finally {
+      release();
+    }
+    expect(await screen.findByText('-0.1', { exact: true })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Withdrawal' })).toBe(button);
+    expect(button).toHaveFocus();
+  });
+
   it('does not request transaction history without wallet read permission', async () => {
     let requests = 0;
     server.use(
