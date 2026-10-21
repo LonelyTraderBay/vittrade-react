@@ -2,7 +2,7 @@
  * DCAOverviewCard Component
  *
  * Hero-style overview card matching the Wallet "Tổng tài sản" card design.
- * Uses TrCard variant="hero" for consistent deep-blue gradient background.
+ * Uses TrCard variant="hero" for the shared theme-aware portfolio surface.
  *
  * Features:
  *   - Shimmer skeleton loading state
@@ -209,7 +209,7 @@ export function DCAOverviewCard({
               <div className="mb-1">
                 <span
                   style={{
-                    color: '#FFFFFF',
+                    color: c.text1,
                     fontSize: 32,
                     fontWeight: 700,
                     fontFamily: '-apple-system, BlinkMacSystemFont, "SF Mono", monospace',
@@ -227,8 +227,8 @@ export function DCAOverviewCard({
                 <div
                   className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md"
                   style={{
-                    background: isProfit ? 'rgba(16,185,129,0.20)' : 'rgba(239,68,68,0.20)',
-                    color: isProfit ? '#34D399' : '#F87171',
+                    background: c.surface2,
+                    color: isProfit ? c.successText : c.errorText,
                     fontSize: 13,
                     fontWeight: 600,
                     fontVariantNumeric: 'tabular-nums',
@@ -243,9 +243,7 @@ export function DCAOverviewCard({
                     ? '•••'
                     : `${isProfit ? '+' : ''}${formatVNDFull(data.profitLoss)}`}
                   {!balanceHidden && (
-                    <span style={{ opacity: 0.8, marginLeft: 2 }}>
-                      ({formatPercent(data.profitLossPercent)})
-                    </span>
+                    <span style={{ marginLeft: 2 }}>({formatPercent(data.profitLossPercent)})</span>
                   )}
                 </div>
                 <span style={{ color: c.portfolioTextMuted, fontSize: φ.xs }}>tổng lãi/lỗ</span>
@@ -262,7 +260,7 @@ export function DCAOverviewCard({
                   isProfit={isProfit}
                   onTap={onSparklineTap}
                 />
-                <span style={{ color: 'rgba(255,255,255,0.35)', fontSize: 10, marginTop: 4 }}>
+                <span style={{ color: c.portfolioTextMuted, fontSize: 10, marginTop: 4 }}>
                   90 ngày
                 </span>
               </div>
@@ -286,7 +284,7 @@ export function DCAOverviewCard({
                 </div>
                 <div
                   style={{
-                    color: '#FFFFFF',
+                    color: c.text1,
                     fontSize: 20,
                     fontWeight: 700,
                     fontVariantNumeric: 'tabular-nums',
@@ -317,7 +315,7 @@ export function DCAOverviewCard({
                 </div>
                 <div
                   style={{
-                    color: '#34D399',
+                    color: c.text1,
                     fontSize: 20,
                     fontWeight: 700,
                     fontVariantNumeric: 'tabular-nums',
@@ -348,7 +346,7 @@ export function DCAOverviewCard({
                 </div>
                 <div
                   style={{
-                    color: '#A78BFA',
+                    color: c.text1,
                     fontSize: 20,
                     fontWeight: 700,
                     fontVariantNumeric: 'tabular-nums',
@@ -382,7 +380,7 @@ export function DCAOverviewCard({
                   <p style={{ color: c.portfolioTextMuted, fontSize: 10 }}>Lần mua tiếp</p>
                   <p
                     style={{
-                      color: '#FFFFFF',
+                      color: c.text1,
                       fontSize: 13,
                       fontWeight: 600,
                       fontVariantNumeric: 'tabular-nums',
@@ -404,16 +402,16 @@ export function DCAOverviewCard({
               <StatusBadge
                 icon={<Play className="w-3 h-3" />}
                 count={data.activePlans}
-                bg="rgba(16,185,129,0.20)"
-                color="#34D399"
+                bg={c.surface2}
+                color={c.successText}
                 label="đang chạy"
               />
               {data.pausedPlans > 0 && (
                 <StatusBadge
                   icon={<Pause className="w-3 h-3" />}
                   count={data.pausedPlans}
-                  bg="rgba(245,158,11,0.20)"
-                  color="#FBBF24"
+                  bg={c.surface2}
+                  color={c.warningText}
                   label="tạm dừng"
                 />
               )}
@@ -421,8 +419,8 @@ export function DCAOverviewCard({
                 <StatusBadge
                   icon={<AlertCircle className="w-3 h-3" />}
                   count={data.errorPlans}
-                  bg="rgba(239,68,68,0.20)"
-                  color="#F87171"
+                  bg={c.surface2}
+                  color={c.errorText}
                   label="lỗi"
                 />
               )}
