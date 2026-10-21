@@ -166,6 +166,19 @@ for (const theme of ['light', 'dark'])
         const owner = kind.split('-')[0];
         const path = owner === 'history' ? '/wallet/history' : `/p2p/${owner}`;
         const target = `${profile.prefix}${path}`;
+        const previousContext = `${profile.prefix}/home?ui-return=wallet-denied#return-point`;
+        if (kind === 'history-denied') {
+          // PlatformSwitcher normalizes home to the viewport shell (Phone has no /w).
+          // Establish and assert a real prior entry before testing Back, including context.
+          await page.evaluate(
+            async ({ moduleUrl, previousContext }) => {
+              const { router } = await import(moduleUrl);
+              await router.navigate(previousContext, { replace: true });
+            },
+            { moduleUrl: '/src/app/router/index.ts', previousContext },
+          );
+          await expect(page).toHaveURL(previousContext);
+        }
         await page.evaluate(
           async ({ moduleUrl, target }) => {
             const { router } = await import(moduleUrl);
@@ -185,7 +198,7 @@ for (const theme of ['light', 'dark'])
             page.getByRole('heading', { level: 1, name: 'Transaction history', exact: true }),
           ).toBeVisible();
           await page.getByRole('button', { name: 'Quay lại', exact: true }).press('Enter');
-          await expect(page).toHaveURL('/w/home');
+          await expect(page).toHaveURL(previousContext);
         } else {
           const title =
             owner === 'history'
