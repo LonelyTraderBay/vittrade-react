@@ -96,7 +96,7 @@
       "domain": "system",
       "owner": "app/platform",
       "status": "integration-pending",
-      "lines": 104,
+      "lines": 105,
       "routePaths": [
         "dca/backtester",
         "dca/dynamic-amount",
@@ -189,6 +189,7 @@
           "../../components/layout/Header",
           "@/shared/hooks/useThemeColors",
           "@/shared/navigation/useRoutePrefix",
+          "@/shared/theme/colors",
           "@/shared/ui/TrCard",
           "@/shared/ui/layout/PageContent",
           "@/shared/ui/layout/PageLayout"

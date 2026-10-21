@@ -7,6 +7,7 @@ import { PageLayout } from '@/shared/ui/layout/PageLayout';
 import { TrCard } from '@/shared/ui/TrCard';
 import { useRoutePrefix } from '@/shared/navigation/useRoutePrefix';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
+import { withAlpha } from '@/shared/theme/colors';
 
 /**
  * Boundary an toàn cho route chưa có backend contract hoàn chỉnh.
@@ -35,7 +36,7 @@ export function IntegrationPendingPage() {
                 display: 'grid',
                 placeItems: 'center',
                 color: colors.buy,
-                background: `${colors.buy}18`,
+                background: withAlpha(colors.buy, '18'),
               }}
             >
               <Database size={24} />
