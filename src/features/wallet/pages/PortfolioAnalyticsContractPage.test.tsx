@@ -1,7 +1,7 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { screen, within } from '@testing-library/react';
+import { act, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import type { AuthAdapter } from '@/shared/session/AuthContext';
 import { renderWithProviders } from '@/test/test-utils';
@@ -33,6 +33,107 @@ const response = {
 };
 
 describe('Portfolio analytics contract page', () => {
+  it('keeps the selected period focused while its new read is pending', async () => {
+    let release!: () => void;
+    const pending = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    server.use(
+      http.get('*/wallet/analytics/portfolio', async ({ request }) => {
+        const period = new URL(request.url).searchParams.get('period') ?? '1M';
+        if (period === '1W') await pending;
+        return HttpResponse.json({ ...response, period });
+      }),
+    );
+    renderWithProviders(<PortfolioAnalyticsContractPage />);
+    const user = userEvent.setup();
+    await screen.findByText('Period 1M');
+    const control = screen.getByRole('button', { name: '1W' });
+    control.focus();
+    try {
+      await user.keyboard('{Enter}');
+      expect(control).toHaveFocus();
+      expect(screen.getByRole('status')).toHaveTextContent('Loading portfolio analytics API…');
+      expect(screen.queryByText('Period 1M')).not.toBeInTheDocument();
+      await act(async () => {
+        release();
+      });
+      await screen.findByText('Period 1W');
+      expect(control).toHaveFocus();
+    } finally {
+      release();
+    }
+  });
+
+  it('retains controls on a period error and recovers by choosing another period', async () => {
+    server.use(
+      http.get('*/wallet/analytics/portfolio', ({ request }) => {
+        const period = new URL(request.url).searchParams.get('period') ?? '1M';
+        return period === '1W'
+          ? HttpResponse.json({ code: 'TEMPORARY_FAILURE' }, { status: 503 })
+          : HttpResponse.json({ ...response, period });
+      }),
+    );
+    renderWithProviders(<PortfolioAnalyticsContractPage />);
+    const user = userEvent.setup();
+    await screen.findByText('Period 1M');
+    const control = screen.getByRole('button', { name: '1W' });
+    control.focus();
+    await user.keyboard('{Enter}');
+    await screen.findByText('Có lỗi xảy ra', {}, { timeout: 10000 });
+    expect(control).toHaveFocus();
+    expect(screen.queryByText('Portfolio summary')).not.toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: '1Y' }));
+    await screen.findByText('Period 1Y');
+    expect(screen.getByRole('button', { name: '1Y' })).toHaveFocus();
+  });
+
+  it('cancels the replaced period read and ignores its late result', async () => {
+    let release!: () => void;
+    const pending = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    let oldSignal: AbortSignal | undefined;
+    let oldHandlerFinished = false;
+    server.use(
+      http.get('*/wallet/analytics/portfolio', async ({ request }) => {
+        const period = new URL(request.url).searchParams.get('period') ?? '1M';
+        if (period === '1W') {
+          oldSignal = request.signal;
+          await pending;
+          oldHandlerFinished = true;
+        }
+        return HttpResponse.json({
+          ...response,
+          period,
+          history: [{ ...response.history[0], value: period === '1W' ? 99999 : 1050 }],
+        });
+      }),
+    );
+    renderWithProviders(<PortfolioAnalyticsContractPage />);
+    const user = userEvent.setup();
+    await screen.findByText('Period 1M');
+    try {
+      await user.click(screen.getByRole('button', { name: '1W' }));
+      await waitFor(() => expect(oldSignal).toBeDefined());
+      await user.click(screen.getByRole('button', { name: '1Y' }));
+      await screen.findByText('Period 1Y');
+      await waitFor(() => expect(oldSignal?.aborted).toBe(true));
+      await act(async () => {
+        release();
+      });
+      await waitFor(() => expect(oldHandlerFinished).toBe(true));
+      expect(screen.queryByText('Period 1W')).not.toBeInTheDocument();
+      const summary = screen
+        .getByText('Portfolio summary')
+        .closest('[data-slot="tr-card"]') as HTMLElement;
+      expect(within(summary).getByText('$1,050.00')).toBeInTheDocument();
+      expect(within(summary).queryByText('$99,999.00')).not.toBeInTheDocument();
+    } finally {
+      release();
+    }
+  });
+
   it('does not request analytics without wallet read permission', async () => {
     let requests = 0;
     server.use(

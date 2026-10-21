@@ -1,6 +1,6 @@
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { StrictMode, useState } from 'react';
+import { StrictMode, useRef, useState } from 'react';
 import userEvent from '@testing-library/user-event';
 import { renderWithProviders } from '@/test/test-utils';
 import { BottomSheetRow, BottomSheetV2 } from './BottomSheetV2';
@@ -504,6 +504,136 @@ describe('BottomSheetV2', () => {
       requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
     );
     expect(second).toHaveFocus();
+  });
+
+  it.each(['bottom', 'center'] as const)(
+    'returns to the logical fallback when the opener is disabled, removed or hidden (%s)',
+    async (variant) => {
+      reducedMotion.value = true;
+      for (const unavailable of ['disabled', 'removed', 'hidden'] as const) {
+        const trigger = document.createElement('button');
+        document.body.append(trigger);
+        trigger.focus();
+        const fallback = document.createElement('section');
+        fallback.tabIndex = -1;
+        document.body.append(fallback);
+        const fallbackFocusRef = { current: fallback };
+        const { rerender, unmount } = renderWithProviders(
+          <BottomSheetV2
+            open
+            variant={variant}
+            title="Fallback"
+            onClose={() => undefined}
+            fallbackFocusRef={fallbackFocusRef}
+          >
+            Content
+          </BottomSheetV2>,
+        );
+        await waitFor(() => expect(screen.getByRole('dialog', { name: 'Fallback' })).toHaveFocus());
+        if (unavailable === 'disabled') trigger.disabled = true;
+        else if (unavailable === 'removed') trigger.remove();
+        else trigger.hidden = true;
+        rerender(
+          <BottomSheetV2
+            open={false}
+            variant={variant}
+            title="Fallback"
+            onClose={() => undefined}
+            fallbackFocusRef={fallbackFocusRef}
+          >
+            Content
+          </BottomSheetV2>,
+        );
+        await waitFor(() => expect(fallback).toHaveFocus());
+        unmount();
+        trigger.remove();
+        fallback.remove();
+      }
+    },
+  );
+
+  it('prefers a usable opener over the supplied fallback', async () => {
+    reducedMotion.value = true;
+    const trigger = document.createElement('button');
+    const fallback = document.createElement('section');
+    fallback.tabIndex = -1;
+    document.body.append(trigger, fallback);
+    trigger.focus();
+    const fallbackFocusRef = { current: fallback };
+    const { rerender, unmount } = renderWithProviders(
+      <BottomSheetV2
+        open
+        title="Preferred opener"
+        onClose={() => undefined}
+        fallbackFocusRef={fallbackFocusRef}
+      >
+        Content
+      </BottomSheetV2>,
+    );
+    await waitFor(() => expect(screen.getByRole('dialog')).toHaveFocus());
+    rerender(
+      <BottomSheetV2
+        open={false}
+        title="Preferred opener"
+        onClose={() => undefined}
+        fallbackFocusRef={fallbackFocusRef}
+      >
+        Content
+      </BottomSheetV2>,
+    );
+    await waitFor(() => expect(trigger).toHaveFocus());
+    unmount();
+    trigger.remove();
+    fallback.remove();
+  });
+
+  it('uses a caller fallback after conditional unmount without taking focus from the next modal', async () => {
+    reducedMotion.value = true;
+    function Flow() {
+      const [step, setStep] = useState(0);
+      const fallbackFocusRef = useRef<HTMLElement>(null);
+      return (
+        <>
+          <section tabIndex={-1} aria-label="Logical step" ref={fallbackFocusRef} />
+          {step === 0 && <button onClick={() => setStep(1)}>Begin fallback flow</button>}
+          {step === 1 && (
+            <BottomSheetV2
+              open
+              title="First fallback"
+              onClose={() => setStep(2)}
+              fallbackFocusRef={fallbackFocusRef}
+            >
+              First
+            </BottomSheetV2>
+          )}
+          {step === 2 && (
+            <BottomSheetV2
+              open
+              title="Next fallback"
+              onClose={() => setStep(3)}
+              fallbackFocusRef={fallbackFocusRef}
+            >
+              Next
+            </BottomSheetV2>
+          )}
+        </>
+      );
+    }
+    const user = userEvent.setup();
+    renderWithProviders(
+      <StrictMode>
+        <Flow />
+      </StrictMode>,
+    );
+    await user.click(screen.getByRole('button', { name: 'Begin fallback flow' }));
+    await user.click(screen.getByRole('button', { name: 'Đóng' }));
+    const next = screen.getByRole('dialog', { name: 'Next fallback' });
+    await new Promise<void>((resolve) =>
+      requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+    );
+    expect(next).toHaveFocus();
+    await user.click(screen.getByRole('button', { name: 'Đóng' }));
+    await waitFor(() => expect(screen.getByRole('region', { name: 'Logical step' })).toHaveFocus());
   });
 
   it('returns focus to the parent dialog after a conditional child unmounts', async () => {

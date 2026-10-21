@@ -17,17 +17,12 @@ import {
   useWalletDustConversionMutation,
   useWalletDustConversionQuoteQuery,
 } from '@/features/wallet/model/wallet-queries';
-import type { DustConversionReceipt, WalletAsset } from '@/features/wallet/model/wallet-types';
+import type { WalletAsset } from '@/features/wallet/model/wallet-types';
 import {
-  Sparkles,
-  CheckCircle,
-  Clock3,
-  Info,
-  Coins,
-  ArrowRight,
-  Square,
-  CheckSquare,
-} from 'lucide-react';
+  DustConversionReceiptSheet,
+  type DustConversionResult,
+} from '../components/DustConversionReceiptSheet';
+import { Sparkles, CheckCircle, Info, Coins, ArrowRight, Square, CheckSquare } from 'lucide-react';
 
 const DUST_THRESHOLD = 10; // $10 threshold
 const EMPTY_ASSETS: WalletAsset[] = [];
@@ -47,11 +42,9 @@ export function DustConverterPage() {
   const [targetAsset, setTargetAsset] = useState('USDT');
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [showConfirmSheet, setShowConfirmSheet] = useState(false);
-  const [conversionResult, setConversionResult] = useState<{
-    receipt: DustConversionReceipt;
-    sourceCount: number;
-  } | null>(null);
+  const [conversionResult, setConversionResult] = useState<DustConversionResult | null>(null);
   const conversionInFlight = useRef(false);
+  const workspaceRef = useRef<HTMLDivElement>(null);
   const conversionAttempts = useRef(new Map<string, string>());
   const { data: assetsData, isLoading, error, refetch } = useWalletAssetsQuery(canReadWallet);
   const assets = assetsData?.items ?? EMPTY_ASSETS;
@@ -107,19 +100,21 @@ export function DustConverterPage() {
   const receivedUsd = quote?.receivedUsd ?? 0;
   const receivedAmount = quote?.targetAmount ?? 0;
   const feePct = quote?.feePct ?? 0;
+  // Preserve the old whole-page read guards when keeping the controls mounted.
+  // A cached quote must never enable a write after a balance or quote error.
+  const quoteReady = Boolean(
+    quote &&
+    !isLoading &&
+    !error &&
+    !quoteError &&
+    !quoteLoading &&
+    quote.targetAsset === targetAsset &&
+    selectedAssets.length > 0 &&
+    selectedAssets.length === selectedIds.size,
+  );
 
   const handleConvert = async () => {
-    if (
-      !canReadWallet ||
-      !canConvertDust ||
-      conversionInFlight.current ||
-      !quote ||
-      quoteLoading ||
-      quote.targetAsset !== targetAsset ||
-      selectedAssets.length === 0 ||
-      selectedAssets.length !== selectedIds.size
-    )
-      return;
+    if (!canReadWallet || !canConvertDust || conversionInFlight.current || !quoteReady) return;
     conversionInFlight.current = true;
     const signature = JSON.stringify(conversionRequest);
     const key = conversionAttempts.current.get(signature) ?? crypto.randomUUID();
@@ -157,125 +152,72 @@ export function DustConverterPage() {
     );
   }
 
-  if (isLoading) {
-    return (
-      <PageLayout variant="flush">
-        <Header title="Chuyển đổi số dư nhỏ" back />
-        <PageContent>
-          <div className="py-16 text-center" style={{ color: c.text2 }}>
-            Đang tải số dư ví…
-          </div>
-        </PageContent>
-      </PageLayout>
+  const quoteFeedback =
+    error || quoteError ? (
+      <div role="alert">
+        <ErrorState
+          title="Không thể tải dữ liệu chuyển đổi"
+          message={
+            error
+              ? 'Không thể cập nhật số dư ví. Vui lòng thử lại.'
+              : 'Không lấy được báo giá. Thử lại hoặc điều chỉnh lựa chọn tài sản.'
+          }
+          onAction={() => {
+            if (error) void refetch();
+            if (quoteError) void refetchQuote();
+          }}
+        />
+      </div>
+    ) : (
+      <p role="status" style={{ color: c.text2 }}>
+        {isLoading
+          ? 'Đang tải số dư ví…'
+          : quoteLoading
+            ? 'Đang cập nhật báo giá…'
+            : 'Vui lòng chọn lại tài sản để nhận báo giá.'}
+      </p>
     );
-  }
-
-  if (error || quoteError) {
-    return (
-      <PageLayout variant="flush">
-        <Header title="Chuyển đổi số dư nhỏ" back />
-        <PageContent>
-          <ErrorState
-            title="Không thể tải dữ liệu chuyển đổi"
-            onAction={() => {
-              if (error) void refetch();
-              if (quoteError) void refetchQuote();
-            }}
-          />
-        </PageContent>
-      </PageLayout>
-    );
-  }
 
   return (
     <PageLayout variant="flush">
       <Header title="Chuyển đổi số dư nhỏ" back />
 
-      <BottomSheetV2
-        open={conversionResult !== null}
+      <DustConversionReceiptSheet
+        result={conversionResult}
+        fallbackFocusRef={workspaceRef}
         onClose={() => {
           setConversionResult(null);
           setSelectedIds(new Set());
         }}
-        title={
-          conversionResult?.receipt.status === 'pending'
-            ? 'Yêu cầu chuyển đổi đang xử lý'
-            : 'Chuyển đổi thành công!'
-        }
-      >
-        <div className="flex flex-col items-center gap-4 py-4">
-          <div
-            className="w-16 h-16 rounded-full flex items-center justify-center"
-            style={{
-              background:
-                conversionResult?.receipt.status === 'pending'
-                  ? `${c.warn}22`
-                  : 'rgba(16,185,129,0.15)',
-              border: `2px solid ${conversionResult?.receipt.status === 'pending' ? c.warn : 'rgba(16,185,129,0.4)'}`,
-            }}
-          >
-            {conversionResult?.receipt.status === 'pending' ? (
-              <Clock3 size={36} color={c.warn} />
-            ) : (
-              <CheckCircle size={36} color={c.success} />
-            )}
-          </div>
-          <div className="text-center">
-            <p style={{ color: c.text1, fontSize: φ.body, fontWeight: 700 }}>
-              {conversionResult?.receipt.status === 'pending'
-                ? 'Yêu cầu đang chờ backend xác nhận.'
-                : `Đã chuyển ${conversionResult?.sourceCount ?? 0} tài sản nhỏ`}
-            </p>
-            <p
-              style={{
-                color: conversionResult?.receipt.status === 'pending' ? c.text2 : c.success,
-                fontSize: 22,
-                fontWeight: 700,
-                marginTop: 8,
-                fontFamily: 'monospace',
-              }}
-            >
-              {conversionResult?.receipt.status === 'pending' ? 'Dự kiến ' : '+'}
-              {fmtAmount(conversionResult?.receipt.targetAmount ?? 0)}{' '}
-              {conversionResult?.receipt.targetAsset}
-            </p>
-            <p style={{ color: c.text3, fontSize: φ.xs, marginTop: 4 }}>
-              ≈ {fmtUsd(conversionResult?.receipt.receivedUsd ?? 0)}
-            </p>
-          </div>
-          <CTAButton
-            onClick={() => {
-              setConversionResult(null);
-              setSelectedIds(new Set());
-            }}
-          >
-            {conversionResult?.receipt.status === 'pending' ? 'Đóng biên nhận' : 'Hoàn tất'}
-          </CTAButton>
-        </div>
-      </BottomSheetV2>
+      />
 
       <BottomSheetV2
         open={showConfirmSheet}
         onClose={() => setShowConfirmSheet(false)}
         title="Xác nhận chuyển đổi"
         preventClose={conversionMutation.isPending}
+        fallbackFocusRef={workspaceRef}
       >
         <div className="flex flex-col gap-4">
-          <div className="rounded-2xl p-4 flex flex-col gap-1" style={{ background: c.surface2 }}>
-            <BottomSheetRow label="Số tài sản" value={`${selectedAssets.length} loại`} />
-            <BottomSheetRow label="Tổng giá trị" value={fmtUsd(totalDustUsd)} />
-            <BottomSheetRow
-              label="Phí chuyển đổi"
-              value={`${fmtUsd(conversionFee)} (${feePct}%)`}
-            />
-            <BottomSheetRow
-              label="Nhận được"
-              value={`${fmtAmount(receivedAmount)} ${targetAsset}`}
-              highlight
-              valueColor="#10B981"
-            />
-            <BottomSheetRow label="Giá trị nhận" value={fmtUsd(receivedUsd)} />
-          </div>
+          {quoteReady ? (
+            <div className="rounded-2xl p-4 flex flex-col gap-1" style={{ background: c.surface2 }}>
+              <BottomSheetRow label="Số tài sản" value={`${selectedAssets.length} loại`} />
+              <BottomSheetRow label="Tổng giá trị" value={fmtUsd(totalDustUsd)} />
+              <BottomSheetRow
+                label="Phí chuyển đổi"
+                value={`${fmtUsd(conversionFee)} (${feePct}%)`}
+              />
+              <BottomSheetRow
+                label="Nhận được"
+                value={`${fmtAmount(receivedAmount)} ${targetAsset}`}
+                highlight
+                valueColor={c.successText}
+              />
+              <BottomSheetRow label="Giá trị nhận" value={fmtUsd(receivedUsd)} />
+            </div>
+          ) : (
+            quoteFeedback
+          )}
 
           <div>
             <p style={{ color: c.text2, fontSize: 12, fontWeight: 600, marginBottom: 8 }}>
@@ -313,12 +255,7 @@ export function DustConverterPage() {
           <CTAButton
             onClick={handleConvert}
             loading={conversionMutation.isPending || quoteLoading}
-            disabled={
-              !canConvertDust ||
-              !quote ||
-              selectedAssets.length === 0 ||
-              selectedAssets.length !== selectedIds.size
-            }
+            disabled={!canConvertDust || !quoteReady}
             variant="primary"
           >
             {conversionMutation.isPending ? 'Đang chuyển đổi...' : `Chuyển đổi sang ${targetAsset}`}
@@ -332,264 +269,310 @@ export function DustConverterPage() {
       </BottomSheetV2>
 
       <PageContent grow gap="default">
-        <TrCard variant="hero" rounded="lg" className="p-5">
-          <div className="flex items-center gap-3 mb-3">
-            <div
-              className="w-12 h-12 rounded-2xl flex items-center justify-center"
-              style={{
-                background: 'rgba(245,158,11,0.15)',
-                border: '2px solid rgba(245,158,11,0.3)',
-              }}
-            >
-              <Sparkles size={24} color={c.warn} />
-            </div>
-            <div className="flex-1">
-              <p style={{ color: c.text1, fontSize: φ.body, fontWeight: 700 }}>Dọn dẹp ví</p>
-              <p style={{ color: c.text3, fontSize: φ.xs }}>
-                Chuyển đổi số dư nhỏ (dưới {fmtUsd(DUST_THRESHOLD)}) sang {targetAsset}
-              </p>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-3 gap-2">
-            {[
-              { label: 'Dust tìm thấy', value: dustAssets.length.toString() },
-              { label: 'Đã chọn', value: selectedIds.size.toString() },
-              { label: 'Giá trị', value: fmtUsd(totalDustUsd) },
-            ].map((s) => (
-              <div
-                key={s.label}
-                className="rounded-xl p-2.5 text-center"
-                style={{ background: c.portfolioBtnGhost }}
-              >
-                <p style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>{s.value}</p>
-                <p style={{ color: c.portfolioTextMuted, fontSize: 9 }}>{s.label}</p>
-              </div>
-            ))}
-          </div>
-        </TrCard>
-
-        <PageSection label="Chuyển đổi sang">
-          <div className="flex gap-2">
-            {TARGET_OPTIONS.map((opt) => (
-              <button
-                key={opt.symbol}
-                disabled={conversionMutation.isPending}
-                onClick={() => {
-                  if (conversionInFlight.current) return;
-                  setTargetAsset(opt.symbol);
-                  setSelectedIds(new Set());
-                  hapticSelection();
-                }}
-                className="flex-1 flex items-center gap-2.5 px-4 py-3 rounded-2xl"
-                style={{
-                  background: targetAsset === opt.symbol ? `${opt.color}15` : c.surface2,
-                  border: `1.5px solid ${targetAsset === opt.symbol ? `${opt.color}60` : c.borderSolid}`,
-                }}
-              >
-                <div
-                  className="w-8 h-8 rounded-full flex items-center justify-center"
-                  style={{ background: `${opt.color}22` }}
-                >
-                  <span style={{ color: c.text1, fontSize: 10, fontWeight: 700 }}>
-                    {opt.symbol.slice(0, 3)}
-                  </span>
-                </div>
-                <div className="text-left">
-                  <p style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}>{opt.symbol}</p>
-                  <p style={{ color: c.text3, fontSize: 10 }}>{opt.name}</p>
-                </div>
-                {targetAsset === opt.symbol && (
-                  <CheckCircle size={16} color={opt.color} className="ml-auto" />
-                )}
-              </button>
-            ))}
-          </div>
-        </PageSection>
-
-        <PageSection label={`Số dư nhỏ (${dustAssets.length})`}>
-          {dustAssets.length === 0 ? (
-            <div className="flex flex-col items-center py-8 gap-3">
-              <Coins size={32} color={c.text3} />
-              <p style={{ color: c.text3, fontSize: φ.sm }}>Không có số dư nhỏ nào</p>
-              <p style={{ color: c.text3, fontSize: φ.xs }}>Ví sạch! Không có dust cần dọn dẹp.</p>
-            </div>
+        <div
+          ref={workspaceRef}
+          role="region"
+          aria-label="Lựa chọn và báo giá chuyển đổi"
+          tabIndex={-1}
+          className="flex flex-col gap-4"
+        >
+          {isLoading ? (
+            <p role="status" className="py-16 text-center" style={{ color: c.text2 }}>
+              Đang tải số dư ví…
+            </p>
+          ) : error ? (
+            quoteFeedback
           ) : (
             <>
-              <button
-                onClick={selectAll}
-                disabled={conversionMutation.isPending}
-                className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl mb-2"
-                style={{ background: c.surface2 }}
-              >
-                {selectedIds.size === dustAssets.length ? (
-                  <CheckSquare size={16} color="var(--tr-link)" />
-                ) : (
-                  <Square size={16} color={c.text3} />
-                )}
-                <span style={{ color: c.text2, fontSize: 12, fontWeight: 600 }}>
-                  {selectedIds.size === dustAssets.length ? 'Bỏ chọn tất cả' : 'Chọn tất cả'}
-                </span>
-              </button>
+              <TrCard variant="hero" rounded="lg" className="p-5">
+                <div className="flex items-center gap-3 mb-3">
+                  <div
+                    className="w-12 h-12 rounded-2xl flex items-center justify-center"
+                    style={{
+                      background: 'rgba(245,158,11,0.15)',
+                      border: '2px solid rgba(245,158,11,0.3)',
+                    }}
+                  >
+                    <Sparkles size={24} color={c.warn} />
+                  </div>
+                  <div className="flex-1">
+                    <p style={{ color: c.text1, fontSize: φ.body, fontWeight: 700 }}>Dọn dẹp ví</p>
+                    <p style={{ color: c.text3, fontSize: φ.xs }}>
+                      Chuyển đổi số dư nhỏ (dưới {fmtUsd(DUST_THRESHOLD)}) sang {targetAsset}
+                    </p>
+                  </div>
+                </div>
 
-              <div className="flex flex-col gap-1.5">
-                {dustAssets.map((asset) => {
-                  const isSelected = selectedIds.has(asset.id);
-                  return (
+                <div className="grid grid-cols-3 gap-2">
+                  {[
+                    { label: 'Dust tìm thấy', value: dustAssets.length.toString() },
+                    { label: 'Đã chọn', value: selectedIds.size.toString() },
+                    {
+                      label: 'Giá trị',
+                      value: selectedIds.size > 0 && !quoteReady ? '—' : fmtUsd(totalDustUsd),
+                    },
+                  ].map((s) => (
+                    <div
+                      key={s.label}
+                      className="rounded-xl p-2.5 text-center"
+                      style={{ background: c.portfolioBtnGhost }}
+                    >
+                      <p style={{ color: c.text1, fontSize: φ.sm, fontWeight: 700 }}>{s.value}</p>
+                      <p style={{ color: c.portfolioTextMuted, fontSize: 9 }}>{s.label}</p>
+                    </div>
+                  ))}
+                </div>
+              </TrCard>
+
+              <PageSection label="Chuyển đổi sang">
+                <div className="flex gap-2">
+                  {TARGET_OPTIONS.map((opt) => (
                     <button
-                      key={asset.id}
+                      key={opt.symbol}
+                      aria-pressed={targetAsset === opt.symbol}
                       disabled={conversionMutation.isPending}
-                      onClick={() => toggleAsset(asset.id)}
-                      className="w-full flex items-center gap-3 px-3 py-3 rounded-2xl"
+                      onClick={() => {
+                        if (conversionInFlight.current) return;
+                        setTargetAsset(opt.symbol);
+                        setSelectedIds(new Set());
+                        hapticSelection();
+                      }}
+                      className="flex-1 flex items-center gap-2.5 px-4 py-3 rounded-2xl"
                       style={{
-                        background: isSelected ? `${asset.logoColor}08` : c.surface2,
-                        border: `1.5px solid ${isSelected ? `${asset.logoColor}40` : 'transparent'}`,
+                        background: targetAsset === opt.symbol ? `${opt.color}15` : c.surface2,
+                        border: `1.5px solid ${targetAsset === opt.symbol ? `${opt.color}60` : c.borderSolid}`,
                       }}
                     >
-                      {isSelected ? (
-                        <CheckSquare size={18} color="var(--tr-link)" />
-                      ) : (
-                        <Square size={18} color={c.text3} />
-                      )}
-
                       <div
-                        className="w-8 h-8 rounded-full flex items-center justify-center shrink-0"
-                        style={{
-                          background: `${asset.logoColor}22`,
-                          border: `1px solid ${asset.logoColor}44`,
-                        }}
+                        className="w-8 h-8 rounded-full flex items-center justify-center"
+                        style={{ background: `${opt.color}22` }}
                       >
-                        <span style={{ color: asset.logoColor, fontSize: 9, fontWeight: 700 }}>
-                          {asset.symbol.slice(0, 3)}
+                        <span style={{ color: c.text1, fontSize: 10, fontWeight: 700 }}>
+                          {opt.symbol.slice(0, 3)}
                         </span>
                       </div>
-
-                      <div className="flex-1 text-left min-w-0">
+                      <div className="text-left">
                         <p style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}>
-                          {asset.symbol}
+                          {opt.symbol}
                         </p>
-                        <p style={{ color: c.text3, fontSize: 10 }}>{asset.name}</p>
+                        <p style={{ color: c.text3, fontSize: 10 }}>{opt.name}</p>
                       </div>
-
-                      <div className="text-right shrink-0">
-                        <p
-                          style={{
-                            color: c.text1,
-                            fontSize: 12,
-                            fontWeight: 600,
-                            fontFamily: 'monospace',
-                          }}
-                        >
-                          {fmtAmount(asset.available)}
-                        </p>
-                        <p style={{ color: c.text3, fontSize: 10 }}>≈ {fmtUsd(asset.usdValue)}</p>
-                      </div>
+                      {targetAsset === opt.symbol && (
+                        <CheckCircle size={16} color={opt.color} className="ml-auto" />
+                      )}
                     </button>
-                  );
-                })}
+                  ))}
+                </div>
+              </PageSection>
+
+              <PageSection label={`Số dư nhỏ (${dustAssets.length})`}>
+                {dustAssets.length === 0 ? (
+                  <div className="flex flex-col items-center py-8 gap-3">
+                    <Coins size={32} color={c.text3} />
+                    <p style={{ color: c.text3, fontSize: φ.sm }}>Không có số dư nhỏ nào</p>
+                    <p style={{ color: c.text3, fontSize: φ.xs }}>
+                      Ví sạch! Không có dust cần dọn dẹp.
+                    </p>
+                  </div>
+                ) : (
+                  <>
+                    <button
+                      onClick={selectAll}
+                      disabled={conversionMutation.isPending}
+                      className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl mb-2"
+                      style={{ background: c.surface2 }}
+                    >
+                      {selectedIds.size === dustAssets.length ? (
+                        <CheckSquare size={16} color="var(--tr-link)" />
+                      ) : (
+                        <Square size={16} color={c.text3} />
+                      )}
+                      <span style={{ color: c.text2, fontSize: 12, fontWeight: 600 }}>
+                        {selectedIds.size === dustAssets.length ? 'Bỏ chọn tất cả' : 'Chọn tất cả'}
+                      </span>
+                    </button>
+
+                    <div className="flex flex-col gap-1.5">
+                      {dustAssets.map((asset) => {
+                        const isSelected = selectedIds.has(asset.id);
+                        return (
+                          <button
+                            key={asset.id}
+                            aria-pressed={isSelected}
+                            disabled={conversionMutation.isPending}
+                            onClick={() => toggleAsset(asset.id)}
+                            className="w-full flex items-center gap-3 px-3 py-3 rounded-2xl"
+                            style={{
+                              background: isSelected ? `${asset.logoColor}08` : c.surface2,
+                              border: `1.5px solid ${isSelected ? `${asset.logoColor}40` : 'transparent'}`,
+                            }}
+                          >
+                            {isSelected ? (
+                              <CheckSquare size={18} color="var(--tr-link)" />
+                            ) : (
+                              <Square size={18} color={c.text3} />
+                            )}
+
+                            <div
+                              className="w-8 h-8 rounded-full flex items-center justify-center shrink-0"
+                              style={{
+                                background: `${asset.logoColor}22`,
+                                border: `1px solid ${asset.logoColor}44`,
+                              }}
+                            >
+                              <span
+                                style={{ color: asset.logoColor, fontSize: 9, fontWeight: 700 }}
+                              >
+                                {asset.symbol.slice(0, 3)}
+                              </span>
+                            </div>
+
+                            <div className="flex-1 text-left min-w-0">
+                              <p style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}>
+                                {asset.symbol}
+                              </p>
+                              <p style={{ color: c.text3, fontSize: 10 }}>{asset.name}</p>
+                            </div>
+
+                            <div className="text-right shrink-0">
+                              <p
+                                style={{
+                                  color: c.text1,
+                                  fontSize: 12,
+                                  fontWeight: 600,
+                                  fontFamily: 'monospace',
+                                }}
+                              >
+                                {fmtAmount(asset.available)}
+                              </p>
+                              <p style={{ color: c.text3, fontSize: 10 }}>
+                                ≈ {fmtUsd(asset.usdValue)}
+                              </p>
+                            </div>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </>
+                )}
+              </PageSection>
+
+              {selectedIds.size > 0 && !quoteReady && !showConfirmSheet && quoteFeedback}
+              {selectedIds.size > 0 && quoteReady && (
+                <TrCard className="p-4">
+                  <p style={{ color: c.text2, fontSize: 12, fontWeight: 600, marginBottom: 8 }}>
+                    Ước tính chuyển đổi
+                  </p>
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      <div className="flex -space-x-2">
+                        {selectedAssets.slice(0, 4).map((a) => (
+                          <div
+                            key={a.id}
+                            className="w-6 h-6 rounded-full flex items-center justify-center"
+                            style={{
+                              background: `${a.logoColor}30`,
+                              border: `1px solid ${c.surface}`,
+                              zIndex: 1,
+                            }}
+                          >
+                            <span style={{ color: a.logoColor, fontSize: 7, fontWeight: 700 }}>
+                              {a.symbol.slice(0, 2)}
+                            </span>
+                          </div>
+                        ))}
+                        {selectedAssets.length > 4 && (
+                          <div
+                            className="w-6 h-6 rounded-full flex items-center justify-center"
+                            style={{
+                              background: c.surface2,
+                              border: `1px solid ${c.divider}`,
+                              zIndex: 1,
+                            }}
+                          >
+                            <span style={{ color: c.text3, fontSize: 7, fontWeight: 700 }}>
+                              +{selectedAssets.length - 4}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                      <span style={{ color: c.text2, fontSize: 12 }}>
+                        {selectedAssets.length} tài sản
+                      </span>
+                    </div>
+                    <ArrowRight size={16} color={c.text3} />
+                    <div className="flex items-center gap-2">
+                      <span
+                        style={{
+                          color: 'var(--tr-success-text)',
+                          fontSize: 14,
+                          fontWeight: 700,
+                          fontFamily: 'monospace',
+                        }}
+                      >
+                        +{fmtAmount(receivedAmount)} {targetAsset}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex justify-between text-xs" style={{ color: c.text3 }}>
+                    <span>Giá trị: {fmtUsd(totalDustUsd)}</span>
+                    <span>
+                      Phí: {fmtUsd(conversionFee)} ({feePct}%)
+                    </span>
+                  </div>
+                </TrCard>
+              )}
+
+              {/* Info */}
+              <div
+                className="flex items-start gap-2 rounded-2xl px-4 py-3"
+                style={{
+                  background: 'rgba(59,130,246,0.06)',
+                  border: '1px solid rgba(59,130,246,0.15)',
+                }}
+              >
+                <Info size={13} color="var(--tr-link)" className="shrink-0 mt-0.5" />
+                <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.6 }}>
+                  Số dư nhỏ dưới {fmtUsd(DUST_THRESHOLD)} có thể được chuyển đổi.{' '}
+                  {quoteReady
+                    ? `Phí chuyển đổi: ${feePct}%.`
+                    : 'Phí và tỷ giá được cung cấp trong báo giá.'}{' '}
+                  Giá dựa trên tỷ giá thị trường. Tài sản đang đóng băng hoặc trong lệnh không thể
+                  chuyển đổi.
+                </p>
               </div>
             </>
           )}
-        </PageSection>
-
-        {selectedIds.size > 0 && (
-          <TrCard className="p-4">
-            <p style={{ color: c.text2, fontSize: 12, fontWeight: 600, marginBottom: 8 }}>
-              Ước tính chuyển đổi
-            </p>
-            <div className="flex items-center justify-between mb-2">
-              <div className="flex items-center gap-2">
-                <div className="flex -space-x-2">
-                  {selectedAssets.slice(0, 4).map((a) => (
-                    <div
-                      key={a.id}
-                      className="w-6 h-6 rounded-full flex items-center justify-center"
-                      style={{
-                        background: `${a.logoColor}30`,
-                        border: `1px solid ${c.surface}`,
-                        zIndex: 1,
-                      }}
-                    >
-                      <span style={{ color: a.logoColor, fontSize: 7, fontWeight: 700 }}>
-                        {a.symbol.slice(0, 2)}
-                      </span>
-                    </div>
-                  ))}
-                  {selectedAssets.length > 4 && (
-                    <div
-                      className="w-6 h-6 rounded-full flex items-center justify-center"
-                      style={{
-                        background: c.surface2,
-                        border: `1px solid ${c.divider}`,
-                        zIndex: 1,
-                      }}
-                    >
-                      <span style={{ color: c.text3, fontSize: 7, fontWeight: 700 }}>
-                        +{selectedAssets.length - 4}
-                      </span>
-                    </div>
-                  )}
-                </div>
-                <span style={{ color: c.text2, fontSize: 12 }}>
-                  {selectedAssets.length} tài sản
-                </span>
-              </div>
-              <ArrowRight size={16} color={c.text3} />
-              <div className="flex items-center gap-2">
-                <span
-                  style={{
-                    color: 'var(--tr-success-text)',
-                    fontSize: 14,
-                    fontWeight: 700,
-                    fontFamily: 'monospace',
-                  }}
-                >
-                  +{fmtAmount(receivedAmount)} {targetAsset}
-                </span>
-              </div>
-            </div>
-            <div className="flex justify-between text-xs" style={{ color: c.text3 }}>
-              <span>Giá trị: {fmtUsd(totalDustUsd)}</span>
-              <span>
-                Phí: {fmtUsd(conversionFee)} ({feePct}%)
-              </span>
-            </div>
-          </TrCard>
-        )}
-
-        {/* Info */}
-        <div
-          className="flex items-start gap-2 rounded-2xl px-4 py-3"
-          style={{ background: 'rgba(59,130,246,0.06)', border: '1px solid rgba(59,130,246,0.15)' }}
-        >
-          <Info size={13} color="var(--tr-link)" className="shrink-0 mt-0.5" />
-          <p style={{ color: c.text2, fontSize: 11, lineHeight: 1.6 }}>
-            Số dư nhỏ dưới {fmtUsd(DUST_THRESHOLD)} có thể được chuyển đổi. Phí chuyển đổi: {feePct}
-            %. Giá dựa trên tỷ giá thị trường. Tài sản đang đóng băng hoặc trong lệnh không thể
-            chuyển đổi.
-          </p>
         </div>
       </PageContent>
 
-      <StickyFooter>
-        {!canConvertDust && (
-          <p role="status" className="mb-2 text-center" style={{ color: c.text3, fontSize: φ.xs }}>
-            Tài khoản hiện chỉ có quyền xem, không thể chuyển đổi số dư.
-          </p>
-        )}
-        <CTAButton
-          onClick={() => {
-            setShowConfirmSheet(true);
-            hapticMedium();
-          }}
-          disabled={!canConvertDust || selectedIds.size === 0}
-          variant="primary"
-        >
-          {selectedIds.size === 0
-            ? 'Chọn tài sản để chuyển đổi'
-            : `Chuyển đổi ${selectedIds.size} tài sản → ${targetAsset}`}
-        </CTAButton>
-      </StickyFooter>
+      {!isLoading && !error && (
+        <StickyFooter>
+          {!canConvertDust && (
+            <p
+              role="status"
+              className="mb-2 text-center"
+              style={{ color: c.text3, fontSize: φ.xs }}
+            >
+              Tài khoản hiện chỉ có quyền xem, không thể chuyển đổi số dư.
+            </p>
+          )}
+          <CTAButton
+            onClick={() => {
+              if (!canConvertDust || !quoteReady || conversionInFlight.current) return;
+              setShowConfirmSheet(true);
+              hapticMedium();
+            }}
+            disabled={!canConvertDust || !quoteReady}
+            loading={quoteLoading && selectedIds.size > 0}
+            variant="primary"
+          >
+            {selectedIds.size === 0
+              ? 'Chọn tài sản để chuyển đổi'
+              : `Chuyển đổi ${selectedIds.size} tài sản → ${targetAsset}`}
+          </CTAButton>
+        </StickyFooter>
+      )}
     </PageLayout>
   );
 }

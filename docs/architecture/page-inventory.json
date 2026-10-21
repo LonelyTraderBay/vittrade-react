@@ -12,7 +12,7 @@
   "summary": {
     "pageCount": 130,
     "routeCount": 428,
-    "componentCount": 155,
+    "componentCount": 156,
     "dataModuleCount": 0,
     "serviceCount": 32,
     "mockCount": 28,
@@ -3604,12 +3604,13 @@
       "domain": "wallet",
       "owner": "features/wallet",
       "status": "integration-pending",
-      "lines": 596,
+      "lines": 579,
       "routePaths": [
         "wallet/dust-converter"
       ],
       "dependencies": {
         "localImports": [
+          "../components/DustConversionReceiptSheet",
           "@/features/wallet/model/wallet-queries",
           "@/features/wallet/model/wallet-types",
           "@/shared/hooks/useActionToast",
@@ -3699,7 +3700,7 @@
       "domain": "wallet",
       "owner": "features/wallet",
       "status": "integration-pending",
-      "lines": 296,
+      "lines": 291,
       "routePaths": [
         "markets/portfolio-tracker",
         "portfolio/analytics",
@@ -3712,6 +3713,7 @@
           "@/shared/hooks/useThemeColors",
           "@/shared/session/useAuth",
           "@/shared/ui/ErrorState",
+          "@/shared/ui/FilterButton",
           "@/shared/ui/TrCard",
           "@/shared/ui/layout/Header",
           "@/shared/ui/layout/PageContent",
@@ -7450,6 +7452,10 @@
     {
       "path": "src/features/trading/components/trading-order-config.ts",
       "domain": "trading"
+    },
+    {
+      "path": "src/features/wallet/components/DustConversionReceiptSheet.tsx",
+      "domain": "wallet"
     },
     {
       "path": "src/features/wallet/components/WalletTransactionHistoryComponents.tsx",

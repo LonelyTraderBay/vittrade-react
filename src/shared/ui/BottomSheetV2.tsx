@@ -6,13 +6,21 @@ import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { useScrollLock } from '@/shared/hooks/useScrollLock';
 import { φElevation } from '@/shared/lib/golden';
 
-function restoreFocusIfSafe(previousFocus: HTMLElement | null) {
-  if (!previousFocus?.isConnected) return;
+function restoreFocusIfSafe(previousFocus: HTMLElement | null, fallbackFocus: HTMLElement | null) {
   const hasOpenDialog = Boolean(document.querySelector('[role="dialog"][data-state="open"]'));
-  const targetInsideOpenDialog = Boolean(
-    previousFocus.closest('[role="dialog"][data-state="open"]'),
-  );
-  if (!hasOpenDialog || targetInsideOpenDialog) previousFocus.focus({ preventScroll: true });
+  for (const target of [previousFocus, fallbackFocus]) {
+    if (
+      !target?.isConnected ||
+      target === document.body ||
+      target.matches(':disabled') ||
+      target.closest('[inert], [aria-hidden="true"], [hidden]')
+    )
+      continue;
+    const targetInsideOpenDialog = Boolean(target.closest('[role="dialog"][data-state="open"]'));
+    if (hasOpenDialog && !targetInsideOpenDialog) continue;
+    target.focus({ preventScroll: true });
+    if (document.activeElement === target) return;
+  }
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -79,6 +87,8 @@ export interface BottomSheetV2Props {
   customHeader?: React.ReactNode;
   /** Callback fired after the open animation completes (~350ms). Useful for analytics/tracking. */
   onAfterOpen?: () => void;
+  /** Caller-owned logical focus target if the original opener is no longer usable. */
+  fallbackFocusRef?: React.RefObject<HTMLElement | null>;
 }
 
 export function BottomSheetV2({
@@ -95,6 +105,7 @@ export function BottomSheetV2({
   className,
   customHeader,
   onAfterOpen,
+  fallbackFocusRef,
 }: BottomSheetV2Props) {
   const c = useThemeColors();
   const prefersReducedMotion = useReducedMotion() ?? false;
@@ -102,6 +113,8 @@ export function BottomSheetV2({
   const sheetRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const previousFocusRef = useRef<HTMLElement | null>(null);
+  const latestFallbackFocusRef = useRef(fallbackFocusRef);
+  latestFallbackFocusRef.current = fallbackFocusRef;
   const wasOpenRef = useRef(false);
   const portalContentRef = useRef<HTMLDivElement>(null);
 
@@ -254,7 +267,9 @@ export function BottomSheetV2({
     } else if (!modalOpen && wasOpenRef.current) {
       const previousFocus = previousFocusRef.current;
       previousFocusRef.current = null;
-      requestAnimationFrame(() => restoreFocusIfSafe(previousFocus));
+      requestAnimationFrame(() =>
+        restoreFocusIfSafe(previousFocus, latestFallbackFocusRef.current?.current ?? null),
+      );
     }
 
     wasOpenRef.current = modalOpen;
@@ -284,7 +299,8 @@ export function BottomSheetV2({
       const previousFocus = previousFocusRef.current;
       requestAnimationFrame(() => {
         // Conditional consumers unmount while open. An effect replay keeps the panel connected.
-        if (!isPanelConnected()) restoreFocusIfSafe(previousFocus);
+        if (!isPanelConnected())
+          restoreFocusIfSafe(previousFocus, latestFallbackFocusRef.current?.current ?? null);
       });
     };
   }, [isPanelConnected]);
