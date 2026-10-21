@@ -215,6 +215,8 @@ jobs:
             config: playwright.auth-api.config.ts
           - suite: auth-mock
             config: playwright.auth-mock.config.ts
+          - suite: ui-mock
+            config: playwright.ui-mock.config.ts
     steps:
       - uses: actions/checkout@v4
         with:
@@ -235,7 +237,8 @@ jobs:
           if [ "$BROWSER_PROFILE" = "auth-mock" ]; then
             VITE_ENABLE_DEVTOOLS=true npm run test:e2e -- --config "$BROWSER_CONFIG"
             VITE_ENABLE_DEVTOOLS=false npm run test:e2e -- --config playwright.preview-defaults.config.ts
-            VITE_ENABLE_DEVTOOLS=true npm run test:e2e -- --config playwright.ui-mock.config.ts
+          elif [ "$BROWSER_PROFILE" = "ui-mock" ]; then
+            VITE_ENABLE_DEVTOOLS=true npm run test:e2e -- --config "$BROWSER_CONFIG"
           else
             npm run test:e2e -- --config "$BROWSER_CONFIG"
           fi

@@ -408,11 +408,17 @@ Với **mỗi lát cắt C06**, AI MUST thực hiện đúng chu trình sau và 
    định ngoài repository thực sự cần thiết; tiếp tục phần độc lập và không tuyên
    bố “100%” vượt quá phạm vi đã đo.
 
-CI full giữ nguyên assertion, coverage threshold, security/contract/build và ba
-browser suites; `test:coverage` chạy cùng toàn bộ suite với `test:run` nên chỉ
-chạy một lượt có instrumentation, có test kiểm command parity. Static/build,
-unit/coverage và từng browser suite chạy trên runner/workspace độc lập; build/E2E
-local dùng chung output/port vẫn tuần tự. Không hủy checkpoint đang nghiệm thu,
+CI full giữ nguyên assertion, coverage threshold, security/contract/build và bốn
+browser lane: smoke, Auth API, Auth mock và UI mock. Auth mock chạy nối tiếp hai
+cấu hình devtools bật/mặc định tắt; tổng cộng vẫn đủ năm cấu hình browser, mỗi
+cấu hình một lần. UI mock có runner/workspace riêng; aggregate và exact-source
+reuse bắt buộc có job UI thành công cùng artifact. Scope tests thực thi Bash
+contract bằng npm stub cục bộ và kiểm lỗi của từng cấu hình, không bỏ test hoặc
+nới ngưỡng. `test:coverage` chạy cùng toàn bộ suite với `test:run` nên chỉ chạy
+một lượt có instrumentation, có test kiểm command parity. Static/build,
+unit/coverage và từng browser lane chạy trên runner/workspace độc lập; build/E2E
+local dùng chung output/port vẫn tuần tự. Đo thời gian từ run GitHub hoàn tất trên
+cùng application/test inputs; một cặp run chỉ là số đo quan sát, không phải SLA. Không hủy checkpoint đang nghiệm thu,
 không `[skip ci]`, không path-ignore toàn workflow hay đổi branch protection.
 Thời gian tối ưu chỉ được báo sau khi đo run thật; kiểm cả failure/cancel/missing,
 mixed paths và fallback full. Nếu classifier/aggregate sai, revert atomic patch

@@ -14,6 +14,7 @@ export const fullJobNames = [
   'Browser smoke',
   'Browser auth-api',
   'Browser auth-mock',
+  'Browser ui-mock',
   'Production gates',
 ];
 

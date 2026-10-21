@@ -192,11 +192,7 @@ test('auth mock CI retains diagnostic contracts and separately verifies disabled
 
 test('UI rollout runs in development MSW without replacing existing browser contracts', () => {
   const workflow = readFileSync(new URL('../.github/workflows/ci.yml', import.meta.url), 'utf8');
-  assert.ok(
-    workflow.includes(
-      'VITE_ENABLE_DEVTOOLS=true npm run test:e2e -- --config playwright.ui-mock.config.ts',
-    ),
-  );
+  assert.ok(workflow.includes('            config: playwright.ui-mock.config.ts'));
   const ui = readFileSync(new URL('../playwright.ui-mock.config.ts', import.meta.url), 'utf8');
   const smoke = readFileSync(new URL('../playwright.config.ts', import.meta.url), 'utf8');
   assert.ok(ui.includes("testMatch: '**/ui-*-mock.spec.ts'"));
@@ -345,3 +341,148 @@ for (const auditExit of [0, 17]) {
     }
   });
 }
+
+function browserWorkflowContract() {
+  const workflow = readFileSync(new URL('../.github/workflows/ci.yml', import.meta.url), 'utf8');
+  const section = workflow.split('\n  browser:\n')[1]?.split('\n  metadata:\n')[0];
+  assert.ok(section, 'Browser matrix job must exist');
+  const include = section.split('        include:\n')[1]?.split('    steps:\n')[0];
+  assert.ok(include, 'Browser include matrix must exist');
+  const profiles = [
+    ...include.matchAll(/          - suite: ([a-z-]+)\n            config: ([a-z.-]+\.ts)/g),
+  ].map((match) => ({ suite: match[1], config: match[2] }));
+  const step = section.split('      - name: Browser contract\n')[1]?.split('      - name:')[0];
+  const run = step?.split('        run: |\n')[1];
+  assert.ok(run, 'Browser contract must contain an executable Bash block');
+  return {
+    profiles,
+    script: run
+      .split('\n')
+      .map((line) => line.replace(/^ {10}/, ''))
+      .join('\n'),
+  };
+}
+
+function executeBrowserContract(script, profile, failureConfig = '') {
+  const bash =
+    process.env.CI_SCOPE_TEST_BASH ||
+    (process.platform === 'win32' ? 'C:/Program Files/Git/bin/bash.exe' : 'bash');
+  const env = {
+    ...process.env,
+    BASH_ENV: '',
+    BROWSER_PROFILE: profile.suite,
+    BROWSER_CONFIG: profile.config,
+    FAIL_CONFIG: failureConfig,
+  };
+  delete env.VITE_ENABLE_DEVTOOLS;
+  // Only this shell-local stub runs: no npm install, browser, data or network activity.
+  const stub = `npm() {
+    printf 'CI_PROFILE|%s|%s\\n' "\${VITE_ENABLE_DEVTOOLS-unset}" "$*"
+    if [ -n "$FAIL_CONFIG" ] && [ "$*" = "run test:e2e -- --config $FAIL_CONFIG" ]; then return 17; fi
+    return 0
+  }\n`;
+  const result = spawnSync(bash, ['--noprofile', '--norc', '-c', stub + script], {
+    encoding: 'utf8',
+    env,
+  });
+  assert.equal(result.error, undefined);
+  return { ...result, calls: result.stdout.trim().split(/\r?\n/).filter(Boolean) };
+}
+
+test('browser matrix executes all five configs once across four isolated lanes', () => {
+  const { profiles, script } = browserWorkflowContract();
+  assert.deepEqual(profiles, [
+    { suite: 'smoke', config: 'playwright.config.ts' },
+    { suite: 'auth-api', config: 'playwright.auth-api.config.ts' },
+    { suite: 'auth-mock', config: 'playwright.auth-mock.config.ts' },
+    { suite: 'ui-mock', config: 'playwright.ui-mock.config.ts' },
+  ]);
+  const traces = profiles.map((profile) => {
+    const result = executeBrowserContract(script, profile);
+    assert.equal(result.status, 0, result.stderr);
+    return { suite: profile.suite, calls: result.calls };
+  });
+  assert.deepEqual(traces, [
+    { suite: 'smoke', calls: ['CI_PROFILE|unset|run test:e2e -- --config playwright.config.ts'] },
+    {
+      suite: 'auth-api',
+      calls: ['CI_PROFILE|unset|run test:e2e -- --config playwright.auth-api.config.ts'],
+    },
+    {
+      suite: 'auth-mock',
+      calls: [
+        'CI_PROFILE|true|run test:e2e -- --config playwright.auth-mock.config.ts',
+        'CI_PROFILE|false|run test:e2e -- --config playwright.preview-defaults.config.ts',
+      ],
+    },
+    {
+      suite: 'ui-mock',
+      calls: ['CI_PROFILE|true|run test:e2e -- --config playwright.ui-mock.config.ts'],
+    },
+  ]);
+});
+
+test('each browser config failure propagates and prevents remaining work in its lane', () => {
+  const { profiles, script } = browserWorkflowContract();
+  const cases = [
+    ['smoke', 'playwright.config.ts', 1],
+    ['auth-api', 'playwright.auth-api.config.ts', 1],
+    ['auth-mock', 'playwright.auth-mock.config.ts', 1],
+    ['auth-mock', 'playwright.preview-defaults.config.ts', 2],
+    ['ui-mock', 'playwright.ui-mock.config.ts', 1],
+  ];
+  for (const [suite, config, expectedCalls] of cases) {
+    const profile = profiles.find((profile) => profile.suite === suite);
+    assert.ok(profile, `Missing lane ${suite}`);
+    const result = executeBrowserContract(script, profile, config);
+    assert.equal(result.status, 17, `${suite}/${config}: ${result.stderr}`);
+    assert.equal(result.calls.length, expectedCalls);
+  }
+  const auth = profiles.find((profile) => profile.suite === 'auth-mock');
+  assert.ok(auth);
+  const masked = executeBrowserContract(
+    script.replace('set -euo pipefail', 'set -uo pipefail'),
+    auth,
+    auth.config,
+  );
+  assert.equal(masked.status, 0, 'Negative control must detect a masked first-profile failure');
+  assert.equal(masked.calls.length, 2);
+});
+
+test('exact full-source proof requires the UI matrix job and all of its upload steps', () => {
+  assert.ok(fullJobNames.includes('Browser ui-mock'));
+  const complete = jobs();
+  assert.equal(hasFullGate(run, complete, 'abc', 3), true);
+  const ui = complete.find((job) => job.name === 'Browser ui-mock');
+  assert.ok(ui);
+  assert.equal(
+    hasFullGate(
+      run,
+      complete.filter((job) => job !== ui),
+      'abc',
+      3,
+    ),
+    false,
+  );
+  assert.equal(hasFullGate(run, [...complete, ui], 'abc', 3), false);
+  for (const conclusion of ['skipped', 'failure', 'cancelled', undefined]) {
+    assert.equal(
+      hasFullGate(
+        run,
+        complete.map((job) => (job === ui ? { ...ui, conclusion } : job)),
+        'abc',
+        3,
+      ),
+      false,
+    );
+  }
+  const uploadFailure = complete.map((job) =>
+    job === ui
+      ? {
+          ...ui,
+          steps: [{ name: 'Preserve verification reports', conclusion: 'failure' }],
+        }
+      : job,
+  );
+  assert.equal(hasFullGate(run, uploadFailure, 'abc', 3), false);
+});
