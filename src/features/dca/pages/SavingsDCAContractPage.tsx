@@ -9,6 +9,7 @@ import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { useActionToast } from '@/shared/hooks/useActionToast';
 import { useAuth } from '@/shared/session/useAuth';
 import { ConfirmationDialog } from '@/shared/ui/ConfirmationDialog';
+import { DcaPlanCoinIcon } from '../components/DcaPlanCoinIcon';
 import {
   useDCASnapshotQuery,
   useCreateDCAPlanMutation,
@@ -219,9 +220,10 @@ export function SavingsDCAContractPage() {
                   style={{ background: colors.surface2, color: colors.warningText }}
                 >
                   <DcaPlanCoinIcon
-                    key={plan.coinIcon}
                     icon={plan.coinIcon}
                     symbol={plan.coinSymbol}
+                    loading="lazy"
+                    referrerPolicy="no-referrer"
                   />
                 </span>
                 <div className="min-w-0 flex-1">
@@ -314,31 +316,5 @@ function Metric({ label, value }: { label: string; value: string | number }) {
       </strong>
       <p style={{ color: colors.text3, fontSize: 9 }}>{label}</p>
     </div>
-  );
-}
-
-function DcaPlanCoinIcon({ icon, symbol }: { icon: string; symbol: string }) {
-  const [imageFailed, setImageFailed] = useState(false);
-  const source = icon.trim();
-  const isImageSource = /^(?:https?:\/\/|\/|\.\.?\/|data:image\/)/i.test(source);
-
-  if (!source || !isImageSource || imageFailed) {
-    return (
-      <span aria-hidden="true" className="text-xs font-bold">
-        {symbol}
-      </span>
-    );
-  }
-
-  return (
-    <img
-      src={source}
-      alt=""
-      aria-hidden="true"
-      loading="lazy"
-      referrerPolicy="no-referrer"
-      className="h-6 w-6 object-contain"
-      onError={() => setImageFailed(true)}
-    />
   );
 }

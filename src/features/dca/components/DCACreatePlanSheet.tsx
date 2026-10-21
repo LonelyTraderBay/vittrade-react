@@ -14,6 +14,7 @@ import { InputField } from '@/shared/ui/InputField';
 import type { CreateDCAPlanRequest, DCAFrequency } from '../model/dca-types';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { textRoleStyle } from '@/shared/theme/typography';
+import { DcaPlanCoinIcon } from './DcaPlanCoinIcon';
 
 /**
  * DCACreatePlanSheet Props
@@ -124,13 +125,11 @@ export function DCACreatePlanSheet({
                 }}
               >
                 <div className="flex flex-col items-center gap-2">
-                  <img
-                    src={coin.icon}
+                  <DcaPlanCoinIcon
+                    icon={coin.icon}
+                    symbol={coin.symbol}
                     alt={coin.name}
-                    className="w-8 h-8"
-                    onError={(e) => {
-                      e.currentTarget.src = `https://ui-avatars.com/api/?name=${coin.symbol}&background=random`;
-                    }}
+                    size={32}
                   />
                   <div className="text-[12px] font-medium" style={{ color: c.text1 }}>
                     {coin.symbol}

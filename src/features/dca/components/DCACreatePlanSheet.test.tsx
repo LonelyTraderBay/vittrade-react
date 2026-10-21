@@ -100,10 +100,9 @@ describe('DCACreatePlanSheet', () => {
 
     const bitcoinLogo = screen.getByAltText('Bitcoin');
     fireEvent.error(bitcoinLogo);
-    expect(bitcoinLogo).toHaveAttribute(
-      'src',
-      'https://ui-avatars.com/api/?name=BTC&background=random',
-    );
+    expect(bitcoinLogo).not.toBeInTheDocument();
+    expect(screen.getByRole('img', { name: 'Bitcoin' })).toHaveTextContent('BTC');
+    expect(screen.getByRole('img', { name: 'Bitcoin' })).not.toHaveAttribute('src');
 
     view.rerender(
       <DCACreatePlanSheet
