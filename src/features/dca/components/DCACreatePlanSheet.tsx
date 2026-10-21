@@ -7,8 +7,10 @@
  * @module components/dca
  */
 
-import { useEffect, useState } from 'react';
+import { useEffect, useId, useState } from 'react';
 import { BottomSheetV2 } from '@/shared/ui/BottomSheetV2';
+import { CTAButton } from '@/shared/ui/CTAButton';
+import { InputField } from '@/shared/ui/InputField';
 import type { CreateDCAPlanRequest, DCAFrequency } from '../model/dca-types';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { textRoleStyle } from '@/shared/theme/typography';
@@ -68,6 +70,8 @@ export function DCACreatePlanSheet({
   const [coinSymbol, setCoinSymbol] = useState<string>(preselectedCoin || 'BTC');
   const [frequency, setFrequency] = useState<DCAFrequency>('weekly');
   const [amount, setAmount] = useState<string>('500000');
+  const amountId = useId();
+  const belowMinimum = parseInt(amount) < 10_000;
 
   useEffect(() => {
     if (preselectedCoin) setCoinSymbol(preselectedCoin);
@@ -101,15 +105,17 @@ export function DCACreatePlanSheet({
     >
       <div className="space-y-6 pb-6">
         {/* Select Coin */}
-        <div>
-          <label className="block text-[14px] font-medium mb-3" style={{ color: c.text1 }}>
+        <fieldset className="min-w-0" disabled={isCreating}>
+          <legend className="mb-3" style={{ ...textRoleStyle('bodyMedium'), color: c.text1 }}>
             Chọn Coin
-          </label>
+          </legend>
           <div className="grid grid-cols-3 gap-2">
             {AVAILABLE_COINS.map((coin) => (
               <button
                 key={coin.symbol}
+                type="button"
                 disabled={isCreating}
+                aria-pressed={coinSymbol === coin.symbol}
                 onClick={() => setCoinSymbol(coin.symbol)}
                 className="p-3 rounded-xl border-2 transition-all"
                 style={{
@@ -133,18 +139,20 @@ export function DCACreatePlanSheet({
               </button>
             ))}
           </div>
-        </div>
+        </fieldset>
 
         {/* Select Frequency */}
-        <div>
-          <label className="block text-[14px] font-medium mb-3" style={{ color: c.text1 }}>
+        <fieldset className="min-w-0" disabled={isCreating}>
+          <legend className="mb-3" style={{ ...textRoleStyle('bodyMedium'), color: c.text1 }}>
             Tần Suất Mua
-          </label>
+          </legend>
           <div className="grid grid-cols-3 gap-2">
             {FREQUENCY_OPTIONS.map((option) => (
               <button
                 key={option.value}
+                type="button"
                 disabled={isCreating}
+                aria-pressed={frequency === option.value}
                 onClick={() => setFrequency(option.value)}
                 className="h-11 rounded-xl border-2 transition-all text-[14px] font-medium"
                 style={{
@@ -157,45 +165,32 @@ export function DCACreatePlanSheet({
               </button>
             ))}
           </div>
-        </div>
+        </fieldset>
 
         {/* Amount Input */}
         <div>
-          <label className="block text-[14px] font-medium mb-3" style={{ color: c.text1 }}>
-            Số Tiền Mỗi Lần (VND)
-          </label>
-
-          {/* Input */}
-          <div className="relative mb-3">
-            <input
-              type="text"
-              value={amount}
-              disabled={isCreating}
-              onChange={(e) => {
-                const value = e.target.value.replace(/\D/g, '');
-                setAmount(value);
-              }}
-              className="w-full h-14 px-4 pr-16 rounded-xl border-2 outline-none text-[18px] font-medium transition-colors"
-              style={{
-                background: c.surface2,
-                borderColor: c.border,
-                color: c.text1,
-              }}
-              onFocus={(e) => {
-                e.currentTarget.style.borderColor = c.primary;
-              }}
-              onBlur={(e) => {
-                e.currentTarget.style.borderColor = c.border;
-              }}
-              placeholder="500.000"
-            />
-            <div
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-[14px]"
-              style={{ color: c.text2 }}
-            >
-              VND
-            </div>
-          </div>
+          <InputField
+            id={amountId}
+            label="Số Tiền Mỗi Lần (VND)"
+            type="text"
+            inputMode="numeric"
+            required
+            value={amount}
+            disabled={isCreating}
+            onChange={(e) => {
+              const value = e.target.value.replace(/\D/g, '');
+              setAmount(value);
+            }}
+            placeholder="500.000"
+            helper="Tối thiểu 10.000 VND mỗi lần mua."
+            error={amount && belowMinimum ? 'Nhập ít nhất 10.000 VND.' : undefined}
+            suffix={
+              <span aria-hidden="true" style={{ color: c.text2 }}>
+                VND
+              </span>
+            }
+            containerClassName="mb-3"
+          />
 
           {/* Display formatted */}
           <div className="text-[14px] mb-3" style={{ color: c.text2 }}>
@@ -277,14 +272,13 @@ export function DCACreatePlanSheet({
             kế hoạch trước khi thử lại.
           </p>
         )}
-        <button
+        <CTAButton
           onClick={handleCreate}
-          disabled={isCreating || !amount || parseInt(amount) < 10000}
-          className="w-full h-12 rounded-xl text-white text-[14px] font-medium hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
-          style={{ background: c.primary }}
+          loading={isCreating}
+          disabled={isCreating || !amount || belowMinimum}
         >
           {isCreating ? 'Đang tạo...' : 'Tạo Kế Hoạch'}
-        </button>
+        </CTAButton>
 
         {/* Disclaimer */}
         <div className="text-[12px] text-center" style={{ color: c.text3 }}>

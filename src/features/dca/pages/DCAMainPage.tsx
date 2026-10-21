@@ -9,6 +9,7 @@ import { DCACreatePlanSheet } from '../components/DCACreatePlanSheet';
 import { DCAAdvancedToolsSection } from '../components/DCAAdvancedToolsSection';
 import { DCAExpandedChartSheet } from '../components/DCAExpandedChartSheet';
 import { BottomSheetV2 } from '@/shared/ui/BottomSheetV2';
+import { CTAButton } from '@/shared/ui/CTAButton';
 import { PullToRefresh } from '@/shared/ui/PullToRefresh';
 import { useHaptic } from '@/shared/hooks/useHaptic';
 import { useRoutePrefix } from '@/shared/navigation/useRoutePrefix';
@@ -341,13 +342,7 @@ function DCAPageContent({ isEnabled, isDevelopment, analytics, funnels }: DCAMai
           <p className="text-[14px] mb-4" style={{ color: c.text2 }}>
             Chúng tôi đang cập nhật tính năng này. Vui lòng quay lại sau.
           </p>
-          <button
-            onClick={() => navigate(-1)}
-            className="px-6 py-2 text-white rounded-lg"
-            style={{ background: c.primary }}
-          >
-            Quay lại
-          </button>
+          <CTAButton onClick={() => navigate(-1)} className="mx-auto max-w-xs" label="Quay lại" />
         </div>
       </div>
     );
@@ -515,19 +510,18 @@ function DCAPageContent({ isEnabled, isDevelopment, analytics, funnels }: DCAMai
       {/* Bottom CTA */}
       {canManageDCA && (
         <div className="fixed left-0 right-0 flex justify-center px-5 z-10" style={{ bottom: 92 }}>
-          <button
+          <CTAButton
             onClick={() => {
               hapticSelection();
               setCreateSheetOpen(true);
               trackEvent('dca_create_sheet_opened', { source: 'bottom_cta' });
               trackWalletFunnelCreateSheet();
             }}
-            className="w-[calc(100%-56px)] max-w-[320px] h-[48px] rounded-[14px] text-white text-[14px] flex items-center justify-center gap-2 hover:opacity-90 transition-opacity active:scale-[0.98]"
-            style={{ fontWeight: 600, background: c.primary }}
-          >
-            <Plus className="w-5 h-5" />
-            Tạo kế hoạch mới
-          </button>
+            fullWidth={false}
+            className="w-[calc(100%-56px)] max-w-[320px]"
+            icon={Plus}
+            label="Tạo kế hoạch mới"
+          />
         </div>
       )}
 
@@ -557,23 +551,22 @@ function DCAPageContent({ isEnabled, isDevelopment, analytics, funnels }: DCAMai
           </p>
 
           <div className="flex gap-3">
-            <button
+            <CTAButton
               onClick={() => setDeleteConfirmPlanId(null)}
               disabled={isLoading}
-              className="flex-1 h-12 rounded-xl text-[14px] transition-colors disabled:opacity-50"
-              style={{ fontWeight: 500, background: c.surface2, color: c.text1 }}
-            >
-              Hủy
-            </button>
+              variant="secondary"
+              className="flex-1"
+              label="Hủy"
+            />
             {/* The sheet renders its actions only while a selected plan ID keeps it open. */}
-            <button
+            <CTAButton
               onClick={() => handleDelete(deleteConfirmPlanId!)}
               disabled={isLoading}
-              className="flex-1 h-12 rounded-xl text-white text-[14px] hover:opacity-90 transition-opacity disabled:opacity-50"
-              style={{ fontWeight: 500, background: c.error }}
-            >
-              {isLoading ? 'Đang xóa...' : 'Xóa'}
-            </button>
+              variant="danger"
+              loading={isLoading}
+              className="flex-1"
+              label={isLoading ? 'Đang xóa...' : 'Xóa'}
+            />
           </div>
         </div>
       </BottomSheetV2>

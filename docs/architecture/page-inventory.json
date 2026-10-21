@@ -862,7 +862,7 @@
       "domain": "dca",
       "owner": "features/dca",
       "status": "integration-pending",
-      "lines": 600,
+      "lines": 593,
       "routePaths": [
         "dca"
       ],
@@ -882,6 +882,7 @@
           "@/shared/session/useAuth",
           "@/shared/types/route-state",
           "@/shared/ui/BottomSheetV2",
+          "@/shared/ui/CTAButton",
           "@/shared/ui/ErrorState",
           "@/shared/ui/PullToRefresh",
           "@/shared/ui/layout/Header",
