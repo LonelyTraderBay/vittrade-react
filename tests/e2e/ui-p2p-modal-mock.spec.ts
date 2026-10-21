@@ -1,6 +1,28 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Locator, type Page, type TestInfo } from '@playwright/test';
 import { writeFile } from 'node:fs/promises';
+import { verifyOpaqueTextContrast } from './helpers/opaque-text-contrast';
+
+test('Opaque contrast resolver rejects unreadable, unsupported and obscured text @ui-mock', async ({
+  page,
+}) => {
+  // Isolated browser calibration; this is harness evidence, not another product route.
+  for (const style of [
+    'color:white;background:white',
+    'color:black;background:white;opacity:0.5',
+    'color:black;background:linear-gradient(white,gray)',
+  ]) {
+    await page.setContent(`<p style="${style}">Contrast control</p>`);
+    await expect(verifyOpaqueTextContrast(page, page.locator('p'))).rejects.toThrow();
+  }
+  await page.setContent(
+    '<p style="color:black;background:white">Contrast control</p>' +
+      '<div style="position:fixed;inset:0;background:white"></div>',
+  );
+  await expect(verifyOpaqueTextContrast(page, page.locator('p'))).rejects.toThrow(
+    'Text is obscured',
+  );
+});
 
 const profiles = [
   { name: 'phone', prefix: '', width: 390, height: 844, keyboard: true },
@@ -140,14 +162,55 @@ async function inspectAndCancel(
   expect(geometry.insideViewport).toBe(true);
   expect(geometry.insideFrame).toBe(true);
   expect(geometry.buttons.find((b) => /^(Hủy|Huỷ)$/.test(b.name || ''))?.hitsSelf).toBe(true);
-  let colorContrast: { violations: number; incomplete: number } | undefined;
+  let colorContrast:
+    | {
+        violations: number;
+        incomplete: number;
+        resolvedNodes: number;
+        opaqueMeasurements: unknown[];
+      }
+    | undefined;
   if (contrast) {
     const result = await new AxeBuilder({ page })
       .include('[role="dialog"]')
       .withRules(['color-contrast'])
       .analyze();
-    colorContrast = { violations: result.violations.length, incomplete: result.incomplete.length };
-    expect(colorContrast).toEqual({ violations: 0, incomplete: 0 });
+    expect(result.violations).toEqual([]);
+    const opaqueMeasurements = [];
+    for (const issue of result.incomplete) {
+      expect(issue.id).toBe('color-contrast');
+      expect(issue.nodes.length).toBeGreaterThan(0);
+      for (const node of issue.nodes) {
+        expect(node.target).toHaveLength(1);
+        expect(typeof node.target[0]).toBe('string');
+        expect(node.all).toEqual([]);
+        expect(node.none).toEqual([]);
+        expect(node.any.length).toBeGreaterThan(0);
+        expect(
+          node.any.every(
+            (check) =>
+              check.id === 'color-contrast' && check.data?.messageKey === 'elmPartiallyObscuring',
+          ),
+        ).toBe(true);
+        const target = dialog.locator(node.target[0] as string);
+        await expect(target).toHaveCount(1);
+        // Keep axe's raw incomplete result; resolve only supported opaque text using real paint/hits.
+        opaqueMeasurements.push(await verifyOpaqueTextContrast(page, target));
+      }
+    }
+    colorContrast = {
+      violations: result.violations.length,
+      incomplete: result.incomplete.length,
+      resolvedNodes: opaqueMeasurements.length,
+      opaqueMeasurements,
+    };
+    expect(opaqueMeasurements).toHaveLength(
+      result.incomplete.reduce((n, issue) => n + issue.nodes.length, 0),
+    );
+    await info.attach(label + '-contrast-resolution', {
+      body: JSON.stringify({ rawAxe: result, colorContrast }),
+      contentType: 'application/json',
+    });
   }
   await page.screenshot({
     path: info.outputPath(`${label}.png`),

@@ -134,6 +134,7 @@ export function WebShell() {
         {/* ─── Main Area (Command Bar + Content) ─── */}
         <div className="flex-1 flex flex-col overflow-hidden min-w-0">
           {isMobile ? <StatusBar /> : <WebCommandBar />}
+          <PreviewChromeSlot />
 
           {/* Offline Banner */}
           {isOffline && (

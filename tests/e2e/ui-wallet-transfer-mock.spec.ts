@@ -116,7 +116,8 @@ for (const theme of ['light', 'dark'] as const) {
       expect(hit.centerHitsCta).toBe(true);
       expect(hit.navigationLabel).toBeFalsy();
       const navigation = page.getByRole('navigation', { name: 'Main navigation' });
-      if (profile.name === 'responsive-phone') {
+      let navigationClearance: { top: number; gap: number } | undefined;
+      if (profile.prefix === '/r' && profile.width < 1024) {
         const floatingAction = await navigation
           .getByRole('button', { name: 'Giao dịch', exact: true })
           .locator('div')
@@ -124,10 +125,11 @@ for (const theme of ['light', 'dark'] as const) {
           .boundingBox();
         expect(floatingAction).not.toBeNull();
         expect(hit.ctaBottom).toBeLessThanOrEqual(floatingAction!.y);
+        navigationClearance = { top: floatingAction!.y, gap: floatingAction!.y - hit.ctaBottom };
       }
       await writeFile(
         testInfo.outputPath('hit-target.json'),
-        JSON.stringify({ profile, theme, hit }, null, 2),
+        JSON.stringify({ profile, theme, hit, navigationClearance }, null, 2),
       );
       const responsePromise = page.waitForResponse(
         (response) =>
@@ -152,7 +154,7 @@ for (const theme of ['light', 'dark'] as const) {
       expect(writes).toHaveLength(1);
       console.log(
         'C06_TRANSFER_MSW_HIT',
-        JSON.stringify({ profile, theme, hit, writes: writes.length }),
+        JSON.stringify({ profile, theme, hit, navigationClearance, writes: writes.length }),
       );
       if (profile.name === 'responsive-phone') {
         await navigation.getByRole('button', { name: 'Giao dịch', exact: true }).click();

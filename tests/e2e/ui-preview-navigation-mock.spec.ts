@@ -27,14 +27,11 @@ async function signIn(page: Page, prefix: string, theme: 'light' | 'dark') {
   expect((await loginResponse).fromServiceWorker()).toBe(true);
   await expect(page).toHaveURL(new RegExp(`${prefix}/home$`));
   // URL changes before the concurrent route/preview layout has necessarily committed.
-  await expect(page.getByTestId('dev-preview-controls')).toHaveCSS(
-    'position',
-    prefix === '' ? 'relative' : 'fixed',
-  );
-  if (prefix === '')
-    await expect(page.locator('#app-layout-root [data-preview-chrome-host]')).toContainText(
-      'DỮ LIỆU MÔ PHỎNG',
-    );
+  await expect(page.getByTestId('dev-preview-controls')).toHaveCSS('position', 'relative');
+  await expect(page.locator('[data-preview-chrome-host]')).toHaveCount(1);
+  await expect(
+    page.locator('[data-preview-chrome-host] [data-testid="dev-preview-controls"]'),
+  ).toContainText('DỮ LIỆU MÔ PHỎNG');
   await page.locator('html').evaluate((html, mode) => {
     html.classList.toggle('dark', mode === 'dark');
     html.classList.toggle('light', mode === 'light');

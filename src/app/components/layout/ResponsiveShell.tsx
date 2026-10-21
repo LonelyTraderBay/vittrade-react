@@ -7,6 +7,7 @@ import { useBreakpoint } from '../../hooks/useBreakpoint';
 import { useUI } from '../../hooks/useUI';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { SHELL_PAGE_GUTTER_OWNER_STYLE } from '@/shared/ui/layout/pageGutter';
+import { PreviewChromeSlot } from '@/shared/ui/layout/PreviewChromeSlot';
 
 /** Suspense Fallback for lazy-loaded responsive pages */
 function PageLoadingFallback() {
@@ -45,6 +46,7 @@ export function ResponsiveAppLayout({ desktopMode = 'adaptive' }: ResponsiveShel
   const c = useThemeColors();
   const adaptiveDesktop = isDesktop && desktopMode === 'adaptive';
   const centeredDesktop = isDesktop && desktopMode === 'centered';
+  const navigationClearance = adaptiveDesktop ? 0 : 'calc(80px + env(safe-area-inset-bottom, 0px))';
 
   // The Outlet keeps the same ancestor tree across breakpoints, preserving drafts and pending work.
   return (
@@ -70,8 +72,8 @@ export function ResponsiveAppLayout({ desktopMode = 'adaptive' }: ResponsiveShel
       {adaptiveDesktop && <LeftRail />}
       <div
         className="relative flex flex-col overflow-hidden"
-        style={
-          centeredDesktop
+        style={{
+          ...(centeredDesktop
             ? {
                 width: 480,
                 height: '90vh',
@@ -81,8 +83,10 @@ export function ResponsiveAppLayout({ desktopMode = 'adaptive' }: ResponsiveShel
                 border: '1px solid ' + c.border,
                 boxShadow: '0 40px 80px rgba(0,0,0,0.6)',
               }
-            : { flex: 1, minWidth: 0 }
-        }
+            : { flex: 1, minWidth: 0 }),
+          // Reserve the scrollport itself; inner padding still lets focus/auto-scroll land under chrome.
+          paddingBottom: isAuthRoute ? 0 : navigationClearance,
+        }}
       >
         {adaptiveDesktop && (
           <header
@@ -110,6 +114,7 @@ export function ResponsiveAppLayout({ desktopMode = 'adaptive' }: ResponsiveShel
           </header>
         )}
         {!adaptiveDesktop && !isAuthRoute && <StatusBar />}
+        {!isAuthRoute && <PreviewChromeSlot />}
         {!adaptiveDesktop && isOffline && (
           <div
             className="flex items-center justify-center gap-2 py-1.5 text-xs font-medium"
@@ -124,7 +129,8 @@ export function ResponsiveAppLayout({ desktopMode = 'adaptive' }: ResponsiveShel
         <div
           className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-none"
           style={{
-            paddingBottom: adaptiveDesktop ? 0 : 80,
+            // AuthLayout owns its full-height scroller and preview disclosure viewport.
+            paddingBottom: isAuthRoute ? navigationClearance : 0,
             overscrollBehaviorY: 'contain',
             WebkitOverflowScrolling: 'touch',
           }}
