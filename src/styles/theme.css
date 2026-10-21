@@ -1009,8 +1009,8 @@
 /* ---- Interactive Row / List Item Hover ---- */
 .hover-row,
 [data-slot='card'] > div,
-.rounded-2xl > div[class*='flex'][class*='items-center'],
-.rounded-2xl > button[class*='flex'] {
+.rounded-2xl:not([data-slot='tr-card']) > div[class*='flex'][class*='items-center'],
+.rounded-2xl:not([data-slot='tr-card']) > button[class*='flex'] {
   transition: background-color var(--tr-duration-fast) ease;
 }
 
@@ -1019,9 +1019,9 @@
   background-color: var(--tr-border);
 }
 
-/* ---- Auto-detect: list rows inside card containers ---- */
-.rounded-2xl > div[class*='flex'][class*='items-center']:hover,
-.rounded-2xl > button[class*='flex']:hover {
+/* Legacy class-shape adapters exclude canonical cards: radius is not interaction. */
+.rounded-2xl:not([data-slot='tr-card']) > div[class*='flex'][class*='items-center']:hover,
+.rounded-2xl:not([data-slot='tr-card']) > button[class*='flex']:hover {
   background-color: var(--tr-border) !important;
 }
 
@@ -1084,19 +1084,19 @@ button[class*='rounded-xl'][class*='text-center']:hover {
 }
 
 /* ---- Auto-detect: order/transaction cards ---- */
-div[class*='rounded-xl'][class*='p-3'],
-div[class*='rounded-xl'][class*='p-4'],
-div[class*='rounded-2xl'][class*='p-3'],
-div[class*='rounded-2xl'][class*='p-4'] {
+div:not([data-slot='tr-card'])[class*='rounded-xl'][class*='p-3'],
+div:not([data-slot='tr-card'])[class*='rounded-xl'][class*='p-4'],
+div:not([data-slot='tr-card'])[class*='rounded-2xl'][class*='p-3'],
+div:not([data-slot='tr-card'])[class*='rounded-2xl'][class*='p-4'] {
   transition:
     border-color var(--tr-duration-normal) ease,
     box-shadow var(--tr-duration-normal) ease;
 }
 
-div[class*='rounded-xl'][class*='p-3']:hover,
-div[class*='rounded-xl'][class*='p-4']:hover,
-div[class*='rounded-2xl'][class*='p-3']:hover,
-div[class*='rounded-2xl'][class*='p-4']:hover {
+div:not([data-slot='tr-card'])[class*='rounded-xl'][class*='p-3']:hover,
+div:not([data-slot='tr-card'])[class*='rounded-xl'][class*='p-4']:hover,
+div:not([data-slot='tr-card'])[class*='rounded-2xl'][class*='p-3']:hover,
+div:not([data-slot='tr-card'])[class*='rounded-2xl'][class*='p-4']:hover {
   border-color: rgba(229, 138, 0, 0.12) !important;
   box-shadow: 0 2px 16px rgba(229, 138, 0, 0.06);
 }

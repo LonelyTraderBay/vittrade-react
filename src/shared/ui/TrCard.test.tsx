@@ -3,6 +3,9 @@ import { fireEvent } from '@testing-library/react';
 import { renderWithTheme, screen } from '@/test/test-utils';
 import { radiusClass, VitRadii } from '@/shared/theme/radii';
 import { TrCard, TrCardStat } from '@/shared/ui/TrCard';
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
+import postcss from 'postcss';
 
 /**
  * ══════════════════════════════════════════════════════════
@@ -12,6 +15,26 @@ import { TrCard, TrCardStat } from '@/shared/ui/TrCard';
  */
 
 describe('TrCard', () => {
+  it('keeps legacy radius/padding hover adapters outside the canonical card contract', () => {
+    const css = postcss.parse(
+      readFileSync(path.resolve(__dirname, '../../styles/theme.css'), 'utf8'),
+    );
+    const adapters: string[] = [];
+    css.walkRules((rule) => {
+      for (const selector of rule.selectors) {
+        const childRow = selector.startsWith('.rounded-2xl');
+        const paddedCard =
+          selector.startsWith('div') &&
+          selector.includes("[class*='rounded-") &&
+          /\[class\*='p-[34]'\]/.test(selector);
+        if (!childRow && !paddedCard) continue;
+        adapters.push(selector);
+        expect(selector).toContain(":not([data-slot='tr-card'])");
+      }
+    });
+    expect(adapters).toHaveLength(12);
+  });
+
   it.each(Object.keys(VitRadii) as (keyof typeof VitRadii)[])(
     'uses the foundation radius %s ahead of the card role',
     (radius) => {

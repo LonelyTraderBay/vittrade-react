@@ -20,7 +20,9 @@ for (const mode of ['light', 'dark'] as const) {
         html.classList.toggle('dark', mode === 'dark');
       }, mode);
       await page.evaluate(() => document.fonts.ready);
-      const cards = page.locator('[data-slot="tr-card"]');
+      const cards = page.locator(
+        '[data-slot="tr-card"]:not([data-slot="tr-card"] [data-slot="tr-card"])',
+      );
       await expect(cards).toHaveCount(6);
       const loaded = await cards
         .first()

@@ -133,8 +133,12 @@ for (const mode of ['light', 'dark'] as const) {
         for (const [name, target] of targets)
           rows.push(await measureNativeTextSurface(page, target, name, info));
         // Nominal font colors over native rendered gradient/tints. Does not measure SVG/glyph overlap.
-        for (const row of rows)
+        for (const row of rows) {
           expect.soft(row.minimumRatio, row.name).toBeGreaterThanOrEqual(row.threshold);
+          expect(row.surfaceOwnerCount, row.name).toBe(
+            ['plans', 'invested', 'average'].includes(row.name) ? 2 : 1,
+          );
+        }
         await card.getByRole('button', { name: 'Ẩn số dư', exact: true }).press('Enter');
         await expect(card.getByText('••••••', { exact: true })).toBeVisible();
         await expect(balance).toHaveCount(0);

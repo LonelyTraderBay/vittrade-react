@@ -91,9 +91,9 @@ test('measures actual TrCard markup against built CSS in both themes', async ({
       renderToStaticMarkup(
         React.createElement(TrCard, {
           hover,
-          className: 'p-4',
+          className: 'rounded-2xl p-4',
           'data-testid': hover ? 'explicit-hover' : 'static-card',
-          children: 'Hover',
+          children: React.createElement('div', { className: 'flex items-center' }, 'Hover'),
         }),
       ),
     )
@@ -106,6 +106,15 @@ test('measures actual TrCard markup against built CSS in both themes', async ({
       event.preventDefault();
       form.setAttribute('data-submitted', 'true');
     });
+  });
+  // A noncanonical control proves the legacy adapter remains active; do not
+  // delete its behavior while protecting the shared public contract.
+  await page.getByTestId('static-card').evaluate((element) => {
+    const legacy = element.cloneNode(true) as HTMLElement;
+    legacy.removeAttribute('data-slot');
+    legacy.style.removeProperty('box-shadow');
+    legacy.setAttribute('data-testid', 'legacy-card-control');
+    element.parentElement!.append(legacy);
   });
   const measurements: { theme: string; id: string; radius: string }[] = [];
   for (const theme of ['light', 'dark']) {
@@ -141,13 +150,34 @@ test('measures actual TrCard markup against built CSS in both themes', async ({
       shadow: getComputedStyle(element).boxShadow,
     }));
     await staticCard.hover();
+    await staticCard.evaluate(async (element) => {
+      getComputedStyle(element).getPropertyValue('border-color');
+      await Promise.all(element.getAnimations().map((animation) => animation.finished));
+    });
     await expect(staticCard).toHaveCSS('border-color', beforeHover.border);
     await expect(staticCard).toHaveCSS('box-shadow', beforeHover.shadow);
     await expect(staticCard).toHaveCSS('transform', 'none');
+    await staticCard.locator(':scope > div').hover();
+    await expect(staticCard.locator(':scope > div')).toHaveCSS(
+      'background-color',
+      'rgba(0, 0, 0, 0)',
+    );
+    const legacy = page.getByTestId('legacy-card-control');
+    await legacy.locator(':scope > div').hover();
+    await expect(legacy).toHaveCSS('border-color', 'rgba(229, 138, 0, 0.12)');
+    await expect(legacy).not.toHaveCSS('box-shadow', beforeHover.shadow);
+    await expect(legacy.locator(':scope > div')).not.toHaveCSS(
+      'background-color',
+      'rgba(0, 0, 0, 0)',
+    );
     await page.getByTestId('explicit-hover').hover();
     await expect(page.getByTestId('explicit-hover')).toHaveCSS(
       'transform',
       'matrix(1, 0, 0, 1, 0, -1)',
+    );
+    await expect(page.getByTestId('explicit-hover')).toHaveCSS(
+      'border-color',
+      'rgba(229, 138, 0, 0.15)',
     );
     await page.evaluate(() => document.fonts.ready);
     await testInfo.attach(`radii-${theme}`, {

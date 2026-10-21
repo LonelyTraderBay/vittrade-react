@@ -167,7 +167,7 @@ export function DCAOverviewCard({
   );
 
   const ghostBg = c.portfolioBtnGhost;
-  const metricStyle = { background: ghostBg, overflowWrap: 'anywhere' } as const;
+  const metricStyle = { overflowWrap: 'anywhere' } as const;
 
   /* ── Action buttons config ── */
   const ACTION_BUTTONS: { icon: typeof Plus; label: string; color: string; action?: () => void }[] =
@@ -279,7 +279,7 @@ export function DCAOverviewCard({
           <div className={`${DCA_METRIC_GRID_CLASS_NAME} mt-4`}>
             {/* Kế hoạch */}
             <div className="relative">
-              <div className="rounded-2xl p-3" style={metricStyle}>
+              <TrCard variant="inner" density="compact" background={ghostBg} style={metricStyle}>
                 <div className="flex items-center gap-1 mb-2">
                   <div
                     className="w-6 h-6 rounded-full flex items-center justify-center shrink-0"
@@ -304,13 +304,13 @@ export function DCAOverviewCard({
                 <div style={{ color: c.portfolioTextMuted, fontSize: 10, marginTop: 4 }}>
                   {data.activePlans} đang chạy
                 </div>
-              </div>
+              </TrCard>
               {tooltipFor('plans')}
             </div>
 
             {/* Đã đầu tư */}
             <div className="relative">
-              <div className="rounded-2xl p-3" style={metricStyle}>
+              <TrCard variant="inner" density="compact" background={ghostBg} style={metricStyle}>
                 <div className="flex items-center gap-1 mb-2">
                   <div
                     className="w-6 h-6 rounded-full flex items-center justify-center shrink-0"
@@ -335,13 +335,13 @@ export function DCAOverviewCard({
                 <div style={{ color: c.portfolioTextMuted, fontSize: 10, marginTop: 4 }}>
                   {balanceHidden ? '•••••' : formatVNDFull(data.totalInvested)}
                 </div>
-              </div>
+              </TrCard>
               {tooltipFor('invested')}
             </div>
 
             {/* Trung bình */}
             <div className="relative">
-              <div className="rounded-2xl p-3" style={metricStyle}>
+              <TrCard variant="inner" density="compact" background={ghostBg} style={metricStyle}>
                 <div className="flex items-center gap-1 mb-2">
                   <div
                     className="w-6 h-6 rounded-full flex items-center justify-center shrink-0"
@@ -366,7 +366,7 @@ export function DCAOverviewCard({
                 <div style={{ color: c.portfolioTextMuted, fontSize: 10, marginTop: 4 }}>
                   VND / kế hoạch
                 </div>
-              </div>
+              </TrCard>
               {tooltipFor('average')}
             </div>
           </div>

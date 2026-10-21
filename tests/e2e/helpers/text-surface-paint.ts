@@ -9,7 +9,16 @@ export async function measureNativeTextSurface(
   info: TestInfo,
 ) {
   const data = await target.evaluate((element) => {
-    const surface = element.closest('[data-slot="tr-card"]');
+    const owners: Element[] = [];
+    for (
+      let owner = element.closest('[data-slot="tr-card"]');
+      owner;
+      owner = owner.parentElement?.closest('[data-slot="tr-card"]') ?? null
+    )
+      owners.push(owner);
+    // Inner cards can be translucent. Preserve every enclosing card layer,
+    // including the outer portfolio gradient, rather than assuming nearest=opaque.
+    const surface = owners.at(-1);
     if (!surface) throw Error('No surface owner');
     const root = surface.getBoundingClientRect(),
       style = getComputedStyle(element),
@@ -75,6 +84,7 @@ export async function measureNativeTextSurface(
     return {
       width: root.width,
       height: root.height,
+      surfaceOwnerCount: owners.length,
       foreground: style.color,
       foregroundOpacity: opacity,
       fontSize: style.fontSize,

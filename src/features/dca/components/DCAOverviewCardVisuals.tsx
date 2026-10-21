@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import { Maximize2, X } from 'lucide-react';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
+import { TrCard } from '@/shared/ui/TrCard';
 
 /** Keep data and loading metrics on the same content-sized grid. */
 export const DCA_METRIC_GRID_CLASS_NAME =
@@ -57,14 +58,20 @@ export function SkeletonCard({ ghostBg }: { ghostBg: string }) {
       {/* Responsive metrics, matching the loaded card */}
       <div className={`${DCA_METRIC_GRID_CLASS_NAME} mt-1`}>
         {[0, 1, 2].map((i) => (
-          <div key={i} className="rounded-2xl p-3 space-y-2" style={{ background: ghostBg }}>
+          <TrCard
+            key={i}
+            variant="inner"
+            density="compact"
+            background={ghostBg}
+            className="space-y-2"
+          >
             <div className="flex items-center gap-1.5">
               <ShimmerBlock w={24} h={24} r={12} />
               <ShimmerBlock w={50} h={10} />
             </div>
             <ShimmerBlock w="80%" h={22} r={6} />
             <ShimmerBlock w="60%" h={10} r={4} />
-          </div>
+          </TrCard>
         ))}
       </div>
 
