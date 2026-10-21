@@ -2072,7 +2072,7 @@
       "domain": "p2p",
       "owner": "features/p2p",
       "status": "integration-pending",
-      "lines": 261,
+      "lines": 256,
       "routePaths": [
         "p2p/disputes"
       ],
@@ -2084,6 +2084,7 @@
           "@/shared/hooks/useThemeColors",
           "@/shared/navigation/useRoutePrefix",
           "@/shared/ui/ErrorState",
+          "@/shared/ui/FilterButton",
           "@/shared/ui/TrCard",
           "@/shared/ui/layout/Header",
           "@/shared/ui/layout/PageContent",
@@ -2542,7 +2543,7 @@
       "domain": "p2p",
       "owner": "features/p2p",
       "status": "integration-pending",
-      "lines": 174,
+      "lines": 213,
       "routePaths": [
         "p2p/reviews"
       ],
@@ -3828,7 +3829,7 @@
       "domain": "wallet",
       "owner": "features/wallet",
       "status": "integration-pending",
-      "lines": 233,
+      "lines": 255,
       "routePaths": [
         "wallet/history"
       ],

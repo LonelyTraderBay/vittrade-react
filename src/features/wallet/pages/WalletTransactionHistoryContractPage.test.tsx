@@ -1,9 +1,10 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { screen, waitFor } from '@testing-library/react';
+import { useQueryClient } from '@tanstack/react-query';
+import { screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { useLocation } from 'react-router';
+import { Route, Routes, useLocation } from 'react-router';
 import type { AuthAdapter } from '@/shared/session/AuthContext';
 import { renderWithProviders } from '@/test/test-utils';
 import { testAuthAdapter } from '@/test/auth-test-adapter';
@@ -26,6 +27,15 @@ const noWalletReadAdapter: AuthAdapter = {
 function LocationProbe() {
   const location = useLocation();
   return <output data-testid="current-path">{location.pathname}</output>;
+}
+
+function RefreshHistoryTestControl() {
+  const client = useQueryClient();
+  return (
+    <button type="button" onClick={() => void client.refetchQueries()}>
+      Refetch history test
+    </button>
+  );
 }
 
 const transactions = [
@@ -76,6 +86,114 @@ function filterTransactions(request: Request) {
 }
 
 describe('Wallet transaction history contract page', () => {
+  it('retains the page heading and returns to the prior context after a non-retryable 403', async () => {
+    let requests = 0;
+    server.use(
+      http.get('*/wallet/transactions', () => {
+        requests++;
+        return HttpResponse.json(
+          { code: 'FORBIDDEN', message: 'Permission denied' },
+          { status: 403 },
+        );
+      }),
+    );
+    const user = userEvent.setup();
+    renderWithProviders(
+      <>
+        <Routes>
+          <Route path="/wallet/history" element={<WalletTransactionHistoryContractPage />} />
+          <Route path="/wallet" element={<h1>Wallet overview test</h1>} />
+        </Routes>
+        <LocationProbe />
+      </>,
+      { routerProps: { initialEntries: ['/wallet', '/wallet/history'] } },
+    );
+    await screen.findByText('Không có quyền truy cập');
+    expect(
+      screen.getByRole('heading', { level: 1, name: 'Transaction history' }),
+    ).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Thử lại' })).not.toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Quay lại' }));
+    await screen.findByRole('heading', { name: 'Wallet overview test' });
+    expect(screen.getByTestId('current-path')).toHaveTextContent('/wallet');
+    expect(requests).toBe(1);
+  });
+
+  it('keeps the header and controls but hides cached totals and rows after a failed refresh', async () => {
+    let fail = false;
+    server.use(
+      http.get('*/wallet/transactions', ({ request }) =>
+        fail
+          ? HttpResponse.json({ code: 'UNAVAILABLE' }, { status: 503 })
+          : HttpResponse.json(filterTransactions(request)),
+      ),
+    );
+    const user = userEvent.setup();
+    renderWithProviders(
+      <>
+        <WalletTransactionHistoryContractPage />
+        <RefreshHistoryTestControl />
+      </>,
+    );
+    await screen.findByText('+100', { exact: true });
+    expect(screen.getByText('4 transactions', { exact: true })).toBeInTheDocument();
+    fail = true;
+    await user.click(screen.getByRole('button', { name: 'Refetch history test' }));
+    await screen.findByText('Có lỗi xảy ra');
+    expect(
+      screen.getByRole('heading', { level: 1, name: 'Transaction history' }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole('group', { name: 'Transaction type' })).toBeInTheDocument();
+    expect(screen.queryByText('4 transactions', { exact: true })).not.toBeInTheDocument();
+    expect(screen.queryByText('+100', { exact: true })).not.toBeInTheDocument();
+  });
+
+  it('keeps a selected filter focused through a read error and recovers with another filter', async () => {
+    server.use(
+      http.get('*/wallet/transactions', ({ request }) =>
+        new URL(request.url).searchParams.get('type') === 'withdraw'
+          ? HttpResponse.json({ code: 'UNAVAILABLE' }, { status: 503 })
+          : HttpResponse.json(filterTransactions(request)),
+      ),
+    );
+    const user = userEvent.setup();
+    renderWithProviders(<WalletTransactionHistoryContractPage />);
+    await screen.findByText('+100', { exact: true });
+    const withdrawal = screen.getByRole('button', { name: 'Withdrawal' });
+    await user.click(withdrawal);
+    await screen.findByText('Có lỗi xảy ra');
+    expect(withdrawal).toBeInTheDocument();
+    expect(withdrawal).toHaveFocus();
+    expect(withdrawal).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.queryByText('+100', { exact: true })).not.toBeInTheDocument();
+    const all = within(screen.getByRole('group', { name: 'Transaction type' })).getByRole(
+      'button',
+      { name: 'All' },
+    );
+    await user.click(all);
+    await screen.findByText('+100', { exact: true });
+    expect(all).toHaveFocus();
+  });
+
+  it('retains the asset draft and input focus when submitting it causes a read error', async () => {
+    server.use(
+      http.get('*/wallet/transactions', ({ request }) =>
+        new URL(request.url).searchParams.has('asset')
+          ? HttpResponse.json({ code: 'UNAVAILABLE' }, { status: 503 })
+          : HttpResponse.json(filterTransactions(request)),
+      ),
+    );
+    const user = userEvent.setup();
+    renderWithProviders(<WalletTransactionHistoryContractPage />);
+    await screen.findByText('+100', { exact: true });
+    const input = screen.getByRole('textbox', { name: 'Filter by asset' });
+    await user.type(input, 'btc{Enter}');
+    await screen.findByText('Có lỗi xảy ra');
+    expect(input).toBeInTheDocument();
+    expect(input).toHaveFocus();
+    expect(input).toHaveValue('btc');
+  });
+
   it('keeps filter controls and keyboard focus mounted while a new filter request is pending', async () => {
     let release!: () => void;
     const pending = new Promise<void>((resolve) => {
