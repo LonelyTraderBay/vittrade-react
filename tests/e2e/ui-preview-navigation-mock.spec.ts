@@ -27,7 +27,14 @@ async function signIn(page: Page, prefix: string, theme: 'light' | 'dark') {
   expect((await loginResponse).fromServiceWorker()).toBe(true);
   await expect(page).toHaveURL(new RegExp(`${prefix}/home$`));
   // URL changes before the concurrent route/preview layout has necessarily committed.
-  await expect(page.getByTestId('dev-preview-controls')).toHaveCSS('position', 'fixed');
+  await expect(page.getByTestId('dev-preview-controls')).toHaveCSS(
+    'position',
+    prefix === '' ? 'relative' : 'fixed',
+  );
+  if (prefix === '')
+    await expect(page.locator('#app-layout-root [data-preview-chrome-host]')).toContainText(
+      'DỮ LIỆU MÔ PHỎNG',
+    );
   await page.locator('html').evaluate((html, mode) => {
     html.classList.toggle('dark', mode === 'dark');
     html.classList.toggle('light', mode === 'light');
@@ -55,6 +62,7 @@ async function measureWalletTarget(page: Page) {
     const y = wallet.y + wallet.height / 2;
     const hit = document.elementFromPoint(x, y);
     return {
+      connected: element.isConnected,
       wallet,
       warning,
       center: { x, y },
@@ -90,6 +98,9 @@ for (const theme of ['light', 'dark'] as const) {
       });
       console.log('C06_PREVIEW_NAV_HIT', JSON.stringify({ profile, theme, measurement }));
       expect(measurement.centerHitsWallet).toBe(true);
+      expect(measurement.connected).toBe(true);
+      expect(measurement.wallet.width).toBeGreaterThan(0);
+      expect(measurement.wallet.height).toBeGreaterThan(0);
       expect(measurement.overlapsWarning).toBe(false);
       await page.mouse.click(measurement.center.x, measurement.center.y);
       await expect(page).toHaveURL(new RegExp(`${profile.prefix}/wallet$`));
@@ -108,17 +119,34 @@ for (const theme of ['light', 'dark'] as const) {
     await signIn(page, '/r', theme);
     const measurements = [];
     for (const width of [767, 768, 1023, 1024, 390]) {
+      const previous = await page.getByRole('button', { name: 'Ví', exact: true }).elementHandle();
       await page.setViewportSize({ width, height: 900 });
+      let hit: Awaited<ReturnType<typeof measureWalletTarget>> | undefined;
       await expect
         .poll(async () => {
-          const hit = await measureWalletTarget(page);
-          return hit.centerHitsWallet && !hit.overlapsWarning;
+          hit = await measureWalletTarget(page);
+          return (
+            hit.connected &&
+            hit.wallet.width > 0 &&
+            hit.wallet.height > 0 &&
+            hit.bottomNavigationVisible === width < 1024 &&
+            hit.centerHitsWallet &&
+            !hit.overlapsWarning
+          );
         })
         .toBe(true);
-      const hit = await measureWalletTarget(page);
-      expect(hit.bottomNavigationVisible).toBe(width < 1024);
-      measurements.push({ width, hit });
-      await page.mouse.click(hit.center.x, hit.center.y);
+      const previousTarget = await previous?.evaluate((element) => ({
+        connected: element.isConnected,
+        width: element.getBoundingClientRect().width,
+      }));
+      measurements.push({ width, hit, previousTarget });
+      await writeFile(
+        testInfo.outputPath('resize-hits.json'),
+        JSON.stringify(measurements, null, 2),
+      );
+      // A breakpoint can replace BottomNav with LeftRail after measurement. A real locator
+      // click rechecks the current target's stability; cached coordinates can become (0,0).
+      await page.getByRole('button', { name: 'Ví', exact: true }).click();
       await expect(page).toHaveURL('/r/wallet');
       await page.getByRole('button', { name: 'Trang chủ', exact: true }).click();
       await expect(page).toHaveURL('/r/home');

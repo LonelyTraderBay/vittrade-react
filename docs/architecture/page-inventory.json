@@ -12,7 +12,7 @@
   "summary": {
     "pageCount": 130,
     "routeCount": 428,
-    "componentCount": 151,
+    "componentCount": 153,
     "dataModuleCount": 0,
     "serviceCount": 32,
     "mockCount": 28,
@@ -7592,7 +7592,15 @@
       "domain": "platform"
     },
     {
+      "path": "src/shared/ui/layout/PreviewChromeSlot.tsx",
+      "domain": "platform"
+    },
+    {
       "path": "src/shared/ui/layout/pageGutter.ts",
+      "domain": "platform"
+    },
+    {
+      "path": "src/shared/ui/layout/preview-chrome-context.ts",
       "domain": "platform"
     },
     {

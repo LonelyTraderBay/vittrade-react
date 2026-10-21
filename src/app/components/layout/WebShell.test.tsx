@@ -8,6 +8,7 @@ import { WebShell } from './WebShell';
 import { Header } from '@/shared/ui/layout/Header';
 import { PageContent } from '@/shared/ui/layout/PageContent';
 import { StickyFooter } from '@/shared/ui/layout/PageLayout';
+import { PreviewChromeContext } from '@/shared/ui/layout/preview-chrome-context';
 
 const initialWidth = window.innerWidth;
 
@@ -16,6 +17,30 @@ afterEach(() => {
 });
 
 describe('WebShell loading and connectivity', () => {
+  it('reserves a preview host on the separate Web auth branch without replacing its form', () => {
+    const hosts: (HTMLElement | null)[] = [];
+    const register = (host: HTMLElement | null) => hosts.push(host);
+    renderWithProviders(
+      <PreviewChromeContext.Provider value={register}>
+        <Routes>
+          <Route path="/w" element={<WebShell />}>
+            <Route
+              path="auth/login"
+              element={<input aria-label="Web auth draft" defaultValue="draft" />}
+            />
+          </Route>
+        </Routes>
+      </PreviewChromeContext.Provider>,
+      { routerProps: { initialEntries: ['/w/auth/login'] } },
+    );
+    const host = document.querySelector('[data-preview-chrome-host]');
+    expect(hosts).toContain(host);
+    expect(host?.nextElementSibling).toContainElement(screen.getByLabelText('Web auth draft'));
+    expect(host?.nextElementSibling).toHaveClass('min-h-0', 'flex-1', 'overflow-y-auto');
+    expect(screen.getByLabelText('Web auth draft')).toHaveValue('draft');
+    expect(screen.queryByRole('navigation', { name: 'Main navigation' })).not.toBeInTheDocument();
+  });
+
   it.each([
     { width: 1280, outerPadding: '0px 32px' },
     { width: 390, outerPadding: '0px 16px' },

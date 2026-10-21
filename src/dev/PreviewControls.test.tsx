@@ -37,6 +37,7 @@ function renderPreview(
     },
   }),
   bottomNavigationVisible?: boolean,
+  portalHost?: HTMLElement,
 ) {
   const adapter: AuthAdapter = {
     ...testAuthAdapter,
@@ -50,7 +51,10 @@ function renderPreview(
         path: '*',
         element: (
           <>
-            <PreviewControls bottomNavigationVisible={bottomNavigationVisible} />
+            <PreviewControls
+              bottomNavigationVisible={bottomNavigationVisible}
+              portalHost={portalHost}
+            />
             <CurrentPath />
           </>
         ),
@@ -75,6 +79,30 @@ async function openControls(user: ReturnType<typeof userEvent.setup>) {
 }
 
 describe('development mock preview controls', () => {
+  it('uses the supplied shell region and opens its panel without adding flow height', async () => {
+    const host = document.createElement('div');
+    document.body.append(host);
+    const view = renderPreview(undefined, undefined, host);
+    try {
+      const controls = screen.getByTestId('dev-preview-controls');
+      expect(host).toContainElement(controls);
+      expect(controls).toHaveStyle({ position: 'relative', width: '100%' });
+      await openControls(userEvent.setup());
+      expect(screen.getByRole('region', { name: 'Công cụ xem trước' })).toHaveStyle({
+        position: 'absolute',
+        top: '100%',
+        right: '12px',
+      });
+      await userEvent.click(screen.getByRole('button', { name: 'Thu gọn' }));
+      expect(screen.queryByRole('region', { name: 'Công cụ xem trước' })).not.toBeInTheDocument();
+      expect(screen.getAllByRole('status', { name: 'Mock data warning' })).toHaveLength(1);
+    } finally {
+      view.unmount();
+      view.router.dispose();
+      host.remove();
+    }
+  });
+
   it('keeps the mock warning while disabling diagnostic controls and stored scenarios', () => {
     setDevPreviewScenario({ domain: 'wallet', state: 'forbidden' });
     setDevtoolsEnabled(false);

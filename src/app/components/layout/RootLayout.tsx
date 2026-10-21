@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Outlet, useLocation } from 'react-router';
 import { AppProvider } from '../../contexts/AppContext';
 import { MobileFrame } from './MobileFrame';
@@ -6,6 +6,7 @@ import { ErrorBoundary } from '../mobile/ErrorBoundary';
 import { ThemedToaster } from '@/shared/ui/ThemedToaster';
 import { PlatformSwitcher } from './PlatformSwitcher';
 import { useBreakpoint } from '../../hooks/useBreakpoint';
+import { PreviewChromeContext } from '@/shared/ui/layout/preview-chrome-context';
 
 /**
  * ══════════════════════════════════════════════════════════
@@ -29,11 +30,15 @@ export function RootLayout({
   developmentPreviewControls: DevelopmentPreviewControls,
   isEquivalentRoute,
 }: {
-  developmentPreviewControls?: React.ComponentType<{ bottomNavigationVisible?: boolean }>;
+  developmentPreviewControls?: React.ComponentType<{
+    bottomNavigationVisible?: boolean;
+    portalHost?: HTMLElement | null;
+  }>;
   isEquivalentRoute?: (currentPathname: string, targetPathname: string) => boolean;
 }) {
   const location = useLocation();
   const { isDesktop, isMobile } = useBreakpoint();
+  const [previewHost, setPreviewHost] = useState<HTMLElement | null>(null);
 
   // Determine which platform shell we're in
   const isTabletRoute = location.pathname.startsWith('/t/') || location.pathname === '/t';
@@ -52,15 +57,17 @@ export function RootLayout({
   return (
     <ErrorBoundary section="VitTrade App">
       <AppProvider>
-        <React.Suspense fallback={<RouteChunkFallback />}>
-          {needsMobileFrame ? (
-            <MobileFrame>
+        <PreviewChromeContext.Provider value={DevelopmentPreviewControls ? setPreviewHost : null}>
+          <React.Suspense fallback={<RouteChunkFallback />}>
+            {needsMobileFrame ? (
+              <MobileFrame>
+                <Outlet />
+              </MobileFrame>
+            ) : (
               <Outlet />
-            </MobileFrame>
-          ) : (
-            <Outlet />
-          )}
-        </React.Suspense>
+            )}
+          </React.Suspense>
+        </PreviewChromeContext.Provider>
         <ThemedToaster />
         <PlatformSwitcher
           previewControlsVisible={Boolean(DevelopmentPreviewControls)}
@@ -68,7 +75,10 @@ export function RootLayout({
         />
         {DevelopmentPreviewControls ? (
           <React.Suspense fallback={null}>
-            <DevelopmentPreviewControls bottomNavigationVisible={bottomNavigationVisible} />
+            <DevelopmentPreviewControls
+              bottomNavigationVisible={bottomNavigationVisible}
+              portalHost={previewHost}
+            />
           </React.Suspense>
         ) : null}
       </AppProvider>

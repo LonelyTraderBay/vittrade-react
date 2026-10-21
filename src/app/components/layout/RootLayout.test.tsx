@@ -1,9 +1,11 @@
-import { act, render, screen } from '@testing-library/react';
-import { lazy, type ComponentType } from 'react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
+import { lazy, useState, type ComponentType } from 'react';
+import { createPortal } from 'react-dom';
 import type { ReactNode } from 'react';
-import { MemoryRouter, Route, Routes } from 'react-router';
+import { MemoryRouter, Route, Routes, useNavigate } from 'react-router';
 import { describe, expect, it, vi } from 'vitest';
 import { RootLayout } from './RootLayout';
+import { PreviewChromeSlot } from '@/shared/ui/layout/PreviewChromeSlot';
 
 vi.mock('../../contexts/AppContext', () => ({
   AppProvider: ({ children }: { children: ReactNode }) => <>{children}</>,
@@ -42,6 +44,69 @@ function renderAt(path: string) {
 }
 
 describe('RootLayout platform shells', () => {
+  it('moves one persistent preview control between shell hosts and unregisters on exit', () => {
+    function PreviewControl({ portalHost }: { portalHost?: HTMLElement | null }) {
+      const [count, setCount] = useState(0);
+      const content = <button onClick={() => setCount(count + 1)}>Preview count {count}</button>;
+      return portalHost ? createPortal(content, portalHost) : content;
+    }
+    function Page({ name, next }: { name: string; next: string }) {
+      const navigate = useNavigate();
+      return (
+        <div data-testid={name}>
+          <PreviewChromeSlot />
+          <button onClick={() => navigate(next)}>Next page</button>
+        </div>
+      );
+    }
+    render(
+      <MemoryRouter initialEntries={['/home']}>
+        <Routes>
+          <Route element={<RootLayout developmentPreviewControls={PreviewControl} />}>
+            <Route path="home" element={<Page name="phone-host" next="/w/home" />} />
+            <Route path="w/home" element={<Page name="web-host" next="/auth/login" />} />
+            <Route path="auth/login" element={<p>Standalone form</p>} />
+          </Route>
+        </Routes>
+      </MemoryRouter>,
+    );
+    expect(screen.getByTestId('phone-host')).toContainElement(
+      screen.getByRole('button', { name: 'Preview count 0' }),
+    );
+    fireEvent.click(screen.getByRole('button', { name: 'Preview count 0' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Next page' }));
+    expect(screen.getByTestId('web-host')).toContainElement(
+      screen.getByRole('button', { name: 'Preview count 1' }),
+    );
+    expect(document.querySelectorAll('[data-preview-chrome-host]')).toHaveLength(1);
+    fireEvent.click(screen.getByRole('button', { name: 'Next page' }));
+    expect(screen.getByText('Standalone form')).toBeVisible();
+    expect(screen.getAllByRole('button', { name: 'Preview count 1' })).toHaveLength(1);
+    expect(document.querySelector('[data-preview-chrome-host]')).toBeNull();
+  });
+
+  it('adds no empty preview region when development controls are absent', () => {
+    render(
+      <MemoryRouter initialEntries={['/home']}>
+        <Routes>
+          <Route element={<RootLayout />}>
+            <Route
+              path="*"
+              element={
+                <>
+                  <PreviewChromeSlot />
+                  <p>Product content</p>
+                </>
+              }
+            />
+          </Route>
+        </Routes>
+      </MemoryRouter>,
+    );
+    expect(screen.getByText('Product content')).toBeVisible();
+    expect(document.querySelector('[data-preview-chrome-host]')).toBeNull();
+  });
+
   it('shows a lightweight loading status while a route chunk is pending', () => {
     const LazyRoute = lazy(() => new Promise<{ default: ComponentType }>(() => undefined));
 

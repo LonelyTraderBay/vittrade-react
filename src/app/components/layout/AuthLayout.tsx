@@ -3,6 +3,7 @@ import { Outlet } from 'react-router';
 import { StatusBar } from './StatusBar';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { DEVICE } from './device-layout';
+import { PreviewChromeSlot } from '@/shared/ui/layout/PreviewChromeSlot';
 
 export function AuthLayout() {
   const c = useThemeColors();
@@ -19,6 +20,7 @@ export function AuthLayout() {
       }}
     >
       <StatusBar />
+      <PreviewChromeSlot />
       <div
         className="min-h-0 flex-1 overflow-y-auto scrollbar-none"
         style={{

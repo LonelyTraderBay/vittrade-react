@@ -22,11 +22,6 @@ vi.mock('@/shared/session/useAuth', () => ({
   useAuth: () => authState,
 }));
 
-vi.mock('@/shared/config/env', () => ({
-  env: { isDev: true, dataSource: 'mock' },
-  isDevelopmentBuild: true,
-}));
-
 vi.mock('@/shared/hooks/useThemeColors', () => ({
   useThemeColors: () => ({ bg: '#fff', text3: '#666' }),
 }));
@@ -207,7 +202,7 @@ describe('AppLayout session timeout', () => {
     expect(screen.getByText('Đang tải...')).toBeInTheDocument();
   });
 
-  it('reserves space below narrow development mock previews', () => {
+  it('does not leave a bottom preview spacer when no preview host is registered', () => {
     const previousWidth = window.innerWidth;
     window.innerWidth = 390;
 
@@ -216,8 +211,8 @@ describe('AppLayout session timeout', () => {
 
       const marginBottom =
         document.querySelector<HTMLElement>('[data-pull-scroll]')?.style.marginBottom;
-      expect(marginBottom).toContain('132px');
-      expect(marginBottom).toContain('safe-area-inset-bottom');
+      expect(marginBottom).toBe('');
+      expect(document.querySelector('[data-preview-chrome-host]')).toBeNull();
     } finally {
       window.innerWidth = previousWidth;
     }

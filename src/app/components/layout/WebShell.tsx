@@ -17,6 +17,7 @@ import {
   isFullBleedRoute,
 } from './webConstants';
 import { SHELL_PAGE_GUTTER_OWNER_STYLE } from '@/shared/ui/layout/pageGutter';
+import { PreviewChromeSlot } from '@/shared/ui/layout/PreviewChromeSlot';
 
 /**
  * ══════════════════════════════════════════════════════════
@@ -103,8 +104,13 @@ export function WebShell() {
   if (isAuthRoute) {
     return (
       <PlatformProvider value={WEB_PLATFORM}>
-        <div data-platform="web" className="h-screen overflow-hidden" style={{ background: c.bg }}>
-          <div className="h-full overflow-y-auto scrollbar-none">
+        <div
+          data-platform="web"
+          className="flex flex-col h-screen overflow-hidden"
+          style={{ background: c.bg }}
+        >
+          <PreviewChromeSlot />
+          <div className="min-h-0 flex-1 overflow-y-auto scrollbar-none">
             <Suspense fallback={<WebLoadingFallback />}>
               <Outlet />
             </Suspense>
