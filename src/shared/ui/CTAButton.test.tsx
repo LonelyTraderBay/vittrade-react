@@ -3,6 +3,9 @@ import { describe, expect, it } from 'vitest';
 import { renderWithTheme } from '@/test/test-utils';
 import { ButtonGradients, ButtonTextColors } from '@/shared/theme/button';
 import { Plus } from 'lucide-react';
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
+import postcss from 'postcss';
 import { CTAButton } from './CTAButton';
 
 function luminance(hex: string) {
@@ -33,6 +36,35 @@ function interpolateHex(start: string, end: string, progress: number) {
 }
 
 describe('CTAButton', () => {
+  it('keeps its interaction identity when consumers supply layout classes', () => {
+    renderWithTheme(<CTAButton fullWidth={false} className="fixture-layout" label="Action" />);
+    expect(screen.getByRole('button', { name: 'Action' })).toHaveClass(
+      'vit-cta-button',
+      'fixture-layout',
+    );
+  });
+
+  it('excludes canonical CTAs from legacy class-shape interaction adapters', () => {
+    const root = postcss.parse(
+      readFileSync(path.resolve(__dirname, '../../styles/theme.css'), 'utf8'),
+    );
+    const rules: string[] = [];
+    root.walkRules((rule) => {
+      const fullWidth =
+        rule.selector.includes("[class*='w-full']") &&
+        rule.selector.includes("[class*='font-semibold']") &&
+        rule.selector.includes("[class*='rounded-2xl']");
+      const navigation =
+        rule.selector.includes('button') &&
+        rule.selector.includes("[class*='flex'][class*='items-center'][class*='gap-']");
+      if (!fullWidth && !navigation) return;
+      rules.push(rule.selector);
+      for (const selector of rule.selectors)
+        expect(selector).toMatch(/:not\(\s*\.vit-cta-button\s*\)/);
+    });
+    expect(rules).toHaveLength(5);
+  });
+
   it('renders label and a decorative leading icon without leaking component props to the DOM', () => {
     renderWithTheme(<CTAButton label="Create" icon={Plus} />);
     const button = screen.getByRole('button', { name: 'Create' });

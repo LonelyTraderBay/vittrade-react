@@ -1026,27 +1026,43 @@
 }
 
 /* ---- Auto-detect: CTA buttons (full-width, tall, rounded) ---- */
-button[class*='w-full'][class*='rounded-2xl'][class*='font-bold'],
-button[class*='w-full'][class*='rounded-2xl'][class*='font-semibold'],
-button[class*='w-full'][class*='rounded-xl'][class*='font-bold'],
-button[class*='w-full'][class*='rounded-xl'][class*='font-semibold'] {
+button:not(.vit-cta-button)[class*='w-full'][class*='rounded-2xl'][class*='font-bold'],
+button:not(.vit-cta-button)[class*='w-full'][class*='rounded-2xl'][class*='font-semibold'],
+button:not(.vit-cta-button)[class*='w-full'][class*='rounded-xl'][class*='font-bold'],
+button:not(.vit-cta-button)[class*='w-full'][class*='rounded-xl'][class*='font-semibold'] {
   transition: all var(--tr-duration-fast) var(--tr-ease-standard);
   position: relative;
 }
 
-button[class*='w-full'][class*='rounded-2xl'][class*='font-bold']:hover:not(:disabled),
-button[class*='w-full'][class*='rounded-2xl'][class*='font-semibold']:hover:not(:disabled),
-button[class*='w-full'][class*='rounded-xl'][class*='font-bold']:hover:not(:disabled),
-button[class*='w-full'][class*='rounded-xl'][class*='font-semibold']:hover:not(:disabled) {
+button:not(.vit-cta-button)[class*='w-full'][class*='rounded-2xl'][class*='font-bold']:hover:not(
+    :disabled
+  ),
+button:not(
+    .vit-cta-button
+  )[class*='w-full'][class*='rounded-2xl'][class*='font-semibold']:hover:not(:disabled),
+button:not(.vit-cta-button)[class*='w-full'][class*='rounded-xl'][class*='font-bold']:hover:not(
+    :disabled
+  ),
+button:not(.vit-cta-button)[class*='w-full'][class*='rounded-xl'][class*='font-semibold']:hover:not(
+    :disabled
+  ) {
   filter: brightness(1.12);
   box-shadow: 0 4px 20px rgba(229, 138, 0, 0.2);
   transform: translateY(-1px);
 }
 
-button[class*='w-full'][class*='rounded-2xl'][class*='font-bold']:active:not(:disabled),
-button[class*='w-full'][class*='rounded-2xl'][class*='font-semibold']:active:not(:disabled),
-button[class*='w-full'][class*='rounded-xl'][class*='font-bold']:active:not(:disabled),
-button[class*='w-full'][class*='rounded-xl'][class*='font-semibold']:active:not(:disabled) {
+button:not(.vit-cta-button)[class*='w-full'][class*='rounded-2xl'][class*='font-bold']:active:not(
+    :disabled
+  ),
+button:not(
+    .vit-cta-button
+  )[class*='w-full'][class*='rounded-2xl'][class*='font-semibold']:active:not(:disabled),
+button:not(.vit-cta-button)[class*='w-full'][class*='rounded-xl'][class*='font-bold']:active:not(
+    :disabled
+  ),
+button:not(
+    .vit-cta-button
+  )[class*='w-full'][class*='rounded-xl'][class*='font-semibold']:active:not(:disabled) {
   filter: brightness(0.95);
   transform: scale(0.98);
   box-shadow: none;
@@ -1231,11 +1247,11 @@ div[class*='rounded-2xl'][class*='p-4']:hover {
 }
 
 /* ---- Auto-detect: navigation buttons (icon + text inside flex) ---- */
-button[class*='flex'][class*='items-center'][class*='gap-'] {
+button:not(.vit-cta-button)[class*='flex'][class*='items-center'][class*='gap-'] {
   transition: all var(--tr-duration-fast) ease;
 }
 
-button[class*='flex'][class*='items-center'][class*='gap-']:hover {
+button:not(.vit-cta-button)[class*='flex'][class*='items-center'][class*='gap-']:hover {
   filter: brightness(1.08);
 }
 

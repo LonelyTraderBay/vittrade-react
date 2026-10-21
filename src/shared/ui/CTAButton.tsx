@@ -72,7 +72,7 @@ export function CTAButton({
       disabled={isDisabled}
       aria-disabled={isDisabled}
       aria-busy={loading}
-      className={`${fullWidth ? 'w-full' : ''} rounded-2xl flex items-center justify-center gap-2 font-semibold ripple ${className}`}
+      className={`vit-cta-button ${fullWidth ? 'w-full' : ''} rounded-2xl flex items-center justify-center gap-2 font-semibold ripple ${className}`}
       style={{
         height: ButtonHeights[density],
         borderRadius: ButtonRadius[density],
