@@ -9,7 +9,7 @@
  *   - Sparkline with draw-on-mount animation
  *   - Action buttons (Tạo mới / Tạm dừng / Biểu đồ / Lịch sử)
  *   - Eye toggle hide/show balance
- *   - 3-column ghost metrics with tooltips
+ *   - Responsive ghost metrics with tooltips
  *   - Next execution + plan status badges
  *
  * @module components/dca
@@ -36,7 +36,12 @@ import { TrCard } from '@/shared/ui/TrCard';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { useHaptic } from '@/shared/hooks/useHaptic';
 import { φ, φIcon, φAvatar } from '@/shared/lib/golden';
-import { SkeletonCard, Sparkline, TooltipPopover } from './DCAOverviewCardVisuals';
+import {
+  DCA_METRIC_GRID_CLASS_NAME,
+  SkeletonCard,
+  Sparkline,
+  TooltipPopover,
+} from './DCAOverviewCardVisuals';
 
 /* ─── Types ──────────────────────────────────────────────── */
 
@@ -162,6 +167,7 @@ export function DCAOverviewCard({
   );
 
   const ghostBg = c.portfolioBtnGhost;
+  const metricStyle = { background: ghostBg, overflowWrap: 'anywhere' } as const;
 
   /* ── Action buttons config ── */
   const ACTION_BUTTONS: { icon: typeof Plus; label: string; color: string; action?: () => void }[] =
@@ -204,8 +210,8 @@ export function DCAOverviewCard({
           </div>
 
           {/* ── Row 2: Big value + Sparkline ──────────────── */}
-          <div className="flex items-start justify-between gap-3">
-            <div className="min-w-0 flex-1">
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div className="min-w-0 flex-[1_1_16rem]">
               <div className="mb-1">
                 <span
                   style={{
@@ -216,6 +222,7 @@ export function DCAOverviewCard({
                     lineHeight: 1.15,
                     letterSpacing: -1,
                     fontVariantNumeric: 'tabular-nums',
+                    overflowWrap: 'anywhere',
                   }}
                 >
                   {balanceHidden ? '••••••' : `₫${formatVNDFull(data.currentValue)}`}
@@ -225,13 +232,14 @@ export function DCAOverviewCard({
               {/* P&L badge */}
               <div className="flex items-center gap-2 flex-wrap" style={{ marginBottom: 4 }}>
                 <div
-                  className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md"
+                  className="inline-flex max-w-full flex-wrap items-center gap-1 px-2 py-0.5 rounded-md"
                   style={{
                     background: c.surface2,
                     color: isProfit ? c.successText : c.errorText,
                     fontSize: 13,
                     fontWeight: 600,
                     fontVariantNumeric: 'tabular-nums',
+                    overflowWrap: 'anywhere',
                   }}
                 >
                   {isProfit ? (
@@ -252,7 +260,7 @@ export function DCAOverviewCard({
 
             {/* Sparkline — animated draw */}
             {sparklineData && sparklineData.length >= 2 && (
-              <div className="shrink-0 pt-2 flex flex-col items-end">
+              <div className="ml-auto shrink-0 pt-2 flex flex-col items-end">
                 <Sparkline
                   data={sparklineData}
                   width={88}
@@ -267,11 +275,11 @@ export function DCAOverviewCard({
             )}
           </div>
 
-          {/* ── Row 3: 3-column ghost metrics ────────────── */}
-          <div className="grid grid-cols-3 gap-2 mt-4">
+          {/* ── Row 3: Responsive ghost metrics ───────────── */}
+          <div className={`${DCA_METRIC_GRID_CLASS_NAME} mt-4`}>
             {/* Kế hoạch */}
             <div className="relative">
-              <div className="rounded-2xl p-3" style={{ background: ghostBg }}>
+              <div className="rounded-2xl p-3" style={metricStyle}>
                 <div className="flex items-center gap-1 mb-2">
                   <div
                     className="w-6 h-6 rounded-full flex items-center justify-center shrink-0"
@@ -302,7 +310,7 @@ export function DCAOverviewCard({
 
             {/* Đã đầu tư */}
             <div className="relative">
-              <div className="rounded-2xl p-3" style={{ background: ghostBg }}>
+              <div className="rounded-2xl p-3" style={metricStyle}>
                 <div className="flex items-center gap-1 mb-2">
                   <div
                     className="w-6 h-6 rounded-full flex items-center justify-center shrink-0"
@@ -333,7 +341,7 @@ export function DCAOverviewCard({
 
             {/* Trung bình */}
             <div className="relative">
-              <div className="rounded-2xl p-3" style={{ background: ghostBg }}>
+              <div className="rounded-2xl p-3" style={metricStyle}>
                 <div className="flex items-center gap-1 mb-2">
                   <div
                     className="w-6 h-6 rounded-full flex items-center justify-center shrink-0"
@@ -365,10 +373,10 @@ export function DCAOverviewCard({
 
           {/* ── Row 4: Next execution + status badges ───── */}
           <div
-            className="flex items-center justify-between gap-3 mt-3 rounded-2xl px-3 py-2.5"
+            className="flex flex-wrap items-center justify-between gap-3 mt-3 rounded-2xl px-3 py-2.5"
             style={{ background: ghostBg }}
           >
-            <div className="flex items-center gap-2.5 min-w-0">
+            <div className="flex items-center gap-2.5 min-w-0 flex-[1_1_12rem]">
               <div
                 className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0"
                 style={{ background: 'rgba(59,130,246,0.20)' }}
@@ -398,7 +406,7 @@ export function DCAOverviewCard({
               )}
             </div>
 
-            <div className="flex items-center gap-1.5 shrink-0">
+            <div className="ml-auto flex items-center gap-1.5 shrink-0">
               <StatusBadge
                 icon={<Play className="w-3 h-3" />}
                 count={data.activePlans}

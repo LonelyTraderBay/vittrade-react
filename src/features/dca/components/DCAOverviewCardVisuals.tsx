@@ -3,6 +3,10 @@ import type { ReactNode } from 'react';
 import { Maximize2, X } from 'lucide-react';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 
+/** Keep data and loading metrics on the same content-sized grid. */
+export const DCA_METRIC_GRID_CLASS_NAME =
+  'grid grid-cols-[repeat(auto-fit,minmax(min(100%,7.5rem),1fr))] gap-2';
+
 /* ─── Shimmer Skeleton ───────────────────────────────────── */
 
 function ShimmerBlock({
@@ -50,8 +54,8 @@ export function SkeletonCard({ ghostBg }: { ghostBg: string }) {
         <ShimmerBlock w={60} h={14} />
       </div>
 
-      {/* 3-column metrics */}
-      <div className="grid grid-cols-3 gap-2 mt-1">
+      {/* Responsive metrics, matching the loaded card */}
+      <div className={`${DCA_METRIC_GRID_CLASS_NAME} mt-1`}>
         {[0, 1, 2].map((i) => (
           <div key={i} className="rounded-2xl p-3 space-y-2" style={{ background: ghostBg }}>
             <div className="flex items-center gap-1.5">
