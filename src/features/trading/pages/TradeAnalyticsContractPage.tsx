@@ -5,6 +5,7 @@ import { Header } from '@/shared/ui/layout/Header';
 import { PageContent } from '@/shared/ui/layout/PageContent';
 import { PageLayout } from '@/shared/ui/layout/PageLayout';
 import { TrCard } from '@/shared/ui/TrCard';
+import { FilterButton } from '@/shared/ui/FilterButton';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { useAuth } from '@/shared/session/useAuth';
 import { useTradingAnalyticsQuery } from '../model/analytics-queries';
@@ -17,6 +18,11 @@ import type {
 const PERIODS: TradingAnalyticsPeriod[] = ['7D', '1M', '3M', '1Y'];
 const TABS = ['overview', 'trades', 'assets'] as const;
 type AnalyticsTab = (typeof TABS)[number];
+const VIEW_LABELS: Record<AnalyticsTab, string> = {
+  overview: 'Overview',
+  trades: 'Trades',
+  assets: 'Assets',
+};
 
 export function TradeAnalyticsContractPage() {
   const colors = useThemeColors();
@@ -39,62 +45,48 @@ export function TradeAnalyticsContractPage() {
     );
   }
 
-  if (query.isPending) {
-    return (
-      <PageLayout>
-        <Header title="Trade Analytics" subtitle="Trading analytics contract" back />
-        <PageContent>
-          <p style={{ color: colors.text2 }}>Đang tải dữ liệu analytics API…</p>
-        </PageContent>
-      </PageLayout>
-    );
-  }
-
-  if (query.isError || !query.data) return <ErrorState onAction={() => void query.refetch()} />;
-
   return (
     <PageLayout>
       <Header title="Trade Analytics" subtitle="Server-owned trading performance" back />
       <PageContent gap="default">
-        <div className="flex gap-2 overflow-x-auto">
+        <div role="group" aria-label="Analytics period" className="flex flex-wrap gap-2">
           {PERIODS.map((value) => (
-            <button
+            <FilterButton
               key={value}
-              type="button"
+              selected={period === value}
+              label={value}
               onClick={() => setPeriod(value)}
-              className="rounded-full px-4 py-2 text-xs font-semibold"
-              style={{
-                background: period === value ? colors.primary : colors.surface2,
-                color: period === value ? 'var(--tr-text-on-color)' : colors.text2,
-              }}
-            >
-              {value}
-            </button>
+            />
           ))}
         </div>
-
-        <SummaryCard data={query.data} />
-
-        <div className="grid grid-cols-3 gap-2">
+        <div role="group" aria-label="Analytics view" className="flex flex-wrap gap-2">
           {TABS.map((value) => (
-            <button
+            <FilterButton
               key={value}
-              type="button"
+              selected={tab === value}
+              label={VIEW_LABELS[value]}
               onClick={() => setTab(value)}
-              className="rounded-xl px-3 py-2 text-xs font-semibold capitalize"
-              style={{
-                background: tab === value ? `${colors.primary}20` : colors.surface2,
-                color: tab === value ? colors.primary : colors.text3,
-              }}
-            >
-              {value}
-            </button>
+            />
           ))}
         </div>
-
-        {tab === 'overview' && <Overview data={query.data} />}
-        {tab === 'trades' && <Trades data={query.data} />}
-        {tab === 'assets' && <Assets data={query.data} />}
+        <section aria-label="Analytics results" className="flex flex-col gap-4">
+          {query.isPending ? (
+            <p role="status" style={{ color: colors.text2 }}>
+              Đang tải dữ liệu analytics API…
+            </p>
+          ) : query.isError || !query.data ? (
+            <div role="alert">
+              <ErrorState onAction={() => void query.refetch()} />
+            </div>
+          ) : (
+            <>
+              <SummaryCard data={query.data} />
+              {tab === 'overview' && <Overview data={query.data} />}
+              {tab === 'trades' && <Trades data={query.data} />}
+              {tab === 'assets' && <Assets data={query.data} />}
+            </>
+          )}
+        </section>
       </PageContent>
     </PageLayout>
   );

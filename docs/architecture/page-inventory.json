@@ -3367,7 +3367,7 @@
       "domain": "trading",
       "owner": "features/trading",
       "status": "integration-pending",
-      "lines": 293,
+      "lines": 285,
       "routePaths": [
         "trade/analytics"
       ],
@@ -3378,6 +3378,7 @@
           "@/shared/hooks/useThemeColors",
           "@/shared/session/useAuth",
           "@/shared/ui/ErrorState",
+          "@/shared/ui/FilterButton",
           "@/shared/ui/TrCard",
           "@/shared/ui/layout/Header",
           "@/shared/ui/layout/PageContent",
