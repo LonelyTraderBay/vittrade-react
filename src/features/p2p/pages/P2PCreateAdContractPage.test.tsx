@@ -144,6 +144,38 @@ describe('P2P create ad contract page', () => {
     expect(screen.getByRole('alert')).toHaveTextContent('Biên độ giá không hợp lệ.');
   });
 
+  it('locks confirmation dismissal while pending and retains the form after a transport error', async () => {
+    let release!: () => void;
+    const gate = new Promise<void>((resolve) => (release = resolve));
+    let attempts = 0;
+    server.use(
+      http.post('*/p2p/ads', async () => {
+        attempts++;
+        await gate;
+        return HttpResponse.error();
+      }),
+    );
+    const user = userEvent.setup();
+    renderWithProviders(<P2PCreateAdContractPage />);
+    await fillValidForm(user);
+    const trigger = screen.getByRole('button', { name: 'Xem xác nhận đăng quảng cáo' });
+    await user.click(trigger);
+    await user.click(screen.getByRole('button', { name: 'Xác nhận đăng' }));
+    try {
+      await vi.waitFor(() => expect(attempts).toBe(1));
+      expect(screen.getByRole('button', { name: 'Huỷ' })).toBeDisabled();
+      await user.keyboard('{Escape}');
+      expect(screen.getByRole('dialog')).toBeInTheDocument();
+    } finally {
+      release();
+    }
+    expect(await screen.findByRole('alert')).toHaveTextContent('Không thể đăng quảng cáo.');
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    expect(screen.getByRole('spinbutton', { name: 'Giá (VND/USDT)' })).toHaveValue(25000);
+    expect(screen.getByRole('spinbutton', { name: 'Tổng USDT' })).toHaveValue(1000);
+    await vi.waitFor(() => expect(trigger).toHaveFocus());
+  });
+
   it('supports floating ads, caps payment methods, and closes confirmation', async () => {
     let requestBody: unknown;
     server.use(
@@ -172,7 +204,13 @@ describe('P2P create ad contract page', () => {
     expect(screen.getByRole('button', { name: 'ACB' })).toHaveAttribute('aria-pressed', 'false');
 
     await user.click(screen.getByRole('button', { name: 'Xem xác nhận đăng quảng cáo' }));
-    expect(screen.getByRole('dialog')).toBeInTheDocument();
+    const dialog = screen.getByRole('dialog', { name: 'Xác nhận đăng quảng cáo' });
+    expect(dialog.contains(document.activeElement)).toBe(true);
+    await user.keyboard('{Escape}');
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    const trigger = screen.getByRole('button', { name: 'Xem xác nhận đăng quảng cáo' });
+    await vi.waitFor(() => expect(trigger).toHaveFocus());
+    await user.click(trigger);
     await user.click(screen.getByRole('button', { name: 'Huỷ' }));
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
 

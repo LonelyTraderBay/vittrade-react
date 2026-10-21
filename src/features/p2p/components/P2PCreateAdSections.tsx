@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { TrCard } from '@/shared/ui/TrCard';
+import { BottomSheetV2 } from '@/shared/ui/BottomSheetV2';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import type { P2PAdCreateRequest, P2PAdType } from '../model/p2p-types';
 
@@ -352,34 +353,39 @@ export function P2PCreateAdConfirmation({
 }: P2PCreateAdConfirmationProps) {
   if (!open) return null;
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 p-4" role="dialog">
-      <div className="w-full max-w-lg rounded-2xl p-5" style={{ background: colors.surface }}>
-        <h2 style={{ color: colors.text1, fontWeight: 700 }}>Xác nhận đăng quảng cáo</h2>
-        <p className="mt-2 text-sm" style={{ color: colors.text2 }}>
-          {request.type === 'sell' ? 'BÁN' : 'MUA'} {request.available} {request.asset} với giá{' '}
-          {formatMoney(request.price)} {request.currency}.
-        </p>
-        <div className="mt-4 flex gap-2">
-          <button
-            type="button"
-            onClick={onClose}
-            className="flex-1 rounded-lg px-3 py-2"
-            style={{ background: colors.surface2, color: colors.text2 }}
-          >
-            Huỷ
-          </button>
-          <button
-            type="button"
-            onClick={onConfirm}
-            disabled={!canWriteAds || pending}
-            className="flex-1 rounded-lg px-3 py-2 font-semibold"
-            style={{ background: colors.primary, color: 'var(--tr-text-on-color)' }}
-          >
-            {pending ? 'Đang đăng…' : 'Xác nhận đăng'}
-          </button>
-        </div>
+    <BottomSheetV2
+      showCloseButton={false}
+      showHandle={false}
+      open
+      title="Xác nhận đăng quảng cáo"
+      onClose={onClose}
+      preventClose={pending}
+    >
+      <p className="text-sm" style={{ color: colors.text2 }}>
+        {request.type === 'sell' ? 'BÁN' : 'MUA'} {request.available} {request.asset} với giá{' '}
+        {formatMoney(request.price)} {request.currency}.
+      </p>
+      <div className="mt-4 flex gap-2">
+        <button
+          type="button"
+          onClick={onClose}
+          disabled={pending}
+          className="flex-1 rounded-lg px-3 py-2"
+          style={{ background: colors.surface2, color: colors.text2 }}
+        >
+          Huỷ
+        </button>
+        <button
+          type="button"
+          onClick={onConfirm}
+          disabled={!canWriteAds || pending}
+          className="flex-1 rounded-lg px-3 py-2 font-semibold"
+          style={{ background: colors.primary, color: 'var(--tr-text-on-color)' }}
+        >
+          {pending ? 'Đang đăng…' : 'Xác nhận đăng'}
+        </button>
       </div>
-    </div>
+    </BottomSheetV2>
   );
 }
 

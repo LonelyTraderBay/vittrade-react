@@ -1858,7 +1858,7 @@
       "domain": "p2p",
       "owner": "features/p2p",
       "status": "integration-pending",
-      "lines": 256,
+      "lines": 262,
       "routePaths": [
         "p2p/ad/:id"
       ],
@@ -1870,6 +1870,7 @@
           "@/shared/hooks/useThemeColors",
           "@/shared/navigation/useRoutePrefix",
           "@/shared/session/useAuth",
+          "@/shared/ui/BottomSheetV2",
           "@/shared/ui/ErrorState",
           "@/shared/ui/TrCard",
           "@/shared/ui/layout/Header",
@@ -2345,7 +2346,7 @@
       "domain": "p2p",
       "owner": "features/p2p",
       "status": "integration-pending",
-      "lines": 317,
+      "lines": 327,
       "routePaths": [
         "p2p/my-ads"
       ],
@@ -2357,6 +2358,7 @@
           "@/shared/hooks/useThemeColors",
           "@/shared/navigation/useRoutePrefix",
           "@/shared/session/useAuth",
+          "@/shared/ui/BottomSheetV2",
           "@/shared/ui/ErrorState",
           "@/shared/ui/TrCard",
           "@/shared/ui/layout/Header",

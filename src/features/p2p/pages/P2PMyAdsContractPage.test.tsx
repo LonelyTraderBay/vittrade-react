@@ -1,7 +1,7 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { screen } from '@testing-library/react';
+import { screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useLocation } from 'react-router';
 import { renderWithProviders } from '@/test/test-utils';
@@ -283,7 +283,9 @@ describe('P2P my ads contract page', () => {
 
     await user.click(screen.getByRole('button', { name: 'Delete ad-active' }));
     await user.click(screen.getByRole('button', { name: 'Xác nhận xóa' }));
-    expect(await screen.findByText('Không thể xóa quảng cáo.')).toBeInTheDocument();
+    expect(await within(screen.getByRole('dialog')).findByRole('alert')).toHaveTextContent(
+      'Không thể xóa quảng cáo.',
+    );
     expect(deleteRequests).toBe(1);
   });
 });

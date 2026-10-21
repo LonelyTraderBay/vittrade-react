@@ -6,6 +6,7 @@ import { Header } from '@/shared/ui/layout/Header';
 import { PageContent } from '@/shared/ui/layout/PageContent';
 import { PageLayout } from '@/shared/ui/layout/PageLayout';
 import { TrCard } from '@/shared/ui/TrCard';
+import { BottomSheetV2 } from '@/shared/ui/BottomSheetV2';
 import { useRoutePrefix } from '@/shared/navigation/useRoutePrefix';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { useAuth } from '@/shared/session/useAuth';
@@ -174,7 +175,7 @@ export function P2PAdDetailContractPage() {
               {validationMessage}
             </p>
           )}
-          {errorMessage && (
+          {errorMessage && !confirmOpen && (
             <p role="alert" className="mt-3 text-xs" style={{ color: 'var(--tr-error-text)' }}>
               {errorMessage}
             </p>
@@ -201,40 +202,45 @@ export function P2PAdDetailContractPage() {
       </PageContent>
 
       {confirmOpen && (
-        <div
-          className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 p-4"
-          role="dialog"
-          aria-modal="true"
+        <BottomSheetV2
+          showCloseButton={false}
+          showHandle={false}
+          open
+          title="Xác nhận đơn P2P"
+          onClose={() => setConfirmOpen(false)}
+          preventClose={orderMutation.isPending}
         >
-          <div className="w-full max-w-lg rounded-2xl p-5" style={{ background: colors.surface }}>
-            <h2 style={{ color: colors.text1, fontWeight: 700 }}>Xác nhận đơn P2P</h2>
-            <p className="mt-2 text-sm" style={{ color: colors.text2 }}>
-              {formatMoney(numericFiatAmount)} {ad.currency} qua {paymentMethod} để nhận{' '}
-              {cryptoAmount.toFixed(6)} {ad.asset}.
+          <p className="text-sm" style={{ color: colors.text2 }}>
+            {formatMoney(numericFiatAmount)} {ad.currency} qua {paymentMethod} để nhận{' '}
+            {cryptoAmount.toFixed(6)} {ad.asset}.
+          </p>
+          {errorMessage && (
+            <p role="alert" className="mt-3 text-xs" style={{ color: 'var(--tr-error-text)' }}>
+              {errorMessage}
             </p>
-            <div className="mt-4 flex gap-2">
-              <button
-                type="button"
-                disabled={orderMutation.isPending}
-                onClick={() => setConfirmOpen(false)}
-                className="flex-1 rounded-lg px-3 py-2 text-sm"
-                style={{ background: colors.surface2, color: colors.text2 }}
-              >
-                Hủy
-              </button>
-              <button
-                type="button"
-                aria-label="Confirm P2P order"
-                onClick={() => void submitOrder()}
-                disabled={!canCreateOrder || !canReview || orderMutation.isPending}
-                className="flex-1 rounded-lg px-3 py-2 text-sm font-semibold"
-                style={{ background: colors.primary, color: 'var(--tr-text-on-color)' }}
-              >
-                {orderMutation.isPending ? 'Đang tạo…' : 'Xác nhận đơn'}
-              </button>
-            </div>
+          )}
+          <div className="mt-4 flex gap-2">
+            <button
+              type="button"
+              disabled={orderMutation.isPending}
+              onClick={() => setConfirmOpen(false)}
+              className="flex-1 rounded-lg px-3 py-2 text-sm"
+              style={{ background: colors.surface2, color: colors.text2 }}
+            >
+              Hủy
+            </button>
+            <button
+              type="button"
+              aria-label="Confirm P2P order"
+              onClick={() => void submitOrder()}
+              disabled={!canCreateOrder || !canReview || orderMutation.isPending}
+              className="flex-1 rounded-lg px-3 py-2 text-sm font-semibold"
+              style={{ background: colors.primary, color: 'var(--tr-text-on-color)' }}
+            >
+              {orderMutation.isPending ? 'Đang tạo…' : 'Xác nhận đơn'}
+            </button>
           </div>
-        </div>
+        </BottomSheetV2>
       )}
     </PageLayout>
   );

@@ -1,7 +1,7 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { act, fireEvent, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Route, Routes, useParams } from 'react-router';
 import { renderWithProviders } from '@/test/test-utils';
@@ -132,7 +132,7 @@ describe('P2P ad detail contract page', () => {
     await user.click(screen.getByRole('button', { name: 'Xem xác nhận đơn P2P' }));
     const button = await screen.findByRole('button', { name: 'Confirm P2P order' });
     await user.click(button);
-    await screen.findByRole('alert');
+    await within(screen.getByRole('dialog')).findByRole('alert');
     await waitFor(() => expect(button).not.toBeDisabled());
     expect(keys).toHaveLength(1);
     await user.click(button);
@@ -159,6 +159,7 @@ describe('P2P ad detail contract page', () => {
     await user.type(screen.getByRole('spinbutton', { name: 'Fiat amount' }), '100000');
     await user.click(screen.getByRole('button', { name: 'MoMo' }));
     await user.click(screen.getByRole('button', { name: 'Xem xác nhận đơn P2P' }));
+    expect(screen.getByRole('dialog')).toHaveAccessibleName('Xác nhận đơn P2P');
     expect(screen.getByRole('dialog')).toHaveTextContent('qua MoMo');
     await user.click(screen.getByRole('button', { name: 'Hủy' }));
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
@@ -305,8 +306,8 @@ describe('P2P ad detail contract page', () => {
     const amount = screen.getByRole('spinbutton', { name: 'Fiat amount' });
     await user.type(amount, '100000');
     await user.click(screen.getByRole('button', { name: 'Xem xác nhận đơn P2P' }));
-    await user.clear(amount);
-    await user.type(amount, '99999');
+    // Simulate an out-of-band data change; the modal keeps background controls inert.
+    fireEvent.change(amount, { target: { value: '99999' } });
 
     expect(screen.getByRole('dialog')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Confirm P2P order' })).toBeDisabled();
@@ -333,6 +334,7 @@ describe('P2P ad detail contract page', () => {
       'Không thể tạo đơn P2P. Vui lòng thử lại.',
     );
     expect(screen.getByRole('dialog')).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Hủy' }));
     await user.type(amount, '0');
     expect(screen.queryByText('Không thể tạo đơn P2P. Vui lòng thử lại.')).not.toBeInTheDocument();
   });
@@ -353,7 +355,9 @@ describe('P2P ad detail contract page', () => {
     renderAdDetail();
 
     expect(await screen.findByText('Merchant One')).toBeInTheDocument();
-    await user.type(screen.getByRole('spinbutton', { name: 'Fiat amount' }), '100000');
+    const amount = screen.getByRole('spinbutton', { name: 'Fiat amount' });
+    const payment = screen.getByRole('button', { name: 'MoMo' });
+    await user.type(amount, '100000');
     await user.click(screen.getByRole('button', { name: 'Xem xác nhận đơn P2P' }));
     await user.click(screen.getByRole('button', { name: 'Confirm P2P order' }));
 
@@ -361,8 +365,8 @@ describe('P2P ad detail contract page', () => {
       'Đang tạo…',
     );
     expect(screen.getByRole('button', { name: 'Confirm P2P order' })).toBeDisabled();
-    expect(screen.getByRole('spinbutton', { name: 'Fiat amount' })).toBeDisabled();
-    expect(screen.getByRole('button', { name: 'MoMo' })).toBeDisabled();
+    expect(amount).toBeDisabled();
+    expect(payment).toBeDisabled();
     expect(screen.getByRole('button', { name: 'Hủy' })).toBeDisabled();
     finishRequest(HttpResponse.json(receipt, { status: 201 }) as unknown as Response);
     expect(await screen.findByTestId('created-order-route')).toHaveTextContent('order-created');

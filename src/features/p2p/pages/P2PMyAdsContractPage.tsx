@@ -5,6 +5,7 @@ import { Header } from '@/shared/ui/layout/Header';
 import { PageContent } from '@/shared/ui/layout/PageContent';
 import { PageLayout } from '@/shared/ui/layout/PageLayout';
 import { TrCard } from '@/shared/ui/TrCard';
+import { BottomSheetV2 } from '@/shared/ui/BottomSheetV2';
 import { useRoutePrefix } from '@/shared/navigation/useRoutePrefix';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { useAuth } from '@/shared/session/useAuth';
@@ -133,7 +134,7 @@ export function P2PMyAdsContractPage() {
           ))}
         </div>
 
-        {actionError && (
+        {actionError && !deleteId && (
           <p role="alert" style={{ color: colors.sell }}>
             {actionError}
           </p>
@@ -161,7 +162,10 @@ export function P2PMyAdsContractPage() {
                 colors={colors}
                 onOpen={() => navigate(`${prefix}/p2p/ad/${encodeURIComponent(ad.id)}`)}
                 onToggle={() => void updateStatus(ad)}
-                onDelete={() => setDeleteId(ad.id)}
+                onDelete={() => {
+                  setActionError(null);
+                  setDeleteId(ad.id);
+                }}
                 canWrite={canWriteAds}
                 isMutating={statusMutation.isPending || deleteMutation.isPending}
               />
@@ -171,37 +175,43 @@ export function P2PMyAdsContractPage() {
       </PageContent>
 
       {deleteId && (
-        <div
-          className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 p-4"
-          role="dialog"
-          aria-modal="true"
+        <BottomSheetV2
+          showCloseButton={false}
+          showHandle={false}
+          open
+          title="Xóa quảng cáo?"
+          onClose={() => setDeleteId(null)}
+          preventClose={deleteMutation.isPending}
         >
-          <div className="w-full max-w-lg rounded-2xl p-5" style={{ background: colors.surface }}>
-            <h2 style={{ color: colors.text1, fontWeight: 700 }}>Xóa quảng cáo?</h2>
-            <p className="mt-2 text-sm" style={{ color: colors.text2 }}>
-              Hành động này không thể hoàn tác sau khi backend xác nhận.
+          <p className="text-sm" style={{ color: colors.text2 }}>
+            Hành động này không thể hoàn tác sau khi backend xác nhận.
+          </p>
+          {actionError && (
+            <p role="alert" className="mt-3 text-xs" style={{ color: colors.errorText }}>
+              {actionError}
             </p>
-            <div className="mt-4 flex gap-2">
-              <button
-                type="button"
-                onClick={() => setDeleteId(null)}
-                className="flex-1 rounded-lg px-3 py-2"
-                style={{ background: colors.surface2, color: colors.text2 }}
-              >
-                Hủy
-              </button>
-              <button
-                type="button"
-                onClick={() => void deleteAd()}
-                disabled={!canWriteAds || deleteMutation.isPending}
-                className="flex-1 rounded-lg px-3 py-2 font-semibold"
-                style={{ background: colors.sell, color: 'var(--tr-text-on-color)' }}
-              >
-                {deleteMutation.isPending ? 'Đang xóa…' : 'Xác nhận xóa'}
-              </button>
-            </div>
+          )}
+          <div className="mt-4 flex gap-2">
+            <button
+              type="button"
+              onClick={() => setDeleteId(null)}
+              disabled={deleteMutation.isPending}
+              className="flex-1 rounded-lg px-3 py-2"
+              style={{ background: colors.surface2, color: colors.text2 }}
+            >
+              Hủy
+            </button>
+            <button
+              type="button"
+              onClick={() => void deleteAd()}
+              disabled={!canWriteAds || deleteMutation.isPending}
+              className="flex-1 rounded-lg px-3 py-2 font-semibold"
+              style={{ background: colors.sell, color: 'var(--tr-text-on-color)' }}
+            >
+              {deleteMutation.isPending ? 'Đang xóa…' : 'Xác nhận xóa'}
+            </button>
           </div>
-        </div>
+        </BottomSheetV2>
       )}
     </PageLayout>
   );
