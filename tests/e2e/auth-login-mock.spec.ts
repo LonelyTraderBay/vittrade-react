@@ -105,8 +105,12 @@ test('login uses the real development MSW handler across shells @auth-login-mock
     await password.fill('Preview-123!');
     await expect(email).toHaveValue('mfa@vittrade.local');
     const previewControls = page.getByTestId('dev-preview-controls');
-    expect(await previewControls.evaluate((element) => getComputedStyle(element).position)).toBe(
-      'static',
+    await expect(previewControls).toHaveCSS('position', 'relative');
+    await expect(
+      page.locator('[data-preview-chrome-host] [data-testid="dev-preview-controls"]'),
+    ).toHaveCount(1);
+    const previewPosition = await previewControls.evaluate(
+      (element) => getComputedStyle(element).position,
     );
     const submitBox = await submit.boundingBox();
     const previewBox = await previewControls.boundingBox();
@@ -241,7 +245,7 @@ test('login uses the real development MSW handler across shells @auth-login-mock
       destinationRoute: `${shell.prefix}/auth/otp`,
       verifyMfaRequests: verificationRequests.length,
       documentWidth,
-      previewPosition: 'static',
+      previewPosition,
       previewOverlapsSubmit: overlapsSubmit,
       fieldGeometry,
       screenshots: [

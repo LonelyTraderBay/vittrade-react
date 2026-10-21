@@ -73,10 +73,14 @@ test('registration uses the real development MSW handler across shells @auth-moc
     await expect(page.getByRole('alert')).toHaveCount(0);
 
     const previewControls = page.getByTestId('dev-preview-controls');
+    await expect(previewControls).toHaveCSS('position', 'relative');
+    await expect(
+      page.locator('[data-preview-chrome-host] [data-testid="dev-preview-controls"]'),
+    ).toHaveCount(1);
     const previewPosition = await previewControls.evaluate(
       (element) => getComputedStyle(element).position,
     );
-    expect(previewPosition).toBe('static');
+    expect(previewPosition).toBe('relative');
     const submitBox = await submit.boundingBox();
     const previewBox = await previewControls.boundingBox();
     expect(submitBox).not.toBeNull();
@@ -111,12 +115,11 @@ test('registration uses the real development MSW handler across shells @auth-moc
     await expect(page.getByRole('alert')).toHaveCount(0);
     await page.getByRole('button', { name: 'Thu gọn' }).click();
 
-    const registrationFailurePromise = page.waitForEvent(
-      'requestfailed',
-      (request) =>
+    const registrationFailurePromise = page.waitForEvent('requestfailed', {
+      predicate: (request) =>
         request.method() === 'POST' && new URL(request.url()).pathname.endsWith('/auth/register'),
-      { timeout: 5_000 },
-    );
+      timeout: 5_000,
+    });
     await submit.click();
     await registrationFailurePromise;
     await expect(
