@@ -251,6 +251,14 @@ for (const theme of ['light', 'dark'])
           const amountHandle = (await amount.elementHandle())!;
           const modalCase = kind.endsWith('overview');
           if (modalCase) {
+            // Focus return must reveal its target without relying on scroll anchoring after reflow.
+            await page.evaluate(() => {
+              document.documentElement.style.overflowAnchor = 'none';
+              document.body.style.overflowAnchor = 'none';
+              document.querySelectorAll<HTMLElement>('[data-pull-scroll]').forEach((element) => {
+                element.style.overflowAnchor = 'none';
+              });
+            });
             const opener = kind.includes('quick')
               ? page.getByRole('button', { name: 'Tuỳ chọn P2P', exact: true })
               : page.getByRole('button', {
@@ -342,7 +350,8 @@ for (const theme of ['light', 'dark'])
                   kind,
                   actualFocus,
                   expected: 'selected USDT asset control',
-                  scope: 'Real query error while modal open; no writes.',
+                  scope:
+                    'Real query error while modal open, scroll anchoring disabled to expose offscreen focus after reflow; no writes.',
                 },
                 null,
                 2,
