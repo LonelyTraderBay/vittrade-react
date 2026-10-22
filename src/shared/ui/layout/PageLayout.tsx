@@ -1,18 +1,20 @@
 import React from 'react';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
+import { pageInlineGutterStyle } from './pageGutter';
 
 /**
  * ══════════════════════════════════════════════════════════════
  *  PageLayout — Enterprise Standard Page Wrapper
  * ══════════════════════════════════════════════════════════════
  *
- *  THE canonical layout wrapper for every page in the app.
+ *  Canonical content-page wrapper; route/auth/immersive adapters may delegate
+ *  to a documented layout owner (see page-layout-contract.test.ts).
  *  Enforces consistent structure that works correctly inside
  *  AppLayout's scroll container.
  *
  *  CONSTRAINTS (from Guidelines.md + codebase rules):
  *  ─────────────────────────────────────────────────────────
- *  ✓  flex flex-col + min-h-full — fills scroll container
+ *  ✓  flex flex-col + minHeight: 100% — fills scroll container
  *  ✓  pb-8 (32px) bottom padding — content never hidden by BottomNav
  *  ✓  background: c.bg — semantic token, auto dark/light
  *  ✗  NEVER h-screen / h-full + overflow-y-auto
@@ -152,8 +154,9 @@ export function StickyFooter({
   const c = useThemeColors();
   return (
     <div
-      className={`sticky bottom-0 z-10 px-5 py-4 ${className}`}
+      className={`sticky bottom-0 z-10 py-4 ${className}`}
       style={{
+        ...pageInlineGutterStyle(),
         background: bg === 'surface' ? c.surface : c.bg,
         borderTop: border ? `1px solid ${c.divider}` : 'none',
         backdropFilter: 'saturate(180%) blur(20px)',

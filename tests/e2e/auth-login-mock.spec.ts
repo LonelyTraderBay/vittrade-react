@@ -1,5 +1,26 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Locator } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+import { ALPHA, withAlpha } from '../../src/shared/theme/colors';
+
+async function readCompactFieldGeometry(input: Locator) {
+  return input.evaluate((element) => {
+    const control = element.parentElement!;
+    const expectedSurface = document.createElement('div');
+    expectedSurface.style.backgroundColor = 'var(--tr-surface)';
+    document.body.append(expectedSurface);
+    const surfaceColor = getComputedStyle(expectedSurface).backgroundColor;
+    expectedSurface.remove();
+    const style = getComputedStyle(control);
+    return {
+      height: style.height,
+      borderRadius: style.borderRadius,
+      paddingInline: style.paddingInline,
+      gap: style.gap,
+      background: style.backgroundColor,
+      expectedSurface: surfaceColor,
+    };
+  });
+}
 import { createHash } from 'node:crypto';
 import { readFile, writeFile } from 'node:fs/promises';
 
@@ -59,6 +80,17 @@ test('login uses the real development MSW handler across shells @auth-login-mock
 
     const email = page.getByTestId('auth-email');
     const password = page.getByTestId('auth-password');
+    let fieldGeometry: Awaited<ReturnType<typeof readCompactFieldGeometry>> | undefined;
+    if (shell.name === 'web') {
+      fieldGeometry = await readCompactFieldGeometry(email);
+      expect(fieldGeometry).toMatchObject({
+        height: '48px',
+        borderRadius: '10px',
+        paddingInline: '14px',
+        gap: '10px',
+        background: fieldGeometry.expectedSurface,
+      });
+    }
     const submit = page.getByTestId('auth-submit');
     await submit.click();
     await expect(page.getByText('Vui lòng nhập email.', { exact: true })).toBeVisible();
@@ -73,8 +105,12 @@ test('login uses the real development MSW handler across shells @auth-login-mock
     await password.fill('Preview-123!');
     await expect(email).toHaveValue('mfa@vittrade.local');
     const previewControls = page.getByTestId('dev-preview-controls');
-    expect(await previewControls.evaluate((element) => getComputedStyle(element).position)).toBe(
-      'static',
+    await expect(previewControls).toHaveCSS('position', 'relative');
+    await expect(
+      page.locator('[data-preview-chrome-host] [data-testid="dev-preview-controls"]'),
+    ).toHaveCount(1);
+    const previewPosition = await previewControls.evaluate(
+      (element) => getComputedStyle(element).position,
     );
     const submitBox = await submit.boundingBox();
     const previewBox = await previewControls.boundingBox();
@@ -209,8 +245,9 @@ test('login uses the real development MSW handler across shells @auth-login-mock
       destinationRoute: `${shell.prefix}/auth/otp`,
       verifyMfaRequests: verificationRequests.length,
       documentWidth,
-      previewPosition: 'static',
+      previewPosition,
       previewOverlapsSubmit: overlapsSubmit,
+      fieldGeometry,
       screenshots: [
         validationScreenshot,
         populatedScreenshot,
@@ -271,15 +308,26 @@ test('Web login has no axe violations in settled light and dark states @auth-log
           await Promise.all(
             document.getAnimations().map((animation) => animation.finished.catch(() => undefined)),
           );
-          await new Promise<void>((resolve) => requestAnimationFrame(resolve));
+          await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+        });
+
+        const email = page.getByTestId('auth-email');
+        const fieldGeometry = await readCompactFieldGeometry(email);
+        expect(fieldGeometry).toMatchObject({
+          height: '48px',
+          borderRadius: '10px',
+          paddingInline: '14px',
+          gap: '10px',
+          background: fieldGeometry.expectedSurface,
         });
 
         if (state === 'empty-submit-validation') {
           await page.getByTestId('auth-submit').click();
           await expect(page.getByRole('alert')).toHaveText('Vui lòng nhập email.');
+          await expect(email).toHaveAttribute('aria-invalid', 'true');
+          await expect(email).toHaveAccessibleDescription('Vui lòng nhập email.');
         }
         if (state === 'invalid-email-blur') {
-          const email = page.getByTestId('auth-email');
           await email.fill('invalid-email');
           await email.blur();
           await expect(email).toHaveAttribute('aria-invalid', 'true');
@@ -299,7 +347,14 @@ test('Web login has no axe violations in settled light and dark states @auth-log
           })),
         }));
 
-        measurements.push({ theme, width, state, violationCount: violations.length, violations });
+        measurements.push({
+          theme,
+          width,
+          state,
+          fieldGeometry,
+          violationCount: violations.length,
+          violations,
+        });
       }
     }
   }
@@ -351,6 +406,42 @@ test('LoginPage shared shells pass light/dark Axe states @auth-login-mock', asyn
         await page.setViewportSize({ width: shell.width, height: 900 });
         await page.goto(shell.route);
         await expect(page.getByRole('heading', { name: 'VitTrade' })).toBeVisible();
+        const brandTypography = await page
+          .getByRole('heading', { name: 'VitTrade' })
+          .evaluate((element) => {
+            const style = getComputedStyle(element);
+            return {
+              fontSize: style.fontSize,
+              fontWeight: style.fontWeight,
+              lineHeightRatio: Number(
+                (parseFloat(style.lineHeight) / parseFloat(style.fontSize)).toFixed(3),
+              ),
+            };
+          });
+        expect(brandTypography).toEqual({
+          fontSize: '26px',
+          fontWeight: '700',
+          lineHeightRatio: 1.272,
+        });
+        const subtitleTypography = await page
+          .getByText('Giao dịch thông minh, an toàn, tốc độ', { exact: true })
+          .evaluate((element) => {
+            const style = getComputedStyle(element);
+            return {
+              fontSize: style.fontSize,
+              fontWeight: style.fontWeight,
+              lineHeightRatio: Number(
+                (parseFloat(style.lineHeight) / parseFloat(style.fontSize)).toFixed(3),
+              ),
+            };
+          });
+        expect(subtitleTypography).toEqual({
+          fontSize: '13px',
+          fontWeight: '400',
+          lineHeightRatio: 1.5,
+        });
+        let errorSurface: { background: string; border: string; textFontSize: string } | null =
+          null;
         await page.evaluate((activeTheme) => {
           document.documentElement.classList.toggle('dark', activeTheme === 'dark');
           document.documentElement.classList.toggle('light', activeTheme === 'light');
@@ -359,7 +450,7 @@ test('LoginPage shared shells pass light/dark Axe states @auth-login-mock', asyn
           await Promise.all(
             document.getAnimations().map((animation) => animation.finished.catch(() => undefined)),
           );
-          await new Promise<void>((resolve) => requestAnimationFrame(resolve));
+          await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
         });
 
         if (state === 'empty-submit-validation') {
@@ -367,12 +458,35 @@ test('LoginPage shared shells pass light/dark Axe states @auth-login-mock', asyn
           await expect(page.getByText('Vui lòng nhập email.', { exact: true })).toBeVisible();
         }
         if (state === 'invalid-email-validation') {
-          await page.getByTestId('auth-email').fill('invalid-email');
+          const email = page.getByTestId('auth-email');
+          await email.fill('invalid-email');
           await page.getByTestId('auth-password').fill('Preview-123!');
           await page.getByTestId('auth-submit').click();
           await expect(
             page.getByText('Định dạng email không hợp lệ', { exact: true }),
           ).toBeVisible();
+          const tokenBorderColor = await email.evaluate((element) => {
+            const wrapper = element.parentElement;
+            if (!wrapper) throw new Error('Email input has no shared field wrapper.');
+
+            const probe = document.createElement('div');
+            probe.style.cssText =
+              'position: fixed; visibility: hidden; border-top: 1.5px solid var(--input-border-error)';
+            wrapper.append(probe);
+            const tokenBorderColor = getComputedStyle(probe).borderTopColor;
+            probe.remove();
+
+            return tokenBorderColor;
+          });
+          await expect
+            .poll(() =>
+              email.evaluate((element) => {
+                if (!element.parentElement)
+                  throw new Error('Email input has no shared field wrapper.');
+                return getComputedStyle(element.parentElement).borderTopColor;
+              }),
+            )
+            .toBe(tokenBorderColor);
         }
         if (state === 'invalid-credentials-401') {
           await page.getByTestId('auth-email').fill('mfa@vittrade.local');
@@ -385,9 +499,38 @@ test('LoginPage shared shells pass light/dark Axe states @auth-login-mock', asyn
           );
           await page.getByTestId('auth-submit').click();
           expect((await responsePromise).status()).toBe(401);
-          await expect(page.getByRole('alert')).toHaveText(
+          const alert = page.getByRole('alert');
+          await expect(alert).toHaveText(
             'Đăng nhập thất bại. Vui lòng kiểm tra thông tin và thử lại.',
           );
+          const actualSurface = await alert.evaluate((element) => {
+            const style = getComputedStyle(element);
+            const text = element.querySelector('span');
+            if (!text) throw new Error('Login error alert has no message text.');
+            return {
+              background: style.backgroundColor,
+              border: style.borderTopColor,
+              textFontSize: getComputedStyle(text).fontSize,
+            };
+          });
+          errorSurface = actualSurface;
+          const expectedSurface = await page.evaluate(
+            ({ background, border }) => {
+              const probe = document.createElement('div');
+              probe.style.backgroundColor = background;
+              probe.style.border = `1px solid ${border}`;
+              document.body.append(probe);
+              const style = getComputedStyle(probe);
+              const result = { background: style.backgroundColor, border: style.borderTopColor };
+              probe.remove();
+              return result;
+            },
+            {
+              background: withAlpha('var(--tr-sell)', ALPHA.muted),
+              border: withAlpha('var(--tr-sell)', ALPHA.border),
+            },
+          );
+          expect(actualSurface).toMatchObject({ ...expectedSurface, textFontSize: '12px' });
         }
 
         const result = await new AxeBuilder({ page })
@@ -399,6 +542,9 @@ test('LoginPage shared shells pass light/dark Axe states @auth-login-mock', asyn
           viewportWidth: shell.width,
           theme,
           state,
+          brandTypography,
+          subtitleTypography,
+          errorSurface,
           violationCount: result.violations.length,
           violations: result.violations.map(({ id, impact, nodes }) => ({
             id,

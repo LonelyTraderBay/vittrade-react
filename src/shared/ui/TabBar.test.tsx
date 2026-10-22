@@ -3,6 +3,73 @@ import { describe, expect, it, vi } from 'vitest';
 import { TabBar } from './TabBar';
 
 describe('TabBar', () => {
+  it.each(['underline', 'pill', 'segment'] as const)(
+    'links caller-owned tabs and panels with a named tablist for %s',
+    (variant) => {
+      render(
+        <>
+          <TabBar
+            variant={variant}
+            ariaLabel="Phạm vi dữ liệu"
+            active="first"
+            onChange={() => {}}
+            tabs={[
+              { id: 'first', label: 'Thứ nhất', triggerId: 'first-tab', panelId: 'first-panel' },
+              { id: 'second', label: 'Thứ hai', triggerId: 'second-tab', panelId: 'second-panel' },
+            ]}
+          />
+          <section id="first-panel" role="tabpanel" aria-labelledby="first-tab" tabIndex={0}>
+            First content
+          </section>
+          <section id="second-panel" role="tabpanel" aria-labelledby="second-tab" hidden />
+        </>,
+      );
+      expect(screen.getByRole('tablist', { name: 'Phạm vi dữ liệu' })).toBeInTheDocument();
+      const first = screen.getByRole('tab', { name: 'Thứ nhất' });
+      const second = screen.getByRole('tab', { name: 'Thứ hai' });
+      expect(first).toHaveAttribute('id', 'first-tab');
+      expect(first).toHaveAttribute('aria-controls', 'first-panel');
+      expect(second).toHaveAttribute('id', 'second-tab');
+      expect(second).toHaveAttribute('aria-controls', 'second-panel');
+      if (variant === 'segment') {
+        expect(first.style.transition).toBe('none');
+        expect(second.style.transition).toBe('none');
+      }
+      expect(screen.getByRole('tabpanel', { name: 'Thứ nhất' })).toHaveAttribute(
+        'id',
+        'first-panel',
+      );
+      expect(document.getElementById(second.getAttribute('aria-controls')!)!).toHaveAttribute(
+        'hidden',
+      );
+    },
+  );
+
+  it.each(['underline', 'pill', 'segment'] as const)(
+    'moves keyboard focus with selection for %s tabs',
+    (variant) => {
+      const onChange = vi.fn();
+      render(
+        <TabBar
+          variant={variant}
+          tabs={['first', 'second']}
+          active="first"
+          onChange={onChange}
+          bordered={false}
+        />,
+      );
+      const [first, second] = screen.getAllByRole('tab');
+      expect(first).toHaveAttribute('type', 'button');
+      expect(second).toHaveAttribute('type', 'button');
+      first.focus();
+      fireEvent.keyDown(first, { key: 'ArrowRight' });
+      expect(onChange).toHaveBeenLastCalledWith('second');
+      expect(second).toHaveFocus();
+      fireEvent.keyDown(second, { key: 'Escape' });
+      expect(onChange).toHaveBeenCalledTimes(1);
+    },
+  );
+
   it('exposes the selected tab and wraps keyboard navigation in both directions', () => {
     const onChange = vi.fn();
     const { rerender } = render(

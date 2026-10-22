@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "id": "EV-20261014-002",
+  "taskId": "C05",
+  "stepId": "C05.03",
+  "kind": "browser",
+  "observedAt": "2026-10-13T21:32:22Z",
+  "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
+  "sourceState": "Dirty working tree; Chromium review used the local route catalog and local development mock/MSW only.",
+  "dirtyFileHashes": {
+    "src/app/router/index.ts": "2bdc346e5c9a9b74599860ea89f29bdfb5e2af9787248942fe5f097c89d6267f",
+    "src/features/profile/pages/EditProfileContractPage.test.tsx": "121c1fb7cbf07af1c27baadf4a6b34999e35377507f882731889efbab1132d90",
+    "src/features/trading/components/OrderModifySheet.test.tsx": "1937a288baaf45581e6ce05b21963b54d030648bdcc79ebc996a3e89c37f3798",
+    "src/features/trading/components/TradeTerminal.readonly-boundary.test.tsx": "a6688a654f6efdf29049b819d48b9a561a5d3d488667083b0a02a5e995c3d6b5",
+    "src/features/trading/pages/OrdersHistoryPage.test.tsx": "d9e9af98e7cdc9756e1f98b60af3698660a01fc1cc28e24ca299fe1bfa9db06d"
+  },
+  "commandOrSteps": "node docs/architecture/production-readiness/evidence/C05/run-wide-ui-a11y-review-2026-10-14.cjs; Playwright Chromium at 1440x900 against http://127.0.0.1:4173; repeat with forced dark and light root themes; block external requests.",
+  "environment": "Local desktop browser, Chromium, 1440x900, 372 resolved /w/ routes per theme, Vite development server, mock/MSW; backend not contacted; external requests blocked.",
+  "expected": "Routes resolve to their declared page, no horizontal overflow or browser page errors, and no automated axe violation nodes in the measured desktop themes.",
+  "actual": {
+    "dark": {
+      "observedAt": "2026-10-13T21:17:25.272Z",
+      "reportPath": "C:/Users/Joker-PC/.codex/visualizations/2026/10/14/01a13394-3caa-7930-a58f-e3e6c61b066f/vittrade-audit/ui-wide-final-dark/ui-a11y-wide-report.json",
+      "sha256": "4a6379b0c9b9667237e8a0f8542d1f6e0dd21b14c2d4e0f73e1ad6ef26249881",
+      "routes": 372,
+      "routeMismatches": 0,
+      "notFound": 0,
+      "horizontalOverflow": 0,
+      "pageErrors": 0,
+      "axeViolationNodes": 0,
+      "consoleErrors": 35,
+      "localApiResponses": { "total": 158, "200": 123, "404": 10, "503": 25 },
+      "externalRequestAttemptsBlocked": { "total": 375, "fonts.googleapis.com": 372, "cryptologos.cc": 3 }
+    },
+    "light": {
+      "observedAt": "2026-10-13T21:22:32.101Z",
+      "reportPath": "C:/Users/Joker-PC/.codex/visualizations/2026/10/14/01a13394-3caa-7930-a58f-e3e6c61b066f/vittrade-audit/ui-wide-final-light/ui-a11y-wide-report.json",
+      "sha256": "5d080d4589278b43e39bc32e2e564e611f48d9af41d4395b352de6a4b9eeaa5e",
+      "routes": 372,
+      "routeMismatches": 0,
+      "notFound": 0,
+      "horizontalOverflow": 0,
+      "pageErrors": 0,
+      "axeViolationNodes": 0,
+      "consoleErrors": 34,
+      "localApiResponses": { "total": 157, "200": 123, "404": 10, "503": 24 },
+      "externalRequestAttemptsBlocked": { "total": 375, "fonts.googleapis.com": 372, "cryptologos.cc": 3 }
+    },
+    "local404Paths": {
+      "/api/p2p/ads/ad001/analytics": 1,
+      "/api/trading/copy/providers/provider-1": 8,
+      "/api/trading/copy/providers/trader-1": 1
+    },
+    "local503Paths": [
+      "/api/market/calendar",
+      "/api/market/correlations",
+      "/api/market/derivatives",
+      "/api/market/news",
+      "/api/market/signals",
+      "/api/market/sentiment",
+      "/api/market/unlocks",
+      "/api/trading/positions",
+      "/api/wallet/network-status"
+    ]
+  },
+  "result": "pass",
+  "artifact": "C:/Users/Joker-PC/.codex/visualizations/2026/10/14/01a13394-3caa-7930-a58f-e3e6c61b066f/vittrade-audit/ui-wide-final-dark/ui-a11y-wide-report.json; C:/Users/Joker-PC/.codex/visualizations/2026/10/14/01a13394-3caa-7930-a58f-e3e6c61b066f/vittrade-audit/ui-wide-final-light/ui-a11y-wide-report.json",
+  "notes": "Pass applies only to measured route resolution, desktop overflow/page-error and axe-node checks against local mocks. Console errors correspond to the listed local 404/503 responses; external font and logo requests were blocked but attempted. These route/error fixtures and asset-hosting dependencies require follow-up; no backend/staging/API behavior, mobile viewport, screenshot baseline, formal 0/128 acceptance, or human acceptance is certified. C05.03 remains in progress."
+}

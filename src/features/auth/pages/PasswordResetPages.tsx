@@ -8,6 +8,7 @@ import { PageContent } from '@/shared/ui/layout/PageContent';
 import { PageLayout } from '@/shared/ui/layout/PageLayout';
 import { useRoutePrefix } from '@/shared/navigation/useRoutePrefix';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
+import { textRoleSize } from '@/shared/theme/typography';
 import { passwordResetApi } from '../api/password-reset-api';
 
 const PASSWORD_RULES = [
@@ -73,8 +74,15 @@ export function ForgotPasswordContractPage() {
     <PageLayout>
       <Header title="Quên mật khẩu" subtitle="Xác thực · Bảo mật" back />
       <PageContent padding="relaxed" gap="relaxed">
-        {error && (
-          <p role="alert" style={{ color: '#EF4444', fontSize: 13, textAlign: 'center' }}>
+        {error && step !== 'otp' && (
+          <p
+            role="alert"
+            style={{
+              color: colors.errorText,
+              fontSize: textRoleSize('caption'),
+              textAlign: 'center',
+            }}
+          >
             {error}
           </p>
         )}
@@ -125,30 +133,24 @@ export function ForgotPasswordContractPage() {
                 Mã 6 số đã được gửi đến <span style={{ color: colors.text1 }}>{email}</span>
               </p>
             </div>
-            <label style={{ color: colors.text2, fontSize: 13 }}>
-              Mã OTP
-              <input
-                type="tel"
-                inputMode="numeric"
-                maxLength={6}
-                autoComplete="one-time-code"
-                pattern="[0-9]{6}"
-                required
-                value={otp}
-                onChange={(event) => setOtp(event.target.value.replace(/\D/g, '').slice(0, 6))}
-                className="mt-2 w-full rounded-2xl text-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
-                aria-label="Mã OTP"
-                style={{
-                  background: colors.surface2,
-                  border: `1.5px solid ${colors.borderSolid}`,
-                  color: colors.text1,
-                  fontSize: 24,
-                  fontWeight: 700,
-                  letterSpacing: 8,
-                  height: 52,
-                }}
-              />
-            </label>
+            <InputField
+              label="Mã OTP"
+              type="tel"
+              inputMode="numeric"
+              maxLength={6}
+              autoComplete="one-time-code"
+              pattern="[0-9]{6}"
+              required
+              value={otp}
+              error={error || undefined}
+              onChange={(event) => setOtp(event.target.value.replace(/\D/g, '').slice(0, 6))}
+              style={{
+                fontSize: 24,
+                fontWeight: 700,
+                letterSpacing: 8,
+                textAlign: 'center',
+              }}
+            />
             <CTAButton
               type="submit"
               disabled={otp.length !== 6}
@@ -354,8 +356,8 @@ function PasswordForm({
           const pass = rule.test(newPassword);
           return (
             <div key={rule.id} className="flex items-center gap-2">
-              <Check size={12} color={pass ? '#10B981' : colors.text3} />
-              <span style={{ color: pass ? '#10B981' : colors.text2, fontSize: 12 }}>
+              <Check size={12} color={pass ? colors.successText : colors.text3} />
+              <span style={{ color: pass ? colors.successText : colors.text2, fontSize: 12 }}>
                 {rule.label}
               </span>
             </div>
@@ -402,7 +404,7 @@ function SuccessState({
         className="flex h-24 w-24 items-center justify-center rounded-full"
         style={{ background: 'rgba(16,185,129,0.15)', border: '2px solid rgba(16,185,129,0.4)' }}
       >
-        <CheckCircle size={48} color="#10B981" />
+        <CheckCircle size={48} color={colors.successText} />
       </div>
       <div className="text-center">
         <h2

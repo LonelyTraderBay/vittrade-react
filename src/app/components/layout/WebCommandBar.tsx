@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { Search, Bell, Moon, Sun, ChevronRight } from 'lucide-react';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
+import { WEB_AVATAR_GRADIENT } from '@/shared/theme/webTokens';
 import { useTheme } from '@/shared/theme/useTheme';
 import { useAuth } from '@/shared/session/useAuth';
 import { useUI } from '../../hooks/useUI';
@@ -36,6 +37,7 @@ const SEGMENT_LABELS: Record<string, string> = {
   dca: 'DCA',
   profile: 'Tài khoản',
   p2p: 'P2P',
+  news: 'Tin tức',
   arena: 'Arena',
   earn: 'Earn',
   notifications: 'Thông báo',
@@ -129,7 +131,8 @@ export function WebCommandBar() {
   }, [isDark, setTheme]);
 
   return (
-    <div
+    <header
+      aria-label="Thanh công cụ chính"
       className="flex items-center justify-between px-6 shrink-0 gap-4"
       style={{
         height: WEB_COMMAND_BAR_HEIGHT,
@@ -296,7 +299,7 @@ export function WebCommandBar() {
             style={{
               width: 32,
               height: 32,
-              background: 'linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%)',
+              background: WEB_AVATAR_GRADIENT,
             }}
           >
             <span style={{ color: '#fff', fontSize: 12, fontWeight: 700 }}>
@@ -314,6 +317,6 @@ export function WebCommandBar() {
           </div>
         </button>
       </div>
-    </div>
+    </header>
   );
 }

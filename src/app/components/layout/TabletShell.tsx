@@ -1,11 +1,13 @@
 import React, { Suspense } from 'react';
-import { Outlet } from 'react-router';
+import { Outlet, useLocation } from 'react-router';
 import { TabletSidebar } from './TabletSidebar';
 import { TabletTopBar } from './TabletTopBar';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { useUI } from '../../hooks/useUI';
 import { PlatformProvider } from '../../hooks/usePlatform';
 import type { PlatformInfo } from '../../hooks/usePlatform';
+import { SHELL_PAGE_GUTTER_OWNER_STYLE } from '@/shared/ui/layout/pageGutter';
+import { PreviewChromeSlot } from '@/shared/ui/layout/PreviewChromeSlot';
 
 /**
  * ══════════════════════════════════════════════════════════
@@ -83,6 +85,7 @@ function TabletLoadingFallback() {
 }
 
 export function TabletShell() {
+  const isAuthRoute = /^\/t\/auth(?:\/|$)/.test(useLocation().pathname);
   const c = useThemeColors();
   const { isOffline } = useUI();
 
@@ -100,6 +103,7 @@ export function TabletShell() {
         <div className="flex-1 flex flex-col overflow-hidden min-w-0">
           {/* Top Bar */}
           <TabletTopBar />
+          {!isAuthRoute && <PreviewChromeSlot />}
 
           {/* Offline Banner */}
           {isOffline && (
@@ -125,6 +129,7 @@ export function TabletShell() {
           >
             <div
               style={{
+                ...SHELL_PAGE_GUTTER_OWNER_STYLE,
                 maxWidth: TABLET_PLATFORM.contentMaxWidth,
                 margin: '0 auto',
                 padding: `0 ${TABLET_PLATFORM.contentPadding}px`,

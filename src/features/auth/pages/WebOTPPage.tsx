@@ -10,6 +10,7 @@ import { parseLoginMfaChallengeState } from '../lib/login-mfa-route-state';
 import { parseRegistrationChallengeState } from '../lib/registration-route-state';
 import type { LoginMfaChallenge } from '@/shared/session/session-types';
 import type { RegistrationChallengeState } from '../model/registration-types';
+import { getLoginReturnPath } from '../lib/login-return-path';
 
 /** Web OTP flow for server-issued login MFA and registration challenges. */
 
@@ -22,6 +23,7 @@ export function WebOTPPage() {
   const location = useLocation();
   const registrationChallenge = parseRegistrationChallengeState(location.state);
   const loginChallenge = registrationChallenge ? null : parseLoginMfaChallengeState(location.state);
+  const returnTo = getLoginReturnPath(location.state, '/w/home');
 
   if (registrationChallenge) {
     return (
@@ -29,12 +31,29 @@ export function WebOTPPage() {
     );
   }
   if (loginChallenge) {
-    return <WebOTPChallengePage challenge={{ kind: 'login', state: loginChallenge }} />;
+    return (
+      <WebOTPChallengePage
+        challenge={{ kind: 'login', state: loginChallenge }}
+        returnTo={returnTo}
+      />
+    );
   }
-  return <Navigate to="/w/auth/login" replace />;
+  return (
+    <Navigate
+      to="/w/auth/login"
+      replace
+      state={returnTo !== '/w/home' ? { from: returnTo } : undefined}
+    />
+  );
 }
 
-function WebOTPChallengePage({ challenge }: { challenge: WebOTPChallenge }) {
+function WebOTPChallengePage({
+  challenge,
+  returnTo = '/w/home',
+}: {
+  challenge: WebOTPChallenge;
+  returnTo?: string;
+}) {
   const navigate = useNavigate();
   const { verifyMfa, verifyLoginMfa } = useAuth();
   const c = useThemeColors();
@@ -73,7 +92,10 @@ function WebOTPChallengePage({ challenge }: { challenge: WebOTPChallenge }) {
     const checkExpiry = () => {
       const remaining = Date.parse(challengeExpiry) - Date.now();
       if (remaining <= 0) {
-        navigate(registrationFlow ? '/w/auth/register' : '/w/auth/login', { replace: true });
+        navigate(registrationFlow ? '/w/auth/register' : '/w/auth/login', {
+          replace: true,
+          state: !registrationFlow && returnTo !== '/w/home' ? { from: returnTo } : undefined,
+        });
       } else {
         timeout = setTimeout(checkExpiry, Math.min(remaining, 2_147_483_647));
       }
@@ -83,14 +105,17 @@ function WebOTPChallengePage({ challenge }: { challenge: WebOTPChallenge }) {
       Math.min(Math.max(0, Date.parse(challengeExpiry) - Date.now()), 2_147_483_647),
     );
     return () => clearTimeout(timeout);
-  }, [challengeExpiry, navigate, registrationFlow]);
+  }, [challengeExpiry, navigate, registrationFlow, returnTo]);
 
   /* ─── Verify OTP ─── */
   const handleVerify = useCallback(
     async (code: string) => {
       if (verifyInFlight.current || isLoading) return;
       if (Date.now() >= Date.parse(challengeExpiry)) {
-        navigate(registrationFlow ? '/w/auth/register' : '/w/auth/login', { replace: true });
+        navigate(registrationFlow ? '/w/auth/register' : '/w/auth/login', {
+          replace: true,
+          state: !registrationFlow && returnTo !== '/w/home' ? { from: returnTo } : undefined,
+        });
         return;
       }
       verifyInFlight.current = true;
@@ -113,7 +138,7 @@ function WebOTPChallengePage({ challenge }: { challenge: WebOTPChallenge }) {
           if (purpose === 'register') {
             navigate('/w/auth/2fa-setup', { replace: true });
           } else {
-            navigate('/w/home', { replace: true });
+            navigate(returnTo, { replace: true });
           }
         }, 1800);
       } catch (verifyError) {
@@ -135,7 +160,10 @@ function WebOTPChallengePage({ challenge }: { challenge: WebOTPChallenge }) {
           }
         } else if (challenge.kind === 'login' && isApiError(verifyError)) {
           if (verifyError.status === 410) {
-            navigate('/w/auth/login', { replace: true });
+            navigate('/w/auth/login', {
+              replace: true,
+              state: returnTo !== '/w/home' ? { from: returnTo } : undefined,
+            });
             verifyInFlight.current = false;
             setIsLoading(false);
             return;
@@ -173,6 +201,7 @@ function WebOTPChallengePage({ challenge }: { challenge: WebOTPChallenge }) {
       verifyLoginMfa,
       registrationFlow,
       challengeExpiry,
+      returnTo,
     ],
   );
 
@@ -249,7 +278,11 @@ function WebOTPChallengePage({ challenge }: { challenge: WebOTPChallenge }) {
       <WebAuthFormShell textColor={c.text1}>
         {/* Back link */}
         <button
-          onClick={() => navigate(backRoute)}
+          onClick={() =>
+            navigate(backRoute, {
+              state: !registrationFlow && returnTo !== '/w/home' ? { from: returnTo } : undefined,
+            })
+          }
           className="flex items-center hover:underline"
           style={{
             gap: 6,

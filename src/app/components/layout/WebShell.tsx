@@ -6,6 +6,9 @@ import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { useUI } from '../../hooks/useUI';
 import { PlatformProvider } from '../../hooks/usePlatform';
 import type { PlatformInfo } from '../../hooks/usePlatform';
+import { useBreakpoint } from '../../hooks/useBreakpoint';
+import { StatusBar } from './StatusBar';
+import { BottomNav } from './BottomNav';
 import {
   WEB_SIDEBAR_WIDTH,
   WEB_COMMAND_BAR_HEIGHT,
@@ -13,6 +16,8 @@ import {
   WEB_CONTENT_PADDING,
   isFullBleedRoute,
 } from './webConstants';
+import { SHELL_PAGE_GUTTER_OWNER_STYLE } from '@/shared/ui/layout/pageGutter';
+import { PreviewChromeSlot } from '@/shared/ui/layout/PreviewChromeSlot';
 
 /**
  * ══════════════════════════════════════════════════════════
@@ -90,6 +95,7 @@ function WebLoadingFallback() {
 export function WebShell() {
   const c = useThemeColors();
   const { isOffline } = useUI();
+  const { isMobile } = useBreakpoint();
   const location = useLocation();
   const fullBleed = isFullBleedRoute(location.pathname);
   const isAuthRoute = location.pathname.startsWith('/w/auth');
@@ -98,8 +104,13 @@ export function WebShell() {
   if (isAuthRoute) {
     return (
       <PlatformProvider value={WEB_PLATFORM}>
-        <div data-platform="web" className="h-screen overflow-hidden" style={{ background: c.bg }}>
-          <div className="h-full overflow-y-auto scrollbar-none">
+        <div
+          data-platform="web"
+          className="flex flex-col h-screen overflow-hidden"
+          style={{ background: c.bg }}
+        >
+          <PreviewChromeSlot />
+          <div className="min-h-0 flex-1 overflow-y-auto scrollbar-none">
             <Suspense fallback={<WebLoadingFallback />}>
               <Outlet />
             </Suspense>
@@ -114,15 +125,16 @@ export function WebShell() {
     <PlatformProvider value={WEB_PLATFORM}>
       <div
         data-platform="web"
-        className="flex h-screen overflow-hidden"
+        className="relative flex h-screen overflow-hidden"
         style={{ background: c.bg }}
       >
         {/* ─── Full Sidebar ─── */}
-        <WebSidebar />
+        {!isMobile && <WebSidebar />}
 
         {/* ─── Main Area (Command Bar + Content) ─── */}
         <div className="flex-1 flex flex-col overflow-hidden min-w-0">
-          <WebCommandBar />
+          {isMobile ? <StatusBar /> : <WebCommandBar />}
+          <PreviewChromeSlot />
 
           {/* Offline Banner */}
           {isOffline && (
@@ -144,11 +156,11 @@ export function WebShell() {
           {/* Main scrollable content */}
           <div
             className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-none"
-            style={{ overscrollBehaviorY: 'contain' }}
+            style={{ overscrollBehaviorY: 'contain', paddingBottom: isMobile ? 96 : undefined }}
           >
             {fullBleed ? (
               /* Full-bleed: no maxWidth, no padding — page controls its own layout + scroll */
-              <div style={{ minHeight: '100%' }}>
+              <div className={isMobile ? 'pb-24' : undefined} style={{ minHeight: '100%' }}>
                 <Suspense fallback={<WebLoadingFallback />}>
                   <Outlet />
                 </Suspense>
@@ -157,9 +169,10 @@ export function WebShell() {
               /* Standard: centered with maxWidth + padding */
               <div
                 style={{
+                  ...SHELL_PAGE_GUTTER_OWNER_STYLE,
                   maxWidth: WEB_CONTENT_MAX_WIDTH,
                   margin: '0 auto',
-                  padding: `0 ${WEB_CONTENT_PADDING}px`,
+                  padding: `0 ${isMobile ? 16 : WEB_CONTENT_PADDING}px`,
                   minHeight: '100%',
                 }}
               >
@@ -173,6 +186,8 @@ export function WebShell() {
 
         {/* Portal root for modal dialogs */}
         <div id="sheet-portal" />
+
+        {isMobile && <BottomNav />}
       </div>
     </PlatformProvider>
   );

@@ -10,7 +10,6 @@ interface Props {
   copyError: string;
   handleCopyKey: () => Promise<void>;
   setStep: React.Dispatch<React.SetStateAction<number>>;
-  inputRefs: React.MutableRefObject<(HTMLInputElement | null)[]>;
 }
 function QRCodeSVG({ src, isLoading }: { src?: string; isLoading: boolean }) {
   return src ? (
@@ -27,7 +26,7 @@ function QRCodeSVG({ src, isLoading }: { src?: string; isLoading: boolean }) {
 }
 
 export function Web2FASetupQrStep(props: Props) {
-  const { c, setup, isLoading, copied, copyError, handleCopyKey, setStep, inputRefs } = props;
+  const { c, setup, isLoading, copied, copyError, handleCopyKey, setStep } = props;
   return (
     <div>
       {/* Header */}
@@ -164,10 +163,7 @@ export function Web2FASetupQrStep(props: Props) {
       {/* Next button */}
       <button
         type="button"
-        onClick={() => {
-          setStep(1);
-          setTimeout(() => inputRefs.current[0]?.focus(), 200);
-        }}
+        onClick={() => setStep(1)}
         disabled={!setup}
         className="flex items-center justify-center gap-2"
         style={{

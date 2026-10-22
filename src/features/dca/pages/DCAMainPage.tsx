@@ -9,6 +9,7 @@ import { DCACreatePlanSheet } from '../components/DCACreatePlanSheet';
 import { DCAAdvancedToolsSection } from '../components/DCAAdvancedToolsSection';
 import { DCAExpandedChartSheet } from '../components/DCAExpandedChartSheet';
 import { BottomSheetV2 } from '@/shared/ui/BottomSheetV2';
+import { CTAButton } from '@/shared/ui/CTAButton';
 import { PullToRefresh } from '@/shared/ui/PullToRefresh';
 import { useHaptic } from '@/shared/hooks/useHaptic';
 import { useRoutePrefix } from '@/shared/navigation/useRoutePrefix';
@@ -117,19 +118,15 @@ function DCAPageContent({ isEnabled, isDevelopment, analytics, funnels }: DCAMai
     trackPreselectedCoinUsed,
   } = funnels;
 
-  // Track page view in funnels
   useEffect(() => {
     trackWalletFunnelPageView();
   }, [trackWalletFunnelPageView]);
-  // ═══════════════════════════════════════════════════════════
-  // Deep link handling — Enterprise-grade one-time initialization
-  // ═══════════════════════════════════════════════════════════
   // Đọc deep-link state một lần rồi xóa khỏi history entry hiện tại.
   // Không dùng storage phía client cho dữ liệu điều hướng hay dữ liệu giao dịch.
   // Vẫn hỗ trợ ?coin=BTC để tương thích URL cũ.
-  // ═══════════════════════════════════════════════════════════
   const deepLinkProcessedRef = useRef(false);
-  const createAttemptKey = useRef<{ signature: string; key: string } | null>(null);
+  const actionInFlight = useRef(false);
+  const createAttemptKeys = useRef(new Map<string, string>());
   const updateAttemptKeys = useRef(new Map<string, string>());
   const deleteAttemptKeys = useRef(new Map<string, string>());
   const statePreselect = readDcaPreselectedCoin(location.state);
@@ -142,7 +139,6 @@ function DCAPageContent({ isEnabled, isDevelopment, analytics, funnels }: DCAMai
     const coin = statePreselect || queryPreselect;
     if (!coin) return;
 
-    // Mark as processed
     deepLinkProcessedRef.current = true;
 
     // Xóa state sau khi tiêu thụ để back/forward không mở lại form ngoài ý muốn.
@@ -153,7 +149,6 @@ function DCAPageContent({ isEnabled, isDevelopment, analytics, funnels }: DCAMai
     setPreselectedCoin(coin);
     setCreateSheetOpen(true);
 
-    // Track deep link usage
     trackDeepLink(coin, true);
     trackAssetFunnelCreateSheet();
   }, [
@@ -167,19 +162,26 @@ function DCAPageContent({ isEnabled, isDevelopment, analytics, funnels }: DCAMai
     canManageDCA,
   ]);
 
-  const handleCreatePlan = async (request: CreateDCAPlanRequest) => {
+  const handleCreatePlan = async (request: CreateDCAPlanRequest): Promise<boolean> => {
+    if (
+      !canManageDCA ||
+      !isDCAEnabled ||
+      actionInFlight.current ||
+      !Number.isFinite(request.amountPerPurchase) ||
+      request.amountPerPurchase <= 0
+    )
+      return false;
+    actionInFlight.current = true;
     const signature = JSON.stringify(request);
-    if (createAttemptKey.current?.signature !== signature) {
-      createAttemptKey.current = { signature, key: crypto.randomUUID() };
-    }
+    const key = createAttemptKeys.current.get(signature) ?? crypto.randomUUID();
+    createAttemptKeys.current.set(signature, key);
     try {
       const createdPlan = await createPlanMutation.mutateAsync({
         request,
-        idempotencyKey: createAttemptKey.current.key,
+        idempotencyKey: key,
       });
       toast.success('Tạo kế hoạch DCA thành công!');
 
-      // Track plan creation in analytics
       trackPlanCreation(
         createdPlan.id,
         request.coinSymbol,
@@ -188,37 +190,54 @@ function DCAPageContent({ isEnabled, isDevelopment, analytics, funnels }: DCAMai
         preselectedCoin ? 'asset_detail' : 'dca_page',
       );
 
-      // Track if preselected coin was used
       if (preselectedCoin && request.coinSymbol === preselectedCoin) {
         trackPreselectedCoinUsed();
       }
 
-      createAttemptKey.current = null;
+      createAttemptKeys.current.delete(signature);
       setCreateSheetOpen(false);
       setPreselectedCoin(null);
+      return true;
     } catch {
       toast.error('Không thể tạo kế hoạch. Vui lòng thử lại.');
+      return false;
+    } finally {
+      actionInFlight.current = false;
     }
   };
 
   const handleToggleStatus = async (plan: DCAPlan) => {
+    if (
+      !canManageDCA ||
+      !isDCAEnabled ||
+      actionInFlight.current ||
+      plan.status === 'error' ||
+      !plans.some((item) => item.id === plan.id)
+    )
+      return;
+    actionInFlight.current = true;
     try {
       const newStatus = plan.status === 'active' ? 'paused' : 'active';
       const signature = JSON.stringify({ planId: plan.id, status: newStatus });
       const idempotencyKey = updateAttemptKeys.current.get(signature) ?? crypto.randomUUID();
       updateAttemptKeys.current.set(signature, idempotencyKey);
-      await updatePlanMutation.mutateAsync({
+      const receipt = await updatePlanMutation.mutateAsync({
         planId: plan.id,
         request: { status: newStatus },
         idempotencyKey,
       });
+      if (receipt.id !== plan.id || receipt.status !== newStatus) {
+        toast.error('Backend chưa xác nhận trạng thái yêu cầu. Vui lòng kiểm tra lại kế hoạch.');
+        return;
+      }
 
-      // Track status change
       trackPlanStatusChange(plan.id, newStatus);
       updateAttemptKeys.current.delete(signature);
       toast.success(plan.status === 'active' ? 'Đã tạm dừng kế hoạch' : 'Đã kích hoạt kế hoạch');
     } catch {
       toast.error('Không thể cập nhật kế hoạch');
+    } finally {
+      actionInFlight.current = false;
     }
   };
 
@@ -227,6 +246,9 @@ function DCAPageContent({ isEnabled, isDevelopment, analytics, funnels }: DCAMai
       toast.error('Bạn không có quyền quản lý kế hoạch DCA.');
       return;
     }
+    if (!isDCAEnabled || actionInFlight.current || !plans.some((plan) => plan.id === planId))
+      return;
+    actionInFlight.current = true;
     const idempotencyKey = deleteAttemptKeys.current.get(planId) ?? crypto.randomUUID();
     deleteAttemptKeys.current.set(planId, idempotencyKey);
     try {
@@ -235,7 +257,6 @@ function DCAPageContent({ isEnabled, isDevelopment, analytics, funnels }: DCAMai
         idempotencyKey,
       });
 
-      // Track plan deletion
       trackPlanDeletion(planId, 'user_initiated');
 
       deleteAttemptKeys.current.delete(planId);
@@ -243,6 +264,8 @@ function DCAPageContent({ isEnabled, isDevelopment, analytics, funnels }: DCAMai
       setDeleteConfirmPlanId(null);
     } catch {
       toast.error('Không thể xóa kế hoạch');
+    } finally {
+      actionInFlight.current = false;
     }
   };
 
@@ -276,7 +299,6 @@ function DCAPageContent({ isEnabled, isDevelopment, analytics, funnels }: DCAMai
     return portfolioHistory.filter((point) => point.date >= cutoff);
   }, [portfolioHistory, chartTimeframe]);
 
-  // Timeframe label map
   const TIMEFRAME_OPTIONS: { key: '7d' | '30d' | '90d' | 'all'; label: string }[] = [
     { key: '7d', label: '7D' },
     { key: '30d', label: '30D' },
@@ -284,7 +306,6 @@ function DCAPageContent({ isEnabled, isDevelopment, analytics, funnels }: DCAMai
     { key: 'all', label: 'Tất cả' },
   ];
 
-  // Compute P&L for the selected timeframe
   const timeframePnL = useMemo(() => {
     if (filteredChartData.length < 2) return null;
 
@@ -294,7 +315,6 @@ function DCAPageContent({ isEnabled, isDevelopment, analytics, funnels }: DCAMai
     const valueChange = last.portfolioValue - first.portfolioValue;
     const percentChange = first.portfolioValue > 0 ? (valueChange / first.portfolioValue) * 100 : 0;
 
-    // Also calculate invested change within the period
     const investedChange = last.totalInvested - first.totalInvested;
 
     return {
@@ -305,7 +325,6 @@ function DCAPageContent({ isEnabled, isDevelopment, analytics, funnels }: DCAMai
     };
   }, [filteredChartData]);
 
-  // Subtitle for chart based on timeframe
   const TIMEFRAME_SUBTITLE: Record<string, string> = {
     '7d': '7 ngày qua',
     '30d': '30 ngày qua',
@@ -313,7 +332,6 @@ function DCAPageContent({ isEnabled, isDevelopment, analytics, funnels }: DCAMai
     all: 'Toàn bộ',
   };
 
-  // Feature flag gate: Show disabled message if DCA is not enabled
   if (!isDCAEnabled) {
     return (
       <div className="min-h-full flex items-center justify-center p-5">
@@ -324,13 +342,7 @@ function DCAPageContent({ isEnabled, isDevelopment, analytics, funnels }: DCAMai
           <p className="text-[14px] mb-4" style={{ color: c.text2 }}>
             Chúng tôi đang cập nhật tính năng này. Vui lòng quay lại sau.
           </p>
-          <button
-            onClick={() => navigate(-1)}
-            className="px-6 py-2 text-white rounded-lg"
-            style={{ background: c.primary }}
-          >
-            Quay lại
-          </button>
+          <CTAButton onClick={() => navigate(-1)} className="mx-auto max-w-xs" label="Quay lại" />
         </div>
       </div>
     );
@@ -498,19 +510,18 @@ function DCAPageContent({ isEnabled, isDevelopment, analytics, funnels }: DCAMai
       {/* Bottom CTA */}
       {canManageDCA && (
         <div className="fixed left-0 right-0 flex justify-center px-5 z-10" style={{ bottom: 92 }}>
-          <button
+          <CTAButton
             onClick={() => {
               hapticSelection();
               setCreateSheetOpen(true);
               trackEvent('dca_create_sheet_opened', { source: 'bottom_cta' });
               trackWalletFunnelCreateSheet();
             }}
-            className="w-[calc(100%-56px)] max-w-[320px] h-[48px] rounded-[14px] text-white text-[14px] flex items-center justify-center gap-2 hover:opacity-90 transition-opacity active:scale-[0.98]"
-            style={{ fontWeight: 600, background: c.primary }}
-          >
-            <Plus className="w-5 h-5" />
-            Tạo kế hoạch mới
-          </button>
+            fullWidth={false}
+            className="w-[calc(100%-56px)] max-w-[320px]"
+            icon={Plus}
+            label="Tạo kế hoạch mới"
+          />
         </div>
       )}
 
@@ -523,6 +534,7 @@ function DCAPageContent({ isEnabled, isDevelopment, analytics, funnels }: DCAMai
         }}
         onCreate={handleCreatePlan}
         isCreating={isCreating}
+        creationUnconfirmed={createPlanMutation.isError}
         preselectedCoin={preselectedCoin}
       />
 
@@ -539,23 +551,22 @@ function DCAPageContent({ isEnabled, isDevelopment, analytics, funnels }: DCAMai
           </p>
 
           <div className="flex gap-3">
-            <button
+            <CTAButton
               onClick={() => setDeleteConfirmPlanId(null)}
               disabled={isLoading}
-              className="flex-1 h-12 rounded-xl text-[14px] transition-colors disabled:opacity-50"
-              style={{ fontWeight: 500, background: c.surface2, color: c.text1 }}
-            >
-              Hủy
-            </button>
+              variant="secondary"
+              className="flex-1"
+              label="Hủy"
+            />
             {/* The sheet renders its actions only while a selected plan ID keeps it open. */}
-            <button
+            <CTAButton
               onClick={() => handleDelete(deleteConfirmPlanId!)}
               disabled={isLoading}
-              className="flex-1 h-12 rounded-xl text-white text-[14px] hover:opacity-90 transition-opacity disabled:opacity-50"
-              style={{ fontWeight: 500, background: c.error }}
-            >
-              {isLoading ? 'Đang xóa...' : 'Xóa'}
-            </button>
+              variant="danger"
+              loading={isLoading}
+              className="flex-1"
+              label={isLoading ? 'Đang xóa...' : 'Xóa'}
+            />
           </div>
         </div>
       </BottomSheetV2>

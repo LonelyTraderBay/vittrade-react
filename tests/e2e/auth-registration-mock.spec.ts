@@ -73,10 +73,14 @@ test('registration uses the real development MSW handler across shells @auth-moc
     await expect(page.getByRole('alert')).toHaveCount(0);
 
     const previewControls = page.getByTestId('dev-preview-controls');
+    await expect(previewControls).toHaveCSS('position', 'relative');
+    await expect(
+      page.locator('[data-preview-chrome-host] [data-testid="dev-preview-controls"]'),
+    ).toHaveCount(1);
     const previewPosition = await previewControls.evaluate(
       (element) => getComputedStyle(element).position,
     );
-    expect(previewPosition).toBe('static');
+    expect(previewPosition).toBe('relative');
     const submitBox = await submit.boundingBox();
     const previewBox = await previewControls.boundingBox();
     expect(submitBox).not.toBeNull();
@@ -111,12 +115,11 @@ test('registration uses the real development MSW handler across shells @auth-moc
     await expect(page.getByRole('alert')).toHaveCount(0);
     await page.getByRole('button', { name: 'Thu gọn' }).click();
 
-    const registrationFailurePromise = page.waitForEvent(
-      'requestfailed',
-      (request) =>
+    const registrationFailurePromise = page.waitForEvent('requestfailed', {
+      predicate: (request) =>
         request.method() === 'POST' && new URL(request.url()).pathname.endsWith('/auth/register'),
-      { timeout: 5_000 },
-    );
+      timeout: 5_000,
+    });
     await submit.click();
     await registrationFailurePromise;
     await expect(
@@ -323,7 +326,7 @@ test('Web registration has no axe violations in settled light and dark states @a
   ).toEqual([]);
 });
 
-test('shared RegisterPage has no axe violations across shell validation states @auth-mock', async ({
+test('shared RegistrationForm has no axe violations across shell validation states @auth-mock', async ({
   page,
 }, testInfo) => {
   test.setTimeout(240_000);
@@ -331,6 +334,7 @@ test('shared RegisterPage has no axe violations across shell validation states @
     { name: 'phone', route: '/auth/register', width: 390, height: 844 },
     { name: 'tablet', route: '/t/auth/register', width: 768, height: 900 },
     { name: 'responsive', route: '/r/auth/register', width: 1024, height: 900 },
+    { name: 'web', route: '/w/auth/register', width: 1440, height: 900 },
   ] as const;
   const themes = ['light', 'dark'] as const;
   const states = [
@@ -348,6 +352,7 @@ test('shared RegisterPage has no axe violations across shell validation states @
     ['DifferentMockPass123!', '[redacted fixture password]'],
   ] as const;
   const measurements: Array<Record<string, unknown>> = [];
+  const semanticColorMeasurements: Array<Record<string, unknown>> = [];
   const registrationPosts: string[] = [];
   page.on('request', (request) => {
     const url = new URL(request.url());
@@ -410,6 +415,35 @@ test('shared RegisterPage has no axe violations across shell validation states @
           }
         }
 
+        if (state === 'valid-draft-password-strength') {
+          const semanticColors = await page.evaluate(() => {
+            const checkbox = document.querySelector<HTMLInputElement>('input[type="checkbox"]');
+            const strengthBars = Array.from(
+              document.querySelectorAll<HTMLElement>('[role="status"] > div > span'),
+            );
+            const probe = document.createElement('span');
+            document.body.append(probe);
+            probe.style.color = 'var(--tr-primary)';
+            const primary = getComputedStyle(probe).color;
+            probe.style.color = 'var(--tr-buy)';
+            const success = getComputedStyle(probe).color;
+            probe.remove();
+
+            return {
+              checkboxAccent: checkbox ? getComputedStyle(checkbox).accentColor : null,
+              primary,
+              strengthBars: strengthBars.map((bar) => getComputedStyle(bar).backgroundColor),
+              success,
+            };
+          });
+          expect(semanticColors.checkboxAccent).toBe(semanticColors.primary);
+          expect(semanticColors.strengthBars).toHaveLength(4);
+          expect(
+            semanticColors.strengthBars.every((color) => color === semanticColors.success),
+          ).toBe(true);
+          semanticColorMeasurements.push({ shell: shell.name, theme, ...semanticColors });
+        }
+
         const results = await new AxeBuilder({ page })
           .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'])
           .analyze();
@@ -440,12 +474,13 @@ test('shared RegisterPage has no axe violations across shell validation states @
 
   const report = {
     fixtureBoundary:
-      'Local Vite development app with the registered mockServiceWorker.js. The shared RegisterPage validation and draft states issue no registration request; no page.route, backend, staging or production service was used. Axe failure summaries redact all synthetic name/contact/password values.',
+      'Local Vite development app with the registered mockServiceWorker.js. The shared RegistrationForm validation and draft states issue no registration request; no page.route, backend, staging or production service was used. Axe failure summaries redact all synthetic name/contact/password values.',
     themes,
     states,
     shells,
     serviceWorkerScripts,
     registrationPostCount: registrationPosts.length,
+    semanticColorMeasurements,
     measurements,
   };
   const reportPath = testInfo.outputPath('shared-register-page-axe-report.json');
@@ -458,6 +493,6 @@ test('shared RegisterPage has no axe violations across shell validation states @
   expect(registrationPosts).toEqual([]);
   expect(
     measurements.filter((measurement) => measurement.violationCount !== 0),
-    'Shared RegisterPage Axe violations by shell, theme and form state',
+    'Shared RegistrationForm Axe violations by shell, theme and form state',
   ).toEqual([]);
 });

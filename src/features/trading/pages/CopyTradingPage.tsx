@@ -2,6 +2,7 @@ import { AlertTriangle, CheckCircle, ChevronRight } from 'lucide-react';
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { ErrorState } from '@/shared/ui/ErrorState';
+import { FilterButton } from '@/shared/ui/FilterButton';
 import { Header } from '@/shared/ui/layout/Header';
 import { PageContent } from '@/shared/ui/layout/PageContent';
 import { PageLayout } from '@/shared/ui/layout/PageLayout';
@@ -25,34 +26,19 @@ export function CopyTradingPage() {
   const totalCopiers = providers.reduce((sum, provider) => sum + provider.copiers, 0);
   const totalAum = providers.reduce((sum, provider) => sum + provider.aum, 0);
 
-  if (query.isPending)
-    return (
-      <PageLayout>
-        <Header title="Copy Trading" subtitle="Sao chép · Trade" back />
-        <PageContent>
-          <p style={{ color: colors.text2, fontSize: 13 }}>Đang tải provider…</p>
-        </PageContent>
-      </PageLayout>
-    );
-  if (query.isError)
-    return (
-      <PageLayout>
-        <Header title="Copy Trading" subtitle="Sao chép · Trade" back />
-        <ErrorState onAction={() => void query.refetch()} />
-      </PageLayout>
-    );
-
   return (
     <PageLayout>
       <Header title="Copy Trading" subtitle="Sao chép · Trade" back />
       <PageContent gap="default">
-        <TrCard variant="hero" className="p-4">
-          <div className="grid grid-cols-3 gap-2 text-center">
-            <Stat label="Providers" value={String(providers.length)} />
-            <Stat label="Copiers" value={totalCopiers.toLocaleString('vi-VN')} />
-            <Stat label="AUM" value={`$${Math.round(totalAum / 1_000_000)}M`} />
-          </div>
-        </TrCard>
+        {!query.isPending && !query.isError && query.data && (
+          <TrCard variant="hero" className="p-4">
+            <div className="grid grid-cols-3 gap-2 text-center">
+              <Stat label="Providers" value={String(providers.length)} />
+              <Stat label="Copiers" value={totalCopiers.toLocaleString('vi-VN')} />
+              <Stat label="AUM" value={`$${Math.round(totalAum / 1_000_000)}M`} />
+            </div>
+          </TrCard>
+        )}
         <TrCard
           className="p-3"
           style={{ background: colors.warningBg, border: `1px solid ${colors.warningBorder}` }}
@@ -65,101 +51,146 @@ export function CopyTradingPage() {
             </p>
           </div>
         </TrCard>
-        <div className="flex gap-2 overflow-x-auto">
+        <div role="group" aria-label="Sắp xếp provider" className="flex flex-wrap gap-2">
           {SORT_OPTIONS.map((label, index) => (
-            <button
-              type="button"
+            <FilterButton
               key={label}
+              selected={sortIndex === index}
+              label={label}
               onClick={() => setSortIndex(index)}
-              className="shrink-0 rounded-full px-4 py-2"
-              style={{
-                background: sortIndex === index ? colors.primary : colors.surface2,
-                color: sortIndex === index ? '#fff' : colors.text2,
-                fontSize: 11,
-              }}
-            >
-              {label}
-            </button>
+            />
           ))}
         </div>
-        <div className="flex flex-col gap-3">
-          {providers.map((provider) => {
-            const risk = RISK_LEVELS[provider.riskLevel.toUpperCase() as keyof typeof RISK_LEVELS];
-            return (
-              <TrCard key={provider.id} className="p-4">
-                <div className="flex items-start gap-3">
-                  <div
-                    className="w-11 h-11 rounded-full flex items-center justify-center"
-                    style={{ background: colors.primary + '22' }}
-                  >
-                    <span style={{ color: colors.primary, fontSize: 16, fontWeight: 700 }}>
-                      {provider.avatar}
-                    </span>
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2">
-                      <p style={{ color: colors.text1, fontSize: 14, fontWeight: 700 }}>
-                        {provider.name}
-                      </p>
-                      {provider.verified && <CheckCircle size={12} color={colors.primary} />}
-                    </div>
-                    <div className="flex flex-wrap gap-1 mt-1">
-                      {provider.tags.slice(0, 2).map((tag) => (
-                        <span
-                          key={tag}
-                          className="rounded-md px-2 py-0.5"
-                          style={{ background: colors.surface2, color: colors.text2, fontSize: 9 }}
+        <section
+          aria-label="Kết quả Copy Trading"
+          aria-busy={query.isFetching}
+          className="flex flex-col gap-4"
+        >
+          {query.isPending ? (
+            <p role="status" style={{ color: colors.text2, fontSize: 13 }}>
+              Đang tải provider…
+            </p>
+          ) : query.isError ? (
+            <div role="alert">
+              <ErrorState
+                title="Không thể tải provider"
+                message="Bạn có thể thử lại hoặc đổi cách sắp xếp; lựa chọn hiện tại được giữ nguyên."
+                onAction={() => void query.refetch()}
+              />
+            </div>
+          ) : (
+            <>
+              {providers.length === 0 && (
+                <p style={{ color: colors.text2 }}>Không có provider phù hợp.</p>
+              )}
+              <div className="flex flex-col gap-3">
+                {providers.map((provider) => {
+                  const risk =
+                    RISK_LEVELS[provider.riskLevel.toUpperCase() as keyof typeof RISK_LEVELS];
+                  const riskColor =
+                    risk.key === 'low'
+                      ? colors.successText
+                      : risk.key === 'medium'
+                        ? colors.warningText
+                        : colors.errorText;
+                  const riskBackground =
+                    risk.key === 'low'
+                      ? 'rgba(16, 185, 129, 0.1)'
+                      : risk.key === 'medium'
+                        ? 'rgba(245, 158, 11, 0.1)'
+                        : 'rgba(239, 68, 68, 0.1)';
+                  return (
+                    <TrCard key={provider.id} className="p-4">
+                      <div className="flex items-start gap-3">
+                        <div
+                          className="w-11 h-11 rounded-full flex items-center justify-center"
+                          style={{ background: colors.primary + '22' }}
                         >
-                          {tag}
-                        </span>
-                      ))}
-                      <span
-                        className="rounded-md px-2 py-0.5"
-                        style={{ background: `${risk.color}15`, color: risk.color, fontSize: 9 }}
+                          <span style={{ color: colors.primary, fontSize: 16, fontWeight: 700 }}>
+                            {provider.avatar}
+                          </span>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2">
+                            <p style={{ color: colors.text1, fontSize: 14, fontWeight: 700 }}>
+                              {provider.name}
+                            </p>
+                            {provider.verified && <CheckCircle size={12} color={colors.primary} />}
+                          </div>
+                          <div className="flex flex-wrap gap-1 mt-1">
+                            {provider.tags.slice(0, 2).map((tag) => (
+                              <span
+                                key={tag}
+                                className="rounded-md px-2 py-0.5"
+                                style={{
+                                  background: colors.surface2,
+                                  color: colors.text2,
+                                  fontSize: 9,
+                                }}
+                              >
+                                {tag}
+                              </span>
+                            ))}
+                            <span
+                              className="rounded-md px-2 py-0.5"
+                              style={{ background: riskBackground, color: riskColor, fontSize: 9 }}
+                            >
+                              Rủi ro: {risk.label}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <p
+                            style={{
+                              color: 'var(--tr-success-text)',
+                              fontSize: 18,
+                              fontWeight: 700,
+                            }}
+                          >
+                            +{provider.totalPnlPct.toFixed(1)}%
+                          </p>
+                          <p style={{ color: 'var(--tr-error-text)', fontSize: 11 }}>
+                            DD {provider.maxDrawdown.toFixed(1)}%
+                          </p>
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-4 gap-2 mt-3">
+                        {[
+                          ['Win rate', `${provider.winRate}%`],
+                          ['PnL', `$${Math.round(provider.totalPnl).toLocaleString('en-US')}`],
+                          ['Copiers', provider.copiers.toLocaleString('vi-VN')],
+                          ['Sharpe', provider.sharpeRatio.toFixed(2)],
+                        ].map(([label, value]) => (
+                          <div key={label}>
+                            <p style={{ color: colors.text3, fontSize: 9 }}>{label}</p>
+                            <p style={{ color: colors.text1, fontSize: 12, fontWeight: 700 }}>
+                              {value}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          navigate(copyProviderPath(location.pathname, prefix, provider.id))
+                        }
+                        className="w-full mt-3 rounded-xl py-2.5 flex items-center justify-center gap-2"
+                        style={{
+                          background: colors.surface2,
+                          color: colors.text1,
+                          fontSize: 12,
+                          fontWeight: 700,
+                        }}
                       >
-                        Rủi ro: {risk.label}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <p style={{ color: '#10B981', fontSize: 18, fontWeight: 700 }}>
-                      +{provider.totalPnlPct.toFixed(1)}%
-                    </p>
-                    <p style={{ color: '#EF4444', fontSize: 11 }}>
-                      DD {provider.maxDrawdown.toFixed(1)}%
-                    </p>
-                  </div>
-                </div>
-                <div className="grid grid-cols-4 gap-2 mt-3">
-                  {[
-                    ['Win rate', `${provider.winRate}%`],
-                    ['PnL', `$${Math.round(provider.totalPnl).toLocaleString('en-US')}`],
-                    ['Copiers', provider.copiers.toLocaleString('vi-VN')],
-                    ['Sharpe', provider.sharpeRatio.toFixed(2)],
-                  ].map(([label, value]) => (
-                    <div key={label}>
-                      <p style={{ color: colors.text3, fontSize: 9 }}>{label}</p>
-                      <p style={{ color: colors.text1, fontSize: 12, fontWeight: 700 }}>{value}</p>
-                    </div>
-                  ))}
-                </div>
-                <button
-                  type="button"
-                  onClick={() => navigate(copyProviderPath(location.pathname, prefix, provider.id))}
-                  className="w-full mt-3 rounded-xl py-2.5 flex items-center justify-center gap-2"
-                  style={{
-                    background: colors.surface2,
-                    color: colors.text1,
-                    fontSize: 12,
-                    fontWeight: 700,
-                  }}
-                >
-                  Xem chi tiết <ChevronRight size={14} />
-                </button>
-              </TrCard>
-            );
-          })}
-        </div>
+                        Xem chi tiết <ChevronRight size={14} />
+                      </button>
+                    </TrCard>
+                  );
+                })}
+              </div>
+            </>
+          )}
+        </section>
         <p style={{ color: colors.text3, fontSize: 10, lineHeight: 1.5, textAlign: 'center' }}>
           Hiệu suất quá khứ không đảm bảo kết quả tương lai. Tất cả chỉ số mang tính tham khảo và
           cần được đánh giá cùng risk disclosure.

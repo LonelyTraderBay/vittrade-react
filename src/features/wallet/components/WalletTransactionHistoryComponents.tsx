@@ -2,31 +2,6 @@ import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { formatAmount, transactionMetadata } from '../model/wallet-history';
 import type { WalletTransaction } from '../model/wallet-types';
 
-export function FilterButton({
-  active,
-  label,
-  onClick,
-}: {
-  active: boolean;
-  label: string;
-  onClick: () => void;
-}) {
-  const colors = useThemeColors();
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className="rounded-lg px-3 py-2 text-xs font-semibold"
-      style={{
-        background: active ? `${colors.primary}20` : colors.surface2,
-        color: active ? colors.primary : colors.text3,
-      }}
-    >
-      {label}
-    </button>
-  );
-}
-
 export function TransactionHistoryRow({
   transaction,
   last,
@@ -63,7 +38,7 @@ export function TransactionHistoryRow({
       <span style={{ color: colors.text2 }}>{transaction.asset}</span>
       <span
         className="text-right"
-        style={{ color: debit ? '#EF4444' : '#10B981', fontWeight: 600 }}
+        style={{ color: debit ? colors.errorText : colors.successText, fontWeight: 600 }}
       >
         {debit ? '-' : '+'}
         {formatAmount(transaction.amount)}

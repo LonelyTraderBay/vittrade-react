@@ -1,0 +1,144 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-10-13T06:08:40.445Z",
+  "sourceHead": "db9c9064fa3ba79bd76fb7acb1023d90486b6cbf",
+  "origin": "http://127.0.0.1:4193",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "fixtureBoundary": {
+    "serviceWorkerControlled": true,
+    "allObservedResponsesFromServiceWorker": true,
+    "externalApiOrigins": [],
+    "realBackendRequestSent": false,
+    "realBackendMutationSent": false
+  },
+  "sourceHashes": {
+    "contracts/openapi/auth.yaml": "cceb23c9745d716a14cc9db823afee87e8e0ebea642426e12c41524351eaab83",
+    "contracts/openapi/launchpad.yaml": "f91848569eda4fc8adbb96ec01c4015d3e8bea488ebfb54c9cbf807afbb7732e",
+    "docs/architecture/production-readiness/evidence/A06/operation-mock-map-2026-09-28.json": "22daaea2c44da7e384507fbcd118f72aea0f18bf59e65aa025e8309eef01d320",
+    "docs/architecture/production-readiness/evidence/A06/run-launchpad-loading-current-head-browser-check.mjs": "7ef47c5d308aeb179ca6ede22df0fa0f64634cd83aaaa5cd74818e65cc75bdc1",
+    "src/app/App.tsx": "55882d23aff913e5ad89d511b52f9108780f1fcc32137758d688ba6c654d254a",
+    "src/app/routeConfig.ts": "675ea95ec4831b9d0caf1cbf68524efaebda8ed9b970b5dad129bdd55f28bac9",
+    "src/app/routes.ts": "c93a80e123fd95c3abd246aeb00589a51f5ff4560e794e87f70f7ff96248c0d5",
+    "src/dev/PreviewControls.tsx": "a318fb182dda24c9b8d2103ae4b40eeecb7c3eded57332aad3c5bc8a1836a54c",
+    "src/dev/mocks/browser.ts": "b90d7d79708ff86ab2612ffddcea5e583ea707bae61386ab49c976af1cfea1f3",
+    "src/dev/mocks/handlers.ts": "9d1ea085bab944b0bd0e59a665222113cb7bb661bbcd2408f09c6adf08cd3ea9",
+    "src/dev/mocks/launchpad-fixtures.ts": "7c34266aecc5ab2cb73f4f25bc7f37f6901bcb5fd4c461faf1087f9985e78221",
+    "src/dev/mocks/personas.ts": "6189b9cbfb9765f5c442c52a089d30b5be171170fe054ef6bf2faffbbb53dccd",
+    "src/dev/mocks/preview-scenario-handler.ts": "1b05e3e420b1df43de6d2e37533d4d8dbcd203fedb70ca59a65a4a62179396f5",
+    "src/dev/mocks/scenario-runtime.ts": "446d43808b478a1eaca07faa29d690c49c8e7ffb21fc1f12d2de2feb524e2e50",
+    "src/features/auth/api/auth-api.ts": "e3733bea27f15fb63c15d04541c3dbbcf3dd619f30e650907ba8923893855b1a",
+    "src/features/auth/pages/WebLoginPage.tsx": "740142c311aa06792d3c504d0a6268c7c8ec59bc4b7203de156ba48c9acbf029",
+    "src/features/launchpad/api/launchpad-api.ts": "574566b73db413d55cc82cdcb84ec17e80a7f22db220a8338b28d29e312ce489",
+    "src/features/launchpad/model/launchpad-queries.ts": "9ffab47f27e86e4cfd169457b676642ed6c249226c6eb54a730e3e3ff3e7050d",
+    "src/features/launchpad/model/launchpad-types.ts": "4c4ff3989ea92029b220cd743695cb0579a94ae56551772ae320f878d56a2b83",
+    "src/features/launchpad/pages/LaunchpadContractPages.test.tsx": "4e3a525bcef0ccab378b96f5dfd5868b9021463e464b056a7e0ea6be049df965",
+    "src/features/launchpad/pages/LaunchpadContractPages.tsx": "1c0b563300f776353a5b3a0dce37c1b011f3f3aae81c5ae2c4c1f8ea9bf5643c",
+    "src/features/launchpad/routes.ts": "e65fc942bf96578870b179952a21cc1ee6527b689efef7f34d35799ff75fa548",
+    "src/shared/api/client.ts": "882197549d075a8be1f495c7d2271dcbf1530ff1606190531da59b75020977bb",
+    "src/shared/api/http-client.ts": "12a04035eac23a2999f8c7a76aafa32966585402c06d98f451ef33eb8601cf42",
+    "src/shared/api/query-client.ts": "b2b0e5fe60f7ade24017f12859fa1b68bd2de143868c42e37df51a71ee259ac2",
+    "src/shared/session/AuthContext.tsx": "b95d134413d28d85278553b752a4d6738857ed7785ea53d7a0e441db61b310f2"
+  },
+  "scenario": {
+    "id": "launchpad.loading",
+    "domain": "launchpad",
+    "state": "loading",
+    "status": "passed",
+    "observedAt": "2026-10-13T06:08:40.445Z",
+    "persona": "developer (local MSW fixture)",
+    "role": "user",
+    "routes": ["/w/launchpad"],
+    "operationIds": ["listLaunchpadProjects", "getLaunchpadProject"],
+    "observedOperationIds": ["listLaunchpadProjects"],
+    "operationRequestCounts": {
+      "listLaunchpadProjects": 1,
+      "getLaunchpadProject": 0
+    },
+    "requests": [
+      {
+        "operationId": "getSession",
+        "method": "GET",
+        "path": "/api/auth/session",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "login",
+        "method": "POST",
+        "path": "/api/auth/login",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "getMarketWatchlist",
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "resourceType": "fetch"
+      },
+      {
+        "operationId": "listLaunchpadProjects",
+        "method": "GET",
+        "path": "/api/launchpad/projects",
+        "resourceType": "fetch"
+      }
+    ],
+    "responses": [
+      {
+        "operationId": "getSession",
+        "method": "GET",
+        "path": "/api/auth/session",
+        "status": 401,
+        "fromServiceWorker": true,
+        "elapsedMs": 16
+      },
+      {
+        "operationId": "login",
+        "method": "POST",
+        "path": "/api/auth/login",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 9
+      },
+      {
+        "operationId": "listMarketPairs",
+        "method": "GET",
+        "path": "/api/market/pairs",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 4
+      },
+      {
+        "operationId": "getMarketWatchlist",
+        "method": "GET",
+        "path": "/api/market/watchlist",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 4
+      },
+      {
+        "operationId": "listLaunchpadProjects",
+        "method": "GET",
+        "path": "/api/launchpad/projects",
+        "status": 200,
+        "fromServiceWorker": true,
+        "elapsedMs": 2012
+      }
+    ],
+    "listProjectCount": 5,
+    "listTotal": 5,
+    "activeCount": 2,
+    "listResponseElapsedMs": 2012,
+    "scenarioSelected": true,
+    "externalApiOrigins": [],
+    "elapsedMs": 2669,
+    "screenshots": ["preview-launchpad-loading-current-head-202610130608376.png"],
+    "note": "Local Chromium/MSW observed the Launchpad loading state before listLaunchpadProjects returned the ordinary contract-valid 200 fixture response after a configured 2-second preview delay. The list appeared afterward without a false empty state. This row observes listLaunchpadProjects only (1/2 linked operations); detail remains outside the loading route flow. No write or external API call occurred; this is not backend or user-acceptance evidence."
+  }
+}

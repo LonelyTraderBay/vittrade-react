@@ -1,5 +1,7 @@
-import { act, fireEvent, screen } from '@testing-library/react';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
+import { StrictMode, useRef, useState } from 'react';
+import userEvent from '@testing-library/user-event';
 import { renderWithProviders } from '@/test/test-utils';
 import { BottomSheetRow, BottomSheetV2 } from './BottomSheetV2';
 
@@ -37,9 +39,48 @@ describe('BottomSheetV2', () => {
     expect(dialog).toHaveAttribute('aria-modal', 'true');
     expect(dialog).toHaveTextContent('Nội dung');
     expect(dialog).toHaveStyle({ maxHeight: '85vh' });
-    expect(screen.getByRole('button', { name: 'Đóng' })).toBeEnabled();
-    fireEvent.click(screen.getByRole('button', { name: 'Đóng' }));
+    const close = screen.getByRole('button', { name: 'Đóng' });
+    expect(close).toHaveAttribute('type', 'button');
+    expect(close).toBeEnabled();
+    fireEvent.click(close);
     expect(onClose).toHaveBeenCalledOnce();
+  });
+
+  it('keeps the modal layer active through exit and allows reopen after it completes', async () => {
+    function ReopenableSheet() {
+      const [open, setOpen] = useState(false);
+      return (
+        <>
+          <button type="button" onClick={() => setOpen(true)}>
+            Open sheet
+          </button>
+          <BottomSheetV2 open={open} onClose={() => setOpen(false)} title="Reopenable sheet">
+            <p>Sheet content</p>
+          </BottomSheetV2>
+        </>
+      );
+    }
+
+    renderWithProviders(<ReopenableSheet />);
+    fireEvent.click(screen.getByRole('button', { name: 'Open sheet' }));
+    expect(screen.getByRole('dialog', { name: 'Reopenable sheet' })).toBeVisible();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Đóng' }));
+    expect(document.querySelector('[role="dialog"]')).toBeInTheDocument();
+    expect(document.querySelector('[data-bottom-sheet-overlay]')).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Open sheet' })).not.toBeInTheDocument();
+    expect(document.body.style.pointerEvents).toBe('none');
+
+    await waitFor(() =>
+      expect(document.querySelector('[data-bottom-sheet-overlay]')).not.toBeInTheDocument(),
+    );
+    expect(document.querySelector('[role="dialog"]')).not.toBeInTheDocument();
+    await waitFor(() => expect(document.body.style.pointerEvents).toBe(''));
+    expect(screen.getByRole('button', { name: 'Open sheet' })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Open sheet' }));
+
+    expect(screen.getByRole('dialog', { name: 'Reopenable sheet' })).toBeVisible();
+    expect(screen.getByText('Sheet content')).toBeVisible();
   });
 
   it('blocks every close request while preventClose is active', () => {
@@ -146,18 +187,12 @@ describe('BottomSheetV2', () => {
     const dialog = screen.getByRole('dialog', { name: 'Tab order' });
     const first = screen.getByRole('button', { name: 'Đóng' });
     const last = screen.getByRole('link', { name: 'Cuối' });
-    screen.getByRole('button', { name: 'Đầu' }).focus();
-    fireEvent.keyDown(dialog, { key: 'Tab', shiftKey: true });
-    expect(screen.getByRole('button', { name: 'Đầu' })).toHaveFocus();
-    first.focus();
+    last.focus();
     fireEvent.keyDown(dialog, { key: 'Tab' });
     expect(first).toHaveFocus();
     first.focus();
     fireEvent.keyDown(dialog, { key: 'Tab', shiftKey: true });
     expect(last).toHaveFocus();
-    last.focus();
-    fireEvent.keyDown(dialog, { key: 'Tab' });
-    expect(first).toHaveFocus();
 
     rerender(
       <BottomSheetV2
@@ -172,6 +207,71 @@ describe('BottomSheetV2', () => {
     fireEvent.keyDown(screen.getByRole('dialog', { name: 'Dialog' }), { key: 'Tab' });
   });
 
+  for (const variant of ['bottom', 'center'] as const) {
+    it(`keeps focus in the ${variant} panel when its focused action becomes disabled`, async () => {
+      const sheet = (pending: boolean) => (
+        <StrictMode>
+          <BottomSheetV2
+            open
+            variant={variant}
+            onClose={() => undefined}
+            title="Pending action"
+            showCloseButton={false}
+            preventClose={pending}
+          >
+            <button disabled={pending}>Submit</button>
+          </BottomSheetV2>
+        </StrictMode>
+      );
+      const { rerender } = renderWithProviders(sheet(false));
+      const dialog = screen.getByRole('dialog', { name: 'Pending action' });
+      const submit = screen.getByRole('button', { name: 'Submit' });
+      submit.focus();
+      rerender(sheet(true));
+
+      expect(submit).toBeDisabled();
+      expect(dialog).toHaveFocus();
+      const user = userEvent.setup();
+      await user.tab();
+      expect(dialog).toHaveFocus();
+      await user.tab({ shift: true });
+      expect(dialog).toHaveFocus();
+    });
+  }
+
+  it('preserves focus in an enabled field when close prevention starts', () => {
+    const sheet = (pending: boolean) => (
+      <BottomSheetV2 open onClose={() => undefined} title="Editable draft" preventClose={pending}>
+        <input aria-label="Draft" defaultValue="12.3456789" />
+      </BottomSheetV2>
+    );
+    const { rerender } = renderWithProviders(sheet(false));
+    const input = screen.getByRole('textbox', { name: 'Draft' });
+    input.focus();
+    rerender(sheet(true));
+    expect(input).toHaveFocus();
+    expect(input).toHaveValue('12.3456789');
+  });
+
+  it('does not take focus from a child dialog when its parent starts preventing close', () => {
+    const sheets = (pending: boolean, childOpen: boolean) => (
+      <BottomSheetV2 open onClose={() => undefined} title="Parent" preventClose={pending}>
+        <button disabled={pending}>Parent action</button>
+        {childOpen && (
+          <BottomSheetV2 open onClose={() => undefined} title="Child">
+            <input aria-label="Child field" />
+          </BottomSheetV2>
+        )}
+      </BottomSheetV2>
+    );
+    const { rerender } = renderWithProviders(sheets(false, false));
+    rerender(sheets(false, true));
+    const input = screen.getByRole('textbox', { name: 'Child field' });
+    input.focus();
+    rerender(sheets(true, true));
+    expect(input).toHaveFocus();
+  });
+
   it('closes on Escape when dismissal is allowed', () => {
     const onClose = vi.fn();
     renderWithProviders(
@@ -182,6 +282,25 @@ describe('BottomSheetV2', () => {
 
     fireEvent.keyDown(screen.getByRole('dialog', { name: 'Escape' }), { key: 'Escape' });
     expect(onClose).toHaveBeenCalledOnce();
+  });
+
+  it('hides background content and prevents focus from escaping the modal', () => {
+    const outside = document.createElement('button');
+    outside.textContent = 'Background action';
+    document.body.append(outside);
+
+    renderWithProviders(
+      <BottomSheetV2 open onClose={() => undefined} title="Modal focus">
+        <button>Sheet action</button>
+      </BottomSheetV2>,
+    );
+
+    const dialog = screen.getByRole('dialog', { name: 'Modal focus' });
+    expect(outside).toHaveAttribute('aria-hidden', 'true');
+    outside.focus();
+    expect(dialog).toHaveFocus();
+
+    outside.remove();
   });
 
   it('supports swipe dismissal only when the gesture starts at the top of the content', () => {
@@ -287,13 +406,10 @@ describe('BottomSheetV2', () => {
     expect(onClose).not.toHaveBeenCalled();
   });
 
-  it('calls onAfterOpen once and restores focus when closed', () => {
-    vi.useFakeTimers();
-    vi.spyOn(window, 'requestAnimationFrame').mockImplementation((callback) => {
-      callback(0);
-      return 1;
-    });
+  it('calls onAfterOpen once and restores focus when the sheet closes', async () => {
+    reducedMotion.value = true;
     const trigger = document.createElement('button');
+    trigger.textContent = 'Open sheet';
     document.body.append(trigger);
     trigger.focus();
     const onAfterOpen = vi.fn();
@@ -304,16 +420,245 @@ describe('BottomSheetV2', () => {
       </BottomSheetV2>,
     );
 
-    act(() => vi.advanceTimersByTime(350));
-    expect(onAfterOpen).toHaveBeenCalledOnce();
-    expect(screen.getByRole('dialog', { name: 'Focus' })).toHaveFocus();
+    await waitFor(() => expect(onAfterOpen).toHaveBeenCalledOnce());
+    await waitFor(() => expect(screen.getByRole('dialog', { name: 'Focus' })).toHaveFocus());
     rerender(
       <BottomSheetV2 open={false} onClose={onClose} onAfterOpen={onAfterOpen} title="Focus">
         <button>Action</button>
       </BottomSheetV2>,
     );
-    expect(trigger).toHaveFocus();
+    await waitFor(() =>
+      expect(document.querySelector('[data-bottom-sheet-overlay]')).not.toBeInTheDocument(),
+    );
+    expect(document.querySelector('[role="dialog"]')).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Open sheet' })).toBeInTheDocument();
+    await waitFor(() => expect(trigger).toHaveFocus());
     trigger.remove();
+  });
+
+  it.each([false, true])(
+    'restores its trigger after conditional unmount (strict=%s)',
+    async (strict) => {
+      reducedMotion.value = true;
+      function ConditionalSheet() {
+        const [open, setOpen] = useState(false);
+        return (
+          <>
+            <button type="button" onClick={() => setOpen(true)}>
+              Open conditional sheet
+            </button>
+            {open && (
+              <BottomSheetV2 open onClose={() => setOpen(false)} title="Conditional">
+                <button>Action</button>
+              </BottomSheetV2>
+            )}
+          </>
+        );
+      }
+      const user = userEvent.setup();
+      renderWithProviders(
+        strict ? (
+          <StrictMode>
+            <ConditionalSheet />
+          </StrictMode>
+        ) : (
+          <ConditionalSheet />
+        ),
+      );
+      const trigger = screen.getByRole('button', { name: 'Open conditional sheet' });
+      await user.click(trigger);
+      const dialog = screen.getByRole('dialog', { name: 'Conditional' });
+      await waitFor(() => expect(dialog).toHaveFocus());
+      await user.click(screen.getByRole('button', { name: 'Đóng' }));
+      expect(screen.queryByRole('dialog', { name: 'Conditional' })).not.toBeInTheDocument();
+      await waitFor(() => expect(trigger).toHaveFocus());
+    },
+  );
+
+  it('does not steal focus when its unmount opens another modal', async () => {
+    reducedMotion.value = true;
+    function SequentialSheets() {
+      const [step, setStep] = useState(0);
+      return (
+        <>
+          <button onClick={() => setStep(1)}>Open sequence</button>
+          {step === 1 && (
+            <BottomSheetV2 open title="First" onClose={() => setStep(2)}>
+              First
+            </BottomSheetV2>
+          )}
+          {step === 2 && (
+            <BottomSheetV2 open title="Second" onClose={() => setStep(0)}>
+              Second
+            </BottomSheetV2>
+          )}
+        </>
+      );
+    }
+    const user = userEvent.setup();
+    renderWithProviders(<SequentialSheets />);
+    await user.click(screen.getByRole('button', { name: 'Open sequence' }));
+    await user.click(screen.getByRole('button', { name: 'Đóng' }));
+    const second = screen.getByRole('dialog', { name: 'Second' });
+    await new Promise<void>((resolve) =>
+      requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+    );
+    expect(second).toHaveFocus();
+  });
+
+  it.each(['bottom', 'center'] as const)(
+    'returns to the logical fallback when the opener is disabled, removed or hidden (%s)',
+    async (variant) => {
+      reducedMotion.value = true;
+      for (const unavailable of ['disabled', 'removed', 'hidden'] as const) {
+        const trigger = document.createElement('button');
+        document.body.append(trigger);
+        trigger.focus();
+        const fallback = document.createElement('section');
+        fallback.tabIndex = -1;
+        document.body.append(fallback);
+        const fallbackFocusRef = { current: fallback };
+        const { rerender, unmount } = renderWithProviders(
+          <BottomSheetV2
+            open
+            variant={variant}
+            title="Fallback"
+            onClose={() => undefined}
+            fallbackFocusRef={fallbackFocusRef}
+          >
+            Content
+          </BottomSheetV2>,
+        );
+        await waitFor(() => expect(screen.getByRole('dialog', { name: 'Fallback' })).toHaveFocus());
+        if (unavailable === 'disabled') trigger.disabled = true;
+        else if (unavailable === 'removed') trigger.remove();
+        else trigger.hidden = true;
+        rerender(
+          <BottomSheetV2
+            open={false}
+            variant={variant}
+            title="Fallback"
+            onClose={() => undefined}
+            fallbackFocusRef={fallbackFocusRef}
+          >
+            Content
+          </BottomSheetV2>,
+        );
+        await waitFor(() => expect(fallback).toHaveFocus());
+        unmount();
+        trigger.remove();
+        fallback.remove();
+      }
+    },
+  );
+
+  it('prefers a usable opener over the supplied fallback', async () => {
+    reducedMotion.value = true;
+    const trigger = document.createElement('button');
+    const fallback = document.createElement('section');
+    fallback.tabIndex = -1;
+    document.body.append(trigger, fallback);
+    trigger.focus();
+    const fallbackFocusRef = { current: fallback };
+    const { rerender, unmount } = renderWithProviders(
+      <BottomSheetV2
+        open
+        title="Preferred opener"
+        onClose={() => undefined}
+        fallbackFocusRef={fallbackFocusRef}
+      >
+        Content
+      </BottomSheetV2>,
+    );
+    await waitFor(() => expect(screen.getByRole('dialog')).toHaveFocus());
+    rerender(
+      <BottomSheetV2
+        open={false}
+        title="Preferred opener"
+        onClose={() => undefined}
+        fallbackFocusRef={fallbackFocusRef}
+      >
+        Content
+      </BottomSheetV2>,
+    );
+    await waitFor(() => expect(trigger).toHaveFocus());
+    unmount();
+    trigger.remove();
+    fallback.remove();
+  });
+
+  it('uses a caller fallback after conditional unmount without taking focus from the next modal', async () => {
+    reducedMotion.value = true;
+    function Flow() {
+      const [step, setStep] = useState(0);
+      const fallbackFocusRef = useRef<HTMLElement>(null);
+      return (
+        <>
+          <section tabIndex={-1} aria-label="Logical step" ref={fallbackFocusRef} />
+          {step === 0 && <button onClick={() => setStep(1)}>Begin fallback flow</button>}
+          {step === 1 && (
+            <BottomSheetV2
+              open
+              title="First fallback"
+              onClose={() => setStep(2)}
+              fallbackFocusRef={fallbackFocusRef}
+            >
+              First
+            </BottomSheetV2>
+          )}
+          {step === 2 && (
+            <BottomSheetV2
+              open
+              title="Next fallback"
+              onClose={() => setStep(3)}
+              fallbackFocusRef={fallbackFocusRef}
+            >
+              Next
+            </BottomSheetV2>
+          )}
+        </>
+      );
+    }
+    const user = userEvent.setup();
+    renderWithProviders(
+      <StrictMode>
+        <Flow />
+      </StrictMode>,
+    );
+    await user.click(screen.getByRole('button', { name: 'Begin fallback flow' }));
+    await user.click(screen.getByRole('button', { name: 'Đóng' }));
+    const next = screen.getByRole('dialog', { name: 'Next fallback' });
+    await new Promise<void>((resolve) =>
+      requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+    );
+    expect(next).toHaveFocus();
+    await user.click(screen.getByRole('button', { name: 'Đóng' }));
+    await waitFor(() => expect(screen.getByRole('region', { name: 'Logical step' })).toHaveFocus());
+  });
+
+  it('returns focus to the parent dialog after a conditional child unmounts', async () => {
+    reducedMotion.value = true;
+    function NestedSheets() {
+      const [child, setChild] = useState(false);
+      return (
+        <BottomSheetV2 open title="Parent" onClose={() => undefined}>
+          <button onClick={() => setChild(true)}>Open child</button>
+          {child && (
+            <BottomSheetV2 open title="Child" onClose={() => setChild(false)}>
+              Child
+            </BottomSheetV2>
+          )}
+        </BottomSheetV2>
+      );
+    }
+    const user = userEvent.setup();
+    renderWithProviders(<NestedSheets />);
+    const trigger = screen.getByRole('button', { name: 'Open child' });
+    await user.click(trigger);
+    const child = screen.getByRole('dialog', { name: 'Child' });
+    await user.click(screen.getByRole('button', { name: 'Đóng' }));
+    await waitFor(() => expect(child).not.toBeInTheDocument());
+    await waitFor(() => expect(trigger).toHaveFocus());
   });
 });
 

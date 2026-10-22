@@ -43,6 +43,8 @@ const PAGE_ROOTS = [
  * Paths relative to src/ root.
  */
 const GUARDED_FILES = [
+  'src/features/market/pages/WatchlistPage.tsx',
+  'src/features/p2p/pages/P2PFraudPreventionPage.tsx',
   'src/features/market/pages/MarketHomePage.tsx',
   'src/features/arena/pages/ArenaContractPages.tsx',
   // Sprint 7-8 Arena migrations (10 files)

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import { MessageCircle, Star, ThumbsDown, ThumbsUp } from 'lucide-react';
 import { ErrorState } from '@/shared/ui/ErrorState';
 import { Header } from '@/shared/ui/layout/Header';
@@ -12,138 +12,180 @@ import type { P2PReviewScope } from '../model/p2p-types';
 
 export function P2PReviewsPage() {
   const colors = useThemeColors();
+  const tabId = useId();
   const [scope, setScope] = useState<P2PReviewScope>('received');
   const query = useP2PReviewsQuery(scope);
   const reviews = query.data?.items ?? [];
   const average = query.data?.averageRating ?? 0;
 
-  if (query.isPending) {
-    return (
-      <PageLayout>
-        <Header title="Đánh giá P2P" subtitle="Đánh giá · P2P" back />
-        <PageContent>
-          <p style={{ color: colors.text2, fontSize: 13 }}>Đang tải đánh giá…</p>
-        </PageContent>
-      </PageLayout>
-    );
-  }
-
-  if (query.isError) {
-    return (
-      <PageLayout>
-        <Header title="Đánh giá P2P" subtitle="Đánh giá · P2P" back />
-        <ErrorState
-          title="Không thể tải đánh giá P2P"
-          actionLabel="Thử lại"
-          onAction={() => void query.refetch()}
-        />
-      </PageLayout>
-    );
-  }
-
   return (
     <PageLayout>
       <Header title="Đánh giá P2P" subtitle="Đánh giá · P2P" back />
       <PageContent gap="default">
-        <TrCard className="p-5">
-          <div className="flex items-center gap-6">
-            <div className="text-center">
-              <div style={{ color: '#F59E0B', fontSize: 36, fontWeight: 700 }}>
-                {average.toFixed(1)}
-              </div>
-              <div
-                className="flex justify-center gap-0.5 mt-1"
-                aria-label={`${average} trên 5 sao`}
-              >
-                {Array.from({ length: 5 }, (_, index) => (
-                  <Star
-                    key={index}
-                    size={12}
-                    fill={index < Math.round(average) ? '#F59E0B' : colors.surface2}
-                    color={index < Math.round(average) ? '#F59E0B' : colors.surface2}
-                  />
-                ))}
-              </div>
-              <span style={{ color: colors.text3, fontSize: 11 }}>{reviews.length} đánh giá</span>
-            </div>
-            <div className="flex-1 flex flex-col gap-2">
-              <SummaryLine
-                icon={<ThumbsUp size={14} color="#10B981" />}
-                label="Tích cực"
-                value={query.data?.positiveCount ?? 0}
-                color="#10B981"
-              />
-              <SummaryLine
-                icon={<ThumbsDown size={14} color="#EF4444" />}
-                label="Tiêu cực"
-                value={query.data?.negativeCount ?? 0}
-                color="#EF4444"
-              />
-            </div>
-          </div>
-        </TrCard>
-
         <TabBar
           variant="segment"
+          ariaLabel="Phạm vi đánh giá P2P"
           tabs={[
-            { id: 'received', label: 'Nhận được' },
-            { id: 'given', label: 'Đã viết' },
+            {
+              id: 'received',
+              label: 'Nhận được',
+              triggerId: `${tabId}-received-tab`,
+              panelId: `${tabId}-received-panel`,
+            },
+            {
+              id: 'given',
+              label: 'Đã viết',
+              triggerId: `${tabId}-given-tab`,
+              panelId: `${tabId}-given-panel`,
+            },
           ]}
           active={scope}
           onChange={(value) => setScope(value as P2PReviewScope)}
         />
-
-        {reviews.length === 0 ? (
-          <div className="flex flex-col items-center py-16 gap-3">
-            <MessageCircle size={36} color={colors.borderSolid} />
-            <p
-              role="status"
-              aria-label="No P2P reviews"
-              style={{ color: colors.text3, fontSize: 13 }}
-            >
-              Chưa có đánh giá nào
-            </p>
-          </div>
-        ) : (
-          <div className="flex flex-col gap-3">
-            {reviews.map((review) => (
-              <TrCard key={review.id} rounded="sm" className="p-4">
-                <div className="flex items-center justify-between gap-3 mb-2">
-                  <div>
-                    <p style={{ color: colors.text1, fontSize: 13, fontWeight: 600 }}>
-                      {scope === 'received' ? review.fromUser : review.toUser}
-                    </p>
-                    <p style={{ color: colors.text3, fontSize: 10 }}>Đơn #{review.orderId}</p>
-                  </div>
-                  <div className="flex items-center gap-1" aria-label={`${review.rating} sao`}>
-                    {Array.from({ length: 5 }, (_, index) => (
-                      <Star
-                        key={index}
-                        size={11}
-                        fill={index < review.rating ? '#F59E0B' : colors.surface2}
-                        color={index < review.rating ? '#F59E0B' : colors.surface2}
-                      />
-                    ))}
-                  </div>
+        {(['received', 'given'] as const).map((panelScope) => (
+          <section
+            key={panelScope}
+            id={`${tabId}-${panelScope}-panel`}
+            role="tabpanel"
+            aria-labelledby={`${tabId}-${panelScope}-tab`}
+            hidden={scope !== panelScope}
+            tabIndex={scope === panelScope ? 0 : undefined}
+            aria-busy={scope === panelScope ? query.isFetching : undefined}
+            className={scope === panelScope ? 'flex flex-col gap-4' : undefined}
+          >
+            {scope === panelScope &&
+              (query.isPending ? (
+                <p role="status" style={{ color: colors.text2, fontSize: 13 }}>
+                  Đang tải đánh giá…
+                </p>
+              ) : query.isError ? (
+                <div role="alert">
+                  <ErrorState
+                    title="Không thể tải đánh giá P2P"
+                    actionLabel="Thử lại"
+                    onAction={() => void query.refetch()}
+                  />
                 </div>
-                <p style={{ color: colors.text2, fontSize: 13, lineHeight: 1.5 }}>
-                  {review.comment}
-                </p>
-                {review.reply && (
-                  <p
-                    className="mt-2 pl-3"
-                    style={{ color: colors.text3, fontSize: 11, borderLeft: '2px solid #3B82F6' }}
-                  >
-                    Phản hồi: {review.reply}
-                  </p>
-                )}
-                <p style={{ color: colors.text3, fontSize: 10, marginTop: 8 }}>
-                  {review.createdAt}
-                </p>
-              </TrCard>
-            ))}
-          </div>
-        )}
+              ) : (
+                <>
+                  <TrCard className="p-5">
+                    <div className="flex items-center gap-6">
+                      <div className="text-center">
+                        <div
+                          style={{ color: 'var(--tr-warning-text)', fontSize: 36, fontWeight: 700 }}
+                        >
+                          {average.toFixed(1)}
+                        </div>
+                        <div
+                          className="flex justify-center gap-0.5 mt-1"
+                          role="img"
+                          aria-label={`${average} trên 5 sao`}
+                        >
+                          {Array.from({ length: 5 }, (_, index) => (
+                            <Star
+                              key={index}
+                              size={12}
+                              fill={index < Math.round(average) ? '#F59E0B' : colors.surface2}
+                              color={
+                                index < Math.round(average)
+                                  ? 'var(--tr-warning-text)'
+                                  : colors.surface2
+                              }
+                              aria-hidden="true"
+                            />
+                          ))}
+                        </div>
+                        <span style={{ color: colors.text3, fontSize: 11 }}>
+                          {reviews.length} đánh giá
+                        </span>
+                      </div>
+                      <div className="flex-1 flex flex-col gap-2">
+                        <SummaryLine
+                          icon={
+                            <ThumbsUp size={14} color={colors.successText} aria-hidden="true" />
+                          }
+                          label="Tích cực"
+                          value={query.data?.positiveCount ?? 0}
+                          color={colors.successText}
+                        />
+                        <SummaryLine
+                          icon={
+                            <ThumbsDown size={14} color={colors.errorText} aria-hidden="true" />
+                          }
+                          label="Tiêu cực"
+                          value={query.data?.negativeCount ?? 0}
+                          color={colors.errorText}
+                        />
+                      </div>
+                    </div>
+                  </TrCard>
+
+                  {reviews.length === 0 ? (
+                    <div className="flex flex-col items-center py-16 gap-3">
+                      <MessageCircle size={36} color={colors.borderSolid} />
+                      <p role="status" style={{ color: colors.text3, fontSize: 13 }}>
+                        Chưa có đánh giá nào
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="flex flex-col gap-3">
+                      {reviews.map((review) => (
+                        <TrCard key={review.id} rounded="sm" className="p-4">
+                          <div className="flex items-center justify-between gap-3 mb-2">
+                            <div>
+                              <p style={{ color: colors.text1, fontSize: 13, fontWeight: 600 }}>
+                                {scope === 'received' ? review.fromUser : review.toUser}
+                              </p>
+                              <p style={{ color: colors.text3, fontSize: 10 }}>
+                                Đơn #{review.orderId}
+                              </p>
+                            </div>
+                            <div
+                              className="flex items-center gap-1"
+                              role="img"
+                              aria-label={`${review.rating} sao`}
+                            >
+                              {Array.from({ length: 5 }, (_, index) => (
+                                <Star
+                                  key={index}
+                                  size={11}
+                                  fill={index < review.rating ? '#F59E0B' : colors.surface2}
+                                  color={
+                                    index < review.rating
+                                      ? 'var(--tr-warning-text)'
+                                      : colors.surface2
+                                  }
+                                  aria-hidden="true"
+                                />
+                              ))}
+                            </div>
+                          </div>
+                          <p style={{ color: colors.text2, fontSize: 13, lineHeight: 1.5 }}>
+                            {review.comment}
+                          </p>
+                          {review.reply && (
+                            <p
+                              className="mt-2 pl-3"
+                              style={{
+                                color: colors.text3,
+                                fontSize: 11,
+                                borderLeft: '2px solid #3B82F6',
+                              }}
+                            >
+                              Phản hồi: {review.reply}
+                            </p>
+                          )}
+                          <p style={{ color: colors.text3, fontSize: 10, marginTop: 8 }}>
+                            {review.createdAt}
+                          </p>
+                        </TrCard>
+                      ))}
+                    </div>
+                  )}
+                </>
+              ))}
+          </section>
+        ))}
       </PageContent>
     </PageLayout>
   );

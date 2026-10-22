@@ -1,7 +1,7 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { screen } from '@testing-library/react';
+import { act, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import type { AuthAdapter } from '@/shared/session/AuthContext';
 import { testAuthAdapter } from '@/test/auth-test-adapter';
@@ -76,6 +76,48 @@ const response = {
 };
 
 describe('Trade analytics contract page', () => {
+  it('keeps the focused period and selected view while the new query is pending', async () => {
+    let release!: () => void;
+    const pending = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    server.use(
+      http.get('*/trading/analytics', async ({ request }) => {
+        const period = new URL(request.url).searchParams.get('period') ?? '1M';
+        if (period === '7D') await pending;
+        return HttpResponse.json({ ...response, period });
+      }),
+    );
+    const user = userEvent.setup();
+    renderWithProviders(<TradeAnalyticsContractPage />, {
+      authAdapter: adapterWithPermissions(['trade:read']),
+    });
+    await screen.findByText('Period 1M');
+    await user.click(screen.getByRole('button', { name: /^assets$/i }));
+    const control = screen.getByRole('button', { name: '7D' });
+    control.focus();
+    try {
+      await user.keyboard('{Enter}');
+      expect(control).toBeInTheDocument();
+      expect(control).toHaveFocus();
+      expect(screen.getByRole('status')).toHaveTextContent('Đang tải dữ liệu analytics API…');
+      expect(screen.queryByText('Performance summary')).not.toBeInTheDocument();
+      expect(screen.queryByText('Period 1M')).not.toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /^assets$/i })).toHaveAttribute(
+        'aria-pressed',
+        'true',
+      );
+      await act(async () => {
+        release();
+      });
+      await screen.findByText('Period 7D');
+      expect(control).toHaveFocus();
+      expect(screen.getByRole('heading', { name: 'Asset breakdown' })).toBeInTheDocument();
+    } finally {
+      release();
+    }
+  });
+
   it('renders server-owned summary and switches to asset view', async () => {
     server.use(http.get('*/trading/analytics', () => HttpResponse.json(response)));
 
@@ -86,9 +128,89 @@ describe('Trade analytics contract page', () => {
     expect(await screen.findByText('Performance summary')).toBeInTheDocument();
     expect(screen.getByText('+$1,259.35')).toBeInTheDocument();
 
-    await userEvent.click(screen.getByRole('button', { name: 'assets' }));
+    await userEvent.click(screen.getByRole('button', { name: 'Assets' }));
     expect(screen.getByText('Asset breakdown')).toBeInTheDocument();
     expect(screen.getByText('BTC')).toBeInTheDocument();
+  });
+
+  it('keeps controls focused on a period error and can recover by selecting another period', async () => {
+    const requests: string[] = [];
+    server.use(
+      http.get('*/trading/analytics', ({ request }) => {
+        const period = new URL(request.url).searchParams.get('period') ?? '1M';
+        requests.push(period);
+        return period === '7D'
+          ? HttpResponse.json({ code: 'ANALYTICS_UNAVAILABLE' }, { status: 503 })
+          : HttpResponse.json({ ...response, period });
+      }),
+    );
+    const user = userEvent.setup();
+    renderWithProviders(<TradeAnalyticsContractPage />, {
+      authAdapter: adapterWithPermissions(['trade:read']),
+    });
+    await screen.findByText('Period 1M');
+    await user.click(screen.getByRole('button', { name: 'Assets' }));
+    const control = screen.getByRole('button', { name: '7D' });
+    control.focus();
+    await user.keyboard('{Enter}');
+    expect(await screen.findByRole('alert')).toHaveTextContent('Có lỗi xảy ra');
+    expect(control).toHaveFocus();
+    expect(control).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.queryByText('Performance summary')).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Assets' })).toHaveAttribute('aria-pressed', 'true');
+    expect(requests.filter((period) => period === '7D')).toHaveLength(3);
+    await user.click(screen.getByRole('button', { name: '1Y' }));
+    await screen.findByText('Period 1Y');
+    expect(screen.getByRole('heading', { name: 'Asset breakdown' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: '1Y' })).toHaveFocus();
+    expect(requests).toEqual(['1M', '7D', '7D', '7D', '1Y']);
+  });
+
+  it('cancels a superseded read and keeps the latest period when the old handler finishes later', async () => {
+    let release!: () => void;
+    const slow = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    let oldSignal: AbortSignal | undefined;
+    let oldHandlerFinished = false;
+    server.use(
+      http.get('*/trading/analytics', async ({ request }) => {
+        const period = new URL(request.url).searchParams.get('period') ?? '1M';
+        if (period === '7D') {
+          oldSignal = request.signal;
+          await slow;
+          oldHandlerFinished = true;
+        }
+        return HttpResponse.json({
+          ...response,
+          period,
+          summary: { ...response.summary, totalPnl: period === '7D' ? 999 : 1259.35 },
+        });
+      }),
+    );
+    const user = userEvent.setup();
+    renderWithProviders(<TradeAnalyticsContractPage />, {
+      authAdapter: adapterWithPermissions(['trade:read']),
+    });
+    await screen.findByText('Period 1M');
+    try {
+      await user.click(screen.getByRole('button', { name: '7D' }));
+      await waitFor(() => expect(oldSignal).toBeDefined());
+      await user.click(screen.getByRole('button', { name: '1Y' }));
+      await screen.findByText('Period 1Y');
+      await waitFor(() => expect(oldSignal?.aborted).toBe(true));
+      await act(async () => {
+        release();
+      });
+      await waitFor(() => expect(oldHandlerFinished).toBe(true));
+      expect(screen.getByText('Period 1Y')).toBeInTheDocument();
+      expect(screen.queryByText('Period 7D')).not.toBeInTheDocument();
+      expect(screen.getByText('+$1,259.35')).toBeInTheDocument();
+      expect(screen.queryByText('+$999.00')).not.toBeInTheDocument();
+      expect(screen.getByRole('button', { name: '1Y' })).toHaveFocus();
+    } finally {
+      release();
+    }
   });
 
   it('renders the shared error state for an unavailable analytics contract', async () => {
@@ -149,7 +271,7 @@ describe('Trade analytics contract page', () => {
     });
 
     expect(await screen.findByText('Performance summary')).toBeInTheDocument();
-    await userEvent.click(screen.getByRole('button', { name: 'trades' }));
+    await userEvent.click(screen.getByRole('button', { name: 'Trades' }));
 
     expect(screen.getByRole('heading', { name: 'Best trades' })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'Worst trades' })).toBeInTheDocument();

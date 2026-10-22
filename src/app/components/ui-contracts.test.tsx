@@ -97,11 +97,22 @@ describe('application UI contracts', () => {
   it('shows the scroll action only when visible and invokes it when activated', () => {
     const onClick = vi.fn();
     const { rerender } = render(<ScrollToTopFAB visible={false} onClick={onClick} />);
-    const button = screen.getByRole('button', { name: 'Cuộn lên đầu trang' });
+    const button = screen.getByRole('button', { hidden: true });
     expect(button).toHaveStyle({ opacity: '0', pointerEvents: 'none' });
+    expect(screen.queryByRole('button', { name: 'Cuộn lên đầu trang' })).not.toBeInTheDocument();
+    expect(button).toBeDisabled();
+    button.focus();
+    expect(button).not.toHaveFocus();
+    fireEvent.click(button);
+    expect(onClick).not.toHaveBeenCalled();
 
     rerender(<ScrollToTopFAB visible onClick={onClick} />);
-    expect(button).toHaveStyle({ opacity: '1', pointerEvents: 'auto' });
+    expect(screen.getByRole('button', { name: 'Cuộn lên đầu trang' })).toBe(button);
+    expect(button).toBeEnabled();
+    expect(button).toHaveAttribute('type', 'button');
+    // Visible utility controls inherit modal pointer isolation from their ancestors.
+    expect(button.style.pointerEvents).toBe('');
+    expect(button).toHaveClass('absolute');
     fireEvent.click(button);
     expect(onClick).toHaveBeenCalledOnce();
   });

@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { Shield, TrendingUp, Zap, Globe, CheckCircle } from 'lucide-react';
 import { WEB_FONT } from '@/shared/theme/webTokens';
+import { AuthBrandMark } from './AuthBrandMark';
 
 /**
  * WebAuthBrandPanel — Shared left brand panel for all web auth pages.
@@ -28,7 +29,7 @@ const FEATURES = [
 
 const TRUST_BADGES = ['Đã xác minh', 'VASP đăng ký', 'Quỹ SAFU'];
 
-const AVATAR_COLORS = ['#3B82F6', '#10B981', '#F59E0B', '#8B5CF6'];
+const AVATAR_COLORS = ['#1d4ed8', '#047857', '#92400e', '#6d28d9'];
 const AVATAR_INITIALS = ['H', 'T', 'M', 'L'];
 
 interface WebAuthBrandPanelProps {
@@ -108,30 +109,8 @@ export function WebAuthBrandPanel({
             animate={{ scale: 1, rotate: 0 }}
             transition={{ duration: 0.5, delay: 0.2, type: 'spring', stiffness: 200 }}
             className="flex items-center justify-center"
-            style={{
-              width: 44,
-              height: 44,
-              borderRadius: 12,
-              background: 'linear-gradient(135deg, #3B82F6 0%, #1d4ed8 100%)',
-              boxShadow: '0 8px 24px rgba(59,130,246,0.35)',
-            }}
           >
-            <svg width="24" height="24" viewBox="0 0 36 36" fill="none">
-              <path
-                d="M6 18L14 10L20 16L28 8"
-                stroke="#fff"
-                strokeWidth="3"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M6 26L14 18L20 24L30 14"
-                stroke="rgba(255,255,255,0.5)"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+            <AuthBrandMark size="sm" />
           </motion.div>
           <motion.span
             initial={{ opacity: 0, x: -10 }}
@@ -183,7 +162,9 @@ export function WebAuthBrandPanel({
               <p style={{ color: '#fff', fontSize: WEB_FONT.md, fontWeight: 600, marginBottom: 2 }}>
                 {f.label}
               </p>
-              <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: WEB_FONT.sm, lineHeight: 1.4 }}>
+              <p
+                style={{ color: 'rgba(255,255,255,0.65)', fontSize: WEB_FONT.sm, lineHeight: 1.4 }}
+              >
                 {f.desc}
               </p>
             </div>
@@ -251,41 +232,15 @@ export function WebAuthFormShell({ children, textColor }: WebAuthFormShellProps)
       className="flex-1 flex items-start justify-center"
       style={{
         padding: '40px 32px',
+        minWidth: 0,
         minHeight: '100vh',
         overflowY: 'auto',
       }}
     >
-      <div style={{ width: '100%', maxWidth: 440, paddingTop: 24, paddingBottom: 40 }}>
+      <div style={{ width: '100%', maxWidth: 440, minWidth: 0, paddingTop: 24, paddingBottom: 40 }}>
         {/* Mobile-only logo (visible when brand panel hidden on <lg) */}
-        <div className="flex lg:hidden flex-col items-center" style={{ marginBottom: 32 }}>
-          <div
-            className="flex items-center justify-center"
-            style={{
-              width: 52,
-              height: 52,
-              borderRadius: 14,
-              background: 'linear-gradient(135deg, #3B82F6 0%, #1d4ed8 100%)',
-              boxShadow: '0 8px 32px rgba(59,130,246,0.3)',
-              marginBottom: 12,
-            }}
-          >
-            <svg width="28" height="28" viewBox="0 0 36 36" fill="none">
-              <path
-                d="M6 18L14 10L20 16L28 8"
-                stroke="#fff"
-                strokeWidth="3"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M6 26L14 18L20 24L30 14"
-                stroke="rgba(255,255,255,0.5)"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </div>
+        <div className="flex lg:hidden flex-col items-center" style={{ marginBottom: 32, gap: 12 }}>
+          <AuthBrandMark size="md" />
           <span style={{ color: textColor, fontSize: 22, fontWeight: 700 }}>VitTrade</span>
         </div>
         {children}

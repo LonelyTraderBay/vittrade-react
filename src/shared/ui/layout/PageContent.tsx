@@ -1,24 +1,29 @@
 import React from 'react';
-import { SectionHeader, type SectionHeaderVariant } from '@/shared/ui/SectionHeader';
+import {
+  SectionHeader,
+  type SectionHeaderProps,
+  type SectionHeaderVariant,
+} from '@/shared/ui/SectionHeader';
 import { type VitDensity } from '@/shared/theme/density';
+import { pageInlineGutterStyle } from './pageGutter';
 
 /**
  * ══════════════════════════════════════════════════════════════
  *  PageContent — Enterprise Standard Content Area
  * ══════════════════════════════════════════════════════════════
  *
- *  Standardizes the content area between Header and StickyFooter.
+ *  Owns one continuous content region between Header and StickyFooter.
  *  Enforces consistent horizontal padding and vertical spacing
  *  across all pages.
  *
- *  SPACING SYSTEM (Guidelines §2.3 — 4pt base grid, 8pt rhythm):
+ *  SPACING CONTRACT (Guidelines §21.6 — current PageContent presets):
  *  ─────────────────────────────────────────────────────────────
- *  Horizontal padding: 20px (device standard, matching Header px-5)
+ *  Horizontal padding: shell-owned when a shell provides one; otherwise 20px
  *  Vertical padding presets:
- *    "compact" — pt-2 pb-0 (12px top) — lists, dense content
+ *    "compact" — pt-2 pb-0 (8px top at 16px root) — lists, dense content
  *    "default" — pt-3 pb-0 (12px top) — standard pages
  *    "relaxed" — pt-4 pb-0 (16px top) — forms, settings
- *    "none"    — no padding          — custom hero/gradient
+ *    "none"    — no vertical padding — horizontal page gutter remains unless fullBleed
  *
  *  Gap presets (between child sections):
  *    "tight"   — 8px  — compact lists, dense cards
@@ -42,7 +47,7 @@ import { type VitDensity } from '@/shared/theme/density';
  *  </PageContent>
  *
  *  // Page with flush-to-edge hero section
- *  <PageContent padding="none">
+ *  <PageContent padding="none" fullBleed>
  *    <HeroBanner />  // full width
  *  </PageContent>
  *  <PageContent>     // back to standard padding
@@ -130,14 +135,13 @@ export function PageContent({
   const resolvedGap = gapProp ?? (density ? DENSITY_GAP_MAP[density] : 'default');
   const gapValue = typeof resolvedGap === 'number' ? resolvedGap : GAP_MAP[resolvedGap];
   const paddingClass = PADDING_MAP[resolvedPadding];
-  const hPadding = fullBleed ? '' : 'px-5';
-
   return (
     <div
-      className={['flex flex-col', hPadding, paddingClass, grow ? 'flex-1' : '', className]
+      className={['flex flex-col', paddingClass, grow ? 'flex-1' : '', className]
         .filter(Boolean)
         .join(' ')}
       style={{
+        ...pageInlineGutterStyle(fullBleed),
         gap: gapValue,
         minHeight: grow ? 0 : undefined,
         ...style,
@@ -170,6 +174,8 @@ export function PageContent({
 interface PageSectionProps {
   /** Section label (optional, shows accent bar) */
   label?: string;
+  /** Semantic level, forwarded to SectionHeader; visual typography stays unchanged. */
+  headingLevel?: SectionHeaderProps['headingLevel'];
   /** Section header variant */
   variant?: SectionHeaderVariant;
   /** Accent bar color (default: primary amber) */
@@ -190,6 +196,7 @@ interface PageSectionProps {
 
 export function PageSection({
   label,
+  headingLevel,
   variant = 'accentBar',
   accentColor,
   gap = 'tight',
@@ -206,6 +213,7 @@ export function PageSection({
       {label && (
         <SectionHeader
           title={label}
+          headingLevel={headingLevel}
           variant={variant}
           accentColor={accentColor}
           density={density}

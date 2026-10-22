@@ -45,7 +45,7 @@ export function BottomNav() {
 
   const getIsActive = (tabKey: string) => {
     const base = tabKey.split('/')[0];
-    const currentPath = location.pathname.replace(/^\/r/, '');
+    const currentPath = location.pathname.replace(/^\/(?:r|t|w)(?=\/|$)/, '');
     return currentPath.startsWith(`/${base}`);
   };
 
@@ -115,7 +115,7 @@ export function BottomNav() {
                     width: 52,
                     height: 52,
                     borderRadius: 16,
-                    marginTop: -22,
+                    marginTop: 0,
                     background: `linear-gradient(135deg, ${c.primary} 0%, ${c.primaryDark} 100%)`,
                     boxShadow: [
                       `0 4px 16px ${c.primaryAlpha40}`,

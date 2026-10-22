@@ -1,8 +1,56 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 describe('runtime environment boundary', () => {
+  it('keeps devtools off for a production build even when its mode label is test', async () => {
+    vi.stubEnv('MODE', 'test');
+    vi.stubEnv('DEV', false);
+    vi.stubEnv('PROD', true);
+    vi.stubEnv('VITE_ENABLE_DEVTOOLS', undefined);
+    expect((await import('./env')).env.enableDevtools).toBe(false);
+  });
+
+  it.each(['development', 'staging', 'production', 'test'] as const)(
+    'defaults devtools off outside the test runner and honors explicit opt-in in %s',
+    async (mode) => {
+      vi.stubEnv('MODE', mode);
+      vi.stubEnv('DEV', mode === 'development');
+      vi.stubEnv('PROD', mode === 'production');
+      vi.stubEnv('VITE_ENABLE_DEVTOOLS', undefined);
+      expect((await import('./env')).env.enableDevtools).toBe(mode === 'test');
+      vi.resetModules();
+      vi.stubEnv('VITE_ENABLE_DEVTOOLS', 'true');
+      expect((await import('./env')).env.enableDevtools).toBe(true);
+    },
+  );
+
   beforeEach(() => vi.resetModules());
   afterEach(() => vi.unstubAllEnvs());
+
+  it.each(['staging', 'production'])('rejects unknown release data sources in %s', async (mode) => {
+    const { assertReleaseEnvironment } = await import('./runtime-env-validation');
+    expect(() =>
+      assertReleaseEnvironment({
+        mode,
+        isProduction: false,
+        dataSource: 'fixture',
+        apiBaseUrl: 'https://api.example.test',
+        wsUrl: 'wss://ws.example.test',
+      }),
+    ).toThrow(`${mode} environment requires VITE_DATA_SOURCE=api`);
+  });
+
+  it('rejects malformed URLs and the reserved invalid host', async () => {
+    const { assertReleaseEnvironment } = await import('./runtime-env-validation');
+    expect(() =>
+      assertReleaseEnvironment({
+        mode: 'production',
+        isProduction: false,
+        dataSource: 'api',
+        apiBaseUrl: 'not a URL',
+        wsUrl: 'wss://invalid./stream',
+      }),
+    ).toThrow('Production environment is incomplete: VITE_API_BASE_URL, VITE_WS_URL');
+  });
 
   it('normalizes unknown modes, defaults and opt-in flags', async () => {
     vi.stubEnv('MODE', 'preview');

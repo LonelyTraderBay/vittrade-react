@@ -1,5 +1,6 @@
 import { fireEvent, screen } from '@testing-library/react';
-import { Link, Route, Routes, useNavigate } from 'react-router';
+import { useState } from 'react';
+import { Link, Route, Routes, useNavigate, useSearchParams } from 'react-router';
 import { describe, expect, it } from 'vitest';
 import { renderWithProviders } from '@/test/test-utils';
 import { PageTransition } from './PageTransition';
@@ -28,6 +29,40 @@ function SettingsPage() {
       <button type="button" onClick={() => navigate('/trade/replaced', { replace: true })}>
         Replace destination
       </button>
+    </PageTransition>
+  );
+}
+
+function FilterPage() {
+  const [draft, setDraft] = useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  return (
+    <>
+      <h1>Market filters</h1>
+      <input
+        aria-label="Market search"
+        value={draft}
+        onChange={(event) => {
+          const value = event.currentTarget.value;
+          setDraft(value);
+          const next = new URLSearchParams(searchParams);
+          if (value) next.set('q', value);
+          else next.delete('q');
+          setSearchParams(next, { replace: true });
+        }}
+      />
+      <output>{searchParams.get('q') ?? ''}</output>
+    </>
+  );
+}
+
+function QueryTransitionLayout() {
+  return (
+    <PageTransition>
+      <Routes>
+        <Route path="/markets" element={<FilterPage />} />
+      </Routes>
     </PageTransition>
   );
 }
@@ -77,6 +112,21 @@ function TransitionRoutes() {
 }
 
 describe('PageTransition', () => {
+  it('keeps route state and focus when only search parameters change', async () => {
+    renderWithProviders(<QueryTransitionLayout />, {
+      routerProps: { initialEntries: ['/markets'] },
+    });
+
+    const searchInput = screen.getByRole('textbox', { name: 'Market search' });
+    searchInput.focus();
+    fireEvent.change(searchInput, { target: { value: 'BTC' } });
+
+    expect(await screen.findByText('BTC')).toBeVisible();
+    expect(screen.getByRole('textbox', { name: 'Market search' })).toBe(searchInput);
+    expect(searchInput).toHaveValue('BTC');
+    expect(searchInput).toHaveFocus();
+  });
+
   it('renders push, pop, replace, and root-tab navigation destinations', async () => {
     renderWithProviders(<TransitionRoutes />, { routerProps: { initialEntries: ['/trade'] } });
 

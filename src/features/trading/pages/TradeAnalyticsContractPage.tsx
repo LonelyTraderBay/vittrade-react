@@ -5,6 +5,7 @@ import { Header } from '@/shared/ui/layout/Header';
 import { PageContent } from '@/shared/ui/layout/PageContent';
 import { PageLayout } from '@/shared/ui/layout/PageLayout';
 import { TrCard } from '@/shared/ui/TrCard';
+import { FilterButton } from '@/shared/ui/FilterButton';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { useAuth } from '@/shared/session/useAuth';
 import { useTradingAnalyticsQuery } from '../model/analytics-queries';
@@ -17,6 +18,11 @@ import type {
 const PERIODS: TradingAnalyticsPeriod[] = ['7D', '1M', '3M', '1Y'];
 const TABS = ['overview', 'trades', 'assets'] as const;
 type AnalyticsTab = (typeof TABS)[number];
+const VIEW_LABELS: Record<AnalyticsTab, string> = {
+  overview: 'Overview',
+  trades: 'Trades',
+  assets: 'Assets',
+};
 
 export function TradeAnalyticsContractPage() {
   const colors = useThemeColors();
@@ -39,62 +45,48 @@ export function TradeAnalyticsContractPage() {
     );
   }
 
-  if (query.isPending) {
-    return (
-      <PageLayout>
-        <Header title="Trade Analytics" subtitle="Trading analytics contract" back />
-        <PageContent>
-          <p style={{ color: colors.text2 }}>Đang tải dữ liệu analytics API…</p>
-        </PageContent>
-      </PageLayout>
-    );
-  }
-
-  if (query.isError || !query.data) return <ErrorState onAction={() => void query.refetch()} />;
-
   return (
     <PageLayout>
       <Header title="Trade Analytics" subtitle="Server-owned trading performance" back />
       <PageContent gap="default">
-        <div className="flex gap-2 overflow-x-auto">
+        <div role="group" aria-label="Analytics period" className="flex flex-wrap gap-2">
           {PERIODS.map((value) => (
-            <button
+            <FilterButton
               key={value}
-              type="button"
+              selected={period === value}
+              label={value}
               onClick={() => setPeriod(value)}
-              className="rounded-full px-4 py-2 text-xs font-semibold"
-              style={{
-                background: period === value ? colors.primary : colors.surface2,
-                color: period === value ? '#fff' : colors.text2,
-              }}
-            >
-              {value}
-            </button>
+            />
           ))}
         </div>
-
-        <SummaryCard data={query.data} />
-
-        <div className="grid grid-cols-3 gap-2">
+        <div role="group" aria-label="Analytics view" className="flex flex-wrap gap-2">
           {TABS.map((value) => (
-            <button
+            <FilterButton
               key={value}
-              type="button"
+              selected={tab === value}
+              label={VIEW_LABELS[value]}
               onClick={() => setTab(value)}
-              className="rounded-xl px-3 py-2 text-xs font-semibold capitalize"
-              style={{
-                background: tab === value ? `${colors.primary}20` : colors.surface2,
-                color: tab === value ? colors.primary : colors.text3,
-              }}
-            >
-              {value}
-            </button>
+            />
           ))}
         </div>
-
-        {tab === 'overview' && <Overview data={query.data} />}
-        {tab === 'trades' && <Trades data={query.data} />}
-        {tab === 'assets' && <Assets data={query.data} />}
+        <section aria-label="Analytics results" className="flex flex-col gap-4">
+          {query.isPending ? (
+            <p role="status" style={{ color: colors.text2 }}>
+              Đang tải dữ liệu analytics API…
+            </p>
+          ) : query.isError || !query.data ? (
+            <div role="alert">
+              <ErrorState onAction={() => void query.refetch()} />
+            </div>
+          ) : (
+            <>
+              <SummaryCard data={query.data} />
+              {tab === 'overview' && <Overview data={query.data} />}
+              {tab === 'trades' && <Trades data={query.data} />}
+              {tab === 'assets' && <Assets data={query.data} />}
+            </>
+          )}
+        </section>
       </PageContent>
     </PageLayout>
   );
@@ -133,7 +125,7 @@ function Overview({ data }: { data: TradingAnalyticsResponse }) {
     <>
       <TrCard className="p-4">
         <div className="flex items-center gap-2">
-          <TrendingUp size={17} color="#10B981" />
+          <TrendingUp size={17} color="var(--tr-success-text)" />
           <h2 style={{ color: colors.text1, fontWeight: 700 }}>Daily P/L</h2>
         </div>
         <div className="mt-4 grid gap-3">
@@ -154,7 +146,10 @@ function Overview({ data }: { data: TradingAnalyticsResponse }) {
                     }}
                   />
                 </div>
-                <span className="text-right" style={{ color: positive ? '#10B981' : '#EF4444' }}>
+                <span
+                  className="text-right"
+                  style={{ color: positive ? 'var(--tr-success-text)' : 'var(--tr-error-text)' }}
+                >
                   {formatUsd(day.pnl)}
                 </span>
               </div>
@@ -205,9 +200,9 @@ function TradeGroup({
             style={{ background: colors.surface2 }}
           >
             {positive ? (
-              <ArrowUpRight size={15} color="#10B981" />
+              <ArrowUpRight size={15} color="var(--tr-success-text)" />
             ) : (
-              <ArrowDownRight size={15} color="#EF4444" />
+              <ArrowDownRight size={15} color="var(--tr-error-text)" />
             )}
             <div className="min-w-0 flex-1">
               <strong style={{ color: colors.text1, fontSize: 12 }}>{trade.pair}</strong>
@@ -215,7 +210,12 @@ function TradeGroup({
                 {trade.side.toUpperCase()} · {trade.date} · {trade.roi.toFixed(2)}% ROI
               </p>
             </div>
-            <strong style={{ color: positive ? '#10B981' : '#EF4444', fontSize: 12 }}>
+            <strong
+              style={{
+                color: positive ? 'var(--tr-success-text)' : 'var(--tr-error-text)',
+                fontSize: 12,
+              }}
+            >
               {formatUsd(trade.pnl)}
             </strong>
           </div>
@@ -240,7 +240,10 @@ function Assets({ data }: { data: TradingAnalyticsResponse }) {
               <span className="h-2 w-2 rounded-full" style={{ background: asset.color }} />
               {asset.asset}
             </span>
-            <span className="text-right" style={{ color: asset.pnl >= 0 ? '#10B981' : '#EF4444' }}>
+            <span
+              className="text-right"
+              style={{ color: asset.pnl >= 0 ? 'var(--tr-success-text)' : 'var(--tr-error-text)' }}
+            >
               {formatUsd(asset.pnl)}
             </span>
             <span className="text-right" style={{ color: colors.text3 }}>
@@ -260,7 +263,12 @@ function Metric({ label, value, positive }: { label: string; value: string; posi
       <p style={{ color: colors.text3, fontSize: 10 }}>{label}</p>
       <strong
         style={{
-          color: positive == null ? colors.text1 : positive ? '#10B981' : '#EF4444',
+          color:
+            positive == null
+              ? colors.text1
+              : positive
+                ? 'var(--tr-success-text)'
+                : 'var(--tr-error-text)',
           fontSize: 13,
         }}
       >

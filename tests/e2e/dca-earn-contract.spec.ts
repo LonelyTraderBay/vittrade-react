@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { ButtonGradients, ButtonTextColors } from '../../src/shared/theme/button';
 
 const session = {
   user: {
@@ -44,6 +45,100 @@ const earnProduct = {
   color: '#10B981',
   riskLevel: 'low',
 };
+
+for (const profile of [
+  { prefix: '', width: 320, height: 844 },
+  { prefix: '/t', width: 900, height: 900 },
+  { prefix: '/w', width: 1440, height: 900 },
+  { prefix: '/r', width: 1024, height: 900 },
+]) {
+  for (const theme of ['light', 'dark']) {
+    test(`DCA contract coin image ${profile.prefix || 'phone'} ${theme}`, async ({
+      page,
+    }, info) => {
+      await page.setViewportSize(profile);
+      const iconSource = `data:image/svg+xml,${encodeURIComponent(
+        '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><circle cx="12" cy="12" r="10" fill="currentColor"/></svg>',
+      )}`;
+      let writes = 0;
+      page.on('request', (request) => {
+        if (
+          ['POST', 'PATCH', 'DELETE', 'PUT'].includes(request.method()) &&
+          new URL(request.url()).pathname.includes('/dca/')
+        )
+          writes++;
+      });
+      await page.route('**/auth/session', (route) => route.fulfill({ json: session }));
+      await page.route('https://e2e.test/dca/snapshot', (route) =>
+        route.fulfill({
+          json: {
+            overview: {
+              currentValue: 1_050_000,
+              totalInvested: 1_000_000,
+              profitLoss: 50_000,
+              profitLossPercent: 5,
+              activePlans: 1,
+              pausedPlans: 0,
+              errorPlans: 0,
+              nextExecution: { relativeTime: 'tomorrow', amount: 100_000 },
+            },
+            plans: [{ ...dcaPlan, coinIcon: iconSource }],
+            purchaseHistory: [],
+            portfolioHistory: [],
+          },
+        }),
+      );
+      await page.goto(`${profile.prefix}/earn/savings/dca`);
+      await expect(page).toHaveURL(new RegExp(`${profile.prefix}/earn/savings/dca$`));
+      await page.locator('html').evaluate((html, mode) => {
+        html.classList.toggle('light', mode === 'light');
+      }, theme);
+      const coinBox = page.getByTestId('dca-plan-coin-icon');
+      const image = coinBox.locator('img');
+      await image.scrollIntoViewIfNeeded();
+      await image.evaluate((element: HTMLImageElement) => element.decode());
+      expect(await image.evaluate((element: HTMLImageElement) => element.naturalWidth)).toBe(24);
+      await expect(image).toHaveAttribute('src', iconSource);
+      await expect(image).toHaveAttribute('alt', '');
+      await expect(image).toHaveAttribute('aria-hidden', 'true');
+      await expect(image).toHaveAttribute('loading', 'lazy');
+      await expect(image).toHaveAttribute('referrerpolicy', 'no-referrer');
+      const before = await image.boundingBox();
+      expect(before && { width: before.width, height: before.height }).toEqual({
+        width: 24,
+        height: 24,
+      });
+
+      await image.dispatchEvent('error');
+
+      await expect(coinBox.locator('img')).toHaveCount(0);
+      const fallback = coinBox.locator('span[aria-hidden="true"]');
+      await expect(fallback).toHaveText('BTC');
+      const after = await fallback.boundingBox();
+      expect(after && { width: after.width, height: after.height }).toEqual({
+        width: 24,
+        height: 24,
+      });
+      expect(writes).toBe(0);
+      await page.screenshot({
+        path: info.outputPath('dca-contract-coin-fallback.png'),
+        animations: 'disabled',
+      });
+      await info.attach('coin-image-measurements', {
+        body: JSON.stringify({
+          profile,
+          theme,
+          before,
+          after,
+          writes,
+          boundary:
+            'API-mode build with local intercepted session/snapshot; decode error event after a real SVG image decode.',
+        }),
+        contentType: 'application/json',
+      });
+    });
+  }
+}
 
 test.describe('DCA and Earn contract smoke on staging build', () => {
   test('creates, pauses and cancels a DCA plan through the contract boundary', async ({ page }) => {
@@ -106,7 +201,20 @@ test.describe('DCA and Earn contract smoke on staging build', () => {
     await page.getByRole('button', { name: 'Cancel' }).click();
     const confirmCancellation = page.getByRole('button', { name: 'Xác nhận hủy' });
     await expect(confirmCancellation).toBeVisible();
-    await confirmCancellation.click({ force: true });
+    const actionStyle = await confirmCancellation.evaluate((element) => ({
+      background: getComputedStyle(element).backgroundImage,
+      color: getComputedStyle(element).color,
+    }));
+    const rgb = (hex: string) =>
+      `rgb(${hex
+        .match(/[\da-f]{2}/gi)!
+        .map((value) => parseInt(value, 16))
+        .join(', ')})`;
+    const stops = ButtonGradients.danger.match(/#[\da-f]{6}/gi)!;
+    expect(actionStyle.background).toContain(rgb(stops[0]));
+    expect(actionStyle.background).toContain(rgb(stops[1]));
+    expect(actionStyle.color).toBe(rgb(ButtonTextColors.danger));
+    await confirmCancellation.click();
     await expect.poll(() => deleteCalled).toBe(true);
   });
 

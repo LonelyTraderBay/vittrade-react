@@ -6,6 +6,7 @@ import { PageLayout } from '@/shared/ui/layout/PageLayout';
 import { TrCard } from '@/shared/ui/TrCard';
 import { useRoutePrefix } from '@/shared/navigation/useRoutePrefix';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
+import { withAlpha } from '@/shared/theme/colors';
 import { useAuth } from '@/shared/session/useAuth';
 import { useProfileQuery } from '../model/profile-queries';
 
@@ -41,7 +42,12 @@ export function ProfileContractPage() {
           <div className="flex items-center gap-3">
             <div
               className="flex h-14 w-14 items-center justify-center rounded-2xl"
-              style={{ background: colors.primary, color: '#fff', fontSize: 22, fontWeight: 700 }}
+              style={{
+                background: colors.primary,
+                color: 'var(--tr-text-on-color)',
+                fontSize: 22,
+                fontWeight: 700,
+              }}
             >
               {profile.fullName.charAt(0)}
             </div>
@@ -50,7 +56,7 @@ export function ProfileContractPage() {
                 {profile.fullName}
               </h2>
               <p style={{ color: colors.text2, fontSize: 12 }}>{profile.email}</p>
-              <p style={{ color: colors.success, fontSize: 11 }}>KYC: {profile.kycStatus}</p>
+              <p style={{ color: colors.successText, fontSize: 11 }}>KYC: {profile.kycStatus}</p>
             </div>
           </div>
           <div className="mt-4 grid grid-cols-2 gap-3">
@@ -84,9 +90,9 @@ export function ProfileContractPage() {
           data-testid="auth-sign-out"
           className="w-full rounded-2xl px-4 py-3 text-sm font-semibold"
           style={{
-            color: colors.danger,
-            background: `${colors.danger}12`,
-            border: `1px solid ${colors.danger}40`,
+            color: colors.errorText,
+            background: withAlpha(colors.danger, '12'),
+            border: `1px solid ${withAlpha(colors.danger, '40')}`,
           }}
           onClick={() => {
             void signOut().then(() => navigate(`${prefix}/auth/login`, { replace: true }));

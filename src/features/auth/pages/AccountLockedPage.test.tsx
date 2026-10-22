@@ -38,7 +38,10 @@ describe.each([
       screen.getByText(/Hệ thống xác thực hiện chưa cho phép đăng nhập tài khoản này/),
     ).toBeVisible();
     expect(screen.getByRole('button', { name: 'Quay lại đăng nhập' })).toBeVisible();
-    expect(screen.getByRole('button', { name: 'Không phải bạn? Đặt lại mật khẩu' })).toBeVisible();
+    expect(screen.getByRole('button', { name: 'Không phải bạn? Đặt lại mật khẩu' })).toHaveStyle({
+      background: 'var(--tr-surface-2)',
+      color: 'var(--tr-text-1)',
+    });
     expect(screen.queryByText(/Tài khoản đã mở khóa|Email mở khóa đã gửi/)).not.toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'Gửi email mở khóa' })).not.toBeInTheDocument();
   });

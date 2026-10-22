@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useNavigate } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import {
   ArrowDownRight,
   ArrowUpRight,
@@ -95,19 +95,27 @@ export function MarketHomePage() {
             <button
               onClick={() => navigate(`${prefix}/markets`)}
               className="rounded-xl px-3 py-2 flex items-center gap-1"
-              style={{ background: '#3B82F6', color: '#fff', fontSize: 11, fontWeight: 600 }}
+              style={{ background: '#1d4ed8', color: '#fff', fontSize: 11, fontWeight: 600 }}
             >
               <Search size={13} />
               Khám phá
             </button>
           </div>
           <div className="grid grid-cols-3 gap-2">
-            <SummaryMetric label="Tăng mạnh" value={gainers[0]?.symbol ?? '—'} color="#10B981" />
-            <SummaryMetric label="Giảm mạnh" value={losers[0]?.symbol ?? '—'} color="#EF4444" />
+            <SummaryMetric
+              label="Tăng mạnh"
+              value={gainers[0]?.symbol ?? '—'}
+              color={colors.successText}
+            />
+            <SummaryMetric
+              label="Giảm mạnh"
+              value={losers[0]?.symbol ?? '—'}
+              color={colors.errorText}
+            />
             <SummaryMetric
               label="Thanh khoản"
               value={mostActive[0]?.symbol ?? '—'}
-              color="#3B82F6"
+              color={colors.link}
             />
           </div>
         </TrCard>
@@ -119,7 +127,6 @@ export function MarketHomePage() {
           pairs={favoritePairs}
           emptyLabel="Chưa có cặp trong watchlist"
           onMore={() => navigate(`${prefix}/markets/watchlist`)}
-          onPair={(pair) => navigate(`${prefix}/pair/${pair.id}`)}
         />
         <div className="grid grid-cols-2 gap-3">
           <MarketSection
@@ -128,7 +135,6 @@ export function MarketHomePage() {
             color="#10B981"
             pairs={gainers}
             onMore={() => navigate(`${prefix}/markets/movers`)}
-            onPair={(pair) => navigate(`${prefix}/pair/${pair.id}`)}
           />
           <MarketSection
             title="Giảm mạnh"
@@ -136,19 +142,13 @@ export function MarketHomePage() {
             color="#EF4444"
             pairs={losers}
             onMore={() => navigate(`${prefix}/markets/movers`)}
-            onPair={(pair) => navigate(`${prefix}/pair/${pair.id}`)}
           />
         </div>
 
-        <PageSection label="Thanh khoản nổi bật" accentColor="#3B82F6">
+        <PageSection label="Thanh khoản nổi bật" headingLevel={2} accentColor="#3B82F6">
           <TrCard className="px-4">
             {mostActive.map((pair) => (
-              <PairRow
-                key={pair.id}
-                pair={pair}
-                onClick={() => navigate(`${prefix}/pair/${pair.id}`)}
-                showVolume
-              />
+              <PairRow key={pair.id} pair={pair} showVolume />
             ))}
           </TrCard>
         </PageSection>
@@ -177,7 +177,6 @@ function MarketSection({
   pairs,
   emptyLabel,
   onMore,
-  onPair,
 }: {
   title: string;
   icon: typeof Star;
@@ -185,14 +184,16 @@ function MarketSection({
   pairs: MarketPair[];
   emptyLabel?: string;
   onMore: () => void;
-  onPair: (pair: MarketPair) => void;
 }) {
   const colors = useThemeColors();
   return (
     <TrCard className="p-3" role="region" aria-label={title}>
       <button className="flex items-center justify-between w-full mb-2" onClick={onMore}>
-        <span className="flex items-center gap-2" style={{ color, fontSize: 12, fontWeight: 700 }}>
-          <Icon size={14} />
+        <span
+          className="flex items-center gap-2"
+          style={{ color: colors.text1, fontSize: 12, fontWeight: 700 }}
+        >
+          <Icon size={14} color={color} />
           {title}
         </span>
         <ChevronRight size={12} color={colors.text3} />
@@ -202,38 +203,36 @@ function MarketSection({
           {emptyLabel ?? 'Chưa có dữ liệu'}
         </p>
       ) : (
-        pairs.map((pair) => <PairRow key={pair.id} pair={pair} onClick={() => onPair(pair)} />)
+        pairs.map((pair) => <PairRow key={pair.id} pair={pair} />)
       )}
     </TrCard>
   );
 }
 
-function PairRow({
-  pair,
-  onClick,
-  showVolume = false,
-}: {
-  pair: MarketPair;
-  onClick: () => void;
-  showVolume?: boolean;
-}) {
+function PairRow({ pair, showVolume = false }: { pair: MarketPair; showVolume?: boolean }) {
   const colors = useThemeColors();
   const positive = pair.change24h >= 0;
+  const prefix = useRoutePrefix();
   return (
-    <button
-      onClick={onClick}
-      className="flex items-center gap-2 py-2 w-full text-left"
+    <Link
+      to={`${prefix}/pair/${encodeURIComponent(pair.id)}`}
+      aria-label={`${pair.symbol} — ${fmtPrice(pair.price)}`}
+      className="flex flex-wrap items-center gap-2 py-2 w-full text-left"
       style={{ borderBottom: `1px solid ${colors.divider}` }}
     >
       <span
-        className="w-7 h-7 rounded-lg flex items-center justify-center"
+        className="w-7 h-7 min-w-max shrink-0 rounded-lg flex items-center justify-center"
         style={{ background: `${pair.logoColor}20` }}
       >
-        <span style={{ color: pair.logoColor, fontSize: 9, fontWeight: 700 }}>
+        <span style={{ color: colors.text1, fontSize: 9, fontWeight: 700 }}>
           {pair.baseAsset.slice(0, 3)}
         </span>
       </span>
-      <span className="flex-1 min-w-0">
+      {/* Max-content basis wraps the quote as a unit before a narrow card can overlap text. */}
+      <span
+        className="min-w-0 max-w-full"
+        style={{ flex: '1 1 max-content', overflowWrap: 'anywhere' }}
+      >
         <span style={{ color: colors.text1, display: 'block', fontSize: 11, fontWeight: 600 }}>
           {pair.symbol}
         </span>
@@ -243,7 +242,7 @@ function PairRow({
           </span>
         )}
       </span>
-      <span className="text-right">
+      <span className="ml-auto min-w-0 max-w-full text-right" style={{ overflowWrap: 'anywhere' }}>
         <span
           style={{ color: colors.text1, display: 'block', fontSize: 11, fontFamily: 'monospace' }}
         >
@@ -251,7 +250,7 @@ function PairRow({
         </span>
         <span
           style={{
-            color: positive ? '#10B981' : '#EF4444',
+            color: positive ? colors.successText : colors.errorText,
             display: 'inline-flex',
             alignItems: 'center',
             gap: 1,
@@ -263,7 +262,7 @@ function PairRow({
           {fmtPct(Math.abs(pair.change24h))}
         </span>
       </span>
-    </button>
+    </Link>
   );
 }
 

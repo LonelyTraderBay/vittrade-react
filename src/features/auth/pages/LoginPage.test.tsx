@@ -3,6 +3,7 @@ import { useLocation } from 'react-router';
 import { renderWithProviders, screen, userEvent, waitFor } from '@/test/test-utils';
 import { testAuthAdapter, testAuthSession } from '@/test/auth-test-adapter';
 import type { AuthAdapter } from '@/shared/session/AuthContext';
+import { ApiError } from '@/shared/api/api-error';
 import { LoginPage } from './LoginPage';
 
 function CurrentPath() {
@@ -25,6 +26,36 @@ function createAuthAdapter(
 }
 
 describe('auth LoginPage', () => {
+  it.each(['/auth/login', '/t/auth/login', '/r/auth/login'])(
+    'routes a server-locked account to the matching shell without inventing an expiry at %s',
+    async (path) => {
+      const user = userEvent.setup();
+      const login = vi
+        .fn()
+        .mockRejectedValue(new ApiError('private server detail', { status: 423 }));
+      renderWithProviders(
+        <>
+          <LoginPage />
+          <CurrentPath />
+          <CurrentRouteState />
+        </>,
+        { routerProps: { initialEntries: [path] }, authAdapter: createAuthAdapter(login) },
+      );
+      await user.type(screen.getByTestId('auth-email'), 'locked@example.com');
+      await user.type(screen.getByTestId('auth-password'), 'password');
+      await user.click(screen.getByRole('button', { name: 'Đăng nhập' }));
+
+      await waitFor(() =>
+        expect(screen.getByTestId('current-path')).toHaveTextContent(
+          path.replace('/login', '/account-locked'),
+        ),
+      );
+      expect(screen.getByTestId('current-route-state')).toHaveTextContent('null');
+      expect(screen.queryByText('private server detail')).not.toBeInTheDocument();
+      expect(login).toHaveBeenCalledTimes(1);
+    },
+  );
+
   it('validates required credentials before calling the session adapter', async () => {
     const user = userEvent.setup();
     const login = vi.fn(async () => ({
@@ -82,6 +113,9 @@ describe('auth LoginPage', () => {
     expect(screen.getByText('Định dạng email không hợp lệ')).toBeInTheDocument();
     expect(email).toHaveAttribute('aria-invalid', 'true');
     expect(email).toHaveAttribute('aria-describedby', 'input-email-error');
+    expect(email.parentElement?.getAttribute('style')).toContain(
+      'border: 1.5px solid var(--input-border-error)',
+    );
     expect(login).not.toHaveBeenCalled();
 
     await user.clear(email);
@@ -278,8 +312,14 @@ describe('auth LoginPage', () => {
       },
     );
 
-    expect(screen.getByRole('button', { name: 'Đăng nhập Demo' })).toBeInTheDocument();
-    await user.click(screen.getByRole('button', { name: 'Đăng nhập Demo' }));
+    const demoButton = screen.getByRole('button', { name: 'Đăng nhập Demo' });
+    expect(demoButton.style.background).toBe('var(--tr-surface-2)');
+    expect(demoButton.style.color).toBe('var(--tr-text-1)');
+    expect(demoButton.style.fontSize).toBe('16px');
+    expect(demoButton.style.border).toBe('1.5px solid var(--tr-border-solid)');
+    expect(demoButton.style.boxShadow).toBe('');
+    expect(demoButton.querySelector('svg')?.getAttribute('stroke')).toBe('var(--tr-info)');
+    await user.click(demoButton);
     await waitFor(() =>
       expect(login).toHaveBeenCalledWith({ email: 'demo@vittrade.vn', password: 'demo' }),
     );

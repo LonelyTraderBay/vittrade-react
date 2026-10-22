@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import { AlertCircle, Eye, EyeOff, Fingerprint, Lock, Mail } from 'lucide-react';
 import { CTAButton } from '@/shared/ui/CTAButton';
 import { InputField } from '@/shared/ui/InputField';
@@ -8,18 +8,25 @@ import { PageLayout } from '@/shared/ui/layout/PageLayout';
 import { useAuth } from '@/shared/session/useAuth';
 import { env, isProductionBuild } from '@/shared/config/env';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
+import { ALPHA, withAlpha } from '@/shared/theme/colors';
+import { textRoleStyle } from '@/shared/theme/typography';
 import { useRoutePrefix } from '@/shared/navigation/useRoutePrefix';
 import { isApiError } from '@/shared/api/api-error';
 import { isEmail } from '@/shared/lib/string';
+import { AuthBrandMark } from '@/shared/ui/auth/AuthBrandMark';
+import { getLoginReturnPath } from '../lib/login-return-path';
 
 /** Trang đăng nhập theo contract; adapter chịu trách nhiệm tạo session và chuẩn hóa lỗi. */
 export function LoginPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { signIn } = useAuth();
   const colors = useThemeColors();
   const isAuthFixtureMode =
     !isProductionBuild && (env.isTest || (env.isDev && env.dataSource === 'mock'));
   const prefix = useRoutePrefix();
+  const defaultReturnTo = `${prefix}/home`;
+  const returnTo = getLoginReturnPath(location.state, defaultReturnTo);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -40,11 +47,12 @@ export function LoginPage() {
             method: challenge.method,
             maskedDestination: challenge.maskedDestination,
             expiresAt: challenge.expiresAt,
+            ...(returnTo !== defaultReturnTo ? { from: returnTo } : {}),
           },
         });
         return;
       }
-      navigate(`${prefix}/home`, { replace: true });
+      navigate(returnTo, { replace: true });
     } catch (loginError) {
       if (isApiError(loginError) && loginError.status === 423) {
         navigate(`${prefix}/auth/account-locked`, { replace: true });
@@ -83,32 +91,11 @@ export function LoginPage() {
     <PageLayout>
       <PageContent gap={16}>
         <div className="flex flex-col items-center pb-8 pt-10">
-          <div
-            className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl"
-            style={{
-              background: 'linear-gradient(135deg, #3B82F6 0%, #1d4ed8 100%)',
-              boxShadow: '0 8px 32px rgba(59,130,246,0.4)',
-            }}
-          >
-            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" aria-hidden="true">
-              <path
-                d="M6 18L14 10L20 16L28 8"
-                stroke="#fff"
-                strokeWidth="3"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M6 26L14 18L20 24L30 14"
-                stroke="rgba(255,255,255,0.5)"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+          <div className="mb-4">
+            <AuthBrandMark size="lg" />
           </div>
-          <h1 style={{ color: colors.text1, fontSize: 26, fontWeight: 700 }}>VitTrade</h1>
-          <p style={{ color: colors.text2, fontSize: 13, marginTop: 4 }}>
+          <h1 style={{ color: colors.text1, ...textRoleStyle('pageTitle') }}>VitTrade</h1>
+          <p className="mt-1" style={{ color: colors.text2, ...textRoleStyle('subtitle') }}>
             Giao dịch thông minh, an toàn, tốc độ
           </p>
         </div>
@@ -135,7 +122,6 @@ export function LoginPage() {
             autoComplete="email"
             prefix={<Mail size={18} color={colors.text3} />}
             error={emailFieldError}
-            containerStyle={emailFieldError ? { borderColor: '#EF4444' } : undefined}
           />
 
           <InputField
@@ -165,17 +151,19 @@ export function LoginPage() {
               </button>
             }
             error={passwordFieldError}
-            containerStyle={passwordFieldError ? { borderColor: '#EF4444' } : undefined}
           />
 
           {error && !emailFieldError && !passwordFieldError && (
             <div
               className="flex items-center gap-2 rounded-xl px-3 py-2"
-              style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)' }}
+              style={{
+                background: withAlpha(colors.error, ALPHA.muted),
+                border: `1px solid ${withAlpha(colors.error, ALPHA.border)}`,
+              }}
               role="alert"
             >
               <AlertCircle size={14} color={colors.errorText} />
-              <span style={{ color: colors.errorText, fontSize: 13 }}>{error}</span>
+              <span style={{ color: colors.errorText, ...textRoleStyle('caption') }}>{error}</span>
             </div>
           )}
 
@@ -183,7 +171,7 @@ export function LoginPage() {
             type="button"
             onClick={() => navigate(`${prefix}/auth/forgot-password`)}
             className="text-right"
-            style={{ color: colors.link, fontSize: 13 }}
+            style={{ color: colors.link, ...textRoleStyle('button') }}
           >
             Quên mật khẩu?
           </button>
@@ -194,7 +182,7 @@ export function LoginPage() {
 
           <div className="flex items-center gap-3">
             <div className="h-px flex-1" style={{ background: colors.borderSolid }} />
-            <span style={{ color: colors.text2, fontSize: 12 }}>hoặc</span>
+            <span style={{ color: colors.text2, ...textRoleStyle('caption') }}>hoặc</span>
             <div className="h-px flex-1" style={{ background: colors.borderSolid }} />
           </div>
 
@@ -202,26 +190,22 @@ export function LoginPage() {
             <CTAButton
               type="button"
               onClick={handleDemoLogin}
-              variant="ghost"
-              bg={colors.surface2}
-              textColor={colors.text1}
-              style={{
-                border: `1.5px solid ${colors.borderSolid}`,
-                fontSize: 15,
-                boxShadow: 'none',
-              }}
+              variant="secondary"
+              style={{ border: `1.5px solid ${colors.borderSolid}` }}
             >
-              <Fingerprint size={20} color="#3B82F6" />
+              <Fingerprint size={20} color={colors.info} />
               Đăng nhập Demo
             </CTAButton>
           )}
 
           <div className="flex items-center justify-center gap-1 pt-2">
-            <span style={{ color: colors.text2, fontSize: 13 }}>Chưa có tài khoản?</span>
+            <span style={{ color: colors.text2, ...textRoleStyle('caption') }}>
+              Chưa có tài khoản?
+            </span>
             <button
               type="button"
               onClick={() => navigate(`${prefix}/auth/register`)}
-              style={{ color: colors.link, fontSize: 13, fontWeight: 600 }}
+              style={{ color: colors.link, ...textRoleStyle('button') }}
             >
               Đăng ký ngay
             </button>
@@ -229,7 +213,7 @@ export function LoginPage() {
         </form>
 
         <div className="mt-auto pt-8 text-center">
-          <p style={{ color: colors.text2, fontSize: 11 }}>
+          <p style={{ color: colors.text2, ...textRoleStyle('caption') }}>
             Bằng cách đăng nhập, bạn đồng ý với Điều khoản dịch vụ và Chính sách bảo mật của
             VitTrade.
           </p>

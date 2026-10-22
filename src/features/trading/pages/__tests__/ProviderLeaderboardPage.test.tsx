@@ -127,7 +127,7 @@ describe('ProviderLeaderboardPage', () => {
     renderWithRouter(<ProviderLeaderboardPage />);
     expect(screen.getByText('Leaderboard')).toBeInTheDocument();
     expect(screen.getByText(/Xếp hạng chỉ phản ánh hiệu suất lịch sử/i)).toBeInTheDocument();
-    expect(screen.getByRole('tab', { name: 'ROI' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'ROI' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /^Thấp$/ })).toBeInTheDocument();
     expect(screen.getByText('5 provider phù hợp')).toBeInTheDocument();
   });
@@ -135,7 +135,7 @@ describe('ProviderLeaderboardPage', () => {
   it('sorts and filters providers through the API query boundary', async () => {
     const user = userEvent.setup();
     renderWithRouter(<ProviderLeaderboardPage />);
-    await user.click(screen.getByRole('tab', { name: 'Sharpe' }));
+    await user.click(screen.getByRole('button', { name: 'Sharpe' }));
     expect((document.body.textContent ?? '').indexOf('SteadyGains_Pro')).toBeLessThan(
       (document.body.textContent ?? '').indexOf('RiskMaster_88'),
     );

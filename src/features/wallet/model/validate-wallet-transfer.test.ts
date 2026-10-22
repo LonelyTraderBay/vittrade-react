@@ -1,5 +1,8 @@
 import { describe, expect, it } from 'vitest';
-import { validateWalletTransfer } from './validate-wallet-transfer';
+import {
+  getWalletTransferValidationError,
+  validateWalletTransfer,
+} from './validate-wallet-transfer';
 
 const validTransfer = {
   fromWallet: 'spot' as const,
@@ -40,5 +43,20 @@ describe('validateWalletTransfer', () => {
 
   it('accepts a positive transfer within the available balance', () => {
     expect(validateWalletTransfer(validTransfer)).toBe('');
+    expect(getWalletTransferValidationError(validTransfer)).toBeNull();
+  });
+
+  it.each([
+    [{ toWallet: 'spot' as const }, 'wallets'],
+    [{ assetSymbol: '' }, 'asset'],
+    [{ amount: Number.NaN }, 'amount'],
+    [{ amount: 0 }, 'amount'],
+    [{ amount: 75.01 }, 'amount'],
+  ])('identifies the control responsible for %o without changing the summary', (input, field) => {
+    const value = { ...validTransfer, ...input };
+    expect(getWalletTransferValidationError(value)).toEqual({
+      field,
+      message: validateWalletTransfer(value),
+    });
   });
 });

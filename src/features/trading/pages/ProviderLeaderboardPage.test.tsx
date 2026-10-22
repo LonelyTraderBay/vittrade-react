@@ -1,7 +1,7 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { screen } from '@testing-library/react';
+import { screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { renderWithProviders } from '@/test/test-utils';
 import { ProviderLeaderboardPage } from './ProviderLeaderboardPage';
@@ -71,20 +71,27 @@ describe('provider leaderboard', () => {
 
     expect(await screen.findByText('Đang tải provider…')).toBeInTheDocument();
     expect(await screen.findByText('Provider One')).toBeInTheDocument();
-    await user.click(screen.getByRole('tab', { name: 'Sharpe' }));
+    await user.click(screen.getByRole('button', { name: 'Sharpe' }));
     expect(await screen.findByText('Provider One')).toBeInTheDocument();
     await user.click(screen.getByRole('button', { name: 'Trung bình' }));
     expect(await screen.findByText('Provider One')).toBeInTheDocument();
     await user.click(screen.getByRole('button', { name: /Chỉ hiện provider đã xác minh/ }));
 
     expect(await screen.findByText('Bật')).toBeInTheDocument();
-    expect(screen.getByText('Provider One')).toBeInTheDocument();
+    expect(await screen.findByText('Provider One')).toBeInTheDocument();
   });
 
   it('shows a retry state when leaderboard data is unavailable', async () => {
     let recover = false;
+    let reads = 0;
+    let finishAutomaticAttempts!: () => void;
+    const automaticAttemptsFinished = new Promise<void>((resolve) => {
+      finishAutomaticAttempts = resolve;
+    });
     server.use(
       http.get('*/trading/copy/providers', () => {
+        reads++;
+        if (!recover && reads === 3) finishAutomaticAttempts();
         return recover
           ? HttpResponse.json(providers)
           : HttpResponse.json({ code: 'PROVIDERS_UNAVAILABLE' }, { status: 503 });
@@ -94,10 +101,15 @@ describe('provider leaderboard', () => {
     const user = userEvent.setup();
     renderWithProviders(<ProviderLeaderboardPage />);
 
-    const retryButton = await screen.findByRole('button', { name: 'Thử lại' });
+    const results = screen.getByRole('region', { name: 'Kết quả bảng xếp hạng provider' });
+    // Chờ đủ vòng retry transport trước khi kiểm tra UI, không lấy mốc 1 giây bao cả backoff.
+    await automaticAttemptsFinished;
+    const retryButton = await within(results).findByRole('button', { name: 'Thử lại' });
+    expect(reads).toBe(3);
     recover = true;
     await user.click(retryButton);
 
-    expect(await screen.findByText('Provider One')).toBeInTheDocument();
+    expect(await within(results).findByText('Provider One')).toBeInTheDocument();
+    expect(reads).toBe(4);
   });
 });

@@ -1,0 +1,1281 @@
+{
+  "schemaVersion": 1,
+  "sourceHead": "898fe5c661ee00fe30da68257dce666ffd332b8e",
+  "scope": "First-party src/**/*.tsx, excluding tests and generated source; static JSX color candidates and PageContent external-margin candidates.",
+  "metrics": {
+    "filesScanned": 299,
+    "colorCandidates": 1209,
+    "colorFilesWithCandidates": 190,
+    "pageContentMarginCandidates": 3,
+    "pageContentMarginFilesWithCandidates": 2
+  },
+  "candidates": {
+    "src/app/components/dev/PerformanceMonitor.tsx": {
+      "color-prop-literal|color|#10b981": 2,
+      "color-prop-literal|color|#3b82f6": 1,
+      "color-prop-literal|color|#f59e0b": 1,
+      "inline-style-color|background|rgba(59,130,246,0.08)": 1
+    },
+    "src/app/components/dev/RouteChecker.tsx": {
+      "color-prop-literal|color|#10b981": 1,
+      "inline-style-color|background|#10b981": 2,
+      "inline-style-color|background|rgba(16,185,129,0.12)": 1,
+      "inline-style-color|color|#10b981": 1
+    },
+    "src/app/components/figma/ImageWithFallback.tsx": {
+      "named-color-utility|bg|bg-gray-100": 1
+    },
+    "src/app/components/layout/BottomNav.tsx": {
+      "inline-style-color|background|linear-gradient(180deg, rgba(23,28,36,0.98) 0%, rgba(7,9,13,0.96) 100%)": 1
+    },
+    "src/app/components/layout/LeftRail.tsx": {
+      "color-prop-literal|color|#3b82f6": 1,
+      "color-prop-literal|color|#fff": 1,
+      "color-prop-literal|stroke|#fff": 1,
+      "inline-style-color|background|linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)": 2
+    },
+    "src/app/components/layout/MobileFrame.tsx": {
+      "inline-style-color|background|#0a0a0a": 1,
+      "inline-style-color|background|radial-gradient(circle at 35% 35%, #1a2540 0%, #0a0e1a 60%, #000 100%)": 1,
+      "inline-style-color|background|radial-gradient(circle, rgba(255,255,255,0.25), transparent)": 1
+    },
+    "src/app/components/layout/ResponsiveBottomNav.tsx": {
+      "inline-style-color|background|linear-gradient(180deg, rgba(23,28,36,0.98) 0%, rgba(7,9,13,0.96) 100%)": 1
+    },
+    "src/app/components/layout/ResponsiveShell.tsx": {
+      "inline-style-color|background|#92400e": 2,
+      "inline-style-color|color|#fde68a": 2
+    },
+    "src/app/components/layout/TabletShell.tsx": {
+      "inline-style-color|background|#f59e0b": 1,
+      "inline-style-color|background|rgba(245,158,11,0.1)": 1,
+      "inline-style-color|color|#f59e0b": 1
+    },
+    "src/app/components/layout/TabletSidebar.tsx": {
+      "color-prop-literal|color|#3b82f6": 2,
+      "color-prop-literal|color|#fff": 1,
+      "inline-style-color|background|#3b82f6": 1,
+      "inline-style-color|background|#ef4444": 1,
+      "inline-style-color|background|linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)": 1,
+      "inline-style-color|color|#fff": 1
+    },
+    "src/app/components/layout/TabletTopBar.tsx": {
+      "inline-style-color|background|#ef4444": 1,
+      "inline-style-color|color|#fff": 2
+    },
+    "src/app/components/layout/WebCommandBar.tsx": {
+      "inline-style-color|background|#ef4444": 1,
+      "inline-style-color|color|#fff": 2,
+      "named-color-utility|bg|bg-transparent": 1
+    },
+    "src/app/components/layout/WebShell.tsx": {
+      "inline-style-color|background|#f59e0b": 1,
+      "inline-style-color|background|rgba(245,158,11,0.08)": 1,
+      "inline-style-color|color|#f59e0b": 1
+    },
+    "src/app/components/layout/WebSidebar.tsx": {
+      "color-prop-literal|color|#3b82f6": 2,
+      "color-prop-literal|color|#fff": 1,
+      "inline-style-color|background|#3b82f6": 1,
+      "inline-style-color|background|linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)": 1,
+      "inline-style-color|background|rgba(239,68,68,0.15)": 1,
+      "inline-style-color|color|#ef4444": 1,
+      "inline-style-color|color|#fff": 1
+    },
+    "src/app/components/mobile/ErrorBoundary.tsx": {
+      "color-prop-literal|color|#ef4444": 2,
+      "inline-style-color|background|linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)": 1,
+      "inline-style-color|background|rgba(239,68,68,0.06)": 1,
+      "inline-style-color|background|rgba(239,68,68,0.08)": 1,
+      "inline-style-color|background|rgba(239,68,68,0.1)": 1,
+      "inline-style-color|color|#ef4444": 3,
+      "inline-style-color|color|#fff": 1
+    },
+    "src/app/components/mobile/PullToRefresh.tsx": {
+      "color-prop-literal|color|#3b82f6": 1,
+      "inline-style-color|color|#3b82f6": 1
+    },
+    "src/app/components/mobile/ScrollToTopFAB.tsx": {
+      "color-prop-literal|color|#fff": 1,
+      "inline-style-color|background|rgba(59,130,246,0.9)": 1
+    },
+    "src/app/components/mobile/SwipeBack.tsx": {
+      "color-prop-literal|stroke|#3b82f6": 1
+    },
+    "src/app/components/onboarding/Coachmark.tsx": {
+      "color-prop-literal|color|#8b5cf6": 3,
+      "color-prop-literal|color|#f59e0b": 1,
+      "inline-style-color|background|rgba(0,0,0,0.4)": 1,
+      "inline-style-color|background|rgba(139,92,246,0.12)": 3,
+      "inline-style-color|background|rgba(245,158,11,0.1)": 1,
+      "inline-style-color|color|#8b5cf6": 2,
+      "inline-style-color|color|#f59e0b": 1
+    },
+    "src/app/components/states/SessionTimeoutOverlay.tsx": {
+      "color-prop-literal|color|#f59e0b": 3,
+      "inline-style-color|background|linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)": 1,
+      "inline-style-color|background|rgba(0,0,0,0.75)": 1,
+      "inline-style-color|background|rgba(245,158,11,0.12)": 2,
+      "inline-style-color|background|rgba(245,158,11,0.15)": 1,
+      "inline-style-color|color|#f59e0b": 2,
+      "inline-style-color|color|#fff": 1
+    },
+    "src/app/components/system/PlaceholderPage.tsx": {
+      "named-color-utility|bg|bg-gray-100": 1,
+      "named-color-utility|bg|bg-gray-50": 1,
+      "named-color-utility|bg|bg-white": 1,
+      "named-color-utility|text|text-gray-50": 1,
+      "named-color-utility|text|text-gray-600": 1,
+      "named-color-utility|text|text-gray-700": 1,
+      "named-color-utility|text|text-gray-900": 1
+    },
+    "src/app/routes/RouteErrorBoundary.tsx": {
+      "inline-style-color|background|#3b82f6": 1,
+      "inline-style-color|background|transparent": 1,
+      "inline-style-color|background|var(--background, #0b0e11)": 1,
+      "inline-style-color|color|#fff": 1,
+      "inline-style-color|color|var(--foreground, #e5e7eb)": 1
+    },
+    "src/dev/PreviewControls.tsx": {
+      "inline-style-color|background|#475569": 2,
+      "inline-style-color|background|#fff": 1,
+      "inline-style-color|background|#fffbeb": 1,
+      "inline-style-color|color|#166534": 1,
+      "inline-style-color|color|#475569": 3,
+      "inline-style-color|color|#78350f": 2
+    },
+    "src/dev/legacy/demo/CopyTradingCard.tsx": {
+      "color-prop-literal|stroke|white": 2,
+      "inline-style-color|color|#10b981": 1,
+      "inline-style-color|color|#3b82f6": 1
+    },
+    "src/dev/legacy/demo/IssueComparisonTable.tsx": {
+      "inline-style-color|backgroundColor|#f59e0b15": 1,
+      "inline-style-color|color|#f59e0b": 3
+    },
+    "src/dev/legacy/onboarding/OnboardingBoundaries.tsx": {
+      "color-prop-literal|color|#f59e0b": 2,
+      "inline-style-color|background|linear-gradient(90deg, #8b5cf6 0%, #a78bfa 100%)": 1,
+      "inline-style-color|background|rgba(245,158,11,0.08)": 1,
+      "inline-style-color|color|#f59e0b": 1,
+      "inline-style-color|color|white": 1
+    },
+    "src/dev/legacy/onboarding/OnboardingComplete.tsx": {
+      "color-prop-literal|color|white": 2,
+      "inline-style-color|background|linear-gradient(135deg, #10b981 0%, #34d399 100%)": 1,
+      "inline-style-color|background|linear-gradient(90deg, #8b5cf6 0%, #a78bfa 100%)": 1,
+      "inline-style-color|background|rgba(59,130,246,0.06)": 1,
+      "inline-style-color|color|white": 1
+    },
+    "src/dev/legacy/onboarding/OnboardingGoals.tsx": {
+      "color-prop-literal|color|white": 1,
+      "inline-style-color|background|linear-gradient(90deg, #8b5cf6 0%, #a78bfa 100%)": 1,
+      "inline-style-color|color|white": 1
+    },
+    "src/dev/legacy/onboarding/OnboardingModules.tsx": {
+      "color-prop-literal|color|white": 2,
+      "inline-style-color|background|linear-gradient(90deg, #8b5cf6 0%, #a78bfa 100%)": 1,
+      "inline-style-color|color|white": 2
+    },
+    "src/dev/legacy/onboarding/OnboardingProgress.tsx": {
+      "inline-style-color|background|linear-gradient(90deg, #8b5cf6 0%, #a78bfa 100%)": 1
+    },
+    "src/dev/legacy/onboarding/OnboardingTrust.tsx": {
+      "color-prop-literal|color|#10b981": 1,
+      "inline-style-color|background|linear-gradient(90deg, #8b5cf6 0%, #a78bfa 100%)": 1,
+      "inline-style-color|background|rgba(16,185,129,0.06)": 1,
+      "inline-style-color|color|#10b981": 1,
+      "inline-style-color|color|white": 1
+    },
+    "src/dev/legacy/onboarding/OnboardingWelcome.tsx": {
+      "color-prop-literal|color|#10b981": 1,
+      "color-prop-literal|color|#3b82f6": 1,
+      "color-prop-literal|color|#8b5cf6": 1,
+      "color-prop-literal|color|white": 1,
+      "inline-style-color|background|linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%)": 1,
+      "inline-style-color|background|linear-gradient(90deg, #8b5cf6 0%, #a78bfa 100%)": 1,
+      "inline-style-color|background|rgba(139,92,246,0.15)": 1,
+      "inline-style-color|background|rgba(16,185,129,0.15)": 1,
+      "inline-style-color|background|rgba(59,130,246,0.15)": 1,
+      "inline-style-color|color|white": 1
+    },
+    "src/dev/legacy/p2p/insurance/ClaimBenchmarks.tsx": {
+      "color-prop-literal|color|#8b5cf6": 1,
+      "color-prop-literal|stroke|var(--surface2, #f1f5f9)": 1,
+      "inline-style-color|background|rgba(107,114,128,0.06)": 1,
+      "inline-style-color|color|#10b981": 1,
+      "inline-style-color|color|#3b82f6": 1
+    },
+    "src/dev/legacy/p2p/insurance/ClaimSLATracker.tsx": {
+      "color-prop-literal|color|#10b981": 1,
+      "color-prop-literal|color|#ef4444": 1,
+      "inline-style-color|color|#ef4444": 2
+    },
+    "src/dev/legacy/p2p/insurance/InsuranceOnboardingTour.tsx": {
+      "color-prop-literal|color|#3b82f6": 2,
+      "inline-style-color|background|rgba(59,130,246,0.04)": 1,
+      "inline-style-color|background|rgba(59,130,246,0.1)": 1,
+      "inline-style-color|background|transparent": 1,
+      "inline-style-color|color|#3b82f6": 1
+    },
+    "src/dev/legacy/p2p/insurance/InsuranceStates.tsx": {
+      "color-prop-literal|color|#3b82f6": 1,
+      "color-prop-literal|color|#ef4444": 2,
+      "inline-style-color|background|rgba(239,68,68,0.08)": 2,
+      "inline-style-color|background|rgba(239,68,68,0.12)": 1,
+      "inline-style-color|color|#dc2626": 2,
+      "inline-style-color|color|#ef4444": 1
+    },
+    "src/dev/legacy/responsive/GatePanel.tsx": {
+      "inline-style-color|color|#fff": 1
+    },
+    "src/dev/legacy/responsive/SecurityOverlays.tsx": {
+      "color-prop-literal|color|#3b82f6": 1,
+      "color-prop-literal|color|#ef4444": 1,
+      "inline-style-color|background|linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)": 2,
+      "inline-style-color|background|rgba(0,0,0,0.75)": 1,
+      "inline-style-color|background|rgba(239,68,68,0.12)": 1,
+      "inline-style-color|background|rgba(255,255,255,0.06)": 1,
+      "inline-style-color|background|rgba(59,130,246,0.12)": 1,
+      "inline-style-color|background|transparent": 2,
+      "inline-style-color|color|#fff": 2
+    },
+    "src/dev/legacy/responsive/ShellTemplatePage.tsx": {
+      "color-prop-literal|color|#10b981": 1,
+      "color-prop-literal|color|#3b82f6": 4,
+      "color-prop-literal|color|#4a5568": 3,
+      "color-prop-literal|color|#8b5cf6": 1,
+      "color-prop-literal|color|#fff": 2,
+      "color-prop-literal|stroke|#fff": 1,
+      "inline-style-color|background|#0b0e17": 3,
+      "inline-style-color|background|#141822": 3,
+      "inline-style-color|background|#1c2235": 3,
+      "inline-style-color|background|#f0f4ff": 1,
+      "inline-style-color|background|linear-gradient(135deg, #1a2550, #0d1b3e)": 1,
+      "inline-style-color|background|linear-gradient(135deg, #3b82f6, #1d4ed8)": 2,
+      "inline-style-color|background|radial-gradient(ellipse at 50% 0%, #0d1b3e 0%, #050810 70%)": 1,
+      "inline-style-color|background|rgba(11,14,23,0.95)": 2,
+      "inline-style-color|background|rgba(11,14,23,0.98)": 1,
+      "inline-style-color|background|rgba(240,244,255,0.4)": 1,
+      "inline-style-color|background|rgba(59,130,246,0.1)": 1,
+      "inline-style-color|background|rgba(59,130,246,0.15)": 1,
+      "inline-style-color|color|#3b82f6": 3,
+      "inline-style-color|color|#4a5568": 6,
+      "inline-style-color|color|#8b95b3": 8,
+      "inline-style-color|color|#f0f4ff": 8
+    },
+    "src/dev/legacy/rewards/RewardSubComponents.tsx": {
+      "color-prop-literal|color|#10b981": 7,
+      "color-prop-literal|color|#8b5cf6": 3,
+      "color-prop-literal|color|#94a3b8": 1,
+      "color-prop-literal|color|#ef4444": 2,
+      "color-prop-literal|color|#f59e0b": 5,
+      "inline-style-color|background|#10b981": 1,
+      "inline-style-color|background|#f59e0b": 1,
+      "inline-style-color|background|linear-gradient(135deg, #f59e0b 0%, #d97706 100%)": 2,
+      "inline-style-color|background|linear-gradient(135deg, rgba(16,185,129,0.1) 0%, rgba(16,185,129,0.02) 100%)": 1,
+      "inline-style-color|background|rgba(16,185,129,0.08)": 1,
+      "inline-style-color|background|rgba(239,68,68,0.1)": 1,
+      "inline-style-color|background|rgba(245,158,11,0.08)": 1,
+      "inline-style-color|background|rgba(245,158,11,0.12)": 2,
+      "inline-style-color|background|rgba(245,158,11,0.15)": 1,
+      "inline-style-color|background|rgba(255,255,255,0.1)": 1,
+      "inline-style-color|color|#000": 2,
+      "inline-style-color|color|#10b981": 4,
+      "inline-style-color|color|#8b5cf6": 3,
+      "inline-style-color|color|#ef4444": 3,
+      "inline-style-color|color|#f59e0b": 5,
+      "inline-style-color|color|#fff": 1,
+      "inline-style-color|color|rgba(255,255,255,0.7)": 2
+    },
+    "src/dev/legacy/trading/components/AITradingSignals.tsx": {
+      "color-prop-literal|color|#8b5cf6": 1,
+      "color-prop-literal|color|#f59e0b": 1,
+      "inline-style-color|color|#10b981": 1,
+      "inline-style-color|color|#8b5cf6": 1,
+      "inline-style-color|color|#ef4444": 1,
+      "inline-style-color|color|#f59e0b": 1
+    },
+    "src/dev/legacy/trading/components/AdvancedOrderTypes.tsx": {
+      "color-prop-literal|color|#3b82f6": 3,
+      "color-prop-literal|color|#8b5cf6": 1,
+      "inline-style-color|accentColor|#3b82f6": 1,
+      "inline-style-color|background|#3b82f6": 1,
+      "inline-style-color|color|#3b82f6": 2,
+      "inline-style-color|color|#8b5cf6": 1
+    },
+    "src/dev/legacy/trading/components/AdvancedPositionControls.tsx": {
+      "color-prop-literal|color|#3b82f6": 1,
+      "color-prop-literal|color|#ef4444": 2,
+      "color-prop-literal|color|#f59e0b": 1,
+      "inline-style-color|accentColor|#3b82f6": 1,
+      "inline-style-color|color|#10b981": 2,
+      "inline-style-color|color|#3b82f6": 5,
+      "inline-style-color|color|#8b5cf6": 2,
+      "inline-style-color|color|#ef4444": 4,
+      "inline-style-color|color|#f59e0b": 1,
+      "named-color-utility|bg|bg-transparent": 2
+    },
+    "src/dev/legacy/trading/components/BulkOperations.tsx": {
+      "color-prop-literal|color|#3b82f6": 3,
+      "color-prop-literal|color|#ef4444": 1,
+      "color-prop-literal|color|#f59e0b": 1,
+      "inline-style-color|background|linear-gradient(135deg, #ef4444 0%, #dc2626 100%)": 1,
+      "inline-style-color|background|rgba(0,0,0,0.6)": 1,
+      "inline-style-color|color|#fff": 3
+    },
+    "src/dev/legacy/trading/components/ConvertP2Components.tsx": {
+      "color-prop-literal|color|#06b6d4": 1,
+      "color-prop-literal|color|#10b981": 5,
+      "color-prop-literal|color|#3b82f6": 3,
+      "color-prop-literal|color|#8b5cf6": 3,
+      "color-prop-literal|color|#ef4444": 3,
+      "color-prop-literal|color|#f59e0b": 3,
+      "color-prop-literal|stroke|#8b5cf6": 1,
+      "color-prop-literal|stroke|#f59e0b": 1,
+      "inline-style-color|background|#8b5cf6": 1,
+      "inline-style-color|background|#f59e0b": 1,
+      "inline-style-color|background|rgba(0,0,0,0.75)": 3,
+      "inline-style-color|background|rgba(139,92,246,0.12)": 2,
+      "inline-style-color|background|rgba(16,185,129,0.06)": 1,
+      "inline-style-color|background|rgba(239,68,68,0.06)": 1,
+      "inline-style-color|background|rgba(59,130,246,0.12)": 1,
+      "inline-style-color|background|transparent": 1,
+      "inline-style-color|color|#10b981": 1,
+      "inline-style-color|color|#8b5cf6": 1,
+      "inline-style-color|color|#ef4444": 1,
+      "inline-style-color|color|#f59e0b": 1,
+      "named-color-utility|bg|bg-white": 2,
+      "named-color-utility|text|text-white": 1
+    },
+    "src/dev/legacy/trading/components/ExecutionReport.tsx": {
+      "color-prop-literal|color|#10b981": 3,
+      "color-prop-literal|color|#ef4444": 1,
+      "color-prop-literal|color|#f59e0b": 1,
+      "inline-style-color|background|linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)": 1,
+      "inline-style-color|background|linear-gradient(90deg, #3b82f6, #2563eb)": 1,
+      "inline-style-color|background|rgba(16,185,129,0.08)": 1,
+      "inline-style-color|background|rgba(16,185,129,0.12)": 1,
+      "inline-style-color|color|#10b981": 1,
+      "inline-style-color|color|#3b82f6": 1,
+      "inline-style-color|color|#fff": 1
+    },
+    "src/dev/legacy/trading/components/KeyboardShortcuts.tsx": {
+      "color-prop-literal|color|#10b981": 1,
+      "color-prop-literal|color|#3b82f6": 1,
+      "color-prop-literal|color|#f59e0b": 1,
+      "inline-style-color|background|linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)": 1,
+      "inline-style-color|background|rgba(100,116,139,0.12)": 1,
+      "inline-style-color|background|rgba(59,130,246,0.08)": 1,
+      "inline-style-color|background|rgba(59,130,246,0.12)": 1,
+      "inline-style-color|color|#3b82f6": 2,
+      "inline-style-color|color|#fff": 1
+    },
+    "src/dev/legacy/trading/components/LadderTrading.tsx": {
+      "color-prop-literal|color|#10b981": 1,
+      "color-prop-literal|color|#3b82f6": 1,
+      "color-prop-literal|color|#ef4444": 1,
+      "inline-style-color|background|#3b82f6": 1,
+      "inline-style-color|background|#f59e0b": 1,
+      "inline-style-color|background|linear-gradient(135deg, #10b981 0%, #059669 100%)": 1,
+      "inline-style-color|background|linear-gradient(135deg, #ef4444 0%, #dc2626 100%)": 1,
+      "inline-style-color|background|linear-gradient(90deg, rgba(16,185,129,0.12), transparent)": 1,
+      "inline-style-color|background|linear-gradient(90deg, transparent, rgba(239,68,68,0.12))": 1,
+      "inline-style-color|background|rgba(16,185,129,0.15)": 1,
+      "inline-style-color|background|rgba(239,68,68,0.15)": 1,
+      "inline-style-color|color|#10b981": 2,
+      "inline-style-color|color|#ef4444": 2,
+      "inline-style-color|color|#fff": 2
+    },
+    "src/dev/legacy/trading/components/LiquidationHeatmap.tsx": {
+      "color-prop-literal|color|#f97316": 2,
+      "inline-style-color|color|#10b981": 1,
+      "inline-style-color|color|#3b82f6": 1,
+      "inline-style-color|color|#ef4444": 1,
+      "inline-style-color|color|#fff": 2
+    },
+    "src/dev/legacy/trading/components/LiquidationStats.tsx": {
+      "color-prop-literal|color|#10b981": 1,
+      "color-prop-literal|color|#ef4444": 1,
+      "color-prop-literal|color|#f59e0b": 1,
+      "inline-style-color|background|#10b981": 1,
+      "inline-style-color|background|#ef4444": 1,
+      "inline-style-color|color|#10b981": 1,
+      "inline-style-color|color|#ef4444": 2,
+      "inline-style-color|color|#f59e0b": 1
+    },
+    "src/dev/legacy/trading/components/MarginSafetyComponents.tsx": {
+      "color-prop-literal|color|#10b981": 1,
+      "color-prop-literal|color|#3b82f6": 2,
+      "color-prop-literal|color|#8b5cf6": 1,
+      "color-prop-literal|color|#f59e0b": 1,
+      "inline-style-color|color|#10b981": 1,
+      "inline-style-color|color|#3b82f6": 2,
+      "inline-style-color|color|#8b5cf6": 1,
+      "inline-style-color|color|#ef4444": 5,
+      "inline-style-color|color|#f59e0b": 3
+    },
+    "src/dev/legacy/trading/components/MarginTradingMenu.tsx": {
+      "color-prop-literal|color|#10b981": 2,
+      "color-prop-literal|color|#3b82f6": 2,
+      "color-prop-literal|color|#8b5cf6": 2,
+      "color-prop-literal|color|#f59e0b": 2,
+      "inline-style-color|color|#10b981": 1,
+      "inline-style-color|color|#3b82f6": 1,
+      "inline-style-color|color|#8b5cf6": 1,
+      "inline-style-color|color|#f59e0b": 1
+    },
+    "src/dev/legacy/trading/components/MarketIntelligence.tsx": {
+      "color-prop-literal|color|#10b981": 2,
+      "color-prop-literal|color|#3b82f6": 3,
+      "color-prop-literal|color|#8b5cf6": 1,
+      "color-prop-literal|color|#ef4444": 2,
+      "color-prop-literal|color|#f59e0b": 2,
+      "color-prop-literal|stroke|#10b981": 1,
+      "color-prop-literal|stroke|#ef4444": 1,
+      "inline-style-color|background|#10b981": 1,
+      "inline-style-color|background|#ef4444": 1,
+      "inline-style-color|background|linear-gradient(90deg, #10b981 0%, #059669 100%)": 1,
+      "inline-style-color|background|linear-gradient(90deg, #dc2626 0%, #ef4444 100%)": 1,
+      "inline-style-color|color|#10b981": 2,
+      "inline-style-color|color|#3b82f6": 1,
+      "inline-style-color|color|#ef4444": 2
+    },
+    "src/dev/legacy/trading/components/OrderAmendment.tsx": {
+      "color-prop-literal|color|#10b981": 3,
+      "color-prop-literal|color|#3b82f6": 1,
+      "color-prop-literal|color|#ef4444": 3,
+      "inline-style-color|background|rgba(100,116,139,0.08)": 1,
+      "inline-style-color|background|rgba(16,185,129,0.08)": 1,
+      "inline-style-color|background|rgba(239,68,68,0.08)": 1,
+      "inline-style-color|color|#10b981": 1,
+      "inline-style-color|color|#ef4444": 2,
+      "inline-style-color|color|#fff": 1
+    },
+    "src/dev/legacy/trading/components/PnLAnalytics.tsx": {
+      "color-prop-literal|color|#10b981": 2,
+      "color-prop-literal|color|#ef4444": 1,
+      "color-prop-literal|color|#f59e0b": 1,
+      "color-prop-literal|color|rgba(255,255,255,0.4)": 1,
+      "inline-style-color|background|rgba(255,255,255,0.05)": 3,
+      "inline-style-color|color|#10b981": 1,
+      "inline-style-color|color|#ef4444": 1,
+      "inline-style-color|color|rgba(255,255,255,0.4)": 3,
+      "inline-style-color|color|rgba(255,255,255,0.6)": 5
+    },
+    "src/dev/legacy/trading/components/PortfolioRiskAnalyzer.tsx": {
+      "color-prop-literal|color|#3b82f6": 1,
+      "color-prop-literal|color|#ef4444": 1,
+      "color-prop-literal|color|#f59e0b": 1,
+      "inline-style-color|background|#10b981": 1,
+      "inline-style-color|background|#84cc16": 1,
+      "inline-style-color|background|#ef4444": 1,
+      "inline-style-color|background|#f59e0b": 1,
+      "inline-style-color|background|#fb923c": 1,
+      "inline-style-color|color|#10b981": 1,
+      "inline-style-color|color|#ef4444": 4,
+      "named-color-utility|bg|bg-white": 1
+    },
+    "src/dev/legacy/trading/components/PositionDashboard.tsx": {
+      "color-prop-literal|color|#10b981": 1,
+      "color-prop-literal|color|#ef4444": 3,
+      "inline-style-color|background|rgba(100,116,139,0.12)": 1,
+      "inline-style-color|background|rgba(239,68,68,0.08)": 1,
+      "inline-style-color|color|#ef4444": 1
+    },
+    "src/dev/legacy/trading/components/PositionSizingCalculator.tsx": {
+      "color-prop-literal|color|#3b82f6": 2,
+      "color-prop-literal|color|#ef4444": 1,
+      "color-prop-literal|color|#f59e0b": 1,
+      "inline-style-color|background|rgba(239,68,68,0.08)": 1,
+      "inline-style-color|background|rgba(245,158,11,0.08)": 1,
+      "inline-style-color|background|rgba(59,130,246,0.08)": 2,
+      "inline-style-color|color|#3b82f6": 2,
+      "inline-style-color|color|#ef4444": 3,
+      "inline-style-color|color|#f59e0b": 1,
+      "inline-style-color|color|#fff": 1
+    },
+    "src/dev/legacy/trading/components/RecentLiquidations.tsx": {
+      "color-prop-literal|color|#10b981": 1,
+      "color-prop-literal|color|#ef4444": 2,
+      "inline-style-color|background|#10b981": 1,
+      "inline-style-color|color|#10b981": 2,
+      "inline-style-color|color|#ef4444": 1,
+      "inline-style-color|color|#fff": 1
+    },
+    "src/dev/legacy/trading/components/RegulatoryCompliance.tsx": {
+      "color-prop-literal|color|#10b981": 2,
+      "color-prop-literal|color|#3b82f6": 2,
+      "color-prop-literal|color|#ef4444": 4,
+      "inline-style-color|background|#ef4444": 1,
+      "inline-style-color|color|#3b82f6": 1,
+      "inline-style-color|color|#ef4444": 4
+    },
+    "src/dev/legacy/trading/components/SlippageControl.tsx": {
+      "color-prop-literal|color|#3b82f6": 1,
+      "color-prop-literal|color|#ef4444": 1,
+      "color-prop-literal|color|#f59e0b": 1,
+      "inline-style-color|background|linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)": 1,
+      "inline-style-color|background|rgba(100,116,139,0.08)": 1,
+      "inline-style-color|background|rgba(59,130,246,0.08)": 1,
+      "inline-style-color|color|#3b82f6": 1,
+      "inline-style-color|color|#fff": 1,
+      "named-color-utility|bg|bg-white": 2
+    },
+    "src/dev/legacy/trading/components/TradeJournal.tsx": {
+      "color-prop-literal|color|#3b82f6": 2,
+      "inline-style-color|color|#10b981": 1,
+      "inline-style-color|color|#3b82f6": 1,
+      "inline-style-color|color|#ef4444": 1
+    },
+    "src/dev/legacy/trading/providers/MarketDataWSProvider.tsx": {
+      "inline-style-color|background|#10b981": 1,
+      "inline-style-color|color|#10b981": 1
+    },
+    "src/features/arena/pages/ArenaContractPages.tsx": {
+      "inline-style-color|background|#f59e0b": 1,
+      "inline-style-color|background|#f59e0b12": 1,
+      "inline-style-color|background|#f59e0b18": 1,
+      "inline-style-color|color|#111827": 1
+    },
+    "src/features/arena/pages/ArenaDiscoveryPage.tsx": {
+      "color-prop-literal|color|#8b5cf6": 1,
+      "inline-style-color|background|#7c3aed": 1,
+      "inline-style-color|color|#fff": 1,
+      "named-color-utility|bg|bg-transparent": 1
+    },
+    "src/features/auth/components/Web2FASetupBackupStep.tsx": {
+      "color-prop-literal|color|#10b981": 2,
+      "color-prop-literal|color|#ef4444": 1,
+      "color-prop-literal|color|#fff": 1,
+      "inline-style-color|background|rgba(16,185,129,0.06)": 1,
+      "inline-style-color|background|rgba(16,185,129,0.08)": 1,
+      "inline-style-color|background|rgba(239,68,68,0.05)": 1,
+      "inline-style-color|color|#fff": 1,
+      "named-color-utility|outline|outline-blue-50": 1
+    },
+    "src/features/auth/components/Web2FASetupFlow.tsx": {
+      "named-color-utility|bg|bg-red-50": 1,
+      "named-color-utility|border|border-red-200": 1,
+      "named-color-utility|text|text-red-700": 1
+    },
+    "src/features/auth/components/Web2FASetupQrStep.tsx": {
+      "color-prop-literal|color|#3b82f6": 1,
+      "color-prop-literal|color|#f59e0b": 1,
+      "inline-style-color|background|#fff": 1,
+      "inline-style-color|background|rgba(245,158,11,0.06)": 1,
+      "inline-style-color|background|rgba(59,130,246,0.08)": 1,
+      "inline-style-color|color|#6b7280": 1
+    },
+    "src/features/auth/components/Web2FASetupStepIndicator.tsx": {
+      "color-prop-literal|color|#fff": 1
+    },
+    "src/features/auth/components/Web2FASetupVerifyStep.tsx": {
+      "color-prop-literal|color|#3b82f6": 2,
+      "color-prop-literal|color|#ef4444": 1,
+      "inline-style-color|background|rgba(239,68,68,0.08)": 1,
+      "inline-style-color|background|rgba(59,130,246,0.06)": 1,
+      "inline-style-color|background|rgba(59,130,246,0.08)": 1,
+      "inline-style-color|caretColor|#3b82f6": 1,
+      "inline-style-color|color|#ef4444": 1,
+      "inline-style-color|color|#fff": 1
+    },
+    "src/features/auth/pages/AccountLockedPage.tsx": {
+      "named-color-utility|outline|outline-blue-50": 1
+    },
+    "src/features/auth/pages/OTPPage.tsx": {
+      "color-prop-literal|color|#3b82f6": 1,
+      "inline-style-color|background|rgba(239,68,68,0.1)": 1,
+      "inline-style-color|background|rgba(59,130,246,0.1)": 1,
+      "inline-style-color|color|#3b82f6": 1
+    },
+    "src/features/auth/pages/PasswordChangePage.tsx": {
+      "named-color-utility|outline|outline-blue-50": 1
+    },
+    "src/features/auth/pages/PasswordResetPages.tsx": {
+      "color-prop-literal|color|#10b981": 2,
+      "color-prop-literal|color|#3b82f6": 1,
+      "inline-style-color|background|rgba(16,185,129,0.15)": 1,
+      "inline-style-color|background|rgba(59,130,246,0.1)": 1,
+      "inline-style-color|color|#ef4444": 1,
+      "named-color-utility|outline|outline-blue-50": 4
+    },
+    "src/features/auth/pages/TwoFASetupPage.tsx": {
+      "color-prop-literal|color|#10b981": 1,
+      "color-prop-literal|color|#3b82f6": 1,
+      "color-prop-literal|color|#fff": 2,
+      "inline-style-color|background|#fff": 1,
+      "inline-style-color|background|rgba(16,185,129,0.1)": 1,
+      "inline-style-color|background|rgba(239,68,68,0.08)": 1,
+      "inline-style-color|background|rgba(245,158,11,0.1)": 1,
+      "inline-style-color|background|rgba(59,130,246,0.1)": 1,
+      "inline-style-color|color|#6b7280": 1,
+      "named-color-utility|outline|outline-blue-50": 2,
+      "named-color-utility|text|text-red-600": 1
+    },
+    "src/features/auth/pages/WebAccountLockedPage.tsx": {
+      "color-prop-literal|color|#ef4444": 1,
+      "color-prop-literal|color|#f59e0b": 1,
+      "inline-style-color|background|rgba(239,68,68,0.08)": 1,
+      "inline-style-color|background|rgba(245,158,11,0.04)": 1,
+      "inline-style-color|background|rgba(245,158,11,0.06)": 1,
+      "named-color-utility|outline|outline-blue-50": 1
+    },
+    "src/features/auth/pages/WebAuthSuccessPage.tsx": {
+      "inline-style-color|color|#fff": 1
+    },
+    "src/features/auth/pages/WebLoginPage.tsx": {
+      "color-prop-literal|color|#3b82f6": 1,
+      "color-prop-literal|color|#ef4444": 2,
+      "inline-style-color|background|rgba(239,68,68,0.08)": 1,
+      "inline-style-color|background|rgba(59,130,246,0.03)": 1,
+      "named-color-utility|bg|bg-transparent": 2
+    },
+    "src/features/auth/pages/WebOTPPage.tsx": {
+      "color-prop-literal|color|#10b981": 1,
+      "color-prop-literal|color|#3b82f6": 3,
+      "color-prop-literal|color|#ef4444": 1,
+      "inline-style-color|background|rgba(16,185,129,0.1)": 1,
+      "inline-style-color|background|rgba(239,68,68,0.08)": 1,
+      "inline-style-color|background|rgba(59,130,246,0.08)": 1,
+      "inline-style-color|caretColor|#3b82f6": 1,
+      "named-color-utility|outline|outline-blue-50": 1
+    },
+    "src/features/auth/pages/WebSessionExpiredPage.tsx": {
+      "color-prop-literal|color|#3b82f6": 1,
+      "inline-style-color|background|linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)": 1,
+      "inline-style-color|background|rgba(239,68,68,0.06)": 1,
+      "inline-style-color|background|rgba(59,130,246,0.04)": 1,
+      "inline-style-color|color|#fff": 1
+    },
+    "src/features/dca/components/ChartAnnotationTextInput.tsx": {
+      "arbitrary-color-class|bg|bg-[rgba(0,0,0,0.7)]": 1,
+      "arbitrary-color-class|bg|bg-[rgba(255,255,255,0.15)]": 1,
+      "arbitrary-color-class|border|border-[rgba(255,255,255,0.2)]": 1,
+      "inline-style-color|background|#3b82f6": 1,
+      "named-color-utility|text|text-white": 3
+    },
+    "src/features/dca/components/ChartAnnotationToolbar.tsx": {
+      "arbitrary-color-class|bg|bg-[rgba(0,0,0,0.85)]": 1,
+      "arbitrary-color-class|bg|bg-[rgba(0,0,0,0.9)]": 2,
+      "arbitrary-color-class|bg|bg-[rgba(255,255,255,0.1)]": 1,
+      "arbitrary-color-class|bg|bg-[rgba(255,255,255,0.15)]": 2,
+      "arbitrary-color-class|text|text-[rgba(239,68,68,0.7)]": 1,
+      "arbitrary-color-class|text|text-[rgba(255,255,255,0.4)]": 2,
+      "arbitrary-color-class|text|text-[rgba(255,255,255,0.5)]": 1,
+      "arbitrary-color-class|text|text-[rgba(59,130,246,0.6)]": 1,
+      "arbitrary-color-class|text|text-[rgba(59,130,246,0.8)]": 1,
+      "inline-style-color|background|#3b82f6": 1,
+      "named-color-utility|bg|bg-white": 2,
+      "named-color-utility|border|border-white": 1,
+      "named-color-utility|text|text-white": 1
+    },
+    "src/features/dca/components/DCAAdvancedToolsSection.tsx": {
+      "inline-style-color|background|rgba(139,92,246,0.12)": 1,
+      "inline-style-color|background|rgba(16,185,129,0.12)": 1,
+      "inline-style-color|background|rgba(245,158,11,0.12)": 1,
+      "inline-style-color|background|rgba(59,130,246,0.12)": 1,
+      "inline-style-color|color|#10b981": 1,
+      "inline-style-color|color|#3b82f6": 1,
+      "inline-style-color|color|#8b5cf6": 1,
+      "inline-style-color|color|#f59e0b": 1
+    },
+    "src/features/dca/components/DCACreatePlanSheet.tsx": {
+      "named-color-utility|text|text-white": 1
+    },
+    "src/features/dca/components/DCAHistoryChartVisuals.tsx": {
+      "color-prop-literal|stroke|white": 2
+    },
+    "src/features/dca/components/DCAOverviewCard.tsx": {
+      "color-prop-literal|color|#34d399": 1,
+      "color-prop-literal|color|#f87171": 1,
+      "color-prop-literal|color|#fbbf24": 1,
+      "inline-style-color|background|rgba(139,92,246,0.25)": 1,
+      "inline-style-color|background|rgba(16,185,129,0.25)": 1,
+      "inline-style-color|background|rgba(59,130,246,0.20)": 1,
+      "inline-style-color|background|rgba(59,130,246,0.25)": 1,
+      "inline-style-color|color|#34d399": 2,
+      "inline-style-color|color|#60a5fa": 2,
+      "inline-style-color|color|#a78bfa": 2,
+      "inline-style-color|color|#ffffff": 3,
+      "inline-style-color|color|rgba(255,255,255,0.35)": 1,
+      "inline-style-color|color|rgba(255,255,255,0.4)": 1
+    },
+    "src/features/dca/components/DCAOverviewCardVisuals.tsx": {
+      "color-prop-literal|stopColor|transparent": 1,
+      "inline-style-color|background|linear-gradient(90deg, rgba(255,255,255,0.06) 25%, rgba(255,255,255,0.12) 50%, rgba(255,255,255,0.06) 75%)": 1,
+      "inline-style-color|background|rgba(255,255,255,0.15)": 1,
+      "inline-style-color|background|transparent": 1,
+      "inline-style-color|color|rgba(255,255,255,0.7)": 1
+    },
+    "src/features/dca/components/DCAPlanCard.tsx": {
+      "inline-style-color|background|rgba(239,68,68,0.06)": 1,
+      "inline-style-color|background|rgba(59,130,246,0.06)": 1,
+      "inline-style-color|background|transparent": 2,
+      "inline-style-color|background|var(--card-bg, var(--card, #141822))": 1,
+      "inline-style-color|color|#10b981": 1,
+      "inline-style-color|color|#ef4444": 4
+    },
+    "src/features/dca/pages/DCAMainPage.tsx": {
+      "named-color-utility|text|text-white": 3
+    },
+    "src/features/discovery/pages/DiscoveryContractPages.tsx": {
+      "named-color-utility|bg|bg-transparent": 1
+    },
+    "src/features/earn/components/EarnFeatureComponents.tsx": {
+      "named-color-utility|bg|bg-black/60": 1,
+      "named-color-utility|bg|bg-blue-50": 1,
+      "named-color-utility|bg|bg-emerald-50": 1,
+      "named-color-utility|bg|bg-red-50": 1,
+      "named-color-utility|bg|bg-transparent": 1,
+      "named-color-utility|border|border-emerald-50": 1,
+      "named-color-utility|text|text-blue-50": 1,
+      "named-color-utility|text|text-emerald-50": 1
+    },
+    "src/features/earn/pages/EarnHistoryPage.tsx": {
+      "named-color-utility|text|text-red-50": 1
+    },
+    "src/features/earn/pages/EarnPage.tsx": {
+      "named-color-utility|text|text-blue-50": 2
+    },
+    "src/features/earn/pages/EarnTransactionPages.tsx": {
+      "named-color-utility|bg|bg-red-50": 2,
+      "named-color-utility|bg|bg-transparent": 2,
+      "named-color-utility|text|text-blue-50": 2,
+      "named-color-utility|text|text-red-50": 4
+    },
+    "src/features/earn/pages/SavingsPortfolioPage.tsx": {
+      "named-color-utility|text|text-amber-50": 1
+    },
+    "src/features/launchpad/pages/LaunchpadContractPages.tsx": {
+      "named-color-utility|bg|bg-violet-50": 1
+    },
+    "src/features/market/components/DiscoverMoreSection.tsx": {
+      "color-prop-literal|accentColor|#6366f1": 1
+    },
+    "src/features/market/components/MarketListSections.tsx": {
+      "color-prop-literal|color|#10b981": 1,
+      "color-prop-literal|color|#3b82f6": 1,
+      "color-prop-literal|color|#ef4444": 1,
+      "inline-style-color|background|transparent": 1
+    },
+    "src/features/market/pages/AdvancedChartsPage.tsx": {
+      "color-prop-literal|accentColor|#8b5cf6": 1,
+      "named-color-utility|bg|bg-transparent": 1
+    },
+    "src/features/market/pages/MarketComparisonPage.tsx": {
+      "color-prop-literal|color|#10b981": 1,
+      "color-prop-literal|color|#3b82f6": 1,
+      "color-prop-literal|color|#ef4444": 1,
+      "inline-style-color|background|#3b82f6": 1,
+      "inline-style-color|color|#fff": 1
+    },
+    "src/features/market/pages/MarketDerivativesPage.tsx": {
+      "color-prop-literal|color|#f59e0b": 1,
+      "inline-style-color|background|#10b981": 1,
+      "inline-style-color|background|#ef4444": 1,
+      "inline-style-color|color|#10b981": 3,
+      "inline-style-color|color|#ef4444": 3,
+      "named-color-utility|bg|bg-emerald-50": 3,
+      "named-color-utility|bg|bg-red-50": 3
+    },
+    "src/features/market/pages/MarketHeatmapPage.tsx": {
+      "inline-style-color|background|#10b981": 1,
+      "inline-style-color|background|#ef4444": 1
+    },
+    "src/features/market/pages/MarketHomePage.tsx": {
+      "color-prop-literal|accentColor|#3b82f6": 1,
+      "color-prop-literal|color|#10b981": 1,
+      "color-prop-literal|color|#3b82f6": 1,
+      "color-prop-literal|color|#ef4444": 1,
+      "color-prop-literal|color|#f59e0b": 1,
+      "inline-style-color|background|#1d4ed8": 1,
+      "inline-style-color|color|#fff": 1
+    },
+    "src/features/market/pages/MarketNewsFeedPage.tsx": {
+      "named-color-utility|bg|bg-red-50": 1,
+      "named-color-utility|text|text-red-50": 1
+    },
+    "src/features/market/pages/MarketOverviewPage.tsx": {
+      "color-prop-literal|accentColor|#8b5cf6": 1,
+      "color-prop-literal|accentColor|#f59e0b": 1,
+      "color-prop-literal|color|#10b981": 2,
+      "color-prop-literal|color|#3b82f6": 4,
+      "color-prop-literal|color|#8b5cf6": 1,
+      "color-prop-literal|color|#ef4444": 1,
+      "color-prop-literal|color|#f59e0b": 2,
+      "inline-style-color|background|#10b981": 1,
+      "inline-style-color|background|#ef4444": 1
+    },
+    "src/features/market/pages/MarketPriceAlertsPage.tsx": {
+      "inline-style-color|background|rgba(239,68,68,0.08)": 1,
+      "inline-style-color|color|#fff": 1
+    },
+    "src/features/market/pages/MarketScreenerPage.tsx": {
+      "named-color-utility|bg|bg-transparent": 1
+    },
+    "src/features/market/pages/MarketSectorsPage.tsx": {
+      "color-prop-literal|accentColor|#3b82f6": 1,
+      "color-prop-literal|color|#8b5cf6": 1,
+      "inline-style-color|color|#3b82f6": 1
+    },
+    "src/features/market/pages/MarketSentimentPage.tsx": {
+      "inline-style-color|background|#627eea": 1,
+      "inline-style-color|background|#f7931a": 1,
+      "inline-style-color|color|#10b981": 1,
+      "inline-style-color|color|#ef4444": 1,
+      "named-color-utility|bg|bg-emerald-50": 1,
+      "named-color-utility|bg|bg-gray-50": 1,
+      "named-color-utility|bg|bg-red-50": 1
+    },
+    "src/features/market/pages/TokenInfoPage.tsx": {
+      "color-prop-literal|accentColor|#3b82f6": 1
+    },
+    "src/features/market/pages/WatchlistPage.tsx": {
+      "inline-style-color|background|rgba(239,68,68,0.1)": 1,
+      "inline-style-color|background|rgba(59,130,246,0.05)": 1,
+      "inline-style-color|color|#fff": 1,
+      "named-color-utility|bg|bg-transparent": 1
+    },
+    "src/features/p2p/components/P2P2FASettingsView.tsx": {
+      "named-color-utility|bg|bg-white": 3
+    },
+    "src/features/p2p/components/P2PCreateAdSections.tsx": {
+      "named-color-utility|bg|bg-black/50": 1
+    },
+    "src/features/p2p/components/P2PHomeActionSheets.tsx": {
+      "color-prop-literal|color|#3b82f6": 1,
+      "color-prop-literal|color|#8b5cf6": 1,
+      "color-prop-literal|color|#fff": 1,
+      "inline-style-color|background|linear-gradient(135deg, rgba(139,92,246,0.06) 0%, rgba(59,130,246,0.04) 100%)": 1,
+      "inline-style-color|background|linear-gradient(180deg, #10b981, #34d399)": 1,
+      "inline-style-color|background|linear-gradient(180deg, #3b82f6, #60a5fa)": 1,
+      "inline-style-color|background|linear-gradient(180deg, #f59e0b, #fbbf24)": 1,
+      "inline-style-color|background|rgba(139,92,246,0.1)": 1,
+      "inline-style-color|background|rgba(59,130,246,0.1)": 1,
+      "inline-style-color|color|#10b981": 1,
+      "inline-style-color|color|#3b82f6": 2,
+      "inline-style-color|color|#fff": 1
+    },
+    "src/features/p2p/components/P2PHomeCards.tsx": {
+      "color-prop-literal|color|#f59e0b": 1,
+      "color-prop-literal|color|#fff": 3,
+      "color-prop-literal|fill|#f59e0b": 1,
+      "inline-style-color|background|rgba(139,92,246,0.95)": 1,
+      "inline-style-color|background|rgba(168,85,247,0.1)": 1,
+      "inline-style-color|background|rgba(255,255,255,0.18)": 1,
+      "inline-style-color|background|rgba(255,255,255,0.2)": 1,
+      "inline-style-color|color|#fff": 5,
+      "inline-style-color|color|rgba(255,255,255,0.7)": 1
+    },
+    "src/features/p2p/components/P2PMarketplaceSections.tsx": {
+      "color-prop-literal|color|#10b981": 3,
+      "color-prop-literal|color|#3b82f6": 1,
+      "color-prop-literal|color|#8b5cf6": 1,
+      "color-prop-literal|color|#f59e0b": 1,
+      "color-prop-literal|color|#fff": 3,
+      "inline-style-color|background|#10b981": 1,
+      "inline-style-color|background|linear-gradient(135deg, #10b981, #059669)": 1,
+      "inline-style-color|background|linear-gradient(135deg, #10b981, #3b82f6)": 1,
+      "inline-style-color|background|linear-gradient(135deg, #3b82f6, #2563eb)": 1,
+      "inline-style-color|background|linear-gradient(135deg, rgba(16,185,129,0.06) 0%, rgba(59,130,246,0.06) 50%, rgba(139,92,246,0.04) 100%)": 1,
+      "inline-style-color|background|linear-gradient(135deg, rgba(16,185,129,0.1) 0%, rgba(59,130,246,0.08) 100%)": 1,
+      "inline-style-color|background|linear-gradient(135deg, rgba(59,130,246,0.08) 0%, rgba(139,92,246,0.06) 100%)": 1,
+      "inline-style-color|background|rgba(139,92,246,0.1)": 1,
+      "inline-style-color|background|rgba(16,185,129,0.06)": 1,
+      "inline-style-color|background|rgba(16,185,129,0.08)": 1,
+      "inline-style-color|color|#ef4444": 1
+    },
+    "src/features/p2p/pages/P2PAdAnalyticsPage.tsx": {
+      "color-prop-literal|color|#10b981": 3,
+      "color-prop-literal|color|#3b82f6": 2,
+      "color-prop-literal|color|#8b5cf6": 1,
+      "color-prop-literal|color|#f59e0b": 2,
+      "inline-style-color|color|#10b981": 1
+    },
+    "src/features/p2p/pages/P2PAdDetailContractPage.tsx": {
+      "named-color-utility|bg|bg-black/50": 1
+    },
+    "src/features/p2p/pages/P2PBlacklistAddPage.tsx": {
+      "inline-style-color|background|#ef4444": 1,
+      "inline-style-color|background|rgba(239,68,68,0.1)": 1,
+      "inline-style-color|color|#fff": 1
+    },
+    "src/features/p2p/pages/P2PBlacklistPage.tsx": {
+      "inline-style-color|background|rgba(239,68,68,0.1)": 1,
+      "inline-style-color|background|rgba(245,158,11,0.1)": 1
+    },
+    "src/features/p2p/pages/P2PChatPage.tsx": {
+      "color-prop-literal|color|#10b981": 2,
+      "color-prop-literal|color|#3b82f6": 1,
+      "color-prop-literal|color|#fff": 1,
+      "inline-style-color|background|linear-gradient(135deg, #3b82f6, #8b5cf6)": 1,
+      "inline-style-color|background|rgba(16,185,129,0.06)": 1,
+      "inline-style-color|color|#fff": 1
+    },
+    "src/features/p2p/pages/P2PDashboardPage.tsx": {
+      "inline-style-color|background|linear-gradient(180deg, #3b82f6, #8b5cf6)": 1,
+      "inline-style-color|background|rgba(59,130,246,0.1)": 1
+    },
+    "src/features/p2p/pages/P2PDisputeDetailPage.tsx": {
+      "inline-style-color|background|rgba(245,158,11,0.06)": 1,
+      "inline-style-color|color|#fff": 1
+    },
+    "src/features/p2p/pages/P2PDisputesPage.tsx": {
+      "inline-style-color|background|rgba(59,130,246,0.08)": 1
+    },
+    "src/features/p2p/pages/P2PEscrowDetailPage.tsx": {
+      "color-prop-literal|color|#10b981": 3,
+      "color-prop-literal|color|#3b82f6": 1,
+      "color-prop-literal|color|#ef4444": 1,
+      "color-prop-literal|color|#f59e0b": 1,
+      "inline-style-color|background|#047857": 2,
+      "inline-style-color|background|#1d4ed8": 2,
+      "inline-style-color|background|rgba(239,68,68,0.08)": 1,
+      "inline-style-color|color|#ef4444": 1,
+      "inline-style-color|color|#fff": 4
+    },
+    "src/features/p2p/pages/P2PExpressConfirmPage.tsx": {
+      "color-prop-literal|color|#fff": 1,
+      "inline-style-color|background|linear-gradient(135deg, #3b82f6, #8b5cf6)": 1,
+      "inline-style-color|background|rgba(16,185,129,0.06)": 1,
+      "inline-style-color|color|#fff": 2
+    },
+    "src/features/p2p/pages/P2PFraudPreventionPage.tsx": {
+      "color-prop-literal|color|#fff": 1,
+      "inline-style-color|background|rgba(239,68,68,0.06)": 1,
+      "inline-style-color|background|rgba(245,158,11,0.06)": 2
+    },
+    "src/features/p2p/pages/P2PGuidePage.tsx": {
+      "color-prop-literal|color|#fff": 1,
+      "color-prop-literal|fill|#fff": 1,
+      "inline-style-color|background|linear-gradient(135deg, rgba(239,68,68,0.08), rgba(245,158,11,0.08))": 1,
+      "inline-style-color|background|linear-gradient(135deg, rgba(59,130,246,0.15), rgba(139,92,246,0.15))": 1,
+      "inline-style-color|background|rgba(0,0,0,0.45)": 1,
+      "inline-style-color|background|rgba(16,185,129,0.12)": 1
+    },
+    "src/features/p2p/pages/P2PMerchantProfilePage.tsx": {
+      "color-prop-literal|fill|#f59e0b": 1,
+      "inline-style-color|background|linear-gradient(135deg, #3b82f6, #8b5cf6)": 1,
+      "inline-style-color|background|rgba(239,68,68,0.08)": 1,
+      "inline-style-color|color|#fff": 1
+    },
+    "src/features/p2p/pages/P2PMyAdsContractPage.tsx": {
+      "inline-style-color|background|rgba(239,68,68,.12)": 1,
+      "named-color-utility|bg|bg-black/50": 1
+    },
+    "src/features/p2p/pages/P2POrderActionPages.tsx": {
+      "color-prop-literal|color|#9ca3af": 1,
+      "color-prop-literal|fill|#f59e0b": 1,
+      "color-prop-literal|fill|transparent": 1,
+      "inline-style-color|color|#374151": 1
+    },
+    "src/features/p2p/pages/P2PPaymentMethodAddPage.tsx": {
+      "color-prop-literal|color|#a855f7": 1
+    },
+    "src/features/p2p/pages/P2PPaymentMethodsPage.tsx": {
+      "inline-style-color|background|rgba(168,85,247,0.08)": 1,
+      "inline-style-color|background|rgba(239,68,68,0.08)": 1,
+      "inline-style-color|background|rgba(59,130,246,0.06)": 1,
+      "inline-style-color|background|rgba(59,130,246,0.08)": 1,
+      "inline-style-color|background|rgba(59,130,246,0.1)": 1
+    },
+    "src/features/p2p/pages/P2PReportMerchantPage.tsx": {
+      "color-prop-literal|color|#3b82f6": 1,
+      "inline-style-color|background|linear-gradient(135deg, #3b82f6, #8b5cf6)": 1,
+      "inline-style-color|color|#ef4444": 2,
+      "inline-style-color|color|#fff": 1
+    },
+    "src/features/p2p/pages/P2PReviewsPage.tsx": {
+      "color-prop-literal|fill|#f59e0b": 2
+    },
+    "src/features/p2p/pages/P2PTradingLevelPage.tsx": {
+      "color-prop-literal|color|#fff": 2,
+      "inline-style-color|background|linear-gradient(90deg, #8b5cf6, #a78bfa)": 1
+    },
+    "src/features/predictions/pages/PredictionContractPages.tsx": {
+      "named-color-utility|bg|bg-transparent": 1
+    },
+    "src/features/predictions/pages/PredictionRiskCalculatorPage.tsx": {
+      "inline-style-color|background|rgba(239,68,68,0.06)": 1,
+      "inline-style-color|background|rgba(245,158,11,0.06)": 1,
+      "inline-style-color|background|rgba(59,130,246,0.06)": 1
+    },
+    "src/features/profile/pages/DeviceManagementContractPage.tsx": {
+      "inline-style-color|background|#fee2e2": 1,
+      "inline-style-color|color|#991b1b": 1
+    },
+    "src/features/profile/pages/EditProfileContractPage.tsx": {
+      "inline-style-color|color|#ef4444": 1
+    },
+    "src/features/referral/pages/ReferralContractPage.tsx": {
+      "inline-style-color|background|linear-gradient(135deg, #7c2d12, #c2410c)": 1,
+      "inline-style-color|color|#fed7aa": 2,
+      "inline-style-color|color|#fff7ed": 2
+    },
+    "src/features/trading/components/OCOOrderForm.tsx": {
+      "color-prop-literal|color|#10b981": 1,
+      "color-prop-literal|color|#ef4444": 1,
+      "color-prop-literal|color|#f59e0b": 1,
+      "inline-style-color|background|rgba(245,158,11,0.08)": 1,
+      "inline-style-color|background|rgba(59,130,246,0.08)": 1,
+      "inline-style-color|color|#10b981": 1,
+      "inline-style-color|color|#3b82f6": 1,
+      "inline-style-color|color|#ef4444": 3,
+      "inline-style-color|color|#f59e0b": 1,
+      "inline-style-color|color|#fff": 1
+    },
+    "src/features/trading/components/OpenOrdersPanel.tsx": {
+      "color-prop-literal|color|#10b981": 1,
+      "color-prop-literal|color|#ef4444": 1,
+      "inline-style-color|background|linear-gradient(90deg, #10b981, #34d399)": 1,
+      "inline-style-color|background|rgba(139,92,246,0.04)": 1,
+      "inline-style-color|background|rgba(139,92,246,0.12)": 1,
+      "inline-style-color|background|rgba(239,68,68,0.1)": 1,
+      "inline-style-color|background|rgba(245,158,11,0.12)": 1,
+      "inline-style-color|background|rgba(59,130,246,0.08)": 1,
+      "inline-style-color|color|#10b981": 1,
+      "inline-style-color|color|#3b82f6": 1,
+      "inline-style-color|color|#8b5cf6": 1,
+      "inline-style-color|color|#ef4444": 2,
+      "inline-style-color|color|#f59e0b": 1
+    },
+    "src/features/trading/components/OrderBook.tsx": {
+      "inline-style-color|background|rgba(16,185,129,0.08)": 1,
+      "inline-style-color|background|rgba(239,68,68,0.08)": 1,
+      "inline-style-color|color|#10b981": 1,
+      "inline-style-color|color|#ef4444": 2
+    },
+    "src/features/trading/components/OrderConfirmationSheet.tsx": {
+      "color-prop-literal|color|#f59e0b": 1,
+      "inline-style-color|background|rgba(245,158,11,0.08)": 1,
+      "inline-style-color|color|#f59e0b": 1,
+      "named-color-utility|text|text-white": 1
+    },
+    "src/features/trading/components/OrderModifySheet.tsx": {
+      "color-prop-literal|color|#3b82f6": 1,
+      "inline-style-color|background|linear-gradient(135deg, #3b82f6, #2563eb)": 1,
+      "inline-style-color|background|rgba(59,130,246,0.06)": 1,
+      "inline-style-color|background|transparent": 2,
+      "inline-style-color|color|#3b82f6": 1,
+      "inline-style-color|color|#f59e0b": 1,
+      "named-color-utility|text|text-white": 1
+    },
+    "src/features/trading/components/QuickPairSwitcher.tsx": {
+      "color-prop-literal|color|#f59e0b": 1,
+      "color-prop-literal|fill|#f59e0b": 1,
+      "inline-style-color|background|transparent": 1,
+      "inline-style-color|color|#ef4444": 1
+    },
+    "src/features/trading/components/RecentTrades.tsx": {
+      "inline-style-color|color|#ef4444": 1
+    },
+    "src/features/trading/components/TPSLForm.tsx": {
+      "color-prop-literal|color|#8b5cf6": 1,
+      "color-prop-literal|color|#ef4444": 1,
+      "color-prop-literal|color|#f59e0b": 1,
+      "inline-style-color|background|#10b981": 1,
+      "inline-style-color|background|#ef4444": 1,
+      "inline-style-color|background|rgba(139,92,246,0.06)": 1,
+      "inline-style-color|background|rgba(239,68,68,0.08)": 1,
+      "inline-style-color|background|rgba(245,158,11,0.06)": 1,
+      "inline-style-color|background|transparent": 2,
+      "inline-style-color|color|#10b981": 3,
+      "inline-style-color|color|#8b5cf6": 1,
+      "inline-style-color|color|#ef4444": 6,
+      "inline-style-color|color|#f59e0b": 1,
+      "named-color-utility|bg|bg-white": 1
+    },
+    "src/features/trading/components/TradingMarketPanel.tsx": {
+      "color-prop-literal|color|#3b82f6": 1,
+      "color-prop-literal|color|#ef4444": 1,
+      "inline-style-color|background|rgba(139,92,246,0.08)": 1
+    },
+    "src/features/trading/components/TradingOrderEntryPanel.tsx": {
+      "inline-style-color|background|transparent": 4,
+      "named-color-utility|text|text-white": 1
+    },
+    "src/features/trading/components/copy-education/CopyEducationFeesTab.tsx": {
+      "inline-style-color|color|#10b981": 2,
+      "inline-style-color|color|#ef4444": 1
+    },
+    "src/features/trading/components/copy-education/CopyEducationHowItWorksTab.tsx": {
+      "color-prop-literal|color|#10b981": 1,
+      "color-prop-literal|color|#ef4444": 1
+    },
+    "src/features/trading/components/copy-education/CopyEducationMistakesTab.tsx": {
+      "color-prop-literal|color|#10b981": 1,
+      "inline-style-color|color|#10b981": 1
+    },
+    "src/features/trading/components/copy-education/CopyEducationRegulatoryTab.tsx": {
+      "color-prop-literal|color|#10b981": 1
+    },
+    "src/features/trading/components/copy-education/CopyEducationScenarioTab.tsx": {
+      "color-prop-literal|stopColor|#f59e0b": 2,
+      "color-prop-literal|stroke|#f59e0b": 1,
+      "inline-style-color|background|#f59e0b": 1,
+      "inline-style-color|color|#ef4444": 1
+    },
+    "src/features/trading/pages/CopyConfigurationContractPage.tsx": {
+      "inline-style-color|color|#ef4444": 1
+    },
+    "src/features/trading/pages/CopyConfirmationContractPage.tsx": {
+      "inline-style-color|color|#ef4444": 1
+    },
+    "src/features/trading/pages/CopyEducationPage.tsx": {
+      "inline-style-color|color|#fff": 1
+    },
+    "src/features/trading/pages/CopyProviderDetailContractPage.tsx": {
+      "inline-style-color|color|#fff": 1
+    },
+    "src/features/trading/pages/OpenPositionsPage.tsx": {
+      "color-prop-literal|color|#10b981": 1,
+      "color-prop-literal|color|#ef4444": 1
+    },
+    "src/features/trading/pages/OrderReceiptPage.tsx": {
+      "inline-style-color|background|rgba(245,158,11,0.06)": 1,
+      "inline-style-color|background|rgba(59,130,246,0.08)": 1,
+      "named-color-utility|text|text-white": 1,
+      "page-content-direct-child-margin|className|mx-5": 2
+    },
+    "src/features/trading/pages/OrdersHistoryPage.tsx": {
+      "inline-style-color|background|#10b981": 1,
+      "inline-style-color|background|rgba(239,68,68,0.1)": 1,
+      "inline-style-color|color|#10b981": 1,
+      "inline-style-color|color|#ef4444": 1
+    },
+    "src/features/trading/pages/TradeSettingsPage.tsx": {
+      "color-prop-literal|color|#3b82f6": 1,
+      "inline-style-color|background|rgba(239,68,68,0.08)": 1,
+      "inline-style-color|background|rgba(59,130,246,0.06)": 1,
+      "inline-style-color|color|#3b82f6": 1,
+      "inline-style-color|color|#ef4444": 1,
+      "named-color-utility|bg|bg-white": 1
+    },
+    "src/features/trading/pages/TraderProfilePage.tsx": {
+      "color-prop-literal|color|#f59e0b": 1,
+      "inline-style-color|background|#10b981": 1,
+      "inline-style-color|background|#ef4444": 1,
+      "inline-style-color|background|rgba(255,255,255,0.06)": 1,
+      "inline-style-color|background|rgba(255,255,255,0.08)": 1,
+      "inline-style-color|color|#10b981": 1,
+      "inline-style-color|color|#fff": 1
+    },
+    "src/features/wallet/pages/AddressAddPage.tsx": {
+      "color-prop-literal|color|#10b981": 1,
+      "color-prop-literal|color|#f59e0b": 1,
+      "color-prop-literal|color|#fff": 1,
+      "inline-style-color|background|rgba(245,158,11,0.06)": 1,
+      "inline-style-color|background|transparent": 1,
+      "inline-style-color|color|#ef4444": 2,
+      "named-color-utility|bg|bg-white": 1
+    },
+    "src/features/wallet/pages/AddressBookPage.tsx": {
+      "color-prop-literal|fill|#f59e0b": 2,
+      "inline-style-color|background|#3b82f6": 1,
+      "inline-style-color|background|#fff": 1,
+      "inline-style-color|background|rgba(239,68,68,0.08)": 1,
+      "inline-style-color|background|rgba(245,158,11,0.08)": 1,
+      "inline-style-color|background|rgba(59,130,246,0.06)": 1,
+      "inline-style-color|background|rgba(59,130,246,0.1)": 1,
+      "inline-style-color|background|rgba(59,130,246,0.15)": 1,
+      "inline-style-color|background|transparent": 1,
+      "inline-style-color|color|#fff": 1,
+      "page-content-direct-child-margin|className|-mx-5": 1
+    },
+    "src/features/wallet/pages/AssetDetailPage.tsx": {
+      "color-prop-literal|color|#10b981": 1,
+      "color-prop-literal|color|#ef4444": 1,
+      "inline-style-color|background|rgba(255,255,255,0.05)": 4
+    },
+    "src/features/wallet/pages/DustConverterPage.tsx": {
+      "inline-style-color|background|rgba(245,158,11,0.15)": 1,
+      "inline-style-color|background|rgba(59,130,246,0.06)": 1
+    },
+    "src/features/wallet/pages/TransactionDetailPage.tsx": {
+      "inline-style-color|background|rgba(245,158,11,0.08)": 1,
+      "inline-style-color|color|#fff": 1
+    },
+    "src/features/wallet/pages/WalletDepositContractPage.tsx": {
+      "inline-style-color|background|#10b981": 1,
+      "inline-style-color|background|rgba(239,68,68,0.08)": 1,
+      "inline-style-color|background|rgba(245,158,11,0.1)": 1,
+      "named-color-utility|bg|bg-white": 1
+    },
+    "src/features/wallet/pages/WalletTransferContractPage.tsx": {
+      "inline-style-color|color|#fff": 1,
+      "named-color-utility|bg|bg-transparent": 1
+    },
+    "src/shared/ui/BottomSheetV2.tsx": {
+      "inline-style-color|background|rgba(0,0,0,0.5)": 2
+    },
+    "src/shared/ui/CTAButton.tsx": {
+      "named-color-utility|border|border-current": 1
+    },
+    "src/shared/ui/EmptyState.tsx": {
+      "inline-style-color|background|linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)": 1,
+      "inline-style-color|color|#fff": 1
+    },
+    "src/shared/ui/ErrorState.tsx": {
+      "inline-style-color|background|rgba(239,68,68,0.08)": 1,
+      "inline-style-color|background|rgba(239,68,68,0.12)": 2
+    },
+    "src/shared/ui/IconButton.tsx": {
+      "named-color-utility|border|border-current": 1
+    },
+    "src/shared/ui/InputField.tsx": {
+      "inline-style-color|background|transparent": 1
+    },
+    "src/shared/ui/LazyRoute.tsx": {
+      "inline-style-color|background|rgba(239,68,68,0.1)": 1,
+      "inline-style-color|color|#fff": 1
+    },
+    "src/shared/ui/PullToRefresh.tsx": {
+      "color-prop-literal|color|#3b82f6": 1,
+      "inline-style-color|background|linear-gradient(90deg, transparent, #3b82f6 40%, #60a5fa 60%, transparent)": 1,
+      "inline-style-color|background|rgba(59,130,246,0.1)": 1,
+      "inline-style-color|color|#3b82f6": 1
+    },
+    "src/shared/ui/RefreshableSkeletonList.tsx": {
+      "color-prop-literal|color|#3b82f6": 1,
+      "inline-style-color|background|rgba(59,130,246,0.08)": 1,
+      "inline-style-color|color|#3b82f6": 1
+    },
+    "src/shared/ui/SearchBar.tsx": {
+      "named-color-utility|bg|bg-transparent": 1
+    },
+    "src/shared/ui/SectionHeader.tsx": {
+      "inline-style-color|background|transparent": 1
+    },
+    "src/shared/ui/StatCard.tsx": {
+      "color-prop-literal|color|#10b981": 1,
+      "color-prop-literal|color|#ef4444": 1
+    },
+    "src/shared/ui/StatusPill.tsx": {
+      "inline-style-color|color|#fff": 1
+    },
+    "src/shared/ui/TrInput.tsx": {
+      "named-color-utility|bg|bg-transparent": 2
+    },
+    "src/shared/ui/auth/WebAuthBrandPanel.tsx": {
+      "color-prop-literal|color|#10b981": 1,
+      "color-prop-literal|color|rgba(255,255,255,0.7)": 1,
+      "color-prop-literal|stroke|#fff": 2,
+      "color-prop-literal|stroke|rgba(255,255,255,0.5)": 2,
+      "inline-style-color|background|linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)": 2,
+      "inline-style-color|background|linear-gradient(160deg, #0f172a 0%, #1e293b 40%, #0f172a 100%)": 1,
+      "inline-style-color|background|radial-gradient(circle, rgba(16,185,129,0.08) 0%, transparent 70%)": 1,
+      "inline-style-color|background|radial-gradient(circle, rgba(59,130,246,0.12) 0%, transparent 70%)": 1,
+      "inline-style-color|background|rgba(255,255,255,0.06)": 1,
+      "inline-style-color|color|#fff": 4,
+      "inline-style-color|color|rgba(255,255,255,0.5)": 3,
+      "inline-style-color|color|rgba(255,255,255,0.65)": 1
+    },
+    "src/shared/ui/dialog.tsx": {
+      "named-color-utility|bg|bg-black/50": 1
+    },
+    "src/shared/ui/layout/Header.tsx": {
+      "inline-style-color|color|#fff": 1
+    }
+  }
+}

@@ -41,6 +41,7 @@ const axeStates = [
   'request-step',
   'otp-step',
   'flow-reset-step',
+  'flow-valid-password-step',
   'flow-success-step',
   'direct-reset-step',
   'direct-success-step',
@@ -118,6 +119,7 @@ for (const shell of shells) {
     page.on('response', trackResponse);
 
     const screenshots: string[] = [];
+    const successTextMeasurements: Array<Record<string, unknown>> = [];
     const capture = async (state: string) => {
       const path = testInfo.outputPath(
         `password-reset-${shell.name}-${shell.width}x${shell.height}-${state}.png`,
@@ -143,6 +145,20 @@ for (const shell of shells) {
             );
             await new Promise<void>((resolve) => requestAnimationFrame(resolve));
           });
+
+          if (state === 'otp-step') {
+            const otpLayout = await page.getByLabel('Mã OTP').evaluate((input) => {
+              const rect = input.getBoundingClientRect();
+              return {
+                left: rect.left,
+                right: rect.right,
+                documentWidth: document.documentElement.scrollWidth,
+              };
+            });
+            expect(otpLayout.left).toBeGreaterThanOrEqual(0);
+            expect(otpLayout.right).toBeLessThanOrEqual(width);
+            expect(otpLayout.documentWidth).toBeLessThanOrEqual(width);
+          }
 
           const results = await new AxeBuilder({ page })
             .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'])
@@ -183,6 +199,85 @@ for (const shell of shells) {
       });
     };
 
+    const measureSuccessTextAcrossThemes = async () => {
+      for (const theme of axeThemes) {
+        await page.evaluate((activeTheme) => {
+          document.documentElement.classList.toggle('dark', activeTheme === 'dark');
+          document.documentElement.classList.toggle('light', activeTheme === 'light');
+        }, theme);
+        await page.evaluate(
+          () => new Promise<void>((resolve) => requestAnimationFrame(() => resolve())),
+        );
+        const measurement = await page
+          .getByText('Tối thiểu 12 ký tự', { exact: true })
+          .evaluate((element) => {
+            const parseColor = (value: string) => {
+              const channels = value.match(/[\d.]+/g)?.map(Number);
+              if (!channels || channels.length < 3) return null;
+              return {
+                red: channels[0],
+                green: channels[1],
+                blue: channels[2],
+                alpha: channels[3] ?? 1,
+              };
+            };
+            const resolveColor = (value: string) => {
+              const probe = document.createElement('span');
+              probe.style.color = value;
+              document.body.append(probe);
+              const resolved = getComputedStyle(probe).color;
+              probe.remove();
+              return resolved;
+            };
+            const foreground = getComputedStyle(element).color;
+            const semanticToken = resolveColor('var(--tr-success-text)');
+            let background = 'transparent';
+            let ancestor: HTMLElement | null = element as HTMLElement;
+            while (ancestor) {
+              const candidate = getComputedStyle(ancestor).backgroundColor;
+              const parsed = parseColor(candidate);
+              if (parsed && parsed.alpha === 1) {
+                background = candidate;
+                break;
+              }
+              ancestor = ancestor.parentElement;
+            }
+            const foregroundChannels = parseColor(foreground);
+            const backgroundChannels = parseColor(background);
+            if (!foregroundChannels || !backgroundChannels) {
+              throw new Error('Unable to resolve password-rule foreground/background colors.');
+            }
+            const luminance = ({
+              red,
+              green,
+              blue,
+            }: NonNullable<ReturnType<typeof parseColor>>) => {
+              const linear = (channel: number) => {
+                const value = channel / 255;
+                return value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
+              };
+              return 0.2126 * linear(red) + 0.7152 * linear(green) + 0.0722 * linear(blue);
+            };
+            const values = [luminance(foregroundChannels), luminance(backgroundChannels)].sort(
+              (left, right) => right - left,
+            );
+            return {
+              foreground,
+              semanticToken,
+              background,
+              contrastRatio: Number(((values[0] + 0.05) / (values[1] + 0.05)).toFixed(2)),
+              fontSize: getComputedStyle(element).fontSize,
+              fontWeight: getComputedStyle(element).fontWeight,
+            };
+          });
+        successTextMeasurements.push({ theme, width: shell.width, ...measurement });
+      }
+      await page.evaluate(() => {
+        document.documentElement.classList.remove('dark');
+        document.documentElement.classList.add('light');
+      });
+    };
+
     await capture('request-step');
     await scanAxeState('request-step');
     await page.getByLabel('Email đăng ký').fill(email);
@@ -198,7 +293,38 @@ for (const shell of shells) {
     await capture('otp-step');
     await scanAxeState('otp-step');
 
-    await page.getByLabel('Mã OTP').fill('123456');
+    const otp = page.getByLabel('Mã OTP');
+    const otpFieldMeasurement = await otp.evaluate((input) => {
+      const wrapper = input.parentElement;
+      if (!wrapper) throw new Error('OTP field wrapper is missing.');
+      const wrapperStyle = window.getComputedStyle(wrapper);
+      const inputStyle = window.getComputedStyle(input);
+      return {
+        width: wrapper.getBoundingClientRect().width,
+        height: wrapperStyle.height,
+        borderRadius: wrapperStyle.borderRadius,
+        fontSize: inputStyle.fontSize,
+        fontWeight: inputStyle.fontWeight,
+        letterSpacing: inputStyle.letterSpacing,
+        textAlign: inputStyle.textAlign,
+      };
+    });
+    expect(otpFieldMeasurement.width).toBeGreaterThan(0);
+    expect(otpFieldMeasurement).toMatchObject({
+      height: '52px',
+      borderRadius: '14px',
+      fontSize: '24px',
+      fontWeight: '700',
+      letterSpacing: '8px',
+      textAlign: 'center',
+    });
+    await otp.focus();
+    const otpFocusShadow = await otp.evaluate(
+      (input) => window.getComputedStyle(input.parentElement!).boxShadow,
+    );
+    expect(otpFocusShadow).not.toBe('none');
+
+    await otp.fill('123456');
     const verifyResponsePromise = page.waitForResponse(
       (response) =>
         response.request().method() === 'POST' &&
@@ -213,6 +339,9 @@ for (const shell of shells) {
     await scanAxeState('flow-reset-step');
 
     await page.getByLabel('Mật khẩu mới').fill(password);
+    await capture('valid-password-step');
+    await measureSuccessTextAcrossThemes();
+    await scanAxeState('flow-valid-password-step');
     await page.getByLabel('Nhập lại mật khẩu').fill(password);
     const flowConfirmResponsePromise = page.waitForResponse(
       (response) =>
@@ -288,6 +417,8 @@ for (const shell of shells) {
       directConfirmStatus: directConfirmResponse.status(),
       authRequests,
       requestBodiesMatchAdapter: requestBodyMatches,
+      otpFieldMeasurement: { ...otpFieldMeasurement, focusShadowVisible: true },
+      successTextMeasurements,
       screenshots: screenshots.map((file) => file.split(/[\\/]/).at(-1) ?? file),
       screenshotSha256,
       documentWidth,
@@ -319,6 +450,15 @@ for (const shell of shells) {
       axeMeasurements.filter((measurement) => measurement.violationCount !== 0),
       `${shell.name} password-reset Axe violations by theme, viewport and state`,
     ).toEqual([]);
+    expect(successTextMeasurements).toHaveLength(axeThemes.length);
+    expect(
+      successTextMeasurements.every(
+        (measurement) =>
+          measurement.foreground === measurement.semanticToken &&
+          Number(measurement.contrastRatio) >= 4.5,
+      ),
+      `${shell.name} password-rule success text must use the semantic token and meet 4.5:1`,
+    ).toBe(true);
     page.removeListener('request', trackRequest);
     page.removeListener('response', trackResponse);
   });

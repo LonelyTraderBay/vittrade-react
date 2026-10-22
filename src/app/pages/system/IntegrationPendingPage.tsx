@@ -7,6 +7,7 @@ import { PageLayout } from '@/shared/ui/layout/PageLayout';
 import { TrCard } from '@/shared/ui/TrCard';
 import { useRoutePrefix } from '@/shared/navigation/useRoutePrefix';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
+import { withAlpha } from '@/shared/theme/colors';
 
 /**
  * Boundary an toàn cho route chưa có backend contract hoàn chỉnh.
@@ -35,15 +36,15 @@ export function IntegrationPendingPage() {
                 display: 'grid',
                 placeItems: 'center',
                 color: colors.buy,
-                background: `${colors.buy}18`,
+                background: withAlpha(colors.buy, '18'),
               }}
             >
               <Database size={24} />
             </div>
             <div>
-              <h1 style={{ margin: 0, color: colors.text1, fontSize: 20, fontWeight: 700 }}>
+              <h2 style={{ margin: 0, color: colors.text1, fontSize: 20, fontWeight: 700 }}>
                 Route này chưa sẵn sàng cho production
-              </h1>
+              </h2>
               <p style={{ margin: '10px 0 0', color: colors.text2, lineHeight: 1.6 }}>
                 Tính năng chỉ được mở lại sau khi API contract, quyền truy cập, audit event và trạng
                 thái lỗi đã được kiểm thử trên backend staging.

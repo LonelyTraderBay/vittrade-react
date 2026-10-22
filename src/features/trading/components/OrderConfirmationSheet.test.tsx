@@ -1,11 +1,13 @@
 import { fireEvent, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
+import { ButtonGradients, ButtonShadows, ButtonTextColors } from '@/shared/theme/button';
 import { renderWithProviders } from '@/test/test-utils';
 import { OrderConfirmationSheet, type OrderConfirmationSheetProps } from './OrderConfirmationSheet';
 
 const defaultProps: OrderConfirmationSheetProps = {
   open: true,
   isPlacing: false,
+  canWriteTrading: true,
   side: 'buy',
   pair: { symbol: 'BTC/USDT', baseAsset: 'BTC' },
   orderTypeLabel: 'Giới hạn',
@@ -31,6 +33,16 @@ function renderSheet(overrides: Partial<OrderConfirmationSheetProps> = {}) {
 }
 
 describe('OrderConfirmationSheet', () => {
+  it.each(['buy', 'sell'] as const)('uses the shared readable action pair for %s', (side) => {
+    renderSheet({ side });
+    const variant = side === 'buy' ? 'success' : 'danger';
+    expect(screen.getByTestId('trade-confirm-submit')).toHaveStyle({
+      background: ButtonGradients[variant],
+      color: ButtonTextColors[variant],
+      boxShadow: ButtonShadows[variant],
+    });
+  });
+
   it('summarizes a limit order, server-confirmed fee status, and configured TP/SL values', () => {
     renderSheet();
 
@@ -55,6 +67,15 @@ describe('OrderConfirmationSheet', () => {
     renderSheet({ isPlacing: true });
 
     expect(screen.getByRole('button', { name: 'Đang đặt lệnh...' })).toBeDisabled();
+  });
+
+  it('keeps permission loss visible and blocks confirmation inside the modal', () => {
+    renderSheet({ canWriteTrading: false });
+
+    expect(screen.getByRole('alert')).toHaveTextContent(
+      'Trading permission is required to place an order.',
+    );
+    expect(screen.getByTestId('trade-confirm-submit')).toBeDisabled();
   });
 
   it('passes confirmation and close actions to the owning flow', () => {

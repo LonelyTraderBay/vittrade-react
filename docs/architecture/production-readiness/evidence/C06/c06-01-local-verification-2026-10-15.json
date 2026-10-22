@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "taskId": "C06",
+  "stepId": "C06.01",
+  "sourceHead": "19593f88d4f8bdc0e4d9c09eb6b9489ffdac0734",
+  "observedAt": "2026-10-15T01:50:24.107Z",
+  "scope": {
+    "activePageSources": 130,
+    "inventoryPages": 130,
+    "componentSources": 149,
+    "routeRows": 428,
+    "routeIdentityReconciliation": "PASS 428/428",
+    "urlRegistrations": 1465,
+    "uniqueResolvedUrls": 1396,
+    "plannedPageRecords": 201,
+    "plannedPageRecordsWithMissingSource": 201,
+    "plannedRowsLinkedToRoutes": 200,
+    "uniqueLinkedRouteRows": 203
+  },
+  "checks": [
+    {
+      "name": "architecture inventory consistency",
+      "status": "PASS",
+      "command": "node scripts/generate-architecture-inventory.mjs --check",
+      "actual": "130 pages, 428 routes, 149 components, 0 data modules, 32 services, 28 mocks."
+    },
+    {
+      "name": "route matrix deterministic check",
+      "status": "PASS",
+      "command": "node docs/architecture/production-readiness/evidence/C06/generate-route-matrix.mjs --source-head 19593f88d4f8bdc0e4d9c09eb6b9489ffdac0734 --check",
+      "actual": "428 active route rows reconcile; runtime rows checked 0/428."
+    },
+    {
+      "name": "focused inventory generator tests",
+      "status": "PASS",
+      "command": "node scripts/run-with-artifacts.mjs vitest run scripts/generate-architecture-inventory.test.mjs",
+      "actual": "1 test file and 16 tests passed; runner cleanup 1 file / 133 logical bytes / 0 errors."
+    },
+    {
+      "name": "tracking consistency before self-audit",
+      "status": "PASS",
+      "command": "node docs/architecture/production-readiness/check-tracking.mjs",
+      "actual": "errorCount=0; 39 tasks, 220 steps, 130 inventory pages, 428 route declarations, 154 operations, 1013 files outside plan prefix."
+    },
+    {
+      "name": "targeted formatting",
+      "status": "PASS",
+      "command": "node node_modules/prettier/bin/prettier.cjs --check docs/architecture/production-readiness/PLAN.md docs/architecture/production-readiness/evidence/C06/generate-route-matrix.mjs",
+      "actual": "All matched files use Prettier style."
+    },
+    {
+      "name": "TRACKING JSON parse",
+      "status": "PASS",
+      "command": "node JSON.parse(TRACKING.json)",
+      "actual": "Parsed successfully."
+    },
+    {
+      "name": "TRACKING Prettier diagnostic",
+      "status": "FAIL_PREEXISTING",
+      "command": "prettier.check(git show HEAD:docs/architecture/production-readiness/TRACKING.json) and current TRACKING.json",
+      "actual": "Both baseline and current return false; baseline 14,951,725 bytes, current 15,047,436 bytes. Not reformatted because whole-ledger reflow would add unrelated churn; repository format:check targets src and tests, while JSON parser and tracking consistency pass."
+    },
+    {
+      "name": "whitespace",
+      "status": "PASS",
+      "command": "git diff --check",
+      "actual": "No whitespace errors."
+    },
+    {
+      "name": "npm wrapper",
+      "status": "BLOCKED",
+      "command": "npm.cmd run architecture:inventory:check",
+      "actual": "Windows npm child could not resolve node; direct Node 24 invocation of the same inventory checker passed."
+    },
+    {
+      "name": "browser/runtime",
+      "status": "NOT_RUN",
+      "actual": "C06.01 freezes scope only; browser rows 0/428. Runtime pilots are C06.11-C06.13."
+    },
+    {
+      "name": "Node 22 local",
+      "status": "NOT_RUN",
+      "actual": "Repository .nvmrc requires 22; local executable is v24.19.0. Exact-SHA CI is pending."
+    },
+    {
+      "name": "exact-SHA GitHub",
+      "status": "NOT_RUN",
+      "actual": "No C06.01 commit/push has been created yet; required for delivery before C06.02."
+    }
+  ],
+  "claims": {
+    "runtimeAccessibilityOrWcag": "NOT_CLAIMED",
+    "backendOrUserAcceptance": "NOT_CLAIMED",
+    "finalC06Completion": "NOT_CLAIMED"
+  }
+}

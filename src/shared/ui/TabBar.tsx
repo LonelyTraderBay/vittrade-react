@@ -60,6 +60,9 @@ export interface TabItem {
   id: string;
   label: string;
   badge?: number | string;
+  /** Caller-owned DOM IDs; provide both for an associated, mounted tabpanel. */
+  triggerId?: string;
+  panelId?: string;
 }
 
 interface TabBarProps<T extends string> {
@@ -81,6 +84,8 @@ interface TabBarProps<T extends string> {
   className?: string;
   /** Tab bar ID for ARIA */
   id?: string;
+  /** Accessible name of the tablist when it has no visible label. */
+  ariaLabel?: string;
 }
 
 export function TabBar<T extends string>({
@@ -88,11 +93,12 @@ export function TabBar<T extends string>({
   active,
   onChange,
   variant = 'underline',
-  activeColor = '#E58A00',
+  activeColor = 'var(--tr-primary)',
   colors,
   bordered,
   className = '',
   id,
+  ariaLabel,
 }: TabBarProps<T>) {
   const c = useThemeColors();
   const { hapticSelection } = useHaptic();
@@ -120,6 +126,9 @@ export function TabBar<T extends string>({
           e.key === 'ArrowRight'
             ? (currentIndex + 1) % normalizedTabs.length
             : (currentIndex - 1 + normalizedTabs.length) % normalizedTabs.length;
+        const tabButtons =
+          e.currentTarget.parentElement!.querySelectorAll<HTMLButtonElement>('[role="tab"]');
+        tabButtons[nextIndex].focus();
         handleSelect(normalizedTabs[nextIndex].id as T);
       }
     },
@@ -133,6 +142,7 @@ export function TabBar<T extends string>({
       <div
         id={id}
         role="tablist"
+        aria-label={ariaLabel}
         className={`flex px-5 pt-2 pb-0 gap-1 ${className}`}
         style={{
           background: c.surface,
@@ -144,8 +154,11 @@ export function TabBar<T extends string>({
           const tabColor = colors?.[tab.id as T] ?? activeColor;
           return (
             <button
+              type="button"
               key={tab.id}
               role="tab"
+              id={tab.triggerId}
+              aria-controls={tab.panelId}
               aria-selected={isActive}
               tabIndex={isActive ? 0 : -1}
               onClick={() => handleSelect(tab.id as T)}
@@ -180,14 +193,17 @@ export function TabBar<T extends string>({
   /* ═══ Pill variant ═══ */
   if (variant === 'pill') {
     return (
-      <div id={id} role="tablist" className={`flex gap-2 ${className}`}>
+      <div id={id} role="tablist" aria-label={ariaLabel} className={`flex gap-2 ${className}`}>
         {normalizedTabs.map((tab, i) => {
           const isActive = tab.id === active;
           const tabColor = colors?.[tab.id as T] ?? activeColor;
           return (
             <button
+              type="button"
               key={tab.id}
               role="tab"
+              id={tab.triggerId}
+              aria-controls={tab.panelId}
               aria-selected={isActive}
               tabIndex={isActive ? 0 : -1}
               onClick={() => handleSelect(tab.id as T)}
@@ -216,6 +232,7 @@ export function TabBar<T extends string>({
     <div
       id={id}
       role="tablist"
+      aria-label={ariaLabel}
       className={`flex rounded-xl p-1 ${className}`}
       style={{ background: c.surface2 }}
     >
@@ -224,8 +241,11 @@ export function TabBar<T extends string>({
         const tabColor = colors?.[tab.id as T] ?? activeColor;
         return (
           <button
+            type="button"
             key={tab.id}
             role="tab"
+            id={tab.triggerId}
+            aria-controls={tab.panelId}
             aria-selected={isActive}
             tabIndex={isActive ? 0 : -1}
             onClick={() => handleSelect(tab.id as T)}
@@ -233,12 +253,13 @@ export function TabBar<T extends string>({
             className="flex-1 py-2.5 rounded-lg flex items-center justify-center"
             style={{
               background: isActive ? tabColor : 'transparent',
-              color: isActive ? '#fff' : c.text3,
+              color: isActive ? 'var(--tr-text-on-color)' : c.text3,
               fontWeight: 700,
               fontSize: 13,
               minHeight: 40,
-              transition:
-                'background var(--tr-duration-fast) ease, color var(--tr-duration-fast) ease',
+              // Switch the semantic foreground/background pair atomically.
+              // Interpolating both produces unreadable intermediate colors.
+              transition: 'none',
             }}
           >
             {tab.label}

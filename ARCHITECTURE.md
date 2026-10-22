@@ -19,7 +19,42 @@ Các số baseline bên dưới là bằng chứng lịch sử, cần kiểm tra
 luận trạng thái hiện tại. Preview UI bằng mock theo kế hoạch không thay đổi điều
 kiện chứng nhận route production bằng backend/staging thật.
 
-## Trạng thái baseline
+## Kiến trúc hiện tại và ranh giới kiểm chứng — 13/10/2026
+
+Inventory chuẩn hiện có **130 page file/428 route declaration**; owner và trạng
+thái chứng nhận nằm trong [inventory](docs/architecture/page-inventory.json).
+Giữ luồng phụ thuộc `app → features → shared`, public API của 15 feature và các
+shell `/`, `/t`, `/w`, `/r`. Tiến độ, kết quả kiểm chứng và phần cần backend/staging
+được ghi ở [PLAN](docs/architecture/production-readiness/PLAN.md#khac-phuc-audit-20261013)
+và checkpoint của [TRACKING](docs/architecture/production-readiness/TRACKING.json).
+
+- [WithdrawPage](src/features/wallet/pages/WithdrawPage.tsx) sở hữu intent và khóa
+  idempotency. Verify OTP và submit có failure boundary riêng; mất phản hồi submit
+  không chứng minh OTP sai hoặc giao dịch thất bại. Chặn submit trùng đồng bộ, giữ
+  key của intent chưa đổi và khóa chỉnh sửa trong lúc đang gửi. Lookup, replay và
+  atomicity phía server vẫn cần contract được owner duyệt.
+- [PlatformSwitcher](src/app/components/layout/PlatformSwitcher.tsx) giữ shell
+  Auth; badge chỉ hiện ngoài Auth, dùng nền token opaque. Đổi shell giữ query và
+  hash; guard resize bảo vệ form sản phẩm, bỏ qua control của bảng preview. Chọn
+  shell ban đầu tiếp tục theo viewport.
+- [ResponsiveShell](src/app/components/layout/ResponsiveShell.tsx) dùng một cây
+  Outlet/Suspense ổn định qua các breakpoint; chỉ đổi bố cục/nav/style để giữ
+  draft và tác vụ đang chờ. Portal của sheet nằm trong frame ổn định. Regression
+  kiểm cả adaptive/centered và resize thật; không lọc kích thước viewport hoặc
+  thêm delay để che remount.
+- [Phone AppLayout](src/app/components/layout/AppLayout.tsx) lấy snapshot bằng
+  `useOutlet()` trước khi truyền vào `PageTransition`. Cây đang chạy exit giữ
+  route cũ tới khi animation kết thúc; không đặt `Outlet` đọc context hiện hành
+  bên trong cây được giữ lại. Trang mới chỉ mount trong cây mới, để dữ liệu vừa
+  nhập và dialog không bị remount khi người dùng tương tác ngay sau điều hướng.
+- [Telemetry](src/shared/telemetry/telemetry.ts) giới hạn dữ liệu và cô lập lỗi
+  sink. Chưa có provider được cấu hình ở bootstrap; sink test cục bộ không chứng
+  minh delivery hoặc alert. Quyết định provider/privacy thuộc B04.
+- [CI](.github/workflows/ci.yml) giữ các profile browser trong workflow hiện hành, kiểm inventory/contract
+  và sổ nguồn bằng Git blob thật; report được lưu kể cả khi fail. Cấu hình đã sửa
+  chưa thay cho kết quả Node 22/Ubuntu trên commit được giao.
+
+## Trạng thái baseline lịch sử
 
 - Inventory được sinh và kiểm tra ngày 2026-09-30 bao phủ 129 source page
   files, 427 route entries, 149 components, 0 legacy data modules, 32
@@ -1689,11 +1724,19 @@ the feature-owned `TPSLForm` was also retired after confirming it had no importe
 ## Observability boundary
 
 - Component, route and lazy-loading error boundaries report through the
-  vendor-neutral telemetry interface with release version and route/component
-  context; browser diagnostics remain visible and are not swallowed.
+  vendor-neutral telemetry interface. The sink receives bounded release,
+  request correlation, area/operation/feature, HTTP status and section fields.
+  Free-form messages, stacks, causes, URLs, request bodies and nested metadata
+  are omitted pending the provider/privacy decision. The original business
+  error stays with its owner; browser diagnostics remain visible.
 - Global `error` and `unhandledrejection` handlers in `app/App.tsx` report the
   same release context for failures outside React render boundaries.
 - Bottom-sheet open events are sent through `shared/telemetry/sheet-analytics.ts`
   to the shared telemetry sink. Its in-memory diagnostic history is capped at
   100 entries and returned as a snapshot so it cannot grow without bound or be
   mutated by consumers.
+- The event schema accepts only `sheet_opened` with a bounded sheet identifier,
+  integer timestamp and matching ISO date. Unsupported event types are dropped;
+  extending the schema requires a privacy decision. Sync sink throws and async
+  rejection are contained without retry or recursive reporting. The default
+  noop sink remains until B04 inputs and staging delivery verification exist.

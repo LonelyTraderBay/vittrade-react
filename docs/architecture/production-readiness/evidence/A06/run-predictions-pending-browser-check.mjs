@@ -15,10 +15,12 @@ assert.equal(origin.pathname, '/', 'PREVIEW_BASE_URL must be an origin without a
 const originUrl = origin.origin;
 const checkedAt = new Date().toISOString();
 const date = checkedAt.slice(0, 10);
+const evidenceArtifactRunId = process.env.EVIDENCE_RUN_SUFFIX ?? String(Date.now());
+assert.match(evidenceArtifactRunId, /^[a-z0-9-]+$/i, 'Evidence run ID must be filename-safe.');
 const route = '/w/markets/predictions/event/pred-1';
-const pendingScreenshot = path.join(directory, `preview-predictions-pending-order-${date}.png`);
-const receiptScreenshot = path.join(directory, `preview-predictions-pending-receipt-${date}.png`);
-const reportPath = path.join(directory, `predictions-pending-browser-check-${date}.json`);
+const pendingScreenshot = path.join(directory, `preview-predictions-pending-order-${date}-${evidenceArtifactRunId}.png`);
+const receiptScreenshot = path.join(directory, `preview-predictions-pending-receipt-${date}-${evidenceArtifactRunId}.png`);
+const reportPath = path.join(directory, `predictions-pending-browser-check-${date}-${evidenceArtifactRunId}.json`);
 const sourceFiles = [
   'contracts/openapi/predictions.yaml',
   'src/dev/PreviewControls.tsx',

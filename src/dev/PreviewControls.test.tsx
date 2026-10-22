@@ -1,5 +1,6 @@
+import { env } from '@/shared/config/env';
 import { QueryClientProvider } from '@tanstack/react-query';
-import { render, screen, waitFor } from '@testing-library/react';
+import { act, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createMemoryRouter, RouterProvider, useLocation } from 'react-router';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -17,6 +18,11 @@ import {
 } from './mocks/scenario-runtime';
 import { PreviewControls } from './PreviewControls';
 
+const originalDevtoolsEnabled = env.enableDevtools;
+function setDevtoolsEnabled(value: boolean) {
+  Object.defineProperty(env, 'enableDevtools', { configurable: true, value });
+}
+
 function CurrentPath() {
   const location = useLocation();
   return <output data-testid="current-path">{location.pathname}</output>;
@@ -30,6 +36,8 @@ function renderPreview(
       user: { ...TEST_AUTH_USER, id: 'dev-developer', email: 'developer@vittrade.local' },
     },
   }),
+  bottomNavigationVisible?: boolean,
+  portalHost?: HTMLElement,
 ) {
   const adapter: AuthAdapter = {
     ...testAuthAdapter,
@@ -43,7 +51,10 @@ function renderPreview(
         path: '*',
         element: (
           <>
-            <PreviewControls />
+            <PreviewControls
+              bottomNavigationVisible={bottomNavigationVisible}
+              portalHost={portalHost}
+            />
             <CurrentPath />
           </>
         ),
@@ -68,15 +79,91 @@ async function openControls(user: ReturnType<typeof userEvent.setup>) {
 }
 
 describe('development mock preview controls', () => {
+  it('uses the supplied shell region and opens its panel without adding flow height', async () => {
+    const host = document.createElement('div');
+    document.body.append(host);
+    const view = renderPreview(undefined, undefined, host);
+    try {
+      const controls = screen.getByTestId('dev-preview-controls');
+      expect(host).toContainElement(controls);
+      expect(controls).toHaveStyle({ position: 'relative', width: '100%' });
+      await openControls(userEvent.setup());
+      expect(screen.getByRole('region', { name: 'Công cụ xem trước' })).toHaveStyle({
+        position: 'absolute',
+        top: '100%',
+        right: '12px',
+      });
+      await userEvent.click(screen.getByRole('button', { name: 'Thu gọn' }));
+      expect(screen.queryByRole('region', { name: 'Công cụ xem trước' })).not.toBeInTheDocument();
+      expect(screen.getAllByRole('status', { name: 'Mock data warning' })).toHaveLength(1);
+    } finally {
+      view.unmount();
+      view.router.dispose();
+      host.remove();
+    }
+  });
+
+  it('keeps the mock warning while disabling diagnostic controls and stored scenarios', () => {
+    setDevPreviewScenario({ domain: 'wallet', state: 'forbidden' });
+    setDevtoolsEnabled(false);
+    renderPreview();
+    expect(screen.getByRole('status', { name: 'Mock data warning' })).toHaveTextContent(
+      'DỮ LIỆU MÔ PHỎNG · KHÔNG GIAO DỊCH THẬT',
+    );
+    expect(screen.queryByRole('button', { name: 'Mở công cụ xem trước' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('region', { name: 'Công cụ xem trước' })).not.toBeInTheDocument();
+    expect(getDevPreviewScenario()).toBeNull();
+  });
+
   beforeEach(() => {
+    setDevtoolsEnabled(true);
     queryClient.clear();
     resetDevMockRuntime();
   });
   afterEach(() => {
+    setDevtoolsEnabled(originalDevtoolsEnabled);
     queryClient.clear();
     resetDevMockRuntime();
     vi.unstubAllGlobals();
+    Object.defineProperty(window, 'innerWidth', { configurable: true, value: 1024 });
   });
+
+  it('keeps the mock warning above the phone navigation chrome', async () => {
+    Object.defineProperty(window, 'innerWidth', { configurable: true, value: 390 });
+    const { router } = renderPreview();
+
+    await act(async () => {
+      await router.navigate('/home');
+    });
+
+    expect(screen.getByTestId('dev-preview-controls')).toHaveStyle({
+      bottom: 'calc(88px + env(safe-area-inset-bottom, 0px))',
+    });
+    expect(screen.getByRole('status', { name: 'Mock data warning' })).toHaveStyle({
+      width: 'fit-content',
+      padding: '5px 8px',
+    });
+    router.dispose();
+  });
+
+  it.each([true, false])(
+    'uses shell navigation visibility %s on a tablet viewport',
+    async (visible) => {
+      Object.defineProperty(window, 'innerWidth', { configurable: true, value: 768 });
+      const { router } = renderPreview(undefined, visible);
+      await act(async () => {
+        await router.navigate('/r/home');
+      });
+      expect(screen.getByTestId('dev-preview-controls')).toHaveStyle({
+        bottom: visible ? 'calc(88px + env(safe-area-inset-bottom, 0px))' : '16px',
+      });
+      // Wide warning typography is independent of the navigation placement.
+      expect(screen.getByRole('status', { name: 'Mock data warning' })).toHaveStyle({
+        padding: '9px 12px',
+      });
+      router.dispose();
+    },
+  );
 
   it('shows the mock warning and switches persona through the auth adapter after clearing account data', async () => {
     const user = userEvent.setup();

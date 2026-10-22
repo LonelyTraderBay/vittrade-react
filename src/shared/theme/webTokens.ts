@@ -1,5 +1,13 @@
 /* ─── Enterprise desktop font scale ─── */
 export const WEB_COMMAND_BAR_HEIGHT = 64;
+export const WEB_AVATAR_GRADIENT = 'linear-gradient(135deg, #1d4ed8 0%, #6d28d9 100%)';
+
+/** Existing blue Auth identity, shared by the responsive and desktop entry points. */
+export const WEB_AUTH_BRAND_MARK = {
+  gradient: 'linear-gradient(135deg, #3B82F6 0%, #1d4ed8 100%)',
+  primaryStroke: '#fff',
+  secondaryStroke: 'rgba(255,255,255,0.5)',
+} as const;
 
 export const WEB_FONT = {
   /** Micro labels, keyboard hints */

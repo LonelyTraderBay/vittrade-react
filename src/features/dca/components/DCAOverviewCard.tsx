@@ -2,14 +2,14 @@
  * DCAOverviewCard Component
  *
  * Hero-style overview card matching the Wallet "Tổng tài sản" card design.
- * Uses TrCard variant="hero" for consistent deep-blue gradient background.
+ * Uses TrCard variant="hero" for the shared theme-aware portfolio surface.
  *
  * Features:
  *   - Shimmer skeleton loading state
  *   - Sparkline with draw-on-mount animation
  *   - Action buttons (Tạo mới / Tạm dừng / Biểu đồ / Lịch sử)
  *   - Eye toggle hide/show balance
- *   - 3-column ghost metrics with tooltips
+ *   - Responsive ghost metrics with tooltips
  *   - Next execution + plan status badges
  *
  * @module components/dca
@@ -36,7 +36,12 @@ import { TrCard } from '@/shared/ui/TrCard';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { useHaptic } from '@/shared/hooks/useHaptic';
 import { φ, φIcon, φAvatar } from '@/shared/lib/golden';
-import { SkeletonCard, Sparkline, TooltipPopover } from './DCAOverviewCardVisuals';
+import {
+  DCA_METRIC_GRID_CLASS_NAME,
+  SkeletonCard,
+  Sparkline,
+  TooltipPopover,
+} from './DCAOverviewCardVisuals';
 
 /* ─── Types ──────────────────────────────────────────────── */
 
@@ -162,6 +167,7 @@ export function DCAOverviewCard({
   );
 
   const ghostBg = c.portfolioBtnGhost;
+  const metricStyle = { overflowWrap: 'anywhere' } as const;
 
   /* ── Action buttons config ── */
   const ACTION_BUTTONS: { icon: typeof Plus; label: string; color: string; action?: () => void }[] =
@@ -204,18 +210,19 @@ export function DCAOverviewCard({
           </div>
 
           {/* ── Row 2: Big value + Sparkline ──────────────── */}
-          <div className="flex items-start justify-between gap-3">
-            <div className="min-w-0 flex-1">
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div className="min-w-0 flex-[1_1_16rem]">
               <div className="mb-1">
                 <span
                   style={{
-                    color: '#FFFFFF',
+                    color: c.text1,
                     fontSize: 32,
                     fontWeight: 700,
                     fontFamily: '-apple-system, BlinkMacSystemFont, "SF Mono", monospace',
                     lineHeight: 1.15,
                     letterSpacing: -1,
                     fontVariantNumeric: 'tabular-nums',
+                    overflowWrap: 'anywhere',
                   }}
                 >
                   {balanceHidden ? '••••••' : `₫${formatVNDFull(data.currentValue)}`}
@@ -225,13 +232,14 @@ export function DCAOverviewCard({
               {/* P&L badge */}
               <div className="flex items-center gap-2 flex-wrap" style={{ marginBottom: 4 }}>
                 <div
-                  className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md"
+                  className="inline-flex max-w-full flex-wrap items-center gap-1 px-2 py-0.5 rounded-md"
                   style={{
-                    background: isProfit ? 'rgba(16,185,129,0.20)' : 'rgba(239,68,68,0.20)',
-                    color: isProfit ? '#34D399' : '#F87171',
+                    background: c.surface2,
+                    color: isProfit ? c.successText : c.errorText,
                     fontSize: 13,
                     fontWeight: 600,
                     fontVariantNumeric: 'tabular-nums',
+                    overflowWrap: 'anywhere',
                   }}
                 >
                   {isProfit ? (
@@ -243,9 +251,7 @@ export function DCAOverviewCard({
                     ? '•••'
                     : `${isProfit ? '+' : ''}${formatVNDFull(data.profitLoss)}`}
                   {!balanceHidden && (
-                    <span style={{ opacity: 0.8, marginLeft: 2 }}>
-                      ({formatPercent(data.profitLossPercent)})
-                    </span>
+                    <span style={{ marginLeft: 2 }}>({formatPercent(data.profitLossPercent)})</span>
                   )}
                 </div>
                 <span style={{ color: c.portfolioTextMuted, fontSize: φ.xs }}>tổng lãi/lỗ</span>
@@ -254,7 +260,7 @@ export function DCAOverviewCard({
 
             {/* Sparkline — animated draw */}
             {sparklineData && sparklineData.length >= 2 && (
-              <div className="shrink-0 pt-2 flex flex-col items-end">
+              <div className="ml-auto shrink-0 pt-2 flex flex-col items-end">
                 <Sparkline
                   data={sparklineData}
                   width={88}
@@ -262,18 +268,18 @@ export function DCAOverviewCard({
                   isProfit={isProfit}
                   onTap={onSparklineTap}
                 />
-                <span style={{ color: 'rgba(255,255,255,0.35)', fontSize: 10, marginTop: 4 }}>
+                <span style={{ color: c.portfolioTextMuted, fontSize: 10, marginTop: 4 }}>
                   90 ngày
                 </span>
               </div>
             )}
           </div>
 
-          {/* ── Row 3: 3-column ghost metrics ────────────── */}
-          <div className="grid grid-cols-3 gap-2 mt-4">
+          {/* ── Row 3: Responsive ghost metrics ───────────── */}
+          <div className={`${DCA_METRIC_GRID_CLASS_NAME} mt-4`}>
             {/* Kế hoạch */}
             <div className="relative">
-              <div className="rounded-2xl p-3" style={{ background: ghostBg }}>
+              <TrCard variant="inner" density="compact" background={ghostBg} style={metricStyle}>
                 <div className="flex items-center gap-1 mb-2">
                   <div
                     className="w-6 h-6 rounded-full flex items-center justify-center shrink-0"
@@ -286,7 +292,7 @@ export function DCAOverviewCard({
                 </div>
                 <div
                   style={{
-                    color: '#FFFFFF',
+                    color: c.text1,
                     fontSize: 20,
                     fontWeight: 700,
                     fontVariantNumeric: 'tabular-nums',
@@ -298,13 +304,13 @@ export function DCAOverviewCard({
                 <div style={{ color: c.portfolioTextMuted, fontSize: 10, marginTop: 4 }}>
                   {data.activePlans} đang chạy
                 </div>
-              </div>
+              </TrCard>
               {tooltipFor('plans')}
             </div>
 
             {/* Đã đầu tư */}
             <div className="relative">
-              <div className="rounded-2xl p-3" style={{ background: ghostBg }}>
+              <TrCard variant="inner" density="compact" background={ghostBg} style={metricStyle}>
                 <div className="flex items-center gap-1 mb-2">
                   <div
                     className="w-6 h-6 rounded-full flex items-center justify-center shrink-0"
@@ -317,7 +323,7 @@ export function DCAOverviewCard({
                 </div>
                 <div
                   style={{
-                    color: '#34D399',
+                    color: c.text1,
                     fontSize: 20,
                     fontWeight: 700,
                     fontVariantNumeric: 'tabular-nums',
@@ -329,13 +335,13 @@ export function DCAOverviewCard({
                 <div style={{ color: c.portfolioTextMuted, fontSize: 10, marginTop: 4 }}>
                   {balanceHidden ? '•••••' : formatVNDFull(data.totalInvested)}
                 </div>
-              </div>
+              </TrCard>
               {tooltipFor('invested')}
             </div>
 
             {/* Trung bình */}
             <div className="relative">
-              <div className="rounded-2xl p-3" style={{ background: ghostBg }}>
+              <TrCard variant="inner" density="compact" background={ghostBg} style={metricStyle}>
                 <div className="flex items-center gap-1 mb-2">
                   <div
                     className="w-6 h-6 rounded-full flex items-center justify-center shrink-0"
@@ -348,7 +354,7 @@ export function DCAOverviewCard({
                 </div>
                 <div
                   style={{
-                    color: '#A78BFA',
+                    color: c.text1,
                     fontSize: 20,
                     fontWeight: 700,
                     fontVariantNumeric: 'tabular-nums',
@@ -360,17 +366,17 @@ export function DCAOverviewCard({
                 <div style={{ color: c.portfolioTextMuted, fontSize: 10, marginTop: 4 }}>
                   VND / kế hoạch
                 </div>
-              </div>
+              </TrCard>
               {tooltipFor('average')}
             </div>
           </div>
 
           {/* ── Row 4: Next execution + status badges ───── */}
           <div
-            className="flex items-center justify-between gap-3 mt-3 rounded-2xl px-3 py-2.5"
+            className="flex flex-wrap items-center justify-between gap-3 mt-3 rounded-2xl px-3 py-2.5"
             style={{ background: ghostBg }}
           >
-            <div className="flex items-center gap-2.5 min-w-0">
+            <div className="flex items-center gap-2.5 min-w-0 flex-[1_1_12rem]">
               <div
                 className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0"
                 style={{ background: 'rgba(59,130,246,0.20)' }}
@@ -382,7 +388,7 @@ export function DCAOverviewCard({
                   <p style={{ color: c.portfolioTextMuted, fontSize: 10 }}>Lần mua tiếp</p>
                   <p
                     style={{
-                      color: '#FFFFFF',
+                      color: c.text1,
                       fontSize: 13,
                       fontWeight: 600,
                       fontVariantNumeric: 'tabular-nums',
@@ -400,20 +406,20 @@ export function DCAOverviewCard({
               )}
             </div>
 
-            <div className="flex items-center gap-1.5 shrink-0">
+            <div className="ml-auto flex items-center gap-1.5 shrink-0">
               <StatusBadge
                 icon={<Play className="w-3 h-3" />}
                 count={data.activePlans}
-                bg="rgba(16,185,129,0.20)"
-                color="#34D399"
+                bg={c.surface2}
+                color={c.successText}
                 label="đang chạy"
               />
               {data.pausedPlans > 0 && (
                 <StatusBadge
                   icon={<Pause className="w-3 h-3" />}
                   count={data.pausedPlans}
-                  bg="rgba(245,158,11,0.20)"
-                  color="#FBBF24"
+                  bg={c.surface2}
+                  color={c.warningText}
                   label="tạm dừng"
                 />
               )}
@@ -421,8 +427,8 @@ export function DCAOverviewCard({
                 <StatusBadge
                   icon={<AlertCircle className="w-3 h-3" />}
                   count={data.errorPlans}
-                  bg="rgba(239,68,68,0.20)"
-                  color="#F87171"
+                  bg={c.surface2}
+                  color={c.errorText}
                   label="lỗi"
                 />
               )}

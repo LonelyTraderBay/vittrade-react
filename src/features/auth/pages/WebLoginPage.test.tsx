@@ -17,6 +17,54 @@ function CurrentRoute() {
 }
 
 describe('WebLoginPage', () => {
+  it('uses the shared accessible primary CTA contract for login submission', () => {
+    renderWithProviders(<WebLoginPage />, {
+      routerProps: { initialEntries: ['/w/auth/login'] },
+      authAdapter: { ...testAuthAdapter, initialSession: null },
+    });
+
+    const submit = screen.getByTestId('auth-submit');
+    expect(submit).toHaveStyle({ color: 'rgb(17, 24, 39)' });
+    expect((submit as HTMLButtonElement).style.background).toContain('rgb(229, 138, 0)');
+    expect(submit).toHaveAttribute('aria-busy', 'false');
+  });
+
+  it('keeps failed demo initialization on login with retry available and safe feedback', async () => {
+    const user = userEvent.setup();
+    const login = vi.fn().mockRejectedValue(new Error('private adapter failure'));
+    renderWithProviders(
+      <>
+        <WebLoginPage />
+        <CurrentRoute />
+      </>,
+      {
+        routerProps: { initialEntries: ['/w/auth/login'] },
+        authAdapter: { ...testAuthAdapter, initialSession: null, login },
+      },
+    );
+    await user.click(screen.getByRole('button', { name: 'Trải nghiệm Demo' }));
+
+    expect(await screen.findByRole('alert')).toHaveTextContent('Không thể khởi tạo phiên demo.');
+    expect(screen.getByTestId('current-path')).toHaveTextContent('/w/auth/login');
+    expect(screen.queryByText('private adapter failure')).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Trải nghiệm Demo' })).toBeEnabled();
+    expect(login).toHaveBeenCalledTimes(1);
+  });
+
+  it('opens registration in the web authentication shell', () => {
+    renderWithProviders(
+      <>
+        <WebLoginPage />
+        <CurrentRoute />
+      </>,
+      {
+        routerProps: { initialEntries: ['/w/auth/login'] },
+        authAdapter: { ...testAuthAdapter, initialSession: null },
+      },
+    );
+    fireEvent.click(screen.getByRole('button', { name: 'Đăng ký ngay' }));
+    expect(screen.getByTestId('current-path')).toHaveTextContent('/w/auth/register');
+  });
   it('does not advertise social login without a configured provider contract', () => {
     renderWithProviders(<WebLoginPage />, {
       routerProps: { initialEntries: ['/w/auth/login'] },
@@ -103,7 +151,11 @@ describe('WebLoginPage', () => {
     );
 
     await user.click(screen.getByTestId('auth-submit'));
+    const emptyEmail = screen.getByTestId('auth-email');
     expect(screen.getByText('Vui lòng nhập email.')).toBeInTheDocument();
+    expect(emptyEmail).toBeRequired();
+    expect(emptyEmail).toHaveAttribute('aria-invalid', 'true');
+    expect(emptyEmail).toHaveAccessibleDescription('Vui lòng nhập email.');
     expect(login).not.toHaveBeenCalled();
 
     const email = screen.getByTestId('auth-email');
@@ -111,7 +163,9 @@ describe('WebLoginPage', () => {
     fireEvent.blur(email);
     expect(screen.getByText('Định dạng email không hợp lệ')).toBeInTheDocument();
     await user.click(screen.getByTestId('auth-submit'));
-    expect(screen.getAllByText('Định dạng email không hợp lệ')).toHaveLength(2);
+    expect(screen.getAllByText('Định dạng email không hợp lệ')).toHaveLength(1);
+    expect(email).toHaveAttribute('aria-invalid', 'true');
+    expect(email).toHaveAccessibleDescription('Định dạng email không hợp lệ');
     expect(login).not.toHaveBeenCalled();
 
     await user.clear(email);
@@ -120,6 +174,9 @@ describe('WebLoginPage', () => {
     expect(screen.getByText('Vui lòng nhập mật khẩu.')).toBeInTheDocument();
 
     const password = screen.getByTestId('auth-password');
+    expect(password).toBeRequired();
+    expect(password).toHaveAttribute('aria-invalid', 'true');
+    expect(password).toHaveAccessibleDescription('Vui lòng nhập mật khẩu.');
     await user.type(password, 'correct-horse');
     await user.click(screen.getByRole('button', { name: 'Hiện mật khẩu' }));
     expect(password).toHaveAttribute('type', 'text');

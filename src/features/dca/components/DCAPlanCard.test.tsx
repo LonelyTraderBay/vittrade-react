@@ -135,15 +135,14 @@ describe('DCAPlanCard', () => {
     expect(screen.getByRole('button', { name: 'Xóa kế hoạch' })).toBeDisabled();
   });
 
-  it('falls back to a generated coin icon after the configured image fails', () => {
+  it('keeps a named local fallback after the configured image fails', () => {
     render(<DCAPlanCard plan={plan} />);
     const image = screen.getByRole('img', { name: 'Bitcoin' });
 
     fireEvent.error(image);
 
-    expect(image).toHaveAttribute(
-      'src',
-      'https://ui-avatars.com/api/?name=BTC&background=1C2235&color=F0F4FF&size=56',
-    );
+    expect(image).not.toBeInTheDocument();
+    expect(screen.getByRole('img', { name: 'Bitcoin' })).toHaveTextContent('BTC');
+    expect(screen.getByRole('img', { name: 'Bitcoin' })).not.toHaveAttribute('src');
   });
 });

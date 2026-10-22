@@ -1,5 +1,5 @@
 import { useRef, type ComponentProps } from 'react';
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import type { AuthAdapter } from '@/shared/session/auth-context-types';
 import { renderWithProviders } from '@/test/test-utils';
@@ -64,6 +64,36 @@ function renderSetup(authAdapter: AuthAdapter) {
 }
 
 describe('Web2FASetupFlow', () => {
+  it('focuses the first OTP field when the verification step mounts', async () => {
+    renderSetup(testAuthAdapter);
+    await screen.findByText('TEST-SECRET');
+
+    fireEvent.click(screen.getByRole('button', { name: 'Tiếp theo — Xác minh mã' }));
+
+    expect(screen.getByRole('textbox', { name: 'Mã xác thực 2FA, chữ số 1 trên 6' })).toHaveFocus();
+  });
+
+  it('does not steal OTP focus after the user has selected another digit', async () => {
+    const view = renderSetup(testAuthAdapter);
+    await screen.findByText('TEST-SECRET');
+
+    vi.useFakeTimers();
+    try {
+      fireEvent.click(screen.getByRole('button', { name: 'Tiếp theo — Xác minh mã' }));
+      const thirdDigit = screen.getByRole('textbox', {
+        name: 'Mã xác thực 2FA, chữ số 3 trên 6',
+      });
+      thirdDigit.focus();
+
+      act(() => vi.advanceTimersByTime(200));
+
+      expect(thirdDigit).toHaveFocus();
+    } finally {
+      view.unmount();
+      vi.useRealTimers();
+    }
+  });
+
   it('renders the empty-code fallback and loading state of the backup step', () => {
     const handleCopyBackupCodes = vi.fn();
     render(<LoadingBackupStepWithoutSetup handleCopyBackupCodes={handleCopyBackupCodes} />);
@@ -83,6 +113,10 @@ describe('Web2FASetupFlow', () => {
     renderSetup({ ...testAuthAdapter, beginMfaSetup, confirmMfaSetup });
 
     await screen.findByText('TEST-SECRET');
+    const currentStep = screen.getByRole('listitem', { name: 'Bước 1 trên 3: Quét mã QR' });
+    const stepNumber = within(currentStep).getByText('1');
+    expect(stepNumber).toHaveStyle({ color: '#fff' });
+    expect(stepNumber.parentElement).toHaveStyle({ background: '#1d4ed8' });
     fireEvent.click(screen.getByRole('button', { name: 'Tiếp theo — Xác minh mã' }));
 
     const otpInputs = document.querySelectorAll<HTMLInputElement>('input[inputmode="numeric"]');
@@ -111,6 +145,44 @@ describe('Web2FASetupFlow', () => {
         JSON.stringify({ purpose: '2fa-setup', from: '2fa-setup' }),
       ),
     );
+  });
+
+  it('retains all OTP digits when handlers from one render are batched', async () => {
+    const confirmMfaSetup = vi.fn(testAuthAdapter.confirmMfaSetup);
+    renderSetup({ ...testAuthAdapter, confirmMfaSetup });
+
+    await screen.findByText('TEST-SECRET');
+    fireEvent.click(screen.getByRole('button', { name: 'Tiếp theo — Xác minh mã' }));
+    const otpInputs = [
+      ...document.querySelectorAll<HTMLInputElement>('input[inputmode="numeric"]'),
+    ];
+    const onChanges = otpInputs.map((input) => {
+      const propsKey = Object.getOwnPropertyNames(input).find((key) =>
+        key.startsWith('__reactProps$'),
+      );
+      if (!propsKey) throw new Error('React input props are unavailable in this test environment');
+      const props = (
+        input as unknown as Record<
+          string,
+          { onChange?: (event: { target: { value: string } }) => void }
+        >
+      )[propsKey];
+      if (!props.onChange) throw new Error('OTP input change handler is unavailable');
+      return props.onChange;
+    });
+
+    act(() => {
+      for (const [index, digit] of [...'123456'].entries())
+        onChanges[index]({ target: { value: digit } });
+    });
+
+    expect(otpInputs.map((input) => input.value)).toEqual([...'123456']);
+    const verifyButton = screen.getByRole('button', { name: 'Xác minh' });
+    expect(verifyButton).toBeEnabled();
+    fireEvent.click(verifyButton);
+
+    await screen.findByText('Lưu mã dự phòng');
+    expect(confirmMfaSetup).toHaveBeenCalledWith({ code: '123456' });
   });
 
   it('keeps the verify step open with neutral guidance after a confirmation transport failure', async () => {

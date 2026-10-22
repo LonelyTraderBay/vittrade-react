@@ -1,4 +1,5 @@
-import { afterEach, describe, expect, it } from 'vitest';
+import { env } from '@/shared/config/env';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { generateOrderBook } from './trading-fixtures';
 import {
   configureDevMockScenario,
@@ -11,9 +12,27 @@ import {
   setDevPreviewScenario,
 } from './scenario-runtime';
 
-afterEach(() => resetDevMockRuntime());
+const originalDevtoolsEnabled = env.enableDevtools;
+function setDevtoolsEnabled(value: boolean) {
+  Object.defineProperty(env, 'enableDevtools', { configurable: true, value });
+}
+
+beforeEach(() => setDevtoolsEnabled(true));
+afterEach(() => {
+  setDevtoolsEnabled(originalDevtoolsEnabled);
+  resetDevMockRuntime();
+});
 
 describe('development mock scenario runtime', () => {
+  it('ignores a persisted override while diagnostics are disabled and restores it only on explicit opt-in', () => {
+    const scenario = { domain: 'wallet', state: 'forbidden' } as const;
+    setDevPreviewScenario(scenario);
+    setDevtoolsEnabled(false);
+    expect(getDevPreviewScenario()).toBeNull();
+    setDevtoolsEnabled(true);
+    expect(getDevPreviewScenario()).toEqual(scenario);
+  });
+
   it('replays IDs and seeded fixture values after a reset', () => {
     configureDevMockScenario({ seed: 7123 });
     const firstId = nextDevMockId('order');

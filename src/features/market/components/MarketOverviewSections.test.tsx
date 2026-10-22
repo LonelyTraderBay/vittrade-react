@@ -59,6 +59,14 @@ describe('Market overview presentation sections', () => {
 
     const gauge = screen.getByRole('img', { name: `Fear: ${value}` });
     expect(gauge.querySelectorAll('path')[1]).toHaveAttribute('stroke', color);
+    expect(gauge.parentElement?.querySelector('span')).toHaveStyle({
+      color:
+        value <= 25
+          ? 'var(--tr-error-text)'
+          : value <= 45
+            ? 'var(--tr-warning-text)'
+            : 'var(--tr-success-text)',
+    });
   });
 
   it('renders market stat changes as positive, negative, or absent', () => {
@@ -84,15 +92,15 @@ describe('Market overview presentation sections', () => {
 
     const positiveChange = screen
       .getByText('Positive change')
-      .closest('.rounded-2xl')
+      .closest('[data-slot="tr-card"]')
       ?.querySelector('p:last-of-type');
     const negativeChange = screen
       .getByText('Negative change')
-      .closest('.rounded-2xl')
+      .closest('[data-slot="tr-card"]')
       ?.querySelector('p:last-of-type');
-    expect(positiveChange).toHaveStyle({ color: '#10B981' });
+    expect(positiveChange).toHaveStyle({ color: 'var(--tr-success-text)' });
     expect(positiveChange).toHaveTextContent('+2.50%');
-    expect(negativeChange).toHaveStyle({ color: '#EF4444' });
+    expect(negativeChange).toHaveStyle({ color: 'var(--tr-error-text)' });
     expect(negativeChange).toHaveTextContent('-1.25%');
     expect(screen.getByText('No change data').parentElement).not.toHaveTextContent('%');
   });
@@ -122,7 +130,7 @@ describe('Market overview presentation sections', () => {
     const changeBadge = Array.from(change).find((element) => element.textContent === '-1.25%');
 
     expect(changeBadge).toHaveStyle({
-      color: '#EF4444',
+      color: 'var(--tr-error-text)',
       background: 'rgba(239,68,68,0.12)',
     });
   });
@@ -135,7 +143,7 @@ describe('Market overview presentation sections', () => {
       (element) => element.textContent === '+0.00%',
     );
 
-    expect(percentage).toHaveStyle({ color: '#10B981' });
+    expect(percentage).toHaveStyle({ color: 'var(--tr-success-text)' });
     expect(percentage).toHaveTextContent('+0.00%');
   });
 });

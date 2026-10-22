@@ -5,6 +5,7 @@ import { Header } from '@/shared/ui/layout/Header';
 import { PageContent } from '@/shared/ui/layout/PageContent';
 import { PageLayout } from '@/shared/ui/layout/PageLayout';
 import { TrCard } from '@/shared/ui/TrCard';
+import { BottomSheetV2 } from '@/shared/ui/BottomSheetV2';
 import { useRoutePrefix } from '@/shared/navigation/useRoutePrefix';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { useAuth } from '@/shared/session/useAuth';
@@ -93,7 +94,7 @@ export function P2PMyAdsContractPage() {
             onClick={() => navigate(`${prefix}/p2p/create`)}
             disabled={!canWriteAds}
             className="rounded-lg px-3 py-2 text-xs font-semibold"
-            style={{ background: colors.primary, color: '#fff' }}
+            style={{ background: colors.primary, color: 'var(--tr-text-on-color)' }}
           >
             Tạo mới
           </button>
@@ -106,8 +107,8 @@ export function P2PMyAdsContractPage() {
           </p>
         )}
         <div className="grid grid-cols-3 gap-3">
-          <Summary label="Đang hoạt động" value={activeCount} color="#10B981" />
-          <Summary label="Tạm dừng" value={pausedCount} color="#F59E0B" />
+          <Summary label="Đang hoạt động" value={activeCount} color="var(--tr-success-text)" />
+          <Summary label="Tạm dừng" value={pausedCount} color="var(--tr-warning-text)" />
           <Summary label="KL 30 ngày" value={formatMoney(totalVolume)} color={colors.primary} />
         </div>
 
@@ -121,7 +122,7 @@ export function P2PMyAdsContractPage() {
               className="rounded-lg px-2 py-2 text-xs font-semibold"
               style={{
                 background: filter === value ? colors.primary : colors.surface2,
-                color: filter === value ? '#fff' : colors.text2,
+                color: filter === value ? 'var(--tr-text-on-color)' : colors.text2,
               }}
             >
               {value === 'all'
@@ -133,7 +134,7 @@ export function P2PMyAdsContractPage() {
           ))}
         </div>
 
-        {actionError && (
+        {actionError && !deleteId && (
           <p role="alert" style={{ color: colors.sell }}>
             {actionError}
           </p>
@@ -147,7 +148,7 @@ export function P2PMyAdsContractPage() {
               onClick={() => navigate(`${prefix}/p2p/create`)}
               disabled={!canWriteAds}
               className="mt-4 rounded-lg px-4 py-2 text-sm font-semibold"
-              style={{ background: colors.primary, color: '#fff' }}
+              style={{ background: colors.primary, color: 'var(--tr-text-on-color)' }}
             >
               Đăng quảng cáo đầu tiên
             </button>
@@ -159,9 +160,12 @@ export function P2PMyAdsContractPage() {
                 key={ad.id}
                 ad={ad}
                 colors={colors}
-                onOpen={() => navigate(`${prefix}/p2p/ad/${ad.id}`)}
+                onOpen={() => navigate(`${prefix}/p2p/ad/${encodeURIComponent(ad.id)}`)}
                 onToggle={() => void updateStatus(ad)}
-                onDelete={() => setDeleteId(ad.id)}
+                onDelete={() => {
+                  setActionError(null);
+                  setDeleteId(ad.id);
+                }}
                 canWrite={canWriteAds}
                 isMutating={statusMutation.isPending || deleteMutation.isPending}
               />
@@ -171,37 +175,43 @@ export function P2PMyAdsContractPage() {
       </PageContent>
 
       {deleteId && (
-        <div
-          className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 p-4"
-          role="dialog"
-          aria-modal="true"
+        <BottomSheetV2
+          showCloseButton={false}
+          showHandle={false}
+          open
+          title="Xóa quảng cáo?"
+          onClose={() => setDeleteId(null)}
+          preventClose={deleteMutation.isPending}
         >
-          <div className="w-full max-w-lg rounded-2xl p-5" style={{ background: colors.surface }}>
-            <h2 style={{ color: colors.text1, fontWeight: 700 }}>Xóa quảng cáo?</h2>
-            <p className="mt-2 text-sm" style={{ color: colors.text2 }}>
-              Hành động này không thể hoàn tác sau khi backend xác nhận.
+          <p className="text-sm" style={{ color: colors.text2 }}>
+            Hành động này không thể hoàn tác sau khi backend xác nhận.
+          </p>
+          {actionError && (
+            <p role="alert" className="mt-3 text-xs" style={{ color: colors.errorText }}>
+              {actionError}
             </p>
-            <div className="mt-4 flex gap-2">
-              <button
-                type="button"
-                onClick={() => setDeleteId(null)}
-                className="flex-1 rounded-lg px-3 py-2"
-                style={{ background: colors.surface2, color: colors.text2 }}
-              >
-                Hủy
-              </button>
-              <button
-                type="button"
-                onClick={() => void deleteAd()}
-                disabled={!canWriteAds || deleteMutation.isPending}
-                className="flex-1 rounded-lg px-3 py-2 font-semibold"
-                style={{ background: colors.sell, color: '#fff' }}
-              >
-                {deleteMutation.isPending ? 'Đang xóa…' : 'Xác nhận xóa'}
-              </button>
-            </div>
+          )}
+          <div className="mt-4 flex gap-2">
+            <button
+              type="button"
+              onClick={() => setDeleteId(null)}
+              disabled={deleteMutation.isPending}
+              className="flex-1 rounded-lg px-3 py-2"
+              style={{ background: colors.surface2, color: colors.text2 }}
+            >
+              Hủy
+            </button>
+            <button
+              type="button"
+              onClick={() => void deleteAd()}
+              disabled={!canWriteAds || deleteMutation.isPending}
+              className="flex-1 rounded-lg px-3 py-2 font-semibold"
+              style={{ background: colors.sell, color: 'var(--tr-text-on-color)' }}
+            >
+              {deleteMutation.isPending ? 'Đang xóa…' : 'Xác nhận xóa'}
+            </button>
           </div>
-        </div>
+        </BottomSheetV2>
       )}
     </PageLayout>
   );
@@ -259,7 +269,7 @@ function AdCard({
         <span
           className="rounded-full px-2 py-1 text-[10px]"
           style={{
-            color: isActive ? '#10B981' : colors.text3,
+            color: isActive ? 'var(--tr-success-text)' : colors.text3,
             background: isActive ? 'rgba(16,185,129,.12)' : colors.surface2,
           }}
         >
@@ -291,7 +301,7 @@ function AdCard({
             onClick={onToggle}
             disabled={!canWrite || isMutating}
             className="rounded-lg px-3 py-2 text-xs font-semibold"
-            style={{ background: colors.primary, color: '#fff' }}
+            style={{ background: colors.primary, color: 'var(--tr-text-on-color)' }}
           >
             {isActive ? 'Tạm dừng' : 'Bật lại'}
           </button>
@@ -302,7 +312,7 @@ function AdCard({
           onClick={onDelete}
           disabled={!canWrite || isMutating}
           className="rounded-lg px-3 py-2 text-xs font-semibold"
-          style={{ background: 'rgba(239,68,68,.12)', color: colors.sell }}
+          style={{ background: 'rgba(239,68,68,.12)', color: 'var(--tr-error-text)' }}
         >
           Xóa
         </button>

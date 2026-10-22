@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "itemId": "C05.03",
+  "observedAt": "2026-10-13T22:04:07.964Z",
+  "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
+  "sourceState": "dirty working tree; source hashes bind the DCA page and owner regression test",
+  "dirtyFileHashes": {
+    "src/features/dca/pages/SavingsDCAContractPage.tsx": "fd86668ebdf523604995a8e6bd174909c0e375f27980c348f7ad5af67a8e7d6",
+    "src/features/dca/pages/SavingsDCAContractPage.test.tsx": "b8890a583dd030781512985c7eed0107e080392edcb1795333ab372e7345f53b"
+  },
+  "finding": {
+    "priority": "P2",
+    "condition": "Savings DCA rendered at 390x844 with local MSW snapshot values and remote coinIcon URLs.",
+    "observed": [
+      "The full coinIcon URL string was rendered as text in each plan badge, visibly running over the plan cards when the screenshot's remote-image request was unavailable.",
+      "The three fixed summary columns clipped the full 3,027,250,000 value at the mobile viewport."
+    ],
+    "rootCause": "The page emitted the API icon field as a text child and used three inflexible metric columns with the browser's default strong-text size.",
+    "repair": [
+      "Render a valid image source as a decorative image and show the coin symbol for empty, non-image, or failed sources; do not render an image URL as user-facing text.",
+      "Allow summary metrics to wrap below the available width and use tabular numeric text sized for the card while preserving the full number."
+    ]
+  },
+  "verification": {
+    "unit": {
+      "command": "node scripts/run-with-artifacts.mjs vitest run --coverage",
+      "fullSuite": "360/360 test files; 3454/3454 tests; 0 failed and 0 skipped.",
+      "regressions": [
+        "A remote icon error event displays BTC rather than exposing the URL.",
+        "An empty icon source displays BTC.",
+        "A large summary value remains exact in the rendered text."
+      ]
+    },
+    "browser": {
+      "environment": "Playwright Chromium, local Vite/MSW preview at 127.0.0.1:4173, 390x844, backend not contacted.",
+      "route": "/earn/savings/dca",
+      "metrics": [
+        { "text": "22,200,000", "clientWidth": 84, "scrollWidth": 84, "overflow": false },
+        { "text": "3,027,250,000", "clientWidth": 84, "scrollWidth": 84, "overflow": false },
+        { "text": "3", "clientWidth": 84, "scrollWidth": 84, "overflow": false }
+      ],
+      "documentWidth": 390,
+      "rawIconUrlVisible": false,
+      "pageErrors": 0,
+      "consoleErrors": 0,
+      "localApiResponses": [{ "status": 200, "path": "/api/dca/snapshot" }],
+      "externalRequestEventsObserved": 0,
+      "axe": {
+        "status": "not_run",
+        "reason": "The local @axe-core/playwright package is unavailable; no dependency was installed."
+      },
+      "assetLimit": "The three currentSrc values still point to cryptologos.cc and their images decoded despite zero observed external request events; browser cache may explain this. The browser capture does not prove offline fallback. The image-error fallback is covered by the simulated owner regression test."
+    },
+    "screenshot": {
+      "path": "C:/Users/Joker-PC/.codex/visualizations/2026/10/14/01a13394-3caa-7930-a58f-e3e6c61b066f/vittrade-audit/implementation/dca-ui-mobile-fix/dca-390.png",
+      "sha256": "92ebbac5cf89c4ae41d3587fbc9d34f651edadba54ca1d77a6c336f85ba615a0"
+    },
+    "browserReport": {
+      "path": "C:/Users/Joker-PC/.codex/visualizations/2026/10/14/01a13394-3caa-7930-a58f-e3e6c61b066f/vittrade-audit/implementation/dca-ui-mobile-fix/dca-390-report.json",
+      "sha256": "8ba23b854053bde25df814b069910b03bb949f526f4e054e6fc82e985ddcd6db"
+    }
+  },
+  "result": "pass",
+  "artifact": "C:/Users/Joker-PC/.codex/visualizations/2026/10/14/01a13394-3caa-7930-a58f-e3e6c61b066f/vittrade-audit/implementation/dca-ui-mobile-fix/dca-390.png; C:/Users/Joker-PC/.codex/visualizations/2026/10/14/01a13394-3caa-7930-a58f-e3e6c61b066f/vittrade-audit/implementation/dca-ui-mobile-fix/dca-390-report.json",
+  "notes": "This closes only the reproduced local DCA rendering finding. It does not close C05.03, formal UI acceptance (0/128), mobile review of all routes, external asset hosting, backend/staging, or human acceptance."
+}

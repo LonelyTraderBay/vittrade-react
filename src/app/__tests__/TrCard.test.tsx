@@ -86,25 +86,25 @@ describe('TrCard', () => {
     it('should apply medium rounded by default', () => {
       const { container } = render(<TrCard>Content</TrCard>);
 
-      expect(container.firstChild).toHaveClass('rounded-2xl');
+      expect(container.firstChild).toHaveClass('rounded-[var(--tr-radius-card)]');
     });
 
     it('should apply small rounded', () => {
       const { container } = render(<TrCard rounded="sm">Content</TrCard>);
 
-      expect(container.firstChild).toHaveClass('rounded-xl');
+      expect(container.firstChild).toHaveClass('rounded-[var(--tr-radius-card-sm)]');
     });
 
     it('should apply medium rounded', () => {
       const { container } = render(<TrCard rounded="md">Content</TrCard>);
 
-      expect(container.firstChild).toHaveClass('rounded-2xl');
+      expect(container.firstChild).toHaveClass('rounded-[var(--tr-radius-card)]');
     });
 
     it('should apply large rounded', () => {
       const { container } = render(<TrCard rounded="lg">Content</TrCard>);
 
-      expect(container.firstChild).toHaveClass('rounded-3xl');
+      expect(container.firstChild).toHaveClass('rounded-[var(--tr-radius-card-lg)]');
     });
   });
 
@@ -288,7 +288,7 @@ describe('TrCard', () => {
       );
       const card = container.firstChild as HTMLElement;
 
-      expect(card).toHaveClass('rounded-3xl');
+      expect(card).toHaveClass('rounded-[var(--tr-radius-card-lg)]');
       expect(card).toHaveClass('hover-card');
       expect(card.style.background).toBe('var(--tr-portfolio-bg)');
     });
@@ -309,7 +309,7 @@ describe('TrCard', () => {
       );
       const card = container.firstChild as HTMLElement;
 
-      expect(card).toHaveClass('rounded-xl');
+      expect(card).toHaveClass('rounded-[var(--tr-radius-card-sm)]');
       expect(card).toHaveClass('hover-card');
       expect(card).toHaveClass('overflow-hidden');
       expect(card).toHaveClass('custom');
@@ -377,7 +377,7 @@ describe('TrCard', () => {
       );
       const card = container.firstChild as HTMLElement;
 
-      expect(card).toHaveClass('rounded-3xl');
+      expect(card).toHaveClass('rounded-[var(--tr-radius-card-lg)]');
       expect(card.style.background).toBe('var(--tr-portfolio-bg)');
       expect(screen.getByText('Portfolio Balance')).toBeInTheDocument();
     });

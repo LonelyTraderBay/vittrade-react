@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router';
 import { Clock, Plus, RefreshCw } from 'lucide-react';
 import { toast } from 'sonner';
@@ -14,7 +14,6 @@ import { useRefresh } from '@/shared/hooks/useRefresh';
 import { TOAST } from '@/shared/constants/toastMessages';
 import { PullToRefresh } from '@/shared/ui/PullToRefresh';
 import { Header } from '@/shared/ui/layout/Header';
-import { PageContent } from '@/shared/ui/layout/PageContent';
 import { ContextMenuSheet, P2PQuickActionsSheet } from '../components/P2PHomeActionSheets';
 import { CompareBar } from '../components/P2PHomeCards';
 import { P2PMarketplaceSections } from '../components/P2PMarketplaceSections';
@@ -35,6 +34,7 @@ export function P2PMarketplacePage({
   const { hapticSelection } = useHaptic();
   const actionToast = useActionToast();
   const prefix = useRoutePrefix();
+  const assetFocusRef = useRef<HTMLButtonElement>(null);
 
   const [tab, setTab] = useState<'buy' | 'sell'>('buy');
   const [asset, setAsset] = useState('USDT');
@@ -59,10 +59,11 @@ export function P2PMarketplacePage({
   /* ─── Quick buy/sell action ─── */
   const handleQuickAction = useCallback(
     (ad: P2PAd, type: 'buy' | 'sell') => {
+      if (!p2pAdsQuery.isSuccess || !p2pOverviewQuery.isSuccess) return;
       actionToast.info(`Mở offer để xác nhận ${type === 'buy' ? 'mua' : 'bán'} ${ad.asset}.`);
       navigate(`${prefix}/p2p/ad/${encodeURIComponent(ad.id)}`);
     },
-    [actionToast, navigate, prefix],
+    [actionToast, navigate, prefix, p2pAdsQuery.isSuccess, p2pOverviewQuery.isSuccess],
   );
 
   /* ─── Context menu actions ─── */
@@ -103,7 +104,7 @@ export function P2PMarketplacePage({
   }, [actionToast]);
 
   const handleViewMerchant = useCallback(
-    (ad: P2PAd) => navigate(`${prefix}/p2p/merchant/${ad.merchantId}`),
+    (ad: P2PAd) => navigate(`${prefix}/p2p/merchant/${encodeURIComponent(ad.merchantId)}`),
     [navigate, prefix],
   );
 
@@ -115,8 +116,9 @@ export function P2PMarketplacePage({
   const allPaymentMethods = useMemo(() => {
     const methods = new Set<string>();
     p2pAds.forEach((ad) => ad.paymentMethods.forEach((method) => methods.add(method)));
+    if (filterPayment) methods.add(filterPayment);
     return Array.from(methods);
-  }, [p2pAds]);
+  }, [p2pAds, filterPayment]);
 
   const ads = useMemo(
     () =>
@@ -147,37 +149,49 @@ export function P2PMarketplacePage({
     },
     [hapticSelection],
   );
-  const { refresh, lastRefreshedLabel, refreshCount } = useRefresh();
+  const { refresh, lastRefreshedLabel, refreshCount } = useRefresh({ delay: 0 });
   const hasError = p2pAdsQuery.isError || p2pOverviewQuery.isError;
+  const retryRead = async () => {
+    const reads = await Promise.all([p2pAdsQuery.refetch(), p2pOverviewQuery.refetch()]);
+    const success = reads.every((read) => read.isSuccess && read.fetchStatus === 'idle');
+    if (success) await refresh();
+    return success;
+  };
   const handleRefresh = async () => {
-    await Promise.all([p2pAdsQuery.refetch(), p2pOverviewQuery.refetch()]);
-    refresh();
+    // PullToRefresh uses rejection to distinguish failed/paused reads from success.
+    if (!(await retryRead())) throw new Error('P2P_REFRESH_INCOMPLETE');
   };
 
-  if (hasError) {
-    return (
-      <PageContent padding="compact">
+  const overviewReady = p2pOverviewQuery.isSuccess && Boolean(userLevel && currentLevelData);
+  const resultsReady = p2pAdsQuery.isSuccess && overviewReady;
+  const readPaused =
+    p2pAdsQuery.fetchStatus === 'paused' || p2pOverviewQuery.fetchStatus === 'paused';
+  useEffect(() => {
+    if (!resultsReady) {
+      setShowContextMenu(false);
+      setContextMenuAd(null);
+    }
+    if (!overviewReady) setShowQuickActions(false);
+  }, [resultsReady, overviewReady]);
+  const resultsFeedback =
+    readPaused && !resultsReady ? (
+      <p role="status" style={{ color: c.text2, fontSize: 13 }}>
+        Đang chờ kết nối để tải dữ liệu P2P…
+      </p>
+    ) : hasError ? (
+      <div role="alert">
         <ErrorState
           title="Không thể tải P2P"
-          message="Dữ liệu marketplace chưa sẵn sàng. Vui lòng thử lại."
-          onAction={() => void handleRefresh()}
+          message="Dữ liệu marketplace chưa sẵn sàng. Bạn có thể thử lại hoặc đổi bộ lọc; lựa chọn hiện tại được giữ nguyên."
+          onAction={() => void retryRead()}
         />
-      </PageContent>
-    );
-  }
-
-  if (p2pAdsQuery.isPending || p2pOverviewQuery.isPending || !userLevel || !currentLevelData) {
-    return (
-      <PageContent padding="compact">
-        <div className="flex flex-col items-center justify-center gap-3 py-20">
-          <RefreshCw size={28} color={c.primary} className="animate-spin" />
-          <p style={{ color: c.text2, fontSize: 13 }}>Đang tải dữ liệu P2P…</p>
-        </div>
-      </PageContent>
-    );
-  }
-
-  const platformStats = overview.platformStats;
+      </div>
+    ) : !resultsReady ? (
+      <div role="status" className="flex flex-col items-center justify-center gap-3 py-20">
+        <RefreshCw size={28} color={c.primary} className="animate-spin" aria-hidden="true" />
+        <p style={{ color: c.text2, fontSize: 13 }}>Đang tải dữ liệu P2P…</p>
+      </div>
+    ) : undefined;
 
   return (
     <PullToRefresh
@@ -186,17 +200,24 @@ export function P2PMarketplacePage({
       refreshCount={refreshCount}
       className="min-h-full pb-4"
     >
-      {/* Offline / Error states (§18.1) */}
-      <OfflineBanner showStaleHint />
+      {readPaused && resultsReady && (
+        <div role="status">
+          <OfflineBanner message="Đang chờ kết nối để cập nhật dữ liệu P2P." />
+        </div>
+      )}
       {/* Header — variant="page" module index (§21.4) */}
       <Header
         variant="page"
         title="P2P"
-        subtitle={`Lv.${userLevel.currentLevel} · P2P Trading`}
+        subtitle={
+          overviewReady && userLevel ? `Lv.${userLevel.currentLevel} · P2P Trading` : 'P2P Trading'
+        }
         back
         right={
           <div className="flex items-center gap-1.5">
             <button
+              type="button"
+              disabled={!overviewReady}
               onClick={() => setShowQuickActions(!showQuickActions)}
               className="flex items-center justify-center hover-ghost"
               style={{
@@ -228,15 +249,21 @@ export function P2PMarketplacePage({
         }
       />
 
-      <P2PQuickActionsSheet
-        isOpen={showQuickActions}
-        onClose={() => setShowQuickActions(false)}
-        userLevel={userLevel}
-        currentLevelData={currentLevelData}
-        onAfterOpen={onQuickActionsOpen}
-      />
+      {overviewReady && userLevel && currentLevelData && (
+        <P2PQuickActionsSheet
+          isOpen={showQuickActions}
+          onClose={() => setShowQuickActions(false)}
+          userLevel={userLevel}
+          currentLevelData={currentLevelData}
+          onAfterOpen={onQuickActionsOpen}
+          fallbackFocusRef={assetFocusRef}
+        />
+      )}
       <P2PMarketplaceSections
-        platformStats={platformStats}
+        platformStats={overviewReady ? overview?.platformStats : undefined}
+        resultsFeedback={resultsFeedback}
+        resultsBusy={p2pAdsQuery.isFetching || p2pOverviewQuery.isFetching}
+        assetFocusRef={assetFocusRef}
         tab={tab}
         handleTabSwitch={handleTabSwitch}
         asset={asset}
@@ -266,7 +293,7 @@ export function P2PMarketplacePage({
       {/* Context Menu Sheet */}
       <ContextMenuSheet
         ad={contextMenuAd}
-        isOpen={showContextMenu}
+        isOpen={showContextMenu && resultsReady}
         onClose={() => setShowContextMenu(false)}
         tradeType={tab}
         onShare={handleShareOffer}
@@ -275,6 +302,7 @@ export function P2PMarketplacePage({
         onViewMerchant={handleViewMerchant}
         prefix={prefix}
         onAfterOpen={onContextMenuOpen}
+        fallbackFocusRef={assetFocusRef}
       />
 
       {/* Compare Bar */}

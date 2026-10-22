@@ -5,13 +5,61 @@ on:
     branches: [main]
   pull_request:
 
+permissions:
+  contents: read
+  actions: read
+
 jobs:
-  verify:
-    name: Production gates
+  scope:
+    name: CI scope
+    runs-on: ubuntu-latest
+    outputs:
+      mode: ${{ steps.classify.outputs.mode }}
+      reused_run_id: ${{ steps.classify.outputs.reused_run_id }}
+      runtime_fingerprint: ${{ steps.classify.outputs.runtime_fingerprint }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      - name: Verify immutable scope reader runtime
+        run: python3 --version
+      - name: Verify CI scope and failure handling
+        run: node --test scripts/ci-scope.node-test.mjs
+      - name: Classify inputs and previous exact-source gate
+        id: classify
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node scripts/ci-scope.mjs classify
+      - name: Preserve verification reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-scope-${{ github.sha }}-${{ github.run_attempt }}
+          include-hidden-files: true
+          path: .artifacts/ci/**
+          retention-days: 7
+          if-no-files-found: error
+
+  static:
+    name: Static and build gates
+    needs: scope
+    if: needs.scope.outputs.mode == 'full'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # The source ledger verifies historical Git blobs, not only the latest checkout.
+          fetch-depth: 0
+
+      - name: Initialize static verification context
+        run: |
+          set -euo pipefail
+          mkdir -p .artifacts/ci
+          printf '{"schemaVersion":1,"phase":"started","checkoutSha":"%s","runId":"%s","attempt":"%s"}\n' "$GITHUB_SHA" "$GITHUB_RUN_ID" "$GITHUB_RUN_ATTEMPT" > .artifacts/ci/static-context.json
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -25,9 +73,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Install Playwright browser
-        run: npx playwright install --with-deps chromium
-
       - name: Typecheck
         run: npm run typecheck
 
@@ -40,23 +85,10 @@ jobs:
       - name: Format check
         run: npm run format:check
 
-      - name: Unit and integration tests
-        run: npm run test:run
-
-      - name: Coverage gate
-        run: npm run test:coverage -- --reporter=dot
-
-      - name: E2E smoke and accessibility
-        run: npm run test:e2e
-
-      - name: Auth registration API-mode browser contract
-        run: npm run test:e2e -- --config playwright.auth-api.config.ts
-
-      - name: Auth development mock browser contract
-        run: npm run test:e2e -- --config playwright.auth-mock.config.ts
-
       - name: Dependency audit
-        run: npm run audit:high
+        run: |
+          set -euo pipefail
+          npm run audit:high 2>&1 | tee .artifacts/ci/dependency-audit.log
 
       - name: Dependency license policy
         run: npm run licenses:check
@@ -76,11 +108,18 @@ jobs:
       - name: Architecture inventory
         run: npm run architecture:inventory:check
 
+      - name: Readiness source ledger
+        run: node docs/architecture/production-readiness/check-tracking.mjs
+
       - name: Page size gate
         run: npm run page-size:check
 
       - name: Production mock import budget
         run: npm run production-mock-imports:check
+
+      - name: Design system changed-code guard
+        run: |
+          node --input-type=module -e 'import { checkDesignSystemDiff } from "./scripts/check-design-system-diff.mjs"; const report = checkDesignSystemDiff(); console.log(JSON.stringify(report, null, 2)); if (!report.passed) process.exit(1);'
 
       - name: Production route boundaries
         run: npm run production-routes:check
@@ -102,3 +141,173 @@ jobs:
 
       - name: Bundle budget
         run: npm run bundle:check
+
+      - name: Preserve verification reports
+        if: always()
+        id: verification-artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-static-${{ github.sha }}-${{ github.run_attempt }}
+          # Select only run evidence; hidden project config and cache are excluded.
+          include-hidden-files: true
+          path: |
+            .artifacts/ci/static-context.json
+            .artifacts/ci/dependency-audit.log
+            .artifacts/runs/**/run.json
+            .artifacts/runs/**/coverage/**
+            .artifacts/runs/**/playwright-report/**
+            .artifacts/runs/**/test-results/**
+            .artifacts/cleanup-report.json
+          retention-days: 7
+          if-no-files-found: error
+
+      - name: Record verification artifact digest
+        if: always() && steps.verification-artifacts.outcome == 'success'
+        env:
+          ARTIFACT_ID: ${{ steps.verification-artifacts.outputs.artifact-id }}
+          ARTIFACT_DIGEST: ${{ steps.verification-artifacts.outputs.artifact-digest }}
+        run: |
+          printf 'Verification artifact ID: %s\n\nSHA-256: `%s`\n' "$ARTIFACT_ID" "$ARTIFACT_DIGEST" >> "$GITHUB_STEP_SUMMARY"
+
+  unit:
+    name: Unit and coverage
+    needs: scope
+    if: needs.scope.outputs.mode == 'full'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      # test:coverage executes the same complete suite as test:run; scope tests
+      # enforce command parity. Assertions and coverage thresholds are unchanged.
+      - name: Unit, integration and coverage gate
+        run: npm run test:coverage -- --reporter=dot
+      - name: Preserve verification reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-unit-${{ github.sha }}-${{ github.run_attempt }}
+          include-hidden-files: true
+          path: |
+            .artifacts/runs/**/run.json
+            .artifacts/runs/**/coverage/**
+            .artifacts/cleanup-report.json
+          retention-days: 7
+          if-no-files-found: error
+
+  browser:
+    name: Browser ${{ matrix.suite }}
+    needs: scope
+    if: needs.scope.outputs.mode == 'full'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - suite: smoke
+            config: playwright.config.ts
+          - suite: auth-api
+            config: playwright.auth-api.config.ts
+          - suite: auth-mock
+            config: playwright.auth-mock.config.ts
+          - suite: ui-mock
+            config: playwright.ui-mock.config.ts
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+      - name: Browser contract
+        env:
+          BROWSER_PROFILE: ${{ matrix.suite }}
+          BROWSER_CONFIG: ${{ matrix.config }}
+        run: |
+          set -euo pipefail
+          if [ "$BROWSER_PROFILE" = "auth-mock" ]; then
+            VITE_ENABLE_DEVTOOLS=true npm run test:e2e -- --config "$BROWSER_CONFIG"
+            VITE_ENABLE_DEVTOOLS=false npm run test:e2e -- --config playwright.preview-defaults.config.ts
+          elif [ "$BROWSER_PROFILE" = "ui-mock" ]; then
+            VITE_ENABLE_DEVTOOLS=true npm run test:e2e -- --config "$BROWSER_CONFIG"
+          else
+            npm run test:e2e -- --config "$BROWSER_CONFIG"
+          fi
+      - name: Preserve verification reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-browser-${{ matrix.suite }}-${{ github.sha }}-${{ github.run_attempt }}
+          include-hidden-files: true
+          path: |
+            .artifacts/runs/**/run.json
+            .artifacts/runs/**/playwright-report/**
+            .artifacts/runs/**/test-results/**
+            .artifacts/cleanup-report.json
+          retention-days: 7
+          if-no-files-found: error
+
+  metadata:
+    name: Progress metadata gate
+    needs: scope
+    if: needs.scope.outputs.mode == 'metadata-only'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - name: Verify metadata text and ledger
+        run: |
+          mkdir -p .artifacts/ci
+          node scripts/check-git-eol.mjs
+          git diff --check HEAD^ HEAD
+          node scripts/ci-scope.mjs ledger-format
+          node docs/architecture/production-readiness/check-tracking.mjs | tee .artifacts/ci/readiness.txt
+      - name: Preserve verification reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-metadata-${{ github.sha }}-${{ github.run_attempt }}
+          include-hidden-files: true
+          path: .artifacts/ci/**
+          retention-days: 7
+          if-no-files-found: error
+
+  verify:
+    # Stable required-check name; conditional jobs cannot silently bypass it.
+    name: Production gates
+    needs: [scope, static, unit, browser, metadata]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      - name: Verify every applicable gate
+        env:
+          CI_NEEDS: ${{ toJSON(needs) }}
+        run: node scripts/ci-scope.mjs gate
+      - name: Preserve verification reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-gate-${{ github.sha }}-${{ github.run_attempt }}
+          include-hidden-files: true
+          path: .artifacts/ci/**
+          retention-days: 7
+          if-no-files-found: error

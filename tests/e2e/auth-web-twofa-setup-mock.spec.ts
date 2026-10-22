@@ -78,7 +78,7 @@ test('Web MFA setup has no axe violations in settled light and dark states @auth
           await Promise.all(
             document.getAnimations().map((animation) => animation.finished.catch(() => undefined)),
           );
-          await new Promise<void>((resolve) => requestAnimationFrame(resolve));
+          await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
         });
 
         const results = await new AxeBuilder({ page })
@@ -115,6 +115,7 @@ test('Web MFA setup has no axe violations in settled light and dark states @auth
       .getByRole('textbox', { name: `Mã xác thực 2FA, chữ số ${index + 1} trên 6` })
       .fill(digit);
   }
+  await expect(page.getByRole('button', { name: 'Xác minh' })).toBeEnabled();
   const confirmResponsePromise = page.waitForResponse(
     (response) =>
       response.request().method() === 'POST' &&
@@ -213,9 +214,9 @@ for (const viewport of viewports) {
       const request = response.request();
       const url = new URL(response.url());
       if (request.method() !== 'POST' || !url.pathname.startsWith('/api/auth/')) return;
-      const record = authRequests.findLast(
-        (item) => item.path === url.pathname && item.status === undefined,
-      );
+      const record = [...authRequests]
+        .reverse()
+        .find((item) => item.path === url.pathname && item.status === undefined);
       if (record) record.status = response.status();
     };
     page.on('request', trackRequest);
@@ -294,16 +295,29 @@ for (const viewport of viewports) {
     await capture('qr-step', true);
     expect(await page.getByText('DEV-0001', { exact: true }).count()).toBe(0);
 
+    await page.clock.install();
     await page.getByRole('button', { name: /Tiếp theo — Xác minh mã/ }).click();
     await expect(page.getByRole('heading', { name: 'Xác minh mã' })).toBeVisible();
     const otpGroup = page.getByRole('group', { name: 'Mã xác thực gồm 6 chữ số' });
     await expect(otpGroup.getByRole('textbox')).toHaveCount(6);
+    await expect(otpGroup.getByRole('textbox').first()).toBeFocused();
+    const thirdDigit = otpGroup.getByRole('textbox', {
+      name: 'Mã xác thực 2FA, chữ số 3 trên 6',
+    });
+    await thirdDigit.focus();
+    // Reproduce the former delayed-focus boundary without sleeping or retrying input.
+    await page.clock.runFor(200);
+    await expect(thirdDigit).toBeFocused();
+    await page.clock.resume();
     await capture('verify-step');
     for (const [index, digit] of [...otp].entries()) {
-      await otpGroup
-        .getByRole('textbox', { name: `Mã xác thực 2FA, chữ số ${index + 1} trên 6` })
-        .fill(digit);
+      const field = otpGroup.getByRole('textbox', {
+        name: `Mã xác thực 2FA, chữ số ${index + 1} trên 6`,
+      });
+      await field.fill(digit);
+      await expect(field).toHaveValue(digit);
     }
+    await expect(page.getByRole('button', { name: 'Xác minh' })).toBeEnabled();
 
     const confirmResponsePromise = page.waitForResponse(
       (response) =>
@@ -364,7 +378,7 @@ for (const viewport of viewports) {
                 .getAnimations()
                 .map((animation) => animation.finished.catch(() => undefined)),
             );
-            await new Promise<void>((resolve) => requestAnimationFrame(resolve));
+            await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
           });
 
           const results = await new AxeBuilder({ page })
@@ -416,7 +430,7 @@ for (const viewport of viewports) {
 
     const primaryAction = page.getByRole('button', { name: 'Vào trang chủ' });
     await primaryAction.click();
-    await expect(page).toHaveURL('/w/home');
+    await expect(page).toHaveURL(viewport.loginHomeRoute);
 
     const screenshotSha256 = Object.fromEntries(
       await Promise.all(

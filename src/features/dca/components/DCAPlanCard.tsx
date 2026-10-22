@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import type { DCAPlan } from '../model/dca-types';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
+import { DcaPlanCoinIcon } from './DcaPlanCoinIcon';
 
 /**
  * DCAPlanCard Props
@@ -173,13 +174,12 @@ export function DCAPlanCard({
                 flexShrink: 0,
               }}
             >
-              <img
-                src={plan.coinIcon}
+              <DcaPlanCoinIcon
+                icon={plan.coinIcon}
+                symbol={plan.coinSymbol}
                 alt={plan.coinName}
-                style={{ width: 28, height: 28, borderRadius: 14 }}
-                onError={(e) => {
-                  e.currentTarget.src = `https://ui-avatars.com/api/?name=${plan.coinSymbol}&background=1C2235&color=F0F4FF&size=56`;
-                }}
+                size={28}
+                rounded
               />
             </div>
 

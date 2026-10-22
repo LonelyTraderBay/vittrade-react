@@ -81,6 +81,29 @@ function installHandlers() {
 }
 
 describe('Wallet overview contract page', () => {
+  it('keeps the API asset identifier in one route segment', async () => {
+    const id = 'asset/a?b#c%';
+    server.use(
+      http.get('*/wallet/assets', () =>
+        HttpResponse.json({ ...assets, items: [{ ...assets.items[0], id }] }),
+      ),
+      http.get('*/wallet/transactions', () => HttpResponse.json(transactions)),
+    );
+    renderWithProviders(
+      <>
+        <WalletOverviewContractPage />
+        <LocationProbe />
+      </>,
+      {
+        routerProps: { initialEntries: ['/w/wallet'] },
+      },
+    );
+    await userEvent.click(await screen.findByRole('button', { name: /BTCBTCBitcoin/ }));
+    expect(screen.getByTestId('location').textContent).toBe(
+      `/w/wallet/asset/${encodeURIComponent(id)}`,
+    );
+  });
+
   it('does not request balances or activity without wallet read permission', async () => {
     let requests = 0;
     const noWalletReadAdapter: AuthAdapter = {
@@ -337,5 +360,11 @@ describe('Wallet overview contract page', () => {
 
 function LocationProbe() {
   const location = useLocation();
-  return <output data-testid="location">{location.pathname}</output>;
+  return (
+    <output data-testid="location">
+      {location.pathname}
+      {location.search}
+      {location.hash}
+    </output>
+  );
 }

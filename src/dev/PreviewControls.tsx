@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import type { CSSProperties } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { isApiError } from '@/shared/api/api-error';
@@ -100,8 +101,8 @@ const domainLabels: Record<DevPreviewDomain, string> = {
 const shellStyle: CSSProperties = {
   position: 'fixed',
   right: 16,
-  bottom: 16,
-  zIndex: 1200,
+  // Diagnostic chrome stays below the modal layer (60), including when its body is inert.
+  zIndex: 50,
   width: 'min(360px, calc(100vw - 24px))',
   color: '#172033',
   font: '13px/1.45 system-ui, sans-serif',
@@ -143,13 +144,22 @@ const actionStyle: CSSProperties = {
   cursor: 'pointer',
 };
 
-export function PreviewControls() {
+export function PreviewControls({
+  bottomNavigationVisible,
+  portalHost,
+}: {
+  bottomNavigationVisible?: boolean;
+  portalHost?: HTMLElement | null;
+} = {}) {
   const location = useLocation();
+  const isNarrowViewport = typeof window !== 'undefined' && window.innerWidth < 768;
+  const clearBottomNavigation = bottomNavigationVisible ?? isNarrowViewport;
   const storedScenario = getDevPreviewScenario();
   const { user, signIn, signOut } = useAuth();
   const navigate = useNavigate();
   const routePrefix = useRoutePrefix();
   const [isOpen, setIsOpen] = useState(false);
+  const [availablePanelHeight, setAvailablePanelHeight] = useState<number | null>(null);
   const [isBusy, setIsBusy] = useState(false);
   const [personaSelection, setPersonaSelection] = useState<PersonaSelection>('guest');
   const [scenarioId, setScenarioId] = useState<ScreenScenarioId>('home');
@@ -169,6 +179,28 @@ export function PreviewControls() {
 
   const isAuthOrSecurityRoute =
     /^(?:\/(?:t|w|r))?\/(?:auth(?:\/|$)|profile\/security(?:\/|$))/.test(location.pathname);
+
+  useLayoutEffect(() => {
+    if (!portalHost || !isOpen) return;
+    const update = () => {
+      const viewport = window.visualViewport;
+      const bottom = viewport ? viewport.offsetTop + viewport.height : window.innerHeight;
+      // Reserve the existing 8px panel margin and an 8px viewport gutter.
+      setAvailablePanelHeight(Math.max(0, bottom - portalHost.getBoundingClientRect().bottom - 16));
+    };
+    update();
+    const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(update);
+    observer?.observe(portalHost);
+    window.addEventListener('resize', update);
+    window.visualViewport?.addEventListener('resize', update);
+    window.visualViewport?.addEventListener('scroll', update);
+    return () => {
+      observer?.disconnect();
+      window.removeEventListener('resize', update);
+      window.visualViewport?.removeEventListener('resize', update);
+      window.visualViewport?.removeEventListener('scroll', update);
+    };
+  }, [portalHost, isOpen]);
 
   if (!isDevelopmentBuild || !env.isDev || env.dataSource !== 'mock') return null;
 
@@ -264,18 +296,31 @@ export function PreviewControls() {
     await queryClient.invalidateQueries({ queryKey: [scenarioDomain] });
   };
 
-  return (
+  const controls = (
     <aside
       aria-label="Điều khiển xem trước mock"
       data-testid="dev-preview-controls"
       style={
-        isAuthOrSecurityRoute
+        portalHost
           ? {
               ...shellStyle,
-              position: 'static',
-              margin: '24px 16px 16px auto',
+              position: 'relative',
+              right: 'auto',
+              width: '100%',
+              padding: '8px 12px',
             }
-          : shellStyle
+          : isAuthOrSecurityRoute
+            ? {
+                ...shellStyle,
+                position: 'static',
+                margin: '24px 16px 16px auto',
+              }
+            : {
+                ...shellStyle,
+                bottom: clearBottomNavigation
+                  ? 'calc(88px + env(safe-area-inset-bottom, 0px))'
+                  : 16,
+              }
       }
     >
       <div
@@ -285,8 +330,11 @@ export function PreviewControls() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          gap: 10,
-          padding: '9px 12px',
+          gap: isNarrowViewport ? 6 : 10,
+          width: isNarrowViewport ? 'fit-content' : '100%',
+          maxWidth: '100%',
+          marginLeft: isNarrowViewport ? 'auto' : undefined,
+          padding: isNarrowViewport ? '5px 8px' : '9px 12px',
           border: '1px solid #f59e0b',
           borderRadius: 10,
           background: '#fffbeb',
@@ -294,28 +342,65 @@ export function PreviewControls() {
           boxShadow: '0 4px 18px rgba(15, 23, 42, .16)',
         }}
       >
-        <strong>DỮ LIỆU MÔ PHỎNG · KHÔNG PHẢI GIAO DỊCH THẬT</strong>
-        <button
-          type="button"
-          aria-expanded={isOpen}
-          aria-controls="dev-preview-panel"
-          onClick={() => setIsOpen((open) => !open)}
-          style={{
-            flex: '0 0 auto',
-            padding: '4px 7px',
-            border: '1px solid #b45309',
-            borderRadius: 6,
-            background: '#fff',
-            color: '#78350f',
-            cursor: 'pointer',
-          }}
-        >
-          {isOpen ? 'Thu gọn' : 'Mở công cụ xem trước'}
-        </button>
+        <strong style={{ fontSize: isNarrowViewport ? 9 : 13 }}>
+          DỮ LIỆU MÔ PHỎNG · KHÔNG GIAO DỊCH THẬT
+        </strong>
+        {env.enableDevtools && (
+          <button
+            type="button"
+            aria-expanded={isOpen}
+            aria-controls="dev-preview-panel"
+            aria-label={isOpen ? 'Thu gọn' : 'Mở công cụ xem trước'}
+            onClick={() => setIsOpen((open) => !open)}
+            style={{
+              display: 'inline-grid',
+              flex: '0 0 auto',
+              padding: '4px 7px',
+              border: '1px solid #b45309',
+              borderRadius: 6,
+              background: '#fff',
+              color: '#78350f',
+              cursor: 'pointer',
+              fontSize: isNarrowViewport ? 10 : undefined,
+            }}
+          >
+            {/* Both labels size the same grid cell so disclosure never reflows its warning. */}
+            <span
+              aria-hidden="true"
+              style={{ gridArea: '1 / 1', visibility: isOpen ? 'hidden' : 'visible' }}
+            >
+              {isNarrowViewport ? 'Mở' : 'Mở công cụ xem trước'}
+            </span>
+            <span
+              aria-hidden="true"
+              style={{ gridArea: '1 / 1', visibility: isOpen ? 'visible' : 'hidden' }}
+            >
+              Thu gọn
+            </span>
+          </button>
+        )}
       </div>
 
-      {isOpen && (
-        <section id="dev-preview-panel" aria-label="Công cụ xem trước" style={panelStyle}>
+      {env.enableDevtools && isOpen && (
+        <section
+          id="dev-preview-panel"
+          aria-label="Công cụ xem trước"
+          style={{
+            ...panelStyle,
+            ...(portalHost
+              ? {
+                  position: 'absolute',
+                  top: '100%',
+                  right: 12,
+                  width: 'calc(100% - 24px)',
+                  maxHeight:
+                    availablePanelHeight === null
+                      ? panelStyle.maxHeight
+                      : `min(68vh, 560px, ${availablePanelHeight}px)`,
+                }
+              : {}),
+          }}
+        >
           <p style={{ margin: '0 0 12px' }}>
             Phiên hiện tại: <strong>{user?.email ?? 'khách chưa đăng nhập'}</strong>
           </p>
@@ -463,4 +548,5 @@ export function PreviewControls() {
       )}
     </aside>
   );
+  return portalHost ? createPortal(controls, portalHost) : controls;
 }

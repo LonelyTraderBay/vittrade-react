@@ -1,7 +1,11 @@
 import { describe, it, expect, vi } from 'vitest';
 import { fireEvent } from '@testing-library/react';
 import { renderWithTheme, screen } from '@/test/test-utils';
-import { TrCard } from '@/shared/ui/TrCard';
+import { radiusClass, VitRadii } from '@/shared/theme/radii';
+import { TrCard, TrCardStat } from '@/shared/ui/TrCard';
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
+import postcss from 'postcss';
 
 /**
  * ══════════════════════════════════════════════════════════
@@ -11,6 +15,67 @@ import { TrCard } from '@/shared/ui/TrCard';
  */
 
 describe('TrCard', () => {
+  it('keeps legacy radius/padding hover adapters outside the canonical card contract', () => {
+    const css = postcss.parse(
+      readFileSync(path.resolve(__dirname, '../../styles/theme.css'), 'utf8'),
+    );
+    const adapters: string[] = [];
+    css.walkRules((rule) => {
+      for (const selector of rule.selectors) {
+        const childRow = selector.startsWith('.rounded-2xl');
+        const paddedCard =
+          selector.startsWith('div') &&
+          selector.includes("[class*='rounded-") &&
+          /\[class\*='p-[34]'\]/.test(selector);
+        if (!childRow && !paddedCard) continue;
+        adapters.push(selector);
+        expect(selector).toContain(":not([data-slot='tr-card'])");
+      }
+    });
+    expect(adapters).toHaveLength(12);
+  });
+
+  it.each(Object.keys(VitRadii) as (keyof typeof VitRadii)[])(
+    'uses the foundation radius %s ahead of the card role',
+    (radius) => {
+      renderWithTheme(
+        <TrCard radius={radius} rounded="lg">
+          Radius
+        </TrCard>,
+      );
+      expect(screen.getByText('Radius')).toHaveClass(radiusClass(radius));
+      expect(screen.getByText('Radius')).toHaveAttribute('data-slot', 'tr-card');
+      expect(screen.getByText('Radius')).not.toHaveClass('rounded-[var(--tr-radius-card-lg)]');
+    },
+  );
+
+  it('uses a dedicated marker for button cards without inheriting generic card hover selectors', () => {
+    renderWithTheme(<TrCard as="button">Action</TrCard>);
+    expect(screen.getByRole('button', { name: 'Action' })).toHaveAttribute('data-slot', 'tr-card');
+  });
+
+  it('supports CSS padding overrides and radius tokens', () => {
+    renderWithTheme(
+      <TrCard padding="12px 20px" radius="full">
+        Padded
+      </TrCard>,
+    );
+    expect(screen.getByText('Padded')).toHaveStyle({ padding: '12px 20px' });
+    expect(screen.getByText('Padded')).toHaveClass('rounded-full');
+  });
+
+  it.each([
+    { density: 'compact', padding: '8px' },
+    { density: 'tool', padding: '8px' },
+    { density: 'relaxed', padding: '16px' },
+    { density: 'hero', padding: '16px' },
+    { density: 'standard', padding: '12px' },
+  ] as const)('applies $density inner stat spacing', ({ density, padding }) => {
+    renderWithTheme(<TrCardStat density={density}>Stat</TrCardStat>);
+    expect(screen.getByText('Stat')).toHaveStyle({ padding });
+    expect(screen.getByText('Stat')).not.toHaveClass('p-2.5');
+  });
+
   describe('Rendering', () => {
     it('should render children correctly', () => {
       renderWithTheme(<TrCard>Test Content</TrCard>);
@@ -27,6 +92,30 @@ describe('TrCard', () => {
       const { container } = renderWithTheme(<TrCard as="button">Button Card</TrCard>);
       const card = container.firstChild as HTMLElement;
       expect(card.tagName).toBe('BUTTON');
+    });
+
+    it('defaults button cards to non-submit inside a form', () => {
+      const onSubmit = vi.fn();
+      const onClick = vi.fn();
+
+      renderWithTheme(
+        <form
+          onSubmit={(event) => {
+            event.preventDefault();
+            onSubmit();
+          }}
+        >
+          <TrCard as="button" onClick={onClick}>
+            Select card
+          </TrCard>
+        </form>,
+      );
+
+      const button = screen.getByRole('button', { name: 'Select card' });
+      expect(button).toHaveAttribute('type', 'button');
+      fireEvent.click(button);
+      expect(onClick).toHaveBeenCalledTimes(1);
+      expect(onSubmit).not.toHaveBeenCalled();
     });
 
     it('should render as section when specified', () => {
@@ -67,22 +156,22 @@ describe('TrCard', () => {
   });
 
   describe('Border Radius', () => {
-    it('should apply md (rounded-2xl) by default', () => {
+    it('should apply md (rounded-[var(--tr-radius-card)]) by default', () => {
       const { container } = renderWithTheme(<TrCard>Content</TrCard>);
       const card = container.firstChild as HTMLElement;
-      expect(card.className).toContain('rounded-2xl');
+      expect(card.className).toContain('rounded-[var(--tr-radius-card)]');
     });
 
     it('should apply sm border radius', () => {
       const { container } = renderWithTheme(<TrCard rounded="sm">Content</TrCard>);
       const card = container.firstChild as HTMLElement;
-      expect(card.className).toContain('rounded-xl');
+      expect(card.className).toContain('rounded-[var(--tr-radius-card-sm)]');
     });
 
     it('should apply lg border radius', () => {
       const { container } = renderWithTheme(<TrCard rounded="lg">Content</TrCard>);
       const card = container.firstChild as HTMLElement;
-      expect(card.className).toContain('rounded-3xl');
+      expect(card.className).toContain('rounded-[var(--tr-radius-card-lg)]');
     });
   });
 

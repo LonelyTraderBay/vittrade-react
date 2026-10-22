@@ -1,7 +1,7 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { renderWithProviders } from '@/test/test-utils';
 import type { AuthAdapter } from '@/shared/session/AuthContext';
@@ -55,7 +55,13 @@ describe('Wallet transfer contract page', () => {
 
     expect(await screen.findByLabelText('From wallet')).toHaveValue('spot');
     expect(screen.getByLabelText('To wallet')).toHaveValue('funding');
-    expect(screen.getByText(/Available: 75/)).toBeInTheDocument();
+    const amountInput = await screen.findByLabelText('Transfer amount');
+    expect(amountInput).toHaveAttribute('type', 'number');
+    expect(amountInput).toHaveAttribute('min', '0');
+    expect(amountInput).toHaveAttribute('step', 'any');
+    expect(amountInput).toHaveAttribute('inputmode', 'decimal');
+    expect(amountInput).toHaveAttribute('aria-describedby', 'transfer-amount-helper');
+    expect(screen.getByText(/Available: 75/)).toHaveAttribute('id', 'transfer-amount-helper');
   });
 
   it('recovers from a wallet asset query failure when the user retries', async () => {
@@ -85,11 +91,21 @@ describe('Wallet transfer contract page', () => {
     installReadHandlers();
 
     renderWithProviders(<WalletTransferContractPage />);
-    await screen.findByLabelText('Transfer amount');
+    const amountInput = await screen.findByLabelText('Transfer amount');
 
     await userEvent.click(screen.getByRole('button', { name: 'Confirm transfer' }));
 
     expect(screen.getByRole('alert')).toHaveTextContent('Enter an amount greater than zero.');
+    expect(amountInput).toHaveAttribute('aria-invalid', 'true');
+    expect(amountInput).toHaveAttribute(
+      'aria-describedby',
+      'transfer-amount-helper transfer-amount-error',
+    );
+    expect(screen.getByRole('alert')).toHaveAttribute('id', 'transfer-amount-error');
+    expect(amountInput).toHaveFocus();
+    await userEvent.type(amountInput, '12.5');
+    expect(amountInput).toHaveAttribute('aria-invalid', 'false');
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
   });
 
   it('rejects transfers above the selected asset available balance', async () => {
@@ -111,6 +127,10 @@ describe('Wallet transfer contract page', () => {
       'The transfer amount exceeds the available balance.',
     );
     expect(transferRequests).toBe(0);
+    await userEvent.click(screen.getByRole('button', { name: /Max 75/ }));
+    expect(amountInput).toHaveValue(75);
+    expect(amountInput).toHaveAttribute('aria-invalid', 'false');
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
   });
 
   it('swaps wallet direction and submits the max available amount', async () => {
@@ -343,9 +363,15 @@ describe('Wallet transfer contract page', () => {
 
   it('shows a readable busy label while the transfer response is pending', async () => {
     installReadHandlers();
+    let requests = 0;
+    let release!: () => void;
+    const pendingResponse = new Promise<void>((resolve) => {
+      release = resolve;
+    });
     server.use(
       http.post('*/wallet/transfers', async () => {
-        await new Promise((resolve) => setTimeout(resolve, 100));
+        requests += 1;
+        await pendingResponse;
         return HttpResponse.json({
           id: 'transfer-inflight-1',
           fromWallet: 'spot',
@@ -360,12 +386,25 @@ describe('Wallet transfer contract page', () => {
 
     renderWithProviders(<WalletTransferContractPage />);
     await userEvent.type(await screen.findByLabelText('Transfer amount'), '12.5');
-    await userEvent.click(screen.getByRole('button', { name: 'Confirm transfer' }));
-
-    const submit = await screen.findByRole('button', { name: 'Submitting transfer…' });
-    expect(submit).toBeDisabled();
-    expect(submit).toHaveAttribute('aria-busy', 'true');
+    const submit = screen.getByRole('button', { name: 'Confirm transfer' });
+    act(() => {
+      fireEvent.click(submit);
+      fireEvent.click(submit);
+    });
+    try {
+      await waitFor(() => expect(requests).toBe(1));
+      expect(await screen.findByRole('button', { name: 'Submitting transfer…' })).toBeDisabled();
+      expect(submit).toHaveAttribute('aria-busy', 'true');
+      expect(screen.getByLabelText('Transfer amount')).toBeDisabled();
+      expect(screen.getByLabelText('From wallet')).toBeDisabled();
+      expect(screen.getByLabelText('To wallet')).toBeDisabled();
+      expect(screen.getByLabelText('Asset')).toBeDisabled();
+      expect(screen.getByRole('button', { name: 'Swap wallets' })).toBeDisabled();
+    } finally {
+      release();
+    }
     expect(await screen.findByRole('status')).toHaveTextContent('Transfer pending');
+    expect(requests).toBe(1);
   });
 
   it('surfaces API failure without pretending the transfer succeeded', async () => {
@@ -385,6 +424,12 @@ describe('Wallet transfer contract page', () => {
       expect(screen.getByRole('alert')).toHaveTextContent('could not be completed'),
     );
     expect(screen.queryByRole('status')).not.toBeInTheDocument();
+    expect(screen.getByLabelText('Transfer amount')).toHaveValue(12.5);
+    expect(screen.getByLabelText('Transfer amount')).toHaveAttribute('aria-invalid', 'false');
+    expect(screen.getByLabelText('Transfer amount')).toHaveAttribute(
+      'aria-describedby',
+      'transfer-amount-helper',
+    );
   });
 
   it('reuses the idempotency key when retrying the same transfer after a transient failure', async () => {

@@ -47,6 +47,32 @@ function renderOTP(state: unknown, overrides: Partial<AuthAdapter> = {}, pathnam
 }
 
 describe('OTPPage login MFA challenge', () => {
+  it('offers an explicit return to registration after a rate-limited registration verification', async () => {
+    const user = userEvent.setup();
+    const verifyMfa = vi.fn().mockRejectedValue(new ApiError('rate limited', { status: 429 }));
+    renderOTP(
+      {
+        purpose: 'register',
+        challengeId: 'registration-rate-limit',
+        channel: 'email',
+        maskedDestination: 'n***@example.com',
+        expiresAt: '2099-01-01T00:05:00.000Z',
+      },
+      { verifyMfa },
+      '/t/auth/otp',
+    );
+    for (const input of document.querySelectorAll<HTMLInputElement>(
+      'input[aria-label^="Ký tự OTP"]',
+    )) {
+      await user.type(input, '1');
+    }
+    expect(await screen.findByRole('alert')).toHaveTextContent('Quá nhiều lần xác thực.');
+    await user.click(screen.getByRole('button', { name: 'Quay lại đăng ký' }));
+
+    expect(screen.getByTestId('current-path')).toHaveTextContent('/t/auth/register');
+    expect(verifyMfa).toHaveBeenCalledTimes(1);
+  });
+
   it('verifies registration using only its server challenge ID and code', async () => {
     const user = userEvent.setup();
     const verifyMfa = vi.fn(async () => testAuthAdapter.initialSession!);
@@ -165,6 +191,22 @@ describe('OTPPage login MFA challenge', () => {
     await user.click(screen.getByRole('button', { name: 'Xác nhận' }));
 
     await waitFor(() => expect(verifyLoginMfa).toHaveBeenCalledTimes(2));
+  });
+
+  it('offers login recovery after a rate-limited login challenge', async () => {
+    const user = userEvent.setup();
+    const verifyLoginMfa = vi.fn().mockRejectedValue(new ApiError('rate limited', { status: 429 }));
+    renderOTP(challengeState, { verifyLoginMfa });
+
+    for (const input of document.querySelectorAll<HTMLInputElement>(
+      'input[aria-label^="Ký tự OTP"]',
+    )) {
+      await user.type(input, '1');
+    }
+    await user.click(await screen.findByRole('button', { name: 'Quay lại đăng nhập' }));
+
+    expect(screen.getByTestId('current-path')).toHaveTextContent('/auth/login');
+    expect(verifyLoginMfa).toHaveBeenCalledOnce();
   });
 
   it('sends a non-API verification error through the generic recovery state', async () => {

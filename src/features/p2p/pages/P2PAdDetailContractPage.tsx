@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { ErrorState } from '@/shared/ui/ErrorState';
 import { isApiError } from '@/shared/api/api-error';
@@ -6,6 +6,7 @@ import { Header } from '@/shared/ui/layout/Header';
 import { PageContent } from '@/shared/ui/layout/PageContent';
 import { PageLayout } from '@/shared/ui/layout/PageLayout';
 import { TrCard } from '@/shared/ui/TrCard';
+import { BottomSheetV2 } from '@/shared/ui/BottomSheetV2';
 import { useRoutePrefix } from '@/shared/navigation/useRoutePrefix';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { useAuth } from '@/shared/session/useAuth';
@@ -25,6 +26,8 @@ export function P2PAdDetailContractPage() {
   const [selectedPayment, setSelectedPayment] = useState('');
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const createInFlight = useRef(false);
+  const orderAttempts = useRef(new Map<string, string>());
 
   const ad = adQuery.data;
   const paymentMethod = selectedPayment || ad?.paymentMethods[0] || '';
@@ -32,15 +35,18 @@ export function P2PAdDetailContractPage() {
   const cryptoAmount = ad ? numericFiatAmount / ad.price : 0;
   const validationMessage = useMemo(() => {
     if (!ad || !fiatAmount) return 'Nhập số tiền muốn giao dịch.';
-    if (numericFiatAmount <= 0) {
+    if (!Number.isFinite(numericFiatAmount) || numericFiatAmount <= 0) {
       return 'Số tiền phải lớn hơn 0.';
     }
     if (numericFiatAmount < ad.minLimit)
       return `Tối thiểu ${formatMoney(ad.minLimit)} ${ad.currency}.`;
     if (numericFiatAmount > ad.maxLimit)
       return `Tối đa ${formatMoney(ad.maxLimit)} ${ad.currency}.`;
+    if (ad.status !== 'active' || !Number.isFinite(cryptoAmount) || cryptoAmount <= 0)
+      return 'Offer không còn khả dụng. Hãy kiểm tra quảng cáo trước khi tạo đơn.';
     if (cryptoAmount > ad.available) return `Chỉ còn ${ad.available} ${ad.asset} khả dụng.`;
-    if (!paymentMethod) return 'Chọn phương thức thanh toán.';
+    if (!paymentMethod || !ad.paymentMethods.includes(paymentMethod))
+      return 'Chọn phương thức thanh toán.';
     return null;
   }, [ad, cryptoAmount, fiatAmount, numericFiatAmount, paymentMethod]);
 
@@ -66,19 +72,23 @@ export function P2PAdDetailContractPage() {
 
   const canReview = validationMessage === null;
   const submitOrder = async () => {
+    if (!canCreateOrder || !canReview || createInFlight.current) return;
+    createInFlight.current = true;
+    const request = {
+      adId: ad.id,
+      asset: ad.asset,
+      currency: ad.currency,
+      amount: cryptoAmount,
+      fiatAmount: numericFiatAmount,
+      paymentMethod,
+    };
+    const signature = JSON.stringify(request);
+    const key = orderAttempts.current.get(signature) ?? `p2p-ad-order-${crypto.randomUUID()}`;
+    orderAttempts.current.set(signature, key);
     try {
-      const receipt = await orderMutation.mutateAsync({
-        request: {
-          adId: ad.id,
-          asset: ad.asset,
-          currency: ad.currency,
-          amount: cryptoAmount,
-          fiatAmount: numericFiatAmount,
-          paymentMethod,
-        },
-        idempotencyKey: `p2p-ad-order-${crypto.randomUUID()}`,
-      });
-      navigate(`${prefix}/p2p/order/${receipt.orderId}`, { replace: true });
+      const receipt = await orderMutation.mutateAsync({ request, idempotencyKey: key });
+      orderAttempts.current.delete(signature);
+      navigate(`${prefix}/p2p/order/${encodeURIComponent(receipt.orderId)}`, { replace: true });
     } catch (error) {
       if (isApiError(error) && error.status === 409) {
         setErrorMessage(
@@ -88,6 +98,8 @@ export function P2PAdDetailContractPage() {
         return;
       }
       setErrorMessage('Không thể tạo đơn P2P. Vui lòng thử lại.');
+    } finally {
+      createInFlight.current = false;
     }
   };
 
@@ -104,7 +116,11 @@ export function P2PAdDetailContractPage() {
                 tất
               </p>
             </div>
-            <strong style={{ color: ad.type === 'sell' ? '#10B981' : '#EF4444' }}>
+            <strong
+              style={{
+                color: ad.type === 'sell' ? 'var(--tr-success-text)' : 'var(--tr-error-text)',
+              }}
+            >
               {ad.type === 'sell' ? 'Mua' : 'Bán'} {ad.asset}
             </strong>
           </div>
@@ -121,6 +137,7 @@ export function P2PAdDetailContractPage() {
             Số tiền thanh toán ({ad.currency})
             <input
               aria-label="Fiat amount"
+              disabled={orderMutation.isPending}
               inputMode="decimal"
               type="number"
               min="0"
@@ -141,11 +158,12 @@ export function P2PAdDetailContractPage() {
                 key={method}
                 type="button"
                 aria-pressed={paymentMethod === method}
+                disabled={orderMutation.isPending}
                 onClick={() => setSelectedPayment(method)}
                 className="rounded-lg px-3 py-2 text-xs"
                 style={{
                   background: paymentMethod === method ? colors.primary : colors.surface2,
-                  color: paymentMethod === method ? '#fff' : colors.text2,
+                  color: paymentMethod === method ? 'var(--tr-text-on-color)' : colors.text2,
                 }}
               >
                 {method}
@@ -153,17 +171,17 @@ export function P2PAdDetailContractPage() {
             ))}
           </div>
           {validationMessage && (
-            <p role="alert" className="mt-3 text-xs" style={{ color: '#EF4444' }}>
+            <p role="alert" className="mt-3 text-xs" style={{ color: 'var(--tr-error-text)' }}>
               {validationMessage}
             </p>
           )}
-          {errorMessage && (
-            <p role="alert" className="mt-3 text-xs" style={{ color: '#EF4444' }}>
+          {errorMessage && !confirmOpen && (
+            <p role="alert" className="mt-3 text-xs" style={{ color: 'var(--tr-error-text)' }}>
               {errorMessage}
             </p>
           )}
           {!canCreateOrder && (
-            <p role="alert" className="mt-3 text-xs" style={{ color: '#EF4444' }}>
+            <p role="alert" className="mt-3 text-xs" style={{ color: 'var(--tr-error-text)' }}>
               P2P order write permission is required to create an order.
             </p>
           )}
@@ -176,7 +194,7 @@ export function P2PAdDetailContractPage() {
           className="w-full rounded-xl py-3 font-semibold"
           style={{
             background: canCreateOrder && canReview ? colors.primary : colors.surface2,
-            color: canCreateOrder && canReview ? '#fff' : colors.text3,
+            color: canCreateOrder && canReview ? 'var(--tr-text-on-color)' : colors.text3,
           }}
         >
           Xem xác nhận đơn P2P
@@ -184,39 +202,45 @@ export function P2PAdDetailContractPage() {
       </PageContent>
 
       {confirmOpen && (
-        <div
-          className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 p-4"
-          role="dialog"
-          aria-modal="true"
+        <BottomSheetV2
+          showCloseButton={false}
+          showHandle={false}
+          open
+          title="Xác nhận đơn P2P"
+          onClose={() => setConfirmOpen(false)}
+          preventClose={orderMutation.isPending}
         >
-          <div className="w-full max-w-lg rounded-2xl p-5" style={{ background: colors.surface }}>
-            <h2 style={{ color: colors.text1, fontWeight: 700 }}>Xác nhận đơn P2P</h2>
-            <p className="mt-2 text-sm" style={{ color: colors.text2 }}>
-              {formatMoney(numericFiatAmount)} {ad.currency} qua {paymentMethod} để nhận{' '}
-              {cryptoAmount.toFixed(6)} {ad.asset}.
+          <p className="text-sm" style={{ color: colors.text2 }}>
+            {formatMoney(numericFiatAmount)} {ad.currency} qua {paymentMethod} để nhận{' '}
+            {cryptoAmount.toFixed(6)} {ad.asset}.
+          </p>
+          {errorMessage && (
+            <p role="alert" className="mt-3 text-xs" style={{ color: 'var(--tr-error-text)' }}>
+              {errorMessage}
             </p>
-            <div className="mt-4 flex gap-2">
-              <button
-                type="button"
-                onClick={() => setConfirmOpen(false)}
-                className="flex-1 rounded-lg px-3 py-2 text-sm"
-                style={{ background: colors.surface2, color: colors.text2 }}
-              >
-                Hủy
-              </button>
-              <button
-                type="button"
-                aria-label="Confirm P2P order"
-                onClick={() => void submitOrder()}
-                disabled={!canCreateOrder || !canReview || orderMutation.isPending}
-                className="flex-1 rounded-lg px-3 py-2 text-sm font-semibold"
-                style={{ background: colors.primary, color: '#fff' }}
-              >
-                {orderMutation.isPending ? 'Đang tạo…' : 'Xác nhận đơn'}
-              </button>
-            </div>
+          )}
+          <div className="mt-4 flex gap-2">
+            <button
+              type="button"
+              disabled={orderMutation.isPending}
+              onClick={() => setConfirmOpen(false)}
+              className="flex-1 rounded-lg px-3 py-2 text-sm"
+              style={{ background: colors.surface2, color: colors.text2 }}
+            >
+              Hủy
+            </button>
+            <button
+              type="button"
+              aria-label="Confirm P2P order"
+              onClick={() => void submitOrder()}
+              disabled={!canCreateOrder || !canReview || orderMutation.isPending}
+              className="flex-1 rounded-lg px-3 py-2 text-sm font-semibold"
+              style={{ background: colors.primary, color: 'var(--tr-text-on-color)' }}
+            >
+              {orderMutation.isPending ? 'Đang tạo…' : 'Xác nhận đơn'}
+            </button>
           </div>
-        </div>
+        </BottomSheetV2>
       )}
     </PageLayout>
   );

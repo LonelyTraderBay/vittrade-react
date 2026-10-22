@@ -13,6 +13,7 @@ import { Header } from '@/shared/ui/layout/Header';
 import { PageContent } from '@/shared/ui/layout/PageContent';
 import { PageLayout } from '@/shared/ui/layout/PageLayout';
 import { TrCard } from '@/shared/ui/TrCard';
+import { FilterButton } from '@/shared/ui/FilterButton';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { useRoutePrefix } from '@/shared/navigation/useRoutePrefix';
 import { useP2POrdersQuery } from '../model/p2p-order-queries';
@@ -109,25 +110,27 @@ export function P2POrdersContractPage() {
       <PageContent gap="default">
         <div className="grid grid-cols-3 gap-2">
           <Summary label="Total orders" value={orders.length.toString()} color={colors.text1} />
-          <Summary label="Completed" value={completedCount.toString()} color="#10B981" />
-          <Summary label="Completed volume" value={formatFiat(completedVolume)} color="#3B82F6" />
+          <Summary
+            label="Completed"
+            value={completedCount.toString()}
+            color="var(--tr-success-text)"
+          />
+          <Summary
+            label="Completed volume"
+            value={formatFiat(completedVolume)}
+            color="var(--tr-link)"
+          />
         </div>
 
         <TrCard className="p-3">
-          <div className="flex flex-wrap gap-2">
+          <div role="group" aria-label="Order status" className="flex flex-wrap gap-2">
             {TABS.map((item) => (
-              <button
+              <FilterButton
                 key={item.id}
-                type="button"
+                selected={tab === item.id}
+                label={item.label}
                 onClick={() => setTab(item.id)}
-                className="rounded-lg px-3 py-2 text-xs font-semibold"
-                style={{
-                  background: tab === item.id ? `${colors.primary}20` : colors.surface2,
-                  color: tab === item.id ? colors.primary : colors.text3,
-                }}
-              >
-                {item.label}
-              </button>
+              />
             ))}
           </div>
           <div className="mt-3 flex gap-2">
@@ -182,7 +185,7 @@ export function P2POrdersContractPage() {
               <OrderCard
                 key={order.id}
                 order={order}
-                onClick={() => navigate(`${shellPrefix}/p2p/order/${order.id}`)}
+                onClick={() => navigate(`${shellPrefix}/p2p/order/${encodeURIComponent(order.id)}`)}
               />
             ))}
           </div>
@@ -205,7 +208,7 @@ function OrderCard({ order, onClick }: { order: P2POrder; onClick: () => void })
             className="rounded-md px-2 py-1 text-[10px] font-bold"
             style={{
               background: `${isBuy ? '#10B981' : '#EF4444'}20`,
-              color: isBuy ? '#10B981' : '#EF4444',
+              color: isBuy ? 'var(--tr-success-text)' : 'var(--tr-error-text)',
             }}
           >
             {isBuy ? 'BUY' : 'SELL'}
@@ -257,11 +260,13 @@ function matchesTab(status: P2POrderStatus, tab: TabId) {
 
 function orderStatus(status: P2POrderStatus) {
   if (status === 'pending_payment')
-    return { label: 'Pending payment', color: '#F59E0B', icon: Clock };
-  if (status === 'paid') return { label: 'Paid', color: '#3B82F6', icon: ArrowUpRight };
-  if (status === 'released') return { label: 'Released', color: '#10B981', icon: ArrowDownLeft };
-  if (status === 'disputed') return { label: 'Disputed', color: '#EF4444', icon: ShieldAlert };
-  return { label: status, color: '#8B95B3', icon: Clock };
+    return { label: 'Pending payment', color: 'var(--tr-warning-text)', icon: Clock };
+  if (status === 'paid') return { label: 'Paid', color: 'var(--tr-info)', icon: ArrowUpRight };
+  if (status === 'released')
+    return { label: 'Released', color: 'var(--tr-success-text)', icon: ArrowDownLeft };
+  if (status === 'disputed')
+    return { label: 'Disputed', color: 'var(--tr-error-text)', icon: ShieldAlert };
+  return { label: status, color: 'var(--tr-text-2)', icon: Clock };
 }
 
 function formatFiat(value: number, currency = 'VND') {

@@ -17,21 +17,51 @@ const session = {
   accessToken: 'registration-e2e-memory-token',
 };
 
-async function isFullyVisibleHorizontally(element: Locator): Promise<boolean> {
+async function measureHorizontalVisibility(element: Locator) {
   return element.evaluate((node) => {
     const visibleBounds = {
       left: 0,
       right: document.documentElement.clientWidth,
     };
+    const clippingAncestors: Array<{
+      tagName: string;
+      className: string;
+      overflowX: string;
+      left: number;
+      right: number;
+    }> = [];
     for (let ancestor = node.parentElement; ancestor; ancestor = ancestor.parentElement) {
-      if (getComputedStyle(ancestor).overflowX === 'visible') continue;
+      const overflowX = getComputedStyle(ancestor).overflowX;
+      if (overflowX === 'visible') continue;
       const bounds = ancestor.getBoundingClientRect();
       visibleBounds.left = Math.max(visibleBounds.left, bounds.left);
       visibleBounds.right = Math.min(visibleBounds.right, bounds.right);
+      clippingAncestors.push({
+        tagName: ancestor.tagName.toLowerCase(),
+        className: String(ancestor.className),
+        overflowX,
+        left: bounds.left,
+        right: bounds.right,
+      });
     }
     const bounds = node.getBoundingClientRect();
-    return bounds.left >= visibleBounds.left && bounds.right <= visibleBounds.right;
+    return {
+      visible: bounds.left >= visibleBounds.left && bounds.right <= visibleBounds.right,
+      element: {
+        tagName: node.tagName.toLowerCase(),
+        className: String(node.className),
+        left: bounds.left,
+        right: bounds.right,
+        width: bounds.width,
+      },
+      visibleBounds,
+      clippingAncestors,
+    };
   });
+}
+
+async function isFullyVisibleHorizontally(element: Locator): Promise<boolean> {
+  return (await measureHorizontalVisibility(element)).visible;
 }
 
 test.beforeEach(({ baseURL }) => {
@@ -892,24 +922,58 @@ test('supports accessible keyboard registration across Web widths @auth-api', as
     const terms = page.getByRole('checkbox');
     const submit = page.getByRole('button', { name: 'Tiếp tục' });
     const login = page.getByRole('button', { name: 'Đăng nhập' });
-    const primaryControls = [channelGroup, name, email, password, confirmation, terms, submit];
+    const primaryControls = [
+      { name: 'registration channel group', locator: channelGroup },
+      { name: 'full name', locator: name },
+      { name: 'email', locator: email },
+      { name: 'password', locator: password },
+      { name: 'password confirmation', locator: confirmation },
+      { name: 'terms checkbox', locator: terms },
+      { name: 'continue action', locator: submit },
+    ];
 
     await expect(emailChannel).toHaveAttribute('aria-pressed', 'true');
     await expect(phoneChannel).toHaveAttribute('aria-pressed', 'false');
-    const document = await page.evaluate(() => ({
+    const documentMetrics = await page.evaluate(() => ({
       width: document.documentElement.clientWidth,
       scrollWidth: document.documentElement.scrollWidth,
     }));
-    const visible = await Promise.all(
-      primaryControls.map((control) => isFullyVisibleHorizontally(control)),
+    const formBounds = await page.locator('form').evaluate((form) => {
+      const bounds = form.getBoundingClientRect();
+      return { left: bounds.left, right: bounds.right };
+    });
+    const visibility = await Promise.all(
+      primaryControls.map(({ locator }) => measureHorizontalVisibility(locator)),
+    );
+    const controlBounds = primaryControls.map(({ name }, index) => {
+      const { left, right, width } = visibility[index].element;
+      return {
+        name,
+        left,
+        right,
+        width,
+        withinForm: left >= formBounds.left && right <= formBounds.right,
+      };
+    });
+    expect(
+      documentMetrics.scrollWidth,
+      `Web registration overflows at ${viewport.width}px`,
+    ).toBeLessThanOrEqual(documentMetrics.width);
+    const clippedControls = primaryControls
+      .filter((_, index) => !visibility[index].visible)
+      .map(({ name: controlName }) => controlName);
+    const clippingDiagnostics = primaryControls.flatMap(({ name }, index) =>
+      visibility[index].visible ? [] : [{ name, ...visibility[index] }],
     );
     expect(
-      document.scrollWidth,
-      `Web registration overflows at ${viewport.width}px`,
-    ).toBeLessThanOrEqual(document.width);
-    expect(visible, `Web registration controls clip at ${viewport.width}px`).toEqual(
-      primaryControls.map(() => true),
-    );
+      clippedControls,
+      `Web registration controls clip at ${viewport.width}px: ${clippedControls.join(', ') || 'none'}; geometry=${JSON.stringify(clippingDiagnostics)}`,
+    ).toEqual([]);
+    const formOverflow = controlBounds.filter(({ withinForm }) => !withinForm);
+    expect(
+      formOverflow,
+      `Web registration controls escape the form content at ${viewport.width}px: ${JSON.stringify(formOverflow)}`,
+    ).toEqual([]);
 
     if (viewport.width === 320 || viewport.width === 1440) {
       const screenshotPath = testInfo.outputPath(
@@ -942,8 +1006,10 @@ test('supports accessible keyboard registration across Web widths @auth-api', as
     measurements.push({
       route: '/w/auth/register',
       viewport,
-      document,
-      clippedPrimaryControlCount: visible.filter((isVisible) => !isVisible).length,
+      document: documentMetrics,
+      formBounds,
+      primaryControlBounds: controlBounds,
+      clippedPrimaryControlCount: visibility.filter((measurement) => !measurement.visible).length,
       focusOrder: expectedTabOrder,
       selectedChannel: 'email',
     });
@@ -1092,7 +1158,7 @@ test('opens Web auth success without route state using neutral recovery @auth-ap
         opacity: string;
         visibility: string;
       }> = [];
-      let current: HTMLElement | null = element;
+      let current: Element | null = element;
       while (current) {
         const style = window.getComputedStyle(current);
         chain.push({
@@ -1130,7 +1196,7 @@ test('opens Web auth success without route state using neutral recovery @auth-ap
       await page.evaluate(
         () =>
           new Promise<void>((resolve) =>
-            requestAnimationFrame(() => requestAnimationFrame(resolve)),
+            requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
           ),
       );
       const screenshotPath = testInfo.outputPath(`web-auth-success-neutral-${width}x900.png`);
@@ -1179,7 +1245,7 @@ test('Web auth-success neutral recovery has no Axe violations in both themes @au
       await page.evaluate(
         () =>
           new Promise<void>((resolve) =>
-            requestAnimationFrame(() => requestAnimationFrame(resolve)),
+            requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
           ),
       );
       const supportLink = page.getByRole('button', {
@@ -2533,7 +2599,7 @@ test('exposes Web login fields accessibly without horizontal clipping @auth-api'
     await expect(password).toHaveAccessibleName('Mật khẩu');
     await expect(submit).toBeVisible();
 
-    const document = await page.evaluate(() => ({
+    const documentMetrics = await page.evaluate(() => ({
       viewportWidth: document.documentElement.clientWidth,
       documentWidth: document.documentElement.scrollWidth,
     }));
@@ -2542,8 +2608,8 @@ test('exposes Web login fields accessibly without horizontal clipping @auth-api'
       password: await isFullyVisibleHorizontally(password),
       submit: await isFullyVisibleHorizontally(submit),
     };
-    expect(document.documentWidth, `Web login overflows at ${width}px`).toBeLessThanOrEqual(
-      document.viewportWidth,
+    expect(documentMetrics.documentWidth, `Web login overflows at ${width}px`).toBeLessThanOrEqual(
+      documentMetrics.viewportWidth,
     );
     expect(visible, `Web login controls are clipped at ${width}px`).toEqual({
       email: true,
@@ -2552,9 +2618,9 @@ test('exposes Web login fields accessibly without horizontal clipping @auth-api'
     });
     measurements.push({
       path: '/w/auth/login',
-      viewportWidth: width,
+
       viewportHeight: 900,
-      ...document,
+      ...documentMetrics,
       visible,
     });
 
@@ -3201,7 +3267,7 @@ test('renders the shared account-locked route without clipping across Auth shell
       measurements.push({
         shell: shell.name,
         path,
-        viewportWidth: width,
+
         ...layout,
         verticalAccess,
       });
@@ -3453,7 +3519,7 @@ test('opens the Web session-expired route and returns to login at responsive wid
 
     measurements.push({
       route: '/w/auth/session-expired',
-      viewportWidth: width,
+
       viewportHeight: 900,
       initialFocus,
       firstTabTarget: 'Đăng nhập lại',
@@ -3510,15 +3576,21 @@ test('Web session-expired recovery has no serious or critical axe violations @au
       const supportCopy = page.getByText('Liên hệ hỗ trợ', { exact: true });
       await expect
         .poll(() => supportCopy.evaluate((element) => getComputedStyle(element).color))
-        .toBe(theme === 'dark' ? 'rgb(167, 175, 191)' : 'rgb(107, 114, 128)');
-      const colorState = await supportCopy.evaluate((element) => ({
-        rootClasses: document.documentElement.className,
-        text2Token: getComputedStyle(document.documentElement)
-          .getPropertyValue('--tr-text-2')
-          .trim(),
-        foreground: getComputedStyle(element).color,
-        background: getComputedStyle(document.querySelector('.h-full > .flex')!).backgroundColor,
-      }));
+        .toBe(theme === 'dark' ? 'rgb(167, 175, 191)' : 'rgb(52, 64, 84)');
+      const colorState = await supportCopy.evaluate((element) => {
+        const shell = element.closest('[data-platform="web"]');
+        if (!shell) throw new Error('Web auth shell is missing');
+        return {
+          rootClasses: document.documentElement.className,
+          text2Token: getComputedStyle(document.documentElement)
+            .getPropertyValue('--tr-text-2')
+            .trim(),
+          foreground: getComputedStyle(element).color,
+          // WebShell and this page both use c.bg; measure the public shell owner,
+          // independently of its scroller's utility classes or preview host.
+          background: getComputedStyle(shell).backgroundColor,
+        };
+      });
 
       for (const state of ['help-collapsed', 'help-expanded'] as const) {
         if (state === 'help-expanded') {
@@ -3718,7 +3790,7 @@ test('renders the Web account-locked route without clipping and supports recover
 
     measurements.push({
       route: '/w/auth/account-locked',
-      viewportWidth: width,
+
       viewportHeight: 900,
       ...layout,
       clippedItems,
@@ -3887,14 +3959,14 @@ test('Web account-locked page has no axe violations in both themes @auth-api', a
       await page.evaluate(
         () =>
           new Promise<void>((resolve) =>
-            requestAnimationFrame(() => requestAnimationFrame(resolve)),
+            requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
           ),
       );
 
       const statusText = page.getByRole('status').locator('p');
       await expect
         .poll(() => statusText.evaluate((element) => getComputedStyle(element).color))
-        .toBe(theme === 'dark' ? 'rgb(167, 175, 191)' : 'rgb(107, 114, 128)');
+        .toBe(theme === 'dark' ? 'rgb(167, 175, 191)' : 'rgb(52, 64, 84)');
       const resetButton = page.getByRole('button', {
         name: 'Không phải bạn? Đặt lại mật khẩu',
       });

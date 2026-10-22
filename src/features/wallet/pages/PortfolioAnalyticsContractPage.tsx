@@ -5,6 +5,7 @@ import { Header } from '@/shared/ui/layout/Header';
 import { PageContent } from '@/shared/ui/layout/PageContent';
 import { PageLayout } from '@/shared/ui/layout/PageLayout';
 import { TrCard } from '@/shared/ui/TrCard';
+import { FilterButton } from '@/shared/ui/FilterButton';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { useAuth } from '@/shared/session/useAuth';
 import { useWalletPortfolioAnalyticsQuery } from '../model/wallet-queries';
@@ -28,7 +29,7 @@ export function PortfolioAnalyticsContractPage() {
       <PageLayout>
         <Header title="Portfolio Analytics" subtitle="Wallet performance contract" back />
         <PageContent>
-          <p role="alert" style={{ color: colors.error }}>
+          <p role="alert" style={{ color: colors.errorText }}>
             Wallet read permission is required to view portfolio analytics.
           </p>
         </PageContent>
@@ -36,55 +37,50 @@ export function PortfolioAnalyticsContractPage() {
     );
   }
 
-  if (query.isPending) {
-    return (
-      <PageLayout>
-        <Header title="Portfolio Analytics" subtitle="Wallet performance contract" back />
-        <PageContent>
-          <p style={{ color: colors.text2 }}>Loading portfolio analytics API…</p>
-        </PageContent>
-      </PageLayout>
-    );
-  }
-
-  if (query.isError || !query.data) return <ErrorState onAction={() => void query.refetch()} />;
-
   return (
     <PageLayout>
       <Header title="Portfolio Analytics" subtitle="Server-owned wallet performance" back />
       <PageContent gap="default">
-        <div className="flex gap-2 overflow-x-auto" aria-label="Analytics period">
+        <div role="group" className="flex flex-wrap gap-2" aria-label="Analytics period">
           {PERIODS.map((value) => (
-            <button
+            <FilterButton
               key={value}
-              type="button"
+              selected={period === value}
+              label={value}
               onClick={() => setPeriod(value)}
-              className="rounded-full px-4 py-2 text-xs font-semibold"
-              style={{
-                background: period === value ? colors.primary : colors.surface2,
-                color: period === value ? '#fff' : colors.text2,
-              }}
-            >
-              {value}
-            </button>
+            />
           ))}
         </div>
 
-        <SummaryCard data={query.data} />
-        <HistoryCard data={query.data} />
-        <MonthlyPnlCard data={query.data} />
-        <PerformersCard
-          title="Top performers"
-          icon={<TrendingUp size={17} color="#10B981" />}
-          performers={query.data.topPerformers}
-          positive
-        />
-        <PerformersCard
-          title="Worst performers"
-          icon={<TrendingDown size={17} color="#EF4444" />}
-          performers={query.data.worstPerformers}
-          positive={false}
-        />
+        <section aria-label="Portfolio analytics results" className="flex flex-col gap-4">
+          {query.isPending ? (
+            <p role="status" style={{ color: colors.text2 }}>
+              Loading portfolio analytics API…
+            </p>
+          ) : query.isError || !query.data ? (
+            <div role="alert">
+              <ErrorState onAction={() => void query.refetch()} />
+            </div>
+          ) : (
+            <>
+              <SummaryCard data={query.data} />
+              <HistoryCard data={query.data} />
+              <MonthlyPnlCard data={query.data} />
+              <PerformersCard
+                title="Top performers"
+                icon={<TrendingUp size={17} color="var(--tr-success-text)" />}
+                performers={query.data.topPerformers}
+                positive
+              />
+              <PerformersCard
+                title="Worst performers"
+                icon={<TrendingDown size={17} color="var(--tr-error-text)" />}
+                performers={query.data.worstPerformers}
+                positive={false}
+              />
+            </>
+          )}
+        </section>
       </PageContent>
     </PageLayout>
   );
@@ -178,7 +174,10 @@ function MonthlyPnlCard({ data }: { data: PortfolioAnalyticsResponse }) {
                   }}
                 />
               </div>
-              <span className="text-right" style={{ color: positive ? '#10B981' : '#EF4444' }}>
+              <span
+                className="text-right"
+                style={{ color: positive ? 'var(--tr-success-text)' : 'var(--tr-error-text)' }}
+              >
                 {formatUsd(month.pnl)}
               </span>
             </div>
@@ -230,7 +229,12 @@ function PerformersCard({
                 <p style={{ color: colors.text3, fontSize: 10 }}>{performer.name}</p>
               </div>
               <div className="text-right">
-                <strong style={{ color: positive ? '#10B981' : '#EF4444', fontSize: 12 }}>
+                <strong
+                  style={{
+                    color: positive ? 'var(--tr-success-text)' : 'var(--tr-error-text)',
+                    fontSize: 12,
+                  }}
+                >
                   {formatPercent(performer.change)}
                 </strong>
                 <p style={{ color: colors.text3, fontSize: 10 }}>
@@ -252,7 +256,12 @@ function Metric({ label, value, positive }: { label: string; value: string; posi
       <p style={{ color: colors.text3, fontSize: 10 }}>{label}</p>
       <strong
         style={{
-          color: positive == null ? colors.text1 : positive ? '#10B981' : '#EF4444',
+          color:
+            positive == null
+              ? colors.text1
+              : positive
+                ? 'var(--tr-success-text)'
+                : 'var(--tr-error-text)',
           fontSize: 13,
         }}
       >

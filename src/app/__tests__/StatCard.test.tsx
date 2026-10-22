@@ -15,6 +15,14 @@ import { StatCard, StatItem, StatGrid, PercentageStat, type StatSize } from '@/s
 import { Wallet, TrendingUp } from 'lucide-react';
 
 describe('StatCard', () => {
+  it.each(['up', 'down'] as const)('renders the compact %s indicator', (trend) => {
+    const { container } = renderWithProviders(
+      <StatItem label="Change" value="1%" trend={trend} compact />,
+    );
+    expect(container.querySelector('svg')).toHaveAttribute('width', '12');
+    expect(screen.getByText('1%')).toHaveStyle({ color: trend === 'up' ? '#10B981' : '#EF4444' });
+  });
+
   describe('Rendering', () => {
     it('should render label and value', () => {
       renderWithProviders(<StatCard label="Tổng giá trị" value="$1,234.56" />);

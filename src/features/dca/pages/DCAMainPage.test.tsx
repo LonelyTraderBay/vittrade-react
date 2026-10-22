@@ -7,7 +7,7 @@ import userEvent from '@testing-library/user-event';
 import { renderWithProviders } from '@/test/test-utils';
 import { testAuthAdapter } from '@/test/auth-test-adapter';
 import type { AuthAdapter } from '@/shared/session/AuthContext';
-import type { DCASnapshot } from '../model/dca-types';
+import type { CreateDCAPlanRequest, DCASnapshot } from '../model/dca-types';
 import { DCAMainPage } from './DCAMainPage';
 
 const server = setupServer();
@@ -465,18 +465,24 @@ describe('DCA feature page', () => {
     expect(analytics.trackPlanDeletion).toHaveBeenCalledWith('plan-1', 'user_initiated');
   });
 
-  it('reuses the create idempotency key when retrying unchanged form data', async () => {
+  it('retains a non-default create intent and key after transport failure', async () => {
     const idempotencyKeys: string[] = [];
+    const bodies: CreateDCAPlanRequest[] = [];
     let createRequests = 0;
     server.use(
       http.get('*/dca/snapshot', () => HttpResponse.json(snapshot)),
-      http.post('*/dca/plans', ({ request }) => {
+      http.post('*/dca/plans', async ({ request }) => {
+        const body = (await request.json()) as CreateDCAPlanRequest;
+        bodies.push(body);
         createRequests += 1;
         idempotencyKeys.push(request.headers.get('Idempotency-Key') ?? '');
         if (createRequests === 1) {
-          return HttpResponse.json({ message: 'Temporarily unavailable' }, { status: 503 });
+          return HttpResponse.error();
         }
-        return HttpResponse.json({ ...snapshot.plans[0], id: 'plan-created-1' }, { status: 201 });
+        return HttpResponse.json(
+          { ...snapshot.plans[0], ...body, id: 'plan-created-1' },
+          { status: 201 },
+        );
       }),
     );
     const user = userEvent.setup();
@@ -496,15 +502,33 @@ describe('DCA feature page', () => {
     );
 
     await user.click(await screen.findByRole('button', { name: 'Tạo kế hoạch mới' }));
+    await user.click(screen.getByRole('button', { name: /Solana/ }));
+    await user.click(screen.getByRole('button', { name: 'Hàng ngày' }));
+    const amount = screen.getByPlaceholderText('500.000');
+    await user.clear(amount);
+    await user.type(amount, '1234567');
     const submitButton = await screen.findByRole('button', { name: 'Tạo Kế Hoạch' });
     await user.click(submitButton);
     await waitFor(() => expect(createRequests).toBe(1));
     await waitFor(() => expect(submitButton).toBeEnabled());
+    expect(amount).toHaveValue('1234567');
+    expect(screen.getByRole('alert')).toHaveTextContent(
+      'Chưa nhận được xác nhận tạo kế hoạch. Dữ liệu đã được giữ nguyên.',
+    );
     await user.click(submitButton);
 
     await waitFor(() => expect(createRequests).toBe(2));
     expect(idempotencyKeys[0]).toEqual(expect.any(String));
     expect(idempotencyKeys[1]).toBe(idempotencyKeys[0]);
+    expect(bodies).toEqual([
+      { coinSymbol: 'SOL', frequency: 'daily', amountPerPurchase: 1234567 },
+      { coinSymbol: 'SOL', frequency: 'daily', amountPerPurchase: 1234567 },
+    ]);
+    await waitFor(() =>
+      expect(
+        screen.queryByRole('dialog', { name: 'Tạo Kế Hoạch DCA Mới' }),
+      ).not.toBeInTheDocument(),
+    );
   });
 
   it('keeps DCA plans readable while disabling mutations without dca:write', async () => {

@@ -183,7 +183,7 @@ describe('Launchpad contract pages', () => {
 
     renderWithProviders(<LaunchpadContractPage />);
 
-    expect(await screen.findByText('Có lỗi xảy ra')).toBeInTheDocument();
+    expect(await screen.findByText('Không thể tải dự án Launchpad')).toBeInTheDocument();
     await waitFor(() => expect(requestCount).toBe(3));
     expect(screen.getByRole('button', { name: 'Thử lại' })).toBeInTheDocument();
     expect(screen.queryByText('NexaAI Protocol')).not.toBeInTheDocument();
@@ -191,7 +191,7 @@ describe('Launchpad contract pages', () => {
 
     await screen.getByRole('button', { name: 'Thử lại' }).click();
     await waitFor(() => expect(requestCount).toBe(6));
-    expect(screen.getByText('Có lỗi xảy ra')).toBeInTheDocument();
+    expect(screen.getByText('Không thể tải dự án Launchpad')).toBeInTheDocument();
     expect(screen.queryByText('NexaAI Protocol')).not.toBeInTheDocument();
     expect(screen.queryByText('Không có dự án phù hợp.')).not.toBeInTheDocument();
   });

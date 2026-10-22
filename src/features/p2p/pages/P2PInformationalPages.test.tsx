@@ -2,7 +2,7 @@ import type { ComponentType } from 'react';
 import { useLocation } from 'react-router';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { toast } from 'sonner';
-import { renderWithProviders, screen, userEvent } from '@/test/test-utils';
+import { renderWithProviders, screen, userEvent, within } from '@/test/test-utils';
 import { P2PFraudPreventionPage } from './P2PFraudPreventionPage';
 import { P2PGuidePage } from './P2PGuidePage';
 
@@ -50,33 +50,38 @@ describe('P2P informational pages', () => {
     const user = userEvent.setup();
     renderPage(P2PFraudPreventionPage, '/p2p/fraud-prevention');
 
+    // Limit accessible-name queries to the real checklist card, not unrelated scam guidance.
+    const card = screen.getByText('Checklist an toàn').closest('[data-slot="tr-card"]');
+    expect(card).not.toBeNull();
+    const checklist = within(card as HTMLElement);
+
     expect(screen.getByText('6/10 biện pháp bảo vệ đã áp dụng')).toBeInTheDocument();
-    await user.click(screen.getByRole('button', { name: /2FA đã bật/ }));
+    await user.click(checklist.getByRole('button', { name: /2FA đã bật/ }));
     expect(screen.getByText('5/10 biện pháp bảo vệ đã áp dụng')).toBeInTheDocument();
-    await user.click(screen.getByRole('button', { name: /Kiểm tra rating đối tác/ }));
+    await user.click(checklist.getByRole('button', { name: /Kiểm tra rating đối tác/ }));
     expect(screen.getByText('4/10 biện pháp bảo vệ đã áp dụng')).toBeInTheDocument();
 
-    await user.click(screen.getByRole('button', { name: /2FA đã bật/ }));
-    await user.click(screen.getByRole('button', { name: /Kiểm tra rating đối tác/ }));
-    await user.click(screen.getByRole('button', { name: /Anti-Phishing Code đã thiết lập/ }));
-    await user.click(screen.getByRole('button', { name: /Trong giao dịch/ }));
+    await user.click(checklist.getByRole('button', { name: /2FA đã bật/ }));
+    await user.click(checklist.getByRole('button', { name: /Kiểm tra rating đối tác/ }));
+    await user.click(checklist.getByRole('button', { name: /Anti-Phishing Code đã thiết lập/ }));
+    await user.click(checklist.getByRole('button', { name: /Trong giao dịch/ }));
     expect(screen.getByText('2/4')).toBeInTheDocument();
-    await user.click(screen.getByRole('button', { name: /Kiểm tra tên người chuyển/ }));
+    await user.click(checklist.getByRole('button', { name: /Kiểm tra tên người chuyển/ }));
     expect(screen.getByText('8/10 biện pháp bảo vệ đã áp dụng')).toBeInTheDocument();
     expect(
       screen.queryByText('Hoàn thành checklist bên dưới để tăng chỉ số an toàn'),
     ).toBeInTheDocument();
 
-    await user.click(screen.getByRole('button', { name: /Lưu bằng chứng giao dịch/ }));
-    await user.click(screen.getByRole('button', { name: /Sau giao dịch/ }));
+    await user.click(checklist.getByRole('button', { name: /Lưu bằng chứng giao dịch/ }));
+    await user.click(checklist.getByRole('button', { name: /Sau giao dịch/ }));
     expect(screen.getByText('1/2')).toBeInTheDocument();
-    await user.click(screen.getByRole('button', { name: /Biết cách gửi claim bảo hiểm/ }));
+    await user.click(checklist.getByRole('button', { name: /Biết cách gửi claim bảo hiểm/ }));
     expect(screen.getByText('10/10 biện pháp bảo vệ đã áp dụng')).toBeInTheDocument();
     expect(
       screen.queryByText('Hoàn thành checklist bên dưới để tăng chỉ số an toàn'),
     ).not.toBeInTheDocument();
 
-    await user.click(screen.getByRole('button', { name: /Trước giao dịch/ }));
+    await user.click(checklist.getByRole('button', { name: /Trước giao dịch/ }));
     expect(screen.getByText('Kiểm tra rating đối tác')).toBeInTheDocument();
   });
 

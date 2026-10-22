@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { isRouteErrorResponse, useNavigate, useRouteError } from 'react-router';
+import { CTAButton } from '@/shared/ui/CTAButton';
 import { env } from '@/shared/config/env';
 import { captureException } from '../../shared/telemetry/telemetry';
 
@@ -18,14 +19,19 @@ import { captureException } from '../../shared/telemetry/telemetry';
 
 function getErrorMessage(error: unknown): { title: string; detail: string } {
   if (isRouteErrorResponse(error)) {
-    const title = `${error.status} — ${error.statusText || 'Lỗi định tuyến'}`;
+    const title = `${error.status} — ${env.isDev ? error.statusText || 'Lỗi định tuyến' : 'Lỗi định tuyến'}`;
     if (error.status === 404) {
       return { title, detail: 'Trang bạn tìm không tồn tại hoặc đã bị di chuyển.' };
     }
     return { title, detail: 'Yêu cầu không thể hoàn tất. Vui lòng thử lại.' };
   }
   if (error instanceof Error) {
-    return { title: 'Lỗi hiển thị trang', detail: error.message };
+    return {
+      title: 'Lỗi hiển thị trang',
+      detail: env.isDev
+        ? error.message
+        : 'Trang gặp sự cố. Vui lòng thử lại hoặc quay về trang trước.',
+    };
   }
   return { title: 'Lỗi không xác định', detail: 'Đã xảy ra sự cố ngoài dự kiến.' };
 }
@@ -69,37 +75,12 @@ export function RouteErrorBoundary() {
       <h1 style={{ fontSize: 18, fontWeight: 700, margin: 0 }}>{title}</h1>
       <p style={{ fontSize: 14, opacity: 0.7, margin: 0, maxWidth: 420 }}>{detail}</p>
       <div style={{ display: 'flex', gap: 12, marginTop: 8 }}>
-        <button
-          type="button"
-          onClick={() => navigate(-1)}
-          style={{
-            padding: '10px 20px',
-            borderRadius: 10,
-            border: '1px solid rgba(255,255,255,0.15)',
-            background: 'transparent',
-            color: 'inherit',
-            fontSize: 14,
-            cursor: 'pointer',
-          }}
-        >
+        <CTAButton variant="ghost" density="compact" fullWidth={false} onClick={() => navigate(-1)}>
           Quay lại
-        </button>
-        <button
-          type="button"
-          onClick={() => window.location.reload()}
-          style={{
-            padding: '10px 20px',
-            borderRadius: 10,
-            border: 'none',
-            background: '#3B82F6',
-            color: '#fff',
-            fontSize: 14,
-            fontWeight: 600,
-            cursor: 'pointer',
-          }}
-        >
+        </CTAButton>
+        <CTAButton density="compact" fullWidth={false} onClick={() => window.location.reload()}>
           Tải lại trang
-        </button>
+        </CTAButton>
       </div>
     </div>
   );

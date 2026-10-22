@@ -1,12 +1,18 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { fireEvent, screen, waitFor } from '@testing-library/react';
+import { useQueryClient, type QueryClient } from '@tanstack/react-query';
+import { useEffect } from 'react';
+import { act, fireEvent, screen, waitFor } from '@testing-library/react';
 import { useLocation } from 'react-router';
 import { toast } from 'sonner';
 import { renderWithProviders } from '@/test/test-utils';
-import type { P2PAdsResponse, P2POverviewResponse } from '../model/p2p-types';
+import type { P2PAdsResponse } from '../model/p2p-types';
 import { P2PMarketplacePage } from './P2PMarketplacePage';
+import {
+  p2pMarketplaceAds as ads,
+  p2pMarketplaceOverview as overview,
+} from '@/test/fixtures/p2p-marketplace';
 
 const server = setupServer();
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
@@ -19,65 +25,23 @@ afterEach(() => {
 });
 afterAll(() => server.close());
 
+function CaptureClient({ onReady }: { onReady: (client: QueryClient) => void }) {
+  const client = useQueryClient();
+  useEffect(() => onReady(client), [client, onReady]);
+  return null;
+}
+
 function LocationProbe() {
   const location = useLocation();
   return <span data-testid="location">{location.pathname + location.search}</span>;
 }
 
-const ads: P2PAdsResponse = {
-  items: [
-    {
-      id: 'ad-1',
-      type: 'sell',
-      asset: 'USDT',
-      merchant: 'Merchant One',
-      merchantId: 'merchant-1',
-      merchantLevel: 1,
-      merchantVerified: true,
-      merchantJoinDate: '2024-01-01',
-      completionRate: 98,
-      completedOrders: 120,
-      totalVolume30d: 50_000,
-      price: 25_300,
-      currency: 'VND',
-      priceType: 'fixed',
-      minLimit: 100_000,
-      maxLimit: 20_000_000,
-      available: 2_000,
-      paymentMethods: ['Bank Transfer'],
-      avgResponseTime: '2m',
-      isOnline: true,
-      createdAt: '2026-09-23T00:00:00.000Z',
-      status: 'active',
-      merchantBadge: 'elite',
-    },
-    {
-      id: 'ad-2',
-      type: 'sell',
-      asset: 'USDT',
-      merchant: 'Merchant Two',
-      merchantId: 'merchant-2',
-      merchantLevel: 2,
-      merchantVerified: false,
-      merchantJoinDate: '2023-06-01',
-      completionRate: 95,
-      completedOrders: 100,
-      totalVolume30d: 30_000,
-      price: 25_400,
-      currency: 'VND',
-      priceType: 'fixed',
-      minLimit: 100_000,
-      maxLimit: 10_000_000,
-      available: 1_000,
-      paymentMethods: ['Bank Transfer'],
-      avgResponseTime: '3m',
-      isOnline: true,
-      createdAt: '2026-09-22T00:00:00.000Z',
-      status: 'active',
-      merchantBadge: 'pro',
-    },
-  ],
-};
+async function waitForBottomSheetExit() {
+  await waitFor(() =>
+    expect(document.querySelector('[data-bottom-sheet-overlay]')).not.toBeInTheDocument(),
+  );
+}
+
 const mixedAds: P2PAdsResponse = {
   items: [
     ...ads.items,
@@ -93,44 +57,154 @@ const marketplaceAds: P2PAdsResponse = {
   ],
 };
 
-const overview: P2POverviewResponse = {
-  userLevel: {
-    currentLevel: 1,
-    completedOrders: 12,
-    accumulatedVolume: 20_000,
-    dailyUsed: 1_000,
-    dailyLimit: 10_000,
-    fee: 0.2,
-    nextLevelProgress: 0.4,
-  },
-  tradingLevels: [
-    {
-      id: 1,
-      name: 'Starter',
-      nameVi: 'Khởi đầu',
-      fee: 0.2,
-      dailyLimit: 10_000,
-      perOrderLimit: 2_000,
-      requirements: ['KYC cơ bản'],
-      color: '#3B82F6',
-      gradient: 'linear-gradient(135deg, #3B82F6, #60A5FA)',
-    },
-  ],
-  platformStats: {
-    volume24h: 100_000,
-    volume24hChange: 2,
-    totalTrades24h: 100,
-    activeMerchants: 10,
-    onlineTraders: 20,
-    avgCompletionRate: 95,
-    avgCompletionTime: '3m',
-    totalUsers: 1_000,
-    supportedFiats: 4,
-    escrowProtected: 80,
-  },
-};
-
 describe('P2P marketplace feature page', () => {
+  it('retains focused asset and draft filters through pending, error and recovery while hiding unavailable offers', async () => {
+    let release!: () => void;
+    const gate = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    let recover = false;
+    server.use(
+      http.get('*/p2p/overview', () => HttpResponse.json(overview)),
+      http.get('*/p2p/ads', async ({ request }) => {
+        if (new URL(request.url).searchParams.get('asset') !== 'BTC') return HttpResponse.json(ads);
+        await gate;
+        return recover
+          ? HttpResponse.json({
+              items: [
+                { ...ads.items[0], id: 'btc-current', asset: 'BTC', merchant: 'Current BTC' },
+              ],
+            })
+          : HttpResponse.json({ code: 'UNAVAILABLE' }, { status: 503 });
+      }),
+    );
+    renderWithProviders(<P2PMarketplacePage />);
+    expect(await screen.findByText('Merchant One')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Bật bộ lọc' }));
+    fireEvent.change(screen.getByPlaceholderText('Nhập số tiền VND...'), {
+      target: { value: '1000000' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Xác minh' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Bank Transfer' }));
+    const payment = screen.getByRole('button', { name: 'Bank Transfer' });
+    const search = screen.getByPlaceholderText('Tìm merchant...');
+    const asset = screen.getByRole('button', { name: 'BTC' });
+    asset.focus();
+    fireEvent.click(asset);
+    try {
+      expect(screen.getByRole('button', { name: 'BTC' })).toBe(asset);
+      expect(asset).toHaveFocus();
+      expect(screen.getByRole('button', { name: 'Bank Transfer' })).toBe(payment);
+      expect(screen.getByPlaceholderText('Tìm merchant...')).toBe(search);
+      expect(screen.getByPlaceholderText('Nhập số tiền VND...')).toHaveValue('1,000,000');
+      expect(screen.queryByText('Merchant One')).not.toBeInTheDocument();
+      expect(screen.queryByText('Không tìm thấy offer')).not.toBeInTheDocument();
+    } finally {
+      release();
+    }
+    expect(await screen.findByText('Không thể tải P2P')).toBeInTheDocument();
+    expect(asset).toHaveFocus();
+    expect(screen.getByRole('button', { name: 'BTC' })).toBe(asset);
+    expect(screen.getByPlaceholderText('Nhập số tiền VND...')).toHaveValue('1,000,000');
+    recover = true;
+    fireEvent.click(screen.getByRole('button', { name: 'Thử lại' }));
+    expect(await screen.findByText('Current BTC')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'BTC' })).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.getByRole('button', { name: 'Xác minh' })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    );
+  });
+
+  it.each(['offer', 'shortcut'] as const)(
+    'retains marketplace controls and restores logical focus after an overview error with the %s modal open',
+    async (kind) => {
+      let fail = false;
+      let queryClient: QueryClient | undefined;
+      server.use(
+        http.get('*/p2p/ads', () => HttpResponse.json(ads)),
+        http.get('*/p2p/overview', () =>
+          fail
+            ? HttpResponse.json({ code: 'UNAVAILABLE' }, { status: 503 })
+            : HttpResponse.json(overview),
+        ),
+      );
+      renderWithProviders(
+        <>
+          <P2PMarketplacePage />
+          <CaptureClient
+            onReady={(client) => {
+              queryClient = client;
+            }}
+          />
+        </>,
+      );
+      expect(await screen.findByText('Merchant One')).toBeInTheDocument();
+      const asset = screen.getByRole('button', { name: 'BTC' });
+      fireEvent.click(
+        screen.getByRole('button', {
+          name: kind === 'offer' ? 'Tuỳ chọn offer của Merchant One' : 'Tuỳ chọn P2P',
+        }),
+      );
+      expect(await screen.findByRole('dialog')).toBeInTheDocument();
+      fail = true;
+      // A query refresh can fail while the modal correctly hides background controls.
+      await act(async () => {
+        await queryClient!.refetchQueries({ queryKey: ['p2p', 'overview'] });
+      });
+      expect(await screen.findByText('Không thể tải P2P')).toBeInTheDocument();
+      await waitForBottomSheetExit();
+      expect(screen.getByRole('button', { name: 'BTC' })).toBe(asset);
+      await waitFor(() => expect(screen.getByRole('button', { name: 'USDT' })).toHaveFocus());
+      expect(screen.getByRole('button', { name: 'Lịch sử lệnh' })).toBeInTheDocument();
+      expect(screen.queryByText('Merchant One')).not.toBeInTheDocument();
+      expect(screen.queryByText('Volume 24h')).not.toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Tuỳ chọn P2P' })).toBeDisabled();
+      await waitForBottomSheetExit();
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+      fail = false;
+      fireEvent.click(screen.getByRole('button', { name: 'Thử lại' }));
+      expect(await screen.findByText('Merchant One')).toBeInTheDocument();
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    },
+  );
+
+  it('aborts an obsolete marketplace asset read and keeps the latest result after the old handler completes', async () => {
+    let release!: () => void;
+    const gate = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    let oldSignal: AbortSignal | undefined;
+    let oldCompleted = false;
+    server.use(
+      http.get('*/p2p/overview', () => HttpResponse.json(overview)),
+      http.get('*/p2p/ads', async ({ request }) => {
+        const asset = new URL(request.url).searchParams.get('asset') ?? 'USDT';
+        if (asset === 'BTC') {
+          oldSignal = request.signal;
+          await gate;
+          oldCompleted = true;
+        }
+        return HttpResponse.json({
+          items: [{ ...ads.items[0], asset, merchant: `Offer ${asset}` }],
+        });
+      }),
+    );
+    renderWithProviders(<P2PMarketplacePage />);
+    expect(await screen.findByText('Offer USDT')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'BTC' }));
+    try {
+      await waitFor(() => expect(oldSignal).toBeDefined());
+      fireEvent.click(screen.getByRole('button', { name: 'ETH' }));
+      expect(await screen.findByText('Offer ETH')).toBeInTheDocument();
+      expect(oldSignal?.aborted).toBe(true);
+    } finally {
+      release();
+    }
+    await waitFor(() => expect(oldCompleted).toBe(true));
+    expect(screen.queryByText('Offer BTC')).not.toBeInTheDocument();
+  });
+
   it('renders server-backed marketplace ads and overview stats', async () => {
     server.use(
       http.get('*/p2p/ads', () => HttpResponse.json(ads)),
@@ -246,6 +320,7 @@ describe('P2P marketplace feature page', () => {
     expect(await screen.findByText('Merchant One')).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Tuỳ chọn offer của Merchant One' }));
     fireEvent.click(await screen.findByRole('button', { name: 'So sánh giá' }));
+    await waitForBottomSheetExit();
 
     const compareLabel = await screen.findByText('1 offer đang so sánh');
     expect(compareLabel.parentElement?.querySelector('p:last-child')).toHaveTextContent(
@@ -253,6 +328,7 @@ describe('P2P marketplace feature page', () => {
     );
     fireEvent.click(screen.getByRole('button', { name: 'Tuỳ chọn offer của Merchant One' }));
     fireEvent.click(await screen.findByRole('button', { name: 'So sánh giá' }));
+    await waitForBottomSheetExit();
     expect(screen.getByText('1 offer đang so sánh')).toBeInTheDocument();
 
     const toastInfo = vi.spyOn(toast, 'info');
@@ -277,11 +353,13 @@ describe('P2P marketplace feature page', () => {
     for (const merchant of ['Merchant One', 'Merchant Two', 'Merchant Three']) {
       fireEvent.click(screen.getByRole('button', { name: `Tuỳ chọn offer của ${merchant}` }));
       fireEvent.click(await screen.findByRole('button', { name: 'So sánh giá' }));
+      await waitForBottomSheetExit();
     }
     expect(screen.getByText('3 offer đang so sánh')).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole('button', { name: 'Tuỳ chọn offer của Merchant Four' }));
     fireEvent.click(await screen.findByRole('button', { name: 'So sánh giá' }));
+    await waitForBottomSheetExit();
 
     const comparisonBar = screen.getByText('3 offer đang so sánh').parentElement;
     expect(comparisonBar).toHaveTextContent('Merchant One vs Merchant Two vs Merchant Three');
@@ -315,6 +393,7 @@ describe('P2P marketplace feature page', () => {
     await waitFor(() =>
       expect(writeText).toHaveBeenCalledWith(expect.stringContaining('/w/p2p/ad/ad-1')),
     );
+    await waitForBottomSheetExit();
 
     fireEvent.click(screen.getByRole('button', { name: 'Tuỳ chọn offer của Merchant One' }));
     fireEvent.click(await screen.findByRole('button', { name: 'Xem hồ sơ merchant' }));

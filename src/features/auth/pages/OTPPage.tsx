@@ -11,6 +11,7 @@ import { PageLayout } from '@/shared/ui/layout/PageLayout';
 import { PageContent } from '@/shared/ui/layout/PageContent';
 import { parseLoginMfaChallengeState } from '../lib/login-mfa-route-state';
 import { parseRegistrationChallengeState } from '../lib/registration-route-state';
+import { getLoginReturnPath } from '../lib/login-return-path';
 
 export function OTPPage() {
   const navigate = useNavigate();
@@ -18,6 +19,8 @@ export function OTPPage() {
   const { verifyMfa, verifyLoginMfa } = useAuth();
   const c = useThemeColors();
   const prefix = useRoutePrefix();
+  const defaultReturnTo = `${prefix}/home`;
+  const returnTo = getLoginReturnPath(location.state, defaultReturnTo);
   const registrationChallenge = parseRegistrationChallengeState(location.state);
   const registrationFlow = Boolean(registrationChallenge);
   const loginChallenge = parseLoginMfaChallengeState(location.state);
@@ -42,7 +45,10 @@ export function OTPPage() {
     const checkExpiry = () => {
       const remaining = Date.parse(challengeExpiry) - Date.now();
       if (remaining <= 0) {
-        navigate(`${prefix}/auth/${registrationFlow ? 'register' : 'login'}`, { replace: true });
+        navigate(`${prefix}/auth/${registrationFlow ? 'register' : 'login'}`, {
+          replace: true,
+          state: !registrationFlow && returnTo !== defaultReturnTo ? { from: returnTo } : undefined,
+        });
       } else {
         timeout = setTimeout(checkExpiry, Math.min(remaining, 2_147_483_647));
       }
@@ -52,7 +58,7 @@ export function OTPPage() {
       Math.min(Math.max(0, Date.parse(challengeExpiry) - Date.now()), 2_147_483_647),
     );
     return () => clearTimeout(timeout);
-  }, [challengeExpiry, navigate, prefix, registrationFlow]);
+  }, [challengeExpiry, navigate, prefix, registrationFlow, returnTo, defaultReturnTo]);
   const handleChange = (index: number, value: string) => {
     const digit = value.replace(/\D/g, '').slice(-1);
     const newOtp = [...otp];
@@ -77,7 +83,10 @@ export function OTPPage() {
   const handleVerify = async (code: string) => {
     if (!isRouteValid || isLoading) return;
     if (challengeExpiry && Date.now() >= Date.parse(challengeExpiry)) {
-      navigate(`${prefix}/auth/${registrationFlow ? 'register' : 'login'}`, { replace: true });
+      navigate(`${prefix}/auth/${registrationFlow ? 'register' : 'login'}`, {
+        replace: true,
+        state: !registrationFlow && returnTo !== defaultReturnTo ? { from: returnTo } : undefined,
+      });
       return;
     }
     setIsLoading(true);
@@ -86,7 +95,7 @@ export function OTPPage() {
     try {
       if (loginChallenge) {
         await verifyLoginMfa({ challengeId: loginChallenge.id, code });
-        navigate(`${prefix}/home`, { replace: true });
+        navigate(returnTo, { replace: true });
       } else {
         // The route guard above guarantees that a non-login challenge is registration.
         const challenge = registrationChallenge!;
@@ -120,7 +129,10 @@ export function OTPPage() {
         }
       } else if (loginChallenge && isApiError(verifyError)) {
         if (verifyError.status === 410) {
-          navigate(`${prefix}/auth/login`, { replace: true });
+          navigate(`${prefix}/auth/login`, {
+            replace: true,
+            state: returnTo !== defaultReturnTo ? { from: returnTo } : undefined,
+          });
           setIsLoading(false);
           return;
         }
@@ -150,7 +162,13 @@ export function OTPPage() {
   const filled = otp.filter((d) => d !== '').length;
 
   if (!isRouteValid) {
-    return <Navigate to={`${prefix}/auth/login`} replace />;
+    return (
+      <Navigate
+        to={`${prefix}/auth/login`}
+        replace
+        state={returnTo !== defaultReturnTo ? { from: returnTo } : undefined}
+      />
+    );
   }
 
   return (
@@ -237,14 +255,15 @@ export function OTPPage() {
             {returnToLogin && (
               <button
                 onClick={() =>
-                  navigate(`${prefix}/auth/${registrationFlow ? 'register' : 'login'}`, {
+                  navigate(`${prefix}/auth/login`, {
                     replace: true,
+                    state: returnTo !== defaultReturnTo ? { from: returnTo } : undefined,
                   })
                 }
                 className="mt-2 w-full text-center"
                 style={{ color: c.link, fontSize: 13, fontWeight: 600 }}
               >
-                {registrationFlow ? 'Quay lại đăng ký' : 'Quay lại đăng nhập'}
+                Quay lại đăng nhập
               </button>
             )}
           </div>

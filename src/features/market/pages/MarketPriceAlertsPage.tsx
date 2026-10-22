@@ -193,13 +193,13 @@ export function MarketPriceAlertsPage() {
 
         <div className="grid grid-cols-3 gap-2">
           <Summary label="Tổng" value={allAlerts.length} color={colors.text1} />
-          <Summary label="Hoạt động" value={activeCount} color="#10B981" />
-          <Summary label="Đã kích hoạt" value={triggeredCount} color="#3B82F6" />
+          <Summary label="Hoạt động" value={activeCount} color={colors.successText} />
+          <Summary label="Đã kích hoạt" value={triggeredCount} color={colors.link} />
         </div>
 
         <TrCard className="p-4">
           <div className="flex items-center gap-2 mb-3">
-            <Plus size={16} color="#3B82F6" />
+            <Plus size={16} color={colors.link} />
             <span style={{ color: colors.text1, fontSize: 13, fontWeight: 700 }}>Tạo cảnh báo</span>
           </div>
           <div className="grid grid-cols-2 gap-2">
@@ -255,7 +255,7 @@ export function MarketPriceAlertsPage() {
               onClick={() => void handleCreate()}
               disabled={!canManageAlerts || createMutation.isPending || !effectivePairId}
               className="rounded-lg px-3 py-2"
-              style={{ background: '#3B82F6', color: '#fff', fontSize: 11, fontWeight: 700 }}
+              style={{ background: colors.info, color: '#fff', fontSize: 11, fontWeight: 700 }}
             >
               Tạo
             </button>
@@ -263,17 +263,17 @@ export function MarketPriceAlertsPage() {
         </TrCard>
 
         {createMutation.isError && (
-          <p role="alert" style={{ color: '#EF4444', fontSize: 12 }}>
+          <p role="alert" style={{ color: colors.errorText, fontSize: 12 }}>
             Không thể tạo cảnh báo giá. Hãy thử lại.
           </p>
         )}
         {updateMutation.isError && (
-          <p role="alert" style={{ color: '#EF4444', fontSize: 12 }}>
+          <p role="alert" style={{ color: colors.errorText, fontSize: 12 }}>
             Không thể cập nhật cảnh báo giá. Hãy thử lại.
           </p>
         )}
         {deleteMutation.isError && (
-          <p role="alert" style={{ color: '#EF4444', fontSize: 12 }}>
+          <p role="alert" style={{ color: colors.errorText, fontSize: 12 }}>
             Không thể xóa cảnh báo giá. Hãy thử lại.
           </p>
         )}
@@ -345,7 +345,7 @@ function AlertCard({
             className="w-9 h-9 rounded-full flex items-center justify-center"
             style={{ background: `${accent}22` }}
           >
-            <span style={{ color: accent, fontSize: 10, fontWeight: 700 }}>
+            <span style={{ color: colors.text1, fontSize: 10, fontWeight: 700 }}>
               {alert.symbol.split('/')[0].slice(0, 3)}
             </span>
           </div>
@@ -353,7 +353,11 @@ function AlertCard({
             <p style={{ color: colors.text1, fontSize: 13, fontWeight: 700 }}>{alert.symbol}</p>
             <span
               className="flex items-center gap-1"
-              style={{ color: isAbove ? '#10B981' : '#EF4444', fontSize: 11, fontWeight: 600 }}
+              style={{
+                color: isAbove ? colors.successText : colors.errorText,
+                fontSize: 11,
+                fontWeight: 600,
+              }}
             >
               {isAbove ? <TrendingUp size={13} /> : <TrendingDown size={13} />}
               {isAbove ? 'Trên' : 'Dưới'} {fmtUsd(alert.targetPrice)}
@@ -362,7 +366,9 @@ function AlertCard({
         </div>
         <div className="flex items-center gap-2">
           {triggered ? (
-            <span style={{ color: '#10B981', fontSize: 11, fontWeight: 600 }}>Đã kích hoạt</span>
+            <span style={{ color: colors.successText, fontSize: 11, fontWeight: 600 }}>
+              Đã kích hoạt
+            </span>
           ) : (
             <button
               onClick={onToggle}
@@ -370,7 +376,7 @@ function AlertCard({
               aria-label={alert.isActive ? 'Tắt cảnh báo' : 'Bật cảnh báo'}
             >
               {alert.isActive ? (
-                <ToggleRight size={27} color="#10B981" />
+                <ToggleRight size={27} color={colors.successText} />
               ) : (
                 <ToggleLeft size={27} color={colors.text3} />
               )}
@@ -383,7 +389,7 @@ function AlertCard({
             style={{ background: 'rgba(239,68,68,0.08)' }}
             aria-label="Xóa cảnh báo"
           >
-            <Trash2 size={14} color="#EF4444" />
+            <Trash2 size={14} color={colors.errorText} />
           </button>
         </div>
       </div>
@@ -401,7 +407,10 @@ function AlertCard({
           >
             <div
               className="h-full rounded-full"
-              style={{ width: `${progress}%`, background: isAbove ? '#3B82F6' : '#F59E0B' }}
+              style={{
+                width: `${progress}%`,
+                background: isAbove ? colors.info : colors.warningText,
+              }}
             />
           </div>
         </div>
@@ -409,7 +418,7 @@ function AlertCard({
           <p style={{ color: colors.text3, fontSize: 10 }}>Mục tiêu</p>
           <p
             style={{
-              color: isAbove ? '#10B981' : '#EF4444',
+              color: isAbove ? colors.successText : colors.errorText,
               fontSize: 11,
               fontWeight: 700,
               fontFamily: 'monospace',

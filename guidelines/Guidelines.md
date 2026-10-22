@@ -1098,19 +1098,19 @@ thì luôn ưu tiên:
 ### 21.1 Layout Template System
 
 **MUST**
-Mọi page mới phải dùng `PageLayout` + `PageContent` từ `/src/app/components/layout/`:
+Với trang nội dung chuẩn, dùng `PageLayout` + `PageContent` từ `src/shared/ui/layout/`. Web, Tablet và Responsive shell sở hữu gutter tại những profile mà chúng đặt max-width/padding; phone, centered và full-bleed dùng fallback/composition riêng. `Header`, `PageContent` và `StickyFooter` theo cùng hợp đồng `pageGutter.ts`, không cộng thêm gutter theo thói quen:
 
 ```tsx
 import {
   PageLayout,
   StickyFooter,
-} from "../../components/layout/PageLayout";
+} from "@/shared/ui/layout/PageLayout";
 import {
   PageContent,
   PageSection,
-} from "../../components/layout/PageContent";
-import { Header } from "../../components/layout/Header";
-import { TabBar } from "../../components/layout/TabBar";
+} from "@/shared/ui/layout/PageContent";
+import { Header } from "@/shared/ui/layout/Header";
+import { TabBar } from "@/shared/ui/TabBar";
 ```
 
 **MUST NOT**
@@ -1118,24 +1118,25 @@ import { TabBar } from "../../components/layout/TabBar";
 - Tự viết `<div className="flex flex-col min-h-full pb-8">` — dùng `<PageLayout>` thay
 - Tự viết `<div className="px-5 pt-3 flex flex-col gap-4">` — dùng `<PageContent>` thay
 - Tự reimplent tab bar — dùng `<TabBar>` thay
-- Dùng `height: calc(100vh - Xpx)` / `h-screen` / `h-full` + `overflowY: auto` bên trong `AppLayout`
+- Không dùng `height: calc(100vh - Xpx)` / `h-screen` / `h-full` + nested `overflowY: auto` để tạo vùng cuộn thứ hai bên trong `AppLayout`. Chỉ dùng viewport sizing cho widget/full-bleed route có scroll owner, reflow và mobile keyboard được kiểm tra rõ.
+- `PageLayout` hiện render `role="main"`; giữ đúng một main landmark cho page và không bọc nó trong một main khác.
 
 ### 21.2 PageLayout Variants
 
 **MUST**
-Chọn đúng variant cho từng loại trang:
+Chọn variant theo đúng nền và quyền sở hữu vùng cuộn. Các giá trị dưới đây là contract đang có trong `src/shared/ui/layout/PageLayout.tsx`; không suy ra tỷ lệ sử dụng nếu chưa đo inventory:
 
 | Variant     | Background | Bottom Pad  | Use case                                       |
 | ----------- | ---------- | ----------- | ---------------------------------------------- |
-| `default`   | c.bg       | pb-8 (32px) | ~90% pages — standard scrollable content       |
-| `surface`   | c.surface  | pb-8 (32px) | Settings, forms, modal-like pages              |
+| `default`   | c.bg       | 32px        | Nội dung tiêu chuẩn                           |
+| `surface`   | c.surface  | 32px        | Settings/forms khi nền surface phù hợp          |
 | `flush`     | c.bg       | 0           | Pages with StickyFooter (Create Order, Wizard) |
-| `immersive` | none       | pb-8 (32px) | Custom gradient/chart backgrounds              |
+| `immersive` | none       | 32px        | Nền gradient/chart do nội dung sở hữu          |
 
 ### 21.3 Approved Page Compositions
 
 **MUST**
-Chỉ dùng các composition patterns sau:
+Dùng các composition sau làm mẫu mặc định khi semantics và scroll owner phù hợp. Đây không phải danh sách loại trang bắt buộc; pattern khác phải có lý do theo sản phẩm và không được tạo lại primitive dùng chung:
 
 **Pattern A — Standard Page (detail, list, info):**
 
@@ -1171,14 +1172,28 @@ Chỉ dùng các composition patterns sau:
 **Pattern D — Immersive/Chart page:**
 
 ```tsx
+import { MoreVertical } from 'lucide-react';
+import { IconButton } from '@/shared/ui/IconButton';
+
 <PageLayout variant="immersive">
-  <Header transparent back right="more" variant="custom">
-    {/* custom header overlay */}
-  </Header>
+  <Header
+    variant="page"
+    title="Biểu đồ"
+    transparent
+    right={
+      <IconButton
+        icon={MoreVertical}
+        label="Mở tuỳ chọn biểu đồ"
+        onClick={openChartMenu}
+      />
+    }
+  />
   <HeroGradient />
   <PageContent>{/* content below hero */}</PageContent>
 </PageLayout>
 ```
+
+Nếu cấu trúc header thực sự riêng, `variant="custom"` chỉ render `children`; các props như `back`, `right` không tạo action chuẩn trong variant này. Nội dung custom phải tự cung cấp semantics, keyboard, focus và action có handler.
 
 **Pattern E — Module Index (Home-like):**
 
@@ -1199,79 +1214,31 @@ Chỉ dùng các composition patterns sau:
 </PageLayout>
 ```
 
-### 21.4 Header Gold Standard & Pattern Reference
+### 21.4 Header contract và lựa chọn pattern
 
-**MUST — GOLD STANDARD (Trading Bots pattern)**
+Implementation dùng chung là `src/shared/ui/layout/Header.tsx`. `src/app/components/layout/Header.tsx` chỉ là adapter cấp ứng dụng: nó lấy notification count từ `useUI()` rồi chuyển props xuống Header dùng chung. Page dùng adapter khi cần state notification toàn cục; không tạo một bản Header khác trong feature.
 
-Tất cả inner/detail pages phải tuân theo mẫu chuẩn:
+| Variant đang có | Hành vi được xác nhận trong code | Dùng khi |
+| --------------- | -------------------------------- | -------- |
+| `page` (default) | Title căn trái; `right="none"` không tạo placeholder | Trang có title/subtitle căn trái theo pattern sản phẩm |
+| `standard` | Title căn giữa; `right="none"` giữ ô rộng 36px để cân bằng | Header cần trục title ở giữa |
+| `custom` | Render `children`; không render bar chuẩn | Nội dung header thực sự khác cấu trúc chuẩn |
 
-```
-┌─────────────────────────────────────────┐
-│  [←]         Trading Bots         [ ]   │  ← glass bar, h=52px, centered title
-├─────────────────────────────────────────┤
-│  Giao dịch  ›  Bot giao dịch           │  ← breadcrumb auto (depth ≥ 2)
-└─────────────────────────────────────────┘
-```
+**MUST**
 
-**Code mẫu chuẩn:**
+- Chỉ bật breadcrumb bằng `breadcrumb`; `back` không tự bật breadcrumb. `breadcrumbMinDepth` mặc định là `2` và chỉ có hiệu lực khi breadcrumb được bật.
+- Đặt nhãn cụ thể cho icon action (`action.label`) để accessible name diễn đạt hành động.
+- Xác minh callback của từng action. `right="bell"` dùng `onNotificationsClick` hoặc điều hướng tới route notification; `right="search"` chỉ gọi `onSearch` khi được truyền. `right="more"` hiện render button nhưng không có callback trong API, vì vậy không dùng nó làm menu/action có chức năng; truyền `action` hoặc phần tử `right` có handler.
+- Dùng `onBack` nếu luồng yêu cầu hành vi quay lại xác định; nếu bỏ prop này Header gọi `navigate(-1)`.
+- Không dựng header riêng chỉ để đổi màu, padding hoặc vị trí action. Nếu một khác biệt lặp lại là nhu cầu sản phẩm, mở rộng variant/public API có test.
 
-```tsx
-// ✅ GOLD STANDARD — chỉ cần 2 props, breadcrumb tự bật
-<Header title="Trading Bots" back />
+Breadcrumb được tạo từ route path và mapping trong `src/shared/ui/Breadcrumb.tsx`; điều đó không đồng nghĩa mọi page phải hiển thị breadcrumb. Chỉ bật khi cấu trúc điều hướng và nhu cầu quay lại cấp cha đã được xác nhận.
 
-// Breadcrumb auto-enabled khi back=true (ẩn nếu depth < 2)
-// right defaults to 'none' (placeholder 36px bên phải)
-// variant defaults to 'standard' (centered title)
-// breadcrumbMinDepth defaults to 2
-```
-
-**Smart Defaults (đã built-in vào Header component):**
-
-- `back={true}` → `breadcrumb` tự bật (auto-enabled)
-- `breadcrumbMinDepth` mặc định = `2` (chỉ hiện khi depth ≥ 2)
-- `right` mặc định = `'none'` (placeholder 36px giữ cân bằng)
-- `variant` mặc định = `'standard'` (centered title)
-- Muốn tắt breadcrumb: dùng `breadcrumb={false}`
-
-**MUST NOT:**
-
-- Không tự tạo header div riêng — luôn dùng `<Header />`
-- Không dùng `right="none"` explicitly — đó là default
-- Không quên `back` cho inner pages — user phải quay lại được
-
-**Action prop (cho header có icon button bên phải):**
+Ví dụ dưới đây minh họa việc bật breadcrumb tường minh; đây là ví dụ theo API đang có, không phải thay đổi giao diện đã triển khai:
 
 ```tsx
-import { Settings } from 'lucide-react';
-
-<Header
-  title="Security Center"
-  back
-  action={{ icon: Settings, onClick: () => navigate('/settings') }}
-/>
+<Header title="Security Center" back breadcrumb breadcrumbMinDepth={2} />
 ```
-
-**MUST — Pattern Table:**
-
-| Page Type          | variant    | back | right/action  | breadcrumb   | badge |
-| ------------------ | ---------- | ---- | ------------- | ------------ | ----- |
-| Detail page        | `standard` | ✓    | —             | auto ✓       | —     |
-| Module index       | `page`     | ✗    | `bell`        | ✗            | —     |
-| Sub-module index   | `page`     | ✓    | `search`      | auto ✓       | —     |
-| Settings page      | `standard` | ✓    | —             | auto ✓       | —     |
-| Chart/Trade        | `custom`   | ✓    | custom        | auto ✓       | —     |
-| Form/Wizard        | `standard` | ✓    | —             | auto ✓       | —     |
-| Search page        | `standard` | ✓    | `search`      | auto ✓       | —     |
-| Deep nav (≥3 deep) | `standard` | ✓    | —             | auto ✓       | —     |
-| Orders list        | `standard` | ✓    | —             | auto ✓       | count |
-| With action button | `standard` | ✓    | `action={..}` | auto ✓       | —     |
-
-**Breadcrumb tự sinh từ route path:**
-
-- Route segment → Vietnamese label mapping tự động
-- Segment labels được config trong `Breadcrumb.tsx` (`SEGMENT_LABELS` + `CONTEXT_LABELS`)
-- Dynamic segments (IDs, UUIDs) tự phát hiện và hiển thị `...`
-- Clickable: user có thể tap vào segment cha để navigate ngược
 
 ### 21.5 TabBar Variants
 
@@ -1284,24 +1251,32 @@ Chọn đúng TabBar variant:
 | `pill`      | Filter chips — status, category                  | Tất cả/Mua/Bán        |
 | `segment`   | Binary/ternary toggle — Buy/Sell, mode switching | Mua Crypto/Bán Crypto |
 
-### 21.6 PageContent Spacing Presets
+### 21.6 PageContent spacing contract
+
+`PageContent` tại `src/shared/ui/layout/PageContent.tsx` sở hữu vertical top padding và khoảng cách giữa các child trực tiếp. Gutter ngang dùng hợp đồng `--tr-page-inline-gutter` tại `src/shared/ui/layout/pageGutter.ts`: shell đặt `0px` khi chính nó đã cấp max-width/gutter; nếu không có shell sở hữu gutter, fallback giữ 20px. `PageContent fullBleed` bỏ gutter ngang của riêng component. `Header` (`page`/`standard`, không gồm `custom`) và `StickyFooter` dùng cùng hợp đồng để thẳng hàng với content. Các giá trị hiện tại:
+
+| Prop | Giá trị code hiện tại | Vai trò |
+| ---- | --------------------- | ------- |
+| `padding="compact"` | `pt-2` = 8px | Nội dung dày, khi hierarchy vẫn đọc được |
+| `padding="default"` | `pt-3` = 12px | Khoảng Header–content mặc định |
+| `padding="relaxed"` | `pt-4` = 16px | Form/setting cần thêm khoảng thở |
+| `padding="none"` | 0 | Nối với hero/full-bleed có chủ đích |
+| `gap="tight"` | 8px | Các mục liên quan, nhóm dày |
+| `gap="default"` | 16px | Khoảng giữa section mặc định |
+| `gap="relaxed"` | 24px | Nhóm form/section tách biệt |
+| `gap="loose"` | 32px | Các vùng nội dung lớn |
+| `gap={number}` | Số px truyền trực tiếp | Chỉ dùng khi hình học/dữ liệu cần khoảng riêng; ghi lý do ở consumer |
 
 **MUST**
-Dùng đúng preset, không hard-code padding:
 
-| Padding   | Value | Use case                          |
-| --------- | ----- | --------------------------------- |
-| `compact` | pt-2  | Dense lists, tables               |
-| `default` | pt-3  | Standard pages (~80%)             |
-| `relaxed` | pt-4  | Forms, settings, spacious layouts |
-| `none`    | 0     | Full-bleed hero, custom gradient  |
+- Dùng preset có tên cho khoảng cách trang thông thường; không đưa margin vào child trực tiếp để cộng dồn với `gap`.
+- Mỗi breakpoint chỉ có một owner cho page gutter. `WebShell` sở hữu gutter 32px trên desktop và 16px ở hẹp; `TabletShell` sở hữu 24px; `ResponsiveAppLayout` sở hữu 24px ở desktop và 16px ở tablet. Các shell này đặt `--tr-page-inline-gutter: 0px`; `PageContent`, `Header` và `StickyFooter` không cộng thêm gutter. Phone, centered, full-bleed và nhánh shell không có outer gutter giữ fallback 20px, trừ `PageContent fullBleed`. Nhánh auth tuân theo shell thực tế chứa nó. Không cộng gutter thứ hai ở child trừ khi bố cục lồng có chủ đích và được kiểm chứng.
+- Không suy ra density từ kích thước viewport. `density` trong `PageContent` chỉ ánh xạ preset padding/gap; `src/shared/theme/density.ts` là metrics cho control/card và không phải spacing scale tổng quát.
+- Giữ `0`, tỷ lệ, `calc()`, kích thước dựa trên dữ liệu và vị trí runtime khi chúng biểu diễn hình học/thao tác, không phải lựa chọn spacing tùy tiện.
 
-| Gap       | Value | Use case                            |
-| --------- | ----- | ----------------------------------- |
-| `tight`   | 8px   | Compact card lists, FAQ items       |
-| `default` | 16px  | Standard section spacing (~70%)     |
-| `relaxed` | 24px  | Form groups, settings sections      |
-| `loose`   | 32px  | Major page sections, hero + content |
+Các pattern numeric hiện được giữ có chủ đích: danh sách dữ liệu `WatchlistPage` dùng gap12px, top12px và trailing24px để thay margin từng card; filter band giữ padding nội bộ20px riêng. `P2PFraudPreventionPage` giữ gap21px của nội dung giáo dục, top16px; trailing44px thay chuỗi padding16 + gap21 + spacer8 (45px cũ, chủ ý giảm1px). Đây là spacing theo vùng, không phải gutter thứ hai. `tests/e2e/layout-migration.spec.ts` đo hai phía breakpoint768/1024 ở light/dark; không suy rộng thành mọi route/viewport.
+
+`page-layout-contract.test.ts` kiểm page inventory bằng import/JSX alias và danh sách owner ngoại lệ phải còn hiệu lực. `design-system-legacy-guard.test.ts` giữ baseline đo được4 consumer typography legacy,2 consumer Fibonacci spacing,1 consumer CTA color override và95 mảnh selector CSS theo class shape; không tăng vi phạm mới. Các baseline là nợ cần giảm theo C06.14/C06.15, không phải mẫu thiết kế được duyệt. Thêm ngoại lệ hoặc đổi public contract phải qua quy trình review/CODEOWNERS hiện có, có lý do, phạm vi, test và điều kiện xem lại. Full CI còn chạy AST changed-code guard hiện có tại `scripts/check-design-system-diff.mjs`; guard tự động không thay review về semantics, dynamic consumers hay UI thật.
 
 ### 21.7 PageSection with Labels
 
@@ -1309,11 +1284,11 @@ Dùng đúng preset, không hard-code padding:
 Khi nhóm các controls/cards trong bottom sheets hoặc toolbox, dùng `PageSection` có label:
 
 ```tsx
-<PageSection label="Giao dịch" accentColor="#3B82F6">
+<PageSection label="Giao dịch" accentColor="var(--tr-info)">
   <Button>Thanh toán</Button>
   <Button>Sổ lệnh</Button>
 </PageSection>
-<PageSection label="An toàn" accentColor="#10B981">
+<PageSection label="An toàn" accentColor="var(--tr-success-text)">
   <Button>Bảo hiểm</Button>
   <Button>Tranh chấp</Button>
 </PageSection>
@@ -1342,3 +1317,129 @@ Khi refactor page cũ sang template system:
 - [ ] Xóa `useFadeInTab` nếu page đang dùng
 - [ ] Xóa `import { motion } from 'motion/react'` nếu chỉ dùng cho tab indicator
 - [ ] Verify: không có `h-screen` / `calc(100vh)` / `overflow-y: auto` bên trong layout
+
+### 21.10 Token ownership và mapping hiện trạng
+
+**Trạng thái:** các đường dẫn và giá trị dưới đây đã được xác nhận trong code ở revision hiện tại. Các quy tắc đặt trong cột “quy định đề xuất” là **PROPOSED**; không tự đổi nhận diện, typography, density hoặc giá trị token trong một lần chuẩn hóa tài liệu.
+
+Repo có một Design System đang được dùng: theme CSS đi qua `useThemeColors`, các helper token và primitives/layout có consumers cùng owner tests. Tuy vậy, đây chưa phải một nguồn chuẩn đã đồng bộ cho mọi nhóm: CSS/TypeScript có các bản đồ song song, escape hatch được expose công khai, và catalog/consumer checks chưa bao phủ đầy đủ. Không gọi component folder hoặc một số CSS variables là bằng chứng hệ thống đã thống nhất.
+
+| Nhóm | Nguồn/implementation hiện tại | Vấn đề hoặc giới hạn đã xác nhận | Quy định/mapping đề xuất | Consumer và cách kiểm chứng |
+| ---- | ----------------------------- | ------------------------------- | ------------------------ | --------------------------- |
+| Color/theme | `src/styles/theme.css` định nghĩa `--tr-*` trong `:root` và `.light`; `src/shared/hooks/useThemeColors.ts` trả CSS variable cho inline styles; `@theme inline` map một số utility names | `--primary` và `--tr-primary` khác nhau trong `.light`; viền lỗi của `InputField.tsx` dùng `--input-border-error`, nhưng focus shadow vẫn có rgba literal; `button.ts` và `StatusPill.tsx` còn màu literal | **PROPOSED:** giữ `--primary` và `--tr-primary` riêng. CTA/status chỉ chuyển sang semantic role sau khi duyệt đối chiếu cả dark/light vì có thể đổi brand/contrast; đo focus color/contrast riêng trước khi thay shadow | `ThemeProvider`, `Header`, `CTAButton`, `InputField`, `StatusPill`, portal/toast và chart. Chạy `theme-token-contract.test.tsx`, đo computed style cả dark/light tại component và trang tích hợp |
+| Spacing/layout | `PageContent.tsx`: top preset 8/12/16/0, gap 8/16/24/32; `pageGutter.ts`: biến gutter dùng chung và fallback20px; Web/Tablet/Responsive shell cấp gutter theo profile; `density.ts`: metrics control/card; `webTokens.ts` + `webConstants.ts`: nhịp desktop; `theme.css`: `--φ-sp-*` 3/5/8/13/21/34/55 | Nhiều thang có vai trò khác nhau; density không phải spacing scale page. Shell wrapper và layout primitive trước đây cộng gutter; shared primitives hiện kế thừa một contract | `PageContent` sở hữu top padding/gap; `TrCard`/field/overlay sở hữu khoảng nội bộ; một shell/layout owner cấp gutter ngang cho mỗi breakpoint. Giữ riêng phone, desktop, full-bleed và data-density theo contract đã đo | `PageContent`, `Header`, `StickyFooter`, Web/Tablet/Responsive shell, TrCard, field/overlay và feature table. Kiểm shell/page computed padding, alignment, overflow tại breakpoint |
+| Typography | `src/styles/theme.css` có `--φ-fs-*` và `--tr-text-*`; `src/shared/theme/typography.ts` có `VitTypeScale`/`VitTextRoles`; `legacyTypography.ts` và `webTokens.ts` còn được dùng | CSS, TS semantic roles, legacy scale và web scale không phải một output được sinh chung; role name/value không khớp hoàn toàn. Không có bằng chứng từ test rằng toàn bộ các bản đồ đồng bộ | **PROPOSED:** consumer dùng role hiện có (`textRoleStyle`, `VitTextRoles` hoặc `--tr-text-*`) phù hợp với styling context; không thêm role/value mới trước khi nêu vai trò, theme và consumer. Numeric/financial text được giữ độ chính xác và có thể dùng tabular figures | `InputField`, CTA, market values, `MarketListSections`, `OCOOrderForm`, Web pages. Test typography helper hiện có; thêm parity assertion khi mapping được chốt và review wrap/zoom/locale trên trang |
+| Control sizing/density | `src/shared/theme/density.ts`; `src/shared/theme/button.ts`; `CTAButton` dùng subset `compact/standard/hero`; `TrInput` có `compact/standard/hero`; `InputField` có kích thước riêng | Height khác nhau có thật: `density.ts` compact/standard/relaxed/hero/tool = 44/52/58/58/44; `button.ts` = 36/52/58/56/44; `TrInput` = 44/52/64 cho các size của nó | **PROPOSED:** chọn density theo vai trò (tool, data row, standard form, hero); không áp cùng height máy móc. Chỉ hợp nhất API sau khi đối chiếu hit target, responsive, consumer và computed style | `CTAButton`, `InputField`, `TrInput`, `TrCard`, `IconButton`, web table row. Kiểm test owner, target size AA theo ngữ cảnh và thao tác touch/keyboard |
+| Radius | `src/styles/theme.css`: `--tr-radius-*` và alias card; `src/shared/theme/radii.ts`: `VitRadii`/`radiusClass`; `TrCard.tsx`: card roles | Utility radius tổng quát từng lệch giá trị TS do mapping Tailwind khác; `TrCard` dùng chung helper để không có bản mapping riêng | `radius` foundation ưu tiên hơn `rounded`; helper trỏ CSS variable đúng key cho các mức hữu hạn; `none/full` giữ utility structural 0/pill (full có thể tính thành CSS infinity). `rounded="sm/md/lg"` dùng `--tr-radius-card-sm/card/card-lg` = 12/16/24px. Giữ API/alias hiện hữu; không dùng tên utility để suy ra số px | Token parity test + unit tests + `tests/e2e/design-system-radii.spec.ts` đo computed radius với CSS build thật ở light/dark; fixture component không thay thế kiểm toàn bộ route |
+| Motion | `theme.css` có `--tr-duration-*`/easing; `src/shared/theme/motion.ts` có helper TS tương ứng | Hai biểu diễn cùng xuất hiện nhưng test hiện có kiểm tra các giá trị helper; chưa chứng minh mọi CSS declaration dùng các token đó | **PROPOSED:** CSS và TS dùng cùng giá trị theo tên vai trò; animation không thiết yếu phải theo `prefers-reduced-motion` | `BottomSheetV2`, toast, tabs/transitions. Chạy motion helper test, reduced-motion interaction test và kiểm tra computed animation |
+| Shadow, opacity, z-index, breakpoint/container | `colors.ts` có alpha helper; một phần shadow/z-index nằm trong component/theme CSS; desktop shell constants nằm ở `webConstants.ts`; không thấy một catalog chung cho toàn nhóm trong các nguồn trên | Giá trị và stacking context được sở hữu phân tán; thêm global token khi chưa kiểm kê có thể tạo chuẩn giả hoặc che lỗi portal | **PROPOSED:** chỉ tạo token chung khi nhiều consumer có cùng trách nhiệm; giữ z-index cục bộ khi thuộc stacking context riêng và ghi lý do. Không tăng z-index như cách sửa portal/stacking context | Overlay/toast/sheet, sticky header/footer, chart và responsive shell. Kiểm stacking context thực tế, portal, breakpoint liền kề và reduced motion |
+
+Không có token generation pipeline nào được xác nhận ở bước này. CSS runtime variables và TypeScript helpers hiện là các nguồn chỉnh tay riêng theo từng trách nhiệm; khi đồng bộ một mapping, phải có test parity ở cùng thay đổi hoặc giữ rõ hai contract vì semantics khác nhau. `theme-token-contract.test.tsx` là test hữu ích nhưng không phải bằng chứng toàn bộ Design System đã đồng bộ.
+
+### 21.11 Danh mục component dùng chung và ranh giới
+
+Danh mục dưới đây là điểm tra cứu các implementation thật dưới `src/shared/ui/`, không chứng minh mọi route đã dùng đúng component. Tên props/variant cần cập nhật cùng public API; page không sao chép implementation chung để né API hiện có.
+
+| Nhóm/hợp đồng | Implementation và lựa chọn | State/keyboard/test hiện có | Consumer/ràng buộc |
+| -------------- | -------------------------- | -------------------------- | ------------------ |
+| Hành động | `button.tsx` cho primitive button; `CTAButton.tsx` cho CTA lớn với variant `primary/success/danger/warning/ghost/secondary`, density `compact/standard/hero`, `loading`, `disabled`, `fullWidth`, `label`, `icon`; `IconButton.tsx` có `IconOnlyButton`, `BackButton`, `CloseButton` | `button.test.tsx`, `CTAButton.test.tsx`; CTA test loading/disabled/contrast; `children ?? label` giữ tên khi loading, icon leading 18px là trang trí và không vào accessible name. IconButton không có file owner-test riêng được tìm thấy trong danh mục này | Consumer thật gồm `wallet/pages/AddressAddPage.tsx`, `wallet/pages/DustConverterPage.tsx`, `wallet/components/WithdrawSections.tsx`. Dùng CTA cho action cần contract màu/loading; icon-only phải có label. `bg`/`textColor` giữ tương thích cho `wallet/pages/WalletTransactionHistoryContractPage.tsx` tới migration C06.15; không thêm consumer mới. `className`/`style` chỉ tùy chỉnh layout ngoài hoặc ngoại lệ có review, không tạo variant nội bộ ngầm |
+| Form field | `InputField.tsx` là wrapper quanh native input, nhận label dạng text/composition, helper/error/prefix/suffix và native input props; helper/error nối qua `aria-describedby`. `TrInput.tsx`/`TrTextarea` có size/variant, controlled value, numeric formatting, clearable/readOnly | `InputField.test.tsx`, `TrInput.test.tsx`, `form.test.tsx`; kiểm tra label/helper/error association, focus, numeric/password và change/blur | Consumer thật gồm `auth/pages/LoginPage.tsx`, `wallet/pages/AddressAddPage.tsx`, `wallet/pages/WalletTransferContractPage.tsx` (số tiền raw precision, giữ native number constraints), `wallet/components/WithdrawSections.tsx`, `p2p/pages/P2PPaymentMethodAddPage.tsx` (InputField) và `p2p/components/P2PMarketplaceSections.tsx` (TrInput có numeric formatting). Giữ API khi semantics khác; không đổi payload, precision, autocomplete, inputMode hoặc readonly/disabled. **PROPOSED:** consumer cục bộ chỉ tùy chỉnh nội dung đặc thù; kích thước, border, focus và cấu trúc wrapper do primitive sở hữu |
+| Card/surface | `TrCard.tsx`, variants `standard/hero/inner/ghost`, `as`, density, radius/padding, optional hover | `TrCard.test.tsx` kiểm variant, element, keyboard khi `as="button"`, ARIA và overrides | Consumer thật gồm `arena/pages/ArenaDiscoveryPage.tsx`, `wallet/components/WithdrawSections.tsx`. Giữ consumer nghiệp vụ riêng; ưu tiên variant/density đã có. Không dùng `as="button"` nếu bên trong có control tương tác khác |
+| Layout/navigation | `PageLayout.tsx`, `PageContent.tsx`/`PageSection`; `Header.tsx`; `pageGutter.ts`; `TabBar.tsx`; `Breadcrumb.tsx`; app `Header` adapter trong `src/app/components/layout/` | `PageLayout.test.tsx`, `PageContent.test.tsx`, shell integration tests, `Header.test.tsx`, `TabBar.test.tsx`, `Breadcrumb.test.tsx` kiểm contract/boundary khác nhau; browser gutter matrix ở `tests/e2e/production-shell.spec.ts` đo actual route/computed style | Consumer thật gồm `wallet/components/WithdrawSections.tsx`, `launchpad/pages/LaunchpadContractPages.tsx`, `predictions/pages/PredictionRiskCalculatorPage.tsx`. Web/Tablet/Responsive shells cấp gutter; full-bleed/Web auth, phone và centered shell giữ contract riêng. Đo lại consumer khi đổi shell owner |
+| Overlay/confirmation | `BottomSheetV2.tsx` có `bottom/center`, close guards, max-height và custom header; `ConfirmationDialog.tsx` composition dùng center sheet; `dialog.tsx` là primitive riêng | `BottomSheetV2.test.tsx` kiểm Escape, focus trap/restore cả khi consumer unmount, StrictMode, dialog lồng/tiếp nối, nền không nhận focus, prevent-close và reduced motion; `ConfirmationDialog.test.tsx` kiểm phần content hiện có | Consumer thật gồm `dca/pages/DCAMainPage.tsx`, `wallet/pages/DustConverterPage.tsx`, `wallet/pages/AddressBookPage.tsx`, `earn/components/EarnFeatureComponents.tsx`, `p2p/components/P2PCreateAdSections.tsx`, `p2p/pages/P2PAdDetailContractPage.tsx`, `p2p/pages/P2PMyAdsContractPage.tsx`. Form Earn/P2P giữ dữ liệu/validation/callback tại feature và truyền mutation pending vào `preventClose`; lỗi của modal đang mở phải nằm trong modal. Confirmation P2P giữ nút Hủy ở footer, khóa khi pending; header không thêm action đóng trùng. Dùng `ConfirmationDialog` khi public API đáp ứng trạng thái cần có; form xác nhận có permission/pending/error riêng compose `BottomSheetV2`, không copy lifecycle focus hoặc thêm modal primitive. Không tự tạo modal không có vòng đời focus |
+| Feedback/data display | `EmptyState.tsx`, `ErrorState.tsx`, `SkeletonBlock.tsx`, `RefreshableSkeletonList.tsx`, `OfflineBanner.tsx`, `ThemedToaster.tsx`, `StatusPill.tsx`, `InfoRow.tsx`, `StatCard.tsx`, `SearchBar.tsx` | Có owner test cho EmptyState, Error/StatusPill/Toaster (`ui-primitives.test.tsx`), Skeleton, OfflineBanner, SearchBar, InfoRow; coverage theo hành vi không đồng đều | Consumer thật của empty/error gồm `admin/pages/AdminAbTestsContractPage.tsx` và `dca/pages/SavingsDCAContractPage.tsx`. Dùng empty/no-results/error/loading đúng ngữ nghĩa; feature giữ copy/domain content. `StatusPill` preset và custom color không thay thế accessible text/status semantics |
+| Filter choice | `FilterButton.tsx`: `selected`, `label`, `onClick`; parent giữ query, nhóm và trạng thái chọn | Native button với `aria-pressed`, Tab/Enter/Space, dấu check trang trí; `FilterButton.test.tsx` kiểm controlled state, tên ổn định, callback và không submit form | `P2POrdersContractPage.tsx`, `P2PDisputesPage.tsx` và hai nhóm trong `WalletTransactionHistoryContractPage.tsx`; dùng cho lựa chọn lọc, không thay hợp đồng `TabBar` điều hướng panel |
+| Data table/pagination | Không tìm thấy module `Table`/`Pagination` trong `src/shared/ui/` inventory hiện tại | Chưa có shared owner-test tương ứng tại đường dẫn đó | Giữ bảng feature-owned cho tới khi cùng hành vi/keyboard/sort/page contract được chứng minh; không tạo catalog component chỉ để đồng dạng hình thức |
+
+`CTAButton` giữ class định danh `vit-cta-button` khi consumer truyền class bố cục. Các adapter class-shape cho nút full-width/navigation ở `theme.css` phải loại canonical CTA khỏi base/hover/active selectors; không để filter hoặc transform tự suy từ tên utility đổi hợp đồng màu của variant. Gradient/foreground vẫn do `shared/theme/button.ts` sở hữu; keyboard focus và ripple hiện có được giữ. `CTAButton.test.tsx` kiểm marker và ranh giới CSS, `tests/e2e/ui-cta-interaction-mock.spec.ts` kiểm default/hover/focus-visible/active trên consumer P2P Guide thật ở Phone/Web, CSS sáng/tối. Phép đo dùng renderer CSS riêng với background, foreground, filter và press overlay đã resolve; ảnh sản phẩm không bị thay/mask. Đây là technical sample, không phải WCAG hay nghiệm thu mọi consumer.
+
+`TrCard` dùng marker `data-slot="tr-card"` cho selector/test ổn định; không chọn card theo `.rounded-*` và không dùng marker `card` vốn có CSS hover riêng. Radius không quyết định hover: dùng public prop `hover`. `TrCard as="button"` tiếp tục `type="button"`; không dùng card làm nút submit. `contentAlign`, density và callback được giữ nguyên.
+
+CSS adapter legacy suy từ radius/padding phải loại root `data-slot="tr-card"` và các row trực tiếp của root đó. Card thông tin không tự đổi nền/header, border, shadow hoặc vị trí khi hover; tương tác card dùng prop `hover`, tương tác con dùng contract của control con. Metric DCA và skeleton dùng `TrCard variant="inner" density="compact"` với nền portfolio hiện có: giữ radius 16px/padding 12px, không thêm variant theo tên trang. `design-system-radii.spec.ts` kiểm CSS build thật cho passive/explicit hover và control legacy còn hiệu lực; `ui-card-hover-mock.spec.ts` kiểm ba metric DCA qua Phone 320/767, Tablet 768, Responsive 1024 và Web 1440 sáng/tối. Đây là mẫu tích hợp, chưa chứng minh mọi card/route hay reduced-motion.
+
+`FilterButton` sở hữu hình thức và trạng thái pressed; dùng `ButtonHeights.compact` làm min-height 36px, `ButtonPadding.compact`/`ButtonRadius.compact` và text role `button` hiện có. Label được wrap, không dùng chiều cao cố định. Text chọn dùng `text1`, còn lại `text2`; nền chọn dùng `withAlpha(primary, ALPHA.soft)`. Dấu check có slot ổn định, ẩn khi chưa chọn và luôn là trang trí; trạng thái được truyền bằng `aria-pressed` với tên nút ổn định theo [WAI-ARIA Button Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/button/). Parent sở hữu nhãn nhóm và callback; primitive không giữ selection/query, gọi API hoặc nhận override màu/kích thước nội bộ. Nút generic `button.tsx`/`button-variants.ts` có height/nowrap theo contract riêng; FilterButton dùng native button để giữ min-height/wrap và hành vi bàn phím chuẩn. Mapping migration: `wallet/components/WalletTransactionHistoryComponents.FilterButton.active` → `shared/ui/FilterButton.selected`; consumer đã chuyển trực tiếp, không giữ hai implementation. `TabBar` tiếp tục riêng cho tab/panel với keyboard contract của nó.
+
+Wallet History (`src/features/wallet/pages/WalletTransactionHistoryContractPage.tsx`) giữ bộ lọc và asset draft qua lỗi đọc có thể retry; chỉ region kết quả đổi loading/error/data. Nhánh không có quyền đọc hoặc HTTP 403 tiếp tục ẩn lịch sử và không tạo nút retry, đồng thời giữ Header/Quay lại để rời màn hình; không đổi permission/query/cursor/formatter để chuẩn hóa UI. Disputes (`src/features/p2p/pages/P2PDisputesPage.tsx`) dùng FilterButton chung, tên truy cập khớp nhãn tiếng Việt nhìn thấy; parent giữ group và flex-wrap. Disputes/Reviews đặt controls trước summary có chủ đích để đổi trạng thái query không đẩy controls khỏi vị trí; không hiển thị summary giả bằng 0 trong lúc pending/error. Giữ PageContent gutter/gap hiện có và để vùng kết quả sở hữu spacing giữa summary/list/pagination. Kiểm chứng tích hợp tại `tests/e2e/ui-list-query-controls-mock.spec.ts`; không coi sample là nghiệm thu toàn bộ alias/role/locale/AT.
+
+`src/shared/ui/TabBar.tsx` nhận `ariaLabel` tùy chọn để đặt tên tablist khi không có visible label. Với object tab có panel, caller MUST truyền cùng cặp `triggerId`/`panelId` là DOM ID ổn định, hợp lệ và nối panel bằng `aria-labelledby`; `id` của TabItem vẫn là selection key, còn `id` của TabBar vẫn chỉ là ID container. Parent sở hữu panel, nội dung, query và hidden state; primitive chỉ gắn `id`/`aria-controls`, không tạo dữ liệu hoặc tìm/sửa DOM consumer. Reviews dùng `useId` hiện có trong React để tạo ID theo instance, giữ cả hai panel container trong DOM, chỉ panel active chứa kết quả; panel active có `tabIndex=0` khi nội dung đầu tiên không focusable. Contract theo [WAI-ARIA Tabs Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/tabs/), có unit cho cả ba variant và consumer Reviews. Consumer cũ không truyền các prop mới giữ cơ chế selection/keyboard/callback cũ và chưa tự được coi là đã đáp ứng liên kết panel. Arrow vẫn tự kích hoạt theo contract hiện tại; chế độ manual cho nội dung có latency là khuyến nghị cần thiết kế/kiểm thử API riêng, không vá qua DOM hoặc đổi keyboard ngầm. Lựa chọn lọc cùng một vùng kết quả dùng FilterButton khi đúng semantics.
+
+TabBar `segment` đổi cặp màu chữ/nền semantic cùng lúc (`transition: none`); không nội suy hai màu đối nghịch qua các frame thiếu tương phản. Palette và màu tab chưa chọn được giữ nguyên. Browser test ở `ui-list-query-controls-mock.spec.ts` kiểm tab chọn/chưa chọn và 12 frame sau thao tác, ngoài trạng thái đã ổn định; không chỉ đợi animation kết thúc rồi gọi trạng thái tương tác là đạt. Đây là kiểm tra các consumer/theme/viewport được liệt kê, chưa xác minh mọi custom color hoặc variant/consumer cũ.
+
+Launchpad (`LaunchpadContractPage`), Prediction list/search/breaking (`PredictionsContractPage`), Copy Trading và Provider Leaderboard giữ Header và controls khi query đổi hoặc lỗi; chỉ region kết quả thay status/alert/data. Không đưa số liệu cache hoặc số 0 thay cho read lỗi. Copy/Leaderboard dùng `FilterButton` cho sort/risk trên cùng danh sách, không biểu diễn sort thành tab panel; nút verified là toggle có `aria-pressed`. Prediction dùng `SearchBar` với accessible name, controlled onChange tức thì và clear trả focus, giữ nguyên search/status query và thứ tự breaking. Launchpad giữ bộ lọc native có group/pressed vì màu tím sản phẩm đã tồn tại, không thêm shared variant chỉ cho một consumer. Regression `tests/e2e/ui-discovery-query-controls-mock.spec.ts` đo route thật; `/w/trade/copy` chỉ thuộc Web, Phone dùng `/trade/copy-trading`, không tự suy alias từ prefix. Detail/order/permission/precision và API/model/query key giữ nguyên; các trạng thái ngoài matrix vẫn mở.
+
+P2P Express (`src/features/p2p/pages/P2PExpressPage.tsx`) giữ native label/select, số tiền và lựa chọn thanh toán qua pending/lỗi; chỉ vùng offer đổi status/alert/data. Lựa chọn thanh toán đang dùng vẫn có control khi tập offer mới chưa sẵn sàng, không được hiểu là offer đã xác thực. Chỉ cho phép đi tới xác nhận khi cả hai query thành công và có offer/số tiền hợp lệ; giữ nguyên matching, làm tròn fiat, precision dự kiến và URL payload. Action cuối dùng `CTAButton` với variant `success`/`danger`, density mặc định `standard`, không override màu. Marketplace (`P2PMarketplacePage.tsx`) giữ Header, asset/fiat/search/filter; `P2PMarketplaceSections.tsx` nhận `resultsFeedback`/`resultsBusy` để thay riêng kết quả và `platformStats` tùy chọn để không trình bày thống kê cache như dữ liệu đọc thành công. Parent sở hữu query, quyền và callbacks; sections không gọi API. Banner chờ kết nối chỉ xuất hiện từ `fetchStatus=paused` khi còn dữ liệu hợp lệ; pending đã pause có status riêng. Không dùng thông báo mất mạng hoặc tuổi dữ liệu tĩnh. Refresh metadata chỉ ghi sau cả hai read thành công/idle; adapter pull-refresh từ chối để shared component báo lỗi khi read thất bại/paused, còn nút retry để query sở hữu feedback. `P2PMarketplaceResults.tsx` là composition nội bộ feature cho kết quả/feedback, được tách để giữ module dưới gate 600 dòng; không phải primitive dùng chung. Khi dữ liệu không khả dụng, menu offer đóng và không tự mở lại offer cũ sau phục hồi; shortcut cần level chỉ bật khi overview hợp lệ. Hàng asset cuộn ngang sở hữu padding 6px và control có scroll-margin 6px: outline 2px + offset 2px cùng khoảng dư cho tọa độ cuộn phân số. BottomSheet chọn target an toàn, focus không tự cuộn rồi reveal `nearest`/`instant` để tôn trọng scroll-margin; giữ guard và public API. Regression đo khoảng cách focus ring tới các ancestor clip trước viewport/paint/hit, không tự scroll trong test để che lỗi. Hai sheet chuyển tiếp `fallbackFocusRef` của BottomSheetV2 tới asset đang chọn khi opener bị xóa/disabled; cả menu offer và shortcut không tự mở lại sau lỗi overview. Regression tại `tests/e2e/ui-p2p-query-controls-mock.spec.ts`; dữ liệu MSW và điều hướng xác nhận không chứng minh đã tạo lệnh hoặc backend thực.
+
+`CTAButton.tsx` đổi cặp foreground/background của enabled/disabled và variant cùng lúc; chỉ shadow/transform được transition bằng duration token hiện có. Không nội suy màu chữ sang màu của trạng thái đối nghịch. Unit giữ focus/DOM và public API; browser đo nominal gradient paint cùng các frame mapping màu của Express. Vẫn phải kiểm tra consumer tích hợp và custom override được cho phép theo hồ sơ, không suy mọi màu/overlay/frame/consumer đạt WCAG từ một mẫu.
+
+Wallet history giữ controls và draft trong DOM khi query mới đang pending; vùng dữ liệu hiển thị loading status, không lấy dữ liệu của query trước làm kết quả mới. Query key, signal, permission, cursor và precision giữ nguyên. `tests/e2e/ui-semantic-controls-mock.spec.ts` kiểm pressed/focus/hover, nominal contrast trên các lớp nền đơn sắc được hỗ trợ, focus giữ sau response MSW, tint của transfer/profile và CSS text-size/spacing stress 320px. Đây là mẫu Phone/Web sáng/tối, không chứng nhận browser zoom, mọi ancestor paint/occlusion, trạng thái lỗi hoặc toàn bộ WCAG/route. Custom alpha suffix của transfer/profile giữ qua helper hiện có; không đổi palette hay hành vi đăng xuất.
+
+Trading Analytics tại `/w/trade/analytics` dùng hai nhóm `FilterButton` cho kỳ dữ liệu và cách trình bày cùng bộ kết quả. Giữ controls/selection qua loading và lỗi; chỉ vùng kết quả đổi giữa status, alert có retry và dữ liệu. Không hiển thị dữ liệu query trước như kỳ mới, không sửa query key/signal/permission/formatter. `ui-analytics-controls-mock.spec.ts` kiểm Web 390/1440 sáng/tối, focus sau đổi kỳ và lỗi, phục hồi bằng kỳ khác, pressed state, paint/hit points và không gửi mutation. Helper đo plain-color được chia sẻ tại `tests/e2e/helpers/semantic-control-paint.ts`; không sao chép hoặc hạ ngưỡng oracle. Đây là hai viewport của shell Web, không phải bằng chứng route Phone/Tablet/Responsive hoặc nghiệm thu mọi trạng thái retry/zoom/AT.
+
+Portfolio Analytics (`src/features/wallet/pages/PortfolioAnalyticsContractPage.tsx`) áp dụng cùng hợp đồng `FilterButton`: controls giữ DOM qua pending/error, chỉ vùng kết quả đổi status/alert/data. Dust Converter (`src/features/wallet/pages/DustConverterPage.tsx`) giữ lựa chọn khi báo giá lỗi; trạng thái `quoteReady` được suy ra từ query, target và tập tài sản còn hợp lệ. Không hiển thị tổng/ước tính cũ hoặc cho gửi khi đọc số dư/báo giá lỗi. Đổi target vẫn xóa lựa chọn theo nghiệp vụ; không thêm placeholder, retry tự động cho mutation hoặc đổi độ chính xác. Biên nhận đã biết phải độc lập với lần đọc số dư tiếp theo: `src/features/wallet/components/DustConversionReceiptSheet.tsx` chỉ trình bày kết quả, còn permission, selection, idempotency và mutation thuộc page/model Wallet. Pending dùng ngôn ngữ đang xử lý/dự kiến; chỉ receipt `completed` mới được trình bày hoàn tất. Tint dùng `withAlpha`/`ALPHA` hiện có, số tiền nhận dùng `successText` khi mang nghĩa thành công.
+
+`BottomSheetV2.fallbackFocusRef` là public prop tùy chọn cho trường hợp opener bị disabled, tháo khỏi DOM hoặc không thể nhận focus sau chuyển trạng thái. Primitive ưu tiên opener còn dùng được, sau đó mới thử đích logic do consumer giữ ref; không tìm nút bất kỳ trên trang, không focus phần ẩn/inert hoặc lấy focus khỏi dialog đang mở. Consumer cần đích bền vững và có thể nhận focus (`tabIndex={-1}` khi dùng region), tồn tại cả ở trạng thái loading/error; không sửa DOM hoặc thêm timer để vá lifecycle. Dust dùng region “Lựa chọn và báo giá chuyển đổi” cho cả confirmation và receipt. Consumer không truyền prop tiếp tục theo hợp đồng opener hiện có. Kiểm chứng tại `BottomSheetV2.test.tsx` và `tests/e2e/ui-wallet-query-controls-mock.spec.ts`: Phone/Web sáng/tối, period focus/error/recovery, quote error/reset, confirmation lỗi/busy/cancel, pending/completed receipt, lỗi tải lại số dư, return focus và retry cùng idempotency key. Đây là kiểm chứng frontend với MSW, không phải xác nhận giao dịch/backend, mọi alias/viewport hoặc WCAG toàn sản phẩm.
+
+Blacklist (`src/features/p2p/pages/P2PBlacklistPage.tsx`) giữ SearchBar compact và bộ lọc trong DOM qua lỗi tải; chỉ vùng kết quả đổi trạng thái. Model hiện dùng `keepPreviousData`: kết quả trước phải được thông báo đang cập nhật, không cho bỏ chặn dựa trên placeholder. `ConfirmationDialog` gọi callback rồi tự đóng đồng bộ; tác vụ bỏ chặn bất đồng bộ compose `BottomSheetV2` center và CTAButton secondary/warning, không đổi contract của dialog chung. Page sở hữu permission, khóa gửi đồng bộ bằng ref, mutation pending và lỗi trong modal; pending khóa hủy/Escape/backdrop. Chỉ đóng khi DELETE thành công đã biết; dùng trạng thái success của mutation để giữ thông báo độc lập với lỗi GET sau đó. Cùng ý định bỏ chặn một entry dùng lại idempotency key sau lỗi, kể cả đóng/mở lại trong lần mount; không tự retry mutation hoặc suy ra backend đã bảo đảm idempotency. Trả focus về opener còn hợp lệ hoặc region danh sách bền vững. Tint cảnh báo dùng `warnAlpha10` hiện có; CTA theo kích thước public API, không override nội bộ. Unit tại `P2PBlacklistPage.test.tsx` và browser tại `tests/e2e/ui-blacklist-mock.spec.ts` kiểm các nhánh này; dữ liệu MSW không thay nghiệm thu backend/AT/UAT.
+
+**PROPOSED — quy tắc chọn và mở rộng:** ưu tiên component theo hành vi/semantics, không theo lượt import. Nếu API hiện tại thiếu nhu cầu lặp lại, mở rộng variant/composition đúng owner rồi kiểm tra consumer. CSS cục bộ được phép cho layout/domain visualization; thay màu, focus, control height, padding hoặc interaction nội bộ phải đi qua public prop/variant được test. Component nghiệp vụ không đẩy API/quyền/backend ngược vào primitive.
+
+Ví dụ sửa tài liệu dựa trên implementation thật (chưa thay đổi code UI):
+
+```tsx
+// Tài liệu cũ nói back tự bật breadcrumb; implementation chỉ bật khi breadcrumb=true.
+<Header title="Trading Bots" back />
+
+// Dùng API đúng khi trang thực sự cần breadcrumb.
+<Header title="Trading Bots" back breadcrumb />
+```
+
+`PageSection.headingLevel` chuyển tiếp hợp đồng semantic level của SectionHeader; mặc định h3 được giữ để không đổi consumer hiện hành. Trang chọn level theo cấu trúc nội dung, không theo cỡ chữ. Market Home dùng level 2 sau page title h1; typography không đổi.
+
+Market Home giữ pattern hàng quote gọn riêng cho summary cards; không đồng nhất với MarketItem có sparkline/favorite. Hàng quote dùng native Link và cùng URL formatter, accessible name chứa đủ symbol/giá. Nội dung được wrap theo độ rộng card bằng flex max-content basis; khi thiếu chỗ giá xuống dòng, không cắt hoặc giảm precision để vừa bố cục. Regression tại `tests/e2e/ui-market-home-mock.spec.ts` kiểm text bounds, hai phía breakpoint, hai theme, text spacing/resize, keyboard và route Back qua MSW development. Đây là kiểm kỹ thuật, không thay AT/UAT hoặc nghiệm thu toàn bộ UI.
+
+Development preview giữ cảnh báo dữ liệu mô phỏng. Shell sở hữu vị trí cảnh báo qua `shared/ui/layout/PreviewChromeSlot.tsx` và `preview-chrome-context.ts`; `RootLayout.tsx` giữ một host và truyền `portalHost` cho `dev/PreviewControls.tsx`. Controls giữ state/behavior mock và portal nội dung vào host; shared/app không import dev. Khi không được inject controls, slot không tạo DOM hoặc khoảng trống. Phone `AppLayout` đặt slot dưới status bar, bỏ spacer dưới 132px; cảnh báo thu gọn chiếm chỗ trong flow, panel mở là disclosure overlay có chủ đích, không đẩy nội dung trang. `tests/e2e/ui-preview-phone-chrome-mock.spec.ts` kiểm CTA DCA bằng click thật/keyboard, panel, frame bounds và draft tại 320/390/440/767px, CSS sáng/tối. Đây là bằng chứng local/MSW, không thay AT/UAT.
+
+Nút disclosure preview phải giữ kích thước giữa trạng thái mở/thu gọn: hai nhãn cùng đo trong một ô grid, chỉ nhãn đang dùng được vẽ; accessible name giữ ở nút và chứa nhãn nhìn thấy. Không cố định chiều cao cảnh báo hoặc cắt chữ để tránh reflow. Regression kiểm vị trí title/warning/trigger bằng nhau khi mở/đóng tại 320px, CSS sáng/tối và bảy mức letter-spacing 0–0,12em; text vẫn được phép wrap theo viewport.
+
+Trong rollout hiện tại, các nhánh thông thường (ngoài Auth) của Tablet/Web/Responsive chưa đăng ký host và tiếp tục adapter vị trí cũ: Root truyền `bottomNavigationVisible`, preview chừa phía trên navigation khi cần, độc lập với typography hẹp/rộng. Responsive còn navigation dưới ở 768–1023px, Tablet dùng sidebar; không suy navigation chỉ từ ngưỡng 768px. `tests/e2e/ui-preview-navigation-mock.spec.ts` giữ regression cho adapter này. Các shell còn lại cần chuyển cùng contract host trong lát cắt C06.13 tiếp theo; adapter không trở thành nguồn placement độc lập lâu dài. Không đổi navigation hoặc business contract của sản phẩm.
+
+Preview host cũng áp dụng ở `AuthLayout` sau StatusBar (Phone/Tablet/Responsive) và nhánh Auth riêng của `WebShell`; không thêm provider xác thực. Root giữ một instance controls và chuyển portal vào host đang hoạt động; khi không có development controls, slot không tạo DOM hay khoảng trống. Panel mở dùng vị trí host và visual viewport thực tế để giới hạn chiều cao, tự cập nhật khi resize/scroll của visual viewport; mở panel không đẩy nội dung hoặc làm mất draft. Preview là chrome không modal ở lớp 50, dưới modal 60: cảnh báo vẫn được mount trong mock nhưng không được vẽ đè lên tiêu đề, nội dung hoặc nút đóng modal. Kiểm tra cả paint order/ảnh và pointer vì nền inert có thể làm `elementFromPoint` bỏ qua lớp đang che. Không tăng z-index của modal để vá preview. `tests/e2e/ui-preview-hosts-mock.spec.ts` kiểm Auth, panel resize và modal thấp; đây là mẫu Chrome/MSW, không phải xác nhận bàn phím ảo hay mọi browser.
+
+Wallet transfer nối lỗi số tiền tại `getWalletTransferValidationError` (`features/wallet/model/validate-wallet-transfer.ts`) vào public prop `InputField.error`, giữ helper, accessible description và đưa focus về ô sai. Lỗi API/quyền vẫn là thông báo chung; không đánh dấu số tiền sai khi dịch vụ lỗi. API chuỗi `validateWalletTransfer` tiếp tục dùng cùng một validator để giữ tương thích. Regression tại `tests/e2e/ui-wallet-transfer-mock.spec.ts` kiểm form, payload/idempotency fixture, hit target CTA và giữ draft khi resize; đây là bằng chứng local/MSW, không xác nhận kết quả giao dịch backend.
+
+DCA dùng `shared/ui/CTAButton.tsx` cho nút mở/tạo kế hoạch, xác nhận xóa và Quay lại khi feature flag tắt; Hủy dùng variant `secondary`, Xóa dùng `danger`. `DCACreatePlanSheet.tsx` dùng `InputField` với nhãn, helper và lỗi nối bằng public API; group coin/tần suất dùng `fieldset`/`legend`, nút native có `aria-pressed`, Tab/Shift+Tab và Enter/Space. Control dùng density standard 52px; consumer chỉ giữ chiều rộng/vị trí ngoài, không override màu, padding hay focus nội bộ. Mức tối thiểu 10.000 VND là quy tắc UI đang có, được dùng chung cho lỗi field và điều kiện disable; không suy mức này từ OpenAPI `exclusiveMinimum: 0` hoặc đổi payload. Chỉ confirmed success mới reset draft; đóng/hủy hoặc kết quả chưa xác nhận phải giữ intent. `tests/e2e/ui-dca-controls-mock.spec.ts` kiểm bốn shell × CSS sáng/tối, thêm Phone 320px, bàn phím, nhãn/lỗi/focus, ngưỡng, hủy và Back từ nhánh tắt cờ về entry Markets thật trong browser history; `ui-dca-create-intent-mock.spec.ts` giữ kiểm chứng retry/idempotency fixture. Không coi các mẫu này là nghiệm thu toàn trang DCA, theme persistence hoặc backend.
+
+Hero DCA (`features/dca/components/DCAOverviewCard.tsx`) giữ `TrCard`/portfolio surface hiện có. Số dư và metric thông tin dùng `text1`; P&L và count trạng thái dùng `successText`/`errorText`/`warningText` trên nền đục `surface2` để không bị tint/gradient phía dưới làm giảm contrast; caption dùng `portfolioTextMuted`. Không dùng màu primitive sáng cố định cho chữ trên gradient hoặc giảm opacity của phần trăm P&L. Màu lãi/lỗ phải đi cùng dấu và icon; không đổi formatter, precision hay công thức để làm UI gọn hơn. Badge count nhỏ của feature tiếp tục riêng vì khác hợp đồng label/count/density của `StatusPill`; không sao chép primitive mới. `tests/e2e/ui-dca-hero-text-mock.spec.ts` đo nền CSS render và foreground danh định tại ROI chữ thật cho Phone/Web, sáng/tối, fixture lãi/lỗ và ba trạng thái, đồng thời giữ ẩn/hiện số dư và không gửi mutation. Phép đo này không bao phủ SVG/overlap, glyph antialias, toàn trang hay chứng nhận WCAG; font lớn áp 3:1, chữ thường 4,5:1.
+
+Bố cục hero DCA thích ứng theo bề rộng container: cụm số có flex basis 16rem, chart giữ kích thước/dữ liệu và tách hàng khi không đủ chỗ; số đầy đủ và P&L được wrap, không ellipsis hoặc giảm precision để nhường chart. Grid ba metric dùng auto-fit với minimum min(100%, 7.5rem), tự thành một/hai/ba cột; class contract `DCA_METRIC_GRID_CLASS_NAME` trong `DCAOverviewCardVisuals.tsx` dùng chung cho dữ liệu và skeleton để giữ số cột/kích thước ô khi tải; không suy parity grid thành toàn bộ card không có layout shift; minimum này thuộc layout owner để chứa icon/nhãn/help và số, không phải token spacing dùng chung. Lịch mua có basis 12rem và nhóm count được xuống hàng độc lập khi hẹp. `tests/e2e/ui-dca-hero-layout-mock.spec.ts` kiểm vùng chữ số không giao chart, không tràn ô metric/ellipsis boundary, đủ ba metric, giữ giá trị/ẩn-hiện và không gửi mutation; bao gồm Phone 320/390/440, Tablet, Web, Responsive hai phía 376/768/1024, sáng/tối và fixture số dài/lỗ/không có lịch. Đây là kiểm chứng từng phần của component, không phải toàn bộ route/state/browser/AT hay nghiệm thu người dùng.
+
+Auth dùng `features/auth/lib/login-return-path.ts` để đọc `location.state.from` của ProtectedRoute hoặc `returnTo` của Web session-expired. Chỉ nhận URL cục bộ, giữ nguyên query/hash và precision trong URL; đích ngoài origin, đường dẫn lỗi hoặc vòng lặp Auth/Onboarding quay về home của shell. ProtectedRoute giữ prefix phone/tablet/web/responsive khi đưa tới login. Login và login-MFA truyền cùng context qua OTP, lỗi mã, restart sau 429 và hết hạn; chỉ quay về đích khi xác thực thành công. Không truyền context này vào luồng đăng ký hoặc thay API/session/permission contract. `tests/e2e/ui-auth-return-mock.spec.ts` kiểm qua development MSW; đây không phải bằng chứng backend hoặc chính sách hủy request khi rời form.
+
+`BottomSheetV2` giữ focus khi chuyển sang `preventClose`: nếu control đang có focus bị disabled hoặc focus rơi về `body`, primitive đưa focus về panel để Tab/Shift+Tab không đi ra nền. Không lấy focus khỏi field còn hoạt động hoặc dialog con; panel đang ẩn hay inert không được nhận focus. Consumer vẫn sở hữu trạng thái disabled, request, dữ liệu nhập và phản hồi lỗi; `preventClose` không tự vô hiệu hóa field nghiệp vụ. Regression nằm tại `src/shared/ui/BottomSheetV2.test.tsx` (bottom/center, StrictMode, field hợp lệ, dialog con) và các ca pending trong `tests/e2e/ui-earn-modal-mock.spec.ts` (keyboard, close guards, payload, draft và retry key).
+
+`ThemedToaster` sở hữu theme và lớp của container; Sonner sở hữu z-index, vị trí, xếp chồng/mở rộng, animation và reduced motion của từng toast. Không đặt cùng z-index cho mọi item hoặc dùng keyframe global có `forwards` ghi đè transform của item. Consumer dùng public toast API cho nội dung/thời lượng hợp lệ, không sửa các giá trị nội bộ để vá một trang. Gradient phải giữ `background-color` surface đục; không dùng shorthand làm mất nền cơ sở. Kết quả axe `bgGradient` chưa đủ để nghiệm thu: phải đối chiếu từng node bằng phép đo gradient render từ computed style, không che hoặc sửa UI để lấy kết quả; loại `incomplete` khác vẫn bị chặn. `tests/e2e/ui-toast-stack-mock.spec.ts` kiểm tra 1/3/4 thông báo, mở rộng bằng pointer, theme từ control thật, focus của modal và reduced motion.
+
+FAB cuộn đầu trang (`app/components/mobile/ScrollToTopFAB.tsx`) nằm tuyệt đối trong khung Phone của `AppLayout`, giữ vùng chạm 40px và nhận diện hiện có. Owner dành khoảng trống 96px cho navigation, thêm một hàng CTA standard từ `shared/theme/button.ts` và gap 16px; đây là contract utility hiện tại, không phải cách xử lý mọi footer nhiều hàng. Khi ẩn, nút phải disabled, không nằm trong cây accessibility hoặc thứ tự Tab; khi hiện, không ghi đè pointer isolation của modal bằng `pointer-events: auto`. `useScrollPosition` đọc reduced motion tại lúc kích hoạt, dùng cuộn `auto` hoặc `smooth` theo lựa chọn hiện tại. Toast nhận focus bằng Alt+T/Tab phải có outline chung trong `styles/theme.css`, giữ shadow/radius và cơ chế stacking của Sonner. `tests/e2e/ui-floating-controls-mock.spec.ts` kiểm khung Phone 390/767 và viewport thấp 568×320, sáng/tối, hai motion mode, CTA hit/clearance, modal isolation, scroll thật và focus toast Phone/Web. Đây là mẫu Chromium/MSW; chưa thay thế matrix route/footer, công nghệ trợ giúp hay nghiệm thu visual của người dùng.
+
+Màu từ `shared/hooks/useThemeColors.ts` là CSS variable: không nối trực tiếp hậu tố hex alpha. Dùng `withAlpha` trong `shared/theme/colors.ts`; ưu tiên `ALPHA` theo vai trò đã có, giữ suffix riêng khi cần bảo toàn contract hiện tại và ghi lý do. `IntegrationPendingPage` giữ suffix `18` của nền icon, theo quy tắc làm tròn hiện có của helper thành 9%; không đổi màu `buy`, kích thước hoặc ranh giới chờ backend. `tests/e2e/ui-integration-boundary-mock.spec.ts` đo alpha paint từ computed style và đối chứng CSS không hợp lệ, kiểm standalone `/onboarding` cùng mẫu convert trong bốn shell, sáng/tối. Các route pending vẫn giữ boundary và thông báo; không thay chúng bằng implementation legacy hoặc coi phép đo nền icon là nghiệm thu toàn template.
+
+`features/dca/components/DcaPlanCoinIcon.tsx` sở hữu ảnh coin và fallback của ba consumer DCA: picker, plan card và contract page. Tái sử dụng helper feature đã có, không import adapter `app/components/figma` ngược vào feature hoặc tạo primitive chung mới. Ảnh hợp lệ giữ URL, kích thước 24/28/32px, accessible name/decorative semantics, loading và referrer policy của consumer. Khi lỗi hoặc source không phải ảnh, hiển thị symbol cục bộ trong cùng box; không gọi dịch vụ avatar khác hoặc retry source đã lỗi. Source mới có state riêng theo key; sự kiện lỗi từ ảnh cũ không làm hỏng ảnh mới. Consumer không tự gán lại `img.src` trong `onError`. Đây là contract tài nguyên/khả năng truy cập, không đổi API, dữ liệu, formatter, quyền hay business rule DCA.
+
+Normal routes của `TabletShell`, `WebShell` và `ResponsiveAppLayout` cũng đặt `PreviewChromeSlot` trong cột shell, dưới top/status/command bar và trước vùng nội dung cuộn. Cảnh báo thu gọn chiếm chỗ trong flow, không đè CTA; panel mở vẫn là disclosure overlay có chủ đích và không làm tăng chiều cao host. Auth Tablet/Responsive giữ host của `AuthLayout`, Web Auth giữ nhánh host riêng; mỗi surface chỉ có một host đang hoạt động. Không inject controls thì slot không tạo DOM hoặc khoảng trống, kể cả production-shaped render. Responsive dùng clearance 80px cộng safe-area khi có bottom navigation, 0 ở adaptive desktop. Trang thường dành khoảng trống tại cột shell để vùng cuộn kết thúc phía trên chrome; padding chỉ nằm bên trong scroller không ngăn focus/auto-scroll tới dưới nút nổi. Auth giữ viewport/scroller riêng của `AuthLayout` và reserve bên trong như contract cũ, tránh cắt disclosure ở viewport thấp. Giữ nguyên Outlet ancestry, gutter, API, quyền và dữ liệu nhập; dùng unit `PreviewChromeShells.test.tsx` và browser `ui-preview-shell-chrome-mock.spec.ts`, `ui-wallet-transfer-mock.spec.ts` để kiểm host, hit target, panel và trạng thái form.
+
+### 21.12 Quy trình AI, ngoại lệ và cập nhật contract
+
+**PROPOSED — MUST trước khi AI tạo/sửa trang:**
+
+1. Đọc quy định áp dụng trong `AGENTS.md`, `docs/ai/WORKFLOW.md`, `guidelines/Guidelines.md` và hướng dẫn gần module; tìm route/pattern tương đương.
+2. Tra token, layout và public component API theo các đường dẫn ở §§21.10–21.11; xác định shell, theme, locale, role và viewport ảnh hưởng.
+3. Liệt kê component/layout/token sẽ tái sử dụng; tìm trong repo và đọc call site/test trước khi kết luận thiếu.
+4. Dùng component sẵn có. Nếu chưa đáp ứng nhu cầu lặp lại, ưu tiên thêm variant/composition tại owner rồi kiểm tra mọi consumer bị ảnh hưởng.
+5. Chỉ tạo component mới khi trách nhiệm hoặc hành vi khác nhau đã được chứng minh; nêu owner layer, public contract và consumer dự kiến.
+6. Không copy component chung, tự định nghĩa lại token/layout tại page hoặc dùng selector/override xuyên tầng để lách public API.
+7. Kiểm tra trạng thái áp dụng, responsive tại breakpoint liên quan, keyboard/focus, accessible name/error association, theme/locale và luồng nghiệp vụ chịu tác động.
+8. Khi public contract đổi, cập nhật đúng tài liệu chính và test/example của owner cùng thay đổi; không tạo bản quy định song song.
+
+**PROPOSED — ngoại lệ:** hồ sơ ngoại lệ nêu lý do sản phẩm, route/consumer, phần contract khác, rủi ro, test/ảnh đo cần review và điều kiện xem xét lại. Dùng quy trình PR/owner review đã có trong repository; không tự gán tên nhóm/người phê duyệt. Nếu chưa tìm thấy owner phù hợp, ghi nhận reviewer còn thiếu và không coi ngoại lệ là chuẩn chung.
+
+Hướng dẫn AI cấp repository nên liên kết tới tài liệu này, không sao chép lại token table/component catalog. Các đoạn mang nhãn **PROPOSED** chưa trở thành quyết định thiết kế được duyệt cho tới khi đi qua review hiện có.

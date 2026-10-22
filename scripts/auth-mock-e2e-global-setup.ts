@@ -5,6 +5,8 @@ const projectRoot = process.cwd();
 const mockE2EPort = 4182;
 const mockEnvironment = {
   VITE_DATA_SOURCE: 'mock',
+  // Existing diagnostic scenarios opt in; the defaults profile explicitly opts out.
+  VITE_ENABLE_DEVTOOLS: process.env.VITE_ENABLE_DEVTOOLS ?? 'true',
   VITE_API_BASE_URL: '',
   VITE_WS_URL: '',
 } as const;

@@ -8,6 +8,7 @@ import { useHaptic } from '@/shared/hooks/useHaptic';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { useAuth } from '@/shared/session/useAuth';
 import { TOAST } from '@/shared/constants/toastMessages';
+import { isApiError } from '@/shared/api/api-error';
 import {
   WithdrawalConfirmation,
   WithdrawalErrorState,
@@ -28,6 +29,7 @@ import type {
   WalletWithdrawalChallenge,
   WalletWithdrawalNetwork,
   WalletWithdrawalReceipt,
+  WalletWithdrawalVerification,
 } from '../model/wallet-types';
 
 const EMPTY_NETWORKS: WalletWithdrawalNetwork[] = [];
@@ -61,6 +63,17 @@ export function WithdrawPage() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [confirmOpen, setConfirmOpen] = useState(false);
   const withdrawalAttempt = useRef<{ signature: string; key: string } | null>(null);
+  const submissionInFlight = useRef(false);
+  const invalidFieldToFocus = useRef<string | null>(null);
+
+  const clearErrors = (...fields: string[]) => {
+    setErrors((current) => {
+      if (!fields.some((field) => current[field])) return current;
+      const next = { ...current };
+      fields.forEach((field) => delete next[field]);
+      return next;
+    });
+  };
 
   const selectedNetwork = useMemo(
     () => networks.find((network) => network.id === networkId) ?? networks[0],
@@ -76,6 +89,14 @@ export function WithdrawPage() {
   const received = Math.max(0, amountValue - fee);
   const busy =
     challengeMutation.isPending || verificationMutation.isPending || withdrawalMutation.isPending;
+
+  useEffect(() => {
+    // Consume only a failed validation attempt. Clearing errors while typing
+    // must not move focus into another field that is still invalid.
+    const field = invalidFieldToFocus.current;
+    invalidFieldToFocus.current = null;
+    if (field) document.getElementById(`withdraw-${field}`)?.focus();
+  }, [errors]);
 
   if (!canReadWallet) {
     return (
@@ -129,6 +150,8 @@ export function WithdrawPage() {
     } else if (amountValue > assetData.available) {
       next.amount = 'Số dư không đủ.';
     }
+    invalidFieldToFocus.current =
+      ['address', 'memo', 'amount'].find((field) => Boolean(next[field])) ?? null;
     setErrors(next);
     return Object.keys(next).length === 0;
   };
@@ -145,11 +168,23 @@ export function WithdrawPage() {
   };
 
   const verifyAndSubmit = async (challenge: WalletWithdrawalChallenge) => {
+    if (!canWithdraw || submissionInFlight.current) return;
+    submissionInFlight.current = true;
     try {
-      const verification = await verificationMutation.mutateAsync({
-        challengeId: challenge.id,
-        code,
-      });
+      let verification: WalletWithdrawalVerification;
+      try {
+        verification = await verificationMutation.mutateAsync({
+          challengeId: challenge.id,
+          code,
+        });
+      } catch (error) {
+        toast.error(
+          isApiError(error) && error.status === 401
+            ? 'Mã xác minh không hợp lệ hoặc đã hết hạn. Vui lòng thử lại.'
+            : 'Không thể hoàn tất xác minh. Vui lòng thử lại.',
+        );
+        return;
+      }
       const signature = JSON.stringify({ challengeId: challenge.id, request: challengeRequest });
       if (withdrawalAttempt.current?.signature !== signature) {
         withdrawalAttempt.current = { signature, key: crypto.randomUUID() };
@@ -168,7 +203,11 @@ export function WithdrawPage() {
         toast.success(TOAST.WALLET.WITHDRAW_SUBMITTED, { haptic: 'success' });
       }
     } catch {
-      toast.error('Mã xác minh không hợp lệ hoặc đã hết hạn. Vui lòng thử lại.');
+      toast.error(
+        'Chưa xác nhận được kết quả rút tiền. Hãy kiểm tra lịch sử giao dịch trước khi thử lại.',
+      );
+    } finally {
+      submissionInFlight.current = false;
     }
   };
 
@@ -201,7 +240,9 @@ export function WithdrawPage() {
           setErrors((current) => ({ ...current, code: '' }));
         }}
         onSubmit={() => void verifyAndSubmit(workflow.challenge)}
-        onBack={() => setWorkflow({ step: 'form' })}
+        onBack={() => {
+          if (!submissionInFlight.current) setWorkflow({ step: 'form' });
+        }}
       />
     );
   }
@@ -228,14 +269,25 @@ export function WithdrawPage() {
           canWithdraw={canWithdraw}
           onNetworkChange={(event) => {
             setNetworkId(event.target.value);
+            clearErrors('memo', 'amount');
             hapticSelection();
           }}
-          onAddressChange={(event) => setAddress(event.target.value)}
-          onMemoChange={(event) => setMemo(event.target.value)}
-          onAmountChange={(event) => setAmount(event.target.value)}
-          onSetMax={() =>
-            setAmount(Math.min(assetData.available, selectedNetwork.maxWithdraw).toFixed(6))
-          }
+          onAddressChange={(event) => {
+            setAddress(event.target.value);
+            clearErrors('address');
+          }}
+          onMemoChange={(event) => {
+            setMemo(event.target.value);
+            clearErrors('memo');
+          }}
+          onAmountChange={(event) => {
+            setAmount(event.target.value);
+            clearErrors('amount');
+          }}
+          onSetMax={() => {
+            setAmount(Math.min(assetData.available, selectedNetwork.maxWithdraw).toFixed(6));
+            clearErrors('amount');
+          }}
           onContinue={() => {
             if (!validate()) {
               hapticWarning();

@@ -82,6 +82,18 @@ describe('MarketHomePage contract-backed compatibility route', () => {
     expect(screen.getByText(/Đang tải dữ liệu thị trường/)).toBeInTheDocument();
   });
 
+  it('exposes each quote as a named native link with the full formatted price', async () => {
+    server.use(
+      http.get('http://localhost:3000/api/market/pairs', () => HttpResponse.json({ items: pairs })),
+    );
+    renderWithProviders(<MarketHomePage />);
+    const section = await screen.findByRole('region', { name: 'Tăng mạnh' });
+    const quote = within(section).getByRole('link', { name: 'BTC/USDT — 67,543.21' });
+    expect(quote).toHaveAttribute('href', '/pair/btc-usdt');
+    expect(within(quote).getByText('BTC/USDT', { exact: true })).toBeVisible();
+    expect(within(quote).getByText('67,543.21', { exact: true })).toBeVisible();
+  });
+
   it('renders typed market sections after the API response', async () => {
     server.use(
       http.get('http://localhost:3000/api/market/pairs', () => HttpResponse.json({ items: pairs })),
@@ -115,10 +127,10 @@ describe('MarketHomePage contract-backed compatibility route', () => {
     );
 
     const watchlistRegion = await screen.findByRole('region', { name: 'Đang theo dõi' });
-    expect(within(watchlistRegion).getByRole('button', { name: /ETH\/USDT/ })).toBeInTheDocument();
+    expect(within(watchlistRegion).getByRole('link', { name: /ETH\/USDT/ })).toBeInTheDocument();
     expect(within(watchlistRegion).queryByRole('button', { name: /BTC\/USDT/ })).toBeNull();
 
-    fireEvent.click(within(watchlistRegion).getByRole('button', { name: /ETH\/USDT/ }));
+    fireEvent.click(within(watchlistRegion).getByRole('link', { name: /ETH\/USDT/ }));
     expect(screen.getByTestId('current-path')).toHaveTextContent('/w/pair/eth-usdt');
   });
 
@@ -166,7 +178,7 @@ describe('MarketHomePage contract-backed compatibility route', () => {
     fireEvent.click(retryButton);
     const watchlistRegion = await screen.findByRole('region', { name: 'Đang theo dõi' });
 
-    expect(within(watchlistRegion).getByRole('button', { name: /ETH\/USDT/ })).toBeInTheDocument();
+    expect(within(watchlistRegion).getByRole('link', { name: /ETH\/USDT/ })).toBeInTheDocument();
     expect(pairAttempts).toBeGreaterThan(1);
     expect(watchlistAttempts).toBeGreaterThan(1);
   });
@@ -233,7 +245,7 @@ describe('MarketHomePage contract-backed compatibility route', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Đang theo dõi' }));
     expect(screen.getByTestId('current-path')).toHaveTextContent('/w/markets/watchlist');
 
-    fireEvent.click(screen.getAllByRole('button', { name: /BTC\/USDT/ })[0]);
+    fireEvent.click(screen.getAllByRole('link', { name: /BTC\/USDT/ })[0]);
     expect(screen.getByTestId('current-path')).toHaveTextContent('/w/pair/btc-usdt');
 
     fireEvent.click(screen.getByRole('button', { name: 'Tăng mạnh' }));
@@ -249,10 +261,10 @@ describe('MarketHomePage contract-backed compatibility route', () => {
     expect(losersRegion).toBeDefined();
     fireEvent.click(within(losersRegion!).getAllByRole('button')[0]);
     expect(screen.getByTestId('current-path')).toHaveTextContent('/w/markets/movers');
-    fireEvent.click(within(losersRegion!).getByRole('button', { name: /ETH\/USDT/ }));
+    fireEvent.click(within(losersRegion!).getByRole('link', { name: /ETH\/USDT/ }));
     expect(screen.getByTestId('current-path')).toHaveTextContent('/w/pair/eth-usdt');
 
-    const btcRows = screen.getAllByRole('button', { name: /BTC\/USDT/ });
+    const btcRows = screen.getAllByRole('link', { name: /BTC\/USDT/ });
     fireEvent.click(btcRows[btcRows.length - 1]);
     expect(screen.getByTestId('current-path')).toHaveTextContent('/w/pair/btc-usdt');
     fireEvent.click(screen.getByRole('button', { name: 'Market depth' }));

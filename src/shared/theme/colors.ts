@@ -16,16 +16,16 @@
  *
  * Usage:
  * ```tsx
- * import { ALPHA } from '@/constants/colors';
- * import { useThemeColors } from '@/hooks/useThemeColors';
+ * import { ALPHA, withAlpha } from '@/shared/theme/colors';
+ * import { useThemeColors } from '@/shared/hooks/useThemeColors';
  *
  * const c = useThemeColors();
  *
  * // Background with subtle tint
- * background: `${c.success}${ALPHA.ghost}`  // #10B98108
+ * background: withAlpha(c.success, ALPHA.ghost)
  *
  * // Border with more visibility
- * border: `1px solid ${c.success}${ALPHA.border}`  // #10B98130
+ * border: `1px solid ${withAlpha(c.success, ALPHA.border)}`
  * ```
  */
 
@@ -143,7 +143,7 @@ const HEX_TO_PCT: Record<string, number> = {
  *
  * @example
  * ```tsx
- * import { withAlpha, ALPHA } from '@/constants/colors';
+ * import { withAlpha, ALPHA } from '@/shared/theme/colors';
  * const c = useThemeColors();
  *
  * // Background with subtle success tint

@@ -1,9 +1,10 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { screen } from '@testing-library/react';
+import { act, fireEvent, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Route, Routes } from 'react-router';
+import { useEffect } from 'react';
 import { renderWithProviders } from '@/test/test-utils';
 import { testAuthAdapter } from '@/test/auth-test-adapter';
 import { useAuth } from '@/shared/session/useAuth';
@@ -88,13 +89,14 @@ const mixedSnapshot: EarnSnapshot = {
   ],
 };
 
-function AuthSessionRefreshButton() {
+type RefreshSession = ReturnType<typeof useAuth>['refreshSession'];
+
+function AuthSessionRefreshProbe({ capture }: { capture: (refresh: RefreshSession) => void }) {
   const { refreshSession } = useAuth();
-  return (
-    <button onClick={() => void refreshSession()} type="button">
-      Refresh auth session
-    </button>
-  );
+  useEffect(() => {
+    capture(refreshSession);
+  }, [capture, refreshSession]);
+  return null;
 }
 
 function createMutableEarnAuthAdapter() {
@@ -122,19 +124,85 @@ function renderEarn(
   authAdapter: AuthAdapter = testAuthAdapter,
   domain: 'savings' | 'staking' = 'savings',
 ) {
-  return renderWithProviders(
+  let refreshFromProvider: RefreshSession = () => Promise.reject(new Error('No session'));
+  const view = renderWithProviders(
     <>
       <Routes>
         <Route path="/earn/:domain" element={<EarnPage domain={domain} />} />
         <Route path="/earn/:domain/receipt" element={<EarnReceiptPage />} />
       </Routes>
-      <AuthSessionRefreshButton />
+      <AuthSessionRefreshProbe capture={(refresh) => (refreshFromProvider = refresh)} />
     </>,
     { authAdapter, routerProps: { initialEntries: [`/earn/${domain}`] } },
   );
+  return { ...view, refreshSession: () => refreshFromProvider() };
 }
 
 describe('Earn page contract boundary', () => {
+  it.each(['subscribe', 'redeem'] as const)(
+    'guards synchronous duplicate %s and locks the pending action sheet',
+    async (operation) => {
+      let calls = 0;
+      let release!: () => void;
+      const pending = new Promise<void>((resolve) => {
+        release = resolve;
+      });
+      server.use(
+        http.get('*/earn/snapshot', () => HttpResponse.json(redemptionSnapshot)),
+        http.post(
+          `*/earn/${operation === 'subscribe' ? 'subscriptions' : 'redemptions'}`,
+          async () => {
+            calls += 1;
+            await pending;
+            return HttpResponse.json({
+              id: 'receipt-guard',
+              operation,
+              productId: 'product-1',
+              positionId: 'position-1',
+              asset: 'USDT',
+              amount: 100,
+              status: 'completed',
+              createdAt: '2026-10-13T10:00:00.000Z',
+            });
+          },
+        ),
+      );
+      renderEarn();
+      await screen.findByRole('button', { name: /Stable Savings/i });
+      if (operation === 'redeem') {
+        fireEvent.click(screen.getByRole('tab', { name: 'Của tôi (1)' }));
+        fireEvent.click(screen.getByRole('button', { name: 'Rút vốn' }));
+      } else {
+        fireEvent.click(screen.getByRole('button', { name: /Stable Savings/i }));
+        fireEvent.click(screen.getByRole('checkbox'));
+      }
+      fireEvent.change(screen.getByLabelText('Số lượng'), { target: { value: '100' } });
+      const submit = screen.getByRole('button', {
+        name: operation === 'subscribe' ? 'Xác nhận đăng ký' : 'Xác nhận rút vốn',
+      });
+      act(() => {
+        fireEvent.click(submit);
+        fireEvent.click(submit);
+      });
+      try {
+        await waitFor(() => expect(calls).toBe(1));
+        expect(screen.getByRole('button', { name: /^Đóng$/ })).toBeDisabled();
+        expect(screen.getByLabelText('Số lượng')).toBeDisabled();
+        expect(screen.getByRole('button', { name: 'MAX' })).toBeDisabled();
+      } finally {
+        release();
+      }
+      expect(
+        await screen.findByText(
+          operation === 'subscribe'
+            ? 'Đăng ký sản phẩm thành công.'
+            : 'Yêu cầu rút vốn đã được ghi nhận.',
+        ),
+      ).toBeInTheDocument();
+      expect(calls).toBe(1);
+    },
+  );
+
   it('filters each domain, browses back from an empty portfolio, and navigates between wrappers', async () => {
     server.use(http.get('*/earn/snapshot', () => HttpResponse.json(mixedSnapshot)));
 
@@ -504,23 +572,24 @@ describe('Earn page contract boundary', () => {
 
     const user = userEvent.setup();
     const mutableAuth = createMutableEarnAuthAdapter();
-    renderEarn(mutableAuth.adapter);
+    const view = renderEarn(mutableAuth.adapter);
     await user.click(await screen.findByRole('button', { name: /Stable Savings/i }));
     await user.type(screen.getByRole('textbox', { name: 'Số lượng' }), '100');
     await user.click(screen.getByRole('checkbox'));
     mutableAuth.setPermissions(['earn:read']);
-    await user.click(screen.getByRole('button', { name: 'Refresh auth session' }));
+    // Session updates originate outside the modal; background fixture buttons must remain inert.
+    await act(async () => void (await view.refreshSession()));
     await user.click(screen.getByRole('button', { name: /Xác nhận đăng ký/i }));
     expect(screen.getByRole('dialog', { name: 'Đăng ký sản phẩm' })).toBeInTheDocument();
 
     await user.click(screen.getByRole('button', { name: 'Đóng' }));
     mutableAuth.setPermissions(['earn:write']);
-    await user.click(screen.getByRole('button', { name: 'Refresh auth session' }));
+    await act(async () => void (await view.refreshSession()));
     await user.click(screen.getByRole('tab', { name: 'Của tôi (1)' }));
     await user.click(await screen.findByRole('button', { name: 'Rút vốn' }));
     await user.type(screen.getByRole('textbox', { name: 'Số lượng' }), '50');
     mutableAuth.setPermissions(['earn:read']);
-    await user.click(screen.getByRole('button', { name: 'Refresh auth session' }));
+    await act(async () => void (await view.refreshSession()));
     await user.click(screen.getByRole('button', { name: 'Xác nhận rút vốn' }));
 
     expect(screen.getByRole('dialog', { name: 'Rút vốn' })).toBeInTheDocument();
