@@ -218,6 +218,33 @@ path-scoped worktree or index edits.
 
 ## Vertical-slice status: Auth/session
 
+### Ranh giới dữ liệu khi đổi tài khoản
+
+`src/shared/session/AuthContext.tsx` gọi callback đồng bộ `onIdentityChange`
+trước khi công bố credential hoặc identity có `user.id` khác. Callback do
+`src/app/contexts/AppContext.tsx` cung cấp để xóa singleton QueryClient tại
+`src/shared/api/query-client.ts`; shared session không phụ thuộc vào query hoặc feature.
+Facade `src/app/contexts/AuthContext.tsx` chuyển tiếp callback này.
+
+`src/app/components/layout/ProtectedRoute.tsx` sở hữu state cục bộ của trang riêng
+theo `user.id` bằng keyed Outlet. Không remount toàn AppProvider: OTP/registration
+cần giữ trạng thái thành công sau khi áp dụng session và trước khi điều hướng.
+
+| Điều kiện | Hành vi bắt buộc |
+| --- | --- |
+| Refresh giữ nguyên `user.id` | Giữ DOM, draft và focus; không xóa cache chỉ vì token/profile refresh. |
+| Đổi sang ID khác | Xóa query/mutation cache trước khi publish identity; reset subtree được bảo vệ trước khi render dữ liệu tài khoản mới. |
+| Đăng xuất | Xóa cache trước khi publish trạng thái không xác thực; ProtectedRoute giữ hợp đồng redirect và return path hiện có. |
+| Áp dụng session trong luồng auth công khai | Giữ DOM/state thành công OTP, registration và tiến trình điều hướng. |
+
+Operation guards chống phản hồi auth cũ vẫn quyết định khi nào được apply session.
+Boundary không chứng minh server đã hủy mutation đang bay hoặc xóa persistence khác;
+authorization và reconciliation backend vẫn phải được kiểm chứng riêng. Regression
+dùng AppProvider, production QueryClient singleton và ProtectedRoute thật, đồng thời
+giữ các assertion OTP, mất quyền, logout và chống gửi lệnh/rút vốn của consumer.
+
+### Triển khai và giới hạn tích hợp
+
 - The canonical `/auth/login` implementation belongs to
   `features/auth/pages/LoginPage.tsx`; the route imports the feature directly
   and its unused route-less app-page export has been removed.

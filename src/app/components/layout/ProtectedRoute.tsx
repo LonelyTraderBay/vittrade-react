@@ -57,5 +57,10 @@ export function ProtectedRoute({
     );
   }
 
-  return <Outlet />;
+  // Public auth/MFA progress stays mounted; private route state belongs to this user.
+  return (
+    <React.Fragment key={user?.id}>
+      <Outlet />
+    </React.Fragment>
+  );
 }
