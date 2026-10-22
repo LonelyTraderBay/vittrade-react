@@ -7,7 +7,6 @@ import {
   CircleDot,
   Filter,
   Plus,
-  Search,
   Shield,
   Sparkles,
   TrendingUp,
@@ -15,7 +14,6 @@ import {
   X,
   Zap,
 } from 'lucide-react';
-import { EmptyState } from '@/shared/ui/EmptyState';
 import { PageContent } from '@/shared/ui/layout/PageContent';
 import { SearchBar } from '@/shared/ui/SearchBar';
 import { TabBar } from '@/shared/ui/TabBar';
@@ -25,9 +23,13 @@ import { fmtCompact, fmtPct } from '@/shared/lib/formatNumber';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { useHaptic } from '@/shared/hooks/useHaptic';
 import type { P2PAd, P2PPlatformStats } from '../model/p2p-types';
-import { SwipeableAdCard } from './P2PHomeCards';
+import { P2PMarketplaceResults } from './P2PMarketplaceResults';
 export interface P2PMarketplaceSectionsProps {
-  platformStats: P2PPlatformStats;
+  platformStats?: P2PPlatformStats;
+  /** Query feedback replaces only the results; controls and drafts remain mounted. */
+  resultsFeedback?: React.ReactNode;
+  resultsBusy?: boolean;
+  assetFocusRef?: React.RefObject<HTMLButtonElement>;
   tab: 'buy' | 'sell';
   handleTabSwitch: (tab: 'buy' | 'sell') => void;
   asset: string;
@@ -63,6 +65,9 @@ const SORT_OPTIONS = [
 ];
 export function P2PMarketplaceSections({
   platformStats,
+  resultsFeedback,
+  resultsBusy = false,
+  assetFocusRef,
   tab,
   handleTabSwitch,
   asset,
@@ -94,7 +99,6 @@ export function P2PMarketplaceSections({
 
   return (
     <PageContent padding="compact">
-      {/* ═══ P2P Hub Card — Enterprise Fintech ═══ */}
       <div
         className="rounded-2xl overflow-hidden"
         style={{
@@ -203,116 +207,118 @@ export function P2PMarketplaceSections({
         </div>
 
         {/* ─── Stats Section ─── */}
-        <div
-          className="px-4 py-3"
-          style={{
-            borderTop: `1px solid ${c.divider}`,
-            background: c.surface2,
-          }}
-        >
-          {/* Stats Grid — 3 columns */}
-          <div className="grid grid-cols-3 gap-0">
-            <div
-              className="flex flex-col items-center py-1.5"
-              style={{ borderRight: `1px solid ${c.divider}` }}
-            >
-              <div className="flex items-center gap-1 mb-1">
-                <Activity size={10} color="#3B82F6" />
-                <span style={{ color: c.text3, fontSize: 9, fontWeight: 500 }}>Volume 24h</span>
-              </div>
-              <span
-                style={{
-                  color: c.text1,
-                  fontSize: 14,
-                  fontWeight: 700,
-                  fontFamily: 'monospace',
-                  letterSpacing: -0.5,
-                }}
-              >
-                {fmtCompact(platformStats.volume24h, { prefix: '₫' })}
-              </span>
-              <span style={{ color: c.successText, fontSize: 10, fontWeight: 700, marginTop: 1 }}>
-                +{fmtPct(platformStats.volume24hChange)}
-              </span>
-            </div>
-
-            <div
-              className="flex flex-col items-center py-1.5"
-              style={{ borderRight: `1px solid ${c.divider}` }}
-            >
-              <div className="flex items-center gap-1 mb-1">
-                <Users size={10} color="#10B981" />
-                <span style={{ color: c.text3, fontSize: 9, fontWeight: 500 }}>Online</span>
-              </div>
-              <span
-                style={{
-                  color: c.text1,
-                  fontSize: 14,
-                  fontWeight: 700,
-                  fontFamily: 'monospace',
-                  letterSpacing: -0.5,
-                }}
-              >
-                {platformStats.onlineTraders.toLocaleString()}
-              </span>
-              <span style={{ color: c.text3, fontSize: 10, marginTop: 1 }}>traders</span>
-            </div>
-
-            <div className="flex flex-col items-center py-1.5">
-              <div className="flex items-center gap-1 mb-1">
-                <TrendingUp size={10} color="#F59E0B" />
-                <span style={{ color: c.text3, fontSize: 9, fontWeight: 500 }}>Completion</span>
-              </div>
-              <span
-                style={{
-                  color: c.text1,
-                  fontSize: 14,
-                  fontWeight: 700,
-                  fontFamily: 'monospace',
-                  letterSpacing: -0.5,
-                }}
-              >
-                {platformStats.avgCompletionRate}%
-              </span>
-              <span style={{ color: c.text3, fontSize: 10, marginTop: 1 }}>
-                avg {platformStats.avgCompletionTime}
-              </span>
-            </div>
-          </div>
-
-          {/* Bottom row: secondary stats */}
+        {platformStats && (
           <div
-            className="flex items-center justify-between mt-2.5 pt-2.5"
-            style={{ borderTop: `1px solid ${c.divider}` }}
+            className="px-4 py-3"
+            style={{
+              borderTop: `1px solid ${c.divider}`,
+              background: c.surface2,
+            }}
           >
-            <div className="flex items-center gap-1.5">
+            {/* Stats Grid — 3 columns */}
+            <div className="grid grid-cols-3 gap-0">
               <div
-                className="w-5 h-5 rounded flex items-center justify-center"
-                style={{ background: 'rgba(139,92,246,0.1)' }}
+                className="flex flex-col items-center py-1.5"
+                style={{ borderRight: `1px solid ${c.divider}` }}
               >
-                <BarChart3 size={10} color="#8B5CF6" />
+                <div className="flex items-center gap-1 mb-1">
+                  <Activity size={10} color="#3B82F6" />
+                  <span style={{ color: c.text3, fontSize: 9, fontWeight: 500 }}>Volume 24h</span>
+                </div>
+                <span
+                  style={{
+                    color: c.text1,
+                    fontSize: 14,
+                    fontWeight: 700,
+                    fontFamily: 'monospace',
+                    letterSpacing: -0.5,
+                  }}
+                >
+                  {fmtCompact(platformStats.volume24h, { prefix: '₫' })}
+                </span>
+                <span style={{ color: c.successText, fontSize: 10, fontWeight: 700, marginTop: 1 }}>
+                  +{fmtPct(platformStats.volume24hChange)}
+                </span>
               </div>
-              <span style={{ color: c.text2, fontSize: 11 }}>
-                <span style={{ fontWeight: 700, fontFamily: 'monospace', color: c.text1 }}>
-                  {platformStats.totalTrades24h.toLocaleString()}
-                </span>{' '}
-                trades · {platformStats.activeMerchants} merchants
-              </span>
+
+              <div
+                className="flex flex-col items-center py-1.5"
+                style={{ borderRight: `1px solid ${c.divider}` }}
+              >
+                <div className="flex items-center gap-1 mb-1">
+                  <Users size={10} color="#10B981" />
+                  <span style={{ color: c.text3, fontSize: 9, fontWeight: 500 }}>Online</span>
+                </div>
+                <span
+                  style={{
+                    color: c.text1,
+                    fontSize: 14,
+                    fontWeight: 700,
+                    fontFamily: 'monospace',
+                    letterSpacing: -0.5,
+                  }}
+                >
+                  {platformStats.onlineTraders.toLocaleString()}
+                </span>
+                <span style={{ color: c.text3, fontSize: 10, marginTop: 1 }}>traders</span>
+              </div>
+
+              <div className="flex flex-col items-center py-1.5">
+                <div className="flex items-center gap-1 mb-1">
+                  <TrendingUp size={10} color="#F59E0B" />
+                  <span style={{ color: c.text3, fontSize: 9, fontWeight: 500 }}>Completion</span>
+                </div>
+                <span
+                  style={{
+                    color: c.text1,
+                    fontSize: 14,
+                    fontWeight: 700,
+                    fontFamily: 'monospace',
+                    letterSpacing: -0.5,
+                  }}
+                >
+                  {platformStats.avgCompletionRate}%
+                </span>
+                <span style={{ color: c.text3, fontSize: 10, marginTop: 1 }}>
+                  avg {platformStats.avgCompletionTime}
+                </span>
+              </div>
             </div>
+
+            {/* Bottom row: secondary stats */}
             <div
-              className="flex items-center gap-1.5 px-2 py-1 rounded-lg"
-              style={{
-                background: 'rgba(16,185,129,0.06)',
-                border: '1px solid rgba(16,185,129,0.1)',
-              }}
+              className="flex items-center justify-between mt-2.5 pt-2.5"
+              style={{ borderTop: `1px solid ${c.divider}` }}
             >
-              <Shield size={10} color="#10B981" />
-              <span style={{ color: c.successText, fontSize: 10, fontWeight: 600 }}>
-                {fmtCompact(platformStats.escrowProtected, { prefix: '₫' })} Escrow
-              </span>
+              <div className="flex items-center gap-1.5">
+                <div
+                  className="w-5 h-5 rounded flex items-center justify-center"
+                  style={{ background: 'rgba(139,92,246,0.1)' }}
+                >
+                  <BarChart3 size={10} color="#8B5CF6" />
+                </div>
+                <span style={{ color: c.text2, fontSize: 11 }}>
+                  <span style={{ fontWeight: 700, fontFamily: 'monospace', color: c.text1 }}>
+                    {platformStats.totalTrades24h.toLocaleString()}
+                  </span>{' '}
+                  trades · {platformStats.activeMerchants} merchants
+                </span>
+              </div>
+              <div
+                className="flex items-center gap-1.5 px-2 py-1 rounded-lg"
+                style={{
+                  background: 'rgba(16,185,129,0.06)',
+                  border: '1px solid rgba(16,185,129,0.1)',
+                }}
+              >
+                <Shield size={10} color="#10B981" />
+                <span style={{ color: c.successText, fontSize: 10, fontWeight: 600 }}>
+                  {fmtCompact(platformStats.escrowProtected, { prefix: '₫' })} Escrow
+                </span>
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
       <TabBar
         variant="segment"
@@ -334,6 +340,9 @@ export function P2PMarketplaceSections({
           {ASSETS.map((a) => (
             <button
               key={a}
+              ref={asset === a ? assetFocusRef : undefined}
+              type="button"
+              aria-pressed={asset === a}
               onClick={() => {
                 setAsset(a);
                 hapticSelection();
@@ -355,6 +364,8 @@ export function P2PMarketplaceSections({
         {FIAT_CURRENCIES.map((cur) => (
           <button
             key={cur}
+            type="button"
+            aria-pressed={fiatCurrency === cur}
             onClick={() => {
               setFiatCurrency(cur);
               hapticSelection();
@@ -405,6 +416,8 @@ export function P2PMarketplaceSections({
                   {SORT_OPTIONS.map((s) => (
                     <button
                       key={s.id}
+                      type="button"
+                      aria-pressed={sortBy === s.id}
                       onClick={() => {
                         setSortBy(s.id);
                         hapticSelection();
@@ -437,6 +450,8 @@ export function P2PMarketplaceSections({
                   ].map((t) => (
                     <button
                       key={t.id}
+                      type="button"
+                      aria-pressed={merchantType === t.id}
                       onClick={() => {
                         setMerchantType(t.id);
                         hapticSelection();
@@ -474,6 +489,8 @@ export function P2PMarketplaceSections({
                 </p>
                 <div className="flex gap-1.5 flex-wrap">
                   <button
+                    type="button"
+                    aria-pressed={!filterPayment}
                     onClick={() => {
                       setFilterPayment('');
                       hapticSelection();
@@ -492,6 +509,8 @@ export function P2PMarketplaceSections({
                   {allPaymentMethods.map((pm) => (
                     <button
                       key={pm}
+                      type="button"
+                      aria-pressed={filterPayment === pm}
                       onClick={() => {
                         setFilterPayment(filterPayment === pm ? '' : pm);
                         hapticSelection();
@@ -542,48 +561,18 @@ export function P2PMarketplaceSections({
         )}
       </AnimatePresence>
 
-      {/* Results Header */}
-      <div className="flex items-center justify-between">
-        <span style={{ color: c.text2, fontSize: 11 }}>
-          {`${ads.length} offer`}
-          {sortBy !== 'price' && (
-            <span style={{ color: c.text3 }}>
-              {' · '}
-              {SORT_OPTIONS.find((s) => s.id === sortBy)?.label}
-            </span>
-          )}
-        </span>
-        <div
-          className="flex items-center gap-1 px-2 py-1 rounded-md"
-          style={{ background: c.surface2 }}
-        >
-          <Shield size={9} color="#10B981" />
-          <span style={{ color: c.successText, fontSize: 9, fontWeight: 600 }}>Escrow</span>
-        </div>
-      </div>
-
-      {/* Ads List */}
-      <div className="flex flex-col gap-2.5">
-        {ads.length === 0 ? (
-          <EmptyState
-            icon={Search}
-            title="Không tìm thấy offer"
-            subtitle="Thử thay đổi bộ lọc hoặc tài sản"
-          />
-        ) : (
-          ads.map((ad, i) => (
-            <SwipeableAdCard
-              key={ad.id}
-              ad={ad}
-              tradeType={tab}
-              prefix={prefix}
-              index={i}
-              onContextMenu={onContextMenu}
-              onQuickAction={onQuickAction}
-            />
-          ))
-        )}
-      </div>
+      <P2PMarketplaceResults
+        ads={ads}
+        tab={tab}
+        sortLabel={
+          sortBy !== 'price' ? SORT_OPTIONS.find((s) => s.id === sortBy)?.label : undefined
+        }
+        resultsFeedback={resultsFeedback}
+        resultsBusy={resultsBusy}
+        prefix={prefix}
+        onContextMenu={onContextMenu}
+        onQuickAction={onQuickAction}
+      />
     </PageContent>
   );
 }

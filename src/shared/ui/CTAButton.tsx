@@ -84,7 +84,9 @@ export function CTAButton({
           : variant === 'secondary'
             ? undefined
             : ButtonShadows[variant],
-        transition: 'all var(--tr-duration-normal) ease',
+        // Text/background form one semantic state; interpolating either can lose contrast.
+        transition:
+          'box-shadow var(--tr-duration-normal) ease, transform var(--tr-duration-normal) ease',
         ...style,
       }}
       {...rest}

@@ -37,6 +37,7 @@ export function ContextMenuSheet({
   onViewMerchant,
   prefix,
   onAfterOpen,
+  fallbackFocusRef,
 }: {
   ad: P2PAd | null;
   isOpen: boolean;
@@ -48,6 +49,7 @@ export function ContextMenuSheet({
   onViewMerchant: (ad: P2PAd) => void;
   prefix: string;
   onAfterOpen?: () => void;
+  fallbackFocusRef?: React.RefObject<HTMLElement | null>;
 }) {
   const c = useThemeColors();
   const navigate = useNavigate();
@@ -134,6 +136,7 @@ export function ContextMenuSheet({
       showCloseButton={false}
       ariaLabel={`Tuỳ chọn ${ad.merchant}`}
       onAfterOpen={onAfterOpen}
+      fallbackFocusRef={fallbackFocusRef}
     >
       {/* Menu items */}
       <div className="flex flex-col gap-1">
@@ -184,12 +187,14 @@ export function P2PQuickActionsSheet({
   userLevel,
   currentLevelData,
   onAfterOpen,
+  fallbackFocusRef,
 }: {
   isOpen: boolean;
   onClose: () => void;
   userLevel: P2PUserLevel;
   currentLevelData: P2PTradingLevel;
   onAfterOpen?: () => void;
+  fallbackFocusRef?: React.RefObject<HTMLElement | null>;
 }) {
   const c = useThemeColors();
   const navigate = useNavigate();
@@ -205,6 +210,7 @@ export function P2PQuickActionsSheet({
       maxHeight="calc(100vh - 24px)"
       ariaLabel="Tuỳ chọn P2P"
       onAfterOpen={onAfterOpen}
+      fallbackFocusRef={fallbackFocusRef}
     >
       {/* User Level Summary */}
       <button

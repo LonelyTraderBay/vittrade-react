@@ -12,10 +12,10 @@
   "summary": {
     "pageCount": 130,
     "routeCount": 428,
-    "componentCount": 156,
+    "componentCount": 157,
     "dataModuleCount": 0,
     "serviceCount": 32,
-    "mockCount": 28,
+    "mockCount": 29,
     "pageStatus": {
       "production": 0,
       "integration-pending": 126,
@@ -2163,7 +2163,7 @@
       "domain": "p2p",
       "owner": "features/p2p",
       "status": "integration-pending",
-      "lines": 261,
+      "lines": 258,
       "routePaths": [
         "p2p/express"
       ],
@@ -2174,6 +2174,7 @@
           "../model/p2p-types",
           "@/shared/hooks/useThemeColors",
           "@/shared/navigation/useRoutePrefix",
+          "@/shared/ui/CTAButton",
           "@/shared/ui/ErrorState",
           "@/shared/ui/TrCard",
           "@/shared/ui/layout/Header",
@@ -2285,7 +2286,7 @@
       "domain": "p2p",
       "owner": "features/p2p",
       "status": "integration-pending",
-      "lines": 289,
+      "lines": 317,
       "routePaths": [
         "p2p"
       ],
@@ -2306,8 +2307,7 @@
           "@/shared/ui/ErrorState",
           "@/shared/ui/OfflineBanner",
           "@/shared/ui/PullToRefresh",
-          "@/shared/ui/layout/Header",
-          "@/shared/ui/layout/PageContent"
+          "@/shared/ui/layout/Header"
         ],
         "mockReferences": [],
         "directRuntimeAccess": {
@@ -7365,6 +7365,10 @@
       "domain": "p2p"
     },
     {
+      "path": "src/features/p2p/components/P2PMarketplaceResults.tsx",
+      "domain": "p2p"
+    },
+    {
       "path": "src/features/p2p/components/P2PMarketplaceSections.tsx",
       "domain": "p2p"
     },
@@ -7883,6 +7887,10 @@
     },
     {
       "path": "src/test/fixtures/auth-user.ts",
+      "domain": "platform"
+    },
+    {
+      "path": "src/test/fixtures/p2p-marketplace.ts",
       "domain": "platform"
     }
   ]

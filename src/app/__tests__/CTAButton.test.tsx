@@ -557,11 +557,14 @@ describe('CTAButton', () => {
   });
 
   describe('Transitions', () => {
-    it('should have transition for all properties', () => {
+    it('should animate shadow and transform without interpolating semantic colors', () => {
       const { container } = render(<CTAButton>Button</CTAButton>);
 
       const button = container.firstChild as HTMLElement;
-      expect(button.style.transition).toContain('all');
+      const properties = button.style.transition
+        .split(',')
+        .map((value) => value.trim().split(' ')[0]);
+      expect(properties).toEqual(['box-shadow', 'transform']);
       expect(button.style.transition).toContain('var(--tr-duration-normal)');
       expect(button.style.transition).toContain('ease');
     });

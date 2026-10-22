@@ -1,8 +1,9 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
-import { screen } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
+import { useQueryClient } from '@tanstack/react-query';
 import { useLocation } from 'react-router';
 import { renderWithProviders } from '@/test/test-utils';
 import type { P2PAd, P2PPaymentMethod } from '../model/p2p-types';
@@ -54,6 +55,11 @@ function ad(overrides: Partial<P2PAd>): P2PAd {
   return { ...baseAd, ...overrides };
 }
 
+function RefreshProbe({ queryKey }: { queryKey: string[] }) {
+  const client = useQueryClient();
+  return <button onClick={() => void client.refetchQueries({ queryKey })}>Làm mới kiểm thử</button>;
+}
+
 function LocationProbe() {
   const location = useLocation();
   return <span data-testid="location">{location.pathname + location.search}</span>;
@@ -66,6 +72,140 @@ function installPayments() {
 }
 
 describe('P2P Express contract page', () => {
+  it('retains the selected asset, amount and payment through pending, error and retry without using a previous offer', async () => {
+    installPayments();
+    let release!: () => void;
+    const gate = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    let recover = false;
+    server.use(
+      http.get('*/p2p/ads', async ({ request }) => {
+        if (new URL(request.url).searchParams.get('asset') !== 'BTC')
+          return HttpResponse.json({ items: [ad({ paymentMethods: ['Momo'] })] });
+        await gate;
+        return recover
+          ? HttpResponse.json({
+              items: [
+                ad({
+                  id: 'btc-current',
+                  asset: 'BTC',
+                  merchant: 'Current BTC',
+                  price: 1_600_000_000,
+                  paymentMethods: ['Momo'],
+                }),
+              ],
+            })
+          : HttpResponse.json({ code: 'UNAVAILABLE' }, { status: 503 });
+      }),
+    );
+    const user = userEvent.setup();
+    renderWithProviders(
+      <>
+        <P2PExpressPage />
+        <LocationProbe />
+      </>,
+      { routerProps: { initialEntries: ['/w/p2p/express'] } },
+    );
+    expect(await screen.findByText('Merchant')).toBeInTheDocument();
+    await user.type(screen.getByLabelText('Số tiền VND'), '1000000');
+    await user.click(screen.getByRole('button', { name: 'Momo' }));
+    const asset = screen.getByRole('combobox', { name: 'Tài sản' });
+    const amount = screen.getByLabelText('Số tiền VND');
+    await user.selectOptions(asset, 'BTC');
+    try {
+      expect(screen.getByRole('combobox', { name: 'Tài sản' })).toBe(asset);
+      expect(asset).toHaveFocus();
+      expect(screen.getByLabelText('Số tiền VND')).toBe(amount);
+      expect(amount).toHaveValue('1000000');
+      expect(screen.queryByText('Merchant')).not.toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Mua nhanh BTC' })).toBeDisabled();
+    } finally {
+      release();
+    }
+    expect(await screen.findByText('Không thể tải dữ liệu Express P2P')).toBeInTheDocument();
+    expect(asset).toHaveFocus();
+    expect(screen.getByRole('combobox', { name: 'Tài sản' })).toBe(asset);
+    expect(screen.getByLabelText('Số tiền VND')).toHaveValue('1000000');
+    expect(screen.getByRole('button', { name: 'Momo' })).toHaveAttribute('aria-pressed', 'true');
+    await user.click(screen.getByRole('button', { name: 'Mua nhanh BTC' }));
+    expect(screen.getByTestId('location')).toHaveTextContent('/w/p2p/express');
+    recover = true;
+    await user.click(screen.getByRole('button', { name: 'Thử lại' }));
+    expect(await screen.findByText('Current BTC')).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Mua nhanh BTC' }));
+    expect(screen.getByTestId('location')).toHaveTextContent(
+      '/w/p2p/express/confirm?type=buy&asset=BTC&fiat=1000000&adId=btc-current&payment=Momo',
+    );
+  });
+
+  it('does not expose a cached offer or enable confirmation after the payment-method query fails', async () => {
+    let fail = false;
+    server.use(
+      http.get('*/p2p/ads', () => HttpResponse.json({ items: [baseAd] })),
+      http.get('*/p2p/payment-methods', () =>
+        fail
+          ? HttpResponse.json({ code: 'UNAVAILABLE' }, { status: 503 })
+          : HttpResponse.json({ items: [verifiedPayment] }),
+      ),
+    );
+    const user = userEvent.setup();
+    renderWithProviders(
+      <>
+        <P2PExpressPage />
+        <RefreshProbe queryKey={['p2p', 'payment-methods']} />
+      </>,
+    );
+    expect(await screen.findByText('Merchant')).toBeInTheDocument();
+    await user.type(screen.getByLabelText('Số tiền VND'), '1000000');
+    const amount = screen.getByLabelText('Số tiền VND');
+    fail = true;
+    await user.click(screen.getByRole('button', { name: 'Làm mới kiểm thử' }));
+    expect(await screen.findByText('Không thể tải dữ liệu Express P2P')).toBeInTheDocument();
+    expect(screen.getByLabelText('Số tiền VND')).toBe(amount);
+    expect(amount).toHaveValue('1000000');
+    expect(screen.queryByText('Merchant')).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Mua nhanh USDT' })).toBeDisabled();
+  });
+
+  it('aborts an obsolete asset read and keeps the latest asset and offer when the old handler completes', async () => {
+    installPayments();
+    let release!: () => void;
+    const gate = new Promise<void>((resolve) => {
+      release = resolve;
+    });
+    let oldSignal: AbortSignal | undefined;
+    let oldCompleted = false;
+    server.use(
+      http.get('*/p2p/ads', async ({ request }) => {
+        const asset = new URL(request.url).searchParams.get('asset') ?? 'USDT';
+        if (asset === 'BTC') {
+          oldSignal = request.signal;
+          await gate;
+          oldCompleted = true;
+        }
+        return HttpResponse.json({ items: [ad({ id: asset, asset, merchant: `Offer ${asset}` })] });
+      }),
+    );
+    const user = userEvent.setup();
+    renderWithProviders(<P2PExpressPage />);
+    expect(await screen.findByText('Offer USDT')).toBeInTheDocument();
+    const asset = screen.getByRole('combobox', { name: 'Tài sản' });
+    await user.selectOptions(asset, 'BTC');
+    try {
+      await waitFor(() => expect(oldSignal).toBeDefined());
+      await user.selectOptions(screen.getByRole('combobox', { name: 'Tài sản' }), 'ETH');
+      expect(await screen.findByText('Offer ETH')).toBeInTheDocument();
+      expect(oldSignal?.aborted).toBe(true);
+    } finally {
+      release();
+    }
+    await waitFor(() => expect(oldCompleted).toBe(true));
+    expect(screen.getByRole('combobox', { name: 'Tài sản' })).toBe(asset);
+    expect(asset).toHaveValue('ETH');
+    expect(screen.queryByText('Offer BTC')).not.toBeInTheDocument();
+  });
+
   it('selects the cheapest eligible sell offer and navigates with the selected order details', async () => {
     server.use(
       http.get('*/p2p/ads', ({ request }) => {

@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { ArrowDownUp, Info, ShieldCheck, Zap } from 'lucide-react';
 import { useNavigate } from 'react-router';
 import { ErrorState } from '@/shared/ui/ErrorState';
+import { CTAButton } from '@/shared/ui/CTAButton';
 import { Header } from '@/shared/ui/layout/Header';
 import { PageContent } from '@/shared/ui/layout/PageContent';
 import { PageLayout } from '@/shared/ui/layout/PageLayout';
@@ -27,6 +28,7 @@ export function P2PExpressPage() {
 
   const adsQuery = useP2PAdsQuery({ asset, currency: 'VND' });
   const paymentMethodsQuery = useP2PPaymentMethodsQuery();
+  const resultsReady = adsQuery.isSuccess && paymentMethodsQuery.isSuccess;
   const fiatAmount = Number(fiatInput) || 0;
   const ads = adsQuery.data?.items ?? EMPTY_ADS;
   const compatibleAds = useMemo(() => {
@@ -48,10 +50,15 @@ export function P2PExpressPage() {
     .filter((method) => method.isVerified)
     .map((method) => method.bankName);
   const availablePayments = Array.from(
-    new Set([...verifiedPayments, ...compatibleAds.flatMap((ad) => ad.paymentMethods)]),
+    new Set([
+      ...verifiedPayments,
+      ...compatibleAds.flatMap((ad) => ad.paymentMethods),
+      ...(paymentMethod ? [paymentMethod] : []),
+    ]),
   );
 
   const goToConfirm = () => {
+    if (!resultsReady || !bestAd || fiatAmount <= 0) return;
     const params = new URLSearchParams({
       type: tradeType,
       asset,
@@ -62,33 +69,6 @@ export function P2PExpressPage() {
     navigate(`${prefix}/p2p/express/confirm?${params.toString()}`);
   };
 
-  if (adsQuery.isPending || paymentMethodsQuery.isPending) {
-    return (
-      <PageLayout>
-        <Header title="Express Trade" subtitle="Mua bán nhanh · P2P" back />
-        <PageContent>
-          <p style={{ color: colors.text2, fontSize: 13 }}>Đang tìm offer tốt nhất…</p>
-        </PageContent>
-      </PageLayout>
-    );
-  }
-
-  if (adsQuery.isError || paymentMethodsQuery.isError) {
-    return (
-      <PageLayout>
-        <Header title="Express Trade" subtitle="Mua bán nhanh · P2P" back />
-        <ErrorState
-          title="Không thể tải dữ liệu Express P2P"
-          actionLabel="Thử lại"
-          onAction={() => {
-            void adsQuery.refetch();
-            void paymentMethodsQuery.refetch();
-          }}
-        />
-      </PageLayout>
-    );
-  }
-
   return (
     <PageLayout>
       <Header title="Express Trade" subtitle="Mua bán nhanh · P2P" back />
@@ -98,6 +78,7 @@ export function P2PExpressPage() {
             <button
               key={type}
               type="button"
+              aria-pressed={tradeType === type}
               onClick={() => setTradeType(type)}
               className="flex-1 rounded-xl py-3 font-bold text-sm"
               style={{
@@ -167,6 +148,7 @@ export function P2PExpressPage() {
           <div className="flex gap-2 flex-wrap">
             <button
               type="button"
+              aria-pressed={!paymentMethod}
               onClick={() => setPaymentMethod('')}
               className="rounded-xl px-3 py-2 text-xs"
               style={{
@@ -180,6 +162,7 @@ export function P2PExpressPage() {
               <button
                 key={method}
                 type="button"
+                aria-pressed={paymentMethod === method}
                 onClick={() => setPaymentMethod(method)}
                 className="rounded-xl px-3 py-2 text-xs"
                 style={{
@@ -193,67 +176,81 @@ export function P2PExpressPage() {
           </div>
         </TrCard>
 
-        {bestAd ? (
-          <TrCard
-            className="p-4"
-            accentBorder={tradeType === 'buy' ? 'rgba(16,185,129,0.3)' : 'rgba(239,68,68,0.3)'}
-          >
-            <div className="flex items-center gap-2 mb-3">
-              <Zap
-                size={16}
-                color={tradeType === 'buy' ? 'var(--tr-success-text)' : 'var(--tr-error-text)'}
+        <div
+          role="region"
+          aria-label="Offer Express P2P"
+          aria-busy={adsQuery.isFetching || paymentMethodsQuery.isFetching}
+        >
+          {adsQuery.isError || paymentMethodsQuery.isError ? (
+            <div role="alert">
+              <ErrorState
+                title="Không thể tải dữ liệu Express P2P"
+                message="Offer hiện chưa khả dụng. Bạn có thể thử lại hoặc đổi tài sản; số tiền và bộ lọc được giữ nguyên."
+                actionLabel="Thử lại"
+                onAction={() => {
+                  void adsQuery.refetch();
+                  void paymentMethodsQuery.refetch();
+                }}
               />
-              <span style={{ color: colors.text1, fontSize: 14, fontWeight: 700 }}>
-                Offer phù hợp nhất
-              </span>
             </div>
-            <div className="flex items-center justify-between">
-              <div>
-                <p style={{ color: colors.text1, fontSize: 13, fontWeight: 700 }}>
-                  {bestAd.merchant}
-                </p>
-                <p style={{ color: colors.text3, fontSize: 11 }}>
-                  {bestAd.completionRate}% hoàn tất · {bestAd.avgResponseTime}
+          ) : !resultsReady ? (
+            <p role="status" style={{ color: colors.text2, fontSize: 13 }}>
+              Đang tìm offer tốt nhất…
+            </p>
+          ) : bestAd ? (
+            <TrCard
+              className="p-4"
+              accentBorder={tradeType === 'buy' ? 'rgba(16,185,129,0.3)' : 'rgba(239,68,68,0.3)'}
+            >
+              <div className="flex items-center gap-2 mb-3">
+                <Zap
+                  size={16}
+                  color={tradeType === 'buy' ? 'var(--tr-success-text)' : 'var(--tr-error-text)'}
+                />
+                <span style={{ color: colors.text1, fontSize: 14, fontWeight: 700 }}>
+                  Offer phù hợp nhất
+                </span>
+              </div>
+              <div className="flex items-center justify-between">
+                <div>
+                  <p style={{ color: colors.text1, fontSize: 13, fontWeight: 700 }}>
+                    {bestAd.merchant}
+                  </p>
+                  <p style={{ color: colors.text3, fontSize: 11 }}>
+                    {bestAd.completionRate}% hoàn tất · {bestAd.avgResponseTime}
+                  </p>
+                </div>
+                <p style={{ color: colors.text1, fontSize: 15, fontWeight: 700 }}>
+                  {bestAd.price.toLocaleString('vi-VN')} VND
                 </p>
               </div>
-              <p style={{ color: colors.text1, fontSize: 15, fontWeight: 700 }}>
-                {bestAd.price.toLocaleString('vi-VN')} VND
-              </p>
-            </div>
-            <div className="flex items-center gap-2 mt-3">
-              <ShieldCheck size={14} color="var(--tr-success-text)" />
-              <span style={{ color: colors.text2, fontSize: 11 }}>
-                {(fiatAmount / bestAd.price).toFixed(8)} {asset} dự kiến
-              </span>
-            </div>
-          </TrCard>
-        ) : (
-          <TrCard className="p-4">
-            <div className="flex items-start gap-2">
-              <Info size={15} color="var(--tr-warning-text)" />
-              <p style={{ color: colors.text2, fontSize: 12 }}>
-                Chưa tìm thấy offer phù hợp với số tiền và bộ lọc hiện tại.
-              </p>
-            </div>
-          </TrCard>
-        )}
+              <div className="flex items-center gap-2 mt-3">
+                <ShieldCheck size={14} color="var(--tr-success-text)" />
+                <span style={{ color: colors.text2, fontSize: 11 }}>
+                  {(fiatAmount / bestAd.price).toFixed(8)} {asset} dự kiến
+                </span>
+              </div>
+            </TrCard>
+          ) : (
+            <TrCard className="p-4">
+              <div className="flex items-start gap-2">
+                <Info size={15} color="var(--tr-warning-text)" />
+                <p style={{ color: colors.text2, fontSize: 12 }}>
+                  Chưa tìm thấy offer phù hợp với số tiền và bộ lọc hiện tại.
+                </p>
+              </div>
+            </TrCard>
+          )}
+        </div>
 
-        <button
-          type="button"
-          disabled={!bestAd || fiatAmount <= 0}
+        <CTAButton
+          variant={tradeType === 'buy' ? 'success' : 'danger'}
+          icon={Zap}
+          disabled={!resultsReady || !bestAd || fiatAmount <= 0}
           onClick={goToConfirm}
-          className="w-full rounded-xl py-3 font-bold"
-          style={{
-            background: tradeType === 'buy' ? 'var(--tr-buy)' : '#EF4444',
-            color: 'var(--tr-text-on-color)',
-            opacity: !bestAd || fiatAmount <= 0 ? 0.5 : 1,
-          }}
         >
-          <span className="inline-flex items-center gap-2">
-            <Zap size={16} />
-            {tradeType === 'buy' ? 'Mua nhanh' : 'Bán nhanh'} {asset}
-          </span>
-        </button>
+          {tradeType === 'buy' ? 'Mua nhanh' : 'Bán nhanh'} {asset}
+        </CTAButton>
       </PageContent>
     </PageLayout>
   );

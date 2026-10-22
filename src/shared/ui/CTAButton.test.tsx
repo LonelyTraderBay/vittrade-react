@@ -36,6 +36,28 @@ function interpolateHex(start: string, end: string, progress: number) {
 }
 
 describe('CTAButton', () => {
+  it('switches enabled and semantic color pairs atomically while retaining the focused control', () => {
+    const { rerender } = renderWithTheme(<CTAButton disabled>Tiếp tục</CTAButton>);
+    const button = screen.getByRole('button', { name: 'Tiếp tục' });
+    rerender(<CTAButton variant="success">Tiếp tục</CTAButton>);
+    button.focus();
+    expect(button).toHaveFocus();
+    expect(button).toHaveStyle({ color: ButtonTextColors.success });
+    expect(button).toHaveStyle({ background: ButtonGradients.success });
+    rerender(<CTAButton variant="danger">Tiếp tục</CTAButton>);
+    expect(screen.getByRole('button', { name: 'Tiếp tục' })).toBe(button);
+    expect(button).toHaveFocus();
+    expect(button).toHaveStyle({ color: ButtonTextColors.danger });
+    expect(button).toHaveStyle({ background: ButtonGradients.danger });
+    const properties = button.style.transition
+      .split(',')
+      .map((value) => value.trim().split(' ')[0]);
+    expect(properties).toEqual(['box-shadow', 'transform']);
+    expect(properties).not.toEqual(
+      expect.arrayContaining(['all', 'color', 'background', 'filter']),
+    );
+  });
+
   it('keeps its interaction identity when consumers supply layout classes', () => {
     renderWithTheme(<CTAButton fullWidth={false} className="fixture-layout" label="Action" />);
     expect(screen.getByRole('button', { name: 'Action' })).toHaveClass(
