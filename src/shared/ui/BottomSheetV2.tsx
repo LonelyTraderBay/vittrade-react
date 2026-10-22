@@ -18,9 +18,12 @@ function restoreFocusIfSafe(previousFocus: HTMLElement | null, fallbackFocus: HT
       continue;
     const targetInsideOpenDialog = Boolean(target.closest('[role="dialog"][data-state="open"]'));
     if (hasOpenDialog && !targetInsideOpenDialog) continue;
-    // Native focus reveals the return target after content reflow, including nested scrollers.
-    target.focus();
-    if (document.activeElement === target) return;
+    // Reveal explicitly so nested scrollers honor the caller's focus/occlusion scroll margin.
+    target.focus({ preventScroll: true });
+    if (document.activeElement === target) {
+      target.scrollIntoView?.({ block: 'nearest', inline: 'nearest', behavior: 'instant' });
+      return;
+    }
   }
 }
 

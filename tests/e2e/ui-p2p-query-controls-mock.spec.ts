@@ -359,6 +359,50 @@ for (const theme of ['light', 'dark'])
             );
             await expect(page.getByRole('button', { name: 'USDT', exact: true })).toBeFocused();
             const returnControl = page.getByRole('button', { name: 'USDT', exact: true });
+            const focusGeometry = await returnControl.evaluate((button) => {
+              const box = button.getBoundingClientRect();
+              const style = getComputedStyle(button);
+              const outset = parseFloat(style.outlineWidth) + parseFloat(style.outlineOffset);
+              const clips = [];
+              for (let parent = button.parentElement; parent; parent = parent.parentElement) {
+                const css = getComputedStyle(parent),
+                  rect = parent.getBoundingClientRect();
+                const clipX =
+                  !['visible', 'clip'].includes(css.overflowX) || css.overflowX === 'clip';
+                const clipY =
+                  !['visible', 'clip'].includes(css.overflowY) || css.overflowY === 'clip';
+                if (!clipX && !clipY) continue;
+                const left = rect.left + parent.clientLeft,
+                  top = rect.top + parent.clientTop;
+                clips.push({
+                  className: parent.className,
+                  overflowX: css.overflowX,
+                  overflowY: css.overflowY,
+                  scrollTop: parent.scrollTop,
+                  padding: css.padding,
+                  distances: [
+                    ...(clipX ? [box.left - left, left + parent.clientWidth - box.right] : []),
+                    ...(clipY ? [box.top - top, top + parent.clientHeight - box.bottom] : []),
+                  ],
+                });
+              }
+              return {
+                outset,
+                box: { x: box.x, y: box.y, width: box.width, height: box.height },
+                clips,
+              };
+            });
+            await writeFile(
+              info.outputPath('return-focus-geometry.json'),
+              JSON.stringify(focusGeometry, null, 2),
+            );
+            console.log(
+              'C06_RETURN_FOCUS_GEOMETRY',
+              JSON.stringify({ kind, theme, profile, ...focusGeometry }),
+            );
+            for (const clip of focusGeometry.clips)
+              for (const distance of clip.distances)
+                expect(distance).toBeGreaterThanOrEqual(focusGeometry.outset);
             // Check before scrollIntoView below: focus may otherwise be restored off screen.
             await expect(returnControl).toBeInViewport({ ratio: 1 });
             const returnPaint = await paint(returnControl);

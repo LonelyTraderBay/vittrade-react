@@ -1,7 +1,8 @@
 import { useMemo, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
-import { ArrowLeft, BarChart3, Clock, Search, Users } from 'lucide-react';
+import { ArrowLeft, BarChart3, Clock, Users } from 'lucide-react';
 import { ErrorState } from '@/shared/ui/ErrorState';
+import { SearchBar } from '@/shared/ui/SearchBar';
 import { Header } from '@/shared/ui/layout/Header';
 import { PageContent } from '@/shared/ui/layout/PageContent';
 import { PageLayout } from '@/shared/ui/layout/PageLayout';
@@ -106,9 +107,6 @@ export function PredictionsContractPage({
       return events.filter((event) => event.isTrending).sort((a, b) => b.volume24h - a.volume24h);
     return events;
   }, [mode, query.data?.items]);
-  if (query.isPending)
-    return <LoadingPage title={mode === 'breaking' ? 'Breaking markets' : 'Prediction markets'} />;
-  if (query.isError) return <ErrorState onAction={() => void query.refetch()} />;
   return (
     <PageLayout>
       <Header
@@ -118,26 +116,41 @@ export function PredictionsContractPage({
       />
       <PageContent gap="default">
         {mode === 'search' && (
-          <label
-            className="flex items-center gap-2 rounded-xl px-3"
-            style={{ background: colors.surface2 }}
-          >
-            <Search size={14} color={colors.text3} />
-            <input
-              value={search}
-              onChange={(event) => setSearch(event.target.value)}
-              placeholder="Tìm event…"
-              className="flex-1 bg-transparent py-3 outline-none"
-              style={{ color: colors.text1 }}
-            />
-          </label>
+          <SearchBar
+            value={search}
+            onChange={setSearch}
+            placeholder="Tìm event…"
+            ariaLabel="Tìm prediction market"
+          />
         )}
-        {items.map((event) => (
-          <PredictionCard key={event.id} event={event} />
-        ))}
-        {!items.length && (
-          <p style={{ color: colors.text2 }}>Không có prediction market phù hợp.</p>
-        )}
+        <section
+          aria-label="Kết quả prediction market"
+          aria-busy={query.isFetching}
+          className="flex flex-col gap-4"
+        >
+          {query.isPending ? (
+            <p role="status" style={{ color: colors.text2 }}>
+              Đang tải dữ liệu từ Prediction API…
+            </p>
+          ) : query.isError ? (
+            <div role="alert">
+              <ErrorState
+                title="Không thể tải prediction market"
+                message="Bạn có thể thử lại hoặc sửa tìm kiếm; nội dung đã nhập được giữ nguyên."
+                onAction={() => void query.refetch()}
+              />
+            </div>
+          ) : (
+            <>
+              {items.map((event) => (
+                <PredictionCard key={event.id} event={event} />
+              ))}
+              {!items.length && (
+                <p style={{ color: colors.text2 }}>Không có prediction market phù hợp.</p>
+              )}
+            </>
+          )}
+        </section>
       </PageContent>
     </PageLayout>
   );

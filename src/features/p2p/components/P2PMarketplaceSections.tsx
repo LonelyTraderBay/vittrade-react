@@ -334,7 +334,10 @@ export function P2PMarketplaceSections({
       {/* Asset + Fiat Row */}
       <div className="flex items-center gap-1.5">
         <div
-          className="flex items-center gap-1 flex-1 overflow-x-auto"
+          // 2px outline + 2px offset, with room for fractional scroll alignment.
+          role="group"
+          aria-label="Tài sản P2P"
+          className="flex items-center gap-1 flex-1 overflow-x-auto p-1.5"
           style={{ scrollbarWidth: 'none' }}
         >
           {ASSETS.map((a) => (
@@ -351,6 +354,7 @@ export function P2PMarketplaceSections({
               style={{
                 background: asset === a ? c.chipActiveBg : 'transparent',
                 color: asset === a ? c.chipActiveText : c.text3,
+                scrollMargin: 6,
                 border: `1px solid ${asset === a ? c.chipActiveBorder : 'transparent'}`,
                 fontWeight: 600,
                 fontSize: 12,

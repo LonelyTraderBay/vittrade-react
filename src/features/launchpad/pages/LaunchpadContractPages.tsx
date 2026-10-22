@@ -33,37 +33,36 @@ export function LaunchpadContractPage() {
   const [tab, setTab] = useState<Tab>('all');
   const query = useLaunchpadProjectsQuery(tab === 'all' ? {} : { status: tab });
 
-  if (query.isPending) return <LoadingPage title="Launchpad" />;
-  if (query.isError || !query.data) return <ErrorState onAction={() => void query.refetch()} />;
-
   return (
     <PageLayout>
       <Header title="Launchpad" subtitle="Token launch marketplace · server data" back />
       <PageContent gap="default">
-        <TrCard className="p-4">
-          <div className="flex items-center gap-3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-violet-500/15">
-              <Rocket size={24} color="var(--tr-accent)" />
+        {!query.isPending && !query.isError && query.data && (
+          <TrCard className="p-4">
+            <div className="flex items-center gap-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-violet-500/15">
+                <Rocket size={24} color="var(--tr-accent)" />
+              </div>
+              <div>
+                <h2 style={{ color: colors.text1, fontSize: 18, fontWeight: 700 }}>VitLaunch</h2>
+                <p style={{ color: colors.text2, fontSize: 12 }}>
+                  Dự án và token sale được cung cấp từ Launchpad API.
+                </p>
+              </div>
             </div>
-            <div>
-              <h2 style={{ color: colors.text1, fontSize: 18, fontWeight: 700 }}>VitLaunch</h2>
-              <p style={{ color: colors.text2, fontSize: 12 }}>
-                Dự án và token sale được cung cấp từ Launchpad API.
-              </p>
+            <div className="mt-4 grid grid-cols-3 gap-2">
+              <Metric label="Dự án" value={query.data.total} />
+              <Metric label="Đang mở" value={query.data.activeCount} />
+              <Metric label="Contract" value="API" />
             </div>
-          </div>
-          <div className="mt-4 grid grid-cols-3 gap-2">
-            <Metric label="Dự án" value={query.data.total} />
-            <Metric label="Đang mở" value={query.data.activeCount} />
-            <Metric label="Contract" value="API" />
-          </div>
-        </TrCard>
-
-        <div className="grid grid-cols-4 gap-2">
+          </TrCard>
+        )}
+        <div role="group" aria-label="Trạng thái dự án" className="grid grid-cols-4 gap-2">
           {TABS.map((value) => (
             <button
               key={value}
               type="button"
+              aria-pressed={tab === value}
               onClick={() => setTab(value)}
               className="rounded-xl px-2 py-2 text-xs font-semibold"
               style={{
@@ -82,19 +81,37 @@ export function LaunchpadContractPage() {
           ))}
         </div>
 
-        {query.data.projects.length === 0 ? (
-          <TrCard className="p-4">
-            <p style={{ color: colors.text2 }}>Không có dự án phù hợp.</p>
-          </TrCard>
-        ) : (
-          query.data.projects.map((project) => (
-            <ProjectCard
-              key={project.id}
-              project={project}
-              onOpen={() => navigate(`${prefix}/launchpad/${encodeURIComponent(project.id)}`)}
-            />
-          ))
-        )}
+        <section
+          aria-label="Kết quả Launchpad"
+          aria-busy={query.isFetching}
+          className="flex flex-col gap-4"
+        >
+          {query.isPending ? (
+            <p role="status" style={{ color: colors.text2 }}>
+              Đang tải dữ liệu Launchpad API…
+            </p>
+          ) : query.isError || !query.data ? (
+            <div role="alert">
+              <ErrorState
+                title="Không thể tải dự án Launchpad"
+                message="Bạn có thể thử lại hoặc đổi trạng thái; lựa chọn hiện tại được giữ nguyên."
+                onAction={() => void query.refetch()}
+              />
+            </div>
+          ) : query.data.projects.length === 0 ? (
+            <TrCard className="p-4">
+              <p style={{ color: colors.text2 }}>Không có dự án phù hợp.</p>
+            </TrCard>
+          ) : (
+            query.data.projects.map((project) => (
+              <ProjectCard
+                key={project.id}
+                project={project}
+                onOpen={() => navigate(`${prefix}/launchpad/${encodeURIComponent(project.id)}`)}
+              />
+            ))
+          )}
+        </section>
       </PageContent>
     </PageLayout>
   );

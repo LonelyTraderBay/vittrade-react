@@ -1125,7 +1125,7 @@
       "domain": "launchpad",
       "owner": "features/launchpad",
       "status": "integration-pending",
-      "lines": 302,
+      "lines": 319,
       "routePaths": [
         "launchpad",
         "launchpad/:id",
@@ -2600,7 +2600,7 @@
       "domain": "predictions",
       "owner": "features/predictions",
       "status": "integration-pending",
-      "lines": 467,
+      "lines": 480,
       "routePaths": [
         "activity",
         "breaking",
@@ -2622,6 +2622,7 @@
           "@/shared/navigation/useRoutePrefix",
           "@/shared/session/useAuth",
           "@/shared/ui/ErrorState",
+          "@/shared/ui/SearchBar",
           "@/shared/ui/TrCard",
           "@/shared/ui/layout/Header",
           "@/shared/ui/layout/PageContent",
@@ -3162,7 +3163,7 @@
       "domain": "trading",
       "owner": "features/trading",
       "status": "integration-pending",
-      "lines": 193,
+      "lines": 212,
       "routePaths": [
         "trade/copy",
         "trade/copy-trading",
@@ -3176,6 +3177,7 @@
           "@/shared/hooks/useThemeColors",
           "@/shared/navigation/useRoutePrefix",
           "@/shared/ui/ErrorState",
+          "@/shared/ui/FilterButton",
           "@/shared/ui/TrCard",
           "@/shared/ui/layout/Header",
           "@/shared/ui/layout/PageContent",
@@ -3341,7 +3343,7 @@
       "domain": "trading",
       "owner": "features/trading",
       "status": "integration-pending",
-      "lines": 206,
+      "lines": 216,
       "routePaths": [
         "trade/copy-trading/leaderboard"
       ],
@@ -3351,7 +3353,7 @@
           "@/shared/hooks/useThemeColors",
           "@/shared/navigation/useRoutePrefix",
           "@/shared/ui/ErrorState",
-          "@/shared/ui/TabBar",
+          "@/shared/ui/FilterButton",
           "@/shared/ui/TrCard",
           "@/shared/ui/layout/Header",
           "@/shared/ui/layout/PageContent",

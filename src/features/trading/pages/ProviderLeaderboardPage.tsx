@@ -5,7 +5,7 @@ import { ErrorState } from '@/shared/ui/ErrorState';
 import { Header } from '@/shared/ui/layout/Header';
 import { PageContent } from '@/shared/ui/layout/PageContent';
 import { PageLayout } from '@/shared/ui/layout/PageLayout';
-import { TabBar } from '@/shared/ui/TabBar';
+import { FilterButton } from '@/shared/ui/FilterButton';
 import { TrCard } from '@/shared/ui/TrCard';
 import { useRoutePrefix } from '@/shared/navigation/useRoutePrefix';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
@@ -35,23 +35,6 @@ export function ProviderLeaderboardPage() {
     verified: verifiedOnly || undefined,
   });
 
-  if (query.isPending)
-    return (
-      <PageLayout>
-        <Header title="Leaderboard" subtitle="Copy Trading" back />
-        <PageContent>
-          <p style={{ color: colors.text2, fontSize: 13 }}>Đang tải provider…</p>
-        </PageContent>
-      </PageLayout>
-    );
-  if (query.isError)
-    return (
-      <PageLayout>
-        <Header title="Leaderboard" subtitle="Copy Trading" back />
-        <ErrorState onAction={() => void query.refetch()} />
-      </PageLayout>
-    );
-
   return (
     <PageLayout>
       <Header title="Leaderboard" subtitle="Copy Trading" back />
@@ -73,36 +56,36 @@ export function ProviderLeaderboardPage() {
           </div>
         </TrCard>
 
-        <TabBar
-          variant="segment"
-          tabs={[
-            { id: 'roi', label: 'ROI' },
-            { id: 'sharpe', label: 'Sharpe' },
-            { id: 'followers', label: 'Followers' },
-            { id: 'recent', label: '30D' },
-          ]}
-          active={sort}
-          onChange={(id) => setSort(id as CopyProviderSort)}
-        />
-        <div className="flex flex-wrap gap-2">
-          {riskOptions.map((item) => (
-            <button
-              type="button"
+        <div role="group" aria-label="Sắp xếp bảng xếp hạng" className="flex flex-wrap gap-2">
+          {(
+            [
+              { id: 'roi', label: 'ROI' },
+              { id: 'sharpe', label: 'Sharpe' },
+              { id: 'followers', label: 'Followers' },
+              { id: 'recent', label: '30D' },
+            ] as const
+          ).map((item) => (
+            <FilterButton
               key={item.id}
+              selected={sort === item.id}
+              label={item.label}
+              onClick={() => setSort(item.id)}
+            />
+          ))}
+        </div>
+        <div role="group" aria-label="Rủi ro provider" className="flex flex-wrap gap-2">
+          {riskOptions.map((item) => (
+            <FilterButton
+              key={item.id}
+              selected={risk === item.id}
+              label={item.label}
               onClick={() => setRisk(item.id)}
-              className="rounded-lg px-3 py-1.5"
-              style={{
-                background: risk === item.id ? colors.primary : colors.surface2,
-                color: risk === item.id ? 'var(--tr-text-on-color)' : colors.text2,
-                fontSize: 11,
-              }}
-            >
-              {item.label}
-            </button>
+            />
           ))}
         </div>
         <button
           type="button"
+          aria-pressed={verifiedOnly}
           onClick={() => setVerifiedOnly((value) => !value)}
           className="flex items-center justify-between rounded-xl p-3"
           style={{ background: colors.surface2, border: `1px solid ${colors.borderSolid}` }}
@@ -116,79 +99,106 @@ export function ProviderLeaderboardPage() {
           </span>
         </button>
 
-        <p style={{ color: colors.text3, fontSize: 11 }}>
-          {query.data.items.length} provider phù hợp
-        </p>
-        <div className="flex flex-col gap-3">
-          {query.data.items.map((provider, index) => (
-            <button
-              type="button"
-              key={provider.id}
-              onClick={() =>
-                navigate(`${prefix}/trade/copy-provider/${encodeURIComponent(provider.id)}`)
-              }
-              className="w-full text-left"
-            >
-              <TrCard className="p-4">
-                <div className="flex items-start gap-3">
-                  <div
-                    className="w-10 h-10 rounded-full flex items-center justify-center"
-                    style={{ background: index < 3 ? 'rgba(245,158,11,0.15)' : colors.surface2 }}
+        <section
+          aria-label="Kết quả bảng xếp hạng provider"
+          aria-busy={query.isFetching}
+          className="flex flex-col gap-4"
+        >
+          {query.isPending ? (
+            <p role="status" style={{ color: colors.text2, fontSize: 13 }}>
+              Đang tải provider…
+            </p>
+          ) : query.isError || !query.data ? (
+            <div role="alert">
+              <ErrorState
+                title="Không thể tải bảng xếp hạng provider"
+                message="Bạn có thể thử lại hoặc đổi bộ lọc; lựa chọn hiện tại được giữ nguyên."
+                onAction={() => void query.refetch()}
+              />
+            </div>
+          ) : (
+            <>
+              <p style={{ color: colors.text3, fontSize: 11 }}>
+                {query.data.items.length} provider phù hợp
+              </p>
+              {query.data.items.length === 0 && (
+                <p style={{ color: colors.text2 }}>Không có provider phù hợp.</p>
+              )}
+              <div className="flex flex-col gap-3">
+                {query.data.items.map((provider, index) => (
+                  <button
+                    type="button"
+                    key={provider.id}
+                    onClick={() =>
+                      navigate(`${prefix}/trade/copy-provider/${encodeURIComponent(provider.id)}`)
+                    }
+                    className="w-full text-left"
                   >
-                    <span
-                      style={{
-                        color: index < 3 ? colors.warningText : colors.text2,
-                        fontWeight: 700,
-                      }}
-                    >
-                      #{index + 1}
-                    </span>
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2">
-                      <p style={{ color: colors.text1, fontSize: 14, fontWeight: 700 }}>
-                        {provider.name}
-                      </p>
-                      {provider.verified && <CheckCircle size={12} color={colors.primary} />}
-                    </div>
-                    <div className="flex items-center gap-3 mt-2">
-                      <Metric
-                        label="ROI"
-                        value={`${provider.totalPnlPct >= 0 ? '+' : ''}${provider.totalPnlPct.toFixed(1)}%`}
-                        color={colors.successText}
-                      />
-                      <Metric
-                        label="Sharpe"
-                        value={provider.sharpeRatio.toFixed(2)}
-                        color={colors.warningText}
-                      />
-                      <Metric
-                        label="Max DD"
-                        value={`${provider.maxDrawdown.toFixed(1)}%`}
-                        color={colors.errorText}
-                      />
-                    </div>
-                    <div className="flex items-center gap-3 mt-3">
-                      <span
-                        className="flex items-center gap-1"
-                        style={{ color: colors.text3, fontSize: 10 }}
-                      >
-                        <Users size={10} /> {provider.copiers.toLocaleString('vi-VN')} copiers
-                      </span>
-                      <span
-                        className="flex items-center gap-1"
-                        style={{ color: colors.text3, fontSize: 10 }}
-                      >
-                        <Shield size={10} /> Rủi ro {provider.riskLevel}
-                      </span>
-                    </div>
-                  </div>
-                  <Eye size={16} color={colors.text3} />
-                </div>
-              </TrCard>
-            </button>
-          ))}
-        </div>
+                    <TrCard className="p-4">
+                      <div className="flex items-start gap-3">
+                        <div
+                          className="w-10 h-10 rounded-full flex items-center justify-center"
+                          style={{
+                            background: index < 3 ? 'rgba(245,158,11,0.15)' : colors.surface2,
+                          }}
+                        >
+                          <span
+                            style={{
+                              color: index < 3 ? colors.warningText : colors.text2,
+                              fontWeight: 700,
+                            }}
+                          >
+                            #{index + 1}
+                          </span>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2">
+                            <p style={{ color: colors.text1, fontSize: 14, fontWeight: 700 }}>
+                              {provider.name}
+                            </p>
+                            {provider.verified && <CheckCircle size={12} color={colors.primary} />}
+                          </div>
+                          <div className="flex items-center gap-3 mt-2">
+                            <Metric
+                              label="ROI"
+                              value={`${provider.totalPnlPct >= 0 ? '+' : ''}${provider.totalPnlPct.toFixed(1)}%`}
+                              color={colors.successText}
+                            />
+                            <Metric
+                              label="Sharpe"
+                              value={provider.sharpeRatio.toFixed(2)}
+                              color={colors.warningText}
+                            />
+                            <Metric
+                              label="Max DD"
+                              value={`${provider.maxDrawdown.toFixed(1)}%`}
+                              color={colors.errorText}
+                            />
+                          </div>
+                          <div className="flex items-center gap-3 mt-3">
+                            <span
+                              className="flex items-center gap-1"
+                              style={{ color: colors.text3, fontSize: 10 }}
+                            >
+                              <Users size={10} /> {provider.copiers.toLocaleString('vi-VN')} copiers
+                            </span>
+                            <span
+                              className="flex items-center gap-1"
+                              style={{ color: colors.text3, fontSize: 10 }}
+                            >
+                              <Shield size={10} /> Rủi ro {provider.riskLevel}
+                            </span>
+                          </div>
+                        </div>
+                        <Eye size={16} color={colors.text3} />
+                      </div>
+                    </TrCard>
+                  </button>
+                ))}
+              </div>
+            </>
+          )}
+        </section>
       </PageContent>
     </PageLayout>
   );

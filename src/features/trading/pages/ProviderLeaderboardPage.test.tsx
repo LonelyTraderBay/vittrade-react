@@ -71,14 +71,14 @@ describe('provider leaderboard', () => {
 
     expect(await screen.findByText('Đang tải provider…')).toBeInTheDocument();
     expect(await screen.findByText('Provider One')).toBeInTheDocument();
-    await user.click(screen.getByRole('tab', { name: 'Sharpe' }));
+    await user.click(screen.getByRole('button', { name: 'Sharpe' }));
     expect(await screen.findByText('Provider One')).toBeInTheDocument();
     await user.click(screen.getByRole('button', { name: 'Trung bình' }));
     expect(await screen.findByText('Provider One')).toBeInTheDocument();
     await user.click(screen.getByRole('button', { name: /Chỉ hiện provider đã xác minh/ }));
 
     expect(await screen.findByText('Bật')).toBeInTheDocument();
-    expect(screen.getByText('Provider One')).toBeInTheDocument();
+    expect(await screen.findByText('Provider One')).toBeInTheDocument();
   });
 
   it('shows a retry state when leaderboard data is unavailable', async () => {
