@@ -1,3 +1,4 @@
+import { resizeAuthenticatedHome } from './helpers/resize-home';
 import { expect, test, type Page, type Locator, type TestInfo } from '@playwright/test';
 import { writeFile } from 'node:fs/promises';
 
@@ -17,7 +18,7 @@ async function login(page: Page, theme: string, width: number, email = 'develope
   await page.getByTestId('auth-submit').click();
   await expect(page).toHaveURL('/w/home');
   if (theme === 'dark') await page.getByTitle('Chế độ tối', { exact: true }).click();
-  await page.setViewportSize({ width, height: 900 });
+  await resizeAuthenticatedHome(page, { width, height: 900 });
   return () => writes;
 }
 async function navigate(page: Page, target: string) {
