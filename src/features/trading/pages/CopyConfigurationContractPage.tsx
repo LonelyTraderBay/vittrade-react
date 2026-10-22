@@ -73,13 +73,14 @@ export function CopyConfigurationContractPage() {
           <div className="mt-3 grid grid-cols-3 gap-2">
             {(['mirror', 'fixed', 'smart'] as CopyMode[]).map((mode) => (
               <button
+                data-tr-color-pair="primary"
                 type="button"
                 key={mode}
                 onClick={() => setCopyMode(mode)}
                 className="rounded-lg p-2"
                 style={{
                   background: copyMode === mode ? colors.primary : colors.surface2,
-                  color: copyMode === mode ? '#fff' : colors.text2,
+                  color: copyMode === mode ? 'var(--tr-text-on-color)' : colors.text2,
                   fontSize: 11,
                 }}
               >
@@ -125,12 +126,13 @@ export function CopyConfigurationContractPage() {
         </TrCard>
         {validationError && <p style={{ color: '#EF4444', fontSize: 12 }}>{validationError}</p>}
         <button
+          data-tr-color-pair="primary"
           type="button"
           disabled={Boolean(validationError)}
           className="w-full rounded-xl py-3"
           style={{
             background: validationError ? colors.surface2 : colors.primary,
-            color: validationError ? colors.text3 : '#fff',
+            color: validationError ? colors.text3 : 'var(--tr-text-on-color)',
             fontWeight: 700,
           }}
           onClick={() =>

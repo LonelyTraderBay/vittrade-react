@@ -72,12 +72,13 @@ function RouteErrorFallback({ onRetry }: { onRetry: () => void }) {
           Lỗi kết nối hoặc module chưa sẵn sàng. Vui lòng thử lại.
         </p>
         <button
+          data-tr-color-pair="primary"
           type="button"
           onClick={onRetry}
           className="px-5 py-2.5 rounded-xl"
           style={{
             background: c.primary,
-            color: '#fff',
+            color: 'var(--tr-text-on-color)',
             fontSize: 14,
             fontWeight: 600,
             border: 'none',

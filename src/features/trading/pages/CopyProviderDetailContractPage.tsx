@@ -90,9 +90,15 @@ export function CopyProviderDetailContractPage() {
         </TrCard>
 
         <button
+          data-tr-color-pair="primary"
           type="button"
           className="flex w-full items-center justify-center gap-2 rounded-xl py-3"
-          style={{ background: colors.primary, color: '#fff', fontWeight: 700 }}
+          style={{
+            background: colors.primary,
+            color: 'var(--tr-text-on-color)',
+
+            fontWeight: 700,
+          }}
           onClick={() =>
             navigate(copyProviderFlowPath(location.pathname, prefix, provider.id, 'assessment'))
           }

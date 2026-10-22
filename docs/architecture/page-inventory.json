@@ -3010,7 +3010,7 @@
       "domain": "trading",
       "owner": "features/trading",
       "status": "integration-pending",
-      "lines": 155,
+      "lines": 157,
       "routePaths": [
         "trade/copy-provider/:providerId/configuration",
         "trade/copy/provider/:providerId/configuration"
@@ -3073,7 +3073,7 @@
       "domain": "trading",
       "owner": "features/trading",
       "status": "integration-pending",
-      "lines": 85,
+      "lines": 87,
       "routePaths": [
         "trade/copy-trading/education",
         "trade/copy/education"
@@ -3134,7 +3134,7 @@
       "domain": "trading",
       "owner": "features/trading",
       "status": "integration-pending",
-      "lines": 116,
+      "lines": 122,
       "routePaths": [
         "trade/copy-provider/:providerId",
         "trade/copy/provider/:providerId"
@@ -3454,7 +3454,7 @@
       "domain": "trading",
       "owner": "features/trading",
       "status": "integration-pending",
-      "lines": 278,
+      "lines": 285,
       "routePaths": [
         "trade/trader/:traderId"
       ],
@@ -3871,7 +3871,7 @@
       "domain": "wallet",
       "owner": "features/wallet",
       "status": "integration-pending",
-      "lines": 393,
+      "lines": 394,
       "routePaths": [
         "wallet/transfer"
       ],

@@ -102,6 +102,7 @@ export function TraderProfilePage() {
             ))}
           </div>
           <button
+            data-tr-color-pair="primary"
             type="button"
             onClick={() =>
               navigate(
@@ -109,7 +110,13 @@ export function TraderProfilePage() {
               )
             }
             className="w-full rounded-xl py-3 mt-4 flex items-center justify-center gap-2"
-            style={{ background: colors.primary, color: '#fff', fontSize: 13, fontWeight: 700 }}
+            style={{
+              background: colors.primary,
+              color: 'var(--tr-text-on-color)',
+
+              fontSize: 13,
+              fontWeight: 700,
+            }}
           >
             <Copy size={15} /> Xem cấu hình copy
           </button>
