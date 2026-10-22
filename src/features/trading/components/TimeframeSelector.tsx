@@ -5,6 +5,7 @@
  *  Compact timeframe switcher for charts
  */
 
+import { withAlpha } from '@/shared/theme/colors';
 import React from 'react';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { useHaptic } from '@/shared/hooks/useHaptic';
@@ -93,7 +94,7 @@ export function TimeframePills({ active, onChange }: TimeframeSelectorProps) {
             style={{
               padding: '2px 6px',
               borderRadius: 4,
-              background: isActive ? 'rgba(16, 185, 129, 0.15)' : c.surface2 + '80',
+              background: isActive ? 'rgba(16, 185, 129, 0.15)' : withAlpha(c.surface2, '80'),
               color: isActive ? '#10B981' : c.text3,
               fontSize: 9,
               fontWeight: 700,

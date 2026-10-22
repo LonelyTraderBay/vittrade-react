@@ -1,3 +1,4 @@
+import { withAlpha } from '@/shared/theme/colors';
 import {
   Activity,
   CheckCircle,
@@ -58,7 +59,7 @@ export function CopyEducationHowItWorksTab() {
               <div key={item.step} className="flex gap-3">
                 <div
                   className="w-10 h-10 rounded-full flex items-center justify-center shrink-0"
-                  style={{ background: item.color + '15' }}
+                  style={{ background: withAlpha(item.color, '15') }}
                 >
                   <span style={{ color: item.color, fontSize: 14, fontWeight: 700 }}>
                     {item.step}

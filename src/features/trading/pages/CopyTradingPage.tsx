@@ -1,3 +1,4 @@
+import { withAlpha } from '@/shared/theme/colors';
 import { AlertTriangle, CheckCircle, ChevronRight } from 'lucide-react';
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
@@ -104,7 +105,7 @@ export function CopyTradingPage() {
                       <div className="flex items-start gap-3">
                         <div
                           className="w-11 h-11 rounded-full flex items-center justify-center"
-                          style={{ background: colors.primary + '22' }}
+                          style={{ background: withAlpha(colors.primary, '22') }}
                         >
                           <span style={{ color: colors.primary, fontSize: 16, fontWeight: 700 }}>
                             {provider.avatar}

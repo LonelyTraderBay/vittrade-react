@@ -11,6 +11,7 @@
  *  - Quality score (A-F grade)
  */
 
+import { withAlpha } from '@/shared/theme/colors';
 import React from 'react';
 import { CheckCircle, TrendingUp, TrendingDown, Clock, Award, Activity } from 'lucide-react';
 import { TrCard } from '@/shared/ui/TrCard';
@@ -324,7 +325,7 @@ export function ExecutionReport({ data, onClose }: ExecutionReportProps) {
                     ) : (
                       <div
                         className="w-5 h-5 rounded flex items-center justify-center"
-                        style={{ background: `${c.text3}22` }}
+                        style={{ background: withAlpha(c.text3, '22') }}
                       >
                         <span
                           style={{ fontSize: 10, fontWeight: FONT_WEIGHT.bold, color: c.text3 }}

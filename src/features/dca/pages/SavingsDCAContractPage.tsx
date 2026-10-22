@@ -1,3 +1,4 @@
+import { withAlpha } from '@/shared/theme/colors';
 import { useRef, useState } from 'react';
 import { Pause, Play, Trash2 } from 'lucide-react';
 import { ErrorState } from '@/shared/ui/ErrorState';
@@ -256,7 +257,7 @@ export function SavingsDCAContractPage() {
                   onClick={() => setConfirmCancelPlanId(plan.id)}
                   className="flex items-center gap-1 rounded-lg px-3 py-2"
                   style={{
-                    background: `${colors.sell}15`,
+                    background: withAlpha(colors.sell, '15'),
                     color: colors.errorText,
                     fontSize: 11,
                   }}

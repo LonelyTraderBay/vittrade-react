@@ -902,7 +902,7 @@
       "domain": "dca",
       "owner": "features/dca",
       "status": "integration-pending",
-      "lines": 321,
+      "lines": 322,
       "routePaths": [
         "earn/savings/dca"
       ],
@@ -913,6 +913,7 @@
           "@/shared/hooks/useActionToast",
           "@/shared/hooks/useThemeColors",
           "@/shared/session/useAuth",
+          "@/shared/theme/colors",
           "@/shared/ui/ConfirmationDialog",
           "@/shared/ui/ErrorState",
           "@/shared/ui/TrCard",
@@ -3133,7 +3134,7 @@
       "domain": "trading",
       "owner": "features/trading",
       "status": "integration-pending",
-      "lines": 115,
+      "lines": 116,
       "routePaths": [
         "trade/copy-provider/:providerId",
         "trade/copy/provider/:providerId"
@@ -3144,6 +3145,7 @@
           "../model/trading-queries",
           "@/shared/hooks/useThemeColors",
           "@/shared/navigation/useRoutePrefix",
+          "@/shared/theme/colors",
           "@/shared/ui/ErrorState",
           "@/shared/ui/TrCard",
           "@/shared/ui/layout/Header",
@@ -3163,7 +3165,7 @@
       "domain": "trading",
       "owner": "features/trading",
       "status": "integration-pending",
-      "lines": 212,
+      "lines": 213,
       "routePaths": [
         "trade/copy",
         "trade/copy-trading",
@@ -3176,6 +3178,7 @@
           "@/features/trading/constants/copyTrading",
           "@/shared/hooks/useThemeColors",
           "@/shared/navigation/useRoutePrefix",
+          "@/shared/theme/colors",
           "@/shared/ui/ErrorState",
           "@/shared/ui/FilterButton",
           "@/shared/ui/TrCard",
@@ -3451,7 +3454,7 @@
       "domain": "trading",
       "owner": "features/trading",
       "status": "integration-pending",
-      "lines": 277,
+      "lines": 278,
       "routePaths": [
         "trade/trader/:traderId"
       ],
@@ -3460,6 +3463,7 @@
           "@/features/trading",
           "@/shared/hooks/useThemeColors",
           "@/shared/navigation/useRoutePrefix",
+          "@/shared/theme/colors",
           "@/shared/ui/ErrorState",
           "@/shared/ui/TabBar",
           "@/shared/ui/TrCard",

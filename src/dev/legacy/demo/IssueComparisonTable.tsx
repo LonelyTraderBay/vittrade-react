@@ -1,3 +1,4 @@
+import { withAlpha } from '@/shared/theme/colors';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { CheckCircle2, XCircle, AlertCircle } from 'lucide-react';
 
@@ -108,7 +109,10 @@ export function IssueComparisonTable() {
 
       {/* Score Summary */}
       <div className="grid grid-cols-4 gap-2 mb-4">
-        <div className="rounded-xl p-3 text-center" style={{ backgroundColor: c.danger + '15' }}>
+        <div
+          className="rounded-xl p-3 text-center"
+          style={{ backgroundColor: withAlpha(c.danger, '15') }}
+        >
           <div className="text-xs font-medium mb-1" style={{ color: c.textSec }}>
             Original
           </div>

@@ -1,3 +1,4 @@
+import { withAlpha } from '@/shared/theme/colors';
 import { AlertTriangle, CheckCircle, ChevronRight } from 'lucide-react';
 import { useLocation, useNavigate, useParams } from 'react-router';
 import { ErrorState } from '@/shared/ui/ErrorState';
@@ -47,7 +48,7 @@ export function CopyProviderDetailContractPage() {
           <div className="flex items-start gap-3">
             <div
               className="flex h-12 w-12 items-center justify-center rounded-full"
-              style={{ background: `${colors.primary}22`, color: colors.primary }}
+              style={{ background: withAlpha(colors.primary, '22'), color: colors.primary }}
             >
               <span className="text-lg font-bold">{provider.avatar}</span>
             </div>

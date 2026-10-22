@@ -5,6 +5,7 @@
  *  Realistic skeleton loader for chart components
  */
 
+import { withAlpha } from '@/shared/theme/colors';
 import React from 'react';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 
@@ -29,7 +30,7 @@ export function ChartSkeleton({ height = 120, showVolume = true }: ChartSkeleton
       <div
         className="absolute inset-0 shimmer"
         style={{
-          background: `linear-gradient(90deg, transparent 0%, ${c.surface2}40 50%, transparent 100%)`,
+          background: `linear-gradient(90deg, transparent 0%, ${withAlpha(c.surface2, '40')} 50%, transparent 100%)`,
           backgroundSize: '200% 100%',
           animation: 'shimmer 2s infinite',
         }}

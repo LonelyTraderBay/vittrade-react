@@ -1,3 +1,4 @@
+import { withAlpha } from '@/shared/theme/colors';
 import { AlertTriangle, BarChart3, Clock3, Copy, Shield, Target, Users } from 'lucide-react';
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
@@ -53,7 +54,7 @@ export function TraderProfilePage() {
           <div className="flex items-start gap-3">
             <div
               className="w-14 h-14 rounded-2xl flex items-center justify-center"
-              style={{ background: colors.primary + '22' }}
+              style={{ background: withAlpha(colors.primary, '22') }}
             >
               <span style={{ color: colors.primary, fontSize: 22, fontWeight: 700 }}>
                 {provider.avatar}
