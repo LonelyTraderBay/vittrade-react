@@ -13180,8 +13180,89 @@
   "closingCI": {
     "statusAtCommit": "pending",
     "required": "Full push CI success on final main SHA; artifact digest/run/source verification and remote readback.",
-    "expectedReceipt": "C:\\Users\\Joker-PC\\Documents\\Codex\\Work\\vittrade-react\\20261023-single-main\\outputs\\final-integration\\ci-final-proof.json"
+    "expectedReceipt": "C:\\Users\\Joker-PC\\Documents\\Codex\\Work\\vittrade-react\\20261023-single-main\\outputs\\final-integration\\ci-final-proof.json",
+    "supersededFailedCandidate": {
+      "sha": "d6135fa129ca1a24ceb0473579411d50e474d27d",
+      "runId": 40000606570,
+      "conclusion": "failure"
+    }
   },
   "productBoundary": "C06.13 checkpoint remains open; no backend/staging/UAT, production certification or deploy is claimed.",
-  "analysisLimits": "AST/formatter comparison is triage, not formal equivalence. Old malformed comments were repaired only in analysis input; original Git blobs remain untouched."
+  "analysisLimits": "AST/formatter comparison is triage, not formal equivalence. Old malformed comments were repaired only in analysis input; original Git blobs remain untouched.",
+  "closingCorrections": [
+    {
+      "observedAt": "2026-10-23T18:59:11.682326+00:00",
+      "failedCI": {
+        "sha": "d6135fa129ca1a24ceb0473579411d50e474d27d",
+        "runId": 40000606570,
+        "runNumber": 277,
+        "url": "https://github.com/LonelyTraderBay/vittrade-react/actions/runs/40000606570",
+        "lane": "Browser ui-mock",
+        "tests": "588 pass / 1 fail out of 589",
+        "test": "Integration boundary tint /r/trade/convert 767 light @ui-mock",
+        "evidence": "C:\\Users\\Joker-PC\\Documents\\Codex\\Work\\vittrade-react\\20261023-single-main\\outputs\\final-integration\\ci-failures\\run277-attempt1"
+      },
+      "rootCause": "A 250ms resize callback captured /w/p2p/my-ads. Router accepted explicit /r/trade/convert, but React still rendered the old location during a concurrent transition. The stale callback replaced the explicit navigation with /p2p/my-ads.",
+      "traceTimesMs": {
+        "viewportChange": 762422.266,
+        "explicitNavigate": 762533.78,
+        "explicitDestinationURL": 762788.714,
+        "staleResizeURL": 762939.701
+      },
+      "fix": "The app router supplies a canonical location-key/idle-navigation guard via RootLayout. Both initial shell alignment and delayed resize navigation verify ownership immediately before acting. Existing debounce, dirty-form, equivalent-route and reserved-shell rules remain.",
+      "redGreen": "2/2 deterministic unit regressions fail before fix; 61 related tests pass afterward. Covers pending loader navigation and router-committed navigation whose React render is suspended; asserts exact pathname/query/hash.",
+      "paths": [
+        "src/app/components/layout/PlatformSwitcher.tsx",
+        "src/app/components/layout/RootLayout.tsx",
+        "src/app/routes.ts",
+        "src/app/components/layout/PlatformSwitcher.navigation.test.tsx"
+      ],
+      "originalTestsAndThresholdsUnchanged": true,
+      "sourceBlobs": [
+        {
+          "path": "src/app/components/layout/PlatformSwitcher.tsx",
+          "workingSha256": "518d2145f27b0f3a03bf99601acec319fc6a9d949232a4dcf55f9aaa477a3056",
+          "cleanFilterBlob": "96f002b9352285fb7f1a6d29e4e3cad4fc393bc4"
+        },
+        {
+          "path": "src/app/components/layout/RootLayout.tsx",
+          "workingSha256": "8e5814ff9b09941e1b21ab3ea1be83dd6adb617b66e06b71aad028c4c0d42a1b",
+          "cleanFilterBlob": "46b0ebd3d91431fddcbc2f50e1089b48f81e46e0"
+        },
+        {
+          "path": "src/app/routes.ts",
+          "workingSha256": "2b47b5062d522068659ac1de1677c4038083deab0c34dd041a4bc4ac6d0c81c2",
+          "cleanFilterBlob": "3062ad050fc2e5434901f81244cec09ae3ae0a2e"
+        },
+        {
+          "path": "src/app/components/layout/PlatformSwitcher.navigation.test.tsx",
+          "workingSha256": "ed079d356ea411385144a7b0ec340c8abf8d12884e268342cf9e1e944e1bf8f7",
+          "cleanFilterBlob": "fb9f900db09a1ada32dc0e132b1c8df44b8812dc"
+        }
+      ],
+      "localBrowserLimit": "No UI cases executed: unchanged global readiness page.goto /w/auth/login timed out at30000ms on local Windows/Node24 cold Vite graph. Teardown closed owned server; sourceUnchanged/childClosed true. Preserve failure; hosted final-SHA browser CI is mandatory.",
+      "localRuns": [
+        {
+          "log": "C:\\Users\\Joker-PC\\Documents\\Codex\\Work\\vittrade-react\\20261023-single-main\\outputs\\final-integration\\navigation-regression-before.log",
+          "manifest": ".artifacts/runs/2026-10-23T18-48-54-797Z-vitest-3bc03d71-1b01-4e52-b2c1-2639da7c84be/run.json",
+          "manifestSha256": "a5e871c4cc36fa47af46f669e562da200269a24a52771aadcfedb9e7e8626d40",
+          "status": "failed"
+        },
+        {
+          "log": "C:\\Users\\Joker-PC\\Documents\\Codex\\Work\\vittrade-react\\20261023-single-main\\outputs\\final-integration\\navigation-regression-after.log",
+          "manifest": ".artifacts/runs/2026-10-23T18-49-57-296Z-vitest-a5773d0e-4d75-4b58-8ecf-9b507483c160/run.json",
+          "manifestSha256": "83841d4417a976ed54ec20238c09f4dbfe3a462e10e0b2a530717b6bf410d0f4",
+          "status": "passed"
+        },
+        {
+          "log": "C:\\Users\\Joker-PC\\Documents\\Codex\\Work\\vittrade-react\\20261023-single-main\\outputs\\final-integration\\navigation-browser-after.log",
+          "manifest": ".artifacts/runs/2026-10-23T18-53-29-741Z-playwright-8c3cc2fe-466a-451c-9517-b973df5bc144/run.json",
+          "manifestSha256": "1ee21f350ca345c4364577d35f2ec964e5d34f1b6a76fdd926c910c465f4483e",
+          "status": "failed"
+        }
+      ],
+      "localStaticResults": "C:\\Users\\Joker-PC\\Documents\\Codex\\Work\\vittrade-react\\20261023-single-main\\outputs\\final-integration\\navigation-local-static-results.json",
+      "closingStatus": "pending new final-SHA full CI; failed CI277 is not accepted as completion."
+    }
+  ]
 }

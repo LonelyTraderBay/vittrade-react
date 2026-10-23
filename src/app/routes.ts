@@ -359,6 +359,8 @@ appRouteTree = [
     element: React.createElement(RootLayout, {
       developmentPreviewControls: DevelopmentPreviewControls,
       isEquivalentRoute: isAppRouteEquivalent,
+      canSwitchLocation: (key) =>
+        router.state.navigation.state === 'idle' && router.state.location.key === key,
     }),
     errorElement: React.createElement(RouteErrorBoundary),
     children: [

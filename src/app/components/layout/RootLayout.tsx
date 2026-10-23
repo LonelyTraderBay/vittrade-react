@@ -29,12 +29,14 @@ import { PreviewChromeContext } from '@/shared/ui/layout/preview-chrome-context'
 export function RootLayout({
   developmentPreviewControls: DevelopmentPreviewControls,
   isEquivalentRoute,
+  canSwitchLocation,
 }: {
   developmentPreviewControls?: React.ComponentType<{
     bottomNavigationVisible?: boolean;
     portalHost?: HTMLElement | null;
   }>;
   isEquivalentRoute?: (currentPathname: string, targetPathname: string) => boolean;
+  canSwitchLocation?: (locationKey: string) => boolean;
 }) {
   const location = useLocation();
   const { isDesktop, isMobile } = useBreakpoint();
@@ -72,6 +74,7 @@ export function RootLayout({
         <PlatformSwitcher
           previewControlsVisible={Boolean(DevelopmentPreviewControls)}
           isEquivalentRoute={isEquivalentRoute}
+          canSwitchLocation={canSwitchLocation}
         />
         {DevelopmentPreviewControls ? (
           <React.Suspense fallback={null}>

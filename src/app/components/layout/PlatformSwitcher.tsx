@@ -84,9 +84,11 @@ function hasUnsubmittedFormChanges(): boolean {
 export function PlatformSwitcher({
   previewControlsVisible = false,
   isEquivalentRoute,
+  canSwitchLocation,
 }: {
   previewControlsVisible?: boolean;
   isEquivalentRoute?: (currentPathname: string, targetPathname: string) => boolean;
+  canSwitchLocation?: (locationKey: string) => boolean;
 } = {}) {
   const navigate = useNavigate();
   const location = useLocation();
@@ -98,6 +100,7 @@ export function PlatformSwitcher({
     currentPrefix === '/w' ? 'web' : currentPrefix === '/t' ? 'tablet' : 'phone';
 
   useLayoutEffect(() => {
+    if (canSwitchLocation && !canSwitchLocation(location.key)) return;
     if (keepsRouteShell(location.pathname)) return;
     const targetPrefix = PLATFORM_CONFIG[detectPlatform(window.innerWidth)].prefix;
     const curPrefix = getCurrentPrefix(location.pathname);
@@ -113,7 +116,7 @@ export function PlatformSwitcher({
         { replace: true },
       );
     }
-  }, [location.pathname, location.search, location.hash, navigate, isEquivalentRoute]);
+  }, [location, navigate, isEquivalentRoute, canSwitchLocation]);
 
   useEffect(() => {
     let debounceTimer: ReturnType<typeof setTimeout> | null = null;
@@ -121,6 +124,8 @@ export function PlatformSwitcher({
       if (keepsRouteShell(location.pathname)) return;
       if (debounceTimer) clearTimeout(debounceTimer);
       debounceTimer = setTimeout(() => {
+        // Router state can advance before a concurrent React render commits this location.
+        if (canSwitchLocation && !canSwitchLocation(location.key)) return;
         if (hasUnsubmittedFormChanges()) return;
         const targetPlatform = detectPlatform(window.innerWidth);
         const targetPrefix = PLATFORM_CONFIG[targetPlatform].prefix;
@@ -144,7 +149,7 @@ export function PlatformSwitcher({
       window.removeEventListener('resize', handleResize);
       if (debounceTimer) clearTimeout(debounceTimer);
     };
-  }, [location.pathname, location.search, location.hash, navigate, isEquivalentRoute]);
+  }, [location, navigate, isEquivalentRoute, canSwitchLocation]);
 
   const config = PLATFORM_CONFIG[currentPlatform];
   const Icon = config.icon;
