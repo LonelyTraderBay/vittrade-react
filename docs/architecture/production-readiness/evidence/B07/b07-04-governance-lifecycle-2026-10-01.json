@@ -1,0 +1,85 @@
+{
+  "id": "EV-20261001-050",
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-01T11:31:31.000Z",
+  "taskId": "B07",
+  "stepId": "B07.04",
+  "kind": "validation",
+  "commandOrSteps": "Inspect the authenticated GitHub repository branch-protection and ruleset pages; query repository owner/default branch and CODEOWNERS errors through the public GitHub REST API; search workflow and scripts for DCO enforcement; compare action and runner lifecycle with current official GitHub sources.",
+  "observedAt": "2026-10-01T11:31:31.000Z",
+  "sourceHead": "1f0c682bfb22c72b796cf9e7716271e6483c2dec",
+  "environment": {
+    "repository": "LonelyTraderBay/vittrade-react",
+    "repositoryVisibility": "public",
+    "ownerType": "User",
+    "defaultBranch": "main",
+    "settingsAccess": "Authenticated GitHub browser session",
+    "codeownersApi": "Public GitHub REST API, ref codex/b07-01-ubuntu-validation"
+  },
+  "measurements": {
+    "classicBranchProtection": {
+      "configured": false,
+      "observedText": "Classic branch protections have not been configured",
+      "url": "https://github.com/LonelyTraderBay/vittrade-react/settings/branches"
+    },
+    "repositoryRulesets": {
+      "count": 0,
+      "observedText": "You haven't created any rulesets",
+      "url": "https://github.com/LonelyTraderBay/vittrade-react/settings/rules"
+    },
+    "requiredChecksAndReviews": {
+      "enforced": false,
+      "reason": "No repository branch-protection rule or ruleset exists; repository owner is a user account, so there is no organization-parent ruleset to inherit. CI runs are informational and are not a merge gate."
+    },
+    "codeowners": {
+      "filePresent": true,
+      "ownerAccount": "vittrade",
+      "ownerAccountType": "User",
+      "invalidOwnerCount": 28,
+      "errorKindCounts": {
+        "Unknown owner": 28
+      },
+      "affectedLines": {
+        "first": 5,
+        "last": 32
+      },
+      "uniqueTeamHandles": 15,
+      "apiUrl": "https://api.github.com/repos/LonelyTraderBay/vittrade-react/codeowners/errors?ref=codex%2Fb07-01-ubuntu-validation"
+    },
+    "dco": {
+      "workflowEnforcementFound": false,
+      "verifiedSignedOffCommitsOnB07Branch": true,
+      "remoteRequiredDcoCheck": false,
+      "note": "The B07 commits are manually signed off, but no required branch rule or DCO gate exists."
+    },
+    "actionAndRunnerLifecycle": {
+      "currentCheckoutMajorBeforeChange": 4,
+      "currentSetupNodeMajorBeforeChange": 4,
+      "node20RemovalDate": "2026-09-23",
+      "node24ActionRuntime": "Current GitHub-hosted Actions runtime",
+      "ubuntuLatestCurrentMigration": {
+        "from": "Ubuntu 24.04",
+        "to": "Ubuntu 26.04",
+        "rolloutStart": "2026-10-19",
+        "rolloutCompleteBy": "2026-11-19"
+      },
+      "decision": "Upgrade checkout and setup-node to current Node 24-compatible major releases. Pin CI to ubuntu-24.04, which has the existing project validation baseline, until Ubuntu 26.04 is tested explicitly."
+    }
+  },
+  "sourceUrls": [
+    "https://github.com/LonelyTraderBay/vittrade-react/settings/branches",
+    "https://github.com/LonelyTraderBay/vittrade-react/settings/rules",
+    "https://api.github.com/users/vittrade",
+    "https://api.github.com/repos/LonelyTraderBay/vittrade-react/codeowners/errors?ref=codex%2Fb07-01-ubuntu-validation",
+    "https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners",
+    "https://github.blog/changelog/2026-09-23-node-20-is-no-longer-available-in-github-actions/",
+    "https://github.blog/changelog/2026-09-17-ubuntu-26-generally-available-and-latest-migration/",
+    "https://github.com/actions/checkout/blob/main/CHANGELOG.md",
+    "https://github.com/actions/setup-node/releases"
+  ],
+  "expected": "Determine whether remote branch controls enforce CI, review, CODEOWNERS and DCO, and verify the actual Node and Ubuntu lifecycle before changing workflow action/runtime selections.",
+  "actual": "The authenticated repository settings show no classic branch protection and no repository rulesets. The public repository API confirms the owner is a user account and reports 28 Unknown owner errors across every CODEOWNERS line that references @vittrade/* teams. The checked B07 commits contain sign-off trailers, but no DCO enforcement is configured in repository workflow or remote required checks. Official GitHub notices say Node 20 was removed from Actions on 2026-09-23 and ubuntu-latest migration to Ubuntu 26.04 rolls out from 2026-10-19 through 2026-11-19. The workflow therefore needs Node 24-compatible action majors and an explicit Ubuntu 24.04 pin pending a separate Ubuntu 26.04 test.",
+  "result": "pass",
+  "artifact": "docs/architecture/production-readiness/evidence/B07/b07-04-governance-lifecycle-2026-10-01.json",
+  "notes": "Verification records existing remote state; it does not enable protections or infer that a passing Actions run blocks a merge. CODEOWNERS ownership needs the user to supply valid GitHub user/team identities before it can be repaired."
+}

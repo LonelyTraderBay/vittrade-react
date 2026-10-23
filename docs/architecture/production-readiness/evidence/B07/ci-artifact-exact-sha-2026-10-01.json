@@ -1,0 +1,93 @@
+{
+  "id": "EV-20261001-047",
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-01T09:55:13.000Z",
+  "taskId": "B07",
+  "stepId": "B07.02",
+  "kind": "validation",
+  "commandOrSteps": "Inspect GitHub Actions run #36843241655 for exact head SHA, Node setup, test/E2E counts, build ordering, uploaded artifact metadata and the output of Download uploaded CI evidence for verification plus Verify uploaded CI evidence.",
+  "observedAt": "2026-10-01T09:55:13.000Z",
+  "sourceHead": "aae5b517719f1c1a9ea080af4ae22b159c14dcbb",
+  "run": {
+    "provider": "GitHub Actions",
+    "id": 36843241655,
+    "attempt": 1,
+    "url": "https://github.com/LonelyTraderBay/vittrade-react/actions/runs/36843241655",
+    "event": "push",
+    "branch": "codex/b07-01-ubuntu-validation",
+    "commit": "aae5b517719f1c1a9ea080af4ae22b159c14dcbb",
+    "job": "Production gates",
+    "jobId": 110307038592,
+    "result": "success",
+    "runnerImage": "ubuntu-latest",
+    "nodeVersionSource": ".nvmrc",
+    "configuredNodeMajor": 22,
+    "resolvedNodeVersion": "22.23.3",
+    "startedAt": "2026-10-01T09:31:00Z",
+    "completedAt": "2026-10-01T09:46:27Z",
+    "durationSeconds": 927,
+    "jobDurationSeconds": 924,
+    "completedSteps": 33,
+    "failedSteps": 0
+  },
+  "environment": {
+    "os": "GitHub-hosted Ubuntu runner (ubuntu-latest)",
+    "node": "v22.23.3",
+    "branch": "codex/b07-01-ubuntu-validation",
+    "workingTree": "Exact pushed source SHA aae5b517719f1c1a9ea080af4ae22b159c14dcbb."
+  },
+  "measurements": {
+    "unitAndIntegration": {
+      "result": "pass",
+      "testFilesPassed": 286,
+      "testsPassed": 2406
+    },
+    "e2e": {
+      "result": "pass",
+      "project": "chromium",
+      "testsPassed": 51,
+      "durationSeconds": 96
+    },
+    "ordering": {
+      "result": "pass",
+      "e2eBeforeBuild": true,
+      "buildBeforeProductionMockExclusion": true,
+      "productionMockExclusionBeforeBundleManifest": true,
+      "artifactUploadAfterValidation": true
+    },
+    "artifact": {
+      "result": "pass",
+      "id": 11153145995,
+      "name": "vittrade-ci-evidence-aae5b517719f1c1a9ea080af4ae22b159c14dcbb",
+      "sizeDisplay": "2.81 MB",
+      "digest": "sha256:755bfc071944bc6dc818734435db7c550ea2a739f192a1d79cb152f1a14bf4b0",
+      "contentsVerifiedBy": "scripts/check-ci-evidence-artifact.mjs on the same authenticated Ubuntu job",
+      "files": 553,
+      "javascriptChunks": 221,
+      "coveragePresent": true,
+      "playwrightHtmlReportPresent": true,
+      "distPresent": false,
+      "deployableArtifact": false
+    },
+    "downloadStep": {
+      "result": "success",
+      "action": "actions/download-artifact@v8",
+      "durationSeconds": 1
+    },
+    "artifactVerificationStep": {
+      "result": "success",
+      "durationSeconds": 0,
+      "output": "CI evidence artifact verified for aae5b517719f1c1a9ea080af4ae22b159c14dcbb: 553 files, 221 bundle chunks, coverage and Playwright report present, no dist/."
+    }
+  },
+  "warnings": [
+    "GitHub emitted a Node.js 20 deprecation warning for actions/checkout@v4 and actions/setup-node@v4; this run forced both to Node.js 24. Review action-major upgrades during B07.04 rather than treating this successful run as lifecycle readiness.",
+    "GitHub warned that ubuntu-latest is scheduled to migrate to Ubuntu 26 beginning October 19, 2026; verify the actual runner image and compatibility when the migration occurs.",
+    "The artifact's displayed expiry date and repository retention-policy setting were not inspected in this run."
+  ],
+  "expected": "On the exact pushed SHA, complete all hosted production gates, upload the CI evidence artifact, download that artifact on the authenticated runner, and verify its exact revision/run metadata, reports, bundle manifest and no-dist boundary.",
+  "actual": "Run #36843241655 succeeded on exact SHA aae5b517719f1c1a9ea080af4ae22b159c14dcbb with Node 22.23.3. GitHub reported 2,406 passing unit/integration tests across 286 files and 51/51 Chromium E2E tests. The uploaded artifact 11153145995 has digest sha256:755bfc071944bc6dc818734435db7c550ea2a739f192a1d79cb152f1a14bf4b0. The same job downloaded it and verified 553 files, 221 JavaScript bundle chunks, coverage and the Playwright HTML report, and no dist/. The job built after E2E, then ran production-mock exclusion, bundle budget, upload, download and verification successfully.",
+  "result": "pass",
+  "artifact": "docs/architecture/production-readiness/evidence/B07/ci-artifact-exact-sha-2026-10-01.json",
+  "notes": "This closes B07.02. It does not establish branch protection, required review, backend/staging, full C01 browser acceptance, or product user acceptance."
+}

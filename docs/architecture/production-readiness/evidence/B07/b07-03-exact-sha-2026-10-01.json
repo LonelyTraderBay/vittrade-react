@@ -1,0 +1,106 @@
+{
+  "id": "EV-20261001-049",
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-01T11:03:56.000Z",
+  "taskId": "B07",
+  "stepId": "B07.03",
+  "kind": "validation",
+  "commandOrSteps": "Inspect GitHub Actions run #36850681097 on the exact pushed B07.03 SHA; verify tracking/parity outputs, all Production gates steps, unit/integration and Chromium E2E summaries, build ordering, and uploaded-artifact download verification.",
+  "observedAt": "2026-10-01T11:03:56.000Z",
+  "sourceHead": "2bdaa3072c1555da4c2819790090255541d6670f",
+  "run": {
+    "provider": "GitHub Actions",
+    "id": 36850681097,
+    "attempt": 1,
+    "url": "https://github.com/LonelyTraderBay/vittrade-react/actions/runs/36850681097",
+    "event": "push",
+    "branch": "codex/b07-01-ubuntu-validation",
+    "commit": "2bdaa3072c1555da4c2819790090255541d6670f",
+    "job": "Production gates",
+    "jobId": 110331317920,
+    "result": "success",
+    "startedAt": "2026-10-01T10:41:18Z",
+    "durationSeconds": 927,
+    "completedSteps": 35,
+    "totalSteps": 35,
+    "failedSteps": 0
+  },
+  "environment": {
+    "os": "GitHub-hosted ubuntu-latest",
+    "nodeVersionSource": ".nvmrc",
+    "configuredNodeMajor": 22,
+    "checkout": "Fresh hosted checkout of exact pushed SHA 2bdaa3072c1555da4c2819790090255541d6670f"
+  },
+  "measurements": {
+    "trackingConsistency": {
+      "result": "pass",
+      "errorCount": 0,
+      "tasks": 38,
+      "steps": 205,
+      "filesOutsidePlan": 915
+    },
+    "contractMockParity": {
+      "result": "pass",
+      "contractFiles": 15,
+      "openApiRoutes": 154,
+      "mswRoutes": 154,
+      "matchingMethodPathPairs": 154,
+      "missingHandlers": 0,
+      "extraHandlers": 0,
+      "output": "OpenAPI/MSW method-path parity passed: 154/154 routes match across 15 contracts."
+    },
+    "unitAndIntegration": {
+      "result": "pass",
+      "testFilesPassed": 287,
+      "testsPassed": 2411,
+      "durationSeconds": 299
+    },
+    "coverage": {
+      "result": "pass"
+    },
+    "e2e": {
+      "result": "pass",
+      "project": "chromium",
+      "testsPassed": 51,
+      "durationSeconds": 98
+    },
+    "ordering": {
+      "result": "pass",
+      "e2eBeforeBuild": true,
+      "parityBeforeBuild": true,
+      "productionMockExclusionAfterBuild": true,
+      "bundleBudgetAfterMockExclusion": true,
+      "artifactUploadAfterValidation": true,
+      "artifactDownloadedForVerification": true
+    },
+    "productionBuild": {
+      "result": "pass",
+      "durationSeconds": 38
+    },
+    "artifact": {
+      "result": "pass",
+      "id": 11156177428,
+      "name": "vittrade-ci-evidence-2bdaa3072c1555da4c2819790090255541d6670f",
+      "sizeDisplay": "2.81 MB",
+      "digest": "sha256:1cbebbc517526ef798269f2a68f45f06f8a35c62e174df2f8afe46e3ff2e172d",
+      "verifiedOnRunner": true,
+      "files": 554,
+      "javascriptChunks": 221,
+      "coveragePresent": true,
+      "playwrightHtmlReportPresent": true,
+      "distPresent": false,
+      "deployableArtifact": false,
+      "verificationOutput": "CI evidence artifact verified for 2bdaa3072c1555da4c2819790090255541d6670f: 554 files, 221 bundle chunks, coverage and Playwright report present, no dist/."
+    }
+  },
+  "warnings": [
+    "GitHub reported actions/checkout@v4 and actions/setup-node@v4 are being forced to Node 24 because their current metadata targets deprecated Node 20.",
+    "GitHub reported ubuntu-latest is scheduled to migrate to Ubuntu 26 beginning 2026-10-19.",
+    "CI and Playwright currently run only desktop Chromium; C01 browser target decision remains open."
+  ],
+  "expected": "Complete B07.03 validation on the exact pushed SHA, including the new hosted ledger and contract/mock gates, full configured CI, E2E-before-build order, and runner-side artifact verification.",
+  "actual": "Run #36850681097 succeeded on exact SHA 2bdaa3072c1555da4c2819790090255541d6670f. All 35 Production gates steps passed. Hosted tracking reported 0 errors, OpenAPI/MSW parity matched 154/154 routes across 15 contracts, unit/integration reported 2,411 tests across 287 files, and Chromium E2E reported 51/51. Build, production mock exclusion and bundle checks passed; the uploaded artifact was downloaded and verified on the same runner with 554 files, 221 JavaScript chunks, coverage and Playwright report, and no dist/.",
+  "result": "pass",
+  "artifact": "docs/architecture/production-readiness/evidence/B07/b07-03-exact-sha-2026-10-01.json",
+  "notes": "This closes B07.03 on its exact pushed source SHA. The run is Chromium-only and does not verify broader C01 browser support, backend/staging behavior, branch rules, required reviews, or product user acceptance."
+}

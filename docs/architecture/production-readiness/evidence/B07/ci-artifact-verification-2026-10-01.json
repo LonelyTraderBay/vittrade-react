@@ -1,0 +1,110 @@
+{
+  "id": "EV-20261001-046",
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-01T09:28:36.000Z",
+  "taskId": "B07",
+  "stepId": "B07.02",
+  "kind": "validation",
+  "commandOrSteps": "Run the focused CI artifact checker and bundle manifest tests; run ESLint, Prettier, JavaScript syntax and diff checks; inspect exact-SHA GitHub Actions run and artifact metadata; then run check-tracking after recording the scoped files.",
+  "observedAt": "2026-10-01T09:28:36.000Z",
+  "sourceHead": "ce5ec93d0a60210321911f950712d0984b0270cd",
+  "run": {
+    "provider": "GitHub Actions",
+    "id": 36838559109,
+    "attempt": 1,
+    "url": "https://github.com/LonelyTraderBay/vittrade-react/actions/runs/36838559109",
+    "event": "push",
+    "branch": "codex/b07-01-ubuntu-validation",
+    "commit": "ce5ec93d0a60210321911f950712d0984b0270cd",
+    "job": "Production gates",
+    "jobId": 110291816645,
+    "result": "success",
+    "startedAt": "2026-10-01T08:47:42Z",
+    "completedAt": "2026-10-01T09:02:11Z",
+    "durationSeconds": 869,
+    "completedSteps": 31,
+    "totalSteps": 31,
+    "failedSteps": 0
+  },
+  "environment": {
+    "os": "Windows",
+    "shell": "PowerShell",
+    "node": "v24.19.0",
+    "npm": "11.17.0",
+    "worktree": "vittrade-react-b07-01",
+    "branch": "codex/b07-01-ubuntu-validation",
+    "workingTree": "Dirty; exact-SHA workflow and artifact verification changes are local and uncommitted."
+  },
+  "measurements": {
+    "vitest": {
+      "result": "pass",
+      "filesPassed": 2,
+      "testsPassed": 8,
+      "artifactCheckerTestsPassed": 4,
+      "bundleManifestTestsPassed": 4
+    },
+    "eslint": {
+      "result": "pass",
+      "filesChecked": 4
+    },
+    "prettier": {
+      "result": "pass",
+      "filesChecked": 7,
+      "planMarkdownRange": {
+        "result": "pass",
+        "filesChecked": 1
+      }
+    },
+    "nodeSyntax": {
+      "result": "pass",
+      "filesChecked": 4
+    },
+    "workflowArtifact": {
+      "metadataListing": "pass",
+      "artifactId": 11151041364,
+      "name": "vittrade-ci-evidence-ce5ec93d0a60210321911f950712d0984b0270cd",
+      "sizeBytes": 2949346,
+      "createdAt": "2026-10-01T09:02:08Z",
+      "expiresAt": "2026-12-30T08:47:42Z",
+      "expired": false,
+      "archiveContentsReadLocally": false,
+      "archiveDownloadReason": "GitHub REST archive download returned HTTP 401 without a signed-in gh session. The workflow now downloads and inspects its own uploaded artifact on the authenticated Ubuntu runner."
+    },
+    "gitDiffCheck": "pass",
+    "trackingIntegrity": {
+      "result": "pass",
+      "errorCount": 0,
+      "tasks": 38,
+      "steps": 205,
+      "filesOutsidePlan": 913
+    },
+    "workflowYaml": {
+      "result": "pass",
+      "parseErrors": 0,
+      "assertions": {
+        "uploadId": "upload-ci-evidence",
+        "downloadAction": "actions/download-artifact@v8",
+        "exactShaArtifactName": true,
+        "downloadAfterSuccessfulJob": true,
+        "verifyAfterDownload": true,
+        "distUploaded": false
+      }
+    },
+    "scopedFileHashes": {
+      ".github/workflows/ci.yml": "9883f14f4d16aac97c5bd3568365b9e39cf204244807fb71340f9f56749bfeff",
+      "scripts/check-ci-evidence-artifact.mjs": "fd4d3d8b9f7d67d0317959db42229f1b19ed49b873c5ab41b267b22033667aeb",
+      "scripts/check-ci-evidence-artifact.test.mjs": "6b407a14d9a1ee71ea8e778699bc2a8b3e963870655791f1ad42c1559e6f887c",
+      "docs/architecture/production-readiness/PLAN.md": "ffe6833251ad2714b8d24fe509a4e2895424a3d529520688b9ac1a0bc4f925f0"
+    }
+  },
+  "warnings": [
+    "The successful run above predates artifact-content verification; its uploaded archive has not yet been read.",
+    "The local Windows shell cannot resolve Node from child CMD shims, so focused Vitest, ESLint and Prettier checks were run through their installed JavaScript entrypoints using the explicit Node executable.",
+    "Artifact expiry is the value returned by the GitHub run artifact API; retention policy configuration was not inspected."
+  ],
+  "expected": "Add an authenticated runner-side download and validation gate that confirms the saved evidence is for the exact run and contains required reports without dist/.",
+  "actual": "All 8 focused tests passed across the artifact checker and bundle manifest suites. ESLint passed for four scripts/tests; Prettier passed for seven scoped files and the edited PLAN paragraph range; four JavaScript syntax checks passed; workflow YAML/artifact ordering assertions passed; staged diff checks passed. The tracker is being finalized against these exact files. The prior exact-SHA run #36838559109 succeeded 31/31 and published artifact 11151041364 (2,949,346 bytes). The archive download requires authenticated access and returned HTTP 401 locally; the new runner-side verifier still awaits an exact-SHA Ubuntu run.",
+  "result": "pass",
+  "artifact": "docs/architecture/production-readiness/evidence/B07/ci-artifact-verification-2026-10-01.json",
+  "notes": "B07.02 remains in_progress pending the next exact-SHA hosted run and a successful Verify uploaded CI evidence step. The artifact checker requires matching full commit/run metadata, a passing non-deployable chunk manifest, coverage and Playwright report, and rejects dist/."
+}

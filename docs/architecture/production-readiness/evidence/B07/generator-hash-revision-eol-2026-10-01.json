@@ -1,0 +1,98 @@
+{
+  "id": "EV-20261001-043",
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-01T07:50:38.000Z",
+  "taskId": "B07",
+  "stepId": "B07.01",
+  "kind": "validation",
+  "commandOrSteps": "On the B07 working tree, run the focused Vitest files; A06 and C05 generators with --check; architecture inventory with --check; Prettier --check on the 9 scoped source, output and plan files; node --check on 4 JavaScript modules; and git diff --check. Finally, run check-tracking against the updated ledger.",
+  "observedAt": "2026-10-01T07:50:38.000Z",
+  "sourceHead": "c01eafe3c5abea7c5fba973fb16f31ce4e6389b6",
+  "run": null,
+  "environment": {
+    "os": "Windows",
+    "shell": "PowerShell",
+    "node": "v24.19.0",
+    "npm": "11.17.0",
+    "worktree": "vittrade-react-b07-01",
+    "branch": "codex/b07-01-ubuntu-validation",
+    "workingTree": "Dirty; scoped implementation and generated outputs were checked before commit."
+  },
+  "measurements": {
+    "vitest": {
+      "result": "pass",
+      "filesPassed": 2,
+      "testsPassed": 20,
+      "provenanceTestsPassed": 5
+    },
+    "a06ScenarioMatrixCheck": {
+      "result": "pass",
+      "domains": 15,
+      "operations": 154,
+      "expectations": 106
+    },
+    "c05UiAcceptanceIndexCheck": {
+      "result": "pass",
+      "activeRouteDeclarations": 427,
+      "urlRegistrations": 1458,
+      "uniquePreviewUrls": 1389,
+      "historicalRouteParity": "427/427",
+      "freshScenarioRows": "25/106",
+      "userAcceptedPages": "0/128"
+    },
+    "scenarioEvidenceFreshness": {
+      "rowsWithFreshBrowserEvidence": "25/106",
+      "rowsFullyCoveredByFreshEvidence": "15/106",
+      "uniqueOperationsWithFreshEvidence": "32/154",
+      "registeredSidecars": 35,
+      "sidecarsWithCurrentSourceHashes": 25,
+      "sidecarsStaleFromSourceContentChanges": 10,
+      "runtimeEvidenceFresh": false,
+      "backendOrStagingOperationsVerified": "0/154"
+    },
+    "architectureInventory": {
+      "result": "pass",
+      "pages": 129,
+      "routes": 427,
+      "components": 149,
+      "dataModules": 0,
+      "services": 32,
+      "mocks": 28
+    },
+    "prettier": {
+      "result": "pass",
+      "filesChecked": 9
+    },
+    "nodeSyntax": {
+      "result": "pass",
+      "filesChecked": 4
+    },
+    "gitDiffCheck": "pass",
+    "dirtyFileHashes": {
+      "docs/architecture/production-readiness/evidence/A06/generate-scenario-matrix.mjs": "370807dbc27a280effc140e7d7328fedafa588b1c3d211cb0ba1b61bccff0ea8",
+      "docs/architecture/production-readiness/evidence/A06/scenario-evidence-provenance.mjs": "042abb40b197f6ce8e3fd1da2a5c97263b47313b949e317a5c45139fd578c10c",
+      "docs/architecture/production-readiness/evidence/A06/scenario-evidence-provenance.test.mjs": "2e8366b56fe5d050457d8d4ca6cbc9117b01cf485cfdeaad2b375939193cd8d0",
+      "docs/architecture/production-readiness/evidence/A06/scenario-matrix-2026-09-28.json": "1f5a39e5a820fdb663b60ce7782f0b888dcd77cdbfe796627f7fcee98b608539",
+      "docs/architecture/production-readiness/evidence/C05/generate-ui-acceptance-index.mjs": "290a715e152940e6fb73480a4e64a0a74393d4e63beff02109c6d6f95ae5e3aa",
+      "docs/architecture/production-readiness/evidence/C05/ui-acceptance-index-2026-09-29.json": "d6cb4a95c56d0392c6529652dd630c24d18b4fa4918eaab46378b4144c1b57ec",
+      "docs/architecture/production-readiness/UI-ACCEPTANCE.md": "c378deafcd17587de0e1428176fd022e22ff0b22a4ddc864dcd036d53fe6bb12"
+    },
+    "trackingIntegrity": {
+      "result": "pass",
+      "errorCount": 0,
+      "tasks": 38,
+      "steps": 205,
+      "filesOutsidePlan": 910
+    }
+  },
+  "warnings": [
+    "This local Windows Node 24 run is not the required Node 22 hosted Ubuntu validation for the resulting exact commit SHA; B07.01 remains in_progress until that CI passes.",
+    "Ten of 35 scenario evidence sidecars remain stale because their source-content hashes differ; no freshness is inferred from the local check.",
+    "Aggregate runtime evidence is not fresh; user acceptance is 0/128 and backend/staging verification is 0/154."
+  ],
+  "expected": "Prove deterministic A06/C05 generated outputs and source-hash checks locally, while recording exact remaining stale evidence and pending hosted validation.",
+  "actual": "All 20 tests across two files, A06/C05 generator checks, architecture inventory, formatting, syntax and whitespace checks passed. Recorded outputs remain bound to the recorded baseline SHA while source freshness is determined by content hashes that accept LF/CRLF line-ending normalization. Ten sidecars remain stale due real source-content differences. The updated production-readiness tracker also passes check-tracking with errorCount=0.",
+  "result": "pass",
+  "artifact": "docs/architecture/production-readiness/evidence/B07/generator-hash-revision-eol-2026-10-01.json",
+  "notes": "Local validation only. Exact-SHA Node 22/Ubuntu Actions run is pending commit and push; do not mark B07.01 done on this evidence alone."
+}

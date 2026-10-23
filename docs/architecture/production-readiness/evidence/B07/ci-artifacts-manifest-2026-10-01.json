@@ -1,0 +1,86 @@
+{
+  "id": "EV-20261001-045",
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-01T08:45:33.000Z",
+  "taskId": "B07",
+  "stepId": "B07.02",
+  "kind": "validation",
+  "commandOrSteps": "Run Vitest for check-bundle-budget.test.mjs and generate-architecture-inventory.test.mjs; run ESLint, Prettier, node --check on the bundle budget script/test, and parse/assert the CI workflow YAML artifact, cache, path and gate ordering contract. Run check-tracking after updating the B07.02 ledger.",
+  "observedAt": "2026-10-01T08:45:33.000Z",
+  "sourceHead": "6e19e4b1fb47094fa81feaee46754ed77fc65a47",
+  "run": null,
+  "environment": {
+    "os": "Windows",
+    "shell": "PowerShell",
+    "node": "v24.19.0",
+    "npm": "11.17.0",
+    "worktree": "vittrade-react-b07-01",
+    "branch": "codex/b07-01-ubuntu-validation",
+    "workingTree": "Dirty; B07.02 workflow and bundle-manifest changes are local and uncommitted."
+  },
+  "measurements": {
+    "vitest": {
+      "result": "pass",
+      "filesPassed": 2,
+      "testsPassed": 19,
+      "bundleManifestTestsPassed": 4
+    },
+    "eslint": {
+      "result": "pass",
+      "filesChecked": 2
+    },
+    "prettier": {
+      "result": "pass",
+      "filesChecked": 3
+    },
+    "nodeSyntax": {
+      "result": "pass",
+      "filesChecked": 2
+    },
+    "workflowYaml": {
+      "result": "pass",
+      "parseErrors": 0,
+      "assertions": {
+        "cacheDependencyPath": "package-lock.json",
+        "artifactName": "vittrade-ci-evidence-${{ github.sha }}",
+        "uploadsOnSuccessOrFailure": true,
+        "ifNoFilesFound": "warn",
+        "distUploaded": false,
+        "e2eBeforeBuild": true,
+        "productionMockExclusionBeforeBundleManifest": true
+      }
+    },
+    "bundleManifest": {
+      "result": "unit-tested",
+      "recordsExactCommit": true,
+      "recordsWorkflowRunUrl": true,
+      "recordsChunkSha256AndRawGzipBytes": true,
+      "marksDeployableArtifactFalse": true,
+      "failedBudgetProducesFailManifest": true
+    },
+    "dirtyFileHashes": {
+      ".github/workflows/ci.yml": "d39edff2fe88529a8a9a57553ce79d9fd17b6480df9de1fa689365c281c9492c",
+      ".gitignore": "130f7411b12ced91b9b7ad4eec7cce6b2bc3b16ee550febcf580859a3d8bb18c",
+      "scripts/check-bundle-budget.mjs": "c09568314a582b7f795bf84b5c651066724fab1527f67a7d65a758b9b029e5cc",
+      "scripts/check-bundle-budget.test.mjs": "b1cd5742a0a4b5dd89bce95cd1cf706ef4654db3c3f84ed01bd0eaf1f07b9ddb",
+      "docs/architecture/production-readiness/PLAN.md": "2a499a16e87a2fb6396ed31e6fe351feb8ff5d7f034916a06206fb272d255586"
+    },
+    "trackingIntegrity": {
+      "result": "pass",
+      "errorCount": 0,
+      "tasks": 38,
+      "steps": 205,
+      "filesOutsidePlan": 911
+    }
+  },
+  "warnings": [
+    "No hosted Actions run on the B07.02 source SHA has run yet; artifact creation and the manifest from an actual production build remain unverified.",
+    "Repository visibility is public. The saved Playwright traces/reports are limited to synthetic test fixtures; artifact retention still follows remote repository settings, which are not verified.",
+    "The workflow uploads CI evidence only; it does not upload dist/ or deploy a build."
+  ],
+  "expected": "Persist exact-SHA metadata, coverage, Playwright report/trace outputs, and a non-deployable per-chunk bundle manifest as one CI artifact; cache npm by package-lock.json and preserve failure diagnostics.",
+  "actual": "The 19/19 focused tests, 2-file ESLint, 3-file Prettier and syntax checks passed. YAML parsed with zero errors and assertions confirmed the exact SHA artifact name, lockfile cache path, success/failure upload condition, warning on missing files, E2E/build/mock/bundle order, and exclusion of dist. CI upload itself remains pending. The updated production-readiness ledger passes check-tracking with errorCount=0.",
+  "result": "pass",
+  "artifact": "docs/architecture/production-readiness/evidence/B07/ci-artifacts-manifest-2026-10-01.json",
+  "notes": "Local validation only. B07.02 remains in_progress until hosted CI on the exact pushed SHA succeeds and the uploaded artifact is inspected."
+}

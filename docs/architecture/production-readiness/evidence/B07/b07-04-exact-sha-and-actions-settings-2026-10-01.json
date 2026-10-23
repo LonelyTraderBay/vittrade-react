@@ -1,0 +1,103 @@
+{
+  "id": "EV-20261001-051",
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-01T12:34:50.000Z",
+  "taskId": "B07",
+  "stepId": "B07.04",
+  "kind": "validation",
+  "commandOrSteps": "Inspect authenticated repository General and Actions settings; inspect exact-SHA GitHub Actions run 36857038378, Production gates job output, resolved runner/action versions, artifact metadata, and the uploaded artifact verification result.",
+  "observedAt": "2026-10-01T12:34:50.000Z",
+  "sourceHead": "3aca27dc294e27c422c79b34bf90ac4082eee152",
+  "environment": {
+    "repository": "LonelyTraderBay/vittrade-react",
+    "repositoryVisibility": "public",
+    "branch": "codex/b07-01-ubuntu-validation",
+    "settingsAccess": "Authenticated GitHub browser session",
+    "ciSourceCommit": "09f3f570113bca9467102efdac4d266a6633e0b9",
+    "runner": "GitHub-hosted ubuntu-24.04",
+    "node": "22.23.2 from .nvmrc"
+  },
+  "measurements": {
+    "remoteRepositoryPolicy": {
+      "classicBranchProtection": false,
+      "repositoryRulesets": 0,
+      "requiredChecksEnforced": false,
+      "requiredReviewsEnforced": false,
+      "codeownersUnknownOwnerErrors": 28,
+      "codeownersLinesAffected": "5-32",
+      "dcoWebCommitSignoffRequired": false,
+      "actionsAllowed": "all actions and reusable workflows",
+      "actionsRequireFullLengthShaPins": false,
+      "artifactAndLogRetentionDays": 90,
+      "forkWorkflowApproval": "first-time contributors",
+      "defaultGitHubTokenPermission": "read-only contents and packages",
+      "actionsMayCreateOrApprovePullRequests": false
+    },
+    "hostedCi": {
+      "runId": 36857038378,
+      "runUrl": "https://github.com/LonelyTraderBay/vittrade-react/actions/runs/36857038378",
+      "sourceSha": "09f3f570113bca9467102efdac4d266a6633e0b9",
+      "result": "success",
+      "startedAt": "2026-10-01T11:42:21Z",
+      "completedAt": "2026-10-01T11:51:48Z",
+      "jobId": 110351881828,
+      "jobName": "Production gates",
+      "jobStartedAt": "2026-10-01T11:42:24Z",
+      "jobCompletedAt": "2026-10-01T11:51:47Z",
+      "durationSeconds": 563,
+      "stepsPassed": 35,
+      "stepsFailed": 0,
+      "nodeVersion": "22.23.2",
+      "ubuntuImage": "ubuntu-24.04",
+      "ubuntuImageRelease": "20260920.314.1",
+      "trackingErrors": 0,
+      "openApiMockParity": {
+        "contractFiles": 15,
+        "openApiOperations": 154,
+        "matchingMethodPathPairs": 154,
+        "missing": 0,
+        "extra": 0
+      },
+      "unitIntegration": {
+        "filesPassed": 287,
+        "testsPassed": 2411
+      },
+      "chromiumE2E": {
+        "testsPassed": 51
+      },
+      "actionRevisions": {
+        "actionsCheckoutV7": "3d3c42e5aac5ba805825da76410c181273ba90b1",
+        "actionsSetupNodeV7": "820762786026740c76f36085b0efc47a31fe5020",
+        "actionsUploadArtifactV7": "043fb46d1a93c77aae656e7c1c64a875d1fc6a0a",
+        "actionsDownloadArtifactV8": "3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c"
+      },
+      "artifact": {
+        "id": 11160030746,
+        "name": "vittrade-ci-evidence-09f3f570113bca9467102efdac4d266a6633e0b9",
+        "sizeBytes": 2949737,
+        "digest": "sha256:d5022cabe79fbe251bcd612392d0c415e40a002fa10711cfa99a52c3a1b5824f",
+        "createdAt": "2026-10-01T11:51:43Z",
+        "expiresAt": "2026-12-30T11:42:21Z",
+        "runnerSideDownloadAndVerification": "passed"
+      }
+    }
+  },
+  "sourceUrls": [
+    "https://github.com/LonelyTraderBay/vittrade-react/settings",
+    "https://github.com/LonelyTraderBay/vittrade-react/settings/actions",
+    "https://github.com/LonelyTraderBay/vittrade-react/settings/branches",
+    "https://github.com/LonelyTraderBay/vittrade-react/settings/rules",
+    "https://github.com/LonelyTraderBay/vittrade-react/actions/runs/36857038378",
+    "https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners",
+    "https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/available-rules-for-rulesets",
+    "https://github.blog/changelog/2026-09-23-node-20-is-no-longer-available-in-github-actions/",
+    "https://github.blog/changelog/2026-09-17-ubuntu-26-generally-available-and-latest-migration/",
+    "https://github.com/actions/checkout/blob/main/CHANGELOG.md",
+    "https://github.com/actions/setup-node/releases"
+  ],
+  "expected": "Verify actual remote GitHub governance and action/runner policy, then validate the selected Node-compatible action majors and pinned Ubuntu baseline on the exact pushed workflow SHA.",
+  "actual": "Authenticated settings show no branch protection/rulesets or enforced reviews/checks; all 28 @vittrade/* CODEOWNERS entries are invalid Unknown owner references; browser-based DCO signoff is disabled. Actions allow all actions, full-SHA pinning is disabled, retention is 90 days, first-time external contributors require approval, GITHUB_TOKEN defaults to read-only contents/packages, and Actions cannot create or approve pull requests. Run 36857038378 succeeded on exact SHA 09f3f570113bca9467102efdac4d266a6633e0b9 with 35/35 steps, 2,411 tests/287 files, 51/51 Chromium E2E, 154/154 route parity and a runner-downloaded exact-SHA evidence artifact.",
+  "result": "pass",
+  "artifact": "docs/architecture/production-readiness/evidence/B07/b07-04-exact-sha-and-actions-settings-2026-10-01.json",
+  "notes": "The workflow and hosted gates are verified. Governance findings remain real merge-control blockers; this task did not change branch protection, rulesets, CODEOWNERS identities, DCO settings, action allowlists, or SHA-pin policy."
+}
