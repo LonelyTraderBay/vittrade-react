@@ -943,6 +943,12 @@
     transition: all var(--tr-duration-fast) var(--tr-ease-standard);
   }
 
+  /* Explicit solid-primary color pairs change together across theme/disabled/selected states. */
+  /* Keep each legacy duration/easing; only this property must outrank class-shape shorthands. */
+  button[data-tr-color-pair='primary'] {
+    transition-property: box-shadow, filter, transform !important;
+  }
+
   button:active:not(:disabled) {
     transform: scale(0.97);
   }
@@ -1283,12 +1289,18 @@ select:focus-visible,
 }
 
 /* ---- Auto-detect: Header back/action buttons ---- */
-button[class*='w-8'][class*='h-8'][class*='rounded-full']:hover,
-button[class*='w-9'][class*='h-9'][class*='rounded-full']:hover,
-button[class*='w-10'][class*='h-10'][class*='rounded-full']:hover,
-button[class*='size-8'][class*='rounded-full']:hover,
-button[class*='size-9'][class*='rounded-full']:hover,
-button[class*='size-10'][class*='rounded-full']:hover {
+button:where(
+    :not([data-tr-color-pair='primary'])
+  )[class*='w-8'][class*='h-8'][class*='rounded-full']:hover,
+button:where(
+    :not([data-tr-color-pair='primary'])
+  )[class*='w-9'][class*='h-9'][class*='rounded-full']:hover,
+button:where(
+    :not([data-tr-color-pair='primary'])
+  )[class*='w-10'][class*='h-10'][class*='rounded-full']:hover,
+button:where(:not([data-tr-color-pair='primary']))[class*='size-8'][class*='rounded-full']:hover,
+button:where(:not([data-tr-color-pair='primary']))[class*='size-9'][class*='rounded-full']:hover,
+button:where(:not([data-tr-color-pair='primary']))[class*='size-10'][class*='rounded-full']:hover {
   background-color: var(--tr-border) !important;
 }
 

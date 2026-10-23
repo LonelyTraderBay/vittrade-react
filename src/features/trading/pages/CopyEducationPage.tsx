@@ -65,11 +65,13 @@ export function CopyEducationPage() {
         {activeTab === 'regulatory' && <CopyEducationRegulatoryTab />}
         {/* CTA */}
         <button
+          data-tr-color-pair="primary"
           onClick={() => navigate(`${prefix}/trade/copy-trading`)}
           className="w-full rounded-xl flex items-center justify-center gap-2"
           style={{
             background: c.primary,
-            color: '#fff',
+            color: 'var(--tr-text-on-color)',
+
             height: 48,
             fontWeight: 600,
             fontSize: 14,

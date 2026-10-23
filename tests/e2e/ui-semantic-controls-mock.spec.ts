@@ -1,3 +1,4 @@
+import { resizeAuthenticatedHome } from './helpers/resize-home';
 import { expect, test, type Locator, type Page } from '@playwright/test';
 import { writeFile } from 'node:fs/promises';
 import { paint } from './helpers/semantic-control-paint';
@@ -13,7 +14,7 @@ async function open(page: Page, prefix: string, route: string, theme: string) {
   await expect(page).toHaveURL('/w/home');
   if (theme === 'dark') await page.getByTitle('Chế độ tối', { exact: true }).click();
   await expect(page.locator('html')).toHaveClass(new RegExp('\\b' + theme + '\\b'));
-  await page.setViewportSize({ width: prefix ? 1440 : 390, height: 900 });
+  await resizeAuthenticatedHome(page, { width: prefix ? 1440 : 390, height: 900 });
   await page.evaluate(
     async ({ moduleUrl, target }) => {
       const { router } = await import(moduleUrl);

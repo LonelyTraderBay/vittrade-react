@@ -1,3 +1,4 @@
+import { resizeAuthenticatedHome } from './helpers/resize-home';
 import { expect, test } from '@playwright/test';
 import { writeFile } from 'node:fs/promises';
 import { paint } from './helpers/semantic-control-paint';
@@ -162,7 +163,7 @@ for (const theme of ['light', 'dark'])
         await page.getByTestId('auth-submit').click();
         await expect(page).toHaveURL('/w/home');
         if (theme === 'dark') await page.getByTitle('Chế độ tối', { exact: true }).click();
-        await page.setViewportSize({ width: profile.width, height: 900 });
+        await resizeAuthenticatedHome(page, { width: profile.width, height: 900 });
         const owner = kind.split('-')[0];
         const path = owner === 'history' ? '/wallet/history' : `/p2p/${owner}`;
         const target = `${profile.prefix}${path}`;

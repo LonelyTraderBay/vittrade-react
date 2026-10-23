@@ -1,12 +1,10 @@
 import React from 'react';
-import { useLayoutEffect, useRef } from 'react';
 import { AuthSessionProvider } from './AuthContext';
 import type { AuthAdapter } from './AuthContext';
 import { ThemeProvider } from '@/shared/theme/ThemeContext';
 import { UIProvider } from './UIContext';
 import { TradingContext } from './trading-context';
 import { queryClient } from '@/shared/api/query-client';
-import { useAuth } from '@/shared/session/useAuth';
 
 /**
  * ══════════════════════════════════════════════════════════
@@ -38,28 +36,17 @@ export function AppProvider({
 }) {
   return (
     <ThemeProvider>
-      <AuthSessionProvider adapter={authAdapter}>
+      <AuthSessionProvider adapter={authAdapter} onIdentityChange={clearSessionQueryCache}>
         <UIProvider>
-          <SessionQueryCacheBoundary>
-            <TradingBridge>{children}</TradingBridge>
-          </SessionQueryCacheBoundary>
+          <TradingBridge>{children}</TradingBridge>
         </UIProvider>
       </AuthSessionProvider>
     </ThemeProvider>
   );
 }
 
-function SessionQueryCacheBoundary({ children }: { children: React.ReactNode }) {
-  const { user } = useAuth();
-  const previousUserId = useRef(user?.id ?? null);
-
-  useLayoutEffect(() => {
-    const currentUserId = user?.id ?? null;
-    if (previousUserId.current !== currentUserId) queryClient.clear();
-    previousUserId.current = currentUserId;
-  }, [user?.id]);
-
-  return children;
+function clearSessionQueryCache() {
+  queryClient.clear();
 }
 
 // Internal: trading state that doesn't warrant its own context yet

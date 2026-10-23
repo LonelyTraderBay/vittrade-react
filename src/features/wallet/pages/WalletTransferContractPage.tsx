@@ -211,11 +211,12 @@ export function WalletTransferContractPage() {
               disabled={submitting}
             />
             <button
+              data-tr-color-pair="primary"
               type="button"
               aria-label="Swap wallets"
               disabled={submitting}
               className="mx-auto flex h-10 w-10 items-center justify-center rounded-full"
-              style={{ background: colors.primary, color: '#fff' }}
+              style={{ background: colors.primary, color: 'var(--tr-text-on-color)' }}
               onClick={() => {
                 setFromWallet(toWallet);
                 setToWallet(fromWallet);

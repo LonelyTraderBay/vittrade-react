@@ -29,6 +29,8 @@ export function FilterButton({ selected, label, onClick }: FilterButtonProps) {
         borderRadius: ButtonRadius.compact,
         background: selected ? withAlpha(colors.primary, ALPHA.soft) : colors.surface2,
         color: selected ? colors.text1 : colors.text2,
+        // Keep inverse theme text/surface pairs synchronous; retain the inherited effect timing.
+        transitionProperty: 'box-shadow, filter, transform',
       }}
     >
       <Check

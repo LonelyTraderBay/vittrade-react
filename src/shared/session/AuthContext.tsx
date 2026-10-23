@@ -46,9 +46,10 @@ function broadcastLogout(): void {
 interface AuthProviderProps {
   children: React.ReactNode;
   adapter: AuthAdapter;
+  onIdentityChange?: () => void;
 }
 
-export function AuthSessionProvider({ children, adapter }: AuthProviderProps) {
+export function AuthSessionProvider({ children, adapter, onIdentityChange }: AuthProviderProps) {
   const hasDeterministicInitialState = adapter.initialSession !== undefined;
   const [state, setState] = useState(() =>
     hasDeterministicInitialState
@@ -60,11 +61,19 @@ export function AuthSessionProvider({ children, adapter }: AuthProviderProps) {
         },
   );
   const operationRef = useRef(0);
+  const appliedUserId = useRef(adapter.initialSession?.user.id ?? null);
 
-  const applySession = useCallback((session: AuthSession | null, error: Error | null = null) => {
-    setAccessToken(session?.accessToken ?? null);
-    setState(sessionState(session, error));
-  }, []);
+  const applySession = useCallback(
+    (session: AuthSession | null, error: Error | null = null) => {
+      const userId = session?.user.id ?? null;
+      // Invalidate account data before publishing credentials or a new identity.
+      if (appliedUserId.current !== userId) onIdentityChange?.();
+      appliedUserId.current = userId;
+      setAccessToken(session?.accessToken ?? null);
+      setState(sessionState(session, error));
+    },
+    [onIdentityChange],
+  );
 
   useEffect(() => {
     if (hasDeterministicInitialState) {
