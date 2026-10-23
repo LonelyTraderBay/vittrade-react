@@ -67,6 +67,7 @@ describe('OrderConfirmationSheet', () => {
     renderSheet({ isPlacing: true });
 
     expect(screen.getByRole('button', { name: 'Đang đặt lệnh...' })).toBeDisabled();
+    expect(screen.getByTestId('trade-confirm-submit')).toHaveAttribute('aria-busy', 'true');
   });
 
   it('keeps permission loss visible and blocks confirmation inside the modal', () => {

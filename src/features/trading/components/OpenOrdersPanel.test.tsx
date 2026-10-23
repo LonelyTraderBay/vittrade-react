@@ -25,6 +25,7 @@ function renderPanel({
   orders = [order],
   canWrite = true,
   cancelPending = false,
+  pendingCancelOrderId,
   onModifyOrder = vi.fn(),
   onCancelOrder = vi.fn(),
   onExportHistory = vi.fn(),
@@ -32,6 +33,7 @@ function renderPanel({
   orders?: TradingOrder[];
   canWrite?: boolean;
   cancelPending?: boolean;
+  pendingCancelOrderId?: string;
   onModifyOrder?: (orderId: string) => void;
   onCancelOrder?: (orderId: string) => void;
   onExportHistory?: () => void;
@@ -41,6 +43,7 @@ function renderPanel({
       orders={orders}
       canWrite={canWrite}
       cancelPending={cancelPending}
+      pendingCancelOrderId={pendingCancelOrderId}
       onModifyOrder={onModifyOrder}
       onCancelOrder={onCancelOrder}
       onExportHistory={onExportHistory}
@@ -92,5 +95,26 @@ describe('OpenOrdersPanel', () => {
 
     expect(screen.getByRole('button', { name: 'Sửa' })).toBeEnabled();
     expect(screen.getByTestId(`cancel-order-${order.id}`)).toBeDisabled();
+  });
+
+  it('identifies only the cancellation target as busy while blocking all cancel actions', () => {
+    const otherOrder = { ...order, id: 'open-order-other' };
+    const { onCancelOrder } = renderPanel({
+      orders: [order, otherOrder],
+      cancelPending: true,
+      pendingCancelOrderId: order.id,
+    });
+
+    const target = screen.getByTestId(`cancel-order-${order.id}`);
+    const other = screen.getByTestId(`cancel-order-${otherOrder.id}`);
+    expect(target).toBeDisabled();
+    expect(target).toHaveTextContent('Đang hủy...');
+    expect(target).toHaveAttribute('aria-busy', 'true');
+    expect(other).toBeDisabled();
+    expect(other).toHaveTextContent('Hủy');
+    expect(other).toHaveAttribute('aria-busy', 'false');
+    fireEvent.click(target);
+    fireEvent.click(other);
+    expect(onCancelOrder).not.toHaveBeenCalled();
   });
 });

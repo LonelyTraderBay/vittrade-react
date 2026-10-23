@@ -117,6 +117,7 @@ export function OrderConfirmationSheet({
           type="button"
           onClick={onConfirm}
           disabled={isPlacing || !canWriteTrading}
+          aria-busy={isPlacing}
           data-testid="trade-confirm-submit"
           className="w-full rounded-2xl flex items-center justify-center gap-2 font-semibold text-base ripple"
           style={{

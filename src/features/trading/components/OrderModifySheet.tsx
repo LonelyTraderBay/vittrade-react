@@ -201,13 +201,14 @@ export function OrderModifySheet({
               data-testid="trade-modify-submit"
               onClick={handleSave}
               disabled={!canWrite || !canSave || isPending}
+              aria-busy={isPending}
               className="flex-[2] h-12 rounded-xl font-bold text-white"
               style={{
                 background: 'linear-gradient(135deg, #3B82F6, #2563EB)',
                 fontSize: 14,
               }}
             >
-              Lưu thay đổi
+              {isPending ? 'Đang lưu...' : 'Lưu thay đổi'}
             </button>
           </div>
         </div>
