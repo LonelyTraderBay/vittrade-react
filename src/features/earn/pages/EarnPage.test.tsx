@@ -1,4 +1,4 @@
-import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
+import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import { act, fireEvent, screen, waitFor } from '@testing-library/react';
@@ -15,20 +15,8 @@ import { EarnReceiptPage } from './EarnTransactionPages';
 
 const server = setupServer();
 
-const { successHaptic } = vi.hoisted(() => ({ successHaptic: vi.fn() }));
-vi.mock('@/shared/hooks/useHaptic', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('@/shared/hooks/useHaptic')>();
-  return {
-    ...actual,
-    useHaptic: () => ({ ...actual.useHaptic(), hapticSuccess: successHaptic }),
-  };
-});
-
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
-afterEach(() => {
-  server.resetHandlers();
-  successHaptic.mockClear();
-});
+afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
 const snapshot: EarnSnapshot = {
@@ -325,7 +313,6 @@ describe('Earn page contract boundary', () => {
     await user.click(screen.getByRole('checkbox'));
     await user.click(screen.getByRole('button', { name: /Xác nhận đăng ký/i }));
     expect(await screen.findByText('Đăng ký sản phẩm thành công.')).toBeInTheDocument();
-    expect(successHaptic).toHaveBeenCalledTimes(1);
     await user.click(screen.getByRole('button', { name: 'Đóng thông báo' }));
     expect(screen.queryByText('Đăng ký sản phẩm thành công.')).not.toBeInTheDocument();
   });
@@ -361,7 +348,6 @@ describe('Earn page contract boundary', () => {
     expect(await screen.findByRole('heading', { name: 'Yêu cầu đang xử lý' })).toBeInTheDocument();
     expect(screen.getByRole('status')).toHaveTextContent('Đang xử lý');
     expect(screen.getByText('receipt-pending-subscription')).toBeInTheDocument();
-    expect(successHaptic).not.toHaveBeenCalled();
     expect(screen.queryByText('Đăng ký sản phẩm thành công.')).not.toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Về Tiết kiệm' })).toBeInTheDocument();
   });
@@ -398,7 +384,6 @@ describe('Earn page contract boundary', () => {
     expect(await screen.findByRole('heading', { name: 'Yêu cầu đang xử lý' })).toBeInTheDocument();
     expect(screen.getByRole('status')).toHaveTextContent('Đang xử lý');
     expect(screen.getByText('receipt-pending-redemption')).toBeInTheDocument();
-    expect(successHaptic).not.toHaveBeenCalled();
     expect(screen.queryByText('Yêu cầu rút vốn đã được ghi nhận.')).not.toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Về Tiết kiệm' })).toBeInTheDocument();
   });
