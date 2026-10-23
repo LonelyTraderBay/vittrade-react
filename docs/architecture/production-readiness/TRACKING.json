@@ -48,7 +48,7 @@
     }
   ],
   "checkpoint": {
-    "updatedAt": "2026-10-23T15:49:30.609Z",
+    "updatedAt": "2026-10-23T17:59:45.054Z",
     "lastCompletedTask": "C03",
     "activeTask": "C06",
     "activeStep": "C06.13",
@@ -196,6 +196,27 @@
       "auditVulnerabilities": 0,
       "closingGate": "Full push CI trên SHA cuối main phải success; receipt bên ngoài tránh commit biên nhận làm đổi SHA cần nghiệm thu.",
       "closingStatusAtCommit": "pending"
+    },
+    "fullHistoryIntegration": {
+      "decisionId": "DECISION-20261024-001",
+      "sourceCommit": "718677158dcb037c3e906a9787033149b39e98f7",
+      "originalCommitsInMain": 472,
+      "previouslyOutside69NowInMain": 69,
+      "wipPathsReviewed": 920,
+      "all480BaselineCommitsInMain": true,
+      "immutableTagStashRefsRetained": 54,
+      "backupRestoreVerified": true,
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "closingStatusAtCommit": "pending",
+      "closingGate": "Full push CI on final main SHA plus artifact/source verification, remote ancestry readback and cleanup.",
+      "closingReceipt": "C:\\Users\\Joker-PC\\Documents\\Codex\\Work\\vittrade-react\\20261023-single-main\\outputs\\final-integration\\ci-final-proof.json",
+      "productCheckpointUnchanged": "C06.13; backend/staging/UAT remains open."
     }
   },
   "tasks": [
@@ -75930,7 +75951,7 @@
         "C06"
       ],
       "disposition": "changed",
-      "reason": " | B02.02: provide reserved .test hosts to the isolated Build job only; these values are not deployed. | Run and record the B07.01 portable text EOL gate. | P1-FE-04 local verification. Current local commit individually verified; earlier WIP deferral is historical.",
+      "reason": " | B02.02: provide reserved .test hosts to the isolated Build job only; these values are not deployed. | Run and record the B07.01 portable text EOL gate. | P1-FE-04 local verification. Current local commit individually verified; earlier WIP deferral is historical. | Hợp nhất24/10: giữ owner hiện hành, khôi phục hành vi thiếu; lịch sử/prototype gốc nằm trong ancestry main.",
       "evidenceIds": [
         "EV-20261001-035",
         "EV-20261001-037",
@@ -75947,7 +75968,12 @@
         "EV-20261020-319",
         "EV-20261020-322",
         "EV-20261020-332",
-        "EV-20261020-341"
+        "EV-20261020-341",
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
       ],
       "changeIds": [
         "CHANGE-20261001-0299",
@@ -75963,7 +75989,8 @@
         "CHANGE-20261020-487",
         "CHANGE-20261020-498",
         "CHANGE-20261020-565",
-        "CHANGE-20261020-619"
+        "CHANGE-20261020-619",
+        "CHANGE-20261024-001"
       ],
       "executionScope": {
         "ownerTaskId": "B07",
@@ -75986,8 +76013,8 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "81d5e6a5cffc057830ca12fd67a31bef8b3151c2",
-      "cataloguedSha256": "2f9bb0b74475045ce9f4365c80317529be7b9c231f4e6a9742d6bfb2030c3b07",
+      "cataloguedSourceHead": "718677158dcb037c3e906a9787033149b39e98f7",
+      "cataloguedSha256": "68dd64e2a10293a1f0d4410a1f5f129c58ae13d5a7d3be54692315d32a1f168b",
       "cataloguedSourceHistory": [
         {
           "sourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
@@ -76065,8 +76092,16 @@
           "supersededAt": "2026-10-21T04:33:09.125Z",
           "evidenceId": "EV-20261020-341",
           "reason": "Previous source retained; new Git blob verified individually."
+        },
+        {
+          "sourceHead": "81d5e6a5cffc057830ca12fd67a31bef8b3151c2",
+          "sha256": "2f9bb0b74475045ce9f4365c80317529be7b9c231f4e6a9742d6bfb2030c3b07",
+          "supersededAt": "2026-10-23T17:59:45.054Z",
+          "evidenceId": "EV-20261024-002",
+          "reason": "Giữ provenance trước hợp nhất đầy đủ; source mới được kiểm riêng từng blob sau giải quyết conflict."
         }
-      ]
+      ],
+      "cataloguedAt": "2026-10-23T17:59:45.054Z"
     },
     {
       "path": ".gitignore",
@@ -76078,14 +76113,20 @@
         "C03"
       ],
       "disposition": "changed",
-      "reason": "",
+      "reason": "Hợp nhất24/10: giữ owner hiện hành, khôi phục hành vi thiếu; lịch sử/prototype gốc nằm trong ancestry main.",
       "evidenceIds": [
         "EV-20261012-001",
-        "EV-20261012-004"
+        "EV-20261012-004",
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
       ],
       "changeIds": [
         "CHANGE-20261012-0001",
-        "CHANGE-20261012-0031"
+        "CHANGE-20261012-0031",
+        "CHANGE-20261024-002"
       ],
       "executionScope": {
         "ownerTaskId": "B07",
@@ -76099,8 +76140,18 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "d019d256e8f694edbe8fbaa3397ca77d2f2e0145",
-      "cataloguedSha256": "f3a31f9c67805212d4adc961768014ac927c7ee024aee49b099065d6efc864ff"
+      "cataloguedSourceHead": "718677158dcb037c3e906a9787033149b39e98f7",
+      "cataloguedSha256": "a75d8ec492a8bad081f253668d40dbe25939c0710081e0f65929946296f175dd",
+      "cataloguedSourceHistory": [
+        {
+          "sourceHead": "d019d256e8f694edbe8fbaa3397ca77d2f2e0145",
+          "sha256": "f3a31f9c67805212d4adc961768014ac927c7ee024aee49b099065d6efc864ff",
+          "supersededAt": "2026-10-23T17:59:45.054Z",
+          "evidenceId": "EV-20261024-002",
+          "reason": "Giữ provenance trước hợp nhất đầy đủ; source mới được kiểm riêng từng blob sau giải quyết conflict."
+        }
+      ],
+      "cataloguedAt": "2026-10-23T17:59:45.054Z"
     },
     {
       "path": ".nvmrc",
@@ -77965,10 +78016,11 @@
         "A01",
         "B10",
         "C03",
-        "C06"
+        "C06",
+        "B07"
       ],
       "disposition": "changed",
-      "reason": "Align the reusable roadmap prompt with current M1-M4 criteria and the single-source workflow; preserve the A07.04 application checkpoint. | A08.05 reviewed unchanged under EV-20260929-447; existing mock/backend/staging and user-acceptance limits remain accurate. | Universal 3.1 docs-only bootstrap: add Universal/profile reference and applicable workflow guidance; preserve application checkpoint and prior edits. U01.02 reviewed against the Auth operation contract; no additional source change was needed. | User-authorized unused-output retention EV-20261012-008; previous catalogue retained until reviewed Git delivery. | EV-20261013-001: verified actual local commit/Git blob and unchanged tested bytes; GitHub delivery pending. | C06.11: source đã kiểm chứng trong commit fe9d51c7. | Hợp nhất23/10: Đồng bộ quyết định phát triển main duy nhất của người dùng.",
+      "reason": "Align the reusable roadmap prompt with current M1-M4 criteria and the single-source workflow; preserve the A07.04 application checkpoint. | A08.05 reviewed unchanged under EV-20260929-447; existing mock/backend/staging and user-acceptance limits remain accurate. | Universal 3.1 docs-only bootstrap: add Universal/profile reference and applicable workflow guidance; preserve application checkpoint and prior edits. U01.02 reviewed against the Auth operation contract; no additional source change was needed. | User-authorized unused-output retention EV-20261012-008; previous catalogue retained until reviewed Git delivery. | EV-20261013-001: verified actual local commit/Git blob and unchanged tested bytes; GitHub delivery pending. | C06.11: source đã kiểm chứng trong commit fe9d51c7. | Hợp nhất23/10: Đồng bộ quyết định phát triển main duy nhất của người dùng. | Hợp nhất24/10: giữ owner hiện hành, khôi phục hành vi thiếu; lịch sử/prototype gốc nằm trong ancestry main.",
       "evidenceIds": [
         "EV-20260927-076",
         "EV-20260928-009",
@@ -77985,7 +78037,12 @@
         "EV-20261020-308",
         "EV-20261020-347",
         "EV-20261020-360",
-        "EV-20261023-004"
+        "EV-20261023-004",
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
       ],
       "changeIds": [
         "CHANGE-20260927-053",
@@ -77999,7 +78056,8 @@
         "CHANGE-20261020-408",
         "CHANGE-20261020-651",
         "CHANGE-20261020-744",
-        "CHANGE-20261023-008"
+        "CHANGE-20261023-008",
+        "CHANGE-20261024-003"
       ],
       "executionScope": {
         "ownerTaskId": "B10",
@@ -78216,8 +78274,8 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "fb60a95ca1df1534f6393f79e60531d5da9c0187",
-      "cataloguedSha256": "fe6c813b74426a52a92daa3847491117804c5e56cda8db08a4d7153793dbee79",
+      "cataloguedSourceHead": "718677158dcb037c3e906a9787033149b39e98f7",
+      "cataloguedSha256": "840d4029aa3bdef639f0e3bfd5eed0611cfc0c5fcb6223e2293b5377e9e8097b",
       "cataloguedSourceHistory": [
         {
           "sourceHead": "b42ef50ab5084b11266bb041180e44c194797c39",
@@ -78253,9 +78311,16 @@
           "supersededAt": "2026-10-23T11:59:40.438Z",
           "evidenceId": "EV-20261023-004",
           "reason": "Giữ nguồn trước hợp nhất; blob mới được kiểm riêng từng file."
+        },
+        {
+          "sourceHead": "fb60a95ca1df1534f6393f79e60531d5da9c0187",
+          "sha256": "fe6c813b74426a52a92daa3847491117804c5e56cda8db08a4d7153793dbee79",
+          "supersededAt": "2026-10-23T17:59:45.054Z",
+          "evidenceId": "EV-20261024-002",
+          "reason": "Giữ provenance trước hợp nhất đầy đủ; source mới được kiểm riêng từng blob sau giải quyết conflict."
         }
       ],
-      "cataloguedAt": "2026-10-17T03:16:42.356Z"
+      "cataloguedAt": "2026-10-23T17:59:45.054Z"
     },
     {
       "path": "docs/architecture/auth-login-mfa-spec.md",
@@ -83066,15 +83131,22 @@
       "baselineSha256": null,
       "lifecycle": "active",
       "taskIds": [
-        "A06"
+        "A06",
+        "B07"
       ],
       "disposition": "changed",
-      "reason": "Make the A06.01 OpenAPI-operation to MSW-handler and direct-test inventory reproducible.",
+      "reason": "Make the A06.01 OpenAPI-operation to MSW-handler and direct-test inventory reproducible. | Hợp nhất24/10: giữ owner hiện hành, khôi phục hành vi thiếu; lịch sử/prototype gốc nằm trong ancestry main.",
       "evidenceIds": [
-        "EV-20260928-019"
+        "EV-20260928-019",
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
       ],
       "changeIds": [
-        "CHANGE-20260928-997"
+        "CHANGE-20260928-997",
+        "CHANGE-20261024-005"
       ],
       "executionScope": {
         "ownerTaskId": "A06",
@@ -83083,10 +83155,16 @@
           "A06.01",
           "A06.03",
           "A06.04",
-          "A06.05"
+          "A06.05",
+          "B07.03",
+          "B07.05"
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
-      }
+      },
+      "cataloguedSourceHistory": [],
+      "cataloguedSourceHead": "718677158dcb037c3e906a9787033149b39e98f7",
+      "cataloguedSha256": "7f43183cb822722f4eaf68cd84e4498cbc07a52daad85c9ffd159bfda925f52b",
+      "cataloguedAt": "2026-10-23T17:59:45.054Z"
     },
     {
       "path": "docs/architecture/production-readiness/evidence/A06/generate-scenario-matrix.mjs",
@@ -128556,21 +128634,28 @@
       "baselineSha256": null,
       "lifecycle": "active",
       "taskIds": [
-        "A06"
+        "A06",
+        "B07"
       ],
       "disposition": "changed",
-      "reason": "Added to scope catalog in planning; not proof of implementation/review completion. | Current-source browser evidence 13/10. | Current-source browser evidence 13/10.",
+      "reason": "Added to scope catalog in planning; not proof of implementation/review completion. | Current-source browser evidence 13/10. | Current-source browser evidence 13/10. | Hợp nhất24/10: giữ owner hiện hành, khôi phục hành vi thiếu; lịch sử/prototype gốc nằm trong ancestry main.",
       "evidenceIds": [
         "EV-20260930-031",
         "EV-20261013-010",
-        "EV-20261013-037"
+        "EV-20261013-037",
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
       ],
       "changeIds": [
         "CHANGE-20260930-0138",
         "CHANGE-20261013-362",
-        "CHANGE-20261013-990"
+        "CHANGE-20261013-990",
+        "CHANGE-20261024-007"
       ],
-      "cataloguedAt": "2026-09-30T08:33:28.000Z",
+      "cataloguedAt": "2026-10-23T17:59:45.054Z",
       "executionScope": {
         "ownerTaskId": "A06",
         "role": "scenario_runner_or_generator",
@@ -128580,10 +128665,15 @@
           "A06.04",
           "A06.05",
           "B07.01",
-          "C05.03"
+          "C05.03",
+          "B07.03",
+          "B07.05"
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
-      }
+      },
+      "cataloguedSourceHistory": [],
+      "cataloguedSourceHead": "718677158dcb037c3e906a9787033149b39e98f7",
+      "cataloguedSha256": "231c9d458684a1e4b1c2d50bc8fde65d90e51dd5487b2fa1b9835c8fe7788ae2"
     },
     {
       "path": "docs/architecture/production-readiness/evidence/A06/run-trading-success-browser-check.mjs",
@@ -135186,7 +135276,7 @@
         "C06"
       ],
       "disposition": "changed",
-      "reason": "Record U01.01 completion, measured Auth scope and the U01.02 next checkpoint. U01.02 reviewed against the Auth operation contract; no additional source change was needed. | EV-20261003-003: Record U01.03 browser observations and the measured A06 sidecar refresh, coverage and limitations. Record measured C05.03 UI overlap follow-up and its limits. | EV-20261003-006: record the login MFA 410 browser measurement and its local fixture boundary. Final U01.03 validation counts and remaining tracking-ledger errors are recorded. | EV-20261003-007: document the full contract-backed password-reset browser flow and local-only evidence boundary. Final U01.03 local check counts and the remaining source-ledger errors are recorded. | EV-20261003-008: document Auth reset fixture alignment with OpenAPI and its focused 6/6 result. Final U01.03 fixture-correction checks and source-ledger status are recorded. | EV-20261003-009: record the two email/phone registration challenge issuance browser cases, 12/12 combined E2E result, and owner-blocked OTP verification boundary. | EV-20261003-010: document registration request HTTP 400/429 browser outcomes and the 14/14 combined Auth E2E result. | EV-20261003-011: record the login HTTP 401 browser regression and 15/15 combined Auth E2E result. | EV-20261003-012: record contract session 401 normalization, transport preservation, and 36/36 focused plus 16/16 browser results. | EV-20261009-001: record the owner-approved credential choice, current local E2E results and remaining source-ledger errors. | EV-20261009-002: record exact-commit source ledger reconciliation and its local-only boundary. | EV-20261010-014: record DCA annotation full coverage and next P2P order-action target. | EV-015 records P2P order-action full-suite coverage and the P2P ad-detail next target. | EV-016 records Arena full-suite results and next P2P Merchant slice. | EV-017 records P2P Merchant full-suite results and next payment-method slice. | EV-018 records P2P payment creation full-suite results and next list page slice. | EV-019 records P2P payment-method list full-suite results and next Watchlist page gap. | EV-020 records P2P payment creation full-suite results and next list page slice. | EV-021 records MarketSectorsPage full-suite coverage and the next P2P marketplace slice. | EV-022 records P2P marketplace behavior coverage and next AppLayout slice. | EV-023 records full-suite progress and next measured gap. | EV-024 records full-suite progress and next measured gap. | EV-025 records full-suite progress and next measured gap. | EV-026 records full-suite progress and next measured gap. | EV-027 records full-suite progress and next measured gap. | EV-028 records full-suite progress and next measured gap. | EV-029 records full-suite progress and next measured gap. | EV-030 records full-suite progress and next measured gap. | EV-031 records full-suite progress and next measured gap. | User-authorized unused-output retention EV-20261012-008; previous catalogue retained until reviewed Git delivery. | DECISION-20261013-002: docs-only remediation planning; no runtime source edited. | P0-FE-01 verified local remediation. | Final local source and artifact verification. | EV-20261014-001/002/003: record iteration 53 measured coverage, desktop UI scan and final checker limitations. | EV-20261014-006/007/008: document iteration55 measurements, build blocker and unresolved acceptance. | EV-20261014-009: source-classify every iteration55 mobile/tablet hiddenOverflow entry; acceptance remains pending. | Record measured coverage closure, per-path Git blob reconciliation, gate results and remaining UI/external blockers. | EV-20261014-012–014: refresh coverage after TrInput lint fix and record CI failure/final-SHA boundary. | Record iteration 58 P2P contrast remediation, corrected E2E locator, local full-suite and axe evidence, and preserve manual/external acceptance blockers. | EV-20261014-023–025: record exact-SHA Auth CI failure, root-cause fix, local Auth/coverage results, and preserve UI/backend acceptance blockers. | Regenerate inventory after source line-count drift; record measured inventory gate. | Iteration 62: ghi source fixes, scan UI, full coverage, E2E chưa kết thúc và blocker backend/staging. | C06.01: đăng ký migration và đo lại active/planned page scope cùng 428 active routes. | C06.07: ghi nhận quy trình thi công, commit/push và nghiệm thu exact-SHA được người dùng ủy quyền. | Hợp nhất23/10: Đồng bộ quyết định phát triển main duy nhất của người dùng.",
+      "reason": "Record U01.01 completion, measured Auth scope and the U01.02 next checkpoint. U01.02 reviewed against the Auth operation contract; no additional source change was needed. | EV-20261003-003: Record U01.03 browser observations and the measured A06 sidecar refresh, coverage and limitations. Record measured C05.03 UI overlap follow-up and its limits. | EV-20261003-006: record the login MFA 410 browser measurement and its local fixture boundary. Final U01.03 validation counts and remaining tracking-ledger errors are recorded. | EV-20261003-007: document the full contract-backed password-reset browser flow and local-only evidence boundary. Final U01.03 local check counts and the remaining source-ledger errors are recorded. | EV-20261003-008: document Auth reset fixture alignment with OpenAPI and its focused 6/6 result. Final U01.03 fixture-correction checks and source-ledger status are recorded. | EV-20261003-009: record the two email/phone registration challenge issuance browser cases, 12/12 combined E2E result, and owner-blocked OTP verification boundary. | EV-20261003-010: document registration request HTTP 400/429 browser outcomes and the 14/14 combined Auth E2E result. | EV-20261003-011: record the login HTTP 401 browser regression and 15/15 combined Auth E2E result. | EV-20261003-012: record contract session 401 normalization, transport preservation, and 36/36 focused plus 16/16 browser results. | EV-20261009-001: record the owner-approved credential choice, current local E2E results and remaining source-ledger errors. | EV-20261009-002: record exact-commit source ledger reconciliation and its local-only boundary. | EV-20261010-014: record DCA annotation full coverage and next P2P order-action target. | EV-015 records P2P order-action full-suite coverage and the P2P ad-detail next target. | EV-016 records Arena full-suite results and next P2P Merchant slice. | EV-017 records P2P Merchant full-suite results and next payment-method slice. | EV-018 records P2P payment creation full-suite results and next list page slice. | EV-019 records P2P payment-method list full-suite results and next Watchlist page gap. | EV-020 records P2P payment creation full-suite results and next list page slice. | EV-021 records MarketSectorsPage full-suite coverage and the next P2P marketplace slice. | EV-022 records P2P marketplace behavior coverage and next AppLayout slice. | EV-023 records full-suite progress and next measured gap. | EV-024 records full-suite progress and next measured gap. | EV-025 records full-suite progress and next measured gap. | EV-026 records full-suite progress and next measured gap. | EV-027 records full-suite progress and next measured gap. | EV-028 records full-suite progress and next measured gap. | EV-029 records full-suite progress and next measured gap. | EV-030 records full-suite progress and next measured gap. | EV-031 records full-suite progress and next measured gap. | User-authorized unused-output retention EV-20261012-008; previous catalogue retained until reviewed Git delivery. | DECISION-20261013-002: docs-only remediation planning; no runtime source edited. | P0-FE-01 verified local remediation. | Final local source and artifact verification. | EV-20261014-001/002/003: record iteration 53 measured coverage, desktop UI scan and final checker limitations. | EV-20261014-006/007/008: document iteration55 measurements, build blocker and unresolved acceptance. | EV-20261014-009: source-classify every iteration55 mobile/tablet hiddenOverflow entry; acceptance remains pending. | Record measured coverage closure, per-path Git blob reconciliation, gate results and remaining UI/external blockers. | EV-20261014-012–014: refresh coverage after TrInput lint fix and record CI failure/final-SHA boundary. | Record iteration 58 P2P contrast remediation, corrected E2E locator, local full-suite and axe evidence, and preserve manual/external acceptance blockers. | EV-20261014-023–025: record exact-SHA Auth CI failure, root-cause fix, local Auth/coverage results, and preserve UI/backend acceptance blockers. | Regenerate inventory after source line-count drift; record measured inventory gate. | Iteration 62: ghi source fixes, scan UI, full coverage, E2E chưa kết thúc và blocker backend/staging. | C06.01: đăng ký migration và đo lại active/planned page scope cùng 428 active routes. | C06.07: ghi nhận quy trình thi công, commit/push và nghiệm thu exact-SHA được người dùng ủy quyền. | Hợp nhất23/10: Đồng bộ quyết định phát triển main duy nhất của người dùng. | Hợp nhất24/10: giữ owner hiện hành, khôi phục hành vi thiếu; lịch sử/prototype gốc nằm trong ancestry main.",
       "evidenceIds": [
         "EV-20260927-076",
         "EV-20260928-001",
@@ -135814,7 +135904,12 @@
         "EV-20261020-327",
         "EV-20261020-341",
         "EV-20261020-347",
-        "EV-20261023-004"
+        "EV-20261023-004",
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
       ],
       "changeIds": [
         "CHANGE-20260927-052",
@@ -136173,7 +136268,8 @@
         "CHANGE-20261020-535",
         "CHANGE-20261020-622",
         "CHANGE-20261020-650",
-        "CHANGE-20261023-009"
+        "CHANGE-20261023-009",
+        "CHANGE-20261024-004"
       ],
       "executionScope": {
         "ownerTaskId": "B10",
@@ -136392,9 +136488,9 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedAt": null,
-      "cataloguedSourceHead": "fb60a95ca1df1534f6393f79e60531d5da9c0187",
-      "cataloguedSha256": "54e90534f5b3018273a8222db9474e1df64c6feacaafb9550aa0a01362af0e44",
+      "cataloguedAt": "2026-10-23T17:59:45.054Z",
+      "cataloguedSourceHead": "718677158dcb037c3e906a9787033149b39e98f7",
+      "cataloguedSha256": "5f5494305364c5082ccda88d538c0d410a643dabdf923248dae8e5b0522c5419",
       "cataloguedSourceHistory": [
         {
           "sourceHead": "0362c23cb19c63aa513ae9802c14d43e10107fbc",
@@ -136444,6 +136540,13 @@
           "supersededAt": "2026-10-23T12:00:18.572Z",
           "evidenceId": "EV-20261023-004",
           "reason": "Giữ nguồn PLAN cũ; quyết định main mới ở commit tài liệu đã kiểm riêng blob."
+        },
+        {
+          "sourceHead": "fb60a95ca1df1534f6393f79e60531d5da9c0187",
+          "sha256": "54e90534f5b3018273a8222db9474e1df64c6feacaafb9550aa0a01362af0e44",
+          "supersededAt": "2026-10-23T17:59:45.054Z",
+          "evidenceId": "EV-20261024-002",
+          "reason": "Giữ provenance trước hợp nhất đầy đủ; source mới được kiểm riêng từng blob sau giải quyết conflict."
         }
       ]
     },
@@ -137006,7 +137109,12 @@
         "EV-20261023-006",
         "EV-20261023-007",
         "EV-20261023-008",
-        "EV-20261023-009"
+        "EV-20261023-009",
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
       ],
       "changeIds": [
         "CHANGE-20261001-0316",
@@ -137325,7 +137433,8 @@
         "CHANGE-20261020-848",
         "CHANGE-20261023-010",
         "CHANGE-20261023-012",
-        "CHANGE-20261023-015"
+        "CHANGE-20261023-015",
+        "CHANGE-20261024-037"
       ],
       "cataloguedAt": null,
       "executionScope": {
@@ -139271,7 +139380,7 @@
         "C06"
       ],
       "disposition": "changed",
-      "reason": " | User-authorized unused-output retention EV-20261012-008; previous catalogue retained until reviewed Git delivery. | EV-20261013-001: verified actual local commit/Git blob and unchanged tested bytes; GitHub delivery pending. | C06.07: khai báo PostCSS 8.5.28 đúng phiên bản đã resolve để test AST CSS token contract không phụ thuộc import bắc cầu. (commit 562054439ffc939f9f7d9380affe96ae5da6c408). | P1 23/10: vá Vitest4.1.12, bảo toàn test/gate và dependency khác.",
+      "reason": " | User-authorized unused-output retention EV-20261012-008; previous catalogue retained until reviewed Git delivery. | EV-20261013-001: verified actual local commit/Git blob and unchanged tested bytes; GitHub delivery pending. | C06.07: khai báo PostCSS 8.5.28 đúng phiên bản đã resolve để test AST CSS token contract không phụ thuộc import bắc cầu. (commit 562054439ffc939f9f7d9380affe96ae5da6c408). | P1 23/10: vá Vitest4.1.12, bảo toàn test/gate và dependency khác. | Hợp nhất24/10: giữ owner hiện hành, khôi phục hành vi thiếu; lịch sử/prototype gốc nằm trong ancestry main.",
       "evidenceIds": [
         "EV-20261012-001",
         "EV-20261012-004",
@@ -139282,7 +139391,12 @@
         "EV-20261020-332",
         "EV-20261023-007",
         "EV-20261023-008",
-        "EV-20261023-009"
+        "EV-20261023-009",
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
       ],
       "changeIds": [
         "CHANGE-20261012-0006",
@@ -139290,7 +139404,8 @@
         "CHANGE-20261012-0067",
         "CHANGE-20261016-065",
         "CHANGE-20261020-563",
-        "CHANGE-20261023-013"
+        "CHANGE-20261023-013",
+        "CHANGE-20261024-024"
       ],
       "executionScope": {
         "ownerTaskId": "B07",
@@ -139307,9 +139422,9 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "3dc2b76c8620ca0fa02b3e48cdb4dcafa184f418",
-      "cataloguedSha256": "c8f1f161ca689aac632937a6ad3af1b95fb64151a3231b665b26f7a047305f73",
-      "cataloguedAt": "2026-10-23T15:49:30.609Z",
+      "cataloguedSourceHead": "718677158dcb037c3e906a9787033149b39e98f7",
+      "cataloguedSha256": "bcc74fabab258d69b0e20724c303343f33440652a7bb41a609d1f1d897af2f21",
+      "cataloguedAt": "2026-10-23T17:59:45.054Z",
       "cataloguedSourceHistory": [
         {
           "sourceHead": "bbc473956d0427a142bfd2b3da0ddff7bcc3da02",
@@ -139331,6 +139446,13 @@
           "supersededAt": "2026-10-23T15:49:30.609Z",
           "evidenceId": "EV-20261023-007",
           "reason": "Giữ provenance trước Vitest moderate repair; xác minh riêng Git blob4.1.12."
+        },
+        {
+          "sourceHead": "3dc2b76c8620ca0fa02b3e48cdb4dcafa184f418",
+          "sha256": "c8f1f161ca689aac632937a6ad3af1b95fb64151a3231b665b26f7a047305f73",
+          "supersededAt": "2026-10-23T17:59:45.054Z",
+          "evidenceId": "EV-20261024-002",
+          "reason": "Giữ provenance trước hợp nhất đầy đủ; source mới được kiểm riêng từng blob sau giải quyết conflict."
         }
       ]
     },
@@ -139858,17 +139980,24 @@
       "taskIds": [
         "C02",
         "B08",
-        "C03"
+        "C03",
+        "B07"
       ],
       "disposition": "changed",
-      "reason": "",
+      "reason": "Hợp nhất24/10: giữ owner hiện hành, khôi phục hành vi thiếu; lịch sử/prototype gốc nằm trong ancestry main.",
       "evidenceIds": [
         "EV-20261012-001",
-        "EV-20261012-004"
+        "EV-20261012-004",
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
       ],
       "changeIds": [
         "CHANGE-20261012-0009",
-        "CHANGE-20261012-0039"
+        "CHANGE-20261012-0039",
+        "CHANGE-20261024-025"
       ],
       "executionScope": {
         "ownerTaskId": "C02",
@@ -139883,12 +140012,24 @@
           "C02.02",
           "C02.03",
           "C02.04",
-          "C02.05"
+          "C02.05",
+          "B07.03",
+          "B07.05"
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "d019d256e8f694edbe8fbaa3397ca77d2f2e0145",
-      "cataloguedSha256": "91ce032fd5a2277bab724c6a85fb119dac35f6e8d93b1b334da99cb3663b3a79"
+      "cataloguedSourceHead": "718677158dcb037c3e906a9787033149b39e98f7",
+      "cataloguedSha256": "05e7279563fdf0731d236770b4679e813474000c7b01006d4db6d397a4567f5c",
+      "cataloguedSourceHistory": [
+        {
+          "sourceHead": "d019d256e8f694edbe8fbaa3397ca77d2f2e0145",
+          "sha256": "91ce032fd5a2277bab724c6a85fb119dac35f6e8d93b1b334da99cb3663b3a79",
+          "supersededAt": "2026-10-23T17:59:45.054Z",
+          "evidenceId": "EV-20261024-002",
+          "reason": "Giữ provenance trước hợp nhất đầy đủ; source mới được kiểm riêng từng blob sau giải quyết conflict."
+        }
+      ],
+      "cataloguedAt": "2026-10-23T17:59:45.054Z"
     },
     {
       "path": "scripts/check-dependency-licenses.mjs",
@@ -156325,21 +156466,28 @@
         "U07",
         "A06",
         "C03",
-        "C06"
+        "C06",
+        "B07"
       ],
       "disposition": "changed",
-      "reason": "Preserve the returned receipt and route pending results to the domain receipt without showing completed success. | Handle pending receipts from main Earn subscription/redemption actions.",
+      "reason": "Preserve the returned receipt and route pending results to the domain receipt without showing completed success. | Handle pending receipts from main Earn subscription/redemption actions. | Hợp nhất24/10: giữ owner hiện hành, khôi phục hành vi thiếu; lịch sử/prototype gốc nằm trong ancestry main.",
       "evidenceIds": [
         "EV-20260930-088",
         "EV-20260930-089",
         "EV-20261009-002",
         "EV-20261012-002",
         "EV-20261013-019",
-        "EV-20261013-020"
+        "EV-20261013-020",
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
       ],
       "changeIds": [
         "CHANGE-20260930-0486",
-        "CHANGE-20261013-410"
+        "CHANGE-20261013-410",
+        "CHANGE-20261024-032"
       ],
       "executionScope": {
         "ownerTaskId": "U07",
@@ -156352,13 +156500,15 @@
           "A06.03",
           "C03.05",
           "C06.13",
-          "C06.15"
+          "C06.15",
+          "B07.03",
+          "B07.05"
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedAt": "2026-09-30T13:33:10.494Z",
-      "cataloguedSourceHead": "2b2277fd2c6e4dc12ab89db2e088d2a75072b802",
-      "cataloguedSha256": "1d597ca4cda319a7e1bca81d31f95a279bc20cc7497e2007b03583e2e0146c9a",
+      "cataloguedAt": "2026-10-23T17:59:45.054Z",
+      "cataloguedSourceHead": "718677158dcb037c3e906a9787033149b39e98f7",
+      "cataloguedSha256": "46be748c229bf0fa2ea388721b8c3068a3c83f5fa34fc55a11007eb05ff07926",
       "cataloguedSourceHistory": [
         {
           "sourceHead": "1adcdb2a48f7ae059d936de631652696ad6370a2",
@@ -156366,6 +156516,13 @@
           "supersededAt": "2026-10-13T12:08:53.467Z",
           "evidenceId": "EV-20261013-020",
           "reason": "Individual actual verified owner source commit; historical catalogue preserved."
+        },
+        {
+          "sourceHead": "2b2277fd2c6e4dc12ab89db2e088d2a75072b802",
+          "sha256": "1d597ca4cda319a7e1bca81d31f95a279bc20cc7497e2007b03583e2e0146c9a",
+          "supersededAt": "2026-10-23T17:59:45.054Z",
+          "evidenceId": "EV-20261024-002",
+          "reason": "Giữ provenance trước hợp nhất đầy đủ; source mới được kiểm riêng từng blob sau giải quyết conflict."
         }
       ]
     },
@@ -168090,17 +168247,24 @@
       "taskIds": [
         "U09",
         "C05",
-        "C06"
+        "C06",
+        "B07"
       ],
-      "disposition": "not_assessed",
-      "reason": "",
+      "disposition": "changed",
+      "reason": "Hợp nhất24/10: giữ owner hiện hành, khôi phục hành vi thiếu; lịch sử/prototype gốc nằm trong ancestry main.",
       "evidenceIds": [
         "EV-20261001-028",
         "EV-20261001-029",
-        "EV-20261009-002"
+        "EV-20261009-002",
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
       ],
       "changeIds": [
-        "CHANGE-20261001-0193"
+        "CHANGE-20261001-0193",
+        "CHANGE-20261024-033"
       ],
       "executionScope": {
         "ownerTaskId": "U09",
@@ -168118,12 +168282,24 @@
           "C05.03",
           "C03.05",
           "C06.13",
-          "C06.15"
+          "C06.15",
+          "B07.03",
+          "B07.05"
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
-      "cataloguedSha256": "e813a604872f020142e561b171bc8b2576f233e5af19ee73fdb76d098bcf597e"
+      "cataloguedSourceHead": "718677158dcb037c3e906a9787033149b39e98f7",
+      "cataloguedSha256": "d9eff82ac5205116ca3f68f80342c9c0ac178134a54acc6fb124d907fb4ea84d",
+      "cataloguedSourceHistory": [
+        {
+          "sourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+          "sha256": "e813a604872f020142e561b171bc8b2576f233e5af19ee73fdb76d098bcf597e",
+          "supersededAt": "2026-10-23T17:59:45.054Z",
+          "evidenceId": "EV-20261024-002",
+          "reason": "Giữ provenance trước hợp nhất đầy đủ; source mới được kiểm riêng từng blob sau giải quyết conflict."
+        }
+      ],
+      "cataloguedAt": "2026-10-23T17:59:45.054Z"
     },
     {
       "path": "src/features/support/pages/SupportContractPage.tsx",
@@ -168230,16 +168406,23 @@
       "lifecycle": "active",
       "taskIds": [
         "U09",
-        "C05"
+        "C05",
+        "B07"
       ],
-      "disposition": "not_assessed",
-      "reason": "",
+      "disposition": "changed",
+      "reason": "Hợp nhất24/10: giữ owner hiện hành, khôi phục hành vi thiếu; lịch sử/prototype gốc nằm trong ancestry main.",
       "evidenceIds": [
         "EV-20261001-029",
-        "EV-20261009-002"
+        "EV-20261009-002",
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
       ],
       "changeIds": [
-        "CHANGE-20261001-0196"
+        "CHANGE-20261001-0196",
+        "CHANGE-20261024-034"
       ],
       "executionScope": {
         "ownerTaskId": "U09",
@@ -168250,12 +168433,24 @@
           "U09.04",
           "U09.05",
           "U09.06",
-          "C05.03"
+          "C05.03",
+          "B07.03",
+          "B07.05"
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
-      "cataloguedSha256": "aefd6fc48fcfa2a9246b0f041fa449f3487df43a2f1de52b430f95bc20df3380"
+      "cataloguedSourceHead": "718677158dcb037c3e906a9787033149b39e98f7",
+      "cataloguedSha256": "90be4b6053f7eaddbab39acdd764e665c3600d4bc43e8cc5ff34ed2782afe96a",
+      "cataloguedSourceHistory": [
+        {
+          "sourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
+          "sha256": "aefd6fc48fcfa2a9246b0f041fa449f3487df43a2f1de52b430f95bc20df3380",
+          "supersededAt": "2026-10-23T17:59:45.054Z",
+          "evidenceId": "EV-20261024-002",
+          "reason": "Giữ provenance trước hợp nhất đầy đủ; source mới được kiểm riêng từng blob sau giải quyết conflict."
+        }
+      ],
+      "cataloguedAt": "2026-10-23T17:59:45.054Z"
     },
     {
       "path": "src/features/support/routes.test.ts",
@@ -177017,10 +177212,11 @@
         "A05",
         "B02",
         "C03",
-        "C06"
+        "C06",
+        "B07"
       ],
       "disposition": "changed",
-      "reason": "Add red/green coverage for defaults, explicit API mode, invalid values, and staging/production rejection. | B02.02: verify malformed selector import reaches the safe runtime assertion and release endpoint rejection.",
+      "reason": "Add red/green coverage for defaults, explicit API mode, invalid values, and staging/production rejection. | B02.02: verify malformed selector import reaches the safe runtime assertion and release endpoint rejection. | Hợp nhất24/10: giữ owner hiện hành, khôi phục hành vi thiếu; lịch sử/prototype gốc nằm trong ancestry main.",
       "evidenceIds": [
         "EV-20260927-046",
         "EV-20260927-047",
@@ -177034,13 +177230,19 @@
         "EV-20261013-027",
         "EV-20261020-319",
         "EV-20261020-320",
-        "EV-20261020-321"
+        "EV-20261020-321",
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
       ],
       "changeIds": [
         "CHANGE-20260927-024",
         "CHANGE-20261001-0305",
         "CHANGE-20261013-544",
-        "CHANGE-20261020-480"
+        "CHANGE-20261020-480",
+        "CHANGE-20261024-035"
       ],
       "executionScope": {
         "ownerTaskId": "B02",
@@ -177058,12 +177260,14 @@
           "B02.05",
           "B07.01",
           "C03.05",
-          "C06.13"
+          "C06.13",
+          "B07.03",
+          "B07.05"
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "015c9afaf7002ebd83984617c174bb0794083b2d",
-      "cataloguedSha256": "b96950027e712d2fa3c483e5151a12b12a1043fe62a380bcdd223a52a4ae85fd",
+      "cataloguedSourceHead": "718677158dcb037c3e906a9787033149b39e98f7",
+      "cataloguedSha256": "278949f8b94a7e97814a2ba5f80cc9cb94c15c1f5eafaa2a193e8f34f4decd1a",
       "cataloguedSourceHistory": [
         {
           "sourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
@@ -177078,6 +177282,13 @@
           "supersededAt": "2026-10-20T14:01:41.205Z",
           "evidenceId": "EV-20261020-319",
           "reason": "Previous source retained; new Git blob verified individually."
+        },
+        {
+          "sourceHead": "015c9afaf7002ebd83984617c174bb0794083b2d",
+          "sha256": "b96950027e712d2fa3c483e5151a12b12a1043fe62a380bcdd223a52a4ae85fd",
+          "supersededAt": "2026-10-23T17:59:45.054Z",
+          "evidenceId": "EV-20261024-002",
+          "reason": "Giữ provenance trước hợp nhất đầy đủ; source mới được kiểm riêng từng blob sau giải quyết conflict."
         }
       ],
       "wipReconciliation": {
@@ -177092,7 +177303,8 @@
           "EV-20261020-320",
           "EV-20261020-321"
         ]
-      }
+      },
+      "cataloguedAt": "2026-10-23T17:59:45.054Z"
     },
     {
       "path": "src/shared/config/env.ts",
@@ -180248,10 +180460,11 @@
       "taskIds": [
         "C01",
         "C05",
-        "C06"
+        "C06",
+        "B07"
       ],
       "disposition": "changed",
-      "reason": "Cover accessible action labels, navigation fallbacks, badge limits, placeholder layout, transparent styles and breadcrumb rendering. | C06.08: Khóa regression contract type=button cho hành động shared UI; kiểm tra giữ submit tường minh và anchor asChild. | C06.09: Page gutter contract and shell ownership regression; visual values and exceptions remain documented without changing brand or business behavior.",
+      "reason": "Cover accessible action labels, navigation fallbacks, badge limits, placeholder layout, transparent styles and breadcrumb rendering. | C06.08: Khóa regression contract type=button cho hành động shared UI; kiểm tra giữ submit tường minh và anchor asChild. | C06.09: Page gutter contract and shell ownership regression; visual values and exceptions remain documented without changing brand or business behavior. | Hợp nhất24/10: giữ owner hiện hành, khôi phục hành vi thiếu; lịch sử/prototype gốc nằm trong ancestry main.",
       "evidenceIds": [
         "EV-20261010-011",
         "EV-20261014-010",
@@ -180262,13 +180475,19 @@
         "EV-20261016-115",
         "EV-20261020-318",
         "EV-20261020-320",
-        "EV-20261020-321"
+        "EV-20261020-321",
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
       ],
       "changeIds": [
         "CHANGE-20261010-0063",
         "CHANGE-20261016-115",
         "CHANGE-20261016-145",
-        "CHANGE-20261020-468"
+        "CHANGE-20261020-468",
+        "CHANGE-20261024-036"
       ],
       "executionScope": {
         "ownerTaskId": "C01",
@@ -180284,12 +180503,14 @@
           "C06.08",
           "C06.09",
           "C06.13",
-          "C06.15"
+          "C06.15",
+          "B07.03",
+          "B07.05"
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "951bd1fee8889a4398cf29fdf16bfee6e0b4302f",
-      "cataloguedSha256": "97b065cde70443f398d591ee7c4456baf03e01134637879b579f458534fc7023",
+      "cataloguedSourceHead": "718677158dcb037c3e906a9787033149b39e98f7",
+      "cataloguedSha256": "3cb45cd2e88a00038f124fe63fc9f9feebab35acbd79c3c6c204fa6bb5b9650d",
       "cataloguedSourceHistory": [
         {
           "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
@@ -180318,9 +180539,16 @@
           "supersededAt": "2026-10-20T13:25:24.239Z",
           "evidenceId": "EV-20261020-318",
           "reason": "Previous source retained; new Git blob verified individually."
+        },
+        {
+          "sourceHead": "951bd1fee8889a4398cf29fdf16bfee6e0b4302f",
+          "sha256": "97b065cde70443f398d591ee7c4456baf03e01134637879b579f458534fc7023",
+          "supersededAt": "2026-10-23T17:59:45.054Z",
+          "evidenceId": "EV-20261024-002",
+          "reason": "Giữ provenance trước hợp nhất đầy đủ; source mới được kiểm riêng từng blob sau giải quyết conflict."
         }
       ],
-      "cataloguedAt": "2026-10-16T16:31:28Z",
+      "cataloguedAt": "2026-10-23T17:59:45.054Z",
       "wipReconciliation": {
         "reviewedAt": "2026-10-20T14:15:19.900Z",
         "reviewedSourceHead": "df94dd7aafbec3fc83c34b1424e3c0f73e8c033f",
@@ -210263,6 +210491,765 @@
       },
       "cataloguedSourceHead": "97d2bf5c2b74e4cb07b58f78c52304e918e4f57a",
       "cataloguedSha256": "b1b24fc44a0400bb7a4d1f6764ce1aebc160b05827a6c6555a011886b51f6373"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-wallet-success-2026-10-02.png",
+      "baselineSha256": null,
+      "lifecycle": "active",
+      "taskIds": [
+        "B07"
+      ],
+      "disposition": "changed",
+      "reason": "Hợp nhất lịch sử đầy đủ; source/evidence được kiểm riêng từng Git blob. | Hợp nhất24/10: giữ owner hiện hành, khôi phục hành vi thiếu; lịch sử/prototype gốc nằm trong ancestry main.",
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "changeIds": [
+        "CHANGE-20261024-006"
+      ],
+      "executionScope": {
+        "ownerTaskId": "B07",
+        "role": "evidence_or_documentation",
+        "stepIds": [
+          "B07.03",
+          "B07.05"
+        ],
+        "action": "review_then_fix_only_if_acceptance_gap"
+      },
+      "cataloguedSourceHistory": [],
+      "cataloguedSourceHead": "718677158dcb037c3e906a9787033149b39e98f7",
+      "cataloguedSha256": "fff8d177ae32e8c8a5bad9e9cc322399b674bb14be81816d633a2692c929609f",
+      "cataloguedAt": "2026-10-23T17:59:45.054Z"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/run-wallet-success-browser-check.mjs",
+      "baselineSha256": null,
+      "lifecycle": "active",
+      "taskIds": [
+        "B07"
+      ],
+      "disposition": "changed",
+      "reason": "Hợp nhất lịch sử đầy đủ; source/evidence được kiểm riêng từng Git blob. | Hợp nhất24/10: giữ owner hiện hành, khôi phục hành vi thiếu; lịch sử/prototype gốc nằm trong ancestry main.",
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "changeIds": [
+        "CHANGE-20261024-008"
+      ],
+      "executionScope": {
+        "ownerTaskId": "B07",
+        "role": "evidence_or_documentation",
+        "stepIds": [
+          "B07.03",
+          "B07.05"
+        ],
+        "action": "review_then_fix_only_if_acceptance_gap"
+      },
+      "cataloguedSourceHistory": [],
+      "cataloguedSourceHead": "718677158dcb037c3e906a9787033149b39e98f7",
+      "cataloguedSha256": "949e242cd9a451b56b85f628a63b82d48a0569a65a0005d9bf1aecf566d08070",
+      "cataloguedAt": "2026-10-23T17:59:45.054Z"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/A06/wallet-success-browser-check-2026-10-02.json",
+      "baselineSha256": null,
+      "lifecycle": "active",
+      "taskIds": [
+        "B07"
+      ],
+      "disposition": "changed",
+      "reason": "Hợp nhất lịch sử đầy đủ; source/evidence được kiểm riêng từng Git blob. | Hợp nhất24/10: giữ owner hiện hành, khôi phục hành vi thiếu; lịch sử/prototype gốc nằm trong ancestry main.",
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "changeIds": [
+        "CHANGE-20261024-009"
+      ],
+      "executionScope": {
+        "ownerTaskId": "B07",
+        "role": "evidence_or_documentation",
+        "stepIds": [
+          "B07.03",
+          "B07.05"
+        ],
+        "action": "review_then_fix_only_if_acceptance_gap"
+      },
+      "cataloguedSourceHistory": [],
+      "cataloguedSourceHead": "718677158dcb037c3e906a9787033149b39e98f7",
+      "cataloguedSha256": "329419b2a3081dea5a165b43c0ab2335ef51a482c5c89bf2efb178d4ee88fccb",
+      "cataloguedAt": "2026-10-23T17:59:45.054Z"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/B07/b07-03-exact-sha-2026-10-01.json",
+      "baselineSha256": null,
+      "lifecycle": "active",
+      "taskIds": [
+        "B07"
+      ],
+      "disposition": "changed",
+      "reason": "Hợp nhất lịch sử đầy đủ; source/evidence được kiểm riêng từng Git blob. | Hợp nhất24/10: giữ owner hiện hành, khôi phục hành vi thiếu; lịch sử/prototype gốc nằm trong ancestry main.",
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "changeIds": [
+        "CHANGE-20261024-010"
+      ],
+      "executionScope": {
+        "ownerTaskId": "B07",
+        "role": "evidence_or_documentation",
+        "stepIds": [
+          "B07.03",
+          "B07.05"
+        ],
+        "action": "review_then_fix_only_if_acceptance_gap"
+      },
+      "cataloguedSourceHistory": [],
+      "cataloguedSourceHead": "718677158dcb037c3e906a9787033149b39e98f7",
+      "cataloguedSha256": "dc315a79fa85dbb5a411c85628b6adab75fd986cc77287ddc3770c7cea61acfa",
+      "cataloguedAt": "2026-10-23T17:59:45.054Z"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/B07/b07-03-local-gates-2026-10-01.json",
+      "baselineSha256": null,
+      "lifecycle": "active",
+      "taskIds": [
+        "B07"
+      ],
+      "disposition": "changed",
+      "reason": "Hợp nhất lịch sử đầy đủ; source/evidence được kiểm riêng từng Git blob. | Hợp nhất24/10: giữ owner hiện hành, khôi phục hành vi thiếu; lịch sử/prototype gốc nằm trong ancestry main.",
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "changeIds": [
+        "CHANGE-20261024-011"
+      ],
+      "executionScope": {
+        "ownerTaskId": "B07",
+        "role": "evidence_or_documentation",
+        "stepIds": [
+          "B07.03",
+          "B07.05"
+        ],
+        "action": "review_then_fix_only_if_acceptance_gap"
+      },
+      "cataloguedSourceHistory": [],
+      "cataloguedSourceHead": "718677158dcb037c3e906a9787033149b39e98f7",
+      "cataloguedSha256": "e09d9c7f0ab449bdd43f43acd8b2ea104e1ab6115d7a80edd6102aad509022ff",
+      "cataloguedAt": "2026-10-23T17:59:45.054Z"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/B07/b07-04-exact-sha-and-actions-settings-2026-10-01.json",
+      "baselineSha256": null,
+      "lifecycle": "active",
+      "taskIds": [
+        "B07"
+      ],
+      "disposition": "changed",
+      "reason": "Hợp nhất lịch sử đầy đủ; source/evidence được kiểm riêng từng Git blob. | Hợp nhất24/10: giữ owner hiện hành, khôi phục hành vi thiếu; lịch sử/prototype gốc nằm trong ancestry main.",
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "changeIds": [
+        "CHANGE-20261024-012"
+      ],
+      "executionScope": {
+        "ownerTaskId": "B07",
+        "role": "evidence_or_documentation",
+        "stepIds": [
+          "B07.03",
+          "B07.05"
+        ],
+        "action": "review_then_fix_only_if_acceptance_gap"
+      },
+      "cataloguedSourceHistory": [],
+      "cataloguedSourceHead": "718677158dcb037c3e906a9787033149b39e98f7",
+      "cataloguedSha256": "c4379fa1fb5dec9f835ae9d33aa1094b07b08c29eadc06a15545a99558da5a37",
+      "cataloguedAt": "2026-10-23T17:59:45.054Z"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/B07/b07-04-governance-lifecycle-2026-10-01.json",
+      "baselineSha256": null,
+      "lifecycle": "active",
+      "taskIds": [
+        "B07"
+      ],
+      "disposition": "changed",
+      "reason": "Hợp nhất lịch sử đầy đủ; source/evidence được kiểm riêng từng Git blob. | Hợp nhất24/10: giữ owner hiện hành, khôi phục hành vi thiếu; lịch sử/prototype gốc nằm trong ancestry main.",
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "changeIds": [
+        "CHANGE-20261024-013"
+      ],
+      "executionScope": {
+        "ownerTaskId": "B07",
+        "role": "evidence_or_documentation",
+        "stepIds": [
+          "B07.03",
+          "B07.05"
+        ],
+        "action": "review_then_fix_only_if_acceptance_gap"
+      },
+      "cataloguedSourceHistory": [],
+      "cataloguedSourceHead": "718677158dcb037c3e906a9787033149b39e98f7",
+      "cataloguedSha256": "d0f300b36f32f87228635fac3f838611717a794be083b6e46069c146d1f40f6b",
+      "cataloguedAt": "2026-10-23T17:59:45.054Z"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/B07/b07-05-controlled-failure-artifact-2026-10-01.json",
+      "baselineSha256": null,
+      "lifecycle": "active",
+      "taskIds": [
+        "B07"
+      ],
+      "disposition": "changed",
+      "reason": "Hợp nhất lịch sử đầy đủ; source/evidence được kiểm riêng từng Git blob. | Hợp nhất24/10: giữ owner hiện hành, khôi phục hành vi thiếu; lịch sử/prototype gốc nằm trong ancestry main.",
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "changeIds": [
+        "CHANGE-20261024-014"
+      ],
+      "executionScope": {
+        "ownerTaskId": "B07",
+        "role": "evidence_or_documentation",
+        "stepIds": [
+          "B07.03",
+          "B07.05"
+        ],
+        "action": "review_then_fix_only_if_acceptance_gap"
+      },
+      "cataloguedSourceHistory": [],
+      "cataloguedSourceHead": "718677158dcb037c3e906a9787033149b39e98f7",
+      "cataloguedSha256": "a391f67d5e4f6956a6ddfaa6f6cc5eabd8fc6db4471768deef02a71ca630ca93",
+      "cataloguedAt": "2026-10-23T17:59:45.054Z"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/B07/b07-05-final-clean-workflow-ci-2026-10-01.json",
+      "baselineSha256": null,
+      "lifecycle": "active",
+      "taskIds": [
+        "B07"
+      ],
+      "disposition": "changed",
+      "reason": "Hợp nhất lịch sử đầy đủ; source/evidence được kiểm riêng từng Git blob. | Hợp nhất24/10: giữ owner hiện hành, khôi phục hành vi thiếu; lịch sử/prototype gốc nằm trong ancestry main.",
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "changeIds": [
+        "CHANGE-20261024-015"
+      ],
+      "executionScope": {
+        "ownerTaskId": "B07",
+        "role": "evidence_or_documentation",
+        "stepIds": [
+          "B07.03",
+          "B07.05"
+        ],
+        "action": "review_then_fix_only_if_acceptance_gap"
+      },
+      "cataloguedSourceHistory": [],
+      "cataloguedSourceHead": "718677158dcb037c3e906a9787033149b39e98f7",
+      "cataloguedSha256": "624ebfe3296af9484e3de7b41b8136bc7ac187c10a1b0477b86edc03335ee570",
+      "cataloguedAt": "2026-10-23T17:59:45.054Z"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/B07/ci-artifact-exact-sha-2026-10-01.json",
+      "baselineSha256": null,
+      "lifecycle": "active",
+      "taskIds": [
+        "B07"
+      ],
+      "disposition": "changed",
+      "reason": "Hợp nhất lịch sử đầy đủ; source/evidence được kiểm riêng từng Git blob. | Hợp nhất24/10: giữ owner hiện hành, khôi phục hành vi thiếu; lịch sử/prototype gốc nằm trong ancestry main.",
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "changeIds": [
+        "CHANGE-20261024-016"
+      ],
+      "executionScope": {
+        "ownerTaskId": "B07",
+        "role": "evidence_or_documentation",
+        "stepIds": [
+          "B07.03",
+          "B07.05"
+        ],
+        "action": "review_then_fix_only_if_acceptance_gap"
+      },
+      "cataloguedSourceHistory": [],
+      "cataloguedSourceHead": "718677158dcb037c3e906a9787033149b39e98f7",
+      "cataloguedSha256": "7bc1f0837be9b676d87c32d7234442dce07abc88ff88f8ed9a3e8ad7b7366a27",
+      "cataloguedAt": "2026-10-23T17:59:45.054Z"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/B07/ci-artifact-verification-2026-10-01.json",
+      "baselineSha256": null,
+      "lifecycle": "active",
+      "taskIds": [
+        "B07"
+      ],
+      "disposition": "changed",
+      "reason": "Hợp nhất lịch sử đầy đủ; source/evidence được kiểm riêng từng Git blob. | Hợp nhất24/10: giữ owner hiện hành, khôi phục hành vi thiếu; lịch sử/prototype gốc nằm trong ancestry main.",
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "changeIds": [
+        "CHANGE-20261024-017"
+      ],
+      "executionScope": {
+        "ownerTaskId": "B07",
+        "role": "evidence_or_documentation",
+        "stepIds": [
+          "B07.03",
+          "B07.05"
+        ],
+        "action": "review_then_fix_only_if_acceptance_gap"
+      },
+      "cataloguedSourceHistory": [],
+      "cataloguedSourceHead": "718677158dcb037c3e906a9787033149b39e98f7",
+      "cataloguedSha256": "481dcc6ffa255cb81e52b24e615d4c880f304c0df697843fcfb1d7a944d0b1d8",
+      "cataloguedAt": "2026-10-23T17:59:45.054Z"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/B07/ci-artifacts-manifest-2026-10-01.json",
+      "baselineSha256": null,
+      "lifecycle": "active",
+      "taskIds": [
+        "B07"
+      ],
+      "disposition": "changed",
+      "reason": "Hợp nhất lịch sử đầy đủ; source/evidence được kiểm riêng từng Git blob. | Hợp nhất24/10: giữ owner hiện hành, khôi phục hành vi thiếu; lịch sử/prototype gốc nằm trong ancestry main.",
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "changeIds": [
+        "CHANGE-20261024-018"
+      ],
+      "executionScope": {
+        "ownerTaskId": "B07",
+        "role": "evidence_or_documentation",
+        "stepIds": [
+          "B07.03",
+          "B07.05"
+        ],
+        "action": "review_then_fix_only_if_acceptance_gap"
+      },
+      "cataloguedSourceHistory": [],
+      "cataloguedSourceHead": "718677158dcb037c3e906a9787033149b39e98f7",
+      "cataloguedSha256": "a4d40cc8f8133ae90a2e32b87247c396d9e40dbc99a61c4aa394744cd7cffcbc",
+      "cataloguedAt": "2026-10-23T17:59:45.054Z"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/B07/full-history-integration-review-2026-10-24.json",
+      "baselineSha256": null,
+      "lifecycle": "active",
+      "taskIds": [
+        "B07"
+      ],
+      "disposition": "changed",
+      "reason": "Hợp nhất lịch sử đầy đủ; source/evidence được kiểm riêng từng Git blob. | Hợp nhất24/10: giữ owner hiện hành, khôi phục hành vi thiếu; lịch sử/prototype gốc nằm trong ancestry main.",
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "changeIds": [
+        "CHANGE-20261024-019"
+      ],
+      "executionScope": {
+        "ownerTaskId": "B07",
+        "role": "evidence_or_documentation",
+        "stepIds": [
+          "B07.03",
+          "B07.05"
+        ],
+        "action": "review_then_fix_only_if_acceptance_gap"
+      },
+      "cataloguedSourceHistory": [],
+      "cataloguedSourceHead": "718677158dcb037c3e906a9787033149b39e98f7",
+      "cataloguedSha256": "98ed0d4f43c0af6b3200d22d149f4af9fc6f2688d8c4b284a4f683598286d879",
+      "cataloguedAt": "2026-10-23T17:59:45.054Z"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/B07/generator-hash-revision-eol-2026-10-01.json",
+      "baselineSha256": null,
+      "lifecycle": "active",
+      "taskIds": [
+        "B07"
+      ],
+      "disposition": "changed",
+      "reason": "Hợp nhất lịch sử đầy đủ; source/evidence được kiểm riêng từng Git blob. | Hợp nhất24/10: giữ owner hiện hành, khôi phục hành vi thiếu; lịch sử/prototype gốc nằm trong ancestry main.",
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "changeIds": [
+        "CHANGE-20261024-020"
+      ],
+      "executionScope": {
+        "ownerTaskId": "B07",
+        "role": "evidence_or_documentation",
+        "stepIds": [
+          "B07.03",
+          "B07.05"
+        ],
+        "action": "review_then_fix_only_if_acceptance_gap"
+      },
+      "cataloguedSourceHistory": [],
+      "cataloguedSourceHead": "718677158dcb037c3e906a9787033149b39e98f7",
+      "cataloguedSha256": "439bfb0c68e8d8cf90b66221cf982678d37fbf25ea04e29550e5d3ee32518262",
+      "cataloguedAt": "2026-10-23T17:59:45.054Z"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/B07/node22-ubuntu-ci-eol-gate-2026-10-01.json",
+      "baselineSha256": null,
+      "lifecycle": "active",
+      "taskIds": [
+        "B07"
+      ],
+      "disposition": "changed",
+      "reason": "Hợp nhất lịch sử đầy đủ; source/evidence được kiểm riêng từng Git blob. | Hợp nhất24/10: giữ owner hiện hành, khôi phục hành vi thiếu; lịch sử/prototype gốc nằm trong ancestry main.",
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "changeIds": [
+        "CHANGE-20261024-021"
+      ],
+      "executionScope": {
+        "ownerTaskId": "B07",
+        "role": "evidence_or_documentation",
+        "stepIds": [
+          "B07.03",
+          "B07.05"
+        ],
+        "action": "review_then_fix_only_if_acceptance_gap"
+      },
+      "cataloguedSourceHistory": [],
+      "cataloguedSourceHead": "718677158dcb037c3e906a9787033149b39e98f7",
+      "cataloguedSha256": "6e2229e97713b8bdf223f1737f767833c7b643b2df245fdc4c1d31038585864b",
+      "cataloguedAt": "2026-10-23T17:59:45.054Z"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/B07/node22-ubuntu-generator-provenance-2026-10-01.json",
+      "baselineSha256": null,
+      "lifecycle": "active",
+      "taskIds": [
+        "B07"
+      ],
+      "disposition": "changed",
+      "reason": "Hợp nhất lịch sử đầy đủ; source/evidence được kiểm riêng từng Git blob. | Hợp nhất24/10: giữ owner hiện hành, khôi phục hành vi thiếu; lịch sử/prototype gốc nằm trong ancestry main.",
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "changeIds": [
+        "CHANGE-20261024-022"
+      ],
+      "executionScope": {
+        "ownerTaskId": "B07",
+        "role": "evidence_or_documentation",
+        "stepIds": [
+          "B07.03",
+          "B07.05"
+        ],
+        "action": "review_then_fix_only_if_acceptance_gap"
+      },
+      "cataloguedSourceHistory": [],
+      "cataloguedSourceHead": "718677158dcb037c3e906a9787033149b39e98f7",
+      "cataloguedSha256": "97bc9c15a3b3dc371608cbec29a452875793728f9607ed6146c3d2a9ce38e784",
+      "cataloguedAt": "2026-10-23T17:59:45.054Z"
+    },
+    {
+      "path": "docs/architecture/production-readiness/evidence/B07/repository-consolidation-review-2026-10-23.json",
+      "baselineSha256": null,
+      "lifecycle": "active",
+      "taskIds": [
+        "B07"
+      ],
+      "disposition": "changed",
+      "reason": "Hợp nhất lịch sử đầy đủ; source/evidence được kiểm riêng từng Git blob. | Hợp nhất24/10: giữ owner hiện hành, khôi phục hành vi thiếu; lịch sử/prototype gốc nằm trong ancestry main.",
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "changeIds": [
+        "CHANGE-20261024-023"
+      ],
+      "executionScope": {
+        "ownerTaskId": "B07",
+        "role": "evidence_or_documentation",
+        "stepIds": [
+          "B07.03",
+          "B07.05"
+        ],
+        "action": "review_then_fix_only_if_acceptance_gap"
+      },
+      "cataloguedSourceHistory": [],
+      "cataloguedSourceHead": "718677158dcb037c3e906a9787033149b39e98f7",
+      "cataloguedSha256": "f617236e6e3cf73b2988ec3eb8f37ae23fc97006407054d40a400936190fe6d8",
+      "cataloguedAt": "2026-10-23T17:59:45.054Z"
+    },
+    {
+      "path": "scripts/check-bundle-budget.test.mjs",
+      "baselineSha256": null,
+      "lifecycle": "active",
+      "taskIds": [
+        "B07"
+      ],
+      "disposition": "changed",
+      "reason": "Hợp nhất lịch sử đầy đủ; source/evidence được kiểm riêng từng Git blob. | Hợp nhất24/10: giữ owner hiện hành, khôi phục hành vi thiếu; lịch sử/prototype gốc nằm trong ancestry main.",
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "changeIds": [
+        "CHANGE-20261024-026"
+      ],
+      "executionScope": {
+        "ownerTaskId": "B07",
+        "role": "test",
+        "stepIds": [
+          "B07.03",
+          "B07.05"
+        ],
+        "action": "review_then_fix_only_if_acceptance_gap"
+      },
+      "cataloguedSourceHistory": [],
+      "cataloguedSourceHead": "718677158dcb037c3e906a9787033149b39e98f7",
+      "cataloguedSha256": "12b6d5f5f1f9ad0925aeb479246c5dc1de8359cc90773f2d95e002b03b62b972",
+      "cataloguedAt": "2026-10-23T17:59:45.054Z"
+    },
+    {
+      "path": "scripts/check-ci-evidence-artifact.mjs",
+      "baselineSha256": null,
+      "lifecycle": "active",
+      "taskIds": [
+        "B07"
+      ],
+      "disposition": "changed",
+      "reason": "Hợp nhất lịch sử đầy đủ; source/evidence được kiểm riêng từng Git blob. | Hợp nhất24/10: giữ owner hiện hành, khôi phục hành vi thiếu; lịch sử/prototype gốc nằm trong ancestry main.",
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "changeIds": [
+        "CHANGE-20261024-027"
+      ],
+      "executionScope": {
+        "ownerTaskId": "B07",
+        "role": "tooling_configuration",
+        "stepIds": [
+          "B07.03",
+          "B07.05"
+        ],
+        "action": "review_then_fix_only_if_acceptance_gap"
+      },
+      "cataloguedSourceHistory": [],
+      "cataloguedSourceHead": "718677158dcb037c3e906a9787033149b39e98f7",
+      "cataloguedSha256": "854b5ac48974b2d79426ee84d70490cbab89171a1c9ab3a6ba290f29e3a51f41",
+      "cataloguedAt": "2026-10-23T17:59:45.054Z"
+    },
+    {
+      "path": "scripts/check-ci-evidence-artifact.test.mjs",
+      "baselineSha256": null,
+      "lifecycle": "active",
+      "taskIds": [
+        "B07"
+      ],
+      "disposition": "changed",
+      "reason": "Hợp nhất lịch sử đầy đủ; source/evidence được kiểm riêng từng Git blob. | Hợp nhất24/10: giữ owner hiện hành, khôi phục hành vi thiếu; lịch sử/prototype gốc nằm trong ancestry main.",
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "changeIds": [
+        "CHANGE-20261024-028"
+      ],
+      "executionScope": {
+        "ownerTaskId": "B07",
+        "role": "test",
+        "stepIds": [
+          "B07.03",
+          "B07.05"
+        ],
+        "action": "review_then_fix_only_if_acceptance_gap"
+      },
+      "cataloguedSourceHistory": [],
+      "cataloguedSourceHead": "718677158dcb037c3e906a9787033149b39e98f7",
+      "cataloguedSha256": "73410d7141ee676f04dac402f7597bc04c8df843769701fe8bb9565f0807fa75",
+      "cataloguedAt": "2026-10-23T17:59:45.054Z"
+    },
+    {
+      "path": "scripts/check-openapi-mock-parity.mjs",
+      "baselineSha256": null,
+      "lifecycle": "active",
+      "taskIds": [
+        "B07"
+      ],
+      "disposition": "changed",
+      "reason": "Hợp nhất lịch sử đầy đủ; source/evidence được kiểm riêng từng Git blob. | Hợp nhất24/10: giữ owner hiện hành, khôi phục hành vi thiếu; lịch sử/prototype gốc nằm trong ancestry main.",
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "changeIds": [
+        "CHANGE-20261024-029"
+      ],
+      "executionScope": {
+        "ownerTaskId": "B07",
+        "role": "tooling_configuration",
+        "stepIds": [
+          "B07.03",
+          "B07.05"
+        ],
+        "action": "review_then_fix_only_if_acceptance_gap"
+      },
+      "cataloguedSourceHistory": [],
+      "cataloguedSourceHead": "718677158dcb037c3e906a9787033149b39e98f7",
+      "cataloguedSha256": "a0e7726ae242ba6b520f396348c79f454ef024dce18452d88c563e4215f827c7",
+      "cataloguedAt": "2026-10-23T17:59:45.054Z"
+    },
+    {
+      "path": "scripts/check-openapi-mock-parity.test.mjs",
+      "baselineSha256": null,
+      "lifecycle": "active",
+      "taskIds": [
+        "B07"
+      ],
+      "disposition": "changed",
+      "reason": "Hợp nhất lịch sử đầy đủ; source/evidence được kiểm riêng từng Git blob. | Hợp nhất24/10: giữ owner hiện hành, khôi phục hành vi thiếu; lịch sử/prototype gốc nằm trong ancestry main.",
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "changeIds": [
+        "CHANGE-20261024-030"
+      ],
+      "executionScope": {
+        "ownerTaskId": "B07",
+        "role": "test",
+        "stepIds": [
+          "B07.03",
+          "B07.05"
+        ],
+        "action": "review_then_fix_only_if_acceptance_gap"
+      },
+      "cataloguedSourceHistory": [],
+      "cataloguedSourceHead": "718677158dcb037c3e906a9787033149b39e98f7",
+      "cataloguedSha256": "a38c5e615bad3d8c7c39683f279cc980bbfde631a19ca4cc48a309107ffc3137",
+      "cataloguedAt": "2026-10-23T17:59:45.054Z"
+    },
+    {
+      "path": "src/features/earn/pages/EarnPage.pending-feedback.test.tsx",
+      "baselineSha256": null,
+      "lifecycle": "active",
+      "taskIds": [
+        "B07"
+      ],
+      "disposition": "changed",
+      "reason": "Hợp nhất lịch sử đầy đủ; source/evidence được kiểm riêng từng Git blob. | Hợp nhất24/10: giữ owner hiện hành, khôi phục hành vi thiếu; lịch sử/prototype gốc nằm trong ancestry main.",
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "changeIds": [
+        "CHANGE-20261024-031"
+      ],
+      "executionScope": {
+        "ownerTaskId": "B07",
+        "role": "test",
+        "stepIds": [
+          "B07.03",
+          "B07.05"
+        ],
+        "action": "review_then_fix_only_if_acceptance_gap"
+      },
+      "cataloguedSourceHistory": [],
+      "cataloguedSourceHead": "718677158dcb037c3e906a9787033149b39e98f7",
+      "cataloguedSha256": "8b772c8cd60862ed6d27e8ea40f701110785575523c030ea52c4c36e818eb8cb",
+      "cataloguedAt": "2026-10-23T17:59:45.054Z"
     }
   ],
   "changes": [
@@ -333754,6 +334741,710 @@
         "EV-20261023-009"
       ],
       "commit": null
+    },
+    {
+      "id": "CHANGE-20261024-001",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "path": ".github/workflows/ci.yml",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Đối chiếu và hợp nhất toàn bộ lịch sử/WIP; port đúng phần thiếu, giữ gate và owner hiện hành. Xem bản review theo commit/path.",
+      "beforeHash": "2f9bb0b74475045ce9f4365c80317529be7b9c231f4e6a9742d6bfb2030c3b07",
+      "afterHash": "68dd64e2a10293a1f0d4410a1f5f129c58ae13d5a7d3be54692315d32a1f168b",
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "commit": "718677158dcb037c3e906a9787033149b39e98f7"
+    },
+    {
+      "id": "CHANGE-20261024-002",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "path": ".gitignore",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Đối chiếu và hợp nhất toàn bộ lịch sử/WIP; port đúng phần thiếu, giữ gate và owner hiện hành. Xem bản review theo commit/path.",
+      "beforeHash": "f3a31f9c67805212d4adc961768014ac927c7ee024aee49b099065d6efc864ff",
+      "afterHash": "a75d8ec492a8bad081f253668d40dbe25939c0710081e0f65929946296f175dd",
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "commit": "718677158dcb037c3e906a9787033149b39e98f7"
+    },
+    {
+      "id": "CHANGE-20261024-003",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "path": "docs/ai/WORKFLOW.md",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Đối chiếu và hợp nhất toàn bộ lịch sử/WIP; port đúng phần thiếu, giữ gate và owner hiện hành. Xem bản review theo commit/path.",
+      "beforeHash": "fe6c813b74426a52a92daa3847491117804c5e56cda8db08a4d7153793dbee79",
+      "afterHash": "840d4029aa3bdef639f0e3bfd5eed0611cfc0c5fcb6223e2293b5377e9e8097b",
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "commit": "718677158dcb037c3e906a9787033149b39e98f7"
+    },
+    {
+      "id": "CHANGE-20261024-004",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "path": "docs/architecture/production-readiness/PLAN.md",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Đối chiếu và hợp nhất toàn bộ lịch sử/WIP; port đúng phần thiếu, giữ gate và owner hiện hành. Xem bản review theo commit/path.",
+      "beforeHash": "54e90534f5b3018273a8222db9474e1df64c6feacaafb9550aa0a01362af0e44",
+      "afterHash": "5f5494305364c5082ccda88d538c0d410a643dabdf923248dae8e5b0522c5419",
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "commit": "718677158dcb037c3e906a9787033149b39e98f7"
+    },
+    {
+      "id": "CHANGE-20261024-005",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "path": "docs/architecture/production-readiness/evidence/A06/generate-operation-mock-map.mjs",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Đối chiếu và hợp nhất toàn bộ lịch sử/WIP; port đúng phần thiếu, giữ gate và owner hiện hành. Xem bản review theo commit/path.",
+      "beforeHash": "7ca3e90f9df52a2cdd0197b33b0d993fba0fb2493fa197d909313775420f1a53",
+      "afterHash": "7f43183cb822722f4eaf68cd84e4498cbc07a52daad85c9ffd159bfda925f52b",
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "commit": "718677158dcb037c3e906a9787033149b39e98f7"
+    },
+    {
+      "id": "CHANGE-20261024-006",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "path": "docs/architecture/production-readiness/evidence/A06/preview-wallet-success-2026-10-02.png",
+      "action": "add",
+      "oldPath": null,
+      "reason": "Đối chiếu và hợp nhất toàn bộ lịch sử/WIP; port đúng phần thiếu, giữ gate và owner hiện hành. Xem bản review theo commit/path.",
+      "beforeHash": null,
+      "afterHash": "fff8d177ae32e8c8a5bad9e9cc322399b674bb14be81816d633a2692c929609f",
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "commit": "718677158dcb037c3e906a9787033149b39e98f7"
+    },
+    {
+      "id": "CHANGE-20261024-007",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "path": "docs/architecture/production-readiness/evidence/A06/run-trading-pending-browser-check.mjs",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Đối chiếu và hợp nhất toàn bộ lịch sử/WIP; port đúng phần thiếu, giữ gate và owner hiện hành. Xem bản review theo commit/path.",
+      "beforeHash": "e36b60581ab7b7caa518668d3f8fe1fe6d59c79f954a4a1252aa2d49908c92ac",
+      "afterHash": "231c9d458684a1e4b1c2d50bc8fde65d90e51dd5487b2fa1b9835c8fe7788ae2",
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "commit": "718677158dcb037c3e906a9787033149b39e98f7"
+    },
+    {
+      "id": "CHANGE-20261024-008",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "path": "docs/architecture/production-readiness/evidence/A06/run-wallet-success-browser-check.mjs",
+      "action": "add",
+      "oldPath": null,
+      "reason": "Đối chiếu và hợp nhất toàn bộ lịch sử/WIP; port đúng phần thiếu, giữ gate và owner hiện hành. Xem bản review theo commit/path.",
+      "beforeHash": null,
+      "afterHash": "949e242cd9a451b56b85f628a63b82d48a0569a65a0005d9bf1aecf566d08070",
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "commit": "718677158dcb037c3e906a9787033149b39e98f7"
+    },
+    {
+      "id": "CHANGE-20261024-009",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "path": "docs/architecture/production-readiness/evidence/A06/wallet-success-browser-check-2026-10-02.json",
+      "action": "add",
+      "oldPath": null,
+      "reason": "Đối chiếu và hợp nhất toàn bộ lịch sử/WIP; port đúng phần thiếu, giữ gate và owner hiện hành. Xem bản review theo commit/path.",
+      "beforeHash": null,
+      "afterHash": "329419b2a3081dea5a165b43c0ab2335ef51a482c5c89bf2efb178d4ee88fccb",
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "commit": "718677158dcb037c3e906a9787033149b39e98f7"
+    },
+    {
+      "id": "CHANGE-20261024-010",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "path": "docs/architecture/production-readiness/evidence/B07/b07-03-exact-sha-2026-10-01.json",
+      "action": "add",
+      "oldPath": null,
+      "reason": "Đối chiếu và hợp nhất toàn bộ lịch sử/WIP; port đúng phần thiếu, giữ gate và owner hiện hành. Xem bản review theo commit/path.",
+      "beforeHash": null,
+      "afterHash": "dc315a79fa85dbb5a411c85628b6adab75fd986cc77287ddc3770c7cea61acfa",
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "commit": "718677158dcb037c3e906a9787033149b39e98f7"
+    },
+    {
+      "id": "CHANGE-20261024-011",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "path": "docs/architecture/production-readiness/evidence/B07/b07-03-local-gates-2026-10-01.json",
+      "action": "add",
+      "oldPath": null,
+      "reason": "Đối chiếu và hợp nhất toàn bộ lịch sử/WIP; port đúng phần thiếu, giữ gate và owner hiện hành. Xem bản review theo commit/path.",
+      "beforeHash": null,
+      "afterHash": "e09d9c7f0ab449bdd43f43acd8b2ea104e1ab6115d7a80edd6102aad509022ff",
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "commit": "718677158dcb037c3e906a9787033149b39e98f7"
+    },
+    {
+      "id": "CHANGE-20261024-012",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "path": "docs/architecture/production-readiness/evidence/B07/b07-04-exact-sha-and-actions-settings-2026-10-01.json",
+      "action": "add",
+      "oldPath": null,
+      "reason": "Đối chiếu và hợp nhất toàn bộ lịch sử/WIP; port đúng phần thiếu, giữ gate và owner hiện hành. Xem bản review theo commit/path.",
+      "beforeHash": null,
+      "afterHash": "c4379fa1fb5dec9f835ae9d33aa1094b07b08c29eadc06a15545a99558da5a37",
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "commit": "718677158dcb037c3e906a9787033149b39e98f7"
+    },
+    {
+      "id": "CHANGE-20261024-013",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "path": "docs/architecture/production-readiness/evidence/B07/b07-04-governance-lifecycle-2026-10-01.json",
+      "action": "add",
+      "oldPath": null,
+      "reason": "Đối chiếu và hợp nhất toàn bộ lịch sử/WIP; port đúng phần thiếu, giữ gate và owner hiện hành. Xem bản review theo commit/path.",
+      "beforeHash": null,
+      "afterHash": "d0f300b36f32f87228635fac3f838611717a794be083b6e46069c146d1f40f6b",
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "commit": "718677158dcb037c3e906a9787033149b39e98f7"
+    },
+    {
+      "id": "CHANGE-20261024-014",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "path": "docs/architecture/production-readiness/evidence/B07/b07-05-controlled-failure-artifact-2026-10-01.json",
+      "action": "add",
+      "oldPath": null,
+      "reason": "Đối chiếu và hợp nhất toàn bộ lịch sử/WIP; port đúng phần thiếu, giữ gate và owner hiện hành. Xem bản review theo commit/path.",
+      "beforeHash": null,
+      "afterHash": "a391f67d5e4f6956a6ddfaa6f6cc5eabd8fc6db4471768deef02a71ca630ca93",
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "commit": "718677158dcb037c3e906a9787033149b39e98f7"
+    },
+    {
+      "id": "CHANGE-20261024-015",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "path": "docs/architecture/production-readiness/evidence/B07/b07-05-final-clean-workflow-ci-2026-10-01.json",
+      "action": "add",
+      "oldPath": null,
+      "reason": "Đối chiếu và hợp nhất toàn bộ lịch sử/WIP; port đúng phần thiếu, giữ gate và owner hiện hành. Xem bản review theo commit/path.",
+      "beforeHash": null,
+      "afterHash": "624ebfe3296af9484e3de7b41b8136bc7ac187c10a1b0477b86edc03335ee570",
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "commit": "718677158dcb037c3e906a9787033149b39e98f7"
+    },
+    {
+      "id": "CHANGE-20261024-016",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "path": "docs/architecture/production-readiness/evidence/B07/ci-artifact-exact-sha-2026-10-01.json",
+      "action": "add",
+      "oldPath": null,
+      "reason": "Đối chiếu và hợp nhất toàn bộ lịch sử/WIP; port đúng phần thiếu, giữ gate và owner hiện hành. Xem bản review theo commit/path.",
+      "beforeHash": null,
+      "afterHash": "7bc1f0837be9b676d87c32d7234442dce07abc88ff88f8ed9a3e8ad7b7366a27",
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "commit": "718677158dcb037c3e906a9787033149b39e98f7"
+    },
+    {
+      "id": "CHANGE-20261024-017",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "path": "docs/architecture/production-readiness/evidence/B07/ci-artifact-verification-2026-10-01.json",
+      "action": "add",
+      "oldPath": null,
+      "reason": "Đối chiếu và hợp nhất toàn bộ lịch sử/WIP; port đúng phần thiếu, giữ gate và owner hiện hành. Xem bản review theo commit/path.",
+      "beforeHash": null,
+      "afterHash": "481dcc6ffa255cb81e52b24e615d4c880f304c0df697843fcfb1d7a944d0b1d8",
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "commit": "718677158dcb037c3e906a9787033149b39e98f7"
+    },
+    {
+      "id": "CHANGE-20261024-018",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "path": "docs/architecture/production-readiness/evidence/B07/ci-artifacts-manifest-2026-10-01.json",
+      "action": "add",
+      "oldPath": null,
+      "reason": "Đối chiếu và hợp nhất toàn bộ lịch sử/WIP; port đúng phần thiếu, giữ gate và owner hiện hành. Xem bản review theo commit/path.",
+      "beforeHash": null,
+      "afterHash": "a4d40cc8f8133ae90a2e32b87247c396d9e40dbc99a61c4aa394744cd7cffcbc",
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "commit": "718677158dcb037c3e906a9787033149b39e98f7"
+    },
+    {
+      "id": "CHANGE-20261024-019",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "path": "docs/architecture/production-readiness/evidence/B07/full-history-integration-review-2026-10-24.json",
+      "action": "add",
+      "oldPath": null,
+      "reason": "Đối chiếu và hợp nhất toàn bộ lịch sử/WIP; port đúng phần thiếu, giữ gate và owner hiện hành. Xem bản review theo commit/path.",
+      "beforeHash": null,
+      "afterHash": "98ed0d4f43c0af6b3200d22d149f4af9fc6f2688d8c4b284a4f683598286d879",
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "commit": "718677158dcb037c3e906a9787033149b39e98f7"
+    },
+    {
+      "id": "CHANGE-20261024-020",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "path": "docs/architecture/production-readiness/evidence/B07/generator-hash-revision-eol-2026-10-01.json",
+      "action": "add",
+      "oldPath": null,
+      "reason": "Đối chiếu và hợp nhất toàn bộ lịch sử/WIP; port đúng phần thiếu, giữ gate và owner hiện hành. Xem bản review theo commit/path.",
+      "beforeHash": null,
+      "afterHash": "439bfb0c68e8d8cf90b66221cf982678d37fbf25ea04e29550e5d3ee32518262",
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "commit": "718677158dcb037c3e906a9787033149b39e98f7"
+    },
+    {
+      "id": "CHANGE-20261024-021",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "path": "docs/architecture/production-readiness/evidence/B07/node22-ubuntu-ci-eol-gate-2026-10-01.json",
+      "action": "add",
+      "oldPath": null,
+      "reason": "Đối chiếu và hợp nhất toàn bộ lịch sử/WIP; port đúng phần thiếu, giữ gate và owner hiện hành. Xem bản review theo commit/path.",
+      "beforeHash": null,
+      "afterHash": "6e2229e97713b8bdf223f1737f767833c7b643b2df245fdc4c1d31038585864b",
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "commit": "718677158dcb037c3e906a9787033149b39e98f7"
+    },
+    {
+      "id": "CHANGE-20261024-022",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "path": "docs/architecture/production-readiness/evidence/B07/node22-ubuntu-generator-provenance-2026-10-01.json",
+      "action": "add",
+      "oldPath": null,
+      "reason": "Đối chiếu và hợp nhất toàn bộ lịch sử/WIP; port đúng phần thiếu, giữ gate và owner hiện hành. Xem bản review theo commit/path.",
+      "beforeHash": null,
+      "afterHash": "97bc9c15a3b3dc371608cbec29a452875793728f9607ed6146c3d2a9ce38e784",
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "commit": "718677158dcb037c3e906a9787033149b39e98f7"
+    },
+    {
+      "id": "CHANGE-20261024-023",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "path": "docs/architecture/production-readiness/evidence/B07/repository-consolidation-review-2026-10-23.json",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Đối chiếu và hợp nhất toàn bộ lịch sử/WIP; port đúng phần thiếu, giữ gate và owner hiện hành. Xem bản review theo commit/path.",
+      "beforeHash": "8cacb68af09a93c023d26bb97b0c96ad2758af44082af13c431d324bcbe703cd",
+      "afterHash": "f617236e6e3cf73b2988ec3eb8f37ae23fc97006407054d40a400936190fe6d8",
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "commit": "718677158dcb037c3e906a9787033149b39e98f7"
+    },
+    {
+      "id": "CHANGE-20261024-024",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "path": "package.json",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Đối chiếu và hợp nhất toàn bộ lịch sử/WIP; port đúng phần thiếu, giữ gate và owner hiện hành. Xem bản review theo commit/path.",
+      "beforeHash": "c8f1f161ca689aac632937a6ad3af1b95fb64151a3231b665b26f7a047305f73",
+      "afterHash": "bcc74fabab258d69b0e20724c303343f33440652a7bb41a609d1f1d897af2f21",
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "commit": "718677158dcb037c3e906a9787033149b39e98f7"
+    },
+    {
+      "id": "CHANGE-20261024-025",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "path": "scripts/check-bundle-budget.mjs",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Đối chiếu và hợp nhất toàn bộ lịch sử/WIP; port đúng phần thiếu, giữ gate và owner hiện hành. Xem bản review theo commit/path.",
+      "beforeHash": "91ce032fd5a2277bab724c6a85fb119dac35f6e8d93b1b334da99cb3663b3a79",
+      "afterHash": "05e7279563fdf0731d236770b4679e813474000c7b01006d4db6d397a4567f5c",
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "commit": "718677158dcb037c3e906a9787033149b39e98f7"
+    },
+    {
+      "id": "CHANGE-20261024-026",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "path": "scripts/check-bundle-budget.test.mjs",
+      "action": "add",
+      "oldPath": null,
+      "reason": "Đối chiếu và hợp nhất toàn bộ lịch sử/WIP; port đúng phần thiếu, giữ gate và owner hiện hành. Xem bản review theo commit/path.",
+      "beforeHash": null,
+      "afterHash": "12b6d5f5f1f9ad0925aeb479246c5dc1de8359cc90773f2d95e002b03b62b972",
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "commit": "718677158dcb037c3e906a9787033149b39e98f7"
+    },
+    {
+      "id": "CHANGE-20261024-027",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "path": "scripts/check-ci-evidence-artifact.mjs",
+      "action": "add",
+      "oldPath": null,
+      "reason": "Đối chiếu và hợp nhất toàn bộ lịch sử/WIP; port đúng phần thiếu, giữ gate và owner hiện hành. Xem bản review theo commit/path.",
+      "beforeHash": null,
+      "afterHash": "854b5ac48974b2d79426ee84d70490cbab89171a1c9ab3a6ba290f29e3a51f41",
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "commit": "718677158dcb037c3e906a9787033149b39e98f7"
+    },
+    {
+      "id": "CHANGE-20261024-028",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "path": "scripts/check-ci-evidence-artifact.test.mjs",
+      "action": "add",
+      "oldPath": null,
+      "reason": "Đối chiếu và hợp nhất toàn bộ lịch sử/WIP; port đúng phần thiếu, giữ gate và owner hiện hành. Xem bản review theo commit/path.",
+      "beforeHash": null,
+      "afterHash": "73410d7141ee676f04dac402f7597bc04c8df843769701fe8bb9565f0807fa75",
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "commit": "718677158dcb037c3e906a9787033149b39e98f7"
+    },
+    {
+      "id": "CHANGE-20261024-029",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "path": "scripts/check-openapi-mock-parity.mjs",
+      "action": "add",
+      "oldPath": null,
+      "reason": "Đối chiếu và hợp nhất toàn bộ lịch sử/WIP; port đúng phần thiếu, giữ gate và owner hiện hành. Xem bản review theo commit/path.",
+      "beforeHash": null,
+      "afterHash": "a0e7726ae242ba6b520f396348c79f454ef024dce18452d88c563e4215f827c7",
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "commit": "718677158dcb037c3e906a9787033149b39e98f7"
+    },
+    {
+      "id": "CHANGE-20261024-030",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "path": "scripts/check-openapi-mock-parity.test.mjs",
+      "action": "add",
+      "oldPath": null,
+      "reason": "Đối chiếu và hợp nhất toàn bộ lịch sử/WIP; port đúng phần thiếu, giữ gate và owner hiện hành. Xem bản review theo commit/path.",
+      "beforeHash": null,
+      "afterHash": "a38c5e615bad3d8c7c39683f279cc980bbfde631a19ca4cc48a309107ffc3137",
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "commit": "718677158dcb037c3e906a9787033149b39e98f7"
+    },
+    {
+      "id": "CHANGE-20261024-031",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "path": "src/features/earn/pages/EarnPage.pending-feedback.test.tsx",
+      "action": "add",
+      "oldPath": null,
+      "reason": "Đối chiếu và hợp nhất toàn bộ lịch sử/WIP; port đúng phần thiếu, giữ gate và owner hiện hành. Xem bản review theo commit/path.",
+      "beforeHash": null,
+      "afterHash": "8b772c8cd60862ed6d27e8ea40f701110785575523c030ea52c4c36e818eb8cb",
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "commit": "718677158dcb037c3e906a9787033149b39e98f7"
+    },
+    {
+      "id": "CHANGE-20261024-032",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "path": "src/features/earn/pages/EarnPage.tsx",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Đối chiếu và hợp nhất toàn bộ lịch sử/WIP; port đúng phần thiếu, giữ gate và owner hiện hành. Xem bản review theo commit/path.",
+      "beforeHash": "1d597ca4cda319a7e1bca81d31f95a279bc20cc7497e2007b03583e2e0146c9a",
+      "afterHash": "46be748c229bf0fa2ea388721b8c3068a3c83f5fa34fc55a11007eb05ff07926",
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "commit": "718677158dcb037c3e906a9787033149b39e98f7"
+    },
+    {
+      "id": "CHANGE-20261024-033",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "path": "src/features/support/pages/NotificationsContractPage.tsx",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Đối chiếu và hợp nhất toàn bộ lịch sử/WIP; port đúng phần thiếu, giữ gate và owner hiện hành. Xem bản review theo commit/path.",
+      "beforeHash": "e813a604872f020142e561b171bc8b2576f233e5af19ee73fdb76d098bcf597e",
+      "afterHash": "d9eff82ac5205116ca3f68f80342c9c0ac178134a54acc6fb124d907fb4ea84d",
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "commit": "718677158dcb037c3e906a9787033149b39e98f7"
+    },
+    {
+      "id": "CHANGE-20261024-034",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "path": "src/features/support/pages/SupportWriteBoundary.test.tsx",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Đối chiếu và hợp nhất toàn bộ lịch sử/WIP; port đúng phần thiếu, giữ gate và owner hiện hành. Xem bản review theo commit/path.",
+      "beforeHash": "aefd6fc48fcfa2a9246b0f041fa449f3487df43a2f1de52b430f95bc20df3380",
+      "afterHash": "90be4b6053f7eaddbab39acdd764e665c3600d4bc43e8cc5ff34ed2782afe96a",
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "commit": "718677158dcb037c3e906a9787033149b39e98f7"
+    },
+    {
+      "id": "CHANGE-20261024-035",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "path": "src/shared/config/env.test.ts",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Đối chiếu và hợp nhất toàn bộ lịch sử/WIP; port đúng phần thiếu, giữ gate và owner hiện hành. Xem bản review theo commit/path.",
+      "beforeHash": "b96950027e712d2fa3c483e5151a12b12a1043fe62a380bcdd223a52a4ae85fd",
+      "afterHash": "278949f8b94a7e97814a2ba5f80cc9cb94c15c1f5eafaa2a193e8f34f4decd1a",
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "commit": "718677158dcb037c3e906a9787033149b39e98f7"
+    },
+    {
+      "id": "CHANGE-20261024-036",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "path": "src/shared/ui/layout/Header.test.tsx",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Đối chiếu và hợp nhất toàn bộ lịch sử/WIP; port đúng phần thiếu, giữ gate và owner hiện hành. Xem bản review theo commit/path.",
+      "beforeHash": "97b065cde70443f398d591ee7c4456baf03e01134637879b579f458534fc7023",
+      "afterHash": "3cb45cd2e88a00038f124fe63fc9f9feebab35acbd79c3c6c204fa6bb5b9650d",
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "commit": "718677158dcb037c3e906a9787033149b39e98f7"
+    },
+    {
+      "id": "CHANGE-20261024-037",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "path": "docs/architecture/production-readiness/TRACKING.json",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Ghi quyết định, đối chiếu và catalogue source; afterHash dùng payload trước self-audit có gzip phục hồi được.",
+      "beforeHash": "8f67fdaf4354875617d09b4b20ac367281207fd08c6da7a413594621eaffd0fb",
+      "afterHash": "205972b18d6490c83741de7e2fd981ce39be73e2c4bd05fee193fa16e8deb41e",
+      "afterHashBasis": "docs/architecture/production-readiness/evidence/B07/full-history-integration-tracking-payload-2026-10-24.json.gz",
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "commit": null
     }
   ],
   "evidence": [
@@ -375084,6 +376775,91 @@
       "actual": "Tất cả exit0;3757tests/381files;coverage99.84/99.64/99.87/99.9; build manifest passed,sourceUnchanged,childClosed.",
       "result": "pass",
       "notes": "Giữ test/exclude/retry/threshold và scripts CI; CI chính thức phải đạt đúng final main SHA."
+    },
+    {
+      "id": "EV-20261024-001",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "observedAt": "2026-10-23T17:59:45.054Z",
+      "sourceHead": "cdd9d12fad9d33085714f3b3f09a4f74562153a4",
+      "committedSourceHead": "718677158dcb037c3e906a9787033149b39e98f7",
+      "environment": "Windows/Node24.19.0; hosted Ubuntu/Node22 full CI remains required on final SHA.",
+      "dirtyFileHashes": {},
+      "artifact": "docs/architecture/production-readiness/evidence/B07/full-history-integration-review-2026-10-24.json",
+      "kind": "backup_restore",
+      "commandOrSteps": "Full --all Git bundle; restore mirror; compare all refs and commits; fsck restored repository.",
+      "expected": "Before mutation, restore all reachable history and retain both raw historical copies.",
+      "actual": "60 refs/480 commits restored exactly; fsck0; bundle SHA256 fb230f803352e0a9cfddd77eff0aa0a05fa988a21e0281188f23638e0dd6564a",
+      "result": "pass",
+      "notes": "Raw copies retain also unreferenced historical objects; bundle does not replace them."
+    },
+    {
+      "id": "EV-20261024-002",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "observedAt": "2026-10-23T17:59:45.054Z",
+      "sourceHead": "cdd9d12fad9d33085714f3b3f09a4f74562153a4",
+      "committedSourceHead": "718677158dcb037c3e906a9787033149b39e98f7",
+      "environment": "Windows/Node24.19.0; hosted Ubuntu/Node22 full CI remains required on final SHA.",
+      "dirtyFileHashes": {},
+      "artifact": "docs/architecture/production-readiness/evidence/B07/full-history-integration-review-2026-10-24.json",
+      "kind": "history_reconciliation",
+      "commandOrSteps": "Review original69, normal merges, 920 WIP paths/layers, current owner contracts and retirement commits; inspect all conflicts/automatic merges.",
+      "expected": "Every original commit and WIP parent becomes main ancestor; recover missing behavior without replacing current owners.",
+      "actual": "472/472 original commits, all480 baseline-reachable commits and all69 previously outside main integrated; 54 immutable refs and2stash unchanged. Source report records each original69 and all920WIP paths.",
+      "result": "pass",
+      "notes": "User explicitly selected current owners and retention of replaced prototypes in main history; no prototype product flow is restored."
+    },
+    {
+      "id": "EV-20261024-003",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "observedAt": "2026-10-23T17:59:45.054Z",
+      "sourceHead": "cdd9d12fad9d33085714f3b3f09a4f74562153a4",
+      "committedSourceHead": "718677158dcb037c3e906a9787033149b39e98f7",
+      "environment": "Windows/Node24.19.0; hosted Ubuntu/Node22 full CI remains required on final SHA.",
+      "dirtyFileHashes": {},
+      "artifact": "docs/architecture/production-readiness/evidence/B07/full-history-integration-review-2026-10-24.json",
+      "kind": "regression_before_fix",
+      "commandOrSteps": "Targeted SupportWriteBoundary/EarnPage regressions before restoring strict permission and pending feedback.",
+      "expected": "Regressions must detect the missing behavior.",
+      "actual": "3fail/15pass: support writer incorrectly acknowledged notifications; pending subscription/redemption emitted success haptics.",
+      "result": "fail",
+      "notes": "Historical red evidence is preserved; subsequent green tests and final full CI are required."
+    },
+    {
+      "id": "EV-20261024-004",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "observedAt": "2026-10-23T17:59:45.054Z",
+      "sourceHead": "cdd9d12fad9d33085714f3b3f09a4f74562153a4",
+      "committedSourceHead": "718677158dcb037c3e906a9787033149b39e98f7",
+      "environment": "Windows/Node24.19.0; hosted Ubuntu/Node22 full CI remains required on final SHA.",
+      "dirtyFileHashes": {},
+      "artifact": "docs/architecture/production-readiness/evidence/B07/full-history-integration-review-2026-10-24.json",
+      "kind": "local_validation",
+      "commandOrSteps": "Owned targeted Vitest runs22/23/61; full Vitest run --coverage; page-size gate; typecheck/lint near source ports; OpenAPI/MSW parity.",
+      "expected": "Keep every existing test and all thresholds; recovered behavior and original tool tests must pass.",
+      "actual": "3777tests/385files pass; coverage99.84/99.64/99.87/99.90. Page-size600, unchanged Vitest config/lockfile;154/154 parity. Owned runner passed, sourceUnchanged/childClosed true.",
+      "result": "pass",
+      "notes": "Local source code matches committed source; full closing CI, browser lanes, remote readback and artifact provenance remain pending at this commit."
+    },
+    {
+      "id": "EV-20261024-005",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "observedAt": "2026-10-23T17:59:45.054Z",
+      "sourceHead": "cdd9d12fad9d33085714f3b3f09a4f74562153a4",
+      "committedSourceHead": "718677158dcb037c3e906a9787033149b39e98f7",
+      "environment": "Windows/Node24.19.0; hosted Ubuntu/Node22 full CI remains required on final SHA.",
+      "dirtyFileHashes": {},
+      "artifact": "docs/architecture/production-readiness/evidence/B07/full-history-integration-review-2026-10-24.json",
+      "kind": "decision",
+      "commandOrSteps": "Direct user request plus explicit answer to prototype handling question in this chat.",
+      "expected": "Integrate full history and missing current behavior; preserve original source; final-SHA CI gates completion.",
+      "actual": "User chose current owner implementation, keeping replaced prototypes in main history; authorized normal main merges and missing-behavior ports.",
+      "result": "pass",
+      "notes": "Supersedes archive-only scope of DECISION-20261023-001. Does not authorize deployment or close C06.13/backend/UAT."
     }
   ],
   "decisions": [
@@ -375854,6 +377630,25 @@
         "EV-20261023-001",
         "EV-20261023-003",
         "EV-20261023-004"
+      ]
+    },
+    {
+      "id": "DECISION-20261024-001",
+      "taskId": "B07",
+      "scopeIds": [
+        "B07.03",
+        "B07.05"
+      ],
+      "decidedBy": "Người dùng trực tiếp trong chat",
+      "decidedAt": "2026-10-23T17:59:45.054Z",
+      "decision": "Hợp nhất toàn bộ 69 commit và parent WIP vào main; port hành vi thiếu theo owner hiện hành. Giữ prototype đã thay thế trong lịch sử main theo lựa chọn trực tiếp.",
+      "reason": "Thay phạm vi chỉ giữ archive; bảo toàn bản gốc và chỉ đóng khi full CI trên SHA cuối main đạt. Không tái tạo luồng prototype giả hoặc hạ gate.",
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
       ]
     }
   ],
@@ -402008,6 +403803,72 @@
       ],
       "blockers": [],
       "nextAction": "Push một gói source+catalogue, kiểm đúng SHA cuối; không đổi test/ngưỡng/gate."
+    },
+    {
+      "id": "SESSION-20261024-001",
+      "startedAt": "2026-10-23T17:06:23.297312+00:00",
+      "endedAt": "2026-10-23T17:59:45.054Z",
+      "sourceHeadBefore": "cdd9d12fad9d33085714f3b3f09a4f74562153a4",
+      "sourceHeadAfter": "718677158dcb037c3e906a9787033149b39e98f7",
+      "taskIds": [
+        "B07"
+      ],
+      "stepIds": [
+        "B07.03",
+        "B07.05"
+      ],
+      "changeIds": [
+        "CHANGE-20261024-001",
+        "CHANGE-20261024-002",
+        "CHANGE-20261024-003",
+        "CHANGE-20261024-004",
+        "CHANGE-20261024-005",
+        "CHANGE-20261024-006",
+        "CHANGE-20261024-007",
+        "CHANGE-20261024-008",
+        "CHANGE-20261024-009",
+        "CHANGE-20261024-010",
+        "CHANGE-20261024-011",
+        "CHANGE-20261024-012",
+        "CHANGE-20261024-013",
+        "CHANGE-20261024-014",
+        "CHANGE-20261024-015",
+        "CHANGE-20261024-016",
+        "CHANGE-20261024-017",
+        "CHANGE-20261024-018",
+        "CHANGE-20261024-019",
+        "CHANGE-20261024-020",
+        "CHANGE-20261024-021",
+        "CHANGE-20261024-022",
+        "CHANGE-20261024-023",
+        "CHANGE-20261024-024",
+        "CHANGE-20261024-025",
+        "CHANGE-20261024-026",
+        "CHANGE-20261024-027",
+        "CHANGE-20261024-028",
+        "CHANGE-20261024-029",
+        "CHANGE-20261024-030",
+        "CHANGE-20261024-031",
+        "CHANGE-20261024-032",
+        "CHANGE-20261024-033",
+        "CHANGE-20261024-034",
+        "CHANGE-20261024-035",
+        "CHANGE-20261024-036",
+        "CHANGE-20261024-037"
+      ],
+      "evidenceIds": [
+        "EV-20261024-001",
+        "EV-20261024-002",
+        "EV-20261024-003",
+        "EV-20261024-004",
+        "EV-20261024-005"
+      ],
+      "elapsedMinutes": null,
+      "remainingWork": [
+        "Full CI trên SHA cuối main, artifact digest/source ledger, remote ancestry, bảo toàn refs và cleanup."
+      ],
+      "blockers": [],
+      "nextAction": "Push gói source+catalogue; chỉ kết luận xong sau exact-final-SHA full CI và readback. Không đóng C06/backend/UAT."
     }
   ],
   "templates": {
