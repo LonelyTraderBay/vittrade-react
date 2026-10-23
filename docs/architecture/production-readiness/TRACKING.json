@@ -48,7 +48,7 @@
     }
   ],
   "checkpoint": {
-    "updatedAt": "2026-10-23T17:59:45.054Z",
+    "updatedAt": "2026-10-23T18:59:19.920Z",
     "lastCompletedTask": "C03",
     "activeTask": "C06",
     "activeStep": "C06.13",
@@ -199,7 +199,7 @@
     },
     "fullHistoryIntegration": {
       "decisionId": "DECISION-20261024-001",
-      "sourceCommit": "718677158dcb037c3e906a9787033149b39e98f7",
+      "sourceCommit": "37cef8638360613e750c5f9b14b4cf09072c134d",
       "originalCommitsInMain": 472,
       "previouslyOutside69NowInMain": 69,
       "wipPathsReviewed": 920,
@@ -211,12 +211,21 @@
         "EV-20261024-002",
         "EV-20261024-003",
         "EV-20261024-004",
-        "EV-20261024-005"
+        "EV-20261024-005",
+        "EV-20261024-006",
+        "EV-20261024-007",
+        "EV-20261024-008"
       ],
       "closingStatusAtCommit": "pending",
       "closingGate": "Full push CI on final main SHA plus artifact/source verification, remote ancestry readback and cleanup.",
       "closingReceipt": "C:\\Users\\Joker-PC\\Documents\\Codex\\Work\\vittrade-react\\20261023-single-main\\outputs\\final-integration\\ci-final-proof.json",
-      "productCheckpointUnchanged": "C06.13; backend/staging/UAT remains open."
+      "productCheckpointUnchanged": "C06.13; backend/staging/UAT remains open.",
+      "sourceBeforeClosingCorrection": "718677158dcb037c3e906a9787033149b39e98f7",
+      "failedCandidate": {
+        "sha": "d6135fa129ca1a24ceb0473579411d50e474d27d",
+        "runId": 40000606570,
+        "url": "https://github.com/LonelyTraderBay/vittrade-react/actions/runs/40000606570"
+      }
     }
   },
   "tasks": [
@@ -137114,7 +137123,10 @@
         "EV-20261024-002",
         "EV-20261024-003",
         "EV-20261024-004",
-        "EV-20261024-005"
+        "EV-20261024-005",
+        "EV-20261024-006",
+        "EV-20261024-007",
+        "EV-20261024-008"
       ],
       "changeIds": [
         "CHANGE-20261001-0316",
@@ -137434,7 +137446,8 @@
         "CHANGE-20261023-010",
         "CHANGE-20261023-012",
         "CHANGE-20261023-015",
-        "CHANGE-20261024-037"
+        "CHANGE-20261024-037",
+        "CHANGE-20261024-043"
       ],
       "cataloguedAt": null,
       "executionScope": {
@@ -142366,10 +142379,11 @@
         "C05",
         "B10",
         "C03",
-        "C06"
+        "C06",
+        "B07"
       ],
       "disposition": "changed",
-      "reason": "C05.03: place the floating badge above the mock preview warning only while preview controls are present. Current working changes remain uncommitted; catalogue describes committed bytes only. | P1-FE-01 local verification. | Final local source and artifact verification. Current local commit individually verified; earlier WIP deferral is historical. | Iteration55: Only move between phone, tablet and Web shells when route resolution identifies the same leaf renderer; retain route path/query/hash when the target shell is equivalent. | C06.11: source đã kiểm chứng trong commit fe9d51c7.",
+      "reason": "C05.03: place the floating badge above the mock preview warning only while preview controls are present. Current working changes remain uncommitted; catalogue describes committed bytes only. | P1-FE-01 local verification. | Final local source and artifact verification. Current local commit individually verified; earlier WIP deferral is historical. | Iteration55: Only move between phone, tablet and Web shells when route resolution identifies the same leaf renderer; retain route path/query/hash when the target shell is equivalent. | C06.11: source đã kiểm chứng trong commit fe9d51c7. | Chặn điều hướng resize cũ khi router đang chuyển trang hoặc location key đã đổi; giữ nguyên gate.",
       "evidenceIds": [
         "EV-20261003-004",
         "EV-20261009-002",
@@ -142381,14 +142395,18 @@
         "EV-20261014-006",
         "EV-20261014-007",
         "EV-20261014-010",
-        "EV-20261017-146"
+        "EV-20261017-146",
+        "EV-20261024-006",
+        "EV-20261024-007",
+        "EV-20261024-008"
       ],
       "changeIds": [
         "CHANGE-20261003-0119",
         "CHANGE-20261013-016",
         "CHANGE-20261013-373",
         "CHANGE-20261014-020",
-        "CHANGE-20261017-185"
+        "CHANGE-20261017-185",
+        "CHANGE-20261024-040"
       ],
       "executionScope": {
         "ownerTaskId": "C01",
@@ -142408,12 +142426,14 @@
           "C06.09",
           "C06.11",
           "C06.13",
-          "C06.15"
+          "C06.15",
+          "B07.03",
+          "B07.05"
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "fe9d51c735efc9e875660f0f0ef994abf4fe23b0",
-      "cataloguedSha256": "f708d073a145ae0cdb7ab784fe24f8b8717afc809b9797cf58ae99d4b35159ef",
+      "cataloguedSourceHead": "37cef8638360613e750c5f9b14b4cf09072c134d",
+      "cataloguedSha256": "518d2145f27b0f3a03bf99601acec319fc6a9d949232a4dcf55f9aaa477a3056",
       "cataloguedSourceHistory": [
         {
           "sourceHead": "b5fc42b1978491e12d147be97b85dcd263cda17a",
@@ -142442,9 +142462,16 @@
           "supersededAt": "2026-10-17T03:16:42.356Z",
           "evidenceId": "EV-20261017-146",
           "reason": "Giữ provenance trước khi đóng góp C06.11; source mới được đối chiếu bằng Git blob trong commit riêng."
+        },
+        {
+          "sourceHead": "fe9d51c735efc9e875660f0f0ef994abf4fe23b0",
+          "sha256": "f708d073a145ae0cdb7ab784fe24f8b8717afc809b9797cf58ae99d4b35159ef",
+          "supersededAt": "2026-10-23T18:59:19.920Z",
+          "evidenceId": "EV-20261024-008",
+          "reason": "Giữ provenance trước sửa race được closing CI277 phát hiện."
         }
       ],
-      "cataloguedAt": "2026-10-17T03:16:42.356Z"
+      "cataloguedAt": "2026-10-23T18:59:19.920Z"
     },
     {
       "path": "src/app/components/layout/ProtectedRoute.test.tsx",
@@ -142885,10 +142912,11 @@
         "A05",
         "C05",
         "C03",
-        "C06"
+        "C06",
+        "B07"
       ],
       "disposition": "changed",
-      "reason": "A05.03: Render optional preview controls supplied by route composition without importing development modules. C05.03: pass preview-control visibility to platform badge composition. | Iteration55: Pass the route-renderer equivalence predicate into the shared platform switcher.",
+      "reason": "A05.03: Render optional preview controls supplied by route composition without importing development modules. C05.03: pass preview-control visibility to platform badge composition. | Iteration55: Pass the route-renderer equivalence predicate into the shared platform switcher. | Chặn điều hướng resize cũ khi router đang chuyển trang hoặc location key đã đổi; giữ nguyên gate.",
       "evidenceIds": [
         "EV-20260927-058",
         "EV-20260927-059",
@@ -142900,14 +142928,18 @@
         "EV-20261014-007",
         "EV-20261014-010",
         "EV-20261020-323",
-        "EV-20261020-338"
+        "EV-20261020-338",
+        "EV-20261024-006",
+        "EV-20261024-007",
+        "EV-20261024-008"
       ],
       "changeIds": [
         "CHANGE-20260927-041",
         "CHANGE-20261003-0121",
         "CHANGE-20261014-021",
         "CHANGE-20261020-505",
-        "CHANGE-20261020-599"
+        "CHANGE-20261020-599",
+        "CHANGE-20261024-041"
       ],
       "executionScope": {
         "ownerTaskId": "C01",
@@ -142930,12 +142962,14 @@
           "C03.05",
           "C06.09",
           "C06.13",
-          "C06.15"
+          "C06.15",
+          "B07.03",
+          "B07.05"
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "bfae7fc9460a22297810186cb09bfdf8c62e0e2c",
-      "cataloguedSha256": "bb8d19d77240c8880fe91a3f289ca2944c77af07e81075aedc030777e85a8277",
+      "cataloguedSourceHead": "37cef8638360613e750c5f9b14b4cf09072c134d",
+      "cataloguedSha256": "8e5814ff9b09941e1b21ab3ea1be83dd6adb617b66e06b71aad028c4c0d42a1b",
       "cataloguedSourceHistory": [
         {
           "sourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
@@ -142957,8 +142991,16 @@
           "supersededAt": "2026-10-21T02:41:23.334Z",
           "evidenceId": "EV-20261020-338",
           "reason": "Previous source retained; new Git blob verified individually."
+        },
+        {
+          "sourceHead": "bfae7fc9460a22297810186cb09bfdf8c62e0e2c",
+          "sha256": "bb8d19d77240c8880fe91a3f289ca2944c77af07e81075aedc030777e85a8277",
+          "supersededAt": "2026-10-23T18:59:19.920Z",
+          "evidenceId": "EV-20261024-008",
+          "reason": "Giữ provenance trước sửa race được closing CI277 phát hiện."
         }
-      ]
+      ],
+      "cataloguedAt": "2026-10-23T18:59:19.920Z"
     },
     {
       "path": "src/app/components/layout/ShellComposition.test.tsx",
@@ -145717,10 +145759,11 @@
         "A06",
         "C05",
         "C03",
-        "C06"
+        "C06",
+        "B07"
       ],
       "disposition": "changed",
-      "reason": "A05.03: Lazily inject preview controls only into a development mock build. | Iteration55: Resolve route equivalence from the matched leaf component so Web-only and different-renderer pages keep their intended route.",
+      "reason": "A05.03: Lazily inject preview controls only into a development mock build. | Iteration55: Resolve route equivalence from the matched leaf component so Web-only and different-renderer pages keep their intended route. | Chặn điều hướng resize cũ khi router đang chuyển trang hoặc location key đã đổi; giữ nguyên gate.",
       "evidenceIds": [
         "EV-20260927-058",
         "EV-20260927-059",
@@ -145731,12 +145774,16 @@
         "EV-20261013-006",
         "EV-20261014-006",
         "EV-20261014-007",
-        "EV-20261014-010"
+        "EV-20261014-010",
+        "EV-20261024-006",
+        "EV-20261024-007",
+        "EV-20261024-008"
       ],
       "changeIds": [
         "CHANGE-20260927-040",
         "CHANGE-20260928-1584",
-        "CHANGE-20261014-022"
+        "CHANGE-20261014-022",
+        "CHANGE-20261024-042"
       ],
       "executionScope": {
         "ownerTaskId": "A07",
@@ -145764,12 +145811,14 @@
           "C06.11",
           "C06.12",
           "C06.13",
-          "C06.15"
+          "C06.15",
+          "B07.03",
+          "B07.05"
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "80ba3ae80bff7dfb6a2f0f3d87f10059b875a44d",
-      "cataloguedSha256": "bf67ffd9f2f82639de32f9e7844e59c7d624fa7c1d3f801c3efe97cc29b4f5c0",
+      "cataloguedSourceHead": "37cef8638360613e750c5f9b14b4cf09072c134d",
+      "cataloguedSha256": "2b47b5062d522068659ac1de1677c4038083deab0c34dd041a4bc4ac6d0c81c2",
       "cataloguedSourceHistory": [
         {
           "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
@@ -145784,8 +145833,16 @@
           "supersededAt": "2026-10-14T01:15:27.283Z",
           "evidenceId": "EV-20261014-010",
           "reason": "Previous source pointer retained; current path-specific commit and Git blob independently verified in this evidence."
+        },
+        {
+          "sourceHead": "80ba3ae80bff7dfb6a2f0f3d87f10059b875a44d",
+          "sha256": "bf67ffd9f2f82639de32f9e7844e59c7d624fa7c1d3f801c3efe97cc29b4f5c0",
+          "supersededAt": "2026-10-23T18:59:19.920Z",
+          "evidenceId": "EV-20261024-008",
+          "reason": "Giữ provenance trước sửa race được closing CI277 phát hiện."
         }
-      ]
+      ],
+      "cataloguedAt": "2026-10-23T18:59:19.920Z"
     },
     {
       "path": "src/app/routes/p2pProtectedRoutes.ts",
@@ -210896,16 +210953,20 @@
         "B07"
       ],
       "disposition": "changed",
-      "reason": "Hợp nhất lịch sử đầy đủ; source/evidence được kiểm riêng từng Git blob. | Hợp nhất24/10: giữ owner hiện hành, khôi phục hành vi thiếu; lịch sử/prototype gốc nằm trong ancestry main.",
+      "reason": "Hợp nhất lịch sử đầy đủ; source/evidence được kiểm riêng từng Git blob. | Hợp nhất24/10: giữ owner hiện hành, khôi phục hành vi thiếu; lịch sử/prototype gốc nằm trong ancestry main. | Chặn điều hướng resize cũ khi router đang chuyển trang hoặc location key đã đổi; giữ nguyên gate.",
       "evidenceIds": [
         "EV-20261024-001",
         "EV-20261024-002",
         "EV-20261024-003",
         "EV-20261024-004",
-        "EV-20261024-005"
+        "EV-20261024-005",
+        "EV-20261024-006",
+        "EV-20261024-007",
+        "EV-20261024-008"
       ],
       "changeIds": [
-        "CHANGE-20261024-019"
+        "CHANGE-20261024-019",
+        "CHANGE-20261024-038"
       ],
       "executionScope": {
         "ownerTaskId": "B07",
@@ -210916,10 +210977,18 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHistory": [],
-      "cataloguedSourceHead": "718677158dcb037c3e906a9787033149b39e98f7",
-      "cataloguedSha256": "98ed0d4f43c0af6b3200d22d149f4af9fc6f2688d8c4b284a4f683598286d879",
-      "cataloguedAt": "2026-10-23T17:59:45.054Z"
+      "cataloguedSourceHistory": [
+        {
+          "sourceHead": "718677158dcb037c3e906a9787033149b39e98f7",
+          "sha256": "98ed0d4f43c0af6b3200d22d149f4af9fc6f2688d8c4b284a4f683598286d879",
+          "supersededAt": "2026-10-23T18:59:19.920Z",
+          "evidenceId": "EV-20261024-008",
+          "reason": "Giữ provenance trước sửa race được closing CI277 phát hiện."
+        }
+      ],
+      "cataloguedSourceHead": "37cef8638360613e750c5f9b14b4cf09072c134d",
+      "cataloguedSha256": "3de7a334f98f567fd61bb5de26ea55074e700a069e30ee51a226be9a2647bb12",
+      "cataloguedAt": "2026-10-23T18:59:19.920Z"
     },
     {
       "path": "docs/architecture/production-readiness/evidence/B07/generator-hash-revision-eol-2026-10-01.json",
@@ -211250,6 +211319,37 @@
       "cataloguedSourceHead": "718677158dcb037c3e906a9787033149b39e98f7",
       "cataloguedSha256": "8b772c8cd60862ed6d27e8ea40f701110785575523c030ea52c4c36e818eb8cb",
       "cataloguedAt": "2026-10-23T17:59:45.054Z"
+    },
+    {
+      "path": "src/app/components/layout/PlatformSwitcher.navigation.test.tsx",
+      "baselineSha256": null,
+      "lifecycle": "active",
+      "taskIds": [
+        "B07"
+      ],
+      "disposition": "changed",
+      "reason": "Hồi quy tái hiện race được CI277 phát hiện khi chốt hợp nhất lịch sử. | Chặn điều hướng resize cũ khi router đang chuyển trang hoặc location key đã đổi; giữ nguyên gate.",
+      "evidenceIds": [
+        "EV-20261024-006",
+        "EV-20261024-007",
+        "EV-20261024-008"
+      ],
+      "changeIds": [
+        "CHANGE-20261024-039"
+      ],
+      "executionScope": {
+        "ownerTaskId": "B07",
+        "role": "test",
+        "stepIds": [
+          "B07.03",
+          "B07.05"
+        ],
+        "action": "review_then_fix_only_if_acceptance_gap"
+      },
+      "cataloguedSourceHistory": [],
+      "cataloguedSourceHead": "37cef8638360613e750c5f9b14b4cf09072c134d",
+      "cataloguedSha256": "ed079d356ea411385144a7b0ec340c8abf8d12884e268342cf9e1e944e1bf8f7",
+      "cataloguedAt": "2026-10-23T18:59:19.920Z"
     }
   ],
   "changes": [
@@ -335445,6 +335545,109 @@
         "EV-20261024-005"
       ],
       "commit": null
+    },
+    {
+      "id": "CHANGE-20261024-038",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "path": "docs/architecture/production-readiness/evidence/B07/full-history-integration-review-2026-10-24.json",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Sửa đúng race tìm được trong full CI277, bổ sung hồi quy và giữ lịch sử/bằng chứng lỗi.",
+      "beforeHash": "98ed0d4f43c0af6b3200d22d149f4af9fc6f2688d8c4b284a4f683598286d879",
+      "afterHash": "3de7a334f98f567fd61bb5de26ea55074e700a069e30ee51a226be9a2647bb12",
+      "evidenceIds": [
+        "EV-20261024-006",
+        "EV-20261024-007",
+        "EV-20261024-008"
+      ],
+      "commit": "37cef8638360613e750c5f9b14b4cf09072c134d"
+    },
+    {
+      "id": "CHANGE-20261024-039",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "path": "src/app/components/layout/PlatformSwitcher.navigation.test.tsx",
+      "action": "add",
+      "oldPath": null,
+      "reason": "Sửa đúng race tìm được trong full CI277, bổ sung hồi quy và giữ lịch sử/bằng chứng lỗi.",
+      "beforeHash": null,
+      "afterHash": "ed079d356ea411385144a7b0ec340c8abf8d12884e268342cf9e1e944e1bf8f7",
+      "evidenceIds": [
+        "EV-20261024-006",
+        "EV-20261024-007",
+        "EV-20261024-008"
+      ],
+      "commit": "37cef8638360613e750c5f9b14b4cf09072c134d"
+    },
+    {
+      "id": "CHANGE-20261024-040",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "path": "src/app/components/layout/PlatformSwitcher.tsx",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Sửa đúng race tìm được trong full CI277, bổ sung hồi quy và giữ lịch sử/bằng chứng lỗi.",
+      "beforeHash": "f708d073a145ae0cdb7ab784fe24f8b8717afc809b9797cf58ae99d4b35159ef",
+      "afterHash": "518d2145f27b0f3a03bf99601acec319fc6a9d949232a4dcf55f9aaa477a3056",
+      "evidenceIds": [
+        "EV-20261024-006",
+        "EV-20261024-007",
+        "EV-20261024-008"
+      ],
+      "commit": "37cef8638360613e750c5f9b14b4cf09072c134d"
+    },
+    {
+      "id": "CHANGE-20261024-041",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "path": "src/app/components/layout/RootLayout.tsx",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Sửa đúng race tìm được trong full CI277, bổ sung hồi quy và giữ lịch sử/bằng chứng lỗi.",
+      "beforeHash": "bb8d19d77240c8880fe91a3f289ca2944c77af07e81075aedc030777e85a8277",
+      "afterHash": "8e5814ff9b09941e1b21ab3ea1be83dd6adb617b66e06b71aad028c4c0d42a1b",
+      "evidenceIds": [
+        "EV-20261024-006",
+        "EV-20261024-007",
+        "EV-20261024-008"
+      ],
+      "commit": "37cef8638360613e750c5f9b14b4cf09072c134d"
+    },
+    {
+      "id": "CHANGE-20261024-042",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "path": "src/app/routes.ts",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Sửa đúng race tìm được trong full CI277, bổ sung hồi quy và giữ lịch sử/bằng chứng lỗi.",
+      "beforeHash": "bf67ffd9f2f82639de32f9e7844e59c7d624fa7c1d3f801c3efe97cc29b4f5c0",
+      "afterHash": "2b47b5062d522068659ac1de1677c4038083deab0c34dd041a4bc4ac6d0c81c2",
+      "evidenceIds": [
+        "EV-20261024-006",
+        "EV-20261024-007",
+        "EV-20261024-008"
+      ],
+      "commit": "37cef8638360613e750c5f9b14b4cf09072c134d"
+    },
+    {
+      "id": "CHANGE-20261024-043",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "path": "docs/architecture/production-readiness/TRACKING.json",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Ghi closing failure, root cause và catalogue correction; afterHash là payload thật trước self-audit.",
+      "beforeHash": "d707b65e426ad3bcefa81784b404243b65a98038d4eb09e8944004de966b1813",
+      "afterHash": "cdebb0ebe584b328ebd74db65733d623d7ce514ccefe226bcda9d17df964b3dc",
+      "afterHashBasis": "docs/architecture/production-readiness/evidence/B07/full-history-integration-navigation-tracking-payload-2026-10-24.json.gz",
+      "evidenceIds": [
+        "EV-20261024-006",
+        "EV-20261024-007",
+        "EV-20261024-008"
+      ],
+      "commit": null
     }
   ],
   "evidence": [
@@ -376860,6 +377063,57 @@
       "actual": "User chose current owner implementation, keeping replaced prototypes in main history; authorized normal main merges and missing-behavior ports.",
       "result": "pass",
       "notes": "Supersedes archive-only scope of DECISION-20261023-001. Does not authorize deployment or close C06.13/backend/UAT."
+    },
+    {
+      "id": "EV-20261024-006",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "observedAt": "2026-10-23T18:59:19.920Z",
+      "sourceHead": "d6135fa129ca1a24ceb0473579411d50e474d27d",
+      "committedSourceHead": "37cef8638360613e750c5f9b14b4cf09072c134d",
+      "environment": "Local Windows/Node24.19.0; previous failed hosted CI Ubuntu/Node22; replacement final-SHA full CI remains required.",
+      "dirtyFileHashes": {},
+      "artifact": "docs/architecture/production-readiness/evidence/B07/full-history-integration-review-2026-10-24.json",
+      "kind": "closing_ci_failure",
+      "commandOrSteps": "Full push CI277/run40000606570 on d6135fa1; preserve job logs, screenshots, trace and metadata.",
+      "expected": "Every required full-CI lane must pass on final main SHA.",
+      "actual": "UI-mock588/589; one resize/explicit navigation race. Other required execution lanes passed; aggregate gate correctly failed. Trace shows explicit /r/trade/convert was replaced by stale /p2p/my-ads.",
+      "result": "fail",
+      "notes": "Historical failure remains visible. No timeout/retry/assertion/threshold reduction and no acceptance based on this candidate."
+    },
+    {
+      "id": "EV-20261024-007",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "observedAt": "2026-10-23T18:59:19.920Z",
+      "sourceHead": "d6135fa129ca1a24ceb0473579411d50e474d27d",
+      "committedSourceHead": "37cef8638360613e750c5f9b14b4cf09072c134d",
+      "environment": "Local Windows/Node24.19.0; previous failed hosted CI Ubuntu/Node22; replacement final-SHA full CI remains required.",
+      "dirtyFileHashes": {},
+      "artifact": "docs/architecture/production-readiness/evidence/B07/full-history-integration-review-2026-10-24.json",
+      "kind": "regression_before_fix",
+      "commandOrSteps": "Owned deterministic navigation tests using real memory router, fake scheduler and deferred loader/React Suspense.",
+      "expected": "New tests detect stale resize replacing explicit navigation in both pending-loader and already-committed-router phases.",
+      "actual": "2/2 failed before fix, each receiving /p2p/my-ads instead of /r/trade/convert. After canonical location guard,61 related tests pass and pathname/query/hash remain exact.",
+      "result": "pass",
+      "notes": "Red evidence and manifests retained; original test file and 5000ms browser assertion unchanged."
+    },
+    {
+      "id": "EV-20261024-008",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "observedAt": "2026-10-23T18:59:19.920Z",
+      "sourceHead": "d6135fa129ca1a24ceb0473579411d50e474d27d",
+      "committedSourceHead": "37cef8638360613e750c5f9b14b4cf09072c134d",
+      "environment": "Local Windows/Node24.19.0; previous failed hosted CI Ubuntu/Node22; replacement final-SHA full CI remains required.",
+      "dirtyFileHashes": {},
+      "artifact": "docs/architecture/production-readiness/evidence/B07/full-history-integration-review-2026-10-24.json",
+      "kind": "local_validation",
+      "commandOrSteps": "Rerun22static/build/contracts/audit gates; owned browser integration-boundary suite with CI=true/2workers, unchanged config.",
+      "expected": "Preserve active shell switching, reserved integration boundaries and existing test corpus; no source movement during runs.",
+      "actual": "22/22 gates passed including production build/bundle and audit0. Local browser run executed0cases: unchanged readiness page.goto timed out at30000ms while cold Vite graph initialized; owned teardown completed. All manifests confirm sourceUnchanged/childClosed.",
+      "result": "fail",
+      "notes": "22 static/build checks passed; local browser readiness failed before executing tests, so this combined local validation is NOT fully passed. Hosted full browser CI on the final SHA remains mandatory. Preserve startup-failure log."
     }
   ],
   "decisions": [
@@ -403869,6 +404123,39 @@
       ],
       "blockers": [],
       "nextAction": "Push gói source+catalogue; chỉ kết luận xong sau exact-final-SHA full CI và readback. Không đóng C06/backend/UAT."
+    },
+    {
+      "id": "SESSION-20261024-002",
+      "startedAt": "2026-10-23T18:43:29Z",
+      "endedAt": "2026-10-23T18:59:19.920Z",
+      "sourceHeadBefore": "d6135fa129ca1a24ceb0473579411d50e474d27d",
+      "sourceHeadAfter": "37cef8638360613e750c5f9b14b4cf09072c134d",
+      "taskIds": [
+        "B07"
+      ],
+      "stepIds": [
+        "B07.03",
+        "B07.05"
+      ],
+      "changeIds": [
+        "CHANGE-20261024-038",
+        "CHANGE-20261024-039",
+        "CHANGE-20261024-040",
+        "CHANGE-20261024-041",
+        "CHANGE-20261024-042",
+        "CHANGE-20261024-043"
+      ],
+      "evidenceIds": [
+        "EV-20261024-006",
+        "EV-20261024-007",
+        "EV-20261024-008"
+      ],
+      "elapsedMinutes": null,
+      "remainingWork": [
+        "Full CI trên SHA cuối thay thế, artifact/source provenance, remote readback và cleanup."
+      ],
+      "blockers": [],
+      "nextAction": "Chỉ đóng sau full CI mới đạt trên SHA cuối; giữ failed candidate277 và mọi bản gốc/archive/WIP."
     }
   ],
   "templates": {
