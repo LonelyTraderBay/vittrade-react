@@ -23,7 +23,7 @@ const readJson = (relativePath) =>
 const hashFile = (relativePath) =>
   crypto
     .createHash('sha256')
-    .update(fs.readFileSync(path.join(ROOT, relativePath)))
+    .update(fs.readFileSync(path.join(ROOT, relativePath), 'utf8').replace(/\r\n?/g, '\n'))
     .digest('hex');
 const readSource = (relativePath) => {
   const file = path.join(ROOT, relativePath);
