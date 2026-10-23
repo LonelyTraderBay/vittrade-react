@@ -1,0 +1,439 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-10-23T15:49:30.609Z",
+  "purpose": "Xử lý bốn cảnh báo moderate của Vitest trên main theo yêu cầu người dùng; giữ nguyên test và ngưỡng kiểm tra.",
+  "baselineHead": "ba7567d491290d75a874fc5debc3f5b4a58f8b65",
+  "sourceCommit": "3dc2b76c8620ca0fa02b3e48cdb4dcafa184f418",
+  "advisories": [
+    "https://github.com/advisories/GHSA-qxg6-89mg-rqv8",
+    "https://github.com/advisories/GHSA-xp26-3454-mjgp"
+  ],
+  "upstreamRelease": "https://github.com/vitest-dev/vitest/releases/tag/v4.1.12",
+  "rootCause": "Hai lỗi manual mock injection và Windows redirect traversal tại @vitest/mocker4.1.11 lan thành bốn mục audit trong mocker/vitest/coverage-v8/ui.",
+  "resolution": "Nâng đồng bộ10 gói Vitest4.1.11->4.1.12, đặt tối thiểu^4.1.12 cho3 direct devDependencies. Không nâng major, Vite hoặc dependency ngoài Vitest.",
+  "lockUpdate": {
+    "generator": "npm12.2.1 isolated official tarball",
+    "lockfileVersion": 3,
+    "family": [
+      {
+        "path": "node_modules/@vitest/coverage-v8",
+        "before": "4.1.11",
+        "after": "4.1.12",
+        "integrity": "sha512-6S7/iVknKglLAxMFxQGNppBI0iqJS2NgM6FBxavitj7KaDq/vywOWGf6dGu7F2L1Qy0G6S3uTp7aGshHrzK8JA=="
+      },
+      {
+        "path": "node_modules/@vitest/expect",
+        "before": "4.1.11",
+        "after": "4.1.12",
+        "integrity": "sha512-vFlTt+YEu9WBpNjdGayNmlMVzrWPi1+sv853/7t2FU7hpO5gAFBKHzQmkCq5Xjpr+evegF2994LQT3hF3mRlqQ=="
+      },
+      {
+        "path": "node_modules/@vitest/mocker",
+        "before": "4.1.11",
+        "after": "4.1.12",
+        "integrity": "sha512-fKShNpKZzupWZuY0z7egydvL0sqW4INEZBEExMBMAa6izlENEVHwoXgdaTCaBZ5fwlr4xf2o1wXC83n9RpO+NA=="
+      },
+      {
+        "path": "node_modules/@vitest/pretty-format",
+        "before": "4.1.11",
+        "after": "4.1.12",
+        "integrity": "sha512-XW9O8+Mxx4VpCtkYdMJLZQQwsVryP9wk7cPKDxtXFfwSak6yRh5+2fep/Y0XF/ElBvJHq8bcYdi6aeuai0opZA=="
+      },
+      {
+        "path": "node_modules/@vitest/runner",
+        "before": "4.1.11",
+        "after": "4.1.12",
+        "integrity": "sha512-NKlVKCr5QnCe8jijdMnmkpHHU+WTqiLFR6G0pHji9uRjXK9xJl1k1nTw6F3pOOj2PDcsDt2GKQMI7wIsaT491w=="
+      },
+      {
+        "path": "node_modules/@vitest/snapshot",
+        "before": "4.1.11",
+        "after": "4.1.12",
+        "integrity": "sha512-ko1y1Qgb/slzQ9mr+b89Cuqud8WG1TKtsPD8r7ZUBdvVOGt85Af2HwCqHujrhwJq95hs/9RM7fcAPg57o1vlzw=="
+      },
+      {
+        "path": "node_modules/@vitest/spy",
+        "before": "4.1.11",
+        "after": "4.1.12",
+        "integrity": "sha512-RGq9x4JNGNTZHEJxvN0oSiJjeSCExm0n2gZKKJZHY9cX5AVA6M7VJILBT3ZJ/tJ/0J9uWT7fETV9/btoi//vSg=="
+      },
+      {
+        "path": "node_modules/@vitest/ui",
+        "before": "4.1.11",
+        "after": "4.1.12",
+        "integrity": "sha512-eYUTHtsp52Fu6YGUw9T9173bba7YUr9j/Xj9CdhUaOb8AppLKcknHUaiZQeqJ8MiJ8C2VyKiZuUGSKdvPIKQKA=="
+      },
+      {
+        "path": "node_modules/@vitest/utils",
+        "before": "4.1.11",
+        "after": "4.1.12",
+        "integrity": "sha512-Q3awXrwOfEV+qc3WmO5ONyE0yO7Q1gQ9/oyHxGLZ/pl7N3NO/ZztqQwKLuwMkV+CA1JYSIeO3gkHnRDIo4AVaA=="
+      },
+      {
+        "path": "node_modules/vitest",
+        "before": "4.1.11",
+        "after": "4.1.12",
+        "integrity": "sha512-5eWdz2yb3ajxWF3C8C4TjkXl7FGm3n2E/VlazALrQHzK7nYMSGFnCZto0bbPNl77AwkOZVLk0YnBAejUu0NiWA=="
+      }
+    ],
+    "normalization": {
+      "reason": "Preserve original unrelated dependency versions and package placement; all non-Vitest requirement ranges are identical.",
+      "restoredOriginalEntries": [
+        "node_modules/@babel/core/node_modules/convert-source-map",
+        "node_modules/@vitest/utils/node_modules/convert-source-map",
+        "node_modules/chai",
+        "node_modules/std-env",
+        "node_modules/tinyrainbow",
+        "node_modules/convert-source-map"
+      ]
+    },
+    "unchangedOutsideRootAndFamily": true,
+    "sha256": "9aebef32e1638f71c41012fff6a77f9ac911563c06d12d473594e7ab3e3a1d66"
+  },
+  "generatorFallback": {
+    "npm10": "Hai lần resolver lỗi edgesOut; giữ log trong output tác vụ.",
+    "npm12": "12.2.1 tải chính thức, đối chiếu SHA512, dùng cô lập để tạo lock, không đổi toolchain repo/global.",
+    "validation": "npm10.9.9 ci cài thành công lockv3 trước khi chạy checks."
+  },
+  "auditBefore": {
+    "info": 0,
+    "low": 0,
+    "moderate": 4,
+    "high": 0,
+    "critical": 0,
+    "total": 4
+  },
+  "auditAfter": {
+    "info": 0,
+    "low": 0,
+    "moderate": 0,
+    "high": 0,
+    "critical": 0,
+    "total": 0
+  },
+  "invariants": {
+    "baseline": "ba7567d491290d75a874fc5debc3f5b4a58f8b65",
+    "currentHead": "ba7567d491290d75a874fc5debc3f5b4a58f8b65",
+    "protectedTrackedPathsUnchanged": 1088,
+    "testSpecFilesUnchanged": 432,
+    "vitestConfigAndCiWorkflowUnchanged": true,
+    "coverageThresholds": {
+      "lines": 90,
+      "statements": 90,
+      "functions": 85,
+      "branches": 80
+    },
+    "allOtherPackageEntriesUnchanged": true,
+    "vitestFamilyPackages": 10,
+    "installedAndLockVersions": "4.1.12",
+    "dompurifyPatchRetained": "3.4.17",
+    "auditLockAndInstalledVulnerabilities": 0
+  },
+  "localResults": {
+    "npm10-ci": {
+      "command": [
+        "C:\\Users\\Joker-PC\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+        "C:\\Users\\Joker-PC\\Documents\\Codex\\Work\\vittrade-react\\20261023-single-main\\work\\npm-cli\\package\\bin\\npm-cli.js",
+        "ci",
+        "--no-audit",
+        "--no-fund"
+      ],
+      "cwd": "C:\\Users\\Joker-PC\\Documents\\Projects\\vittrade-react",
+      "startedAt": "2026-10-23T15:43:12.754589+00:00",
+      "endedAt": "2026-10-23T15:43:39.016708+00:00",
+      "exitCode": 0,
+      "sourceHead": "ba7567d491290d75a874fc5debc3f5b4a58f8b65",
+      "dirtyFiles": " M package-lock.json\n M package.json\n",
+      "packageHashes": {
+        "package.json": "c8f1f161ca689aac632937a6ad3af1b95fb64151a3231b665b26f7a047305f73",
+        "package-lock.json": "9aebef32e1638f71c41012fff6a77f9ac911563c06d12d473594e7ab3e3a1d66"
+      },
+      "log": "C:\\Users\\Joker-PC\\Documents\\Codex\\Work\\vittrade-react\\20261023-single-main\\outputs\\vitest-moderate\\npm10-ci.log"
+    },
+    "audit-after-lock": {
+      "command": [
+        "C:\\Users\\Joker-PC\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+        "C:\\Users\\Joker-PC\\Documents\\Codex\\Work\\vittrade-react\\20261023-single-main\\work\\npm-cli\\package\\bin\\npm-cli.js",
+        "audit",
+        "--package-lock-only",
+        "--json",
+        "--audit-level=moderate"
+      ],
+      "cwd": "C:\\Users\\Joker-PC\\Documents\\Projects\\vittrade-react",
+      "startedAt": "2026-10-23T15:44:01.540605+00:00",
+      "endedAt": "2026-10-23T15:44:02.187606+00:00",
+      "exitCode": 0,
+      "sourceHead": "ba7567d491290d75a874fc5debc3f5b4a58f8b65",
+      "dirtyFiles": " M package-lock.json\n M package.json\n",
+      "packageHashes": {
+        "package.json": "c8f1f161ca689aac632937a6ad3af1b95fb64151a3231b665b26f7a047305f73",
+        "package-lock.json": "9aebef32e1638f71c41012fff6a77f9ac911563c06d12d473594e7ab3e3a1d66"
+      },
+      "log": "C:\\Users\\Joker-PC\\Documents\\Codex\\Work\\vittrade-react\\20261023-single-main\\outputs\\vitest-moderate\\audit-after-lock.log"
+    },
+    "audit-after-installed": {
+      "command": [
+        "C:\\Users\\Joker-PC\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+        "C:\\Users\\Joker-PC\\Documents\\Codex\\Work\\vittrade-react\\20261023-single-main\\work\\npm-cli\\package\\bin\\npm-cli.js",
+        "audit",
+        "--json",
+        "--audit-level=moderate"
+      ],
+      "cwd": "C:\\Users\\Joker-PC\\Documents\\Projects\\vittrade-react",
+      "startedAt": "2026-10-23T15:44:35.880577+00:00",
+      "endedAt": "2026-10-23T15:44:36.548597+00:00",
+      "exitCode": 0,
+      "sourceHead": "ba7567d491290d75a874fc5debc3f5b4a58f8b65",
+      "dirtyFiles": " M package-lock.json\n M package.json\n",
+      "packageHashes": {
+        "package.json": "c8f1f161ca689aac632937a6ad3af1b95fb64151a3231b665b26f7a047305f73",
+        "package-lock.json": "9aebef32e1638f71c41012fff6a77f9ac911563c06d12d473594e7ab3e3a1d66"
+      },
+      "log": "C:\\Users\\Joker-PC\\Documents\\Codex\\Work\\vittrade-react\\20261023-single-main\\outputs\\vitest-moderate\\audit-after-installed.log"
+    },
+    "installed-tree": {
+      "command": [
+        "C:\\Users\\Joker-PC\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+        "C:\\Users\\Joker-PC\\Documents\\Codex\\Work\\vittrade-react\\20261023-single-main\\work\\npm-cli\\package\\bin\\npm-cli.js",
+        "ls",
+        "vitest",
+        "@vitest/coverage-v8",
+        "@vitest/ui",
+        "@vitest/mocker",
+        "--all",
+        "--json"
+      ],
+      "cwd": "C:\\Users\\Joker-PC\\Documents\\Projects\\vittrade-react",
+      "startedAt": "2026-10-23T15:44:01.567602+00:00",
+      "endedAt": "2026-10-23T15:44:02.108105+00:00",
+      "exitCode": 0,
+      "sourceHead": "ba7567d491290d75a874fc5debc3f5b4a58f8b65",
+      "dirtyFiles": " M package-lock.json\n M package.json\n",
+      "packageHashes": {
+        "package.json": "c8f1f161ca689aac632937a6ad3af1b95fb64151a3231b665b26f7a047305f73",
+        "package-lock.json": "9aebef32e1638f71c41012fff6a77f9ac911563c06d12d473594e7ab3e3a1d66"
+      },
+      "log": "C:\\Users\\Joker-PC\\Documents\\Codex\\Work\\vittrade-react\\20261023-single-main\\outputs\\vitest-moderate\\installed-tree.log"
+    },
+    "typecheck": {
+      "command": [
+        "C:\\Users\\Joker-PC\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+        "C:\\Users\\Joker-PC\\Documents\\Codex\\Work\\vittrade-react\\20261023-single-main\\work\\npm-cli\\package\\bin\\npm-cli.js",
+        "run",
+        "typecheck"
+      ],
+      "cwd": "C:\\Users\\Joker-PC\\Documents\\Projects\\vittrade-react",
+      "startedAt": "2026-10-23T15:44:01.543102+00:00",
+      "endedAt": "2026-10-23T15:44:13.082602+00:00",
+      "exitCode": 0,
+      "sourceHead": "ba7567d491290d75a874fc5debc3f5b4a58f8b65",
+      "dirtyFiles": " M package-lock.json\n M package.json\n",
+      "packageHashes": {
+        "package.json": "c8f1f161ca689aac632937a6ad3af1b95fb64151a3231b665b26f7a047305f73",
+        "package-lock.json": "9aebef32e1638f71c41012fff6a77f9ac911563c06d12d473594e7ab3e3a1d66"
+      },
+      "log": "C:\\Users\\Joker-PC\\Documents\\Codex\\Work\\vittrade-react\\20261023-single-main\\outputs\\vitest-moderate\\typecheck.log"
+    },
+    "lint": {
+      "command": [
+        "C:\\Users\\Joker-PC\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+        "C:\\Users\\Joker-PC\\Documents\\Codex\\Work\\vittrade-react\\20261023-single-main\\work\\npm-cli\\package\\bin\\npm-cli.js",
+        "run",
+        "lint"
+      ],
+      "cwd": "C:\\Users\\Joker-PC\\Documents\\Projects\\vittrade-react",
+      "startedAt": "2026-10-23T15:44:35.861576+00:00",
+      "endedAt": "2026-10-23T15:45:04.017436+00:00",
+      "exitCode": 0,
+      "sourceHead": "ba7567d491290d75a874fc5debc3f5b4a58f8b65",
+      "dirtyFiles": " M package-lock.json\n M package.json\n",
+      "packageHashes": {
+        "package.json": "c8f1f161ca689aac632937a6ad3af1b95fb64151a3231b665b26f7a047305f73",
+        "package-lock.json": "9aebef32e1638f71c41012fff6a77f9ac911563c06d12d473594e7ab3e3a1d66"
+      },
+      "log": "C:\\Users\\Joker-PC\\Documents\\Codex\\Work\\vittrade-react\\20261023-single-main\\outputs\\vitest-moderate\\lint.log"
+    },
+    "lint-budget": {
+      "command": [
+        "C:\\Users\\Joker-PC\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+        "C:\\Users\\Joker-PC\\Documents\\Codex\\Work\\vittrade-react\\20261023-single-main\\work\\npm-cli\\package\\bin\\npm-cli.js",
+        "run",
+        "lint:check"
+      ],
+      "cwd": "C:\\Users\\Joker-PC\\Documents\\Projects\\vittrade-react",
+      "startedAt": "2026-10-23T15:48:57.449777+00:00",
+      "endedAt": "2026-10-23T15:49:05.187650+00:00",
+      "exitCode": 0,
+      "sourceHead": "ba7567d491290d75a874fc5debc3f5b4a58f8b65",
+      "dirtyFiles": " M package-lock.json\n M package.json\n",
+      "packageHashes": {
+        "package.json": "c8f1f161ca689aac632937a6ad3af1b95fb64151a3231b665b26f7a047305f73",
+        "package-lock.json": "9aebef32e1638f71c41012fff6a77f9ac911563c06d12d473594e7ab3e3a1d66"
+      },
+      "log": "C:\\Users\\Joker-PC\\Documents\\Codex\\Work\\vittrade-react\\20261023-single-main\\outputs\\vitest-moderate\\lint-budget.log"
+    },
+    "format": {
+      "command": [
+        "C:\\Users\\Joker-PC\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+        "C:\\Users\\Joker-PC\\Documents\\Codex\\Work\\vittrade-react\\20261023-single-main\\work\\npm-cli\\package\\bin\\npm-cli.js",
+        "run",
+        "format:check"
+      ],
+      "cwd": "C:\\Users\\Joker-PC\\Documents\\Projects\\vittrade-react",
+      "startedAt": "2026-10-23T15:48:57.449777+00:00",
+      "endedAt": "2026-10-23T15:49:04.391346+00:00",
+      "exitCode": 0,
+      "sourceHead": "ba7567d491290d75a874fc5debc3f5b4a58f8b65",
+      "dirtyFiles": " M package-lock.json\n M package.json\n",
+      "packageHashes": {
+        "package.json": "c8f1f161ca689aac632937a6ad3af1b95fb64151a3231b665b26f7a047305f73",
+        "package-lock.json": "9aebef32e1638f71c41012fff6a77f9ac911563c06d12d473594e7ab3e3a1d66"
+      },
+      "log": "C:\\Users\\Joker-PC\\Documents\\Codex\\Work\\vittrade-react\\20261023-single-main\\outputs\\vitest-moderate\\format.log"
+    },
+    "licenses": {
+      "command": [
+        "C:\\Users\\Joker-PC\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+        "C:\\Users\\Joker-PC\\Documents\\Codex\\Work\\vittrade-react\\20261023-single-main\\work\\npm-cli\\package\\bin\\npm-cli.js",
+        "run",
+        "licenses:check"
+      ],
+      "cwd": "C:\\Users\\Joker-PC\\Documents\\Projects\\vittrade-react",
+      "startedAt": "2026-10-23T15:44:35.847771+00:00",
+      "endedAt": "2026-10-23T15:44:38.039642+00:00",
+      "exitCode": 0,
+      "sourceHead": "ba7567d491290d75a874fc5debc3f5b4a58f8b65",
+      "dirtyFiles": " M package-lock.json\n M package.json\n",
+      "packageHashes": {
+        "package.json": "c8f1f161ca689aac632937a6ad3af1b95fb64151a3231b665b26f7a047305f73",
+        "package-lock.json": "9aebef32e1638f71c41012fff6a77f9ac911563c06d12d473594e7ab3e3a1d66"
+      },
+      "log": "C:\\Users\\Joker-PC\\Documents\\Codex\\Work\\vittrade-react\\20261023-single-main\\outputs\\vitest-moderate\\licenses.log"
+    },
+    "build": {
+      "command": [
+        "C:\\Users\\Joker-PC\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+        "scripts/run-with-artifacts.mjs",
+        "build"
+      ],
+      "cwd": "C:\\Users\\Joker-PC\\Documents\\Projects\\vittrade-react",
+      "startedAt": "2026-10-23T15:45:17.559860+00:00",
+      "endedAt": "2026-10-23T15:46:05.931998+00:00",
+      "exitCode": 0,
+      "sourceHead": "ba7567d491290d75a874fc5debc3f5b4a58f8b65",
+      "dirtyFiles": " M package-lock.json\n M package.json\n",
+      "packageHashes": {
+        "package.json": "c8f1f161ca689aac632937a6ad3af1b95fb64151a3231b665b26f7a047305f73",
+        "package-lock.json": "9aebef32e1638f71c41012fff6a77f9ac911563c06d12d473594e7ab3e3a1d66"
+      },
+      "log": "C:\\Users\\Joker-PC\\Documents\\Codex\\Work\\vittrade-react\\20261023-single-main\\outputs\\vitest-moderate\\build.log"
+    },
+    "production-mocks": {
+      "command": [
+        "C:\\Users\\Joker-PC\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+        "C:\\Users\\Joker-PC\\Documents\\Codex\\Work\\vittrade-react\\20261023-single-main\\work\\npm-cli\\package\\bin\\npm-cli.js",
+        "run",
+        "production-mocks:check"
+      ],
+      "cwd": "C:\\Users\\Joker-PC\\Documents\\Projects\\vittrade-react",
+      "startedAt": "2026-10-23T15:48:55.679149+00:00",
+      "endedAt": "2026-10-23T15:48:56.334727+00:00",
+      "exitCode": 0,
+      "sourceHead": "ba7567d491290d75a874fc5debc3f5b4a58f8b65",
+      "dirtyFiles": " M package-lock.json\n M package.json\n",
+      "packageHashes": {
+        "package.json": "c8f1f161ca689aac632937a6ad3af1b95fb64151a3231b665b26f7a047305f73",
+        "package-lock.json": "9aebef32e1638f71c41012fff6a77f9ac911563c06d12d473594e7ab3e3a1d66"
+      },
+      "log": "C:\\Users\\Joker-PC\\Documents\\Codex\\Work\\vittrade-react\\20261023-single-main\\outputs\\vitest-moderate\\production-mocks.log"
+    },
+    "bundle": {
+      "command": [
+        "C:\\Users\\Joker-PC\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+        "C:\\Users\\Joker-PC\\Documents\\Codex\\Work\\vittrade-react\\20261023-single-main\\work\\npm-cli\\package\\bin\\npm-cli.js",
+        "run",
+        "bundle:check"
+      ],
+      "cwd": "C:\\Users\\Joker-PC\\Documents\\Projects\\vittrade-react",
+      "startedAt": "2026-10-23T15:48:56.458114+00:00",
+      "endedAt": "2026-10-23T15:48:57.129315+00:00",
+      "exitCode": 0,
+      "sourceHead": "ba7567d491290d75a874fc5debc3f5b4a58f8b65",
+      "dirtyFiles": " M package-lock.json\n M package.json\n",
+      "packageHashes": {
+        "package.json": "c8f1f161ca689aac632937a6ad3af1b95fb64151a3231b665b26f7a047305f73",
+        "package-lock.json": "9aebef32e1638f71c41012fff6a77f9ac911563c06d12d473594e7ab3e3a1d66"
+      },
+      "log": "C:\\Users\\Joker-PC\\Documents\\Codex\\Work\\vittrade-react\\20261023-single-main\\outputs\\vitest-moderate\\bundle.log"
+    },
+    "unit-coverage-retry": {
+      "command": [
+        "C:\\Users\\Joker-PC\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+        "scripts/run-with-artifacts.mjs",
+        "vitest",
+        "run",
+        "--coverage",
+        "--reporter=dot"
+      ],
+      "cwd": "C:\\Users\\Joker-PC\\Documents\\Projects\\vittrade-react",
+      "startedAt": "2026-10-23T15:46:29.865479+00:00",
+      "endedAt": "2026-10-23T15:47:46.291321+00:00",
+      "exitCode": 0,
+      "sourceHead": "ba7567d491290d75a874fc5debc3f5b4a58f8b65",
+      "dirtyFiles": " M package-lock.json\n M package.json\n",
+      "packageHashes": {
+        "package.json": "c8f1f161ca689aac632937a6ad3af1b95fb64151a3231b665b26f7a047305f73",
+        "package-lock.json": "9aebef32e1638f71c41012fff6a77f9ac911563c06d12d473594e7ab3e3a1d66"
+      },
+      "log": "C:\\Users\\Joker-PC\\Documents\\Codex\\Work\\vittrade-react\\20261023-single-main\\outputs\\vitest-moderate\\unit-coverage-retry.log"
+    }
+  },
+  "manifests": [
+    {
+      "command": "vitest",
+      "id": "2026-10-23T15-46-32-297Z-vitest-6eba2090-72ce-4406-9d16-4a853e481cd9",
+      "sha256": "45a4b46445400d35e61247b0af2860eccb5f6d8f146b012335619cbc0940755e",
+      "log": "C:/Users/Joker-PC/Documents/Codex/Work/vittrade-react/20261023-single-main/outputs/vitest-moderate/unit-coverage-retry.log",
+      "manifest": "C:/Users/Joker-PC/Documents/Codex/Work/vittrade-react/20261023-single-main/outputs/vitest-moderate/unit-coverage-retry-run.json"
+    },
+    {
+      "command": "build",
+      "id": "2026-10-23T15-45-23-180Z-build-c65627d0-e1af-4f56-bc8f-8bf18ecd2804",
+      "sha256": "31dc2f263a5a1d05f644abb6ec67c686b4f31979137f1e729f15ce70623d30d2",
+      "log": "C:/Users/Joker-PC/Documents/Codex/Work/vittrade-react/20261023-single-main/outputs/vitest-moderate/build.log",
+      "manifest": "C:/Users/Joker-PC/Documents/Codex/Work/vittrade-react/20261023-single-main/outputs/vitest-moderate/build-run.json"
+    }
+  ],
+  "priorLocalFailure": {
+    "command": [
+      "C:\\Users\\Joker-PC\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+      "scripts/run-with-artifacts.mjs",
+      "vitest",
+      "run",
+      "--coverage",
+      "--reporter=dot"
+    ],
+    "cwd": "C:\\Users\\Joker-PC\\Documents\\Projects\\vittrade-react",
+    "startedAt": "2026-10-23T15:44:01.540102+00:00",
+    "endedAt": "2026-10-23T15:45:34.521474+00:00",
+    "exitCode": 1,
+    "sourceHead": "ba7567d491290d75a874fc5debc3f5b4a58f8b65",
+    "dirtyFiles": " M package-lock.json\n M package.json\n",
+    "packageHashes": {
+      "package.json": "c8f1f161ca689aac632937a6ad3af1b95fb64151a3231b665b26f7a047305f73",
+      "package-lock.json": "9aebef32e1638f71c41012fff6a77f9ac911563c06d12d473594e7ab3e3a1d66"
+    },
+    "log": "C:\\Users\\Joker-PC\\Documents\\Codex\\Work\\vittrade-react\\20261023-single-main\\outputs\\vitest-moderate\\unit-coverage.log",
+    "actual": "Test child3757/381 và coverage đạt; runner exit1 vì tranh chấp lifecycle lock khi build chạy song song. Không nhận là runner pass; giữ output chưa hoàn tất, chạy lại tuần tự đạt."
+  },
+  "localCoverage": {
+    "tests": 3757,
+    "files": 381,
+    "statements": 99.84,
+    "branches": 99.64,
+    "functions": 99.87,
+    "lines": 99.9
+  },
+  "scopeLimits": "Local Windows/Node24.19.0/npm10.9.9. CI Ubuntu/Node22 trên SHA cuối vẫn pending tại thời điểm commit; không thay local proof cho hosted CI, không đóng checkpoint sản phẩm/backend/UAT.",
+  "expectedClosingReceipt": "C:/Users/Joker-PC/Documents/Codex/Work/vittrade-react/20261023-single-main/outputs/vitest-moderate/ci-final-proof.json"
+}

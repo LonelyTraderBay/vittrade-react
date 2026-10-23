@@ -48,7 +48,7 @@
     }
   ],
   "checkpoint": {
-    "updatedAt": "2026-10-23T12:07:31.679Z",
+    "updatedAt": "2026-10-23T15:49:30.609Z",
     "lastCompletedTask": "C03",
     "activeTask": "C06",
     "activeStep": "C06.13",
@@ -185,6 +185,17 @@
         ],
         "closingGate": "Full push CI trên SHA cuối main phải success trước mọi xóa nhánh."
       }
+    },
+    "vitestModerateRepair": {
+      "sourceCommit": "3dc2b76c8620ca0fa02b3e48cdb4dcafa184f418",
+      "evidenceIds": [
+        "EV-20261023-007",
+        "EV-20261023-008",
+        "EV-20261023-009"
+      ],
+      "auditVulnerabilities": 0,
+      "closingGate": "Full push CI trên SHA cuối main phải success; receipt bên ngoài tránh commit biên nhận làm đổi SHA cần nghiệm thu.",
+      "closingStatusAtCommit": "pending"
     }
   },
   "tasks": [
@@ -136992,7 +137003,10 @@
         "EV-20261023-003",
         "EV-20261023-004",
         "EV-20261023-005",
-        "EV-20261023-006"
+        "EV-20261023-006",
+        "EV-20261023-007",
+        "EV-20261023-008",
+        "EV-20261023-009"
       ],
       "changeIds": [
         "CHANGE-20261001-0316",
@@ -137310,7 +137324,8 @@
         "CHANGE-20261020-840",
         "CHANGE-20261020-848",
         "CHANGE-20261023-010",
-        "CHANGE-20261023-012"
+        "CHANGE-20261023-012",
+        "CHANGE-20261023-015"
       ],
       "cataloguedAt": null,
       "executionScope": {
@@ -139175,19 +139190,23 @@
         "C06"
       ],
       "disposition": "changed",
-      "reason": " | C06.07: đồng bộ lockfile với khai báo PostCSS test dependency đã tồn tại cùng phiên bản; không nâng phiên bản gói. (commit 562054439ffc939f9f7d9380affe96ae5da6c408). | P0 23/10: vá DOMPurify critical đang chặn main audit; giữ các dependency/gate khác.",
+      "reason": " | C06.07: đồng bộ lockfile với khai báo PostCSS test dependency đã tồn tại cùng phiên bản; không nâng phiên bản gói. (commit 562054439ffc939f9f7d9380affe96ae5da6c408). | P0 23/10: vá DOMPurify critical đang chặn main audit; giữ các dependency/gate khác. | P1 23/10: vá Vitest4.1.12, bảo toàn test/gate và dependency khác.",
       "evidenceIds": [
         "EV-20261009-002",
         "EV-20261016-052",
         "EV-20261016-054",
         "EV-20261020-332",
         "EV-20261023-005",
-        "EV-20261023-006"
+        "EV-20261023-006",
+        "EV-20261023-007",
+        "EV-20261023-008",
+        "EV-20261023-009"
       ],
       "changeIds": [
         "CHANGE-20261016-066",
         "CHANGE-20261020-564",
-        "CHANGE-20261023-011"
+        "CHANGE-20261023-011",
+        "CHANGE-20261023-014"
       ],
       "executionScope": {
         "ownerTaskId": "B07",
@@ -139208,9 +139227,9 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "be4d72ef9a0904f757d9f7bbb7c0ea825b54ce30",
-      "cataloguedSha256": "79ca704e60a0585255628ed7cdc6f488d262bbe64286aace43e2a05279e34633",
-      "cataloguedAt": "2026-10-15T18:09:20.143Z",
+      "cataloguedSourceHead": "3dc2b76c8620ca0fa02b3e48cdb4dcafa184f418",
+      "cataloguedSha256": "9aebef32e1638f71c41012fff6a77f9ac911563c06d12d473594e7ab3e3a1d66",
+      "cataloguedAt": "2026-10-23T15:49:30.609Z",
       "cataloguedSourceHistory": [
         {
           "sourceHead": "6f3492be5f9bb41affa33de98b23d5218bfcabc2",
@@ -139232,6 +139251,13 @@
           "supersededAt": "2026-10-23T12:07:31.679Z",
           "evidenceId": "EV-20261023-006",
           "reason": "Giữ lock snapshot trước bản vá; kiểm riêng blob của DOMPurify patch."
+        },
+        {
+          "sourceHead": "be4d72ef9a0904f757d9f7bbb7c0ea825b54ce30",
+          "sha256": "79ca704e60a0585255628ed7cdc6f488d262bbe64286aace43e2a05279e34633",
+          "supersededAt": "2026-10-23T15:49:30.609Z",
+          "evidenceId": "EV-20261023-007",
+          "reason": "Giữ provenance trước Vitest moderate repair; xác minh riêng Git blob4.1.12."
         }
       ]
     },
@@ -139245,7 +139271,7 @@
         "C06"
       ],
       "disposition": "changed",
-      "reason": " | User-authorized unused-output retention EV-20261012-008; previous catalogue retained until reviewed Git delivery. | EV-20261013-001: verified actual local commit/Git blob and unchanged tested bytes; GitHub delivery pending. | C06.07: khai báo PostCSS 8.5.28 đúng phiên bản đã resolve để test AST CSS token contract không phụ thuộc import bắc cầu. (commit 562054439ffc939f9f7d9380affe96ae5da6c408).",
+      "reason": " | User-authorized unused-output retention EV-20261012-008; previous catalogue retained until reviewed Git delivery. | EV-20261013-001: verified actual local commit/Git blob and unchanged tested bytes; GitHub delivery pending. | C06.07: khai báo PostCSS 8.5.28 đúng phiên bản đã resolve để test AST CSS token contract không phụ thuộc import bắc cầu. (commit 562054439ffc939f9f7d9380affe96ae5da6c408). | P1 23/10: vá Vitest4.1.12, bảo toàn test/gate và dependency khác.",
       "evidenceIds": [
         "EV-20261012-001",
         "EV-20261012-004",
@@ -139253,14 +139279,18 @@
         "EV-20261013-001",
         "EV-20261016-052",
         "EV-20261016-054",
-        "EV-20261020-332"
+        "EV-20261020-332",
+        "EV-20261023-007",
+        "EV-20261023-008",
+        "EV-20261023-009"
       ],
       "changeIds": [
         "CHANGE-20261012-0006",
         "CHANGE-20261012-0036",
         "CHANGE-20261012-0067",
         "CHANGE-20261016-065",
-        "CHANGE-20261020-563"
+        "CHANGE-20261020-563",
+        "CHANGE-20261023-013"
       ],
       "executionScope": {
         "ownerTaskId": "B07",
@@ -139277,9 +139307,9 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "50a4ff432d7cccbbddaef6e4dff50a87e8276c80",
-      "cataloguedSha256": "d4b3a6c6fbb4b3ccf07694205ed5d10fc2e0c0aee6818291f94db6ea5e0b6bc6",
-      "cataloguedAt": "2026-10-15T18:09:20.143Z",
+      "cataloguedSourceHead": "3dc2b76c8620ca0fa02b3e48cdb4dcafa184f418",
+      "cataloguedSha256": "c8f1f161ca689aac632937a6ad3af1b95fb64151a3231b665b26f7a047305f73",
+      "cataloguedAt": "2026-10-23T15:49:30.609Z",
       "cataloguedSourceHistory": [
         {
           "sourceHead": "bbc473956d0427a142bfd2b3da0ddff7bcc3da02",
@@ -139294,6 +139324,13 @@
           "supersededAt": "2026-10-20T22:27:55.988Z",
           "evidenceId": "EV-20261020-332",
           "reason": "Previous source retained; new Git blob verified individually."
+        },
+        {
+          "sourceHead": "50a4ff432d7cccbbddaef6e4dff50a87e8276c80",
+          "sha256": "d4b3a6c6fbb4b3ccf07694205ed5d10fc2e0c0aee6818291f94db6ea5e0b6bc6",
+          "supersededAt": "2026-10-23T15:49:30.609Z",
+          "evidenceId": "EV-20261023-007",
+          "reason": "Giữ provenance trước Vitest moderate repair; xác minh riêng Git blob4.1.12."
         }
       ]
     },
@@ -333665,6 +333702,58 @@
         "EV-20261023-006"
       ],
       "commit": null
+    },
+    {
+      "id": "CHANGE-20261023-013",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "path": "package.json",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Nâng đồng bộ10 gói Vitest4.1.11->4.1.12, đặt tối thiểu^4.1.12 cho3 direct devDependencies. Không nâng major, Vite hoặc dependency ngoài Vitest.",
+      "beforeHash": "d4b3a6c6fbb4b3ccf07694205ed5d10fc2e0c0aee6818291f94db6ea5e0b6bc6",
+      "afterHash": "c8f1f161ca689aac632937a6ad3af1b95fb64151a3231b665b26f7a047305f73",
+      "evidenceIds": [
+        "EV-20261023-007",
+        "EV-20261023-008",
+        "EV-20261023-009"
+      ],
+      "commit": "3dc2b76c8620ca0fa02b3e48cdb4dcafa184f418"
+    },
+    {
+      "id": "CHANGE-20261023-014",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "path": "package-lock.json",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Nâng đồng bộ10 gói Vitest4.1.11->4.1.12, đặt tối thiểu^4.1.12 cho3 direct devDependencies. Không nâng major, Vite hoặc dependency ngoài Vitest.",
+      "beforeHash": "79ca704e60a0585255628ed7cdc6f488d262bbe64286aace43e2a05279e34633",
+      "afterHash": "9aebef32e1638f71c41012fff6a77f9ac911563c06d12d473594e7ab3e3a1d66",
+      "evidenceIds": [
+        "EV-20261023-007",
+        "EV-20261023-008",
+        "EV-20261023-009"
+      ],
+      "commit": "3dc2b76c8620ca0fa02b3e48cdb4dcafa184f418"
+    },
+    {
+      "id": "CHANGE-20261023-015",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "path": "docs/architecture/production-readiness/TRACKING.json",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Ghi bản vá Vitest, audit và bằng chứng local; self-audit theo payload gzip phục hồi được.",
+      "beforeHash": "f6f699a8fcec395f23490f48dbd07eaa9b7cae0b982776ed593f293aa87203e8",
+      "afterHash": "61c30d2863d4ff6909db73ba7e164c341efca7e18fcd385b3b8bdc8a0557baf2",
+      "afterHashBasis": "docs/architecture/production-readiness/evidence/B07/vitest-moderate-tracking-payload-2026-10-23.json.gz",
+      "evidenceIds": [
+        "EV-20261023-007",
+        "EV-20261023-008",
+        "EV-20261023-009"
+      ],
+      "commit": null
     }
   ],
   "evidence": [
@@ -374935,6 +375024,66 @@
       "artifact": "docs/architecture/production-readiness/evidence/B07/repository-consolidation-dependency-audit-2026-10-23.json",
       "notes": "Audit chạy trước source commit; hash được đối chiếu với blob be4d72ef. Chưa dùng local lock audit thay full hosted CI.",
       "committedSourceHead": "be4d72ef9a0904f757d9f7bbb7c0ea825b54ce30"
+    },
+    {
+      "id": "EV-20261023-007",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "observedAt": "2026-10-23T15:49:30.609Z",
+      "sourceHead": "ba7567d491290d75a874fc5debc3f5b4a58f8b65",
+      "dirtyFileHashes": {
+        "package.json": "c8f1f161ca689aac632937a6ad3af1b95fb64151a3231b665b26f7a047305f73",
+        "package-lock.json": "9aebef32e1638f71c41012fff6a77f9ac911563c06d12d473594e7ab3e3a1d66"
+      },
+      "committedSourceHead": "3dc2b76c8620ca0fa02b3e48cdb4dcafa184f418",
+      "environment": "Local Windows/Node24.19.0/npm10.9.9; lock generator isolated npm12.2.1",
+      "artifact": "docs/architecture/production-readiness/evidence/B07/vitest-moderate-repair-2026-10-23.json",
+      "kind": "dependency_audit",
+      "commandOrSteps": "npm10 ci; npm audit --package-lock-only --json --audit-level=moderate; npm audit --json --audit-level=moderate; npm ls Vitest family --all --json",
+      "expected": "Bốn moderate->0,10 gói Vitest4.1.12; dependency còn lại, test/config/gate giữ nguyên.",
+      "actual": "npm10 ci và hai audit exit0;0 vulnerabilities;10 gói cài/lock4.1.12.432 test/spec và1088 protected paths giữ nguyên; DOMPurify3.4.17 vẫn giữ.",
+      "result": "pass",
+      "notes": "Bằng chứng trước source commit đối chiếu từng package blob; registry integrity khớp."
+    },
+    {
+      "id": "EV-20261023-008",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "observedAt": "2026-10-23T15:49:30.609Z",
+      "sourceHead": "ba7567d491290d75a874fc5debc3f5b4a58f8b65",
+      "dirtyFileHashes": {
+        "package.json": "c8f1f161ca689aac632937a6ad3af1b95fb64151a3231b665b26f7a047305f73",
+        "package-lock.json": "9aebef32e1638f71c41012fff6a77f9ac911563c06d12d473594e7ab3e3a1d66"
+      },
+      "committedSourceHead": "3dc2b76c8620ca0fa02b3e48cdb4dcafa184f418",
+      "environment": "Local Windows/Node24.19.0/npm10.9.9; lock generator isolated npm12.2.1",
+      "artifact": "docs/architecture/production-readiness/evidence/B07/vitest-moderate-repair-2026-10-23.json",
+      "kind": "local_validation",
+      "commandOrSteps": "node scripts/run-with-artifacts.mjs vitest run --coverage --reporter=dot (lần đầu, build song song)",
+      "expected": "Cả test child và runner hoàn tất exit0.",
+      "actual": "Test child3757/381 đạt, coverage đạt; runner exit1 khi finalize tranh chấp lifecycle lock. Giữ log/manifest chưa hoàn tất; chưa nhận pass cho run này.",
+      "result": "fail",
+      "notes": "Lỗi điều phối local, không sửa code runner hoặc phá khóa để vượt lỗi; lần sau chạy tuần tự."
+    },
+    {
+      "id": "EV-20261023-009",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "observedAt": "2026-10-23T15:49:30.609Z",
+      "sourceHead": "ba7567d491290d75a874fc5debc3f5b4a58f8b65",
+      "dirtyFileHashes": {
+        "package.json": "c8f1f161ca689aac632937a6ad3af1b95fb64151a3231b665b26f7a047305f73",
+        "package-lock.json": "9aebef32e1638f71c41012fff6a77f9ac911563c06d12d473594e7ab3e3a1d66"
+      },
+      "committedSourceHead": "3dc2b76c8620ca0fa02b3e48cdb4dcafa184f418",
+      "environment": "Local Windows/Node24.19.0/npm10.9.9; lock generator isolated npm12.2.1",
+      "artifact": "docs/architecture/production-readiness/evidence/B07/vitest-moderate-repair-2026-10-23.json",
+      "kind": "local_validation",
+      "commandOrSteps": "Chạy lại full Vitest coverage tuần tự; typecheck; lint; licenses:check; production build với reserved CI origins.",
+      "expected": "Giữ suite3757/381, coverage90/90/85/80 và production build/static checks đạt.",
+      "actual": "Tất cả exit0;3757tests/381files;coverage99.84/99.64/99.87/99.9; build manifest passed,sourceUnchanged,childClosed.",
+      "result": "pass",
+      "notes": "Giữ test/exclude/retry/threshold và scripts CI; CI chính thức phải đạt đúng final main SHA."
     }
   ],
   "decisions": [
@@ -401830,6 +401979,35 @@
       ],
       "blockers": [],
       "nextAction": "Push source+catalogue và chờ exact-main CI; giữ mọi nhánh đến khi gate đạt."
+    },
+    {
+      "id": "SESSION-20261023-003",
+      "startedAt": "2026-10-23T15:40:15.723457+00:00",
+      "endedAt": "2026-10-23T15:49:30.609Z",
+      "sourceHeadBefore": "ba7567d491290d75a874fc5debc3f5b4a58f8b65",
+      "sourceHeadAfter": "3dc2b76c8620ca0fa02b3e48cdb4dcafa184f418",
+      "taskIds": [
+        "B07"
+      ],
+      "stepIds": [
+        "B07.03"
+      ],
+      "changeIds": [
+        "CHANGE-20261023-013",
+        "CHANGE-20261023-014",
+        "CHANGE-20261023-015"
+      ],
+      "evidenceIds": [
+        "EV-20261023-007",
+        "EV-20261023-008",
+        "EV-20261023-009"
+      ],
+      "elapsedMinutes": null,
+      "remainingWork": [
+        "Đợi full CI trên SHA cuối main; kiểm artifact/provenance và cleanup trước bàn giao."
+      ],
+      "blockers": [],
+      "nextAction": "Push một gói source+catalogue, kiểm đúng SHA cuối; không đổi test/ngưỡng/gate."
     }
   ],
   "templates": {
