@@ -81,12 +81,12 @@ export function EarnPage({ domain }: EarnPageProps) {
       });
       subscriptionKeys.current.delete(actionId);
       setSelectedProduct(undefined);
-      hapticSuccess();
       if (receipt.status === 'pending') {
         navigate(`${prefix}/earn/${domain}/receipt`, { state: { receipt } });
         return;
       }
       setSuccessMessage('Đăng ký sản phẩm thành công.');
+      hapticSuccess();
     } finally {
       actionInFlight.current = false;
     }
@@ -104,12 +104,12 @@ export function EarnPage({ domain }: EarnPageProps) {
       });
       redemptionKeys.current.delete(actionId);
       setSelectedPosition(undefined);
-      hapticSuccess();
       if (receipt.status === 'pending') {
         navigate(`${prefix}/earn/${domain}/receipt`, { state: { receipt } });
         return;
       }
       setSuccessMessage('Yêu cầu rút vốn đã được ghi nhận.');
+      hapticSuccess();
     } finally {
       actionInFlight.current = false;
     }

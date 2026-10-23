@@ -29,6 +29,7 @@
     "security:check": "node scripts/check-security-boundaries.mjs",
     "env:check": "node scripts/check-env-boundary.mjs",
     "contracts:check": "node scripts/check-openapi-contracts.mjs",
+    "contracts:mock-parity": "node scripts/check-openapi-mock-parity.mjs",
     "bundle:check": "node scripts/check-build-artifact.mjs bundle",
     "production-mocks:check": "node scripts/check-build-artifact.mjs mocks",
     "production-mock-imports:check": "node scripts/check-production-mock-imports.mjs",

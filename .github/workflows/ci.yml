@@ -102,6 +102,9 @@ jobs:
       - name: OpenAPI contract policy
         run: npm run contracts:check
 
+      - name: OpenAPI and MSW route parity
+        run: npm run contracts:mock-parity
+
       - name: Architecture check
         run: npm run architecture:check
 

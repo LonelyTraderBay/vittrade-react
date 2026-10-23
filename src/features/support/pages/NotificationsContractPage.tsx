@@ -14,7 +14,7 @@ export function NotificationsContractPage() {
   const actionToast = useActionToast();
   const { hasPermission } = useAuth();
   const canRead = hasPermission('notifications:read');
-  const canMarkRead = hasPermission('notifications:write') || hasPermission('support:write');
+  const canMarkRead = hasPermission('notifications:write');
   const query = useNotificationsQuery({ enabled: canRead });
   const markRead = useMarkNotificationReadMutation();
   const idempotencyKeys = useRef(new Map<string, string>());

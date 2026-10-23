@@ -22,7 +22,46 @@ function readOnlyAdapter(): AuthAdapter {
   };
 }
 
+function supportWriteOnlyAdapter(): AuthAdapter {
+  return {
+    ...testAuthAdapter,
+    initialSession: {
+      ...testAuthAdapter.initialSession!,
+      user: {
+        ...testAuthAdapter.initialSession!.user,
+        permissions: ['notifications:read', 'support:write'],
+      },
+    },
+  };
+}
+
 describe('Support write permission boundary', () => {
+  it('requires notification-write permission even for support writers', async () => {
+    server.use(
+      http.get('*/notifications', () =>
+        HttpResponse.json({
+          items: [
+            {
+              id: 'notification-1',
+              type: 'system',
+              title: 'System update',
+              message: 'A new update is available.',
+              time: '2026-09-23T00:00:00.000Z',
+              isRead: false,
+            },
+          ],
+        }),
+      ),
+    );
+    renderWithProviders(<NotificationsContractPage />, { authAdapter: supportWriteOnlyAdapter() });
+    expect(
+      await screen.findByText(
+        'Notification write permission is required to mark notifications as read.',
+      ),
+    ).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Đã đọc' })).toBeDisabled();
+  });
+
   it('does not request or expose notifications without read permission', async () => {
     let listCalls = 0;
     server.use(
