@@ -48,13 +48,13 @@
     }
   ],
   "checkpoint": {
-    "updatedAt": "2026-10-22T08:36:50.826Z",
+    "updatedAt": "2026-10-23T11:59:40.438Z",
     "lastCompletedTask": "C03",
     "activeTask": "C06",
     "activeStep": "C06.13",
     "nextTask": "C06",
     "nextStep": "C06.13",
-    "nextAction": "Xác minh FULL589UI/3756unit đúng candidate head,8ZIP/7manifest/5config/tất cả Git blob, merge/source/signature; guarded primaryFF84b1a929. Sau đó tiếp tục Support/Help,conditional,developer và fullmatrix trước14–15.",
+    "nextAction": "Tiếp tục C06.13 Support/Help, conditional/developer và full matrix trên main sau gate SHA hiện tại; giữ human/AT/backend/UAT mở. Khi chuyển đổi Git, chỉ xóa nhánh phụ sau closing main CI và manifest bảo toàn đạt.",
     "changedFiles": [
       "src/app/contexts/AppContext.tsx",
       "src/app/contexts/AuthContext.tsx",
@@ -66,7 +66,6 @@
       "docs/architecture/production-readiness/TRACKING.json"
     ],
     "pendingChecks": [
-      "Exact-head GitHub FULL cho gói identity và guarded primaryFF.",
       "Support/Help8+12 cell;conditional5;developer14;full C06.13 matrix;human/AT/backend vẫn mở."
     ],
     "blockers": [],
@@ -161,6 +160,21 @@
         "receipt": "C:/CodexEvidence/vittrade-react/2026-10-20/c06-rollout/session-boundary-hosted-receipt-v2.json",
         "rule": "One source+catalogue package/one push; strict FULL589UI/3756unit exact final head before dependent source work; no metadata-only receipt microcommit."
       }
+    },
+    "repositoryConsolidation": {
+      "decisionId": "DECISION-20261023-001",
+      "mergedPullRequest": 4,
+      "mergeCommit": "679e0e1ba70e501e9517e89ab2a3bc3451658d08",
+      "recoveredSourceCommit": "cc474515dc8a6e8ed392950e2feaf0f8208c4e97",
+      "restoreVerified": true,
+      "originalCommitsPreserved": 472,
+      "branchDeletionGate": "Exact final main push CI success + preservation readback",
+      "evidenceIds": [
+        "EV-20261023-001",
+        "EV-20261023-002",
+        "EV-20261023-003",
+        "EV-20261023-004"
+      ]
     }
   },
   "tasks": [
@@ -77933,7 +77947,7 @@
         "C06"
       ],
       "disposition": "changed",
-      "reason": "Align the reusable roadmap prompt with current M1-M4 criteria and the single-source workflow; preserve the A07.04 application checkpoint. | A08.05 reviewed unchanged under EV-20260929-447; existing mock/backend/staging and user-acceptance limits remain accurate. | Universal 3.1 docs-only bootstrap: add Universal/profile reference and applicable workflow guidance; preserve application checkpoint and prior edits. U01.02 reviewed against the Auth operation contract; no additional source change was needed. | User-authorized unused-output retention EV-20261012-008; previous catalogue retained until reviewed Git delivery. | EV-20261013-001: verified actual local commit/Git blob and unchanged tested bytes; GitHub delivery pending. | C06.11: source đã kiểm chứng trong commit fe9d51c7.",
+      "reason": "Align the reusable roadmap prompt with current M1-M4 criteria and the single-source workflow; preserve the A07.04 application checkpoint. | A08.05 reviewed unchanged under EV-20260929-447; existing mock/backend/staging and user-acceptance limits remain accurate. | Universal 3.1 docs-only bootstrap: add Universal/profile reference and applicable workflow guidance; preserve application checkpoint and prior edits. U01.02 reviewed against the Auth operation contract; no additional source change was needed. | User-authorized unused-output retention EV-20261012-008; previous catalogue retained until reviewed Git delivery. | EV-20261013-001: verified actual local commit/Git blob and unchanged tested bytes; GitHub delivery pending. | C06.11: source đã kiểm chứng trong commit fe9d51c7. | Hợp nhất23/10: Đồng bộ quyết định phát triển main duy nhất của người dùng.",
       "evidenceIds": [
         "EV-20260927-076",
         "EV-20260928-009",
@@ -77949,7 +77963,8 @@
         "EV-20261017-146",
         "EV-20261020-308",
         "EV-20261020-347",
-        "EV-20261020-360"
+        "EV-20261020-360",
+        "EV-20261023-004"
       ],
       "changeIds": [
         "CHANGE-20260927-053",
@@ -77962,7 +77977,8 @@
         "CHANGE-20261017-182",
         "CHANGE-20261020-408",
         "CHANGE-20261020-651",
-        "CHANGE-20261020-744"
+        "CHANGE-20261020-744",
+        "CHANGE-20261023-008"
       ],
       "executionScope": {
         "ownerTaskId": "B10",
@@ -78179,8 +78195,8 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "bb8fe23d4a05014dcc2b0e76ed606c757161b9e7",
-      "cataloguedSha256": "d65b9132f391c2787fae80f08d576b50980a06be4a1319ab852bce440dacb67d",
+      "cataloguedSourceHead": "fb60a95ca1df1534f6393f79e60531d5da9c0187",
+      "cataloguedSha256": "fe6c813b74426a52a92daa3847491117804c5e56cda8db08a4d7153793dbee79",
       "cataloguedSourceHistory": [
         {
           "sourceHead": "b42ef50ab5084b11266bb041180e44c194797c39",
@@ -78209,6 +78225,13 @@
           "supersededAt": "2026-10-21T19:45:52.027Z",
           "evidenceId": "EV-20261020-360",
           "reason": "Previous source retained; new Git blob verified individually."
+        },
+        {
+          "sourceHead": "bb8fe23d4a05014dcc2b0e76ed606c757161b9e7",
+          "sha256": "d65b9132f391c2787fae80f08d576b50980a06be4a1319ab852bce440dacb67d",
+          "supersededAt": "2026-10-23T11:59:40.438Z",
+          "evidenceId": "EV-20261023-004",
+          "reason": "Giữ nguồn trước hợp nhất; blob mới được kiểm riêng từng file."
         }
       ],
       "cataloguedAt": "2026-10-17T03:16:42.356Z"
@@ -135142,7 +135165,7 @@
         "C06"
       ],
       "disposition": "changed",
-      "reason": "Record U01.01 completion, measured Auth scope and the U01.02 next checkpoint. U01.02 reviewed against the Auth operation contract; no additional source change was needed. | EV-20261003-003: Record U01.03 browser observations and the measured A06 sidecar refresh, coverage and limitations. Record measured C05.03 UI overlap follow-up and its limits. | EV-20261003-006: record the login MFA 410 browser measurement and its local fixture boundary. Final U01.03 validation counts and remaining tracking-ledger errors are recorded. | EV-20261003-007: document the full contract-backed password-reset browser flow and local-only evidence boundary. Final U01.03 local check counts and the remaining source-ledger errors are recorded. | EV-20261003-008: document Auth reset fixture alignment with OpenAPI and its focused 6/6 result. Final U01.03 fixture-correction checks and source-ledger status are recorded. | EV-20261003-009: record the two email/phone registration challenge issuance browser cases, 12/12 combined E2E result, and owner-blocked OTP verification boundary. | EV-20261003-010: document registration request HTTP 400/429 browser outcomes and the 14/14 combined Auth E2E result. | EV-20261003-011: record the login HTTP 401 browser regression and 15/15 combined Auth E2E result. | EV-20261003-012: record contract session 401 normalization, transport preservation, and 36/36 focused plus 16/16 browser results. | EV-20261009-001: record the owner-approved credential choice, current local E2E results and remaining source-ledger errors. | EV-20261009-002: record exact-commit source ledger reconciliation and its local-only boundary. | EV-20261010-014: record DCA annotation full coverage and next P2P order-action target. | EV-015 records P2P order-action full-suite coverage and the P2P ad-detail next target. | EV-016 records Arena full-suite results and next P2P Merchant slice. | EV-017 records P2P Merchant full-suite results and next payment-method slice. | EV-018 records P2P payment creation full-suite results and next list page slice. | EV-019 records P2P payment-method list full-suite results and next Watchlist page gap. | EV-020 records P2P payment creation full-suite results and next list page slice. | EV-021 records MarketSectorsPage full-suite coverage and the next P2P marketplace slice. | EV-022 records P2P marketplace behavior coverage and next AppLayout slice. | EV-023 records full-suite progress and next measured gap. | EV-024 records full-suite progress and next measured gap. | EV-025 records full-suite progress and next measured gap. | EV-026 records full-suite progress and next measured gap. | EV-027 records full-suite progress and next measured gap. | EV-028 records full-suite progress and next measured gap. | EV-029 records full-suite progress and next measured gap. | EV-030 records full-suite progress and next measured gap. | EV-031 records full-suite progress and next measured gap. | User-authorized unused-output retention EV-20261012-008; previous catalogue retained until reviewed Git delivery. | DECISION-20261013-002: docs-only remediation planning; no runtime source edited. | P0-FE-01 verified local remediation. | Final local source and artifact verification. | EV-20261014-001/002/003: record iteration 53 measured coverage, desktop UI scan and final checker limitations. | EV-20261014-006/007/008: document iteration55 measurements, build blocker and unresolved acceptance. | EV-20261014-009: source-classify every iteration55 mobile/tablet hiddenOverflow entry; acceptance remains pending. | Record measured coverage closure, per-path Git blob reconciliation, gate results and remaining UI/external blockers. | EV-20261014-012–014: refresh coverage after TrInput lint fix and record CI failure/final-SHA boundary. | Record iteration 58 P2P contrast remediation, corrected E2E locator, local full-suite and axe evidence, and preserve manual/external acceptance blockers. | EV-20261014-023–025: record exact-SHA Auth CI failure, root-cause fix, local Auth/coverage results, and preserve UI/backend acceptance blockers. | Regenerate inventory after source line-count drift; record measured inventory gate. | Iteration 62: ghi source fixes, scan UI, full coverage, E2E chưa kết thúc và blocker backend/staging. | C06.01: đăng ký migration và đo lại active/planned page scope cùng 428 active routes. | C06.07: ghi nhận quy trình thi công, commit/push và nghiệm thu exact-SHA được người dùng ủy quyền.",
+      "reason": "Record U01.01 completion, measured Auth scope and the U01.02 next checkpoint. U01.02 reviewed against the Auth operation contract; no additional source change was needed. | EV-20261003-003: Record U01.03 browser observations and the measured A06 sidecar refresh, coverage and limitations. Record measured C05.03 UI overlap follow-up and its limits. | EV-20261003-006: record the login MFA 410 browser measurement and its local fixture boundary. Final U01.03 validation counts and remaining tracking-ledger errors are recorded. | EV-20261003-007: document the full contract-backed password-reset browser flow and local-only evidence boundary. Final U01.03 local check counts and the remaining source-ledger errors are recorded. | EV-20261003-008: document Auth reset fixture alignment with OpenAPI and its focused 6/6 result. Final U01.03 fixture-correction checks and source-ledger status are recorded. | EV-20261003-009: record the two email/phone registration challenge issuance browser cases, 12/12 combined E2E result, and owner-blocked OTP verification boundary. | EV-20261003-010: document registration request HTTP 400/429 browser outcomes and the 14/14 combined Auth E2E result. | EV-20261003-011: record the login HTTP 401 browser regression and 15/15 combined Auth E2E result. | EV-20261003-012: record contract session 401 normalization, transport preservation, and 36/36 focused plus 16/16 browser results. | EV-20261009-001: record the owner-approved credential choice, current local E2E results and remaining source-ledger errors. | EV-20261009-002: record exact-commit source ledger reconciliation and its local-only boundary. | EV-20261010-014: record DCA annotation full coverage and next P2P order-action target. | EV-015 records P2P order-action full-suite coverage and the P2P ad-detail next target. | EV-016 records Arena full-suite results and next P2P Merchant slice. | EV-017 records P2P Merchant full-suite results and next payment-method slice. | EV-018 records P2P payment creation full-suite results and next list page slice. | EV-019 records P2P payment-method list full-suite results and next Watchlist page gap. | EV-020 records P2P payment creation full-suite results and next list page slice. | EV-021 records MarketSectorsPage full-suite coverage and the next P2P marketplace slice. | EV-022 records P2P marketplace behavior coverage and next AppLayout slice. | EV-023 records full-suite progress and next measured gap. | EV-024 records full-suite progress and next measured gap. | EV-025 records full-suite progress and next measured gap. | EV-026 records full-suite progress and next measured gap. | EV-027 records full-suite progress and next measured gap. | EV-028 records full-suite progress and next measured gap. | EV-029 records full-suite progress and next measured gap. | EV-030 records full-suite progress and next measured gap. | EV-031 records full-suite progress and next measured gap. | User-authorized unused-output retention EV-20261012-008; previous catalogue retained until reviewed Git delivery. | DECISION-20261013-002: docs-only remediation planning; no runtime source edited. | P0-FE-01 verified local remediation. | Final local source and artifact verification. | EV-20261014-001/002/003: record iteration 53 measured coverage, desktop UI scan and final checker limitations. | EV-20261014-006/007/008: document iteration55 measurements, build blocker and unresolved acceptance. | EV-20261014-009: source-classify every iteration55 mobile/tablet hiddenOverflow entry; acceptance remains pending. | Record measured coverage closure, per-path Git blob reconciliation, gate results and remaining UI/external blockers. | EV-20261014-012–014: refresh coverage after TrInput lint fix and record CI failure/final-SHA boundary. | Record iteration 58 P2P contrast remediation, corrected E2E locator, local full-suite and axe evidence, and preserve manual/external acceptance blockers. | EV-20261014-023–025: record exact-SHA Auth CI failure, root-cause fix, local Auth/coverage results, and preserve UI/backend acceptance blockers. | Regenerate inventory after source line-count drift; record measured inventory gate. | Iteration 62: ghi source fixes, scan UI, full coverage, E2E chưa kết thúc và blocker backend/staging. | C06.01: đăng ký migration và đo lại active/planned page scope cùng 428 active routes. | C06.07: ghi nhận quy trình thi công, commit/push và nghiệm thu exact-SHA được người dùng ủy quyền. | Hợp nhất23/10: Đồng bộ quyết định phát triển main duy nhất của người dùng.",
       "evidenceIds": [
         "EV-20260927-076",
         "EV-20260928-001",
@@ -135769,7 +135792,8 @@
         "EV-20261020-311",
         "EV-20261020-327",
         "EV-20261020-341",
-        "EV-20261020-347"
+        "EV-20261020-347",
+        "EV-20261023-004"
       ],
       "changeIds": [
         "CHANGE-20260927-052",
@@ -136127,7 +136151,8 @@
         "CHANGE-20261020-423",
         "CHANGE-20261020-535",
         "CHANGE-20261020-622",
-        "CHANGE-20261020-650"
+        "CHANGE-20261020-650",
+        "CHANGE-20261023-009"
       ],
       "executionScope": {
         "ownerTaskId": "B10",
@@ -136347,8 +136372,8 @@
         "action": "review_then_fix_only_if_acceptance_gap"
       },
       "cataloguedAt": null,
-      "cataloguedSourceHead": "d52b283c6f79f67e83f18cd7e81b85b5da027e6b",
-      "cataloguedSha256": "434b45a58ec73c0c07081f5960e9b96c946f29aa8b6fed0fdb76abc5ea86c6ba",
+      "cataloguedSourceHead": "fb60a95ca1df1534f6393f79e60531d5da9c0187",
+      "cataloguedSha256": "54e90534f5b3018273a8222db9474e1df64c6feacaafb9550aa0a01362af0e44",
       "cataloguedSourceHistory": [
         {
           "sourceHead": "0362c23cb19c63aa513ae9802c14d43e10107fbc",
@@ -136391,6 +136416,13 @@
           "supersededAt": "2026-10-21T10:22:25.802Z",
           "evidenceId": "EV-20261020-347",
           "reason": "Previous source retained; new Git blob verified individually."
+        },
+        {
+          "sourceHead": "d52b283c6f79f67e83f18cd7e81b85b5da027e6b",
+          "sha256": "434b45a58ec73c0c07081f5960e9b96c946f29aa8b6fed0fdb76abc5ea86c6ba",
+          "supersededAt": "2026-10-23T12:00:18.572Z",
+          "evidenceId": "EV-20261023-004",
+          "reason": "Giữ nguồn PLAN cũ; quyết định main mới ở commit tài liệu đã kiểm riêng blob."
         }
       ]
     },
@@ -136944,7 +136976,11 @@
         "EV-20261020-377",
         "EV-20261020-379",
         "EV-20261020-383",
-        "EV-20261020-387"
+        "EV-20261020-387",
+        "EV-20261023-001",
+        "EV-20261023-002",
+        "EV-20261023-003",
+        "EV-20261023-004"
       ],
       "changeIds": [
         "CHANGE-20261001-0316",
@@ -137260,7 +137296,8 @@
         "CHANGE-20261020-824",
         "CHANGE-20261020-836",
         "CHANGE-20261020-840",
-        "CHANGE-20261020-848"
+        "CHANGE-20261020-848",
+        "CHANGE-20261023-010"
       ],
       "cataloguedAt": null,
       "executionScope": {
@@ -168835,12 +168872,15 @@
         "U03",
         "C06"
       ],
-      "disposition": "not_assessed",
-      "reason": "",
+      "disposition": "changed",
+      "reason": " | Hợp nhất23/10: Khôi phục phần pending B07 còn thiếu trên owner hiện tại; giữ các guard/API mới.",
       "evidenceIds": [
-        "EV-20261014-010"
+        "EV-20261014-010",
+        "EV-20261023-002"
       ],
-      "changeIds": [],
+      "changeIds": [
+        "CHANGE-20261023-001"
+      ],
       "executionScope": {
         "ownerTaskId": "U03",
         "role": "behavior_test",
@@ -168855,8 +168895,8 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "449fcf0ceeace53d8704d70513237e218db3bc70",
-      "cataloguedSha256": "1eb663556c4ad1b44177c612e579d07c0c5bda2c1a841e80ede7b169bdb3c7f0",
+      "cataloguedSourceHead": "cc474515dc8a6e8ed392950e2feaf0f8208c4e97",
+      "cataloguedSha256": "b7ff34f574ae49ed7c3d96b8f73b2e8374ac2ea0b54eb462cb51285aec66f214",
       "cataloguedSourceHistory": [
         {
           "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
@@ -168864,6 +168904,13 @@
           "supersededAt": "2026-10-14T01:15:27.283Z",
           "evidenceId": "EV-20261014-010",
           "reason": "Previous source pointer retained; current path-specific commit and Git blob independently verified in this evidence."
+        },
+        {
+          "sourceHead": "449fcf0ceeace53d8704d70513237e218db3bc70",
+          "sha256": "1eb663556c4ad1b44177c612e579d07c0c5bda2c1a841e80ede7b169bdb3c7f0",
+          "supersededAt": "2026-10-23T11:59:40.438Z",
+          "evidenceId": "EV-20261023-002",
+          "reason": "Giữ nguồn trước hợp nhất; blob mới được kiểm riêng từng file."
         }
       ]
     },
@@ -168875,10 +168922,14 @@
         "U03",
         "C06"
       ],
-      "disposition": "not_assessed",
-      "reason": "",
-      "evidenceIds": [],
-      "changeIds": [],
+      "disposition": "changed",
+      "reason": " | Hợp nhất23/10: Khôi phục phần pending B07 còn thiếu trên owner hiện tại; giữ các guard/API mới.",
+      "evidenceIds": [
+        "EV-20261023-002"
+      ],
+      "changeIds": [
+        "CHANGE-20261023-002"
+      ],
       "executionScope": {
         "ownerTaskId": "U03",
         "role": "ui_component",
@@ -168898,8 +168949,17 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
-      "cataloguedSha256": "7c515de1a8b648b1273a6fabe303e04292a2dea9d3ed31bfad3d69eabdbb40f7"
+      "cataloguedSourceHead": "cc474515dc8a6e8ed392950e2feaf0f8208c4e97",
+      "cataloguedSha256": "99a1d419cc018f8af7343c707f704510e9112d247c9db304884f552873dc7a0e",
+      "cataloguedSourceHistory": [
+        {
+          "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+          "sha256": "7c515de1a8b648b1273a6fabe303e04292a2dea9d3ed31bfad3d69eabdbb40f7",
+          "supersededAt": "2026-10-23T11:59:40.438Z",
+          "evidenceId": "EV-20261023-002",
+          "reason": "Giữ nguồn trước hợp nhất; blob mới được kiểm riêng từng file."
+        }
+      ]
     },
     {
       "path": "src/features/trading/components/OrderBook.test.tsx",
@@ -168981,17 +169041,19 @@
         "C06"
       ],
       "disposition": "changed",
-      "reason": "C06.02 corrective commit a29a255e closes the exact-SHA modal/accessibility regression; catalog fingerprint is bound to the committed blob.",
+      "reason": "C06.02 corrective commit a29a255e closes the exact-SHA modal/accessibility regression; catalog fingerprint is bound to the committed blob. | Hợp nhất23/10: Khôi phục phần pending B07 còn thiếu trên owner hiện tại; giữ các guard/API mới.",
       "evidenceIds": [
         "EV-20261015-013",
         "EV-20261015-015",
         "EV-20261020-315",
         "EV-20261020-320",
-        "EV-20261020-321"
+        "EV-20261020-321",
+        "EV-20261023-002"
       ],
       "changeIds": [
         "CHANGE-20261015-017",
-        "CHANGE-20261020-439"
+        "CHANGE-20261020-439",
+        "CHANGE-20261023-003"
       ],
       "executionScope": {
         "ownerTaskId": "U03",
@@ -169008,8 +169070,8 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "ace646f7a939fe37739fea0a9b2a16f6fc6dd908",
-      "cataloguedSha256": "987bee9c7e04622c342f85e3c16230758041f5a937ea5a6f65dbc9609c7ef956",
+      "cataloguedSourceHead": "cc474515dc8a6e8ed392950e2feaf0f8208c4e97",
+      "cataloguedSha256": "92d47acc2adee4c5372c6b61c95e0235cf287464cd768dd6f7fcb45fa93a9aac",
       "cataloguedSourceHistory": [
         {
           "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
@@ -169024,6 +169086,13 @@
           "supersededAt": "2026-10-20T12:13:48.606Z",
           "evidenceId": "EV-20261020-315",
           "reason": "Previous source retained; new Git blob verified individually."
+        },
+        {
+          "sourceHead": "ace646f7a939fe37739fea0a9b2a16f6fc6dd908",
+          "sha256": "987bee9c7e04622c342f85e3c16230758041f5a937ea5a6f65dbc9609c7ef956",
+          "supersededAt": "2026-10-23T11:59:40.438Z",
+          "evidenceId": "EV-20261023-002",
+          "reason": "Giữ nguồn trước hợp nhất; blob mới được kiểm riêng từng file."
         }
       ],
       "wipReconciliation": {
@@ -169049,17 +169118,19 @@
         "C06"
       ],
       "disposition": "changed",
-      "reason": "C06.02 corrective commit a29a255e closes the exact-SHA modal/accessibility regression; catalog fingerprint is bound to the committed blob.",
+      "reason": "C06.02 corrective commit a29a255e closes the exact-SHA modal/accessibility regression; catalog fingerprint is bound to the committed blob. | Hợp nhất23/10: Khôi phục phần pending B07 còn thiếu trên owner hiện tại; giữ các guard/API mới.",
       "evidenceIds": [
         "EV-20261015-013",
         "EV-20261015-015",
         "EV-20261020-315",
         "EV-20261020-320",
-        "EV-20261020-321"
+        "EV-20261020-321",
+        "EV-20261023-002"
       ],
       "changeIds": [
         "CHANGE-20261015-016",
-        "CHANGE-20261020-438"
+        "CHANGE-20261020-438",
+        "CHANGE-20261023-004"
       ],
       "executionScope": {
         "ownerTaskId": "U03",
@@ -169081,8 +169152,8 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "ace646f7a939fe37739fea0a9b2a16f6fc6dd908",
-      "cataloguedSha256": "7d8903bcfb1cafb241d4f5fab98a2f7c2fc4548ccd46245e7a8e85640087c001",
+      "cataloguedSourceHead": "cc474515dc8a6e8ed392950e2feaf0f8208c4e97",
+      "cataloguedSha256": "f2917f1089a6eab75f2207ea97f4430a888d2f74707a2f51dc105abc87aa77a9",
       "cataloguedSourceHistory": [
         {
           "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
@@ -169097,6 +169168,13 @@
           "supersededAt": "2026-10-20T12:13:48.606Z",
           "evidenceId": "EV-20261020-315",
           "reason": "Previous source retained; new Git blob verified individually."
+        },
+        {
+          "sourceHead": "ace646f7a939fe37739fea0a9b2a16f6fc6dd908",
+          "sha256": "7d8903bcfb1cafb241d4f5fab98a2f7c2fc4548ccd46245e7a8e85640087c001",
+          "supersededAt": "2026-10-23T11:59:40.438Z",
+          "evidenceId": "EV-20261023-002",
+          "reason": "Giữ nguồn trước hợp nhất; blob mới được kiểm riêng từng file."
         }
       ],
       "wipReconciliation": {
@@ -169183,12 +169261,15 @@
         "U03",
         "C06"
       ],
-      "disposition": "not_assessed",
-      "reason": "",
+      "disposition": "changed",
+      "reason": " | Hợp nhất23/10: Khôi phục phần pending B07 còn thiếu trên owner hiện tại; giữ các guard/API mới.",
       "evidenceIds": [
-        "EV-20261014-010"
+        "EV-20261014-010",
+        "EV-20261023-002"
       ],
-      "changeIds": [],
+      "changeIds": [
+        "CHANGE-20261023-005"
+      ],
       "executionScope": {
         "ownerTaskId": "U03",
         "role": "behavior_test",
@@ -169203,8 +169284,8 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "449fcf0ceeace53d8704d70513237e218db3bc70",
-      "cataloguedSha256": "1937a288baaf45581e6ce05b21963b54d030648bdcc79ebc996a3e89c37f3798",
+      "cataloguedSourceHead": "cc474515dc8a6e8ed392950e2feaf0f8208c4e97",
+      "cataloguedSha256": "25d04d62e398899280e3efe6a32ddbd0c6b4a2b50c31979a1c8d0cedace41c63",
       "cataloguedSourceHistory": [
         {
           "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
@@ -169212,6 +169293,13 @@
           "supersededAt": "2026-10-14T01:15:27.283Z",
           "evidenceId": "EV-20261014-010",
           "reason": "Previous source pointer retained; current path-specific commit and Git blob independently verified in this evidence."
+        },
+        {
+          "sourceHead": "449fcf0ceeace53d8704d70513237e218db3bc70",
+          "sha256": "1937a288baaf45581e6ce05b21963b54d030648bdcc79ebc996a3e89c37f3798",
+          "supersededAt": "2026-10-23T11:59:40.438Z",
+          "evidenceId": "EV-20261023-002",
+          "reason": "Giữ nguồn trước hợp nhất; blob mới được kiểm riêng từng file."
         }
       ]
     },
@@ -169223,10 +169311,14 @@
         "U03",
         "C06"
       ],
-      "disposition": "not_assessed",
-      "reason": "",
-      "evidenceIds": [],
-      "changeIds": [],
+      "disposition": "changed",
+      "reason": " | Hợp nhất23/10: Khôi phục phần pending B07 còn thiếu trên owner hiện tại; giữ các guard/API mới.",
+      "evidenceIds": [
+        "EV-20261023-002"
+      ],
+      "changeIds": [
+        "CHANGE-20261023-006"
+      ],
       "executionScope": {
         "ownerTaskId": "U03",
         "role": "ui_component",
@@ -169246,8 +169338,17 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
-      "cataloguedSha256": "97b0af463695464315f099870e0058abf503ba26c838058ba07fa4c58d052637"
+      "cataloguedSourceHead": "cc474515dc8a6e8ed392950e2feaf0f8208c4e97",
+      "cataloguedSha256": "0eba1a3b68baed1bb9276d27ec2a6472097918fa471b23c595b59f5fc172ce58",
+      "cataloguedSourceHistory": [
+        {
+          "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
+          "sha256": "97b0af463695464315f099870e0058abf503ba26c838058ba07fa4c58d052637",
+          "supersededAt": "2026-10-23T11:59:40.438Z",
+          "evidenceId": "EV-20261023-002",
+          "reason": "Giữ nguồn trước hợp nhất; blob mới được kiểm riêng từng file."
+        }
+      ]
     },
     {
       "path": "src/features/trading/components/QuickPairSwitcher.test.tsx",
@@ -169605,7 +169706,7 @@
         "C06"
       ],
       "disposition": "changed",
-      "reason": " | Iteration 61: Sửa và kiểm thử regression điều hướng/tiêu đề truy cập trong scope Iteration 61. | C06.02 corrective commit a29a255e closes the exact-SHA modal/accessibility regression; catalog fingerprint is bound to the committed blob.",
+      "reason": " | Iteration 61: Sửa và kiểm thử regression điều hướng/tiêu đề truy cập trong scope Iteration 61. | C06.02 corrective commit a29a255e closes the exact-SHA modal/accessibility regression; catalog fingerprint is bound to the committed blob. | Hợp nhất23/10: Khôi phục phần pending B07 còn thiếu trên owner hiện tại; giữ các guard/API mới.",
       "evidenceIds": [
         "EV-20261013-021",
         "EV-20261013-022",
@@ -169614,12 +169715,14 @@
         "EV-20261015-013",
         "EV-20261015-015",
         "EV-20261020-320",
-        "EV-20261020-321"
+        "EV-20261020-321",
+        "EV-20261023-002"
       ],
       "changeIds": [
         "CHANGE-20261013-474",
         "CHANGE-20261014-092",
-        "CHANGE-20261015-018"
+        "CHANGE-20261015-018",
+        "CHANGE-20261023-007"
       ],
       "executionScope": {
         "ownerTaskId": "U03",
@@ -169648,8 +169751,8 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "a29a255e72aa98aa7199d6ee21e506bdd5d4f6ca",
-      "cataloguedSha256": "1693cd8f9ded869a2342f52a681b80e12dc0d541551bf060e1cc0d1138dd3f2d",
+      "cataloguedSourceHead": "cc474515dc8a6e8ed392950e2feaf0f8208c4e97",
+      "cataloguedSha256": "386b01bbbad2d9db0be49effd4008a172d574a0d8f51ffb14d1e674683fe68cf",
       "cataloguedSourceHistory": [
         {
           "sourceHead": "c5fc38b0755da3fe2c9831fe3040160a308a9a03",
@@ -169671,6 +169774,13 @@
           "supersededAt": "2026-10-15T04:29:29.443Z",
           "evidenceId": "EV-20261015-015",
           "reason": "Preserved prior source snapshot after exact-SHA GitHub run #61 identified stale C06.02 provenance; rebound to the corrective source commit."
+        },
+        {
+          "sourceHead": "a29a255e72aa98aa7199d6ee21e506bdd5d4f6ca",
+          "sha256": "1693cd8f9ded869a2342f52a681b80e12dc0d541551bf060e1cc0d1138dd3f2d",
+          "supersededAt": "2026-10-23T11:59:40.438Z",
+          "evidenceId": "EV-20261023-002",
+          "reason": "Giữ nguồn trước hợp nhất; blob mới được kiểm riêng từng file."
         }
       ],
       "wipReconciliation": {
@@ -333345,6 +333455,160 @@
         "archiveSha256": "5fede1e708d0dd445aa02732b3ffabe4c8df652a6ffabedff975af85a91d26dd",
         "payloadSha256": "5fede1e708d0dd445aa02732b3ffabe4c8df652a6ffabedff975af85a91d26dd"
       }
+    },
+    {
+      "id": "CHANGE-20261023-001",
+      "taskId": "U03",
+      "stepId": "U03.04",
+      "path": "src/features/trading/components/OpenOrdersPanel.test.tsx",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Khôi phục phần pending B07 còn thiếu trên owner hiện tại; giữ các guard/API mới.",
+      "beforeHash": "1eb663556c4ad1b44177c612e579d07c0c5bda2c1a841e80ede7b169bdb3c7f0",
+      "afterHash": "b7ff34f574ae49ed7c3d96b8f73b2e8374ac2ea0b54eb462cb51285aec66f214",
+      "evidenceIds": [
+        "EV-20261023-002"
+      ],
+      "commit": "cc474515dc8a6e8ed392950e2feaf0f8208c4e97"
+    },
+    {
+      "id": "CHANGE-20261023-002",
+      "taskId": "U03",
+      "stepId": "U03.04",
+      "path": "src/features/trading/components/OpenOrdersPanel.tsx",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Khôi phục phần pending B07 còn thiếu trên owner hiện tại; giữ các guard/API mới.",
+      "beforeHash": "7c515de1a8b648b1273a6fabe303e04292a2dea9d3ed31bfad3d69eabdbb40f7",
+      "afterHash": "99a1d419cc018f8af7343c707f704510e9112d247c9db304884f552873dc7a0e",
+      "evidenceIds": [
+        "EV-20261023-002"
+      ],
+      "commit": "cc474515dc8a6e8ed392950e2feaf0f8208c4e97"
+    },
+    {
+      "id": "CHANGE-20261023-003",
+      "taskId": "U03",
+      "stepId": "U03.04",
+      "path": "src/features/trading/components/OrderConfirmationSheet.test.tsx",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Khôi phục phần pending B07 còn thiếu trên owner hiện tại; giữ các guard/API mới.",
+      "beforeHash": "987bee9c7e04622c342f85e3c16230758041f5a937ea5a6f65dbc9609c7ef956",
+      "afterHash": "92d47acc2adee4c5372c6b61c95e0235cf287464cd768dd6f7fcb45fa93a9aac",
+      "evidenceIds": [
+        "EV-20261023-002"
+      ],
+      "commit": "cc474515dc8a6e8ed392950e2feaf0f8208c4e97"
+    },
+    {
+      "id": "CHANGE-20261023-004",
+      "taskId": "U03",
+      "stepId": "U03.04",
+      "path": "src/features/trading/components/OrderConfirmationSheet.tsx",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Khôi phục phần pending B07 còn thiếu trên owner hiện tại; giữ các guard/API mới.",
+      "beforeHash": "7d8903bcfb1cafb241d4f5fab98a2f7c2fc4548ccd46245e7a8e85640087c001",
+      "afterHash": "f2917f1089a6eab75f2207ea97f4430a888d2f74707a2f51dc105abc87aa77a9",
+      "evidenceIds": [
+        "EV-20261023-002"
+      ],
+      "commit": "cc474515dc8a6e8ed392950e2feaf0f8208c4e97"
+    },
+    {
+      "id": "CHANGE-20261023-005",
+      "taskId": "U03",
+      "stepId": "U03.04",
+      "path": "src/features/trading/components/OrderModifySheet.test.tsx",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Khôi phục phần pending B07 còn thiếu trên owner hiện tại; giữ các guard/API mới.",
+      "beforeHash": "1937a288baaf45581e6ce05b21963b54d030648bdcc79ebc996a3e89c37f3798",
+      "afterHash": "25d04d62e398899280e3efe6a32ddbd0c6b4a2b50c31979a1c8d0cedace41c63",
+      "evidenceIds": [
+        "EV-20261023-002"
+      ],
+      "commit": "cc474515dc8a6e8ed392950e2feaf0f8208c4e97"
+    },
+    {
+      "id": "CHANGE-20261023-006",
+      "taskId": "U03",
+      "stepId": "U03.04",
+      "path": "src/features/trading/components/OrderModifySheet.tsx",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Khôi phục phần pending B07 còn thiếu trên owner hiện tại; giữ các guard/API mới.",
+      "beforeHash": "97b0af463695464315f099870e0058abf503ba26c838058ba07fa4c58d052637",
+      "afterHash": "0eba1a3b68baed1bb9276d27ec2a6472097918fa471b23c595b59f5fc172ce58",
+      "evidenceIds": [
+        "EV-20261023-002"
+      ],
+      "commit": "cc474515dc8a6e8ed392950e2feaf0f8208c4e97"
+    },
+    {
+      "id": "CHANGE-20261023-007",
+      "taskId": "U03",
+      "stepId": "U03.04",
+      "path": "src/features/trading/components/TradeTerminal.tsx",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Khôi phục phần pending B07 còn thiếu trên owner hiện tại; giữ các guard/API mới.",
+      "beforeHash": "1693cd8f9ded869a2342f52a681b80e12dc0d541551bf060e1cc0d1138dd3f2d",
+      "afterHash": "386b01bbbad2d9db0be49effd4008a172d574a0d8f51ffb14d1e674683fe68cf",
+      "evidenceIds": [
+        "EV-20261023-002"
+      ],
+      "commit": "cc474515dc8a6e8ed392950e2feaf0f8208c4e97"
+    },
+    {
+      "id": "CHANGE-20261023-008",
+      "taskId": "A01",
+      "stepId": "A01.05",
+      "path": "docs/ai/WORKFLOW.md",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Đồng bộ quyết định phát triển main duy nhất của người dùng.",
+      "beforeHash": "d65b9132f391c2787fae80f08d576b50980a06be4a1319ab852bce440dacb67d",
+      "afterHash": "fe6c813b74426a52a92daa3847491117804c5e56cda8db08a4d7153793dbee79",
+      "evidenceIds": [
+        "EV-20261023-004"
+      ],
+      "commit": "fb60a95ca1df1534f6393f79e60531d5da9c0187"
+    },
+    {
+      "id": "CHANGE-20261023-009",
+      "taskId": "A01",
+      "stepId": "A01.05",
+      "path": "docs/architecture/production-readiness/PLAN.md",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Đồng bộ quyết định phát triển main duy nhất của người dùng.",
+      "beforeHash": "434b45a58ec73c0c07081f5960e9b96c946f29aa8b6fed0fdb76abc5ea86c6ba",
+      "afterHash": "54e90534f5b3018273a8222db9474e1df64c6feacaafb9550aa0a01362af0e44",
+      "evidenceIds": [
+        "EV-20261023-004"
+      ],
+      "commit": "fb60a95ca1df1534f6393f79e60531d5da9c0187"
+    },
+    {
+      "id": "CHANGE-20261023-010",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "path": "docs/architecture/production-readiness/TRACKING.json",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Ghi quyết định, đối chiếu lịch sử, catalogue từng blob và bằng chứng phục hồi. afterHash là payload trước self-audit có bản gzip để phục hồi.",
+      "beforeHash": "44ac3454924883eb94b3395655540ab0d662067af47686136e0b1a2b7d04e94e",
+      "afterHash": "8fa82b394586e821855250c9c644623fdae9d234a6cb450264372e7b8cfef110",
+      "afterHashBasis": "docs/architecture/production-readiness/evidence/B07/repository-consolidation-tracking-payload-2026-10-23.json.gz",
+      "evidenceIds": [
+        "EV-20261023-001",
+        "EV-20261023-002",
+        "EV-20261023-003",
+        "EV-20261023-004"
+      ],
+      "commit": null
     }
   ],
   "evidence": [
@@ -374507,6 +374771,79 @@
       "artifact": "C:/CodexEvidence/vittrade-react/2026-10-20/c06-rollout/session-boundary-local-verification-v2.json",
       "artifactSha256": "9f0ba6624eac276a602c52795e95a4966f88197084a3142d34dd30eb9e40d20d",
       "notes": "Không sửa assertion OTP/financial cũ, timeout/retry/API/business/precision/idempotency. Source+catalogue là một gói, một push; cần FULL589UI/3756unit đúng head candidate trước gói phụ thuộc."
+    },
+    {
+      "id": "EV-20261023-001",
+      "taskId": "B07",
+      "stepId": "B07.05",
+      "kind": "backup_restore",
+      "commandOrSteps": "backup_restore.py + verify_restored.py; SHA-256 từng file; so object/ref/stash/reflog; git fsck --full --no-reflogs --unreachable",
+      "environment": "Windows; Git process core.longpaths=true, gc.auto=0",
+      "observedAt": "2026-10-23T11:59:40.438Z",
+      "sourceHead": "cda6d54e330aec2cedd3ebce062049e65c89006f",
+      "dirtyFileHashes": {},
+      "expected": "Bản phục hồi giữ toàn bộ checkout và Git data trước tích hợp.",
+      "actual": "63423 file/3653203144 bytes,23784 object,472 commit; tất cả hash/ref/stash/reflog khớp,fsck exit0.",
+      "result": "pass",
+      "artifact": "C:\\Users\\Joker-PC\\Documents\\Codex\\Work\\vittrade-react\\20261023-single-main\\outputs\\restore-proof.json",
+      "notes": "Raw backup và bản phục hồi riêng giữ cả ignored output, index/worktree metadata và object không được ref cũ bảo vệ."
+    },
+    {
+      "id": "EV-20261023-002",
+      "taskId": "U03",
+      "stepId": "U03.04",
+      "kind": "unit",
+      "commandOrSteps": "run-with-artifacts.mjs vitest run: OpenOrdersPanel, OrderModifySheet, OrderConfirmationSheet, TradeTerminal, TradeTerminal.readonly-boundary; hai tsc project, ESLint, Prettier, architecture, inventory,page-size,diff",
+      "environment": "Local Windows/Node24.19.0/jsdom/MSW; chưa dùng local thay CI Ubuntu/Node22",
+      "observedAt": "2026-10-23T11:59:40.438Z",
+      "sourceHead": "679e0e1ba70e501e9517e89ab2a3bc3451658d08",
+      "dirtyFileHashes": {
+        "src/features/trading/components/OpenOrdersPanel.test.tsx": "b7ff34f574ae49ed7c3d96b8f73b2e8374ac2ea0b54eb462cb51285aec66f214",
+        "src/features/trading/components/OpenOrdersPanel.tsx": "99a1d419cc018f8af7343c707f704510e9112d247c9db304884f552873dc7a0e",
+        "src/features/trading/components/OrderConfirmationSheet.test.tsx": "92d47acc2adee4c5372c6b61c95e0235cf287464cd768dd6f7fcb45fa93a9aac",
+        "src/features/trading/components/OrderConfirmationSheet.tsx": "f2917f1089a6eab75f2207ea97f4430a888d2f74707a2f51dc105abc87aa77a9",
+        "src/features/trading/components/OrderModifySheet.test.tsx": "25d04d62e398899280e3efe6a32ddbd0c6b4a2b50c31979a1c8d0cedace41c63",
+        "src/features/trading/components/OrderModifySheet.tsx": "0eba1a3b68baed1bb9276d27ec2a6472097918fa471b23c595b59f5fc172ce58",
+        "src/features/trading/components/TradeTerminal.tsx": "386b01bbbad2d9db0be49effd4008a172d574a0d8f51ffb14d1e674683fe68cf"
+      },
+      "expected": "Khôi phục phản hồi B07 pending; permission, khóa trùng và payload giữ nguyên.",
+      "actual": "Trước sửa3 regression FAIL/23PASS; sau sửa58/58 test ở5file PASS. Các gate tĩnh liên quan PASS.",
+      "result": "pass",
+      "artifact": "C:\\Users\\Joker-PC\\Documents\\Codex\\Work\\vittrade-react\\20261023-single-main\\outputs\\b07-regression-after.log",
+      "notes": "Runtime chạy trước source commit cc474515dc8a6e8ed392950e2feaf0f8208c4e97; hashes được đối chiếu từng blob source sau commit, không đổi SHA gốc của run.",
+      "committedSourceHead": "cc474515dc8a6e8ed392950e2feaf0f8208c4e97"
+    },
+    {
+      "id": "EV-20261023-003",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "kind": "history_reconciliation",
+      "commandOrSteps": "Đối chiếu39 commit B07,54+27path stash và snapshot WIP839path; kiểm lịch sử nguồn/tag/ref và các owner hiện tại.",
+      "environment": "Local Git, source baseline cda6d54e, backup phục hồi đã kiểm",
+      "observedAt": "2026-10-23T11:59:40.438Z",
+      "sourceHead": "cda6d54e330aec2cedd3ebce062049e65c89006f",
+      "dirtyFileHashes": {},
+      "expected": "Giữ toàn bộ lịch sử và WIP; đưa phần B07 còn thiếu vào source hiện tại.",
+      "actual": "49ref bảo toàn;472commit gốc đều reachable. Một gói pending trading được phục hồi;39commit có resolution; ba snapshot WIP giữ nguyên.",
+      "result": "pass",
+      "artifact": "docs/architecture/production-readiness/evidence/B07/repository-consolidation-review-2026-10-23.json",
+      "notes": "Không tuyên bố mọi WIP là feature được nghiệm thu; snapshot prototype và hunk làm yếu gate được giữ để truy hồi."
+    },
+    {
+      "id": "EV-20261023-004",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "kind": "decision",
+      "commandOrSteps": "Yêu cầu trực tiếp của người dùng trong chat ngày23/10/2026.",
+      "environment": "Quyết định vận hành repo một người",
+      "observedAt": "2026-10-23T11:59:40.438Z",
+      "sourceHead": "679e0e1ba70e501e9517e89ab2a3bc3451658d08",
+      "dirtyFileHashes": {},
+      "expected": "Một nhánh main; bảo toàn và chờ closing CI trước xóa nhánh phụ.",
+      "actual": "Đã duyệt quy trình main; WORKFLOW/PLAN đồng bộ; giữ toàn bộ tiêu chí CI và product acceptance.",
+      "result": "pass",
+      "artifact": "docs/architecture/production-readiness/evidence/B07/repository-consolidation-review-2026-10-23.json",
+      "notes": "Ủy quyền merge/push/xóa nhánh có điều kiện; không mở quyền deploy hoặc công bố WIP."
     }
   ],
   "decisions": [
@@ -375260,6 +375597,23 @@
       "evidenceIds": [
         "EV-20261020-385",
         "EV-20261020-387"
+      ]
+    },
+    {
+      "id": "DECISION-20261023-001",
+      "taskId": "B07",
+      "scopeIds": [
+        "B07.03",
+        "B07.05"
+      ],
+      "decidedBy": "Người dùng trực tiếp trong chat",
+      "decidedAt": "2026-10-23T11:59:40.438Z",
+      "decision": "Phát triển một mình trên nhánh main duy nhất; backup/thử phục hồi, rà B07/WIP và chỉ xóa nhánh phụ sau CI trên SHA cuối main đạt.",
+      "reason": "Giảm nhánh làm việc nhưng giữ nguyên code, commit, tag archive và WIP; không gộp prototype cũ vào sản phẩm để chỉ làm đồ thị Git đầy đủ.",
+      "evidenceIds": [
+        "EV-20261023-001",
+        "EV-20261023-003",
+        "EV-20261023-004"
       ]
     }
   ],
@@ -401315,6 +401669,49 @@
         "Chờ exact-head FULL trước gói phụ thuộc."
       ],
       "nextAction": "Xác minh FULL589UI/3756unit đúng candidate head,8ZIP/7manifest/5config/tất cả Git blob, merge/source/signature; guarded primaryFF84b1a929. Sau đó tiếp tục Support/Help,conditional,developer và fullmatrix trước14–15."
+    },
+    {
+      "id": "SESSION-20261023-001",
+      "startedAt": "2026-10-23T11:47:13Z",
+      "endedAt": "2026-10-23T11:59:40.438Z",
+      "sourceHeadBefore": "cda6d54e330aec2cedd3ebce062049e65c89006f",
+      "sourceHeadAfter": "fb60a95ca1df1534f6393f79e60531d5da9c0187",
+      "taskIds": [
+        "B07",
+        "U03",
+        "A01"
+      ],
+      "stepIds": [
+        "B07.03",
+        "B07.05",
+        "U03.04",
+        "A01.05"
+      ],
+      "changeIds": [
+        "CHANGE-20261023-001",
+        "CHANGE-20261023-002",
+        "CHANGE-20261023-003",
+        "CHANGE-20261023-004",
+        "CHANGE-20261023-005",
+        "CHANGE-20261023-006",
+        "CHANGE-20261023-007",
+        "CHANGE-20261023-008",
+        "CHANGE-20261023-009",
+        "CHANGE-20261023-010"
+      ],
+      "evidenceIds": [
+        "EV-20261023-001",
+        "EV-20261023-002",
+        "EV-20261023-003",
+        "EV-20261023-004"
+      ],
+      "elapsedMinutes": null,
+      "remainingWork": [
+        "Closing CI trên SHA cuối main và đối chiếu trước xóa nhánh phụ.",
+        "C06/product scope vẫn giữ nguyên."
+      ],
+      "blockers": [],
+      "nextAction": "Push candidate hợp nhất, xác minh full main CI và archive; chỉ sau đó thu gọn nhánh."
     }
   ],
   "templates": {
