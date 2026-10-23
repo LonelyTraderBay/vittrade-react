@@ -48,7 +48,7 @@
     }
   ],
   "checkpoint": {
-    "updatedAt": "2026-10-23T11:59:40.438Z",
+    "updatedAt": "2026-10-23T12:07:31.679Z",
     "lastCompletedTask": "C03",
     "activeTask": "C06",
     "activeStep": "C06.13",
@@ -174,7 +174,17 @@
         "EV-20261023-002",
         "EV-20261023-003",
         "EV-20261023-004"
-      ]
+      ],
+      "dependencyAuditRepair": {
+        "failedSha": "415642dbeada26a856134cf7df895bfccfcc3c2e",
+        "failedRun": 39950227400,
+        "sourceCommit": "be4d72ef9a0904f757d9f7bbb7c0ea825b54ce30",
+        "evidenceIds": [
+          "EV-20261023-005",
+          "EV-20261023-006"
+        ],
+        "closingGate": "Full push CI trên SHA cuối main phải success trước mọi xóa nhánh."
+      }
     }
   },
   "tasks": [
@@ -136980,7 +136990,9 @@
         "EV-20261023-001",
         "EV-20261023-002",
         "EV-20261023-003",
-        "EV-20261023-004"
+        "EV-20261023-004",
+        "EV-20261023-005",
+        "EV-20261023-006"
       ],
       "changeIds": [
         "CHANGE-20261001-0316",
@@ -137297,7 +137309,8 @@
         "CHANGE-20261020-836",
         "CHANGE-20261020-840",
         "CHANGE-20261020-848",
-        "CHANGE-20261023-010"
+        "CHANGE-20261023-010",
+        "CHANGE-20261023-012"
       ],
       "cataloguedAt": null,
       "executionScope": {
@@ -139162,16 +139175,19 @@
         "C06"
       ],
       "disposition": "changed",
-      "reason": " | C06.07: đồng bộ lockfile với khai báo PostCSS test dependency đã tồn tại cùng phiên bản; không nâng phiên bản gói. (commit 562054439ffc939f9f7d9380affe96ae5da6c408).",
+      "reason": " | C06.07: đồng bộ lockfile với khai báo PostCSS test dependency đã tồn tại cùng phiên bản; không nâng phiên bản gói. (commit 562054439ffc939f9f7d9380affe96ae5da6c408). | P0 23/10: vá DOMPurify critical đang chặn main audit; giữ các dependency/gate khác.",
       "evidenceIds": [
         "EV-20261009-002",
         "EV-20261016-052",
         "EV-20261016-054",
-        "EV-20261020-332"
+        "EV-20261020-332",
+        "EV-20261023-005",
+        "EV-20261023-006"
       ],
       "changeIds": [
         "CHANGE-20261016-066",
-        "CHANGE-20261020-564"
+        "CHANGE-20261020-564",
+        "CHANGE-20261023-011"
       ],
       "executionScope": {
         "ownerTaskId": "B07",
@@ -139192,8 +139208,8 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "50a4ff432d7cccbbddaef6e4dff50a87e8276c80",
-      "cataloguedSha256": "4e9d488a7c4487a8eae11321846078913e462a3bfd4c7c745372fea8e4c125e3",
+      "cataloguedSourceHead": "be4d72ef9a0904f757d9f7bbb7c0ea825b54ce30",
+      "cataloguedSha256": "79ca704e60a0585255628ed7cdc6f488d262bbe64286aace43e2a05279e34633",
       "cataloguedAt": "2026-10-15T18:09:20.143Z",
       "cataloguedSourceHistory": [
         {
@@ -139209,6 +139225,13 @@
           "supersededAt": "2026-10-20T22:27:55.988Z",
           "evidenceId": "EV-20261020-332",
           "reason": "Previous source retained; new Git blob verified individually."
+        },
+        {
+          "sourceHead": "50a4ff432d7cccbbddaef6e4dff50a87e8276c80",
+          "sha256": "4e9d488a7c4487a8eae11321846078913e462a3bfd4c7c745372fea8e4c125e3",
+          "supersededAt": "2026-10-23T12:07:31.679Z",
+          "evidenceId": "EV-20261023-006",
+          "reason": "Giữ lock snapshot trước bản vá; kiểm riêng blob của DOMPurify patch."
         }
       ]
     },
@@ -333609,6 +333632,39 @@
         "EV-20261023-004"
       ],
       "commit": null
+    },
+    {
+      "id": "CHANGE-20261023-011",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "path": "package-lock.json",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Vá transitive DOMPurify3.4.16->3.4.17 để khôi phục audit high gate; không đổi package.json hoặc dependency khác.",
+      "beforeHash": "4e9d488a7c4487a8eae11321846078913e462a3bfd4c7c745372fea8e4c125e3",
+      "afterHash": "79ca704e60a0585255628ed7cdc6f488d262bbe64286aace43e2a05279e34633",
+      "evidenceIds": [
+        "EV-20261023-005",
+        "EV-20261023-006"
+      ],
+      "commit": "be4d72ef9a0904f757d9f7bbb7c0ea825b54ce30"
+    },
+    {
+      "id": "CHANGE-20261023-012",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "path": "docs/architecture/production-readiness/TRACKING.json",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Ghi CI lỗi, bản vá dependency và catalogue; afterHash dùng payload trước self-audit có gzip khôi phục.",
+      "beforeHash": "2f87dbe0eee500e6c2f97998f206838d6d626b6446f2e18bdfdff7d6d9cbab6c",
+      "afterHash": "f60879f5f145fcb7a8022e6388b20610e708e3325862a28a13359f5f005b881a",
+      "afterHashBasis": "docs/architecture/production-readiness/evidence/B07/repository-consolidation-dependency-tracking-payload-2026-10-23.json.gz",
+      "evidenceIds": [
+        "EV-20261023-005",
+        "EV-20261023-006"
+      ],
+      "commit": null
     }
   ],
   "evidence": [
@@ -374844,6 +374900,41 @@
       "result": "pass",
       "artifact": "docs/architecture/production-readiness/evidence/B07/repository-consolidation-review-2026-10-23.json",
       "notes": "Ủy quyền merge/push/xóa nhánh có điều kiện; không mở quyền deploy hoặc công bố WIP."
+    },
+    {
+      "id": "EV-20261023-005",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "kind": "ci",
+      "commandOrSteps": "GitHub CI #274: Static and build gates / Dependency audit",
+      "environment": "GitHub Ubuntu24.04/Node22.23.3/npm10.9.9",
+      "observedAt": "2026-10-23T12:07:31.679Z",
+      "sourceHead": "415642dbeada26a856134cf7df895bfccfcc3c2e",
+      "dirtyFileHashes": {},
+      "expected": "npm audit --audit-level=high exit0 trước thu gọn nhánh.",
+      "actual": "FAIL: DOMPurify<=3.4.16 critical; Vitest4 moderate. Artifact tải về khớp byte count/digest và source SHA.",
+      "result": "fail",
+      "artifact": "docs/architecture/production-readiness/evidence/B07/repository-consolidation-dependency-audit-2026-10-23.json",
+      "notes": "Giữ bằng chứng lỗi; không xóa nhánh hoặc hạ gate để vượt lỗi này."
+    },
+    {
+      "id": "EV-20261023-006",
+      "taskId": "B07",
+      "stepId": "B07.03",
+      "kind": "dependency_audit",
+      "commandOrSteps": "npm update dompurify --package-lock-only --ignore-scripts; giữ lại metadata Linux không liên quan; npm audit --package-lock-only --audit-level=high --json",
+      "environment": "Local Windows/Node24.19.0/npm10.9.9; bản vá3.4.17 xác minh từ upstream advisory/npm metadata",
+      "observedAt": "2026-10-23T12:07:31.679Z",
+      "sourceHead": "415642dbeada26a856134cf7df895bfccfcc3c2e",
+      "dirtyFileHashes": {
+        "package-lock.json": "79ca704e60a0585255628ed7cdc6f488d262bbe64286aace43e2a05279e34633"
+      },
+      "expected": "Chỉ đổi entry DOMPurify, giữ manifest/gate; không còn high/critical.",
+      "actual": "Đúng1 package entry3.4.16->3.4.17;3 dòng đổi;package.json và metadata Linux giữ nguyên. Audit exit0:0high/0critical,4moderate.",
+      "result": "pass",
+      "artifact": "docs/architecture/production-readiness/evidence/B07/repository-consolidation-dependency-audit-2026-10-23.json",
+      "notes": "Audit chạy trước source commit; hash được đối chiếu với blob be4d72ef. Chưa dùng local lock audit thay full hosted CI.",
+      "committedSourceHead": "be4d72ef9a0904f757d9f7bbb7c0ea825b54ce30"
     }
   ],
   "decisions": [
@@ -401712,6 +401803,33 @@
       ],
       "blockers": [],
       "nextAction": "Push candidate hợp nhất, xác minh full main CI và archive; chỉ sau đó thu gọn nhánh."
+    },
+    {
+      "id": "SESSION-20261023-002",
+      "startedAt": "2026-10-23T12:02:51Z",
+      "endedAt": "2026-10-23T12:07:31.679Z",
+      "sourceHeadBefore": "415642dbeada26a856134cf7df895bfccfcc3c2e",
+      "sourceHeadAfter": "be4d72ef9a0904f757d9f7bbb7c0ea825b54ce30",
+      "taskIds": [
+        "B07"
+      ],
+      "stepIds": [
+        "B07.03"
+      ],
+      "changeIds": [
+        "CHANGE-20261023-011",
+        "CHANGE-20261023-012"
+      ],
+      "evidenceIds": [
+        "EV-20261023-005",
+        "EV-20261023-006"
+      ],
+      "elapsedMinutes": null,
+      "remainingWork": [
+        "Full main CI của candidate sau bản vá; đối chiếu bảo toàn rồi mới xóa nhánh phụ."
+      ],
+      "blockers": [],
+      "nextAction": "Push source+catalogue và chờ exact-main CI; giữ mọi nhánh đến khi gate đạt."
     }
   ],
   "templates": {

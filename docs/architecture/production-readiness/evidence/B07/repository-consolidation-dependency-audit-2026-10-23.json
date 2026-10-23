@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-10-23T12:07:31.679Z",
+  "purpose": "Khắc phục dependency audit chặn closing CI; không thay ngưỡng kiểm tra.",
+  "failedRun": {
+    "id": 39950227400,
+    "number": 274,
+    "sha": "415642dbeada26a856134cf7df895bfccfcc3c2e",
+    "job": "Static and build gates",
+    "failedStep": "Dependency audit",
+    "artifact": {
+      "id": "12498994729",
+      "name": "production-static-415642dbeada26a856134cf7df895bfccfcc3c2e-1",
+      "bytes": 1134,
+      "digest": "sha256:faab567ecb73478ce5dc39e47b61744a7c190747b56e7b5eb2e6a60672b51b80",
+      "verified": true,
+      "path": "C:\\Users\\Joker-PC\\Documents\\Codex\\Work\\vittrade-react\\20261023-single-main\\outputs\\ci-artifacts\\12498994729.zip",
+      "workflowRun": {
+        "id": 39950227400,
+        "repository_id": 1378702926,
+        "head_repository_id": 1378702926,
+        "head_branch": "main",
+        "head_sha": "415642dbeada26a856134cf7df895bfccfcc3c2e"
+      }
+    }
+  },
+  "sourceCommit": "be4d72ef9a0904f757d9f7bbb7c0ea825b54ce30",
+  "dependency": "jspdf -> optional dompurify",
+  "before": {
+    "version": "3.4.16",
+    "resolved": "https://registry.npmjs.org/dompurify/-/dompurify-3.4.16.tgz",
+    "integrity": "sha512-sqo+pNp3qRhCIpbgRi1y8Tgk27Bo2Ry7w0dC1NBeNTdZChWjz9Xb/KOoZbRP/R6pQZ80Qw8YhXw13hWWBbMRnQ==",
+    "license": "(MPL-2.0 OR Apache-2.0)",
+    "optional": true,
+    "optionalDependencies": {
+      "@types/trusted-types": "^2.0.7"
+    }
+  },
+  "after": {
+    "version": "3.4.17",
+    "resolved": "https://registry.npmjs.org/dompurify/-/dompurify-3.4.17.tgz",
+    "integrity": "sha512-B/pSlYVHQ58kqISD/yDjuJ1yfzI34m1gF4lAod2bwSRhiN4K5Cl3H8Af7hqB2PmTL911tdEudnnXn5FnhRoz0w==",
+    "license": "(MPL-2.0 OR Apache-2.0)",
+    "optional": true,
+    "optionalDependencies": {
+      "@types/trusted-types": "^2.0.7"
+    }
+  },
+  "packageJsonUnchanged": true,
+  "changedPackageEntries": [
+    "node_modules/dompurify"
+  ],
+  "normalization": "Restored unrelated Linux optional libc metadata to its original values; only the npm-resolved DOMPurify record changes.",
+  "advisories": [
+    "https://github.com/advisories/GHSA-cg2g-xh64-v4q7",
+    "https://github.com/advisories/GHSA-mrv2-3pqr-j5jr",
+    "https://github.com/advisories/GHSA-c6gr-qvv4-5v3f"
+  ],
+  "localAudit": {
+    "command": "npm audit --package-lock-only --audit-level=high --json",
+    "exitCode": 0,
+    "environment": "Windows/Node24.19.0/npm10.9.9; npm runtime/cache/temp riêng trong workspace tác vụ",
+    "metadata": {
+      "vulnerabilities": {
+        "info": 0,
+        "low": 0,
+        "moderate": 4,
+        "high": 0,
+        "critical": 0,
+        "total": 4
+      },
+      "dependencies": {
+        "prod": 176,
+        "dev": 442,
+        "optional": 92,
+        "peer": 0,
+        "peerOptional": 0,
+        "total": 628
+      }
+    },
+    "log": "C:/Users/Joker-PC/Documents/Codex/Work/vittrade-react/20261023-single-main/outputs/audit-local-after.json"
+  },
+  "limits": "Lock-only local audit chứng minh dependency graph không còn high/critical theo registry tại thời điểm chạy. Installed node_modules local chưa được thay; build/runtime của bản vá phải được CI npm ci kiểm trên SHA cuối. Còn 4 moderate của Vitest theo gate hiện hành."
+}
