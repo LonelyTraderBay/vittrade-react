@@ -332,6 +332,15 @@ và qua `check-tracking.mjs` trước khi được coi là hoàn tất.
 
 #### Giao thức thi công, commit và nghiệm thu C06 — cập nhật ngày 21/10/2026
 
+**Quyết định thay thế về nhánh ngày 23/10/2026:** người dùng giao hợp nhất repo
+về một nhánh `main` sau sao lưu/thử phục hồi và rà B07/WIP. Từ mốc này, các bước
+giao candidate lên PR/remediation bên dưới chuyển sang commit/push trực tiếp
+trên `main`, kiểm CI theo sự kiện push ở đúng SHA; không yêu cầu synthetic merge
+cho một push trực tiếp. Giữ nguyên nghiệm thu theo gói, source catalogue,
+required gate `Production gates`, evidence và toàn bộ giới hạn sản phẩm.
+Quy trình đang áp dụng nằm tại [WORKFLOW](../../ai/WORKFLOW.md#phát-triển-một-người-trên-main--quyết-định-ngày-23102026).
+Quyết định này không xóa lịch sử PR, bằng chứng cũ hoặc mở quyền deploy.
+
 Giao thức này áp dụng riêng cho C06.01–C06.15 trên nhánh remediation hiện hành.
 Người dùng đã yêu cầu AI tự thực hiện tuần tự, đo trên code thật, tạo commit ký
 tên có ghi chú tiếng Việt và push từng lát cắt trước khi sang việc khác. Đây là
