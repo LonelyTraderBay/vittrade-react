@@ -340,6 +340,10 @@ cho một push trực tiếp. Giữ nguyên nghiệm thu theo gói, source catal
 required gate `Production gates`, evidence và toàn bộ giới hạn sản phẩm.
 Quy trình đang áp dụng nằm tại [WORKFLOW](../../ai/WORKFLOW.md#phát-triển-một-người-trên-main--quyết-định-ngày-23102026).
 Quyết định này không xóa lịch sử PR, bằng chứng cũ hoặc mở quyền deploy.
+Yêu cầu bổ sung ngày 24/10/2026 đưa toàn bộ lịch sử còn lại và parent WIP vào
+`main`, port phần hành vi còn thiếu theo owner hiện hành; các prototype đã bị
+thay thế được giữ trong lịch sử theo lựa chọn trực tiếp của người dùng. Xem
+[quyết định và tiêu chí đóng công việc](../../ai/WORKFLOW.md#hợp-nhất-toàn-bộ-lịch-sử-và-wip--quyết-định-ngày-24102026).
 
 Giao thức này áp dụng riêng cho C06.01–C06.15 trên nhánh remediation hiện hành.
 Người dùng đã yêu cầu AI tự thực hiện tuần tự, đo trên code thật, tạo commit ký

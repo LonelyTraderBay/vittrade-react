@@ -9907,5 +9907,14 @@
       "git diff --check"
     ]
   },
-  "branchDeletionGate": "Chỉ sau CI push success trên đúng SHA cuối origin/main và đối chiếu lại archive/WIP/object inventory. Kết quả closing CI và việc xóa nhánh được lưu trong manifest bàn giao ngoài repo để không tạo vòng commit bằng chứng."
+  "branchDeletionGate": "Chỉ sau CI push success trên đúng SHA cuối origin/main và đối chiếu lại archive/WIP/object inventory. Kết quả closing CI và việc xóa nhánh được lưu trong manifest bàn giao ngoài repo để không tạo vòng commit bằng chứng.",
+  "followupFullHistoryIntegration": {
+    "decisionDate": "2026-10-24",
+    "sourceCommit": "3e561b4d68a1ad841ac7f46bfeea21cc1ddffb67",
+    "originalCommitsNowInMain": 472,
+    "previousArchiveOnly69NowInMain": 69,
+    "originalTagsStashRefsRetained": true,
+    "reviewArtifact": "docs/architecture/production-readiness/evidence/B07/full-history-integration-review-2026-10-24.json",
+    "closingGate": "Full push CI on final SHA remains required; see closing receipt referenced by the full review."
+  }
 }

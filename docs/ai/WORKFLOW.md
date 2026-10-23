@@ -36,6 +36,24 @@ ref bảo toàn; chỉ xóa nhánh phụ sau khi CI trên SHA cuối của `main
 đối chiếu từng phần, không tự áp toàn bộ hoặc công bố lên GitHub. Checkpoint sản
 phẩm vẫn ở TRACKING, không suy hoàn tất C06/backend/UAT từ việc hợp nhất Git.
 
+### Hợp nhất toàn bộ lịch sử và WIP — quyết định ngày 24/10/2026
+
+Người dùng yêu cầu đưa cả 69 commit còn ngoài `main` và các parent index/untracked
+của WIP vào lịch sử `main`, đồng thời tích hợp hành vi còn thiếu theo owner hiện
+hành. Quyết định này thay phạm vi chỉ bảo toàn bằng archive trước đó. Giữ nguyên
+SHA gốc, tag, stash, ref bảo toàn và bản sao đã thử phục hồi; giải quyết từng
+conflict theo contract và kiểm tra bản kết hợp. Không dùng merge giữ nguyên tree
+để thay thế việc rà nội dung.
+
+Người dùng chọn giữ các prototype đã bị thay thế trong lịch sử `main`, không
+khôi phục chúng thành luồng sản phẩm. Phần tương đương hoặc được owner mới thay
+thế giữ code hiện hành; phần hành vi còn thiếu phải được port và kiểm hồi quy.
+Không áp lại hunk bỏ test, nới gate hoặc làm mất các guard mới. Bản đối chiếu
+commit/path nằm tại [evidence hợp nhất đầy đủ](../architecture/production-readiness/evidence/B07/full-history-integration-review-2026-10-24.json).
+Chỉ kết luận hoàn tất sau khi full CI theo sự kiện push đạt trên SHA cuối của
+`main`, kiểm tra lại ancestry, remote, tag/stash và khả năng phục hồi. Checkpoint
+sản phẩm, backend/staging/UAT và quyền deploy tiếp tục theo phạm vi đã có.
+
 ## 2. Chọn plugin và skill theo mục tiêu
 
 Plugin có thể cung cấp skill, công cụ hoặc kết nối dịch vụ. Việc cài hoặc có thư mục cache không chứng minh skill đã được đọc, công cụ có thể gọi hay tài khoản đã kết nối. Kiểm tra khả năng được cung cấp trong phiên hiện tại.
