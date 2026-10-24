@@ -1,6 +1,6 @@
 # Frontend performance measurement profile
 
-Status: **C02.01–C02.03 complete; no performance budget has been set.** The next step is C02.04 in [PLAN.md](PLAN.md). This profile measures local frontend behavior with development fixtures; it does not measure backend latency or production RUM.
+Status: **C02.01–C02.05 complete; no production performance budget has been set.** This profile records the local frontend measurements made with development fixtures; it does not measure backend latency or production RUM. See [TRACKING.json](TRACKING.json) for current roadmap status.
 
 ## Journeys and fixture sizes
 

@@ -1,4 +1,4 @@
-import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
+import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import { act, fireEvent, screen, waitFor } from '@testing-library/react';
@@ -10,6 +10,7 @@ import { testAuthAdapter } from '@/test/auth-test-adapter';
 import { useAuth } from '@/shared/session/useAuth';
 import type { AuthAdapter } from '@/shared/session/AuthContext';
 import type { EarnSnapshot } from '../model/earn-types';
+import { useEarnSnapshotQuery } from '../model/earn-queries';
 import { EarnPage, SavingsPage, StakingPage } from './EarnPage';
 import { EarnReceiptPage } from './EarnTransactionPages';
 
@@ -137,6 +138,53 @@ function renderEarn(
   );
   return { ...view, refreshSession: () => refreshFromProvider() };
 }
+
+function EarnSnapshotPollingProbe({ pausePolling }: { pausePolling: boolean }) {
+  const query = useEarnSnapshotQuery({ pausePolling });
+  return <p data-testid="earn-snapshot-status">{query.status}</p>;
+}
+
+describe('Earn snapshot polling', () => {
+  it('keeps one snapshot query and pauses/resumes its interval with the action state', async () => {
+    vi.useFakeTimers();
+    let requests = 0;
+    server.use(
+      http.get('*/earn/snapshot', () => {
+        requests++;
+        return HttpResponse.json(snapshot);
+      }),
+    );
+
+    const view = renderWithProviders(<EarnSnapshotPollingProbe pausePolling={false} />);
+    try {
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(0);
+      });
+      expect(screen.getByTestId('earn-snapshot-status')).toHaveTextContent('success');
+      expect(requests).toBe(1);
+
+      view.rerender(<EarnSnapshotPollingProbe pausePolling />);
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(60_000);
+      });
+      expect(screen.getByTestId('earn-snapshot-status')).toHaveTextContent('success');
+      expect(requests).toBe(1);
+
+      view.rerender(<EarnSnapshotPollingProbe pausePolling={false} />);
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(0);
+      });
+      const requestsAfterResume = requests;
+      await act(async () => {
+        await vi.advanceTimersByTimeAsync(30_000);
+      });
+      expect(requests).toBeGreaterThan(requestsAfterResume);
+    } finally {
+      view.unmount();
+      vi.useRealTimers();
+    }
+  });
+});
 
 describe('Earn page contract boundary', () => {
   it.each(['subscribe', 'redeem'] as const)(

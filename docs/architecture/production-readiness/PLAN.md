@@ -3826,7 +3826,7 @@ Report: [P2P unknown contract audit](evidence/A06/p2p-unknown-contract-audit-202
 
 Kiểm tra `scripts/generate-architecture-inventory.mjs --check` phát hiện [page-inventory.json](../page-inventory.json) cũ so với source Earn: record còn route `earn/savings/receipt`, trong khi route hiện tại là `earn/:domain/receipt`; line count hai page cũng cũ (263→271 và 359→363). Chạy generator chuẩn để tái tạo inventory, không sửa thủ công và không đổi route/source. Kết quả kiểm tra sau cập nhật pass: **129 pages, 427 routes, 149 components, 0 data modules, 32 services, 28 mocks**.
 
-Phạm vi tuân theo [AGENTS.md](../../../AGENTS.md) §8, [AI_RULES.md](../../../AI_RULES.md) v3.1 §9.1, §10, §11.1–11.2 và §19.5–19.6, cùng [WORKFLOW.md](../../ai/WORKFLOW.md): cập nhật đúng generated owner được khai báo trong TRACKING, lưu hash/evidence và giữ nguyên code nguồn. [Bằng chứng](../evidence/A06/page-inventory-regeneration-2026-10-01.json).
+Phạm vi tuân theo [AGENTS.md](../../../AGENTS.md) §8, [AI_RULES.md](../../../AI_RULES.md) v3.1 §9.1, §10, §11.1–11.2 và §19.5–19.6, cùng [WORKFLOW.md](../../ai/WORKFLOW.md): cập nhật đúng generated owner được khai báo trong TRACKING, lưu hash/evidence và giữ nguyên code nguồn. [Bằng chứng](evidence/A06/page-inventory-regeneration-2026-10-01.json).
 
 ### Contract audit A06.03 — Predictions authorization và unknown/duplicate — 2026-09-30 23:03 UTC
 

@@ -3,8 +3,8 @@
   "generatedFrom": {
     "tracking": "docs/architecture/production-readiness/TRACKING.json",
     "operationMap": "docs/architecture/production-readiness/evidence/A06/operation-mock-map-2026-09-28.json",
-    "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-    "generatedAt": "2026-10-13T15:31:19.323Z",
+    "sourceHead": "16469aa2f64f3f10bc9c770046dc8930606ade6c",
+    "generatedAt": "2026-10-24T17:21:35.597Z",
     "operationMapSha256": "22daaea2c44da7e384507fbcd118f72aea0f18bf59e65aa025e8309eef01d320",
     "runtimeEvidenceSha256": "e39cfc225cf350eb180ade4d568f20c5d6f0d750570428e1a51673ce3df2137e"
   },
@@ -15,17 +15,17 @@
     "exactHandlerMappings": 154,
     "operationsWithDirectSharedHandlerTestReferences": 21,
     "scenariosDefined": 106,
-    "scenarioRowsWithFreshBrowserEvidence": 81,
-    "scenarioRowsFullyCoveredByFreshBrowserEvidence": 38,
-    "uniqueOperationsWithFreshBrowserEvidence": 88,
+    "scenarioRowsWithFreshBrowserEvidence": 0,
+    "scenarioRowsFullyCoveredByFreshBrowserEvidence": 0,
+    "uniqueOperationsWithFreshBrowserEvidence": 0,
     "runtimeEvidenceFresh": false,
-    "currentHead": "0bdab349c2863008984c89366ba71f02b094a44a",
+    "currentHead": "16469aa2f64f3f10bc9c770046dc8930606ade6c",
     "runtimeEvidenceRevision": "historical_baseline",
-    "freshScenarioEvidenceSidecars": 81,
+    "freshScenarioEvidenceSidecars": 0,
     "registeredScenarioEvidenceSidecars": 81,
     "historicalBaselineScenarioEvidenceSidecars": 0,
     "historicalBaselineSidecarsWithCurrentSourceHashes": 0,
-    "sourceHashStaleScenarioEvidenceSidecars": 0,
+    "sourceHashStaleScenarioEvidenceSidecars": 81,
     "financialDomainsWithPendingUnknownDuplicateCases": [
       "earn",
       "p2p",
@@ -82,13 +82,7 @@
             "updateAdminFeatureFlag"
           ],
           "expectedUi": "Admin dashboards, moderation and privileged controls: A successful contract response renders the domain data and only actions allowed for the active persona.",
-          "executionStatus": "representative_browser_observed",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/admin-success-browser-check-202610131528078.json",
-          "runtimeRoute": null,
-          "runtimeObservedOperationIds": ["getAdminOverview", "getAdminFunnel", "listAdminAbTests"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 17
+          "executionStatus": "not_verified"
         },
         {
           "id": "admin.empty",
@@ -96,13 +90,7 @@
           "applicability": "required",
           "operationIds": ["getAdminFunnel", "listAdminAbTests"],
           "expectedUi": "Show an explicit no-results/no-activity state with the relevant filter or safe next action; preserve the distinction between no data and access denied.",
-          "executionStatus": "browser_verified",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/admin-empty-browser-check-202610131528058.json",
-          "runtimeRoute": null,
-          "runtimeObservedOperationIds": ["getAdminFunnel", "listAdminAbTests"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 17
+          "executionStatus": "not_verified"
         },
         {
           "id": "admin.loading",
@@ -110,13 +98,7 @@
           "applicability": "required",
           "operationIds": ["getAdminOverview", "getAdminFunnel", "listAdminAbTests"],
           "expectedUi": "Show an observable loading state; do not flash a false empty state or stale conflicting data.",
-          "executionStatus": "browser_verified",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/admin-loading-browser-check-202610131528074.json",
-          "runtimeRoute": null,
-          "runtimeObservedOperationIds": ["getAdminOverview", "getAdminFunnel", "listAdminAbTests"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 17
+          "executionStatus": "not_verified"
         },
         {
           "id": "admin.error",
@@ -130,13 +112,7 @@
             "updateAdminFeatureFlag"
           ],
           "expectedUi": "Show a visible recoverable error and retry path; do not silently substitute fixtures or mutate the UI as if the request succeeded.",
-          "executionStatus": "representative_browser_observed",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/admin-error-browser-check-2026-10-13-financial-1791905275074.json",
-          "runtimeRoute": null,
-          "runtimeObservedOperationIds": ["getAdminOverview", "getAdminFunnel", "listAdminAbTests"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 19
+          "executionStatus": "not_verified"
         },
         {
           "id": "admin.unauthorized",
@@ -150,13 +126,7 @@
             "updateAdminFeatureFlag"
           ],
           "expectedUi": "For a secured operation returning 401, clear/restore protected session state and route to authentication; do not expose stale protected data.",
-          "executionStatus": "representative_browser_observed",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/admin-unauthorized-browser-check-2026-10-13-financial-1791905275074.json",
-          "runtimeRoute": null,
-          "runtimeObservedOperationIds": ["getAdminFunnel", "getAdminOverview", "listAdminAbTests"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 24
+          "executionStatus": "not_verified"
         },
         {
           "id": "admin.forbidden",
@@ -170,13 +140,7 @@
             "updateAdminFeatureFlag"
           ],
           "expectedUi": "For a secured operation returning 403, show an explicit permission-denied state; do not present it as an empty successful result.",
-          "executionStatus": "representative_browser_observed",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/admin-forbidden-browser-check-202610131528058.json",
-          "runtimeRoute": null,
-          "runtimeObservedOperationIds": ["getAdminOverview", "getAdminFunnel", "listAdminAbTests"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 17
+          "executionStatus": "not_verified"
         }
       ]
     },
@@ -205,18 +169,7 @@
             "joinArenaChallenge"
           ],
           "expectedUi": "Arena discovery, challenge detail and join flow: A successful contract response renders the domain data and only actions allowed for the active persona.",
-          "executionStatus": "browser_verified",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/arena-success-browser-check-202610131528157.json",
-          "runtimeRoute": null,
-          "runtimeObservedOperationIds": [
-            "getArenaDiscovery",
-            "getArenaMode",
-            "getArenaChallenge",
-            "joinArenaChallenge"
-          ],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 19
+          "executionStatus": "not_verified"
         },
         {
           "id": "arena.empty",
@@ -224,13 +177,7 @@
           "applicability": "required",
           "operationIds": ["getArenaDiscovery"],
           "expectedUi": "Show no available challenges without implying join failure; joining still requires an authenticated eligible persona.",
-          "executionStatus": "browser_verified",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/arena-empty-browser-check-202610131528115.json",
-          "runtimeRoute": null,
-          "runtimeObservedOperationIds": ["getArenaDiscovery"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 14
+          "executionStatus": "not_verified"
         },
         {
           "id": "arena.loading",
@@ -243,13 +190,7 @@
             "joinArenaChallenge"
           ],
           "expectedUi": "Show an observable loading state; do not flash a false empty state or stale conflicting data.",
-          "executionStatus": "representative_browser_observed",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/arena-loading-browser-check-202610131528129.json",
-          "runtimeRoute": null,
-          "runtimeObservedOperationIds": ["getArenaDiscovery"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 15
+          "executionStatus": "not_verified"
         },
         {
           "id": "arena.error",
@@ -262,13 +203,7 @@
             "joinArenaChallenge"
           ],
           "expectedUi": "Show a visible recoverable error and retry path; do not silently substitute fixtures or mutate the UI as if the request succeeded.",
-          "executionStatus": "representative_browser_observed",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/arena-error-browser-check-202610131528124.json",
-          "runtimeRoute": null,
-          "runtimeObservedOperationIds": ["getArenaDiscovery"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 17
+          "executionStatus": "not_verified"
         },
         {
           "id": "arena.unauthorized",
@@ -349,13 +284,7 @@
             "confirmPasswordReset"
           ],
           "expectedUi": "Registration, login, MFA, session and recovery: A successful contract response renders the domain data and only actions allowed for the active persona.",
-          "executionStatus": "representative_browser_observed",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/auth-success-current-head-browser-check-202610131528186.json",
-          "runtimeRoute": null,
-          "runtimeObservedOperationIds": ["login"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 15
+          "executionStatus": "not_verified"
         },
         {
           "id": "auth.empty",
@@ -378,13 +307,7 @@
             "confirmPasswordReset"
           ],
           "expectedUi": "Use a form-ready state; do not show an empty data table for an authentication flow.",
-          "executionStatus": "representative_browser_observed",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/auth-empty-current-head-browser-check-202610131528164.json",
-          "runtimeRoute": null,
-          "runtimeObservedOperationIds": ["getSession"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 17
+          "executionStatus": "not_verified"
         },
         {
           "id": "auth.loading",
@@ -407,13 +330,7 @@
             "confirmPasswordReset"
           ],
           "expectedUi": "Show an observable loading state; do not flash a false empty state or stale conflicting data.",
-          "executionStatus": "representative_browser_observed",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/auth-loading-current-head-browser-check-202610131528177.json",
-          "runtimeRoute": null,
-          "runtimeObservedOperationIds": ["getSession"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 17
+          "executionStatus": "not_verified"
         },
         {
           "id": "auth.error",
@@ -436,13 +353,7 @@
             "confirmPasswordReset"
           ],
           "expectedUi": "Show a visible recoverable error and retry path; do not silently substitute fixtures or mutate the UI as if the request succeeded.",
-          "executionStatus": "representative_browser_observed",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/auth-error-current-head-browser-check-202610131528165.json",
-          "runtimeRoute": null,
-          "runtimeObservedOperationIds": ["login"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 12
+          "executionStatus": "not_verified"
         },
         {
           "id": "auth.unauthorized",
@@ -459,13 +370,7 @@
             "changePassword"
           ],
           "expectedUi": "For a secured operation returning 401, clear/restore protected session state and route to authentication; do not expose stale protected data.",
-          "executionStatus": "representative_browser_observed",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/auth-unauthorized-current-head-browser-check-202610131528188.json",
-          "runtimeRoute": null,
-          "runtimeObservedOperationIds": ["getSession"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 15
+          "executionStatus": "not_verified"
         },
         {
           "id": "auth.forbidden",
@@ -513,19 +418,7 @@
             "deleteDCAPlan"
           ],
           "expectedUi": "DCA overview and plan lifecycle: A successful contract response renders the domain data and only actions allowed for the active persona.",
-          "executionStatus": "browser_verified",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/dca-success-current-head-browser-check-202610131528249.json",
-          "runtimeRoute": "/w/dca",
-          "runtimeObservedOperationIds": [
-            "createDCAPlan",
-            "deleteDCAPlan",
-            "getDCAAdvancedOverview",
-            "getDCASnapshot",
-            "updateDCAPlan"
-          ],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 18
+          "executionStatus": "not_verified"
         },
         {
           "id": "dca.empty",
@@ -539,13 +432,7 @@
             "deleteDCAPlan"
           ],
           "expectedUi": "Show an empty-plan onboarding action; never imply a recurring purchase has executed when only a plan exists.",
-          "executionStatus": "representative_browser_observed",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/dca-empty-current-head-browser-check-202610131528214.json",
-          "runtimeRoute": "/w/dca",
-          "runtimeObservedOperationIds": ["getDCASnapshot"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 17
+          "executionStatus": "not_verified"
         },
         {
           "id": "dca.loading",
@@ -559,13 +446,7 @@
             "deleteDCAPlan"
           ],
           "expectedUi": "Show an observable loading state; do not flash a false empty state or stale conflicting data.",
-          "executionStatus": "representative_browser_observed",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/dca-loading-current-head-browser-check-202610131528229.json",
-          "runtimeRoute": "/w/dca",
-          "runtimeObservedOperationIds": ["getDCASnapshot"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 15
+          "executionStatus": "not_verified"
         },
         {
           "id": "dca.error",
@@ -579,13 +460,7 @@
             "deleteDCAPlan"
           ],
           "expectedUi": "Show a visible recoverable error and retry path; do not silently substitute fixtures or mutate the UI as if the request succeeded.",
-          "executionStatus": "representative_browser_observed",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/dca-error-current-head-browser-check-202610131528222.json",
-          "runtimeRoute": "/w/dca",
-          "runtimeObservedOperationIds": ["getDCASnapshot"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 17
+          "executionStatus": "not_verified"
         },
         {
           "id": "dca.unauthorized",
@@ -599,13 +474,7 @@
             "deleteDCAPlan"
           ],
           "expectedUi": "For a secured operation returning 401, clear/restore protected session state and route to authentication; do not expose stale protected data.",
-          "executionStatus": "representative_browser_observed",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/dca-unauthorized-current-head-browser-check-202610131528267.json",
-          "runtimeRoute": "/w/dca",
-          "runtimeObservedOperationIds": ["getDCASnapshot"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 19
+          "executionStatus": "not_verified"
         },
         {
           "id": "dca.forbidden",
@@ -638,13 +507,7 @@
           "applicability": "required",
           "operationIds": ["searchDiscovery", "getDiscoveryTopic"],
           "expectedUi": "Search and product discovery: A successful contract response renders the domain data and only actions allowed for the active persona.",
-          "executionStatus": "representative_browser_observed",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/discovery-success-current-head-browser-check-202610131528317.json",
-          "runtimeRoute": "/w/search",
-          "runtimeObservedOperationIds": ["searchDiscovery"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 14
+          "executionStatus": "not_verified"
         },
         {
           "id": "discovery.empty",
@@ -652,13 +515,7 @@
           "applicability": "required",
           "operationIds": ["searchDiscovery"],
           "expectedUi": "Show no-results guidance and allow query/filter adjustment; keep it distinct from request failure.",
-          "executionStatus": "browser_verified",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/discovery-empty-current-head-browser-check-202610131528268.json",
-          "runtimeRoute": "/w/search",
-          "runtimeObservedOperationIds": ["searchDiscovery"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 14
+          "executionStatus": "not_verified"
         },
         {
           "id": "discovery.loading",
@@ -666,13 +523,7 @@
           "applicability": "required",
           "operationIds": ["searchDiscovery", "getDiscoveryTopic"],
           "expectedUi": "Show an observable loading state; do not flash a false empty state or stale conflicting data.",
-          "executionStatus": "representative_browser_observed",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/discovery-loading-current-head-browser-check-202610131528288.json",
-          "runtimeRoute": "/w/search",
-          "runtimeObservedOperationIds": ["searchDiscovery"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 14
+          "executionStatus": "not_verified"
         },
         {
           "id": "discovery.error",
@@ -680,13 +531,7 @@
           "applicability": "required",
           "operationIds": ["searchDiscovery", "getDiscoveryTopic"],
           "expectedUi": "Show a visible recoverable error and retry path; do not silently substitute fixtures or mutate the UI as if the request succeeded.",
-          "executionStatus": "representative_browser_observed",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/discovery-error-current-head-browser-check-202610131528280.json",
-          "runtimeRoute": "/w/search",
-          "runtimeObservedOperationIds": ["searchDiscovery"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 14
+          "executionStatus": "not_verified"
         },
         {
           "id": "discovery.unauthorized",
@@ -731,18 +576,7 @@
             "redeemEarnPosition"
           ],
           "expectedUi": "Earn positions, subscriptions, redemptions and transactions: A successful contract response renders the domain data and only actions allowed for the active persona.",
-          "executionStatus": "browser_verified",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/earn-success-current-head-browser-check-202610131528367.json",
-          "runtimeRoute": "/w/earn/savings",
-          "runtimeObservedOperationIds": [
-            "createEarnSubscription",
-            "getEarnSnapshot",
-            "listEarnTransactions",
-            "redeemEarnPosition"
-          ],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 17
+          "executionStatus": "not_verified"
         },
         {
           "id": "earn.empty",
@@ -750,13 +584,7 @@
           "applicability": "required",
           "operationIds": ["getEarnSnapshot", "listEarnTransactions"],
           "expectedUi": "Show no-position guidance; do not imply funds are subscribed or redeemed without a receipt/status.",
-          "executionStatus": "browser_verified",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/earn-empty-current-head-browser-check-202610131528325.json",
-          "runtimeRoute": "/w/earn/savings/portfolio",
-          "runtimeObservedOperationIds": ["getEarnSnapshot", "listEarnTransactions"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 16
+          "executionStatus": "not_verified"
         },
         {
           "id": "earn.loading",
@@ -769,18 +597,7 @@
             "redeemEarnPosition"
           ],
           "expectedUi": "Show an observable loading state; do not flash a false empty state or stale conflicting data.",
-          "executionStatus": "browser_verified",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/earn-loading-current-head-browser-check-202610131528334.json",
-          "runtimeRoute": "/w/earn/savings/portfolio",
-          "runtimeObservedOperationIds": [
-            "createEarnSubscription",
-            "getEarnSnapshot",
-            "listEarnTransactions",
-            "redeemEarnPosition"
-          ],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 18
+          "executionStatus": "not_verified"
         },
         {
           "id": "earn.error",
@@ -793,13 +610,7 @@
             "redeemEarnPosition"
           ],
           "expectedUi": "Show a visible recoverable error and retry path; do not silently substitute fixtures or mutate the UI as if the request succeeded.",
-          "executionStatus": "representative_browser_observed",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/earn-error-current-head-browser-check-202610131528328.json",
-          "runtimeRoute": "/w/earn/savings/portfolio",
-          "runtimeObservedOperationIds": ["getEarnSnapshot", "listEarnTransactions"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 21
+          "executionStatus": "not_verified"
         },
         {
           "id": "earn.unauthorized",
@@ -812,13 +623,7 @@
             "redeemEarnPosition"
           ],
           "expectedUi": "For a secured operation returning 401, clear/restore protected session state and route to authentication; do not expose stale protected data.",
-          "executionStatus": "representative_browser_observed",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/earn-unauthorized-current-head-browser-check-202610131528392.json",
-          "runtimeRoute": "/w/earn/savings/portfolio",
-          "runtimeObservedOperationIds": ["getEarnSnapshot", "listEarnTransactions"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 22
+          "executionStatus": "not_verified"
         },
         {
           "id": "earn.forbidden",
@@ -850,17 +655,7 @@
             }
           ],
           "expectedUi": "Render only the pending/request-in-flight status defined by the contract; disable duplicate finalization while unresolved and show a stable receipt/reference when available.",
-          "executionStatus": "browser_verified",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/earn-pending-current-head-browser-check-202610131528342.json",
-          "runtimeRoute": "/w/earn/savings",
-          "runtimeObservedOperationIds": [
-            "createEarnSubscription",
-            "listEarnTransactions",
-            "redeemEarnPosition"
-          ],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 23
+          "executionStatus": "not_verified"
         },
         {
           "id": "earn.unknown",
@@ -917,13 +712,7 @@
           "applicability": "required",
           "operationIds": ["listLaunchpadProjects", "getLaunchpadProject"],
           "expectedUi": "Launchpad project list and project detail: A successful contract response renders the domain data and only actions allowed for the active persona.",
-          "executionStatus": "browser_verified",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/launchpad-success-current-head-browser-check-202610131528483.json",
-          "runtimeRoute": null,
-          "runtimeObservedOperationIds": ["getLaunchpadProject", "listLaunchpadProjects"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 25
+          "executionStatus": "not_verified"
         },
         {
           "id": "launchpad.empty",
@@ -931,13 +720,7 @@
           "applicability": "required",
           "operationIds": ["listLaunchpadProjects", "getLaunchpadProject"],
           "expectedUi": "Show no eligible projects and the eligibility reason if known; do not invent purchase capabilities absent from the API contract.",
-          "executionStatus": "representative_browser_observed",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/launchpad-empty-current-head-browser-check-202610131528411.json",
-          "runtimeRoute": null,
-          "runtimeObservedOperationIds": ["listLaunchpadProjects"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 26
+          "executionStatus": "not_verified"
         },
         {
           "id": "launchpad.loading",
@@ -945,13 +728,7 @@
           "applicability": "required",
           "operationIds": ["listLaunchpadProjects", "getLaunchpadProject"],
           "expectedUi": "Show an observable loading state; do not flash a false empty state or stale conflicting data.",
-          "executionStatus": "representative_browser_observed",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/launchpad-loading-current-head-browser-check-202610131528466.json",
-          "runtimeRoute": null,
-          "runtimeObservedOperationIds": ["listLaunchpadProjects"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 26
+          "executionStatus": "not_verified"
         },
         {
           "id": "launchpad.error",
@@ -959,13 +736,7 @@
           "applicability": "required",
           "operationIds": ["listLaunchpadProjects", "getLaunchpadProject"],
           "expectedUi": "Show a visible recoverable error and retry path; do not silently substitute fixtures or mutate the UI as if the request succeeded.",
-          "executionStatus": "representative_browser_observed",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/launchpad-error-current-head-browser-check-202610131528426.json",
-          "runtimeRoute": null,
-          "runtimeObservedOperationIds": ["listLaunchpadProjects"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 19
+          "executionStatus": "not_verified"
         },
         {
           "id": "launchpad.unauthorized",
@@ -1046,36 +817,7 @@
             "deleteMarketWatchlistItem"
           ],
           "expectedUi": "Market overview, instruments, charts, watchlist and alerts: A successful contract response renders the domain data and only actions allowed for the active persona.",
-          "executionStatus": "browser_verified",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/market-success-current-head-browser-check-20261013152851.json",
-          "runtimeRoute": null,
-          "runtimeObservedOperationIds": [
-            "addMarketWatchlistItem",
-            "createMarketPriceAlert",
-            "deleteMarketPriceAlert",
-            "deleteMarketWatchlistItem",
-            "getMarketCalendar",
-            "getMarketCandles",
-            "getMarketCorrelations",
-            "getMarketDerivatives",
-            "getMarketMovers",
-            "getMarketNews",
-            "getMarketOrderBook",
-            "getMarketOverview",
-            "getMarketPair",
-            "getMarketRecentTrades",
-            "getMarketSentiment",
-            "getMarketSignals",
-            "getMarketTokenUnlocks",
-            "getMarketWatchlist",
-            "listMarketPairs",
-            "listMarketPriceAlerts",
-            "updateMarketPriceAlert",
-            "updateMarketWatchlistItem"
-          ],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 43
+          "executionStatus": "not_verified"
         },
         {
           "id": "market.empty",
@@ -1083,13 +825,7 @@
           "applicability": "required",
           "operationIds": ["listMarketPairs"],
           "expectedUi": "Show a scoped no-data state; retain public market reads where allowed and keep private watchlist/alert access separate.",
-          "executionStatus": "browser_verified",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/market-empty-current-head-browser-check-20261013152848.json",
-          "runtimeRoute": null,
-          "runtimeObservedOperationIds": ["listMarketPairs"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 17
+          "executionStatus": "not_verified"
         },
         {
           "id": "market.loading",
@@ -1120,36 +856,7 @@
             "deleteMarketWatchlistItem"
           ],
           "expectedUi": "Show an observable loading state; do not flash a false empty state or stale conflicting data.",
-          "executionStatus": "browser_verified",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/market-loading-current-head-browser-check-20261013152850.json",
-          "runtimeRoute": "/w/markets/watchlist",
-          "runtimeObservedOperationIds": [
-            "addMarketWatchlistItem",
-            "createMarketPriceAlert",
-            "deleteMarketPriceAlert",
-            "deleteMarketWatchlistItem",
-            "getMarketCalendar",
-            "getMarketCandles",
-            "getMarketCorrelations",
-            "getMarketDerivatives",
-            "getMarketMovers",
-            "getMarketNews",
-            "getMarketOrderBook",
-            "getMarketOverview",
-            "getMarketPair",
-            "getMarketRecentTrades",
-            "getMarketSentiment",
-            "getMarketSignals",
-            "getMarketTokenUnlocks",
-            "getMarketWatchlist",
-            "listMarketPairs",
-            "listMarketPriceAlerts",
-            "updateMarketPriceAlert",
-            "updateMarketWatchlistItem"
-          ],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 21
+          "executionStatus": "not_verified"
         },
         {
           "id": "market.error",
@@ -1180,29 +887,7 @@
             "deleteMarketWatchlistItem"
           ],
           "expectedUi": "Show a visible recoverable error and retry path; do not silently substitute fixtures or mutate the UI as if the request succeeded.",
-          "executionStatus": "representative_browser_observed",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/market-error-current-head-browser-check-20261013152850.json",
-          "runtimeRoute": "/w/markets/overview",
-          "runtimeObservedOperationIds": [
-            "getMarketCalendar",
-            "getMarketCorrelations",
-            "getMarketDerivatives",
-            "getMarketMovers",
-            "getMarketNews",
-            "getMarketOrderBook",
-            "getMarketOverview",
-            "getMarketPair",
-            "getMarketRecentTrades",
-            "getMarketSentiment",
-            "getMarketSignals",
-            "getMarketTokenUnlocks",
-            "getMarketWatchlist",
-            "listMarketPairs",
-            "listMarketPriceAlerts"
-          ],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 80
+          "executionStatus": "not_verified"
         },
         {
           "id": "market.unauthorized",
@@ -1347,13 +1032,7 @@
             "sendP2PChatMessage"
           ],
           "expectedUi": "P2P ads, escrow orders, payment methods, chat, dispute and security: A successful contract response renders the domain data and only actions allowed for the active persona.",
-          "executionStatus": "representative_browser_observed",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/p2p-success-browser-check-2026-10-13-financial-1791905275074.json",
-          "runtimeRoute": "/w/p2p/escrow/p2p002",
-          "runtimeObservedOperationIds": ["getP2POrder", "getP2PAd", "createP2POrder"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 12
+          "executionStatus": "not_verified"
         },
         {
           "id": "p2p.empty",
@@ -1404,13 +1083,7 @@
             "sendP2PChatMessage"
           ],
           "expectedUi": "Show an empty marketplace/order state; preserve escrow status and do not infer payment or release from a UI action alone.",
-          "executionStatus": "representative_browser_observed",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/p2p-empty-browser-check-2026-10-13-financial-1791905275074.json",
-          "runtimeRoute": "/w/p2p/order-room",
-          "runtimeObservedOperationIds": ["listP2POrders"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 11
+          "executionStatus": "not_verified"
         },
         {
           "id": "p2p.loading",
@@ -1461,13 +1134,7 @@
             "sendP2PChatMessage"
           ],
           "expectedUi": "Show an observable loading state; do not flash a false empty state or stale conflicting data.",
-          "executionStatus": "representative_browser_observed",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/p2p-loading-browser-check-2026-10-13-financial-1791905275074.json",
-          "runtimeRoute": "/w/p2p/order-room",
-          "runtimeObservedOperationIds": ["listP2POrders"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 11
+          "executionStatus": "not_verified"
         },
         {
           "id": "p2p.error",
@@ -1518,13 +1185,7 @@
             "sendP2PChatMessage"
           ],
           "expectedUi": "Show a visible recoverable error and retry path; do not silently substitute fixtures or mutate the UI as if the request succeeded.",
-          "executionStatus": "representative_browser_observed",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/p2p-error-browser-check-2026-10-13-financial-1791905275074.json",
-          "runtimeRoute": "/w/p2p/order-room",
-          "runtimeObservedOperationIds": ["listP2POrders"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 11
+          "executionStatus": "not_verified"
         },
         {
           "id": "p2p.unauthorized",
@@ -1575,13 +1236,7 @@
             "sendP2PChatMessage"
           ],
           "expectedUi": "For a secured operation returning 401, clear/restore protected session state and route to authentication; do not expose stale protected data.",
-          "executionStatus": "representative_browser_observed",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/p2p-unauthorized-browser-check-2026-10-13-financial-1791905275074.json",
-          "runtimeRoute": null,
-          "runtimeObservedOperationIds": ["listP2POrders"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 13
+          "executionStatus": "not_verified"
         },
         {
           "id": "p2p.forbidden",
@@ -1632,13 +1287,7 @@
             "sendP2PChatMessage"
           ],
           "expectedUi": "For a secured operation returning 403, show an explicit permission-denied state; do not present it as an empty successful result.",
-          "executionStatus": "representative_browser_observed",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/p2p-forbidden-browser-check-2026-10-13-financial-1791905275074.json",
-          "runtimeRoute": "/w/p2p/escrow/p2p002",
-          "runtimeObservedOperationIds": ["getP2POrder", "createP2PReleaseChallenge"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 11
+          "executionStatus": "not_verified"
         },
         {
           "id": "p2p.pending",
@@ -1666,18 +1315,7 @@
             }
           ],
           "expectedUi": "Render only the pending/request-in-flight status defined by the contract; disable duplicate finalization while unresolved and show a stable receipt/reference when available.",
-          "executionStatus": "browser_verified",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/p2p-pending-browser-check-2026-10-13-financial-1791905275074.json",
-          "runtimeRoute": "/w/p2p/escrow/p2p002",
-          "runtimeObservedOperationIds": [
-            "createP2POrder",
-            "getP2POrder",
-            "markP2POrderPaid",
-            "releaseP2POrderEscrow"
-          ],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 13
+          "executionStatus": "not_verified"
         },
         {
           "id": "p2p.unknown",
@@ -1733,18 +1371,7 @@
             }
           ],
           "expectedUi": "For createP2POrder, markP2POrderPaid, and releaseP2POrderEscrow HTTP 409 responses, show explicit conflict guidance, keep each route, and do not resubmit automatically; refresh the affected order after mark-paid and release conflicts. This does not prove same-key replay, reconciliation, or backend behavior.",
-          "executionStatus": "browser_verified",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/p2p-duplicate-browser-check-2026-10-13-financial-1791905275074.json",
-          "runtimeRoute": "/w/p2p/escrow/p2p002",
-          "runtimeObservedOperationIds": [
-            "createP2POrder",
-            "getP2POrder",
-            "markP2POrderPaid",
-            "releaseP2POrderEscrow"
-          ],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 13
+          "executionStatus": "not_verified"
         }
       ]
     },
@@ -1781,22 +1408,7 @@
             "getPredictionOrderReceipt"
           ],
           "expectedUi": "Prediction events, orders, receipts, positions and rewards: A successful contract response renders the domain data and only actions allowed for the active persona.",
-          "executionStatus": "browser_verified",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/predictions-success-browser-check-2026-10-13-financial-1791905275074.json",
-          "runtimeRoute": "/w/markets/predictions",
-          "runtimeObservedOperationIds": [
-            "listPredictionEvents",
-            "getPredictionEvent",
-            "listPredictionPositions",
-            "listPredictionRewards",
-            "listPredictionLeaderboard",
-            "listPredictionActivity",
-            "placePredictionOrder",
-            "getPredictionOrderReceipt"
-          ],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 17
+          "executionStatus": "not_verified"
         },
         {
           "id": "predictions.empty",
@@ -1810,19 +1422,7 @@
             "listPredictionActivity"
           ],
           "expectedUi": "Show empty states for event, position, reward, leaderboard and activity collections; event detail, order placement and receipt status remain outside this empty-read scenario.",
-          "executionStatus": "browser_verified",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/predictions-empty-browser-check-2026-10-13-financial-1791905275074.json",
-          "runtimeRoute": "/w/markets/predictions",
-          "runtimeObservedOperationIds": [
-            "listPredictionEvents",
-            "listPredictionPositions",
-            "listPredictionRewards",
-            "listPredictionLeaderboard",
-            "listPredictionActivity"
-          ],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 17
+          "executionStatus": "not_verified"
         },
         {
           "id": "predictions.loading",
@@ -1838,21 +1438,7 @@
             "getPredictionOrderReceipt"
           ],
           "expectedUi": "Show an observable loading state; do not flash a false empty state or stale conflicting data.",
-          "executionStatus": "browser_verified",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/predictions-loading-browser-check-2026-10-13-financial-1791905275074.json",
-          "runtimeRoute": "/w/markets/predictions",
-          "runtimeObservedOperationIds": [
-            "listPredictionEvents",
-            "getPredictionEvent",
-            "listPredictionPositions",
-            "listPredictionRewards",
-            "listPredictionLeaderboard",
-            "listPredictionActivity",
-            "getPredictionOrderReceipt"
-          ],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 17
+          "executionStatus": "not_verified"
         },
         {
           "id": "predictions.error",
@@ -1869,13 +1455,7 @@
             "getPredictionOrderReceipt"
           ],
           "expectedUi": "Show a visible recoverable error and retry path; do not silently substitute fixtures or mutate the UI as if the request succeeded.",
-          "executionStatus": "representative_browser_observed",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/predictions-error-browser-check-fresh-2026-10-13-financial-1791905275074.json",
-          "runtimeRoute": "/w/markets/predictions",
-          "runtimeObservedOperationIds": ["listPredictionEvents"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 20
+          "executionStatus": "not_verified"
         },
         {
           "id": "predictions.unauthorized",
@@ -1892,13 +1472,7 @@
             "getPredictionOrderReceipt"
           ],
           "expectedUi": "For a secured operation returning 401, clear/restore protected session state and route to authentication; do not expose stale protected data.",
-          "executionStatus": "representative_browser_observed",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/predictions-unauthorized-browser-check-2026-10-13-financial-1791905275074-financial-1791905275074.json",
-          "runtimeRoute": null,
-          "runtimeObservedOperationIds": ["listPredictionEvents", "listPredictionPositions"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 17
+          "executionStatus": "not_verified"
         },
         {
           "id": "predictions.forbidden",
@@ -1930,13 +1504,7 @@
             }
           ],
           "expectedUi": "Render only the pending/request-in-flight status defined by the contract; disable duplicate finalization while unresolved and show a stable receipt/reference when available.",
-          "executionStatus": "browser_verified",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/predictions-pending-browser-check-2026-10-13-financial-1791905275074.json",
-          "runtimeRoute": null,
-          "runtimeObservedOperationIds": ["placePredictionOrder", "getPredictionOrderReceipt"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 16
+          "executionStatus": "not_verified"
         },
         {
           "id": "predictions.unknown",
@@ -2001,21 +1569,7 @@
             "listSubAccounts"
           ],
           "expectedUi": "Profile, KYC, settings, credentials and account controls: A successful contract response renders the domain data and only actions allowed for the active persona.",
-          "executionStatus": "browser_verified",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/profile-success-browser-check-2026-10-13-1791905389117.json",
-          "runtimeRoute": null,
-          "runtimeObservedOperationIds": [
-            "getProfile",
-            "updateProfile",
-            "listTrustedDevices",
-            "revokeDevice",
-            "setDeviceTrust",
-            "listProfileActivity",
-            "listSubAccounts"
-          ],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 22
+          "executionStatus": "not_verified"
         },
         {
           "id": "profile.empty",
@@ -2023,17 +1577,7 @@
           "applicability": "required",
           "operationIds": ["listTrustedDevices", "listProfileActivity", "listSubAccounts"],
           "expectedUi": "Show explicit empty states for Profile collections without replacing the required Profile object; do not collapse missing permission or failed load into an empty result.",
-          "executionStatus": "browser_verified",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/profile-empty-browser-check-2026-10-13-1791905378797.json",
-          "runtimeRoute": "/w/profile/devices, /w/profile/activity, /w/profile/sub-accounts",
-          "runtimeObservedOperationIds": [
-            "listTrustedDevices",
-            "listProfileActivity",
-            "listSubAccounts"
-          ],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 21
+          "executionStatus": "not_verified"
         },
         {
           "id": "profile.loading",
@@ -2046,18 +1590,7 @@
             "listSubAccounts"
           ],
           "expectedUi": "Show an observable loading state; do not flash a false empty state or stale conflicting data.",
-          "executionStatus": "browser_verified",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/profile-loading-browser-check-2026-10-13-1791905382607.json",
-          "runtimeRoute": "/w/profile/edit, /w/profile/devices, /w/profile/activity, /w/profile/sub-accounts",
-          "runtimeObservedOperationIds": [
-            "getProfile",
-            "listTrustedDevices",
-            "listProfileActivity",
-            "listSubAccounts"
-          ],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 22
+          "executionStatus": "not_verified"
         },
         {
           "id": "profile.error",
@@ -2073,18 +1606,7 @@
             "listSubAccounts"
           ],
           "expectedUi": "Show a visible recoverable error and retry path; do not silently substitute fixtures or mutate the UI as if the request succeeded.",
-          "executionStatus": "representative_browser_observed",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/profile-error-current-head-browser-check-2026-10-13-financial-1791905275074.json",
-          "runtimeRoute": "/w/profile, /w/profile/devices, /w/profile/activity, /w/profile/sub-accounts",
-          "runtimeObservedOperationIds": [
-            "getProfile",
-            "listTrustedDevices",
-            "listProfileActivity",
-            "listSubAccounts"
-          ],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 26
+          "executionStatus": "not_verified"
         },
         {
           "id": "profile.unauthorized",
@@ -2100,18 +1622,7 @@
             "listSubAccounts"
           ],
           "expectedUi": "For a secured operation returning 401, clear/restore protected session state and route to authentication; do not expose stale protected data.",
-          "executionStatus": "representative_browser_observed",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/profile-unauthorized-browser-check-2026-10-13-financial-1791905275074.json",
-          "runtimeRoute": null,
-          "runtimeObservedOperationIds": [
-            "getProfile",
-            "listProfileActivity",
-            "listSubAccounts",
-            "listTrustedDevices"
-          ],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 23
+          "executionStatus": "not_verified"
         },
         {
           "id": "profile.forbidden",
@@ -2146,13 +1657,7 @@
           "applicability": "required",
           "operationIds": ["getReferralOverview"],
           "expectedUi": "Referral overview and rewards: A successful contract response renders the domain data and only actions allowed for the active persona.",
-          "executionStatus": "browser_verified",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/referral-success-browser-check-2026-10-13-1791905395071.json",
-          "runtimeRoute": null,
-          "runtimeObservedOperationIds": ["getReferralOverview"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 20
+          "executionStatus": "not_verified"
         },
         {
           "id": "referral.empty",
@@ -2160,13 +1665,7 @@
           "applicability": "required",
           "operationIds": ["getReferralOverview"],
           "expectedUi": "Show zero referrals/rewards as an empty success state, not as a load error.",
-          "executionStatus": "browser_verified",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/referral-empty-browser-check-2026-10-13-1791905390929.json",
-          "runtimeRoute": null,
-          "runtimeObservedOperationIds": ["getReferralOverview"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 20
+          "executionStatus": "not_verified"
         },
         {
           "id": "referral.loading",
@@ -2174,13 +1673,7 @@
           "applicability": "required",
           "operationIds": ["getReferralOverview"],
           "expectedUi": "Show an observable loading state; do not flash a false empty state or stale conflicting data.",
-          "executionStatus": "browser_verified",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/referral-loading-browser-check-2026-10-13-1791905392158.json",
-          "runtimeRoute": null,
-          "runtimeObservedOperationIds": ["getReferralOverview"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 20
+          "executionStatus": "not_verified"
         },
         {
           "id": "referral.error",
@@ -2188,13 +1681,7 @@
           "applicability": "required",
           "operationIds": ["getReferralOverview"],
           "expectedUi": "Show a visible recoverable error and retry path; do not silently substitute fixtures or mutate the UI as if the request succeeded.",
-          "executionStatus": "browser_verified",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/referral-error-browser-check-2026-10-13-1791905392125.json",
-          "runtimeRoute": null,
-          "runtimeObservedOperationIds": ["getReferralOverview"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 23
+          "executionStatus": "not_verified"
         },
         {
           "id": "referral.unauthorized",
@@ -2202,13 +1689,7 @@
           "applicability": "required",
           "operationIds": ["getReferralOverview"],
           "expectedUi": "For a secured operation returning 401, clear/restore protected session state and route to authentication; do not expose stale protected data.",
-          "executionStatus": "browser_verified",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/referral-unauthorized-browser-check-2026-10-13-financial-1791905275074.json",
-          "runtimeRoute": null,
-          "runtimeObservedOperationIds": ["getReferralOverview"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 25
+          "executionStatus": "not_verified"
         },
         {
           "id": "referral.forbidden",
@@ -2249,20 +1730,7 @@
             "createSupportTicket"
           ],
           "expectedUi": "Support tickets, FAQ and help: A successful contract response renders the domain data and only actions allowed for the active persona.",
-          "executionStatus": "browser_verified",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/support-success-browser-check-2026-10-13-1791905404649.json",
-          "runtimeRoute": null,
-          "runtimeObservedOperationIds": [
-            "createSupportTicket",
-            "getHelpCenter",
-            "listNews",
-            "listNotifications",
-            "listSupportTickets",
-            "markNotificationRead"
-          ],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 29
+          "executionStatus": "not_verified"
         },
         {
           "id": "support.empty",
@@ -2277,20 +1745,7 @@
             "createSupportTicket"
           ],
           "expectedUi": "Show no-ticket guidance and a create-ticket action; keep FAQ content and ticket failures distinct.",
-          "executionStatus": "browser_verified",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/support-empty-browser-check-2026-10-13-financial-1791905275074.json",
-          "runtimeRoute": null,
-          "runtimeObservedOperationIds": [
-            "createSupportTicket",
-            "getHelpCenter",
-            "listNews",
-            "listNotifications",
-            "listSupportTickets",
-            "markNotificationRead"
-          ],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 25
+          "executionStatus": "not_verified"
         },
         {
           "id": "support.loading",
@@ -2298,18 +1753,7 @@
           "applicability": "required",
           "operationIds": ["listNews", "listNotifications", "getHelpCenter", "listSupportTickets"],
           "expectedUi": "Show an observable loading state; do not flash a false empty state or stale conflicting data.",
-          "executionStatus": "browser_verified",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/support-loading-browser-check-2026-10-13-financial-1791905275074.json",
-          "runtimeRoute": null,
-          "runtimeObservedOperationIds": [
-            "getHelpCenter",
-            "listNews",
-            "listNotifications",
-            "listSupportTickets"
-          ],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 25
+          "executionStatus": "not_verified"
         },
         {
           "id": "support.error",
@@ -2317,18 +1761,7 @@
           "applicability": "required",
           "operationIds": ["listNews", "listNotifications", "getHelpCenter", "listSupportTickets"],
           "expectedUi": "Show a visible recoverable error and retry path; do not silently substitute fixtures or mutate the UI as if the request succeeded.",
-          "executionStatus": "browser_verified",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/support-error-browser-check-2026-10-13-financial-1791905275074.json",
-          "runtimeRoute": null,
-          "runtimeObservedOperationIds": [
-            "getHelpCenter",
-            "listNews",
-            "listNotifications",
-            "listSupportTickets"
-          ],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 26
+          "executionStatus": "not_verified"
         },
         {
           "id": "support.unauthorized",
@@ -2368,13 +1801,7 @@
           "operationIds": ["createSupportTicket"],
           "contractStatusSemantics": "OpenAPI declares HTTP 201 after ticket creation; it does not declare a durable server-side pending status.",
           "expectedUi": "While createSupportTicket is in flight, show the submitting state and prevent edits or duplicate submission; after HTTP 201, render the created ticket. This verifies client request-in-flight behavior only.",
-          "executionStatus": "browser_verified",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/support-pending-browser-check-2026-10-13-financial-1791905275074.json",
-          "runtimeRoute": "/w/support",
-          "runtimeObservedOperationIds": ["createSupportTicket"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 22
+          "executionStatus": "not_verified"
         }
       ]
     },
@@ -2428,26 +1855,7 @@
             "cancelOrder"
           ],
           "expectedUi": "Order entry, open orders, positions, order history and copy trading: A successful contract response renders the domain data and only actions allowed for the active persona.",
-          "executionStatus": "representative_browser_observed",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/trading-success-browser-check-2026-10-13-financial-1791905275074.json",
-          "runtimeRoute": "/w/trade/btcusdt",
-          "runtimeObservedOperationIds": [
-            "getCopyFrontendViewStatus",
-            "listCopyProviders",
-            "getCopyProviderProfile",
-            "listCopyRelationships",
-            "createCopyRelationship",
-            "stopCopyRelationship",
-            "getTradingAnalytics",
-            "listOpenOrders",
-            "placeOrder",
-            "listOrderHistory",
-            "modifyOrder",
-            "cancelOrder"
-          ],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 44
+          "executionStatus": "not_verified"
         },
         {
           "id": "trading.empty",
@@ -2455,17 +1863,7 @@
           "applicability": "required",
           "operationIds": ["listOpenOrders", "listOpenPositions", "listOrderHistory"],
           "expectedUi": "Show no open orders/positions as a valid empty state; never treat it as proof that an order was cancelled or never submitted.",
-          "executionStatus": "browser_verified",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/trading-empty-browser-check-2026-10-13-financial-1791905275074.json",
-          "runtimeRoute": "/w/trade/positions",
-          "runtimeObservedOperationIds": [
-            "listOpenOrders",
-            "listOrderHistory",
-            "listOpenPositions"
-          ],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 22
+          "executionStatus": "not_verified"
         },
         {
           "id": "trading.loading",
@@ -2473,17 +1871,7 @@
           "applicability": "required",
           "operationIds": ["listOpenOrders", "listOpenPositions", "listOrderHistory"],
           "expectedUi": "Show an observable loading state; do not flash a false empty state or stale conflicting data.",
-          "executionStatus": "browser_verified",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/trading-loading-browser-check-2026-10-13-financial-1791905275074.json",
-          "runtimeRoute": "/w/trade/positions",
-          "runtimeObservedOperationIds": [
-            "listOpenOrders",
-            "listOrderHistory",
-            "listOpenPositions"
-          ],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 22
+          "executionStatus": "not_verified"
         },
         {
           "id": "trading.error",
@@ -2491,13 +1879,7 @@
           "applicability": "required",
           "operationIds": ["listOpenPositions"],
           "expectedUi": "Show a visible recoverable error and retry path; do not silently substitute fixtures or mutate the UI as if the request succeeded.",
-          "executionStatus": "browser_verified",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/trading-error-browser-check-2026-10-13-financial-1791905275074.json",
-          "runtimeRoute": "/w/trade/positions",
-          "runtimeObservedOperationIds": ["listOpenPositions"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 19
+          "executionStatus": "not_verified"
         },
         {
           "id": "trading.unauthorized",
@@ -2519,13 +1901,7 @@
             "cancelOrder"
           ],
           "expectedUi": "For a secured operation returning 401, clear/restore protected session state and route to authentication; do not expose stale protected data.",
-          "executionStatus": "representative_browser_observed",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/trading-unauthorized-browser-check-2026-10-13-financial-1791905275074.json",
-          "runtimeRoute": "/w/trade/positions",
-          "runtimeObservedOperationIds": ["listOpenPositions"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 17
+          "executionStatus": "not_verified"
         },
         {
           "id": "trading.forbidden",
@@ -2544,13 +1920,7 @@
             "cancelOrder"
           ],
           "expectedUi": "For a secured operation returning 403, show an explicit permission-denied state; do not present it as an empty successful result.",
-          "executionStatus": "representative_browser_observed",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/trading-forbidden-browser-check-2026-10-13-financial-1791905275074.json",
-          "runtimeRoute": "/w/trade/positions",
-          "runtimeObservedOperationIds": ["listOpenPositions"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 17
+          "executionStatus": "not_verified"
         },
         {
           "id": "trading.pending",
@@ -2579,19 +1949,7 @@
             }
           ],
           "expectedUi": "Render only the pending/request-in-flight status defined by the contract; disable duplicate finalization while unresolved and show a stable receipt/reference when available.",
-          "executionStatus": "browser_verified",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/trading-pending-browser-check-2026-10-13-financial-1791905275074.json",
-          "runtimeRoute": "/w/trade/btcusdt",
-          "runtimeObservedOperationIds": [
-            "listOpenOrders",
-            "listOrderHistory",
-            "placeOrder",
-            "modifyOrder",
-            "cancelOrder"
-          ],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 22
+          "executionStatus": "not_verified"
         },
         {
           "id": "trading.unknown",
@@ -2708,13 +2066,7 @@
             "createWalletWithdrawal"
           ],
           "expectedUi": "Balances, transactions, transfers, deposit and withdrawal: A successful contract response renders the domain data and only actions allowed for the active persona.",
-          "executionStatus": "representative_browser_observed",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/wallet-success-current-head-browser-check-202610131530328.json",
-          "runtimeRoute": "/w/wallet",
-          "runtimeObservedOperationIds": ["getWalletAssets", "getWalletTransactions"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 22
+          "executionStatus": "not_verified"
         },
         {
           "id": "wallet.empty",
@@ -2722,13 +2074,7 @@
           "applicability": "required",
           "operationIds": ["getWalletAssets", "getWalletTransactions"],
           "expectedUi": "Show an empty transaction/address state only after a successful read; preserve available balance and never report a transfer/withdrawal as complete without status evidence.",
-          "executionStatus": "browser_verified",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/wallet-empty-current-head-browser-check-202610131530225.json",
-          "runtimeRoute": "/w/wallet",
-          "runtimeObservedOperationIds": ["getWalletAssets", "getWalletTransactions"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 17
+          "executionStatus": "not_verified"
         },
         {
           "id": "wallet.loading",
@@ -2756,13 +2102,7 @@
             "createWalletWithdrawal"
           ],
           "expectedUi": "Show an observable loading state; do not flash a false empty state or stale conflicting data.",
-          "executionStatus": "representative_browser_observed",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/wallet-loading-current-head-browser-check-202610131530289.json",
-          "runtimeRoute": "/w/wallet",
-          "runtimeObservedOperationIds": ["getWalletAssets", "getWalletTransactions"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 22
+          "executionStatus": "not_verified"
         },
         {
           "id": "wallet.error",
@@ -2790,13 +2130,7 @@
             "createWalletWithdrawal"
           ],
           "expectedUi": "Show a visible recoverable error and retry path; do not silently substitute fixtures or mutate the UI as if the request succeeded.",
-          "executionStatus": "representative_browser_observed",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/wallet-error-current-head-browser-check-202610131530244.json",
-          "runtimeRoute": "/w/wallet",
-          "runtimeObservedOperationIds": ["getWalletAssets", "getWalletTransactions"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 24
+          "executionStatus": "not_verified"
         },
         {
           "id": "wallet.unauthorized",
@@ -2824,13 +2158,7 @@
             "createWalletWithdrawal"
           ],
           "expectedUi": "For a secured operation returning 401, clear/restore protected session state and route to authentication; do not expose stale protected data.",
-          "executionStatus": "representative_browser_observed",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/wallet-unauthorized-current-head-browser-check-202610131530329.json",
-          "runtimeRoute": null,
-          "runtimeObservedOperationIds": ["getWalletAssets", "getWalletTransactions"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 21
+          "executionStatus": "not_verified"
         },
         {
           "id": "wallet.forbidden",
@@ -2858,13 +2186,7 @@
             "createWalletWithdrawal"
           ],
           "expectedUi": "For a secured operation returning 403, show an explicit permission-denied state; do not present it as an empty successful result.",
-          "executionStatus": "representative_browser_observed",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/wallet-forbidden-current-head-browser-check-202610131530255.json",
-          "runtimeRoute": null,
-          "runtimeObservedOperationIds": ["getWalletAssets", "getWalletTransactions"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 22
+          "executionStatus": "not_verified"
         },
         {
           "id": "wallet.pending",
@@ -2887,13 +2209,7 @@
             }
           ],
           "expectedUi": "Render only the pending/request-in-flight status defined by the contract; disable duplicate finalization while unresolved and show a stable receipt/reference when available.",
-          "executionStatus": "representative_browser_observed",
-          "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/wallet-pending-current-head-browser-check-202610131530293.json",
-          "runtimeRoute": "/w/wallet/transfer",
-          "runtimeObservedOperationIds": ["createWalletTransfer"],
-          "runtimeEvidenceKind": "scenario-sidecar",
-          "runtimeEvidenceFresh": true,
-          "runtimeEvidenceSourceHashCount": 21
+          "executionStatus": "not_verified"
         },
         {
           "id": "wallet.unknown",
@@ -2948,18 +2264,25 @@
     "runtimeEvidence": "docs/architecture/production-readiness/evidence/A06/preview-scenario-browser-check-market-empty-2026-09-28.json",
     "runtimeEvidenceFresh": false,
     "runtimeEvidenceRevision": "historical_baseline",
-    "currentHead": "0bdab349c2863008984c89366ba71f02b094a44a",
+    "currentHead": "16469aa2f64f3f10bc9c770046dc8930606ade6c",
     "scenarioEvidenceArtifacts": [
       {
         "id": "admin.empty",
         "path": "docs/architecture/production-readiness/evidence/A06/admin-empty-browser-check-202610131528058.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 17,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/admin/pages/AdminAbTestsContractPage.tsx",
+          "src/features/admin/pages/AdminContractPages.test.tsx",
+          "src/features/admin/pages/AdminFunnelContractPage.tsx",
+          "src/features/admin/pages/AdminOverviewContractPage.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -2967,12 +2290,19 @@
         "id": "admin.error",
         "path": "docs/architecture/production-readiness/evidence/A06/admin-error-browser-check-2026-10-13-financial-1791905275074.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 19,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/admin/pages/AdminAbTestsContractPage.tsx",
+          "src/features/admin/pages/AdminFunnelContractPage.tsx",
+          "src/features/admin/pages/AdminOverviewContractPage.tsx",
+          "src/features/admin/pages/AdminQueryErrorState.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": false
       },
@@ -2980,12 +2310,19 @@
         "id": "admin.forbidden",
         "path": "docs/architecture/production-readiness/evidence/A06/admin-forbidden-browser-check-202610131528058.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 17,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/admin/pages/AdminAbTestsContractPage.tsx",
+          "src/features/admin/pages/AdminContractPages.test.tsx",
+          "src/features/admin/pages/AdminFunnelContractPage.tsx",
+          "src/features/admin/pages/AdminOverviewContractPage.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -2993,12 +2330,19 @@
         "id": "admin.loading",
         "path": "docs/architecture/production-readiness/evidence/A06/admin-loading-browser-check-202610131528074.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 17,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/admin/pages/AdminAbTestsContractPage.tsx",
+          "src/features/admin/pages/AdminContractPages.test.tsx",
+          "src/features/admin/pages/AdminFunnelContractPage.tsx",
+          "src/features/admin/pages/AdminOverviewContractPage.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3006,12 +2350,19 @@
         "id": "admin.success",
         "path": "docs/architecture/production-readiness/evidence/A06/admin-success-browser-check-202610131528078.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 17,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/admin/pages/AdminAbTestsContractPage.tsx",
+          "src/features/admin/pages/AdminContractPages.test.tsx",
+          "src/features/admin/pages/AdminFunnelContractPage.tsx",
+          "src/features/admin/pages/AdminOverviewContractPage.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3019,12 +2370,21 @@
         "id": "admin.unauthorized",
         "path": "docs/architecture/production-readiness/evidence/A06/admin-unauthorized-browser-check-2026-10-13-financial-1791905275074.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 24,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/app/components/layout/ProtectedRoute.tsx",
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/admin/pages/AdminAbTestsContractPage.tsx",
+          "src/features/admin/pages/AdminFunnelContractPage.tsx",
+          "src/features/admin/pages/AdminOverviewContractPage.tsx",
+          "src/features/admin/pages/AdminQueryErrorState.tsx",
+          "src/shared/session/AuthContext.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": false
       },
@@ -3032,12 +2392,18 @@
         "id": "arena.empty",
         "path": "docs/architecture/production-readiness/evidence/A06/arena-empty-browser-check-202610131528115.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 14,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/app/routes.ts",
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/arena/pages/ArenaDiscoveryPage.test.tsx",
+          "src/features/arena/pages/ArenaDiscoveryPage.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3045,12 +2411,19 @@
         "id": "arena.error",
         "path": "docs/architecture/production-readiness/evidence/A06/arena-error-browser-check-202610131528124.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 17,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/app/components/layout/WebSidebar.tsx",
+          "src/app/routes.ts",
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/arena/pages/ArenaDiscoveryPage.test.tsx",
+          "src/features/arena/pages/ArenaDiscoveryPage.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3058,12 +2431,19 @@
         "id": "arena.loading",
         "path": "docs/architecture/production-readiness/evidence/A06/arena-loading-browser-check-202610131528129.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 15,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/app/components/layout/WebSidebar.tsx",
+          "src/app/routes.ts",
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/arena/pages/ArenaDiscoveryPage.test.tsx",
+          "src/features/arena/pages/ArenaDiscoveryPage.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3071,12 +2451,19 @@
         "id": "arena.success",
         "path": "docs/architecture/production-readiness/evidence/A06/arena-success-browser-check-202610131528157.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 19,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/app/routes.ts",
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/arena/pages/ArenaContractPages.tsx",
+          "src/features/arena/pages/ArenaDiscoveryPage.test.tsx",
+          "src/features/arena/pages/ArenaDiscoveryPage.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3084,12 +2471,20 @@
         "id": "auth.empty",
         "path": "docs/architecture/production-readiness/evidence/A06/auth-empty-current-head-browser-check-202610131528164.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 17,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/app/components/layout/ProtectedRoute.tsx",
+          "src/app/contexts/AuthContext.tsx",
+          "src/app/routes.ts",
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/auth/pages/WebLoginPage.tsx",
+          "src/shared/session/AuthContext.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3097,12 +2492,17 @@
         "id": "auth.error",
         "path": "docs/architecture/production-readiness/evidence/A06/auth-error-current-head-browser-check-202610131528165.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 12,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/auth/pages/WebLoginPage.tsx",
+          "src/shared/session/AuthContext.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3110,12 +2510,22 @@
         "id": "auth.loading",
         "path": "docs/architecture/production-readiness/evidence/A06/auth-loading-current-head-browser-check-202610131528177.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 17,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/app/components/layout/ProtectedRoute.tsx",
+          "src/app/components/layout/WebCommandBar.tsx",
+          "src/app/components/layout/WebSidebar.tsx",
+          "src/app/contexts/AuthContext.tsx",
+          "src/app/routes.ts",
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/auth/pages/WebLoginPage.tsx",
+          "src/shared/session/AuthContext.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3123,12 +2533,20 @@
         "id": "auth.success",
         "path": "docs/architecture/production-readiness/evidence/A06/auth-success-current-head-browser-check-202610131528186.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 15,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/app/components/layout/WebCommandBar.tsx",
+          "src/app/components/layout/WebSidebar.tsx",
+          "src/app/contexts/AuthContext.tsx",
+          "src/app/routes.ts",
+          "src/dev/PreviewControls.tsx",
+          "src/features/auth/pages/WebLoginPage.tsx",
+          "src/shared/session/AuthContext.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3136,12 +2554,20 @@
         "id": "auth.unauthorized",
         "path": "docs/architecture/production-readiness/evidence/A06/auth-unauthorized-current-head-browser-check-202610131528188.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 15,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/app/components/layout/ProtectedRoute.tsx",
+          "src/app/contexts/AuthContext.tsx",
+          "src/app/routes.ts",
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/auth/pages/WebLoginPage.tsx",
+          "src/shared/session/AuthContext.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3149,12 +2575,19 @@
         "id": "dca.empty",
         "path": "docs/architecture/production-readiness/evidence/A06/dca-empty-current-head-browser-check-202610131528214.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 17,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/app/components/layout/WebCommandBar.tsx",
+          "src/app/components/layout/WebSidebar.tsx",
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/dca/components/DCACreatePlanSheet.tsx",
+          "src/features/dca/pages/DCAMainPage.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3162,12 +2595,17 @@
         "id": "dca.error",
         "path": "docs/architecture/production-readiness/evidence/A06/dca-error-current-head-browser-check-202610131528222.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 17,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/dca/pages/DCAMainPage.tsx",
+          "src/shared/ui/ErrorState.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3175,12 +2613,17 @@
         "id": "dca.loading",
         "path": "docs/architecture/production-readiness/evidence/A06/dca-loading-current-head-browser-check-202610131528229.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 15,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/dca/components/DCACreatePlanSheet.tsx",
+          "src/features/dca/pages/DCAMainPage.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3188,12 +2631,18 @@
         "id": "dca.success",
         "path": "docs/architecture/production-readiness/evidence/A06/dca-success-current-head-browser-check-202610131528249.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 18,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/dca/components/DCACreatePlanSheet.tsx",
+          "src/features/dca/components/DCAPlanCard.tsx",
+          "src/features/dca/pages/DCAMainPage.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": false
       },
@@ -3201,12 +2650,19 @@
         "id": "dca.unauthorized",
         "path": "docs/architecture/production-readiness/evidence/A06/dca-unauthorized-current-head-browser-check-202610131528267.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 19,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/app/components/layout/ProtectedRoute.tsx",
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/auth/pages/WebLoginPage.tsx",
+          "src/features/dca/pages/DCAMainPage.tsx",
+          "src/shared/session/AuthContext.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3214,12 +2670,16 @@
         "id": "discovery.empty",
         "path": "docs/architecture/production-readiness/evidence/A06/discovery-empty-current-head-browser-check-202610131528268.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 14,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/discovery/pages/DiscoveryContractPages.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3227,12 +2687,16 @@
         "id": "discovery.error",
         "path": "docs/architecture/production-readiness/evidence/A06/discovery-error-current-head-browser-check-202610131528280.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 14,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/discovery/pages/DiscoveryContractPages.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3240,12 +2704,16 @@
         "id": "discovery.loading",
         "path": "docs/architecture/production-readiness/evidence/A06/discovery-loading-current-head-browser-check-202610131528288.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 14,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/discovery/pages/DiscoveryContractPages.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3253,12 +2721,16 @@
         "id": "discovery.success",
         "path": "docs/architecture/production-readiness/evidence/A06/discovery-success-current-head-browser-check-202610131528317.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 14,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/discovery/pages/DiscoveryContractPages.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3266,12 +2738,17 @@
         "id": "earn.empty",
         "path": "docs/architecture/production-readiness/evidence/A06/earn-empty-current-head-browser-check-202610131528325.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 16,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/earn/pages/EarnHistoryPage.tsx",
+          "src/features/earn/pages/EarnPage.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": false
       },
@@ -3279,12 +2756,19 @@
         "id": "earn.error",
         "path": "docs/architecture/production-readiness/evidence/A06/earn-error-current-head-browser-check-202610131528328.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 21,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/earn/components/EarnFeatureComponents.tsx",
+          "src/features/earn/pages/EarnHistoryPage.tsx",
+          "src/features/earn/pages/EarnPage.tsx",
+          "src/shared/ui/ErrorState.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": false
       },
@@ -3292,12 +2776,18 @@
         "id": "earn.loading",
         "path": "docs/architecture/production-readiness/evidence/A06/earn-loading-current-head-browser-check-202610131528334.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 18,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/earn/components/EarnFeatureComponents.tsx",
+          "src/features/earn/pages/EarnHistoryPage.tsx",
+          "src/features/earn/pages/EarnPage.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": false
       },
@@ -3305,12 +2795,20 @@
         "id": "earn.pending",
         "path": "docs/architecture/production-readiness/evidence/A06/earn-pending-current-head-browser-check-202610131528342.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 23,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/earn/components/EarnFeatureComponents.tsx",
+          "src/features/earn/pages/EarnHistoryPage.tsx",
+          "src/features/earn/pages/EarnPage.tsx",
+          "src/features/earn/pages/EarnTransactionPages.tsx",
+          "src/shared/session/AuthContext.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": false
       },
@@ -3318,12 +2816,18 @@
         "id": "earn.success",
         "path": "docs/architecture/production-readiness/evidence/A06/earn-success-current-head-browser-check-202610131528367.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 17,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/earn/components/EarnFeatureComponents.tsx",
+          "src/features/earn/pages/EarnHistoryPage.tsx",
+          "src/features/earn/pages/EarnPage.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": false
       },
@@ -3331,12 +2835,19 @@
         "id": "earn.unauthorized",
         "path": "docs/architecture/production-readiness/evidence/A06/earn-unauthorized-current-head-browser-check-202610131528392.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 22,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/earn/pages/EarnHistoryPage.tsx",
+          "src/features/earn/pages/EarnPage.tsx",
+          "src/shared/session/AuthContext.tsx",
+          "src/shared/ui/ErrorState.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": false
       },
@@ -3344,12 +2855,20 @@
         "id": "launchpad.empty",
         "path": "docs/architecture/production-readiness/evidence/A06/launchpad-empty-current-head-browser-check-202610131528411.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 26,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/app/routes.ts",
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/auth/pages/WebLoginPage.tsx",
+          "src/features/launchpad/pages/LaunchpadContractPages.test.tsx",
+          "src/features/launchpad/pages/LaunchpadContractPages.tsx",
+          "src/shared/session/AuthContext.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3357,12 +2876,17 @@
         "id": "launchpad.error",
         "path": "docs/architecture/production-readiness/evidence/A06/launchpad-error-current-head-browser-check-202610131528426.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 19,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/launchpad/pages/LaunchpadContractPages.tsx",
+          "src/shared/session/AuthContext.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3370,12 +2894,20 @@
         "id": "launchpad.loading",
         "path": "docs/architecture/production-readiness/evidence/A06/launchpad-loading-current-head-browser-check-202610131528466.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 26,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/app/routes.ts",
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/auth/pages/WebLoginPage.tsx",
+          "src/features/launchpad/pages/LaunchpadContractPages.test.tsx",
+          "src/features/launchpad/pages/LaunchpadContractPages.tsx",
+          "src/shared/session/AuthContext.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3383,12 +2915,19 @@
         "id": "launchpad.success",
         "path": "docs/architecture/production-readiness/evidence/A06/launchpad-success-current-head-browser-check-202610131528483.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 25,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/app/routes.ts",
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/auth/pages/WebLoginPage.tsx",
+          "src/features/launchpad/pages/LaunchpadContractPages.tsx",
+          "src/shared/session/AuthContext.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3396,12 +2935,18 @@
         "id": "market.empty",
         "path": "docs/architecture/production-readiness/evidence/A06/market-empty-current-head-browser-check-20261013152848.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 17,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/app/routes.ts",
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/market/pages/MarketScreenerPage.tsx",
+          "src/shared/session/AuthContext.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3409,12 +2954,50 @@
         "id": "market.error",
         "path": "docs/architecture/production-readiness/evidence/A06/market-error-current-head-browser-check-20261013152850.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 80,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/dev/PreviewControls.test.tsx",
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/market/api/market-api.test.ts",
+          "src/features/market/api/market-stream.test.ts",
+          "src/features/market/components/DiscoverMoreSection.tsx",
+          "src/features/market/components/MarketItem.test.tsx",
+          "src/features/market/components/MarketItem.tsx",
+          "src/features/market/components/MarketListSections.tsx",
+          "src/features/market/components/MarketOverviewSections.test.tsx",
+          "src/features/market/components/MarketOverviewSections.tsx",
+          "src/features/market/pages/AdvancedChartsPage.tsx",
+          "src/features/market/pages/MarketComparisonPage.test.tsx",
+          "src/features/market/pages/MarketCorrelationPairsPage.tsx",
+          "src/features/market/pages/MarketDepthPage.tsx",
+          "src/features/market/pages/MarketEventCalendarPage.test.tsx",
+          "src/features/market/pages/MarketEventCalendarPage.tsx",
+          "src/features/market/pages/MarketHeatmapPage.tsx",
+          "src/features/market/pages/MarketHomePage.test.tsx",
+          "src/features/market/pages/MarketHomePage.tsx",
+          "src/features/market/pages/MarketListPage.test.tsx",
+          "src/features/market/pages/MarketListPage.tsx",
+          "src/features/market/pages/MarketMoversPage.tsx",
+          "src/features/market/pages/MarketOverviewPage.test.tsx",
+          "src/features/market/pages/MarketOverviewPage.tsx",
+          "src/features/market/pages/MarketPriceAlertsPage.tsx",
+          "src/features/market/pages/MarketScreenerPage.tsx",
+          "src/features/market/pages/MarketSectorsPage.test.tsx",
+          "src/features/market/pages/MarketSectorsPage.tsx",
+          "src/features/market/pages/PairDetailPage.test.tsx",
+          "src/features/market/pages/PairDetailPage.tsx",
+          "src/features/market/pages/TokenInfoPage.test.tsx",
+          "src/features/market/pages/TokenInfoPage.tsx",
+          "src/features/market/pages/TokenUnlockSchedulePage.test.tsx",
+          "src/features/market/pages/WatchlistPage.test.tsx",
+          "src/features/market/pages/WatchlistPage.tsx",
+          "src/shared/session/AuthContext.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3422,12 +3005,21 @@
         "id": "market.loading",
         "path": "docs/architecture/production-readiness/evidence/A06/market-loading-current-head-browser-check-20261013152850.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 21,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/dev/PreviewControls.test.tsx",
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/market/pages/MarketOverviewPage.test.tsx",
+          "src/features/market/pages/MarketOverviewPage.tsx",
+          "src/features/market/pages/PairDetailPage.test.tsx",
+          "src/features/market/pages/PairDetailPage.tsx",
+          "src/shared/session/AuthContext.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3435,12 +3027,32 @@
         "id": "market.success",
         "path": "docs/architecture/production-readiness/evidence/A06/market-success-current-head-browser-check-20261013152851.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 43,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/app/components/layout/WebSidebar.tsx",
+          "src/app/routes.ts",
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/market/pages/AdvancedChartsPage.tsx",
+          "src/features/market/pages/MarketCorrelationPairsPage.tsx",
+          "src/features/market/pages/MarketDepthPage.tsx",
+          "src/features/market/pages/MarketEventCalendarPage.tsx",
+          "src/features/market/pages/MarketHeatmapPage.tsx",
+          "src/features/market/pages/MarketHomePage.tsx",
+          "src/features/market/pages/MarketMoversPage.tsx",
+          "src/features/market/pages/MarketOverviewPage.tsx",
+          "src/features/market/pages/MarketPriceAlertsPage.tsx",
+          "src/features/market/pages/MarketScreenerPage.tsx",
+          "src/features/market/pages/MarketSectorsPage.tsx",
+          "src/features/market/pages/PairDetailPage.tsx",
+          "src/features/market/pages/TokenInfoPage.tsx",
+          "src/features/market/pages/WatchlistPage.tsx",
+          "src/shared/session/AuthContext.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3448,12 +3060,17 @@
         "id": "p2p.duplicate",
         "path": "docs/architecture/production-readiness/evidence/A06/p2p-duplicate-browser-check-2026-10-13-financial-1791905275074.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 13,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/p2p/pages/P2PAdDetailContractPage.tsx",
+          "src/features/p2p/pages/P2PEscrowDetailPage.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3461,12 +3078,16 @@
         "id": "p2p.empty",
         "path": "docs/architecture/production-readiness/evidence/A06/p2p-empty-browser-check-2026-10-13-financial-1791905275074.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 11,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/p2p/pages/P2POrdersContractPage.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3474,12 +3095,16 @@
         "id": "p2p.error",
         "path": "docs/architecture/production-readiness/evidence/A06/p2p-error-browser-check-2026-10-13-financial-1791905275074.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 11,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/p2p/pages/P2POrdersContractPage.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3487,12 +3112,17 @@
         "id": "p2p.forbidden",
         "path": "docs/architecture/production-readiness/evidence/A06/p2p-forbidden-browser-check-2026-10-13-financial-1791905275074.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 11,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/p2p/model/p2p-queries.ts",
+          "src/features/p2p/pages/P2PEscrowDetailPage.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3500,12 +3130,16 @@
         "id": "p2p.loading",
         "path": "docs/architecture/production-readiness/evidence/A06/p2p-loading-browser-check-2026-10-13-financial-1791905275074.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 11,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/p2p/pages/P2POrdersContractPage.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3513,12 +3147,17 @@
         "id": "p2p.pending",
         "path": "docs/architecture/production-readiness/evidence/A06/p2p-pending-browser-check-2026-10-13-financial-1791905275074.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 13,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/p2p/pages/P2PAdDetailContractPage.tsx",
+          "src/features/p2p/pages/P2PEscrowDetailPage.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3526,12 +3165,17 @@
         "id": "p2p.success",
         "path": "docs/architecture/production-readiness/evidence/A06/p2p-success-browser-check-2026-10-13-financial-1791905275074.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 12,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/p2p/pages/P2PAdDetailContractPage.tsx",
+          "src/features/p2p/pages/P2PEscrowDetailPage.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3539,12 +3183,16 @@
         "id": "p2p.unauthorized",
         "path": "docs/architecture/production-readiness/evidence/A06/p2p-unauthorized-browser-check-2026-10-13-financial-1791905275074.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 13,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/p2p/pages/P2POrdersContractPage.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3552,12 +3200,18 @@
         "id": "predictions.empty",
         "path": "docs/architecture/production-readiness/evidence/A06/predictions-empty-browser-check-2026-10-13-financial-1791905275074.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 17,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/app/routes.ts",
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/predictions/pages/PredictionContractPages.tsx",
+          "src/shared/config/env.ts"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3565,12 +3219,19 @@
         "id": "predictions.error",
         "path": "docs/architecture/production-readiness/evidence/A06/predictions-error-browser-check-fresh-2026-10-13-financial-1791905275074.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 20,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/app/routes.ts",
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/predictions/pages/PredictionContractPages.tsx",
+          "src/shared/config/env.ts",
+          "src/shared/ui/ErrorState.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3578,12 +3239,18 @@
         "id": "predictions.loading",
         "path": "docs/architecture/production-readiness/evidence/A06/predictions-loading-browser-check-2026-10-13-financial-1791905275074.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 17,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/app/routes.ts",
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/predictions/pages/PredictionContractPages.tsx",
+          "src/shared/config/env.ts"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3591,12 +3258,16 @@
         "id": "predictions.pending",
         "path": "docs/architecture/production-readiness/evidence/A06/predictions-pending-browser-check-2026-10-13-financial-1791905275074.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 16,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/predictions/pages/PredictionContractPages.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3604,12 +3275,18 @@
         "id": "predictions.success",
         "path": "docs/architecture/production-readiness/evidence/A06/predictions-success-browser-check-2026-10-13-financial-1791905275074.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 17,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/app/routes.ts",
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/predictions/pages/PredictionContractPages.tsx",
+          "src/shared/config/env.ts"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3617,12 +3294,18 @@
         "id": "predictions.unauthorized",
         "path": "docs/architecture/production-readiness/evidence/A06/predictions-unauthorized-browser-check-2026-10-13-financial-1791905275074-financial-1791905275074.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 17,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/app/routes.ts",
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/predictions/pages/PredictionContractPages.tsx",
+          "src/shared/session/AuthContext.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3630,12 +3313,19 @@
         "id": "profile.empty",
         "path": "docs/architecture/production-readiness/evidence/A06/profile-empty-browser-check-2026-10-13-1791905378797.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 21,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/app/routes.ts",
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/profile/pages/ActivityLogContractPage.tsx",
+          "src/features/profile/pages/EditProfileContractPage.tsx",
+          "src/shared/session/AuthContext.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3643,12 +3333,21 @@
         "id": "profile.error",
         "path": "docs/architecture/production-readiness/evidence/A06/profile-error-current-head-browser-check-2026-10-13-financial-1791905275074.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 26,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/app/routes.ts",
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/profile/pages/ActivityLogContractPage.tsx",
+          "src/features/profile/pages/EditProfileContractPage.tsx",
+          "src/features/profile/pages/ProfileContractPage.tsx",
+          "src/shared/session/AuthContext.tsx",
+          "src/shared/ui/ErrorState.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3656,12 +3355,19 @@
         "id": "profile.loading",
         "path": "docs/architecture/production-readiness/evidence/A06/profile-loading-browser-check-2026-10-13-1791905382607.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 22,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/app/routes.ts",
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/profile/pages/ActivityLogContractPage.tsx",
+          "src/features/profile/pages/EditProfileContractPage.tsx",
+          "src/shared/session/AuthContext.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3669,12 +3375,19 @@
         "id": "profile.success",
         "path": "docs/architecture/production-readiness/evidence/A06/profile-success-browser-check-2026-10-13-1791905389117.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 22,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/app/routes.ts",
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/profile/pages/ActivityLogContractPage.tsx",
+          "src/features/profile/pages/EditProfileContractPage.tsx",
+          "src/shared/session/AuthContext.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3682,12 +3395,20 @@
         "id": "profile.unauthorized",
         "path": "docs/architecture/production-readiness/evidence/A06/profile-unauthorized-browser-check-2026-10-13-financial-1791905275074.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 23,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/app/routes.ts",
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/profile/pages/ActivityLogContractPage.tsx",
+          "src/features/profile/pages/EditProfileContractPage.tsx",
+          "src/features/profile/pages/ProfileContractPage.tsx",
+          "src/shared/session/AuthContext.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3695,12 +3416,18 @@
         "id": "referral.empty",
         "path": "docs/architecture/production-readiness/evidence/A06/referral-empty-browser-check-2026-10-13-1791905390929.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 20,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/app/routes.ts",
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/referral/pages/ReferralContractPage.tsx",
+          "src/shared/session/AuthContext.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3708,12 +3435,19 @@
         "id": "referral.error",
         "path": "docs/architecture/production-readiness/evidence/A06/referral-error-browser-check-2026-10-13-1791905392125.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 23,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/app/routes.ts",
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/referral/pages/ReferralContractPage.tsx",
+          "src/shared/session/AuthContext.tsx",
+          "src/shared/ui/ErrorState.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": false
       },
@@ -3721,12 +3455,18 @@
         "id": "referral.loading",
         "path": "docs/architecture/production-readiness/evidence/A06/referral-loading-browser-check-2026-10-13-1791905392158.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 20,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/app/routes.ts",
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/referral/pages/ReferralContractPage.tsx",
+          "src/shared/session/AuthContext.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3734,12 +3474,18 @@
         "id": "referral.success",
         "path": "docs/architecture/production-readiness/evidence/A06/referral-success-browser-check-2026-10-13-1791905395071.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 20,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/app/routes.ts",
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/referral/pages/ReferralContractPage.tsx",
+          "src/shared/session/AuthContext.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3747,12 +3493,19 @@
         "id": "referral.unauthorized",
         "path": "docs/architecture/production-readiness/evidence/A06/referral-unauthorized-browser-check-2026-10-13-financial-1791905275074.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 25,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/app/components/layout/ProtectedRoute.tsx",
+          "src/app/routes.ts",
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/referral/pages/ReferralContractPage.tsx",
+          "src/shared/session/AuthContext.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3760,12 +3513,23 @@
         "id": "support.empty",
         "path": "docs/architecture/production-readiness/evidence/A06/support-empty-browser-check-2026-10-13-financial-1791905275074.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 25,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/app/components/layout/WebSidebar.tsx",
+          "src/app/routes.ts",
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/support/model/support-queries.ts",
+          "src/features/support/pages/HelpCenterContractPage.tsx",
+          "src/features/support/pages/NewsContractPage.tsx",
+          "src/features/support/pages/NotificationsContractPage.tsx",
+          "src/features/support/pages/SupportContractPage.tsx",
+          "src/shared/ui/layout/Header.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3773,12 +3537,23 @@
         "id": "support.error",
         "path": "docs/architecture/production-readiness/evidence/A06/support-error-browser-check-2026-10-13-financial-1791905275074.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 26,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/app/components/layout/WebSidebar.tsx",
+          "src/app/routes.ts",
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/support/model/support-queries.ts",
+          "src/features/support/pages/HelpCenterContractPage.tsx",
+          "src/features/support/pages/NewsContractPage.tsx",
+          "src/features/support/pages/NotificationsContractPage.tsx",
+          "src/features/support/pages/SupportContractPage.tsx",
+          "src/shared/ui/ErrorState.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": false
       },
@@ -3786,12 +3561,22 @@
         "id": "support.loading",
         "path": "docs/architecture/production-readiness/evidence/A06/support-loading-browser-check-2026-10-13-financial-1791905275074.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 25,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/app/components/layout/WebSidebar.tsx",
+          "src/app/routes.ts",
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/support/model/support-queries.ts",
+          "src/features/support/pages/HelpCenterContractPage.tsx",
+          "src/features/support/pages/NewsContractPage.tsx",
+          "src/features/support/pages/NotificationsContractPage.tsx",
+          "src/features/support/pages/SupportContractPage.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3799,12 +3584,19 @@
         "id": "support.pending",
         "path": "docs/architecture/production-readiness/evidence/A06/support-pending-browser-check-2026-10-13-financial-1791905275074.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 22,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/app/components/layout/WebSidebar.tsx",
+          "src/app/routes.ts",
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/support/model/support-queries.ts",
+          "src/features/support/pages/SupportContractPage.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3812,12 +3604,25 @@
         "id": "support.success",
         "path": "docs/architecture/production-readiness/evidence/A06/support-success-browser-check-2026-10-13-1791905404649.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 29,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/app/components/layout/TabletSidebar.tsx",
+          "src/app/components/layout/WebCommandBar.tsx",
+          "src/app/components/layout/WebSidebar.tsx",
+          "src/app/routes.ts",
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/support/model/support-queries.ts",
+          "src/features/support/pages/HelpCenterContractPage.tsx",
+          "src/features/support/pages/NewsContractPage.tsx",
+          "src/features/support/pages/NotificationsContractPage.tsx",
+          "src/features/support/pages/SupportContractPage.tsx",
+          "src/shared/ui/layout/Header.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3825,12 +3630,19 @@
         "id": "trading.empty",
         "path": "docs/architecture/production-readiness/evidence/A06/trading-empty-browser-check-2026-10-13-financial-1791905275074.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 22,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/app/contexts/AppContext.tsx",
+          "src/app/routes.ts",
+          "src/dev/PreviewControls.tsx",
+          "src/features/market/pages/MarketHomePage.tsx",
+          "src/features/trading/components/OpenOrdersPanel.tsx",
+          "src/features/trading/pages/OrdersHistoryPage.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3838,12 +3650,18 @@
         "id": "trading.error",
         "path": "docs/architecture/production-readiness/evidence/A06/trading-error-browser-check-2026-10-13-financial-1791905275074.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 19,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/app/contexts/AppContext.tsx",
+          "src/app/routes.ts",
+          "src/dev/PreviewControls.tsx",
+          "src/features/market/pages/MarketHomePage.tsx",
+          "src/shared/ui/ErrorState.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3851,12 +3669,18 @@
         "id": "trading.forbidden",
         "path": "docs/architecture/production-readiness/evidence/A06/trading-forbidden-browser-check-2026-10-13-financial-1791905275074.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 17,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/app/contexts/AppContext.tsx",
+          "src/app/routes.ts",
+          "src/dev/PreviewControls.tsx",
+          "src/features/market/pages/MarketHomePage.tsx",
+          "src/shared/ui/ErrorState.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3864,12 +3688,19 @@
         "id": "trading.loading",
         "path": "docs/architecture/production-readiness/evidence/A06/trading-loading-browser-check-2026-10-13-financial-1791905275074.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 22,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/app/contexts/AppContext.tsx",
+          "src/app/routes.ts",
+          "src/dev/PreviewControls.tsx",
+          "src/features/market/pages/MarketHomePage.tsx",
+          "src/features/trading/components/OpenOrdersPanel.tsx",
+          "src/features/trading/pages/OrdersHistoryPage.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3877,12 +3708,23 @@
         "id": "trading.pending",
         "path": "docs/architecture/production-readiness/evidence/A06/trading-pending-browser-check-2026-10-13-financial-1791905275074.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 22,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "docs/architecture/production-readiness/evidence/A06/run-trading-pending-browser-check.mjs",
+          "src/app/contexts/AppContext.tsx",
+          "src/app/routes.ts",
+          "src/dev/PreviewControls.tsx",
+          "src/features/market/pages/MarketHomePage.tsx",
+          "src/features/trading/components/OpenOrdersPanel.tsx",
+          "src/features/trading/components/OrderConfirmationSheet.tsx",
+          "src/features/trading/components/OrderModifySheet.tsx",
+          "src/features/trading/components/TradeTerminal.tsx",
+          "src/features/trading/components/TradingOrderEntryPanel.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3890,12 +3732,31 @@
         "id": "trading.success",
         "path": "docs/architecture/production-readiness/evidence/A06/trading-success-browser-check-2026-10-13-financial-1791905275074.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 44,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/app/contexts/AppContext.tsx",
+          "src/app/routes.ts",
+          "src/dev/PreviewControls.tsx",
+          "src/features/market/pages/MarketHomePage.tsx",
+          "src/features/trading/components/OpenOrdersPanel.tsx",
+          "src/features/trading/components/OrderConfirmationSheet.tsx",
+          "src/features/trading/components/OrderModifySheet.tsx",
+          "src/features/trading/components/TradeTerminal.tsx",
+          "src/features/trading/components/TradingOrderEntryPanel.tsx",
+          "src/features/trading/pages/ActiveCopiesContractPage.tsx",
+          "src/features/trading/pages/CopyConfigurationContractPage.tsx",
+          "src/features/trading/pages/CopyConfirmationContractPage.tsx",
+          "src/features/trading/pages/CopyProviderDetailContractPage.tsx",
+          "src/features/trading/pages/CopyTradingPage.tsx",
+          "src/features/trading/pages/OrderReceiptPage.tsx",
+          "src/features/trading/pages/PreCopyAssessmentContractPage.tsx",
+          "src/features/trading/pages/TradeAnalyticsContractPage.tsx",
+          "src/shared/session/AuthContext.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3903,12 +3764,19 @@
         "id": "trading.unauthorized",
         "path": "docs/architecture/production-readiness/evidence/A06/trading-unauthorized-browser-check-2026-10-13-financial-1791905275074.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 17,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/app/components/layout/ProtectedRoute.tsx",
+          "src/app/contexts/AppContext.tsx",
+          "src/app/routes.ts",
+          "src/dev/PreviewControls.tsx",
+          "src/features/market/pages/MarketHomePage.tsx",
+          "src/shared/session/AuthContext.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3916,12 +3784,17 @@
         "id": "wallet.empty",
         "path": "docs/architecture/production-readiness/evidence/A06/wallet-empty-current-head-browser-check-202610131530225.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 17,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/wallet/pages/WalletOverviewContractPage.tsx",
+          "src/features/wallet/pages/WalletTransactionHistoryContractPage.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": false
       },
@@ -3929,12 +3802,20 @@
         "id": "wallet.error",
         "path": "docs/architecture/production-readiness/evidence/A06/wallet-error-current-head-browser-check-202610131530244.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 24,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/app/routes.ts",
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/wallet/pages/WalletOverviewContractPage.tsx",
+          "src/features/wallet/pages/WalletTransactionHistoryContractPage.tsx",
+          "src/shared/session/AuthContext.tsx",
+          "src/shared/ui/ErrorState.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3942,12 +3823,19 @@
         "id": "wallet.forbidden",
         "path": "docs/architecture/production-readiness/evidence/A06/wallet-forbidden-current-head-browser-check-202610131530255.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 22,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/wallet/pages/WalletOverviewContractPage.tsx",
+          "src/features/wallet/pages/WalletTransactionHistoryContractPage.test.tsx",
+          "src/features/wallet/pages/WalletTransactionHistoryContractPage.tsx",
+          "src/shared/ui/ErrorState.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3955,12 +3843,20 @@
         "id": "wallet.loading",
         "path": "docs/architecture/production-readiness/evidence/A06/wallet-loading-current-head-browser-check-202610131530289.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 22,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/app/routes.ts",
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/wallet/components/WalletTransactionHistoryComponents.tsx",
+          "src/features/wallet/pages/WalletOverviewContractPage.tsx",
+          "src/features/wallet/pages/WalletTransactionHistoryContractPage.tsx",
+          "src/shared/session/AuthContext.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": false
       },
@@ -3968,12 +3864,18 @@
         "id": "wallet.pending",
         "path": "docs/architecture/production-readiness/evidence/A06/wallet-pending-current-head-browser-check-202610131530293.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 21,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/app/routes.ts",
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/wallet/pages/WalletTransferContractPage.test.tsx",
+          "src/features/wallet/pages/WalletTransferContractPage.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       },
@@ -3981,12 +3883,20 @@
         "id": "wallet.success",
         "path": "docs/architecture/production-readiness/evidence/A06/wallet-success-current-head-browser-check-202610131530328.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 22,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/app/routes.ts",
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/wallet/components/WalletTransactionHistoryComponents.tsx",
+          "src/features/wallet/pages/WalletOverviewContractPage.tsx",
+          "src/features/wallet/pages/WalletTransactionHistoryContractPage.tsx",
+          "src/shared/session/AuthContext.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": false
       },
@@ -3994,12 +3904,19 @@
         "id": "wallet.unauthorized",
         "path": "docs/architecture/production-readiness/evidence/A06/wallet-unauthorized-current-head-browser-check-202610131530329.json",
         "sourceHead": "0bdab349c2863008984c89366ba71f02b094a44a",
-        "sourceHeadRevision": "current",
+        "sourceHeadRevision": "other_or_unknown",
         "sourceHashCount": 21,
-        "sourceHashesMatchCurrent": true,
+        "sourceHashesMatchCurrent": false,
         "historicalBaselineEvidence": false,
-        "fresh": true,
-        "sourceHashMismatches": [],
+        "fresh": false,
+        "sourceHashMismatches": [
+          "src/app/components/layout/ProtectedRoute.tsx",
+          "src/dev/PreviewControls.tsx",
+          "src/dev/mocks/scenario-runtime.ts",
+          "src/features/wallet/pages/WalletOverviewContractPage.tsx",
+          "src/features/wallet/pages/WalletTransactionHistoryContractPage.tsx",
+          "src/shared/session/AuthContext.tsx"
+        ],
         "localPreview": true,
         "localMockEvidence": true
       }

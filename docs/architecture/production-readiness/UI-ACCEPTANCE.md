@@ -41,7 +41,7 @@ The machine-readable index contains **428 active route declarations**, **1465 sh
 
 Each route row includes its stable ROUTE ID, source declaration, component/page target, page IDs and checklist state, task/domain ownership, development-only classification, every resolved preview URL grouped by shell, historical route-template/runtime context, direct and operation-intersection scenario references, mapped operation IDs/names, route-level persona/fixture mapping, mock reset procedure, and user/backend status. A persona mapping documents a local test entry point; it does not prove authorization or acceptance. C05.03 still carries page-specific visual and interaction review.
 
-The current A06 matrix defines **106 scenarios** across 15 domains, but it reports **81 fresh browser rows** after source-hash validation. All **426/428** current concrete URL sets match the historical A07 preview URL sets, while **224/428** active declarations come from four source files whose hashes have since changed. A07 is therefore useful as a historical URL/fixture reference, not current runtime-route proof.
+The current A06 matrix defines **106 scenarios** across 15 domains, but it reports **0 fresh browser rows** after source-hash validation. All **426/428** current concrete URL sets match the historical A07 preview URL sets, while **224/428** active declarations come from four source files whose hashes have since changed. A07 is therefore useful as a historical URL/fixture reference, not current runtime-route proof.
 
 ## Run and inspect
 
@@ -57,8 +57,8 @@ C05.02 clean-context smoke, Chromium Chromium 153.0.8010.12, http://127.0.0.1:51
 - Route-level persona mappings assigned: **17/428**; remaining: **411**.
 - Route declarations with direct scenario references: **11/428**; references are not fresh browser verification.
 - Operation-intersection scenario candidates: **338** across 44 additional route declarations; candidates need route-owner review.
-- Fresh A06 scenario browser rows: **81/106**.
-- Historical A07 current-preview URL parity: **426/428**; declarations in changed A07 source files: **224/428** across 5 files (src/app/routeConfig.ts, src/app/routes.ts, src/features/earn/routes.ts, src/features/market/routes.ts, src/features/p2p/routes.ts).
+- Fresh A06 scenario browser rows: **0/106**.
+- Historical A07 current-preview URL parity: **426/428**; declarations in changed A07 source files: **224/428** across 6 files (src/app/pages/system/IntegrationPendingPage.tsx, src/app/routeConfig.ts, src/app/routes.ts, src/features/earn/routes.ts, src/features/market/routes.ts, src/features/p2p/routes.ts).
 - User-accepted pages: **0/128** applicable baseline pages; the route ledger separately has 331 page records. Backend operations verified: **0/154**.
 
 C05.01 index generation and C05.02 two-route clean-preview smoke are complete. C05.03 owns page-specific interaction checklists and broader route review. Do not translate route presence, fixture rendering, stale browser evidence, this two-route smoke, or the 27 production-shell E2E tests into user acceptance.
