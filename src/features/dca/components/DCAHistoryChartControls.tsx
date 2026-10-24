@@ -49,6 +49,7 @@ export function DCAHistoryChartControls({
           {/* Annotation toggle */}
           {interactive && (
             <button
+              data-tr-color-pair="primary"
               onClick={() => onToggleAnnotation()}
               className="w-8 h-8 rounded-lg flex items-center justify-center transition-all"
               style={{
@@ -57,7 +58,11 @@ export function DCAHistoryChartControls({
                   : hasAnnotations
                     ? 'rgba(59,130,246,0.1)'
                     : 'transparent',
-                color: annotationMode ? 'white' : hasAnnotations ? c.primary : c.text2,
+                color: annotationMode
+                  ? 'var(--tr-text-on-color)'
+                  : hasAnnotations
+                    ? c.primary
+                    : c.text2,
               }}
               aria-label={annotationMode ? 'Tắt ghi chú' : 'Bật ghi chú'}
               title="Ghi chú trên biểu đồ"

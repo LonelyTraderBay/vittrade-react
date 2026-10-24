@@ -3042,7 +3042,7 @@
       "domain": "trading",
       "owner": "features/trading",
       "status": "integration-pending",
-      "lines": 173,
+      "lines": 174,
       "routePaths": [
         "trade/copy-provider/:providerId/confirmation",
         "trade/copy/provider/:providerId/confirmation"
@@ -3289,7 +3289,7 @@
       "domain": "trading",
       "owner": "features/trading",
       "status": "integration-pending",
-      "lines": 116,
+      "lines": 117,
       "routePaths": [
         "trade/copy-provider/:providerId/assessment",
         "trade/copy/provider/:providerId/assessment"

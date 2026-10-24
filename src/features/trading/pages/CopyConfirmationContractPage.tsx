@@ -144,12 +144,13 @@ export function CopyConfirmationContractPage() {
           </p>
         )}
         <button
+          data-tr-color-pair="primary"
           type="button"
           disabled={!canSubmit}
           className="w-full rounded-xl py-3"
           style={{
             background: canSubmit ? colors.primary : colors.surface2,
-            color: canSubmit ? '#fff' : colors.text3,
+            color: canSubmit ? 'var(--tr-text-on-color)' : colors.text3,
             fontWeight: 700,
           }}
           onClick={submitCopyRelationship}

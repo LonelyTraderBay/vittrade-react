@@ -95,12 +95,13 @@ export function PreCopyAssessmentContractPage() {
           </div>
         </TrCard>
         <button
+          data-tr-color-pair="primary"
           type="button"
           disabled={!allChecked}
           className="w-full rounded-xl py-3"
           style={{
             background: allChecked ? colors.primary : colors.surface2,
-            color: allChecked ? '#fff' : colors.text3,
+            color: allChecked ? 'var(--tr-text-on-color)' : colors.text3,
             fontWeight: 700,
           }}
           onClick={() =>

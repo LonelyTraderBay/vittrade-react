@@ -216,6 +216,7 @@ export function P2PCreateAdForm({
           <div className="flex flex-wrap gap-2">
             {paymentOptions.map((method) => (
               <button
+                data-tr-color-pair="primary"
                 key={method}
                 type="button"
                 aria-pressed={paymentMethods.includes(method)}
@@ -317,6 +318,7 @@ export function P2PCreateAdForm({
         </p>
       )}
       <button
+        data-tr-color-pair="primary"
         type="button"
         disabled={!canWriteAds || !canSubmit || submitPending}
         onClick={onOpenConfirmation}
