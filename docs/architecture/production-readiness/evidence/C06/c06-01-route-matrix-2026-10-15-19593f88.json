@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "sourceHead": "3d5327923a813f7108b50e963f3983e1042ca94f",
+  "sourceHead": "415308789bb74e5a1e8f017a547b877cc6877922",
   "inventorySource": "docs/architecture/page-inventory.json",
   "trackingSource": "docs/architecture/production-readiness/TRACKING.json",
   "scope": {
@@ -82,22 +82,24 @@
     "dimensionCoverage": {
       "interactionStates": {
         "routeRowsByStatus": {
-          "local_ui_mock_partial_pass": 1,
-          "not_assessed": 427
+          "local_ui_mock_partial_pass": 4,
+          "not_assessed": 424
         },
-        "routeRowsWithEvidence": 1,
+        "routeRowsWithEvidence": 4,
         "evidenceIds": [
-          "EV-20261025-012"
+          "EV-20261025-012",
+          "EV-20261025-015"
         ]
       },
       "viewport": {
         "routeRowsByStatus": {
-          "local_ui_mock_partial_pass": 1,
-          "not_run": 427
+          "local_ui_mock_partial_pass": 4,
+          "not_run": 424
         },
-        "routeRowsWithEvidence": 1,
+        "routeRowsWithEvidence": 4,
         "evidenceIds": [
-          "EV-20261025-012"
+          "EV-20261025-012",
+          "EV-20261025-015"
         ]
       },
       "theme": {
@@ -517,8 +519,8 @@
       ],
       "personaMappingStatus": "not_recorded",
       "coverage": {
-        "interactionStates": "not_assessed",
-        "viewport": "not_run",
+        "interactionStates": "local_ui_mock_partial_pass",
+        "viewport": "local_ui_mock_partial_pass",
         "theme": "not_run",
         "locale": "not_established",
         "roleAndFeatureFlags": "source_classified",
@@ -565,6 +567,32 @@
           "testedAt": "2026-10-24T19:43:23.395Z",
           "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
           "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        },
+        "interactionStates": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-015",
+          "states": [
+            "loaded-result",
+            "focused-search",
+            "no-results",
+            "clear-restores-result"
+          ],
+          "notes": "Search behavior only; other page states and keyboard/AT acceptance remain open."
+        },
+        "viewport": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-015",
+          "profiles": [
+            {
+              "profile": "phone",
+              "width": 320,
+              "height": 568
+            }
+          ],
+          "testedUrls": [
+            "/w/address-book"
+          ],
+          "notes": "Search-control geometry remained inside the viewport at these tested dimensions; this is not a full-page responsive acceptance."
         }
       }
     },
@@ -12006,8 +12034,8 @@
       ],
       "personaMappingStatus": "not_recorded",
       "coverage": {
-        "interactionStates": "not_assessed",
-        "viewport": "not_run",
+        "interactionStates": "local_ui_mock_partial_pass",
+        "viewport": "local_ui_mock_partial_pass",
         "theme": "not_run",
         "locale": "not_established",
         "roleAndFeatureFlags": "source_classified",
@@ -12054,6 +12082,32 @@
           "testedAt": "2026-10-24T19:43:23.395Z",
           "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
           "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        },
+        "interactionStates": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-015",
+          "states": [
+            "loaded-result",
+            "focused-search",
+            "no-results",
+            "clear-restores-result"
+          ],
+          "notes": "Search behavior only; other page states and keyboard/AT acceptance remain open."
+        },
+        "viewport": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-015",
+          "profiles": [
+            {
+              "profile": "web",
+              "width": 1280,
+              "height": 800
+            }
+          ],
+          "testedUrls": [
+            "/w/profile/security/withdrawal-whitelist"
+          ],
+          "notes": "Search-control geometry remained inside the viewport at these tested dimensions; this is not a full-page responsive acceptance."
         }
       }
     },
@@ -18418,8 +18472,8 @@
       ],
       "personaMappingStatus": "not_recorded",
       "coverage": {
-        "interactionStates": "not_assessed",
-        "viewport": "not_run",
+        "interactionStates": "local_ui_mock_partial_pass",
+        "viewport": "local_ui_mock_partial_pass",
         "theme": "not_run",
         "locale": "not_established",
         "roleAndFeatureFlags": "source_classified",
@@ -18466,6 +18520,45 @@
           "testedAt": "2026-10-24T19:43:23.395Z",
           "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
           "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        },
+        "interactionStates": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-015",
+          "states": [
+            "loaded-result",
+            "focused-search",
+            "no-results",
+            "clear-restores-result"
+          ],
+          "notes": "Search behavior only; other page states and keyboard/AT acceptance remain open."
+        },
+        "viewport": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-015",
+          "profiles": [
+            {
+              "profile": "phone",
+              "width": 390,
+              "height": 844
+            },
+            {
+              "profile": "tablet",
+              "width": 768,
+              "height": 1024
+            },
+            {
+              "profile": "web",
+              "width": 1280,
+              "height": 800
+            }
+          ],
+          "testedUrls": [
+            "/r/wallet/address-book",
+            "/t/wallet/address-book",
+            "/wallet/address-book",
+            "/w/wallet/address-book"
+          ],
+          "notes": "Search-control geometry remained inside the viewport at these tested dimensions; this is not a full-page responsive acceptance."
         }
       }
     },
