@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
-  "sourceHead": "42b3f6a7f4ec4a87f1047f60738c4c595b00f19e",
+  "sourceHead": "1a536db615598accfe4beb47932201fcca83d77a",
   "inventorySource": "docs/architecture/page-inventory.json",
   "trackingSource": "docs/architecture/production-readiness/TRACKING.json",
   "scope": {
     "inventory": {
       "pageFiles": 130,
       "activeRouteDeclarations": 428,
-      "componentFiles": 151,
+      "componentFiles": 157,
       "dataModules": 0,
       "services": 32,
-      "mocks": 28,
+      "mocks": 29,
       "routeSourceFiles": [
         "src/app/routeConfig.ts",
         "src/app/routes.ts",

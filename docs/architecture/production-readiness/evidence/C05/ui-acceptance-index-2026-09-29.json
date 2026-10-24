@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "generatedFrom": {
     "generatedAt": "2026-09-29T16:38:37.957Z",
-    "sourceHead": "e8936f4f1062538003315972363e864a59ce515b",
+    "sourceHead": "1a536db615598accfe4beb47932201fcca83d77a",
     "inputs": {
       "tracking": {
         "path": "docs/architecture/production-readiness/TRACKING.json",
@@ -10,7 +10,7 @@
       },
       "scenarioMatrix": {
         "path": "docs/architecture/production-readiness/evidence/A06/scenario-matrix-2026-09-28.json",
-        "sha256": "5b61ce8ee1d0f14011ac342ebdd62827397bab820390e045ff09f21a3fd1be84"
+        "sha256": "2bb9df068feaa52535a088b1143c190c101d63f82539fe8f0e93362f3e6629c8"
       },
       "routeResolution": {
         "path": "docs/architecture/production-readiness/evidence/A07/route-url-resolution-2026-09-28.json",
