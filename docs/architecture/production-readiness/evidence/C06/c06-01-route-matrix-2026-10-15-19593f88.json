@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "sourceHead": "eb930bfcc6e798d0d28ba021b6a5045a97d84ae7",
+  "sourceHead": "ac49fe1c37d737b82420731a179a785c555807ec",
   "inventorySource": "docs/architecture/page-inventory.json",
   "trackingSource": "docs/architecture/production-readiness/TRACKING.json",
   "scope": {
@@ -347,7 +347,7 @@
         "viewport": "local_ui_mock_partial_pass",
         "theme": "local_ui_mock_partial_pass",
         "locale": "not_established",
-        "roleAndFeatureFlags": "source_classified",
+        "roleAndFeatureFlags": "not_classified",
         "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
       },
@@ -407,28 +407,6 @@
           ],
           "notes": "Axe selected WCAG tags reported zero violations for these states; this does not establish visual approval or full accessibility acceptance."
         },
-        "roleAndFeatureFlags": {
-          "status": "source_classified",
-          "personaId": "developer",
-          "role": "user",
-          "expectedAccess": "allow",
-          "effectivePermissions": [
-            "market:read",
-            "trading:write",
-            "wallet:read"
-          ],
-          "requiredPermissions": [],
-          "requiredRoles": [],
-          "featureFlags": [],
-          "sourceFiles": [
-            "src/app/routeConfig.ts",
-            "src/dev/mocks/handlers.ts",
-            "src/dev/mocks/personas.ts",
-            "src/features/auth/pages/TwoFASetupPage.tsx",
-            "src/features/auth/components/Web2FASetupFlow.tsx"
-          ],
-          "notes": "Authenticated MFA enrollment flow; route has no additional role, permission or feature-flag gate in the inspected frontend source. This is local source classification, not backend authorization."
-        },
         "runtime": {
           "status": "local_ui_mock_pass",
           "scope": "Local MSW authenticated developer MFA setup flow; route reachability only, not backend authorization.",
@@ -469,7 +447,7 @@
         "viewport": "local_ui_mock_partial_pass",
         "theme": "local_ui_mock_partial_pass",
         "locale": "not_established",
-        "roleAndFeatureFlags": "source_classified",
+        "roleAndFeatureFlags": "not_classified",
         "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
       },
@@ -533,28 +511,6 @@
             "backup-codes-copied"
           ],
           "notes": "Axe selected WCAG tags reported zero violations for these states; this does not establish visual approval or full accessibility acceptance."
-        },
-        "roleAndFeatureFlags": {
-          "status": "source_classified",
-          "personaId": "developer",
-          "role": "user",
-          "expectedAccess": "allow",
-          "effectivePermissions": [
-            "market:read",
-            "trading:write",
-            "wallet:read"
-          ],
-          "requiredPermissions": [],
-          "requiredRoles": [],
-          "featureFlags": [],
-          "sourceFiles": [
-            "src/app/routes.ts",
-            "src/dev/mocks/handlers.ts",
-            "src/dev/mocks/personas.ts",
-            "src/features/auth/pages/Web2FASetupPage.tsx",
-            "src/features/auth/components/Web2FASetupFlow.tsx"
-          ],
-          "notes": "Authenticated MFA enrollment flow; route has no additional role, permission or feature-flag gate in the inspected frontend source. This is local source classification, not backend authorization."
         },
         "runtime": {
           "status": "local_ui_mock_pass",
