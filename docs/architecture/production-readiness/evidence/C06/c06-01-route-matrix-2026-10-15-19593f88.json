@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "sourceHead": "a6bf8de1876bea4b41abea90b42403a2ce224002",
+  "sourceHead": "3d5327923a813f7108b50e963f3983e1042ca94f",
   "inventorySource": "docs/architecture/page-inventory.json",
   "trackingSource": "docs/architecture/production-readiness/TRACKING.json",
   "scope": {
@@ -78,6 +78,45 @@
       },
       "historicalProjectEvidenceReconciledInThisStep": false,
       "stateViewportThemeLocaleRoleCells": "Interaction-state, viewport, theme and locale cells remain pending unless separately evidenced; role/flag classification and runtime details are recorded per route below."
+    },
+    "dimensionCoverage": {
+      "interactionStates": {
+        "routeRowsByStatus": {
+          "local_ui_mock_partial_pass": 1,
+          "not_assessed": 427
+        },
+        "routeRowsWithEvidence": 1,
+        "evidenceIds": [
+          "EV-20261025-012"
+        ]
+      },
+      "viewport": {
+        "routeRowsByStatus": {
+          "local_ui_mock_partial_pass": 1,
+          "not_run": 427
+        },
+        "routeRowsWithEvidence": 1,
+        "evidenceIds": [
+          "EV-20261025-012"
+        ]
+      },
+      "theme": {
+        "routeRowsByStatus": {
+          "local_ui_mock_partial_pass": 1,
+          "not_run": 427
+        },
+        "routeRowsWithEvidence": 1,
+        "evidenceIds": [
+          "EV-20261025-012"
+        ]
+      },
+      "locale": {
+        "routeRowsByStatus": {
+          "not_established": 428
+        },
+        "routeRowsWithEvidence": 0,
+        "evidenceIds": []
+      }
     },
     "worktreePreservation": {
       "originalCheckoutBranch": "codex/frontend-readiness-remediation-20261013",
@@ -19514,9 +19553,9 @@
       ],
       "personaMappingStatus": "not_recorded",
       "coverage": {
-        "interactionStates": "not_assessed",
-        "viewport": "not_run",
-        "theme": "not_run",
+        "interactionStates": "local_ui_mock_partial_pass",
+        "viewport": "local_ui_mock_partial_pass",
+        "theme": "local_ui_mock_partial_pass",
         "locale": "not_established",
         "roleAndFeatureFlags": "source_classified",
         "runtime": "local_ui_mock_pass",
@@ -19562,6 +19601,72 @@
           "testedAt": "2026-10-24T19:43:23.395Z",
           "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
           "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        },
+        "interactionStates": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-012",
+          "testedStates": [
+            "empty-amount-validation",
+            "overbalance-validation-without-write",
+            "max-amount",
+            "valid-fixture-submit",
+            "success-feedback",
+            "invalid-field-focus-and-error-association",
+            "cta-center-hit-test",
+            "responsive-nav-clearance-and-trade-navigation",
+            "draft-and-wallet-selection-preserved-through-resize"
+          ],
+          "notAssessed": [
+            "loading-or-duplicate-submit",
+            "transport-error-or-unknown-outcome",
+            "permission-denied",
+            "locale-specific behavior",
+            "manual keyboard/focus review"
+          ],
+          "notApplicable": {
+            "searchFilterPagination": "transfer form has no list",
+            "emptyOrLargeDataset": "transfer form has no result dataset"
+          }
+        },
+        "viewport": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-012",
+          "profileCount": 10,
+          "viewportThemeCells": 20,
+          "testedWidthsCssPx": [
+            320,
+            390,
+            440,
+            767,
+            768,
+            1023,
+            1024,
+            1440
+          ],
+          "draftResizeCells": 10,
+          "responsiveNavigationClearanceCells": 8,
+          "tradeNavigationChecks": 2,
+          "notAssessed": [
+            "orientation",
+            "text scaling and zoom"
+          ]
+        },
+        "theme": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-012",
+          "modes": [
+            "light",
+            "dark"
+          ],
+          "application": "The E2E test toggles html light/dark CSS classes directly.",
+          "notAssessed": [
+            "ThemeProvider persistence",
+            "initial class timing and flicker"
+          ]
+        },
+        "locale": {
+          "status": "not_established",
+          "reason": "English fixture copy was exercised; supported product locales and runtime locale switching are not established."
         }
       }
     },
