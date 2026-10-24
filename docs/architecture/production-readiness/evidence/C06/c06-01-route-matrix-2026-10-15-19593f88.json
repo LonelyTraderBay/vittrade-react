@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "sourceHead": "1a536db615598accfe4beb47932201fcca83d77a",
+  "sourceHead": "a6bf8de1876bea4b41abea90b42403a2ce224002",
   "inventorySource": "docs/architecture/page-inventory.json",
   "trackingSource": "docs/architecture/production-readiness/TRACKING.json",
   "scope": {
@@ -67,8 +67,17 @@
         "routeRowsWithScreenshots": 0,
         "routeRowsWithA11yAutomation": 0
       },
+      "latestLocalEvidence": {
+        "routeRowsWithBrowserRuntimeChecks": 80,
+        "routeRowsWithScreenshots": 0,
+        "routeRowsWithA11yAutomation": 0,
+        "evidenceIds": [
+          "EV-20261025-007"
+        ],
+        "scope": "Local UI mock evidence only; not backend, staging, UAT, visual or accessibility acceptance."
+      },
       "historicalProjectEvidenceReconciledInThisStep": false,
-      "stateViewportThemeLocaleRoleCells": "recorded as pending/not established per route below; not runtime coverage"
+      "stateViewportThemeLocaleRoleCells": "Interaction-state, viewport, theme and locale cells remain pending unless separately evidenced; role/flag classification and runtime details are recorded per route below."
     },
     "worktreePreservation": {
       "originalCheckoutBranch": "codex/frontend-readiness-remediation-20261013",
@@ -233,7 +242,7 @@
       "reason": "C06.01 freezes scope only; browser checks are required in the pilot and rollout steps."
     }
   },
-  "matrixStatus": "baseline_only_runtime_not_run",
+  "matrixStatus": "partial_local_ui_mock_runtime_coverage",
   "routes": [
     {
       "routeId": "ROUTE-90e3f3b33e2b",
@@ -398,9 +407,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "predictions:trade"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/predictions/pages/PredictionContractPages.tsx",
+            "src/features/predictions/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -431,9 +482,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "wallet:read"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/app/routes.ts",
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/wallet/pages/AddressBookPage.tsx"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 1,
+          "uniqueAliases": 1,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -470,9 +563,54 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "deny",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "admin:read"
+          ],
+          "requiredRoles": [
+            "admin"
+          ],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/app/routeConfig.ts",
+            "src/features/admin/routes.ts",
+            "src/app/components/layout/ProtectedRoute.tsx",
+            "src/dev/mocks/personas.ts",
+            "src/dev/mocks/handlers.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -509,9 +647,54 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "deny",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "admin:read"
+          ],
+          "requiredRoles": [
+            "admin"
+          ],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/app/routeConfig.ts",
+            "src/features/admin/routes.ts",
+            "src/app/components/layout/ProtectedRoute.tsx",
+            "src/dev/mocks/personas.ts",
+            "src/dev/mocks/handlers.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -548,9 +731,54 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "deny",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "admin:read"
+          ],
+          "requiredRoles": [
+            "admin"
+          ],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/app/routeConfig.ts",
+            "src/features/admin/routes.ts",
+            "src/app/components/layout/ProtectedRoute.tsx",
+            "src/dev/mocks/personas.ts",
+            "src/dev/mocks/handlers.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -587,9 +815,54 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "deny",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "admin:read"
+          ],
+          "requiredRoles": [
+            "admin"
+          ],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/app/routeConfig.ts",
+            "src/features/admin/routes.ts",
+            "src/app/components/layout/ProtectedRoute.tsx",
+            "src/dev/mocks/personas.ts",
+            "src/dev/mocks/handlers.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -1670,9 +1943,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "predictions:trade"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/predictions/pages/PredictionContractPages.tsx",
+            "src/features/predictions/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -1748,9 +2063,55 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [],
+          "requiredRoles": [],
+          "featureFlags": [
+            {
+              "key": "dca_enabled",
+              "defaultEnabled": true,
+              "source": "src/features/dca/model/dca-feature-flags.ts"
+            }
+          ],
+          "sourceFiles": [
+            "src/app/pages/dca/DCAPage.tsx",
+            "src/features/dca/model/dca-feature-flags.ts",
+            "src/dev/mocks/personas.ts",
+            "src/dev/mocks/handlers.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -2775,9 +3136,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "earn:write"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/earn/pages/EarnPage.tsx",
+            "src/features/earn/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -2847,9 +3250,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "earn:write"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/app/routes.ts",
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/earn/pages/EarnPage.tsx"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 1,
+          "uniqueAliases": 1,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -2886,9 +3331,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "earn:write"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/earn/pages/EarnPage.tsx",
+            "src/features/earn/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -3042,9 +3529,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "earn:write"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/earn/pages/SavingsPortfolioPage.tsx",
+            "src/features/earn/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -3081,9 +3610,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "earn:write"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/earn/pages/EarnTransactionPages.tsx",
+            "src/features/earn/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -3124,9 +3695,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "earn:write"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/earn/pages/EarnTransactionPages.tsx",
+            "src/features/earn/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 8,
+          "uniqueAliases": 8,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -3163,9 +3776,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "earn:write"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/earn/pages/EarnTransactionPages.tsx",
+            "src/features/earn/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -3196,9 +3851,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "earn:write"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/app/routes.ts",
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/earn/pages/EarnPage.tsx"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 1,
+          "uniqueAliases": 1,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -3235,9 +3932,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "earn:write"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/earn/pages/EarnPage.tsx",
+            "src/features/earn/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -3313,9 +4052,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "predictions:trade"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/predictions/pages/PredictionContractPages.tsx",
+            "src/features/predictions/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -4397,9 +5178,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "predictions:trade"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/predictions/pages/PredictionContractPages.tsx",
+            "src/features/predictions/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -4974,9 +5797,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.11"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "wallet:read"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/wallet/pages/PortfolioAnalyticsContractPage.tsx",
+            "src/features/wallet/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -5923,9 +6788,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "p2p:write"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/p2p/pages/P2PAdDetailContractPage.tsx",
+            "src/features/p2p/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -5962,9 +6869,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "p2p:write"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/p2p/pages/P2PBlacklistPage.tsx",
+            "src/features/p2p/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -6001,9 +6950,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "p2p:write"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/p2p/pages/P2PBlacklistAddPage.tsx",
+            "src/features/p2p/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -6040,9 +7031,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "p2p:write"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/p2p/pages/P2PChatPage.tsx",
+            "src/features/p2p/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -6274,9 +7307,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "p2p:write"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/p2p/pages/P2PCreateAdContractPage.tsx",
+            "src/features/p2p/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -6307,9 +7382,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "p2p:write"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/p2p/pages/P2PCreateAdContractPage.tsx",
+            "src/features/p2p/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 1,
+          "uniqueAliases": 1,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -6424,9 +7541,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "p2p:write"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/p2p/pages/P2PDisputeDetailPage.tsx",
+            "src/features/p2p/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -6619,9 +7778,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "p2p:write"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/p2p/pages/P2PEscrowDetailPage.tsx",
+            "src/features/p2p/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -6736,9 +7937,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "p2p:write"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/p2p/pages/P2PExpressConfirmPage.tsx",
+            "src/features/p2p/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -7477,9 +8720,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "p2p:write"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/p2p/pages/P2PMerchantProfilePage.tsx",
+            "src/features/p2p/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -7516,9 +8801,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "p2p:write"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/p2p/pages/P2PMyAdsContractPage.tsx",
+            "src/features/p2p/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -7666,9 +8993,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "p2p:write"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/p2p/pages/P2PEscrowDetailPage.tsx",
+            "src/features/p2p/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -7705,9 +9074,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "p2p:write"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/p2p/pages/P2POrderActionPages.tsx",
+            "src/features/p2p/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -7744,9 +9155,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "p2p:write"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/p2p/pages/P2POrderActionPages.tsx",
+            "src/features/p2p/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -7783,9 +9236,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "p2p:write"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/p2p/pages/P2POrderActionPages.tsx",
+            "src/features/p2p/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -7822,9 +9317,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "p2p:write"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/p2p/pages/P2POrderActionPages.tsx",
+            "src/features/p2p/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -7861,9 +9398,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "p2p:write"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/p2p/pages/P2PPaymentMethodAddPage.tsx",
+            "src/features/p2p/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -8056,9 +9635,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "p2p:write"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/p2p/pages/P2PPaymentMethodsPage.tsx",
+            "src/features/p2p/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -8095,9 +9716,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "p2p:write"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/p2p/pages/P2PReportMerchantPage.tsx",
+            "src/features/p2p/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -8173,9 +9836,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "p2p:write"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/p2p/pages/P2P2FASettingsPage.tsx",
+            "src/features/p2p/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -8836,9 +10541,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "predictions:trade"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/predictions/pages/PredictionContractPages.tsx",
+            "src/features/predictions/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -8869,9 +10616,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "wallet:read"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/wallet/pages/PortfolioAnalyticsContractPage.tsx",
+            "src/features/wallet/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 1,
+          "uniqueAliases": 1,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -8902,9 +10691,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "predictions:trade"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/app/routes.ts",
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/predictions/pages/PredictionContractPages.tsx"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 1,
+          "uniqueAliases": 1,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -8935,9 +10766,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "predictions:trade"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/app/routes.ts",
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/predictions/pages/PredictionContractPages.tsx"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 1,
+          "uniqueAliases": 1,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -9196,9 +11069,52 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "profile:security:write",
+            "profile:write"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/app/routes.ts",
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/profile/pages/DeviceManagementContractPage.tsx"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 1,
+          "uniqueAliases": 1,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -9235,9 +11151,52 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "profile:security:write",
+            "profile:write"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/profile/pages/DeviceManagementContractPage.tsx",
+            "src/features/profile/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -9268,9 +11227,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "profile:write"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/app/routes.ts",
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/profile/pages/EditProfileContractPage.tsx"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 1,
+          "uniqueAliases": 1,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -9307,9 +11308,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "profile:write"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/profile/pages/EditProfileContractPage.tsx",
+            "src/features/profile/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -9385,9 +11428,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "predictions:trade"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/app/routeConfig.ts",
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/predictions/pages/PredictionContractPages.tsx"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -9886,9 +11971,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.12"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "wallet:read"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/wallet/pages/AddressBookPage.tsx",
+            "src/features/wallet/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 1,
+          "uniqueAliases": 1,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -10167,9 +12294,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "predictions:trade"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/predictions/pages/PredictionContractPages.tsx",
+            "src/features/predictions/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -10580,9 +12749,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "predictions:trade"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/predictions/pages/PredictionContractPages.tsx",
+            "src/features/predictions/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -10691,9 +12902,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "predictions:trade"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/predictions/pages/PredictionContractPages.tsx",
+            "src/features/predictions/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -11128,9 +13381,53 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "trade:read",
+            "trading:write",
+            "wallet:read"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/app/routes/tradingProtectedRoutes.ts",
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/trading/components/TradeTerminal.tsx"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -11167,9 +13464,53 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "trade:read",
+            "trading:write",
+            "wallet:read"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/app/routes/tradingProtectedRoutes.ts",
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/trading/components/TradeTerminal.tsx"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -11356,9 +13697,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "trade:read"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/trading/pages/TradeAnalyticsContractPage.tsx",
+            "src/features/trading/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 1,
+          "uniqueAliases": 1,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -12913,9 +15296,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "trade:read"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/trading/pages/WebCopyPerformancePage.tsx",
+            "src/features/trading/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -13186,9 +15611,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "trading:write"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/trading/pages/CopyConfirmationContractPage.tsx",
+            "src/features/trading/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -13342,9 +15809,52 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "trade:read",
+            "trading:write"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/trading/pages/ActiveCopiesContractPage.tsx",
+            "src/features/trading/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -14617,9 +17127,52 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "trade:read",
+            "trading:write"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/trading/pages/ActiveCopiesContractPage.tsx",
+            "src/features/trading/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 1,
+          "uniqueAliases": 1,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -14683,9 +17236,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "trade:read"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/trading/pages/WebCopyPerformancePage.tsx",
+            "src/features/trading/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 1,
+          "uniqueAliases": 1,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -14815,9 +17410,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "trading:write"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/trading/pages/CopyConfirmationContractPage.tsx",
+            "src/features/trading/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 1,
+          "uniqueAliases": 1,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -15238,9 +17875,52 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "trade:read",
+            "trading:write"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/trading/pages/OrdersHistoryPage.tsx",
+            "src/features/trading/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 1,
+          "uniqueAliases": 1,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -15277,9 +17957,52 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "trade:read",
+            "trading:write"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/trading/pages/OrdersHistoryPage.tsx",
+            "src/features/trading/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -15316,9 +18039,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "trade:read"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/trading/pages/OpenPositionsPage.tsx",
+            "src/features/trading/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -15537,9 +18302,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "wallet:read"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/app/routes/walletProfileProtectedRoutes.ts",
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/wallet/pages/WalletOverviewContractPage.tsx"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -15576,9 +18383,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "wallet:read"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/wallet/pages/AddressBookPage.tsx",
+            "src/features/wallet/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -15654,9 +18503,61 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [],
+          "requiredRoles": [],
+          "featureFlags": [
+            {
+              "key": "dca_enabled",
+              "defaultEnabled": true,
+              "source": "src/features/dca/model/dca-feature-flags.ts"
+            },
+            {
+              "key": "dca_asset_detail_button",
+              "defaultEnabled": true,
+              "source": "src/features/dca/model/dca-feature-flags.ts"
+            }
+          ],
+          "sourceFiles": [
+            "src/app/pages/wallet/AssetDetailPage.tsx",
+            "src/features/wallet/pages/AssetDetailPage.tsx",
+            "src/features/dca/model/dca-feature-flags.ts",
+            "src/dev/mocks/personas.ts",
+            "src/dev/mocks/handlers.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -15732,9 +18633,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "wallet:read"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/wallet/pages/WalletDepositContractPage.tsx",
+            "src/features/wallet/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -15771,9 +18714,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "wallet:read"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/wallet/pages/WalletDepositContractPage.tsx",
+            "src/features/wallet/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -15810,9 +18795,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "wallet:read"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/wallet/pages/DustConverterPage.tsx",
+            "src/features/wallet/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -15927,9 +18954,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "wallet:read"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/app/routes/walletProfileProtectedRoutes.ts",
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/wallet/pages/WalletTransactionHistoryContractPage.tsx"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -15966,9 +19035,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "wallet:read"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/wallet/pages/WithdrawalLimitsPage.tsx",
+            "src/features/wallet/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -16044,9 +19155,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "wallet:read"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/wallet/pages/NetworkStatusPage.tsx",
+            "src/features/wallet/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -16083,9 +19236,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "wallet:read"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/wallet/pages/PendingDepositsPage.tsx",
+            "src/features/wallet/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -16122,9 +19317,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "wallet:read"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/wallet/pages/PortfolioAnalyticsContractPage.tsx",
+            "src/features/wallet/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -16200,9 +19437,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "wallet:read"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/wallet/pages/TransactionDetailPage.tsx",
+            "src/features/wallet/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -16239,9 +19518,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "wallet:read"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/wallet/pages/WalletTransferContractPage.tsx",
+            "src/features/wallet/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -16278,9 +19599,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.12"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "wallet:read"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/wallet/pages/WithdrawPage.tsx",
+            "src/features/wallet/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
@@ -16317,9 +19680,51 @@
         "viewport": "not_run",
         "theme": "not_run",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.12"
+      },
+      "c06Coverage": {
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read",
+            "trade:read",
+            "earn:write",
+            "p2p:write",
+            "predictions:trade",
+            "profile:read",
+            "profile:write",
+            "profile:security:write"
+          ],
+          "requiredPermissions": [
+            "wallet:read"
+          ],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/wallet/pages/WithdrawPage.tsx",
+            "src/features/wallet/routes.ts"
+          ],
+          "notes": "Source classification for local mock persona only; browser runtime is recorded separately and this does not establish backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local UI-mock role/flag route access; not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-007",
+          "testedAt": "2026-10-24T19:43:23.395Z",
+          "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
+          "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        }
       }
     },
     {
