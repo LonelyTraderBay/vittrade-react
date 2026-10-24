@@ -213,6 +213,18 @@ const dimensionDefinitions = {
   },
 };
 
+function routeDimensionStatus(route, dimension) {
+  const routeCoverage = route.c06Coverage?.[dimension];
+  const baselineStatus = dimensionDefinitions[dimension].status;
+  if (
+    routeCoverage?.status &&
+    routeCoverage.status !== baselineStatus &&
+    typeof routeCoverage.evidenceId !== 'string'
+  )
+    throw new Error(`Route ${route.id} changes ${dimension} status without an evidenceId.`);
+  return routeCoverage?.status ?? baselineStatus;
+}
+
 function routeRows(routeRecords, pageRecords, pathExists) {
   return routeRecords.map((route) => {
     const pageTargets = (route.pageIds ?? []).map((id) => {
@@ -247,10 +259,10 @@ function routeRows(routeRecords, pageRecords, pathExists) {
       pageTargets,
       personaMappingStatus: route.personaMapping?.status ?? 'not_recorded',
       coverage: {
-        interactionStates: dimensionDefinitions.interactionStates.status,
-        viewport: dimensionDefinitions.viewport.status,
-        theme: dimensionDefinitions.theme.status,
-        locale: dimensionDefinitions.locale.status,
+        interactionStates: routeDimensionStatus(route, 'interactionStates'),
+        viewport: routeDimensionStatus(route, 'viewport'),
+        theme: routeDimensionStatus(route, 'theme'),
+        locale: routeDimensionStatus(route, 'locale'),
         roleAndFeatureFlags:
           c06Coverage?.roleAndFeatureFlags?.status ??
           dimensionDefinitions.roleAndFeatureFlags.status,
@@ -265,6 +277,30 @@ const routes = routeRows(currentRoutes, pagesById, (file) => baselinePaths.has(f
 const routeRowsWithLocalUiMockPass = routes.filter(
   (route) => route.coverage.runtime === 'local_ui_mock_pass',
 ).length;
+const dimensionCoverage = Object.fromEntries(
+  ['interactionStates', 'viewport', 'theme', 'locale'].map((dimension) => {
+    const routeRowsByStatus = routes.reduce((counts, route) => {
+      const status = route.coverage[dimension];
+      counts[status] = (counts[status] ?? 0) + 1;
+      return counts;
+    }, {});
+    const evidencedRoutes = routes.filter(
+      (route) => typeof route.c06Coverage?.[dimension]?.evidenceId === 'string',
+    );
+    return [
+      dimension,
+      {
+        routeRowsByStatus: Object.fromEntries(
+          Object.entries(routeRowsByStatus).sort(([left], [right]) => left.localeCompare(right)),
+        ),
+        routeRowsWithEvidence: evidencedRoutes.length,
+        evidenceIds: [
+          ...new Set(evidencedRoutes.map((route) => route.c06Coverage[dimension].evidenceId)),
+        ].sort(),
+      },
+    ];
+  }),
+);
 
 if (check) {
   const liveRoutes = liveTracking.routes.filter((route) => route.lifecycle === 'active');
@@ -353,6 +389,7 @@ const matrix = {
       stateViewportThemeLocaleRoleCells:
         'Interaction-state, viewport, theme and locale cells remain pending unless separately evidenced; role/flag classification and runtime details are recorded per route below.',
     },
+    dimensionCoverage,
     worktreePreservation: {
       originalCheckoutBranch: 'codex/frontend-readiness-remediation-20261013',
       originalCheckoutHeadAtStart: '074ed3bedfbbcac9e7c31697911ebf234845f0ad',

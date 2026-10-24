@@ -727,6 +727,14 @@ shared consumers để cùng một thay đổi không bị đếm hai lần ho�
    không tăng số vi phạm hardcode/import legacy trên baseline; route/state chưa
    chạy được ghi `blocked` hoặc `N/A` hợp lệ, không tính vào numerator như pass.
 
+Route matrix giữ coverage theo stable route ID. Mỗi route có thể ghi riêng
+`interactionStates`, `viewport`, `theme` và `locale` trong `c06Coverage`; generator
+chỉ đổi trạng thái baseline khi có `evidenceId` gắn với đúng route. Summary
+`scope.dimensionCoverage` đếm số route theo trạng thái và số dòng có evidence,
+không biến một lát cắt `local_ui_mock_partial_pass` thành nghiệm thu toàn route.
+Locale chưa được xác lập phải giữ `not_established`; trạng thái UI mock không
+thay visual/manual AT, backend, staging hoặc UAT acceptance.
+
 #### **C06.15** — retire legacy và nghiệm thu 100% trong phạm vi đã khóa
 
 - Trước xóa alias/token/component, dùng static import graph, re-export/barrel,

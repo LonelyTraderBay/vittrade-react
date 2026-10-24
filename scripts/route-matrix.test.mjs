@@ -138,6 +138,22 @@ describe('Frozen route matrix and live topology contract', () => {
 
   it('preserves per-route role, flag and browser coverage in the frozen matrix', async () => {
     const c06Coverage = {
+      interactionStates: {
+        status: 'local_ui_mock_partial_pass',
+        evidenceId: 'EV-20261025-C06-DEVELOPER',
+        states: ['invalid', 'success'],
+      },
+      viewport: {
+        status: 'local_ui_mock_partial_pass',
+        evidenceId: 'EV-20261025-C06-DEVELOPER',
+        profiles: ['phone', 'tablet', 'web'],
+      },
+      theme: {
+        status: 'local_ui_mock_partial_pass',
+        evidenceId: 'EV-20261025-C06-DEVELOPER',
+        modes: ['light', 'dark'],
+      },
+      locale: { status: 'not_established', reason: 'Locale set is unverified.' },
       roleAndFeatureFlags: {
         status: 'source_classified',
         personaId: 'developer',
@@ -154,9 +170,25 @@ describe('Frozen route matrix and live topology contract', () => {
     const matrix = JSON.parse(fixture.originalMatrix);
     const route = matrix.routes.find((item) => item.routeId === 'ROUTE-sample');
 
+    expect(route.coverage.interactionStates).toBe('local_ui_mock_partial_pass');
+    expect(route.coverage.viewport).toBe('local_ui_mock_partial_pass');
+    expect(route.coverage.theme).toBe('local_ui_mock_partial_pass');
+    expect(route.coverage.locale).toBe('not_established');
     expect(route.coverage.roleAndFeatureFlags).toBe('source_classified');
     expect(route.coverage.runtime).toBe('local_ui_mock_pass');
     expect(route.c06Coverage).toEqual(c06Coverage);
+    expect(matrix.scope.dimensionCoverage.interactionStates).toEqual({
+      routeRowsByStatus: { local_ui_mock_partial_pass: 1 },
+      routeRowsWithEvidence: 1,
+      evidenceIds: ['EV-20261025-C06-DEVELOPER'],
+    });
+    expect(matrix.scope.dimensionCoverage.viewport.routeRowsWithEvidence).toBe(1);
+    expect(matrix.scope.dimensionCoverage.theme.routeRowsWithEvidence).toBe(1);
+    expect(matrix.scope.dimensionCoverage.locale).toEqual({
+      routeRowsByStatus: { not_established: 1 },
+      routeRowsWithEvidence: 0,
+      evidenceIds: [],
+    });
     expect(
       matrix.scope.runtimeCoverage.c06BaselineExecution.routeRowsWithBrowserRuntimeChecks,
     ).toBe(0);
@@ -168,5 +200,16 @@ describe('Frozen route matrix and live topology contract', () => {
     ]);
     expect(matrix.matrixStatus).toBe('partial_local_ui_mock_runtime_coverage');
     expect(fixture.run('--check').status).toBe(0);
+  });
+
+  it('rejects route dimension status changes without evidence IDs', async () => {
+    const fixture = await workspace();
+    const tracking = JSON.parse(await readFile(join(fixture.root, trackingPath), 'utf8'));
+    tracking.routes[0].c06Coverage = { viewport: { status: 'local_ui_mock_partial_pass' } };
+    await writeFile(join(fixture.root, trackingPath), JSON.stringify(tracking));
+
+    const result = fixture.run('--check');
+    expect(result.status).toBe(1);
+    expect(result.stderr).toContain('changes viewport status without an evidenceId');
   });
 });
