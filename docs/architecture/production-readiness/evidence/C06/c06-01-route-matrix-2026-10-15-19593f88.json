@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "sourceHead": "415308789bb74e5a1e8f017a547b877cc6877922",
+  "sourceHead": "eb930bfcc6e798d0d28ba021b6a5045a97d84ae7",
   "inventorySource": "docs/architecture/page-inventory.json",
   "trackingSource": "docs/architecture/production-readiness/TRACKING.json",
   "scope": {
@@ -68,10 +68,11 @@
         "routeRowsWithA11yAutomation": 0
       },
       "latestLocalEvidence": {
-        "routeRowsWithBrowserRuntimeChecks": 80,
+        "routeRowsWithBrowserRuntimeChecks": 82,
         "routeRowsWithScreenshots": 0,
         "routeRowsWithA11yAutomation": 0,
         "evidenceIds": [
+          "EV-20261025-016",
           "EV-20261025-007"
         ],
         "scope": "Local UI mock evidence only; not backend, staging, UAT, visual or accessibility acceptance."
@@ -82,34 +83,37 @@
     "dimensionCoverage": {
       "interactionStates": {
         "routeRowsByStatus": {
-          "local_ui_mock_partial_pass": 4,
-          "not_assessed": 424
+          "local_ui_mock_partial_pass": 6,
+          "not_assessed": 422
         },
-        "routeRowsWithEvidence": 4,
+        "routeRowsWithEvidence": 6,
         "evidenceIds": [
           "EV-20261025-012",
-          "EV-20261025-015"
+          "EV-20261025-015",
+          "EV-20261025-016"
         ]
       },
       "viewport": {
         "routeRowsByStatus": {
-          "local_ui_mock_partial_pass": 4,
-          "not_run": 424
+          "local_ui_mock_partial_pass": 6,
+          "not_run": 422
         },
-        "routeRowsWithEvidence": 4,
+        "routeRowsWithEvidence": 6,
         "evidenceIds": [
           "EV-20261025-012",
-          "EV-20261025-015"
+          "EV-20261025-015",
+          "EV-20261025-016"
         ]
       },
       "theme": {
         "routeRowsByStatus": {
-          "local_ui_mock_partial_pass": 1,
-          "not_run": 427
+          "local_ui_mock_partial_pass": 3,
+          "not_run": 425
         },
-        "routeRowsWithEvidence": 1,
+        "routeRowsWithEvidence": 3,
         "evidenceIds": [
-          "EV-20261025-012"
+          "EV-20261025-012",
+          "EV-20261025-016"
         ]
       },
       "locale": {
@@ -339,13 +343,102 @@
       ],
       "personaMappingStatus": "mapped",
       "coverage": {
-        "interactionStates": "not_assessed",
-        "viewport": "not_run",
-        "theme": "not_run",
+        "interactionStates": "local_ui_mock_partial_pass",
+        "viewport": "local_ui_mock_partial_pass",
+        "theme": "local_ui_mock_partial_pass",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "interactionStates": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-016",
+          "states": [
+            "qr-step",
+            "verify-step",
+            "backup-codes-step",
+            "backup-codes-acknowledged",
+            "completion",
+            "auth-required-redirect"
+          ],
+          "notes": "MFA setup flow only; errors, retries, manual keyboard/screen-reader review and whole-page acceptance remain open."
+        },
+        "viewport": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-016",
+          "profiles": [
+            {
+              "profile": "phone",
+              "width": 390,
+              "height": 844
+            },
+            {
+              "profile": "tablet",
+              "width": 768,
+              "height": 900
+            },
+            {
+              "profile": "responsive",
+              "width": 1024,
+              "height": 900
+            }
+          ],
+          "testedUrls": [
+            "/auth/2fa-setup",
+            "/t/auth/2fa-setup",
+            "/r/auth/2fa-setup"
+          ],
+          "notes": "Tested MFA setup viewports only; not a full responsive acceptance across the 428-route matrix."
+        },
+        "theme": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-016",
+          "modes": [
+            "light",
+            "dark"
+          ],
+          "states": [
+            "qr-step",
+            "verify-step",
+            "backup-codes-step",
+            "backup-codes-acknowledged"
+          ],
+          "notes": "Axe selected WCAG tags reported zero violations for these states; this does not establish visual approval or full accessibility acceptance."
+        },
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read"
+          ],
+          "requiredPermissions": [],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/app/routeConfig.ts",
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/auth/pages/TwoFASetupPage.tsx",
+            "src/features/auth/components/Web2FASetupFlow.tsx"
+          ],
+          "notes": "Authenticated MFA enrollment flow; route has no additional role, permission or feature-flag gate in the inspected frontend source. This is local source classification, not backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local MSW authenticated developer MFA setup flow; route reachability only, not backend authorization.",
+          "aliasRegistrations": 3,
+          "uniqueAliases": 3,
+          "evidenceId": "EV-20261025-016",
+          "testedAt": "2026-10-24T22:02:29.216Z",
+          "canonicalizedPathRule": "Observed setup URL is one of this stable route inventory row resolvedUrls.",
+          "notes": "Exact Browser auth-mock run logged a developer persona sign-in and setup flow at /auth/2fa-setup, /t/auth/2fa-setup, /r/auth/2fa-setup; direct unauthenticated access redirects to login. MSW fixtures only."
+        }
       }
     },
     {
@@ -372,13 +465,107 @@
       ],
       "personaMappingStatus": "mapped",
       "coverage": {
-        "interactionStates": "not_assessed",
-        "viewport": "not_run",
-        "theme": "not_run",
+        "interactionStates": "local_ui_mock_partial_pass",
+        "viewport": "local_ui_mock_partial_pass",
+        "theme": "local_ui_mock_partial_pass",
         "locale": "not_established",
-        "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "roleAndFeatureFlags": "source_classified",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "interactionStates": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-016",
+          "states": [
+            "qr-step",
+            "qr-key-copied",
+            "verify-step",
+            "backup-codes-step",
+            "backup-codes-copied",
+            "backup-code-acknowledged",
+            "completion"
+          ],
+          "notes": "MFA setup flow only; errors, retries, manual keyboard/screen-reader review and whole-page acceptance remain open."
+        },
+        "viewport": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-016",
+          "profiles": [
+            {
+              "profile": "phone",
+              "width": 390,
+              "height": 844
+            },
+            {
+              "profile": "tablet",
+              "width": 768,
+              "height": 900
+            },
+            {
+              "profile": "responsive",
+              "width": 1024,
+              "height": 900
+            },
+            {
+              "profile": "web",
+              "width": 1440,
+              "height": 900
+            }
+          ],
+          "testedUrls": [
+            "/w/auth/2fa-setup"
+          ],
+          "notes": "Tested MFA setup viewports only; not a full responsive acceptance across the 428-route matrix."
+        },
+        "theme": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-016",
+          "modes": [
+            "light",
+            "dark"
+          ],
+          "states": [
+            "qr-step",
+            "qr-key-copied",
+            "verify-step",
+            "backup-codes-step",
+            "backup-codes-copied"
+          ],
+          "notes": "Axe selected WCAG tags reported zero violations for these states; this does not establish visual approval or full accessibility acceptance."
+        },
+        "roleAndFeatureFlags": {
+          "status": "source_classified",
+          "personaId": "developer",
+          "role": "user",
+          "expectedAccess": "allow",
+          "effectivePermissions": [
+            "market:read",
+            "trading:write",
+            "wallet:read"
+          ],
+          "requiredPermissions": [],
+          "requiredRoles": [],
+          "featureFlags": [],
+          "sourceFiles": [
+            "src/app/routes.ts",
+            "src/dev/mocks/handlers.ts",
+            "src/dev/mocks/personas.ts",
+            "src/features/auth/pages/Web2FASetupPage.tsx",
+            "src/features/auth/components/Web2FASetupFlow.tsx"
+          ],
+          "notes": "Authenticated MFA enrollment flow; route has no additional role, permission or feature-flag gate in the inspected frontend source. This is local source classification, not backend authorization."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local MSW authenticated developer MFA setup flow; route reachability only, not backend authorization.",
+          "aliasRegistrations": 1,
+          "uniqueAliases": 1,
+          "evidenceId": "EV-20261025-016",
+          "testedAt": "2026-10-24T22:02:29.216Z",
+          "canonicalizedPathRule": "Observed setup URL is one of this stable route inventory row resolvedUrls.",
+          "notes": "Exact Browser auth-mock run logged a developer persona sign-in and setup flow at /w/auth/2fa-setup; direct unauthenticated access redirects to login. MSW fixtures only."
+        }
       }
     },
     {
