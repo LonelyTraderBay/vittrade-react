@@ -45,18 +45,20 @@ export function useMarkNotificationReadMutation() {
     onSuccess: async () => client.invalidateQueries({ queryKey: supportQueryKeys.notifications }),
   });
 }
-export function useHelpQuery() {
+export function useHelpQuery(options: { enabled?: boolean } = {}) {
   return useQuery({
     queryKey: supportQueryKeys.help,
     queryFn: ({ signal }) => supportApi.listHelp(signal),
+    enabled: options.enabled ?? true,
     retry: false,
     staleTime: 300_000,
   });
 }
-export function useSupportTicketsQuery() {
+export function useSupportTicketsQuery(options: { enabled?: boolean } = {}) {
   return useQuery({
     queryKey: supportQueryKeys.tickets,
     queryFn: ({ signal }) => supportApi.listTickets(signal),
+    enabled: options.enabled ?? true,
     retry: false,
     staleTime: 15_000,
   });

@@ -1,13 +1,16 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { screen, waitFor } from '@testing-library/react';
+import { useEffect } from 'react';
+import { useQueryClient, type QueryKey } from '@tanstack/react-query';
+import { act, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { toast } from 'sonner';
 import { renderWithProviders } from '@/test/test-utils';
 import { testAuthAdapter } from '@/test/auth-test-adapter';
 import { invokeStaleReactHandler } from '@/test/invoke-stale-react-handler';
 import { supportApi } from '../api/support-api';
+import { supportQueryKeys } from '../model/support-queries';
 import type { AuthAdapter } from '@/shared/session/AuthContext';
 import { HelpCenterContractPage } from './HelpCenterContractPage';
 import { NotificationsContractPage } from './NotificationsContractPage';
@@ -44,6 +47,24 @@ const notification = {
   isRead: false,
 };
 
+function QueryInvalidationTrigger({
+  eventName,
+  queryKey,
+}: {
+  eventName: string;
+  queryKey: QueryKey;
+}) {
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    const invalidate = () => void queryClient.invalidateQueries({ queryKey });
+    window.addEventListener(eventName, invalidate);
+    return () => window.removeEventListener(eventName, invalidate);
+  }, [eventName, queryClient, queryKey]);
+
+  return null;
+}
+
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
 afterEach(() => {
   server.resetHandlers();
@@ -59,7 +80,7 @@ function supportWriteAdapter(): AuthAdapter {
       ...testAuthAdapter.initialSession!,
       user: {
         ...testAuthAdapter.initialSession!.user,
-        permissions: ['support:write', 'notifications:read', 'notifications:write'],
+        permissions: ['support:read', 'support:write', 'notifications:read', 'notifications:write'],
       },
     },
   };
@@ -92,6 +113,42 @@ describe('SupportContractPage', () => {
     expect(submit).toBeDisabled();
     invokeStaleReactHandler(submit, 'onClick');
     expect(createCalls).toBe(0);
+  });
+
+  it('allows ticket creation without requesting the read-only ticket list', async () => {
+    let listCalls = 0;
+    let createCalls = 0;
+    server.use(
+      http.get('*/support/tickets', () => {
+        listCalls += 1;
+        return HttpResponse.json({ items: [] });
+      }),
+      http.post('*/support/tickets', () => {
+        createCalls += 1;
+        return HttpResponse.json(ticket, { status: 201 });
+      }),
+    );
+    const writeOnlyAdapter: AuthAdapter = {
+      ...testAuthAdapter,
+      initialSession: {
+        ...testAuthAdapter.initialSession!,
+        user: { ...testAuthAdapter.initialSession!.user, permissions: ['support:write'] },
+      },
+    };
+
+    renderWithProviders(<SupportContractPage />, { authAdapter: writeOnlyAdapter });
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'Support read permission is required to view ticket history.',
+    );
+    const user = userEvent.setup();
+    await user.type(screen.getByLabelText('Tiêu đề ticket'), 'Account issue');
+    await user.type(screen.getByLabelText('Nội dung ticket'), 'Cannot sign in');
+    await user.click(screen.getByRole('button', { name: 'Gửi ticket' }));
+
+    await waitFor(() => expect(createCalls).toBe(1));
+    expect(listCalls).toBe(0);
+    expect(screen.getByLabelText('Tiêu đề ticket')).toHaveValue('');
   });
 
   it('submits trimmed ticket content with an idempotency key and confirms success', async () => {
@@ -227,7 +284,48 @@ describe('SupportContractPage', () => {
     renderWithProviders(<SupportContractPage />, { authAdapter: supportWriteAdapter() });
 
     expect(await screen.findByRole('button', { name: 'Thử lại' })).toBeVisible();
+    expect(screen.getByRole('heading', { name: 'Hỗ trợ' })).toBeVisible();
+    expect(screen.getByLabelText('Tiêu đề ticket')).toBeVisible();
     expect(screen.queryByText('Bạn chưa có yêu cầu hỗ trợ nào.')).not.toBeInTheDocument();
+  });
+
+  it('keeps ticket content, form draft and focus when a refetch fails', async () => {
+    let listCalls = 0;
+    server.use(
+      http.get('*/support/tickets', () => {
+        listCalls += 1;
+        return listCalls === 1 ? HttpResponse.json({ items: [ticket] }) : HttpResponse.error();
+      }),
+    );
+    renderWithProviders(
+      <>
+        <SupportContractPage />
+        <QueryInvalidationTrigger
+          eventName="test:refetch-support-tickets"
+          queryKey={supportQueryKeys.tickets}
+        />
+      </>,
+      { authAdapter: supportWriteAdapter() },
+    );
+
+    const user = userEvent.setup();
+    const subject = await screen.findByLabelText('Tiêu đề ticket');
+    await user.type(subject, 'New account issue');
+    const description = screen.getByLabelText('Nội dung ticket');
+    await user.type(description, 'The page did not load.');
+    description.focus();
+
+    act(() => window.dispatchEvent(new Event('test:refetch-support-tickets')));
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'Không thể cập nhật danh sách ticket; dữ liệu đang hiển thị có thể đã cũ.',
+    );
+    expect(screen.getByRole('heading', { name: 'Hỗ trợ' })).toBeVisible();
+    expect(screen.getByText(ticket.subject)).toBeVisible();
+    expect(subject).toHaveValue('New account issue');
+    expect(description).toHaveValue('The page did not load.');
+    expect(document.activeElement).toBe(description);
+    expect(listCalls).toBe(4);
   });
 });
 
@@ -371,6 +469,87 @@ describe('NotificationsContractPage', () => {
 });
 
 describe('HelpCenterContractPage', () => {
+  it('does not request help content without support read permission', async () => {
+    let listCalls = 0;
+    server.use(
+      http.get('*/support/help', () => {
+        listCalls += 1;
+        return HttpResponse.json({ categories: [], articles: [] });
+      }),
+    );
+    const noReadAdapter: AuthAdapter = {
+      ...testAuthAdapter,
+      initialSession: {
+        ...testAuthAdapter.initialSession!,
+        user: { ...testAuthAdapter.initialSession!.user, permissions: [] },
+      },
+    };
+
+    renderWithProviders(<HelpCenterContractPage />, { authAdapter: noReadAdapter });
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'Support read permission is required to view the help center.',
+    );
+    expect(screen.getByRole('heading', { name: 'Trung tâm trợ giúp' })).toBeVisible();
+    expect(screen.queryByLabelText('Tìm kiếm trợ giúp')).not.toBeInTheDocument();
+    expect(listCalls).toBe(0);
+  });
+
+  it('keeps the help heading and search available when the initial read fails', async () => {
+    server.use(http.get('*/support/help', () => HttpResponse.error()));
+    renderWithProviders(<HelpCenterContractPage />, { authAdapter: supportWriteAdapter() });
+
+    expect(await screen.findByRole('button', { name: 'Thử lại' })).toBeVisible();
+    expect(screen.getByRole('heading', { name: 'Trung tâm trợ giúp' })).toBeVisible();
+    expect(screen.getByLabelText('Tìm kiếm trợ giúp')).toBeVisible();
+  });
+
+  it('keeps help content, search and focus when a refetch fails', async () => {
+    let listCalls = 0;
+    server.use(
+      http.get('*/support/help', () => {
+        listCalls += 1;
+        return listCalls === 1
+          ? HttpResponse.json({
+              categories: [{ id: 'account', name: 'Tài khoản', icon: '👤', count: 1 }],
+              articles: [
+                {
+                  id: 'article-1',
+                  category: 'account',
+                  categoryIcon: '👤',
+                  title: 'Bảo vệ tài khoản',
+                  summary: 'Cách bảo vệ tài khoản của bạn.',
+                  views: 20,
+                },
+              ],
+            })
+          : HttpResponse.error();
+      }),
+    );
+    renderWithProviders(
+      <>
+        <HelpCenterContractPage />
+        <QueryInvalidationTrigger eventName="test:refetch-help" queryKey={supportQueryKeys.help} />
+      </>,
+      { authAdapter: supportWriteAdapter() },
+    );
+
+    const user = userEvent.setup();
+    const search = await screen.findByLabelText('Tìm kiếm trợ giúp');
+    await user.type(search, 'Bảo vệ');
+
+    act(() => window.dispatchEvent(new Event('test:refetch-help')));
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'Dữ liệu trợ giúp đang hiển thị có thể đã cũ vì không thể cập nhật.',
+    );
+    expect(screen.getByRole('heading', { name: 'Trung tâm trợ giúp' })).toBeVisible();
+    expect(screen.getByText('Bảo vệ tài khoản')).toBeVisible();
+    expect(search).toHaveValue('Bảo vệ');
+    expect(document.activeElement).toBe(search);
+    expect(listCalls).toBe(4);
+  });
+
   it('explains when a search returns no help articles', async () => {
     server.use(
       http.get('*/support/help', () =>
@@ -389,7 +568,7 @@ describe('HelpCenterContractPage', () => {
         }),
       ),
     );
-    renderWithProviders(<HelpCenterContractPage />);
+    renderWithProviders(<HelpCenterContractPage />, { authAdapter: supportWriteAdapter() });
 
     const user = userEvent.setup();
     await user.type(await screen.findByLabelText('Tìm kiếm trợ giúp'), 'không tồn tại');

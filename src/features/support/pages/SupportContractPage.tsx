@@ -13,25 +13,44 @@ export function SupportContractPage() {
   const colors = useThemeColors();
   const actionToast = useActionToast();
   const { hasPermission } = useAuth();
+  const canReadTickets = hasPermission('support:read');
   const canCreateTicket = hasPermission('support:write') || hasPermission('support:ticket:write');
-  const query = useSupportTicketsQuery();
+  const query = useSupportTicketsQuery({ enabled: canReadTickets });
   const create = useCreateSupportTicketMutation();
   const [form, setForm] = useState({ subject: '', description: '' });
   const [idempotencyKey, setIdempotencyKey] = useState(() => crypto.randomUUID());
-  if (query.isPending)
-    return (
-      <PageLayout>
-        <Header title="Hỗ trợ" back />
-        <PageContent>
-          <p style={{ color: colors.text2 }}>Đang tải ticket…</p>
-        </PageContent>
-      </PageLayout>
-    );
-  if (query.isError || !query.data) return <ErrorState onAction={() => void query.refetch()} />;
   return (
     <PageLayout>
       <Header title="Hỗ trợ" subtitle="Support tickets" back />
       <PageContent gap="default">
+        {!canReadTickets && (
+          <p role="alert" style={{ color: colors.error, fontSize: 12 }}>
+            Support read permission is required to view ticket history.
+          </p>
+        )}
+        {canReadTickets && query.isPending && (
+          <p style={{ color: colors.text2 }}>Đang tải ticket…</p>
+        )}
+        {canReadTickets && query.isError && !query.data && (
+          <ErrorState onAction={() => void query.refetch()} />
+        )}
+        {canReadTickets && query.isError && query.data && (
+          <div
+            role="alert"
+            className="flex items-center gap-3"
+            style={{ color: colors.error, fontSize: 12 }}
+          >
+            <p>Không thể cập nhật danh sách ticket; dữ liệu đang hiển thị có thể đã cũ.</p>
+            <button
+              type="button"
+              onClick={() => void query.refetch()}
+              disabled={query.isFetching}
+              aria-busy={query.isFetching}
+            >
+              Thử lại
+            </button>
+          </div>
+        )}
         {!canCreateTicket && (
           <p role="alert" style={{ color: colors.text2, fontSize: 12 }}>
             Support write permission is required to create a ticket.
@@ -103,11 +122,11 @@ export function SupportContractPage() {
             {create.isPending ? 'Đang gửi…' : 'Gửi ticket'}
           </button>
         </TrCard>
-        {query.data.items.length === 0 ? (
+        {canReadTickets && query.data && query.data.items.length === 0 ? (
           <p role="status" style={{ color: colors.text2, fontSize: 13 }}>
             Bạn chưa có yêu cầu hỗ trợ nào.
           </p>
-        ) : (
+        ) : canReadTickets && query.data ? (
           query.data.items.map((ticket) => (
             <TrCard className="p-4" key={ticket.id}>
               <div className="flex justify-between">
@@ -122,7 +141,7 @@ export function SupportContractPage() {
               </p>
             </TrCard>
           ))
-        )}
+        ) : null}
       </PageContent>
     </PageLayout>
   );

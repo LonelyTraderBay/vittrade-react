@@ -2866,7 +2866,7 @@
       "domain": "support",
       "owner": "features/support",
       "status": "integration-pending",
-      "lines": 82,
+      "lines": 104,
       "routePaths": [
         "support/help"
       ],
@@ -2874,6 +2874,7 @@
         "localImports": [
           "../model/support-queries",
           "@/shared/hooks/useThemeColors",
+          "@/shared/session/useAuth",
           "@/shared/ui/ErrorState",
           "@/shared/ui/TrCard",
           "@/shared/ui/layout/Header",
@@ -2950,7 +2951,7 @@
       "domain": "support",
       "owner": "features/support",
       "status": "integration-pending",
-      "lines": 130,
+      "lines": 149,
       "routePaths": [
         "support"
       ],
