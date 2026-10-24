@@ -31,7 +31,7 @@ export function SupportContractPage() {
         {canReadTickets && query.isPending && (
           <p style={{ color: colors.text2 }}>Đang tải ticket…</p>
         )}
-        {canReadTickets && query.isError && !query.data && (
+        {canReadTickets && !query.isPending && (query.isError || !query.data) && (
           <ErrorState onAction={() => void query.refetch()} />
         )}
         {canReadTickets && query.isError && query.data && (

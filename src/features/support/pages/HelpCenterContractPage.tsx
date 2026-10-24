@@ -43,7 +43,9 @@ export function HelpCenterContractPage() {
               className="rounded-xl p-3"
             />
             {query.isPending && <p style={{ color: colors.text2 }}>Đang tải help center…</p>}
-            {query.isError && !query.data && <ErrorState onAction={() => void query.refetch()} />}
+            {!query.isPending && (query.isError || !query.data) && (
+              <ErrorState onAction={() => void query.refetch()} />
+            )}
             {query.isError && query.data && (
               <div
                 role="alert"

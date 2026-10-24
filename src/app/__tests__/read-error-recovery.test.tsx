@@ -97,7 +97,12 @@ const readSession = {
   ...testAuthSession,
   user: {
     ...testAuthSession.user,
-    permissions: [...testAuthSession.user.permissions, 'trade:read', 'notifications:read'],
+    permissions: [
+      ...testAuthSession.user.permissions,
+      'trade:read',
+      'notifications:read',
+      'support:read',
+    ],
   },
 };
 const readAdapter = {

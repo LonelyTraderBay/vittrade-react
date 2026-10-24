@@ -1313,9 +1313,16 @@ test('routes Web auth-success support actions to registered Web pages @auth-api'
   let sessionRequests = 0;
   let ticketRequests = 0;
   let helpRequests = 0;
+  const supportSession = {
+    ...session,
+    user: {
+      ...session.user,
+      permissions: [...session.user.permissions, 'support:read'],
+    },
+  };
   await page.route('**/auth/session', async (route) => {
     sessionRequests += 1;
-    await route.fulfill({ json: session });
+    await route.fulfill({ json: supportSession });
   });
   await page.route('**/support/tickets', async (route) => {
     ticketRequests += 1;
