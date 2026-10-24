@@ -262,6 +262,9 @@ function routeRows(routeRecords, pageRecords, pathExists) {
   });
 }
 const routes = routeRows(currentRoutes, pagesById, (file) => baselinePaths.has(file));
+const routeRowsWithLocalUiMockPass = routes.filter(
+  (route) => route.coverage.runtime === 'local_ui_mock_pass',
+).length;
 
 if (check) {
   const liveRoutes = liveTracking.routes.filter((route) => route.lifecycle === 'active');
@@ -336,9 +339,19 @@ const matrix = {
         routeRowsWithScreenshots: 0,
         routeRowsWithA11yAutomation: 0,
       },
+      latestLocalEvidence: {
+        routeRowsWithBrowserRuntimeChecks: routeRowsWithLocalUiMockPass,
+        routeRowsWithScreenshots: 0,
+        routeRowsWithA11yAutomation: 0,
+        evidenceIds: [
+          ...new Set(routes.map((route) => route.c06Coverage?.runtime?.evidenceId).filter(Boolean)),
+        ],
+        scope:
+          'Local UI mock evidence only; not backend, staging, UAT, visual or accessibility acceptance.',
+      },
       historicalProjectEvidenceReconciledInThisStep: false,
       stateViewportThemeLocaleRoleCells:
-        'recorded as pending/not established per route below; not runtime coverage',
+        'Interaction-state, viewport, theme and locale cells remain pending unless separately evidenced; role/flag classification and runtime details are recorded per route below.',
     },
     worktreePreservation: {
       originalCheckoutBranch: 'codex/frontend-readiness-remediation-20261013',
@@ -382,7 +395,10 @@ const matrix = {
     ],
   },
   dimensionDefinitions,
-  matrixStatus: 'baseline_only_runtime_not_run',
+  matrixStatus:
+    routeRowsWithLocalUiMockPass > 0
+      ? 'partial_local_ui_mock_runtime_coverage'
+      : 'baseline_only_runtime_not_run',
   routes,
 };
 
@@ -391,7 +407,7 @@ if (write) {
   fs.mkdirSync(path.dirname(outputPath), { recursive: true });
   fs.writeFileSync(outputPath, serialized, 'utf8');
   process.stdout.write(
-    `Wrote ${path.relative(root, outputPath)}: ${routes.length} routes; ${new Set(allUrls).size} unique URLs; runtime rows tested: 0.\n`,
+    `Wrote ${path.relative(root, outputPath)}: ${routes.length} routes; ${new Set(allUrls).size} unique URLs; local UI mock runtime rows: ${routeRowsWithLocalUiMockPass}.\n`,
   );
 } else {
   if (!fs.existsSync(outputPath)) throw new Error(`Missing matrix artifact: ${outputPath}`);
@@ -399,6 +415,6 @@ if (write) {
   if (actual !== serialized)
     throw new Error(`Route matrix differs from source inputs: ${outputPath}`);
   process.stdout.write(
-    `PASS ${path.relative(root, outputPath)}: ${routes.length} route rows reconcile; runtime rows tested: 0.\n`,
+    `PASS ${path.relative(root, outputPath)}: ${routes.length} route rows reconcile; local UI mock runtime rows: ${routeRowsWithLocalUiMockPass}.\n`,
   );
 }

@@ -92,7 +92,7 @@ describe('Frozen route matrix and live topology contract', () => {
     await writeFile(join(fixture.root, inventoryPath), JSON.stringify(fixture.inventory));
     const result = fixture.run('--check');
     expect(result.status, result.stderr).toBe(0);
-    expect(result.stdout).toContain('runtime rows tested: 0');
+    expect(result.stdout).toContain('local UI mock runtime rows: 0');
     expect(await readFile(join(fixture.root, matrixPath), 'utf8')).toBe(fixture.originalMatrix);
   });
 
@@ -157,6 +157,16 @@ describe('Frozen route matrix and live topology contract', () => {
     expect(route.coverage.roleAndFeatureFlags).toBe('source_classified');
     expect(route.coverage.runtime).toBe('local_ui_mock_pass');
     expect(route.c06Coverage).toEqual(c06Coverage);
+    expect(
+      matrix.scope.runtimeCoverage.c06BaselineExecution.routeRowsWithBrowserRuntimeChecks,
+    ).toBe(0);
+    expect(matrix.scope.runtimeCoverage.latestLocalEvidence.routeRowsWithBrowserRuntimeChecks).toBe(
+      1,
+    );
+    expect(matrix.scope.runtimeCoverage.latestLocalEvidence.evidenceIds).toEqual([
+      'EV-20261025-C06-DEVELOPER',
+    ]);
+    expect(matrix.matrixStatus).toBe('partial_local_ui_mock_runtime_coverage');
     expect(fixture.run('--check').status).toBe(0);
   });
 });
