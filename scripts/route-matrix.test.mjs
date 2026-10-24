@@ -24,7 +24,7 @@ afterEach(async () => {
   }
 });
 
-async function workspace() {
+async function workspace(c06Coverage = null) {
   const root = await mkdtemp(join(tmpdir(), 'vittrade-route-matrix-'));
   workspaces.push(root);
   const pagePath = 'src/features/sample/pages/SamplePage.tsx';
@@ -37,6 +37,7 @@ async function workspace() {
     classification: 'implemented',
     resolvedUrls: ['/sample'],
     pageIds: ['PAGE-sample'],
+    ...(c06Coverage ? { c06Coverage } : {}),
   };
   const inventory = {
     pages: [{ path: pagePath }],
@@ -133,5 +134,29 @@ describe('Frozen route matrix and live topology contract', () => {
     const result = fixture.run('--check', '0'.repeat(40));
     expect(result.status).toBe(1);
     expect(result.stderr).toContain('Cannot read baseline Git inputs');
+  });
+
+  it('preserves per-route role, flag and browser coverage in the frozen matrix', async () => {
+    const c06Coverage = {
+      roleAndFeatureFlags: {
+        status: 'source_classified',
+        personaId: 'developer',
+        expectedAccess: 'allow',
+        requiredPermissions: ['wallet:read'],
+        featureFlags: [],
+      },
+      runtime: {
+        status: 'local_ui_mock_pass',
+        evidenceId: 'EV-20261025-C06-DEVELOPER',
+      },
+    };
+    const fixture = await workspace(c06Coverage);
+    const matrix = JSON.parse(fixture.originalMatrix);
+    const route = matrix.routes.find((item) => item.routeId === 'ROUTE-sample');
+
+    expect(route.coverage.roleAndFeatureFlags).toBe('source_classified');
+    expect(route.coverage.runtime).toBe('local_ui_mock_pass');
+    expect(route.c06Coverage).toEqual(c06Coverage);
+    expect(fixture.run('--check').status).toBe(0);
   });
 });

@@ -233,6 +233,7 @@ function routeRows(routeRecords, pageRecords, pathExists) {
         : route.path.includes('withdraw')
           ? 'C06.12'
           : 'C06.13';
+    const c06Coverage = route.c06Coverage;
     return {
       routeId: route.id,
       registry: route.source,
@@ -250,10 +251,13 @@ function routeRows(routeRecords, pageRecords, pathExists) {
         viewport: dimensionDefinitions.viewport.status,
         theme: dimensionDefinitions.theme.status,
         locale: dimensionDefinitions.locale.status,
-        roleAndFeatureFlags: dimensionDefinitions.roleAndFeatureFlags.status,
-        runtime: dimensionDefinitions.runtime.status,
+        roleAndFeatureFlags:
+          c06Coverage?.roleAndFeatureFlags?.status ??
+          dimensionDefinitions.roleAndFeatureFlags.status,
+        runtime: c06Coverage?.runtime?.status ?? dimensionDefinitions.runtime.status,
         ownerStep: pilotOwnerStep,
       },
+      ...(c06Coverage ? { c06Coverage } : {}),
     };
   });
 }
