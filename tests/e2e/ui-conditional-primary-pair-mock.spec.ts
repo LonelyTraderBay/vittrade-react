@@ -16,7 +16,8 @@ async function setTheme(page: Page, theme: 'light' | 'dark') {
 }
 
 async function signInDeveloper(page: Page, profile: (typeof profiles)[number]) {
-  await page.setViewportSize({ width: profile.width, height: profile.height });
+  // Sign in in the web shell first, then let the shared helper switch to the target shell.
+  await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('/w/auth/login');
   await page.getByTestId('auth-email').fill('developer@vittrade.local');
   await page.getByTestId('auth-password').fill('Preview-123!');
@@ -54,6 +55,7 @@ async function assertPrimaryPair(
 ) {
   await expect(button).toBeVisible();
   await expect(button).toBeEnabled();
+  await button.scrollIntoViewIfNeeded();
 
   if (icon) {
     const result = await paint(button);
@@ -72,7 +74,7 @@ async function assertPrimaryPair(
       };
       return {
         foreground: rgba(style.color),
-        icon: getComputedStyle(element.querySelector('svg')!).stroke,
+        icon: rgba(getComputedStyle(element.querySelector('svg')!).stroke),
         semantic: rgba(style.getPropertyValue('--tr-text-on-color')),
         background: rgba(style.backgroundColor),
         primary: rgba(style.getPropertyValue('--tr-primary')),
@@ -80,9 +82,9 @@ async function assertPrimaryPair(
         transitionProperty: style.transitionProperty,
       };
     });
-    expect(pair.icon).toBe(pair.foreground);
-    expect(pair.foreground).toBe(pair.semantic);
-    expect(pair.background).toBe(pair.primary);
+    expect(pair.icon).toEqual(pair.foreground);
+    expect(pair.foreground).toEqual(pair.semantic);
+    expect(pair.background).toEqual(pair.primary);
     expect(pair.marker).toBe('primary');
     expect(pair.transitionProperty.split(',').map((value) => value.trim())).not.toEqual(
       expect.arrayContaining(['all', 'color', 'background-color']),
@@ -125,8 +127,8 @@ async function assertPrimaryPair(
       }),
     };
   });
-  expect(pair.foreground).toBe(pair.semantic);
-  expect(pair.background).toBe(pair.primary);
+  expect(pair.foreground).toEqual(pair.semantic);
+  expect(pair.background).toEqual(pair.primary);
   expect(pair.marker).toBe('primary');
   expect(pair.transitionProperty.split(',').map((value) => value.trim())).not.toEqual(
     expect.arrayContaining(['all', 'color', 'background-color']),
@@ -188,7 +190,7 @@ for (const theme of ['light', 'dark'] as const) {
           ? '/trade/copy/provider/ct001/confirmation'
           : '/trade/copy-provider/ct001/confirmation');
       await navigate(page, path);
-      await expect(page.getByText('Provider One').first()).toBeVisible();
+      await expect(page.getByText('AlphaHunter_VN').first()).toBeVisible();
       const consents = page.getByRole('checkbox');
       await expect(consents).toHaveCount(4);
       for (const consent of await consents.all()) await consent.check();

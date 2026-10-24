@@ -224,7 +224,7 @@ export function P2PCreateAdForm({
                 className="rounded-lg px-3 py-2 text-xs"
                 style={{
                   background: paymentMethods.includes(method) ? colors.primary : colors.surface2,
-                  color: paymentMethods.includes(method) ? '#fff' : colors.text2,
+                  color: paymentMethods.includes(method) ? 'var(--tr-text-on-color)' : colors.text2,
                 }}
               >
                 {method}
@@ -325,7 +325,7 @@ export function P2PCreateAdForm({
         className="rounded-xl py-3 font-semibold"
         style={{
           background: canSubmit ? colors.primary : colors.surface2,
-          color: canSubmit ? '#fff' : colors.text3,
+          color: canSubmit ? 'var(--tr-text-on-color)' : colors.text3,
         }}
       >
         Xem xác nhận đăng quảng cáo
