@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "sourceHead": "ac49fe1c37d737b82420731a179a785c555807ec",
+  "sourceHead": "d9b7021503ebe7ae3ad4beea95baad1183ad99e3",
   "inventorySource": "docs/architecture/page-inventory.json",
   "trackingSource": "docs/architecture/production-readiness/TRACKING.json",
   "scope": {
@@ -44,8 +44,8 @@
       "activeRouteRecords": 428,
       "retiredRouteRecords": 1,
       "activeRoutesWithoutResolvedUrls": 0,
-      "urlRegistrations": 1465,
-      "uniqueResolvedUrls": 1396,
+      "urlRegistrations": 1468,
+      "uniqueResolvedUrls": 1399,
       "routeClassifications": {
         "component-alias": 133,
         "development-only": 36,
@@ -68,12 +68,13 @@
         "routeRowsWithA11yAutomation": 0
       },
       "latestLocalEvidence": {
-        "routeRowsWithBrowserRuntimeChecks": 82,
+        "routeRowsWithBrowserRuntimeChecks": 83,
         "routeRowsWithScreenshots": 0,
         "routeRowsWithA11yAutomation": 0,
         "evidenceIds": [
           "EV-20261025-016",
-          "EV-20261025-007"
+          "EV-20261025-007",
+          "EV-20261025-019"
         ],
         "scope": "Local UI mock evidence only; not backend, staging, UAT, visual or accessibility acceptance."
       },
@@ -83,37 +84,40 @@
     "dimensionCoverage": {
       "interactionStates": {
         "routeRowsByStatus": {
-          "local_ui_mock_partial_pass": 6,
-          "not_assessed": 422
+          "local_ui_mock_partial_pass": 7,
+          "not_assessed": 421
         },
-        "routeRowsWithEvidence": 6,
+        "routeRowsWithEvidence": 7,
         "evidenceIds": [
           "EV-20261025-012",
           "EV-20261025-015",
-          "EV-20261025-016"
+          "EV-20261025-016",
+          "EV-20261025-019"
         ]
       },
       "viewport": {
         "routeRowsByStatus": {
-          "local_ui_mock_partial_pass": 6,
-          "not_run": 422
+          "local_ui_mock_partial_pass": 7,
+          "not_run": 421
         },
-        "routeRowsWithEvidence": 6,
+        "routeRowsWithEvidence": 7,
         "evidenceIds": [
           "EV-20261025-012",
           "EV-20261025-015",
-          "EV-20261025-016"
+          "EV-20261025-016",
+          "EV-20261025-019"
         ]
       },
       "theme": {
         "routeRowsByStatus": {
-          "local_ui_mock_partial_pass": 3,
-          "not_run": 425
+          "local_ui_mock_partial_pass": 4,
+          "not_run": 424
         },
-        "routeRowsWithEvidence": 3,
+        "routeRowsWithEvidence": 4,
         "evidenceIds": [
           "EV-20261025-012",
-          "EV-20261025-016"
+          "EV-20261025-016",
+          "EV-20261025-019"
         ]
       },
       "locale": {
@@ -11865,9 +11869,15 @@
       "classification": "page",
       "developmentOnly": false,
       "resolvedUrls": [
+        "/profile/security/change-password",
+        "/r/profile/security/change-password",
+        "/t/profile/security/change-password",
         "/w/profile/security/change-password"
       ],
       "registeredShells": [
+        "phone",
+        "responsive-route-context",
+        "tablet",
         "web"
       ],
       "pageTargets": [
@@ -11880,13 +11890,87 @@
       ],
       "personaMappingStatus": "mapped",
       "coverage": {
-        "interactionStates": "not_assessed",
-        "viewport": "not_run",
-        "theme": "not_run",
+        "interactionStates": "local_ui_mock_partial_pass",
+        "viewport": "local_ui_mock_partial_pass",
+        "theme": "local_ui_mock_partial_pass",
         "locale": "not_established",
         "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "interactionStates": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-019",
+          "states": [
+            "verify-step-empty-disabled",
+            "verify-step-current-password-entered",
+            "change-step-verified",
+            "mismatch-error",
+            "password-confirmation-corrected",
+            "totp-entered",
+            "success-step"
+          ],
+          "notes": "Covers password verification, mismatch feedback/correction, TOTP submission and success via local MSW. Invalid credentials, API error/retry, manual keyboard/screen-reader review and whole-page acceptance remain open."
+        },
+        "viewport": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-019",
+          "profiles": [
+            {
+              "profile": "phone",
+              "width": 390,
+              "height": 844
+            },
+            {
+              "profile": "tablet",
+              "width": 768,
+              "height": 900
+            },
+            {
+              "profile": "responsive",
+              "width": 1024,
+              "height": 900
+            },
+            {
+              "profile": "web",
+              "width": 1440,
+              "height": 900
+            }
+          ],
+          "testedUrls": [
+            "/profile/security/change-password",
+            "/t/profile/security/change-password",
+            "/r/profile/security/change-password",
+            "/w/profile/security/change-password"
+          ],
+          "notes": "Each shell test asserted document width equals viewport width; this is route-specific evidence, not full matrix acceptance."
+        },
+        "theme": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-019",
+          "modes": [
+            "light",
+            "dark"
+          ],
+          "states": [
+            "verify-step",
+            "change-step",
+            "mismatch-error",
+            "success-step"
+          ],
+          "notes": "Axe selected WCAG tags had zero violations across 32 scans (four states, two themes, four shells); this is not full accessibility certification or visual approval."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Hosted Browser auth-mock using the registered Vite MSW worker and developer fixture; route reachability plus local request/response contract only, not backend authorization.",
+          "aliasRegistrations": 4,
+          "uniqueAliases": 4,
+          "evidenceId": "EV-20261025-019",
+          "testedAt": "2026-10-24T23:20:40.4509884Z",
+          "canonicalizedPathRule": "Each observed shell URL equals one of this stable route row resolvedUrls.",
+          "notes": "Exact auth-password-change-mock test verified the four route aliases, MSW worker, mock developer login, password verification/change responses and request bodies; no backend or staging was used."
+        }
       }
     },
     {
