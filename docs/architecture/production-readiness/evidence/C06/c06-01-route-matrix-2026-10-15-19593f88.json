@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "sourceHead": "09b0f23bd58ff7a07d97b4032f8d69a5f98e6e0d",
+  "sourceHead": "4fd8eaa94926f88ca26346c9ae2594d8ac529fdc",
   "inventorySource": "docs/architecture/page-inventory.json",
   "trackingSource": "docs/architecture/production-readiness/TRACKING.json",
   "scope": {
@@ -87,10 +87,10 @@
     "dimensionCoverage": {
       "interactionStates": {
         "routeRowsByStatus": {
-          "local_ui_mock_partial_pass": 21,
-          "not_assessed": 407
+          "local_ui_mock_partial_pass": 30,
+          "not_assessed": 398
         },
-        "routeRowsWithEvidence": 21,
+        "routeRowsWithEvidence": 30,
         "evidenceIds": [
           "EV-20261025-012",
           "EV-20261025-015",
@@ -98,15 +98,16 @@
           "EV-20261025-019",
           "EV-20261025-021",
           "EV-20261025-025",
-          "EV-20261025-030"
+          "EV-20261025-030",
+          "EV-20261025-035"
         ]
       },
       "viewport": {
         "routeRowsByStatus": {
-          "local_ui_mock_partial_pass": 21,
-          "not_run": 407
+          "local_ui_mock_partial_pass": 30,
+          "not_run": 398
         },
-        "routeRowsWithEvidence": 21,
+        "routeRowsWithEvidence": 30,
         "evidenceIds": [
           "EV-20261025-012",
           "EV-20261025-015",
@@ -114,22 +115,24 @@
           "EV-20261025-019",
           "EV-20261025-021",
           "EV-20261025-025",
-          "EV-20261025-030"
+          "EV-20261025-030",
+          "EV-20261025-035"
         ]
       },
       "theme": {
         "routeRowsByStatus": {
-          "local_ui_mock_partial_pass": 18,
-          "not_run": 410
+          "local_ui_mock_partial_pass": 27,
+          "not_run": 401
         },
-        "routeRowsWithEvidence": 18,
+        "routeRowsWithEvidence": 27,
         "evidenceIds": [
           "EV-20261025-012",
           "EV-20261025-016",
           "EV-20261025-019",
           "EV-20261025-021",
           "EV-20261025-025",
-          "EV-20261025-030"
+          "EV-20261025-030",
+          "EV-20261025-035"
         ]
       },
       "locale": {
@@ -2380,9 +2383,9 @@
       ],
       "personaMappingStatus": "not_recorded",
       "coverage": {
-        "interactionStates": "not_assessed",
-        "viewport": "not_run",
-        "theme": "not_run",
+        "interactionStates": "local_ui_mock_partial_pass",
+        "viewport": "local_ui_mock_partial_pass",
+        "theme": "local_ui_mock_partial_pass",
         "locale": "not_established",
         "roleAndFeatureFlags": "source_classified",
         "runtime": "local_ui_mock_pass",
@@ -2432,6 +2435,70 @@
           "testedAt": "2026-10-24T19:43:23.395Z",
           "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
           "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        },
+        "interactionStates": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-035",
+          "states": [
+            "create form validation and cancel",
+            "failed create intent remains visible",
+            "feature disabled state and return navigation",
+            "coin rendering and hero loading/error/data states"
+          ],
+          "notes": "Partial route/form state coverage from the CI UI-mock/MSW fixtures. It is not full page acceptance, backend behavior, manual visual review or manual AT."
+        },
+        "viewport": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-035",
+          "profiles": [
+            {
+              "profile": "phone-narrow",
+              "width": 320,
+              "height": 844
+            },
+            {
+              "profile": "phone",
+              "width": 390,
+              "height": 844
+            },
+            {
+              "profile": "tablet",
+              "width": 900,
+              "height": 900
+            },
+            {
+              "profile": "web",
+              "width": 1440,
+              "height": 900
+            },
+            {
+              "profile": "responsive",
+              "width": 1024,
+              "height": 900
+            }
+          ],
+          "testedUrls": [
+            "/dca",
+            "/t/dca",
+            "/w/dca",
+            "/r/dca"
+          ],
+          "notes": "Only the listed route contexts and viewport sizes ran. Orientation, text scaling, browser/OS combinations and whole-page responsive acceptance remain open."
+        },
+        "theme": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-035",
+          "modes": [
+            "light",
+            "dark"
+          ],
+          "testedUrls": [
+            "/dca",
+            "/t/dca",
+            "/w/dca",
+            "/r/dca"
+          ],
+          "notes": "Explicit CSS theme classes were tested in local UI-mock fixtures; provider persistence, OS preference, full visual approval and manual AT remain open."
         }
       }
     },
@@ -3453,9 +3520,9 @@
       ],
       "personaMappingStatus": "not_recorded",
       "coverage": {
-        "interactionStates": "not_assessed",
-        "viewport": "not_run",
-        "theme": "not_run",
+        "interactionStates": "local_ui_mock_partial_pass",
+        "viewport": "local_ui_mock_partial_pass",
+        "theme": "local_ui_mock_partial_pass",
         "locale": "not_established",
         "roleAndFeatureFlags": "source_classified",
         "runtime": "local_ui_mock_pass",
@@ -3501,6 +3568,64 @@
           "testedAt": "2026-10-24T19:43:23.395Z",
           "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
           "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        },
+        "interactionStates": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-035",
+          "states": [
+            "subscription modal open",
+            "Escape cancel returns focus to trigger",
+            "cancelled flow sends no POST"
+          ],
+          "notes": "Partial route/form state coverage from the CI UI-mock/MSW fixtures. It is not full page acceptance, backend behavior, manual visual review or manual AT."
+        },
+        "viewport": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-035",
+          "profiles": [
+            {
+              "profile": "phone",
+              "width": 390,
+              "height": 844
+            },
+            {
+              "profile": "tablet",
+              "width": 900,
+              "height": 900
+            },
+            {
+              "profile": "web",
+              "width": 1440,
+              "height": 900
+            },
+            {
+              "profile": "responsive",
+              "width": 1024,
+              "height": 900
+            }
+          ],
+          "testedUrls": [
+            "/earn",
+            "/t/earn",
+            "/w/earn",
+            "/r/earn"
+          ],
+          "notes": "Only the listed route contexts and viewport sizes ran. Orientation, text scaling, browser/OS combinations and whole-page responsive acceptance remain open."
+        },
+        "theme": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-035",
+          "modes": [
+            "light",
+            "dark"
+          ],
+          "testedUrls": [
+            "/earn",
+            "/t/earn",
+            "/w/earn",
+            "/r/earn"
+          ],
+          "notes": "Explicit CSS theme classes were tested in local UI-mock fixtures; provider persistence, OS preference, full visual approval and manual AT remain open."
         }
       }
     },
@@ -3648,9 +3773,9 @@
       ],
       "personaMappingStatus": "not_recorded",
       "coverage": {
-        "interactionStates": "not_assessed",
-        "viewport": "not_run",
-        "theme": "not_run",
+        "interactionStates": "local_ui_mock_partial_pass",
+        "viewport": "local_ui_mock_partial_pass",
+        "theme": "local_ui_mock_partial_pass",
         "locale": "not_established",
         "roleAndFeatureFlags": "source_classified",
         "runtime": "local_ui_mock_pass",
@@ -3696,6 +3821,75 @@
           "testedAt": "2026-10-24T19:43:23.395Z",
           "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
           "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        },
+        "interactionStates": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-035",
+          "states": [
+            "subscription modal open and backdrop cancel",
+            "positions redeem modal open/cancel",
+            "pending request",
+            "transport-error outcome unknown feedback"
+          ],
+          "notes": "Partial route/form state coverage from the CI UI-mock/MSW fixtures. It is not full page acceptance, backend behavior, manual visual review or manual AT."
+        },
+        "viewport": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-035",
+          "profiles": [
+            {
+              "profile": "phone",
+              "width": 390,
+              "height": 844
+            },
+            {
+              "profile": "tablet",
+              "width": 900,
+              "height": 900
+            },
+            {
+              "profile": "web",
+              "width": 1440,
+              "height": 900
+            },
+            {
+              "profile": "responsive",
+              "width": 1024,
+              "height": 900
+            },
+            {
+              "profile": "phone-short",
+              "width": 568,
+              "height": 320
+            },
+            {
+              "profile": "web-short",
+              "width": 1440,
+              "height": 400
+            }
+          ],
+          "testedUrls": [
+            "/earn/savings",
+            "/t/earn/savings",
+            "/w/earn/savings",
+            "/r/earn/savings"
+          ],
+          "notes": "Only the listed route contexts and viewport sizes ran. Orientation, text scaling, browser/OS combinations and whole-page responsive acceptance remain open."
+        },
+        "theme": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-035",
+          "modes": [
+            "light",
+            "dark"
+          ],
+          "testedUrls": [
+            "/earn/savings",
+            "/t/earn/savings",
+            "/w/earn/savings",
+            "/r/earn/savings"
+          ],
+          "notes": "Explicit CSS theme classes were tested in local UI-mock fixtures; provider persistence, OS preference, full visual approval and manual AT remain open."
         }
       }
     },
@@ -3846,9 +4040,9 @@
       ],
       "personaMappingStatus": "not_recorded",
       "coverage": {
-        "interactionStates": "not_assessed",
-        "viewport": "not_run",
-        "theme": "not_run",
+        "interactionStates": "local_ui_mock_partial_pass",
+        "viewport": "local_ui_mock_partial_pass",
+        "theme": "local_ui_mock_partial_pass",
         "locale": "not_established",
         "roleAndFeatureFlags": "source_classified",
         "runtime": "local_ui_mock_pass",
@@ -3894,6 +4088,74 @@
           "testedAt": "2026-10-24T19:43:23.395Z",
           "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
           "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        },
+        "interactionStates": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-035",
+          "states": [
+            "portfolio redemption modal open/cancel",
+            "pending request",
+            "transport-error outcome unknown feedback"
+          ],
+          "notes": "Partial route/form state coverage from the CI UI-mock/MSW fixtures. It is not full page acceptance, backend behavior, manual visual review or manual AT."
+        },
+        "viewport": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-035",
+          "profiles": [
+            {
+              "profile": "phone",
+              "width": 390,
+              "height": 844
+            },
+            {
+              "profile": "tablet",
+              "width": 900,
+              "height": 900
+            },
+            {
+              "profile": "web",
+              "width": 1440,
+              "height": 900
+            },
+            {
+              "profile": "responsive",
+              "width": 1024,
+              "height": 900
+            },
+            {
+              "profile": "phone-short",
+              "width": 568,
+              "height": 320
+            },
+            {
+              "profile": "web-short",
+              "width": 1440,
+              "height": 400
+            }
+          ],
+          "testedUrls": [
+            "/earn/savings/portfolio",
+            "/t/earn/savings/portfolio",
+            "/w/earn/savings/portfolio",
+            "/r/earn/savings/portfolio"
+          ],
+          "notes": "Only the listed route contexts and viewport sizes ran. Orientation, text scaling, browser/OS combinations and whole-page responsive acceptance remain open."
+        },
+        "theme": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-035",
+          "modes": [
+            "light",
+            "dark"
+          ],
+          "testedUrls": [
+            "/earn/savings/portfolio",
+            "/t/earn/savings/portfolio",
+            "/w/earn/savings/portfolio",
+            "/r/earn/savings/portfolio"
+          ],
+          "notes": "Explicit CSS theme classes were tested in local UI-mock fixtures; provider persistence, OS preference, full visual approval and manual AT remain open."
         }
       }
     },
@@ -4249,9 +4511,9 @@
       ],
       "personaMappingStatus": "not_recorded",
       "coverage": {
-        "interactionStates": "not_assessed",
-        "viewport": "not_run",
-        "theme": "not_run",
+        "interactionStates": "local_ui_mock_partial_pass",
+        "viewport": "local_ui_mock_partial_pass",
+        "theme": "local_ui_mock_partial_pass",
         "locale": "not_established",
         "roleAndFeatureFlags": "source_classified",
         "runtime": "local_ui_mock_pass",
@@ -4297,6 +4559,64 @@
           "testedAt": "2026-10-24T19:43:23.395Z",
           "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
           "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        },
+        "interactionStates": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-035",
+          "states": [
+            "subscription modal open",
+            "close-button cancel returns focus to trigger",
+            "cancelled flow sends no POST"
+          ],
+          "notes": "Partial route/form state coverage from the CI UI-mock/MSW fixtures. It is not full page acceptance, backend behavior, manual visual review or manual AT."
+        },
+        "viewport": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-035",
+          "profiles": [
+            {
+              "profile": "phone",
+              "width": 390,
+              "height": 844
+            },
+            {
+              "profile": "tablet",
+              "width": 900,
+              "height": 900
+            },
+            {
+              "profile": "web",
+              "width": 1440,
+              "height": 900
+            },
+            {
+              "profile": "responsive",
+              "width": 1024,
+              "height": 900
+            }
+          ],
+          "testedUrls": [
+            "/earn/staking",
+            "/t/earn/staking",
+            "/w/earn/staking",
+            "/r/earn/staking"
+          ],
+          "notes": "Only the listed route contexts and viewport sizes ran. Orientation, text scaling, browser/OS combinations and whole-page responsive acceptance remain open."
+        },
+        "theme": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-035",
+          "modes": [
+            "light",
+            "dark"
+          ],
+          "testedUrls": [
+            "/earn/staking",
+            "/t/earn/staking",
+            "/w/earn/staking",
+            "/r/earn/staking"
+          ],
+          "notes": "Explicit CSS theme classes were tested in local UI-mock fixtures; provider persistence, OS preference, full visual approval and manual AT remain open."
         }
       }
     },
@@ -7575,9 +7895,9 @@
       ],
       "personaMappingStatus": "not_recorded",
       "coverage": {
-        "interactionStates": "not_assessed",
-        "viewport": "not_run",
-        "theme": "not_run",
+        "interactionStates": "local_ui_mock_partial_pass",
+        "viewport": "local_ui_mock_partial_pass",
+        "theme": "local_ui_mock_partial_pass",
         "locale": "not_established",
         "roleAndFeatureFlags": "source_classified",
         "runtime": "local_ui_mock_pass",
@@ -7623,6 +7943,74 @@
           "testedAt": "2026-10-24T19:43:23.395Z",
           "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
           "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        },
+        "interactionStates": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-035",
+          "states": [
+            "order confirmation modal open/cancel",
+            "pending and transport-error state",
+            "cancelled modal flow sends no write"
+          ],
+          "notes": "Partial route/form state coverage from the CI UI-mock/MSW fixtures. It is not full page acceptance, backend behavior, manual visual review or manual AT."
+        },
+        "viewport": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-035",
+          "profiles": [
+            {
+              "profile": "phone",
+              "width": 390,
+              "height": 844
+            },
+            {
+              "profile": "tablet",
+              "width": 900,
+              "height": 900
+            },
+            {
+              "profile": "web",
+              "width": 1440,
+              "height": 900
+            },
+            {
+              "profile": "responsive",
+              "width": 1024,
+              "height": 900
+            },
+            {
+              "profile": "phone-short",
+              "width": 568,
+              "height": 320
+            },
+            {
+              "profile": "web-short",
+              "width": 1440,
+              "height": 400
+            }
+          ],
+          "testedUrls": [
+            "/p2p/ad/ad001",
+            "/t/p2p/ad/ad001",
+            "/w/p2p/ad/ad001",
+            "/r/p2p/ad/ad001"
+          ],
+          "notes": "Only the listed route contexts and viewport sizes ran. Orientation, text scaling, browser/OS combinations and whole-page responsive acceptance remain open."
+        },
+        "theme": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-035",
+          "modes": [
+            "light",
+            "dark"
+          ],
+          "testedUrls": [
+            "/p2p/ad/ad001",
+            "/t/p2p/ad/ad001",
+            "/w/p2p/ad/ad001",
+            "/r/p2p/ad/ad001"
+          ],
+          "notes": "Explicit CSS theme classes were tested in local UI-mock fixtures; provider persistence, OS preference, full visual approval and manual AT remain open."
         }
       }
     },
@@ -8094,9 +8482,9 @@
       ],
       "personaMappingStatus": "not_recorded",
       "coverage": {
-        "interactionStates": "not_assessed",
-        "viewport": "not_run",
-        "theme": "not_run",
+        "interactionStates": "local_ui_mock_partial_pass",
+        "viewport": "local_ui_mock_partial_pass",
+        "theme": "local_ui_mock_partial_pass",
         "locale": "not_established",
         "roleAndFeatureFlags": "source_classified",
         "runtime": "local_ui_mock_pass",
@@ -8142,6 +8530,74 @@
           "testedAt": "2026-10-24T19:43:23.395Z",
           "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
           "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        },
+        "interactionStates": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-035",
+          "states": [
+            "create-ad confirmation modal open/cancel",
+            "pending and transport-error state",
+            "cancelled modal flow sends no write"
+          ],
+          "notes": "Partial route/form state coverage from the CI UI-mock/MSW fixtures. It is not full page acceptance, backend behavior, manual visual review or manual AT."
+        },
+        "viewport": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-035",
+          "profiles": [
+            {
+              "profile": "phone",
+              "width": 390,
+              "height": 844
+            },
+            {
+              "profile": "tablet",
+              "width": 900,
+              "height": 900
+            },
+            {
+              "profile": "web",
+              "width": 1440,
+              "height": 900
+            },
+            {
+              "profile": "responsive",
+              "width": 1024,
+              "height": 900
+            },
+            {
+              "profile": "phone-short",
+              "width": 568,
+              "height": 320
+            },
+            {
+              "profile": "web-short",
+              "width": 1440,
+              "height": 400
+            }
+          ],
+          "testedUrls": [
+            "/p2p/create",
+            "/t/p2p/create",
+            "/w/p2p/create",
+            "/r/p2p/create"
+          ],
+          "notes": "Only the listed route contexts and viewport sizes ran. Orientation, text scaling, browser/OS combinations and whole-page responsive acceptance remain open."
+        },
+        "theme": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-035",
+          "modes": [
+            "light",
+            "dark"
+          ],
+          "testedUrls": [
+            "/p2p/create",
+            "/t/p2p/create",
+            "/w/p2p/create",
+            "/r/p2p/create"
+          ],
+          "notes": "Explicit CSS theme classes were tested in local UI-mock fixtures; provider persistence, OS preference, full visual approval and manual AT remain open."
         }
       }
     },
@@ -8169,9 +8625,9 @@
       ],
       "personaMappingStatus": "not_recorded",
       "coverage": {
-        "interactionStates": "not_assessed",
-        "viewport": "not_run",
-        "theme": "not_run",
+        "interactionStates": "local_ui_mock_partial_pass",
+        "viewport": "local_ui_mock_partial_pass",
+        "theme": "local_ui_mock_partial_pass",
         "locale": "not_established",
         "roleAndFeatureFlags": "source_classified",
         "runtime": "local_ui_mock_pass",
@@ -8217,6 +8673,42 @@
           "testedAt": "2026-10-24T19:43:23.395Z",
           "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
           "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        },
+        "interactionStates": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-035",
+          "states": [
+            "web create-offer confirmation modal open/backdrop cancel",
+            "cancelled modal flow sends no write"
+          ],
+          "notes": "Partial route/form state coverage from the CI UI-mock/MSW fixtures. It is not full page acceptance, backend behavior, manual visual review or manual AT."
+        },
+        "viewport": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-035",
+          "profiles": [
+            {
+              "profile": "web",
+              "width": 1440,
+              "height": 900
+            }
+          ],
+          "testedUrls": [
+            "/w/p2p/create-offer"
+          ],
+          "notes": "Only the listed route contexts and viewport sizes ran. Orientation, text scaling, browser/OS combinations and whole-page responsive acceptance remain open."
+        },
+        "theme": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-035",
+          "modes": [
+            "light",
+            "dark"
+          ],
+          "testedUrls": [
+            "/w/p2p/create-offer"
+          ],
+          "notes": "Explicit CSS theme classes were tested in local UI-mock fixtures; provider persistence, OS preference, full visual approval and manual AT remain open."
         }
       }
     },
@@ -9588,9 +10080,9 @@
       ],
       "personaMappingStatus": "not_recorded",
       "coverage": {
-        "interactionStates": "not_assessed",
-        "viewport": "not_run",
-        "theme": "not_run",
+        "interactionStates": "local_ui_mock_partial_pass",
+        "viewport": "local_ui_mock_partial_pass",
+        "theme": "local_ui_mock_partial_pass",
         "locale": "not_established",
         "roleAndFeatureFlags": "source_classified",
         "runtime": "local_ui_mock_pass",
@@ -9636,6 +10128,74 @@
           "testedAt": "2026-10-24T19:43:23.395Z",
           "canonicalizedPathRule": "Final browser path may be another resolved URL registered to this same stable route.",
           "notes": "All registered aliases for this stable route are covered by the four-shell Playwright suite."
+        },
+        "interactionStates": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-035",
+          "states": [
+            "delete confirmation modal open/cancel",
+            "pending and transport-error state",
+            "cancelled modal flow sends no write"
+          ],
+          "notes": "Partial route/form state coverage from the CI UI-mock/MSW fixtures. It is not full page acceptance, backend behavior, manual visual review or manual AT."
+        },
+        "viewport": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-035",
+          "profiles": [
+            {
+              "profile": "phone",
+              "width": 390,
+              "height": 844
+            },
+            {
+              "profile": "tablet",
+              "width": 900,
+              "height": 900
+            },
+            {
+              "profile": "web",
+              "width": 1440,
+              "height": 900
+            },
+            {
+              "profile": "responsive",
+              "width": 1024,
+              "height": 900
+            },
+            {
+              "profile": "phone-short",
+              "width": 568,
+              "height": 320
+            },
+            {
+              "profile": "web-short",
+              "width": 1440,
+              "height": 400
+            }
+          ],
+          "testedUrls": [
+            "/p2p/my-ads",
+            "/t/p2p/my-ads",
+            "/w/p2p/my-ads",
+            "/r/p2p/my-ads"
+          ],
+          "notes": "Only the listed route contexts and viewport sizes ran. Orientation, text scaling, browser/OS combinations and whole-page responsive acceptance remain open."
+        },
+        "theme": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-035",
+          "modes": [
+            "light",
+            "dark"
+          ],
+          "testedUrls": [
+            "/p2p/my-ads",
+            "/t/p2p/my-ads",
+            "/w/p2p/my-ads",
+            "/r/p2p/my-ads"
+          ],
+          "notes": "Explicit CSS theme classes were tested in local UI-mock fixtures; provider persistence, OS preference, full visual approval and manual AT remain open."
         }
       }
     },
