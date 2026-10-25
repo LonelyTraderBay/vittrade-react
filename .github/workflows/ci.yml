@@ -75,6 +75,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Verify complete UI shard evidence and failure handling
+        run: node --test scripts/ci-ui-shards.node-test.mjs
+
       - name: Typecheck
         run: npm run typecheck
 
@@ -236,10 +239,17 @@ jobs:
       - run: npm ci
       - name: Install Playwright browser
         run: npx playwright install --with-deps chromium
+      - name: Discover the complete UI test denominator
+        if: matrix.suite == 'ui-mock'
+        env:
+          VITTRADE_UI_SHARD: ''
+          PLAYWRIGHT_JSON_OUTPUT_FILE: .artifacts/ci/ui-plan.json
+        run: npm run test:e2e -- --config playwright.ui-mock.config.ts --list --reporter=json
       - name: Browser contract
         env:
           BROWSER_PROFILE: ${{ matrix.suite }}
           BROWSER_CONFIG: ${{ matrix.config }}
+          VITTRADE_UI_SHARD: ${{ matrix.suite == 'ui-mock' && '1/3' || '' }}
         run: |
           set -euo pipefail
           if [ "$BROWSER_PROFILE" = "auth-mock" ]; then
@@ -257,10 +267,78 @@ jobs:
           name: production-browser-${{ matrix.suite }}-${{ github.sha }}-${{ github.run_attempt }}
           include-hidden-files: true
           path: |
+            .artifacts/ci/ui-plan.json
             .artifacts/runs/**/run.json
             .artifacts/runs/**/playwright-report/**
             .artifacts/runs/**/test-results/**
             .artifacts/cleanup-report.json
+          retention-days: 7
+          if-no-files-found: error
+
+  ui_shards:
+    name: Browser ui-mock ${{ matrix.shard }}/3
+    needs: scope
+    if: needs.scope.outputs.mode == 'full'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [2, 3]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+      - name: Browser contract
+        env:
+          VITTRADE_UI_SHARD: ${{ matrix.shard }}/3
+          VITE_ENABLE_DEVTOOLS: 'true'
+        run: npm run test:e2e -- --config playwright.ui-mock.config.ts
+      - name: Preserve verification reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-browser-ui-mock-${{ matrix.shard }}-of-3-${{ github.sha }}-${{ github.run_attempt }}
+          include-hidden-files: true
+          path: |
+            .artifacts/runs/**/run.json
+            .artifacts/runs/**/playwright-report/**
+            .artifacts/runs/**/test-results/**
+            .artifacts/cleanup-report.json
+          retention-days: 7
+          if-no-files-found: error
+
+  ui_coverage:
+    name: Complete UI coverage
+    needs: [scope, browser, ui_shards]
+    if: always() && needs.scope.outputs.mode == 'full'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: production-browser-ui-mock-*${{ github.sha }}-${{ github.run_attempt }}
+          path: .artifacts/ui-input
+      - name: Verify every UI ID exactly once from this source and run
+        env:
+          CI_UI_NEEDS: ${{ toJSON(needs) }}
+        run: node scripts/ci-ui-shards.mjs .artifacts/ui-input
+      - name: Preserve verification reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-ui-coverage-${{ github.sha }}-${{ github.run_attempt }}
+          include-hidden-files: true
+          path: .artifacts/ci/ui-coverage.json
           retention-days: 7
           if-no-files-found: error
 
@@ -298,7 +376,7 @@ jobs:
   verify:
     # Stable required-check name; conditional jobs cannot silently bypass it.
     name: Production gates
-    needs: [scope, static, unit, browser, metadata]
+    needs: [scope, static, unit, browser, ui_shards, ui_coverage, metadata]
     if: always()
     runs-on: ubuntu-latest
     steps:
@@ -306,6 +384,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
+      - name: Require complete UI coverage for the selected scope
+        env:
+          CI_UI_NEEDS: ${{ toJSON(needs) }}
+        run: node scripts/ci-ui-shards.mjs gate
       - name: Verify every applicable gate
         env:
           CI_NEEDS: ${{ toJSON(needs) }}

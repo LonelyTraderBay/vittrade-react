@@ -48,57 +48,25 @@
     }
   ],
   "checkpoint": {
-    "updatedAt": "2026-10-25T16:03:27.116Z",
+    "updatedAt": "2026-10-25T17:46:26.232Z",
     "lastCompletedTask": "C03",
     "activeTask": "C06",
     "activeStep": "C06.13",
     "nextTask": "C06",
     "nextStep": "C06.13",
-    "nextAction": "Đóng gói gói40 đường dẫn đã kiểm chứng thành một commit có DCO và thông điệp tiếng Việt, push main; chỉ chốt giao Git sau khi full CI và artifact trên đúng SHA đạt. Sau đó tiếp tục C06.13 Market list/detail theo inventory; giữ mặc định không tự commit/push cho gói mới. C06.14/15 vẫn phụ thuộc nghiệm thu C06.13.",
+    "nextAction": "Commit/push gói tối ưu CI được ủy quyền; kiểm full CI,11 artifact và thời gian thực tế trên SHA cuối trước bàn giao. Không tạo commit chỉ ghi kết quả CI; sau đó tiếp tục C06.13 Market list/detail theo inventory.",
     "changedFiles": [
-      "AGENTS.md",
       ".github/workflows/ci.yml",
-      "package.json",
-      "scripts/catalogue-source.mjs",
-      "docs/PROJECT_CONTEXT.md",
+      "playwright.ui-mock.config.ts",
+      "scripts/ci-scope.mjs",
+      "scripts/ci-ui-shards.mjs",
+      "scripts/ci-ui-shards.node-test.mjs",
       "docs/ai/WORKFLOW.md",
-      "docs/ai/PRODUCTION-READINESS-PROMPT.md",
-      "docs/architecture/production-readiness/PLAN.md",
-      "docs/architecture/production-readiness/check-tracking.mjs",
-      "docs/architecture/production-readiness/evidence/C06/generate-route-matrix.mjs",
-      "docs/architecture/production-readiness/evidence/C06/c06-01-route-matrix-2026-10-15-19593f88.json",
-      "docs/architecture/production-readiness/TRACKING.json",
-      "src/features/dca/pages/SavingsDCAContractPage.tsx",
-      "docs/architecture/page-inventory.json",
-      "src/features/earn/pages/EarnHistoryPage.tsx",
-      "src/features/earn/pages/SavingsContractPages.tsx",
-      "src/shared/ui/FilterButton.tsx",
-      "guidelines/Guidelines.md",
-      "src/features/earn/pages/EarnTransactionPages.tsx",
-      "src/app/components/layout/AppLayout.tsx",
-      "src/app/components/layout/device-layout.ts",
-      "src/features/earn/pages/SavingsPortfolioPage.tsx",
-      "src/features/earn/components/EarnFeatureComponents.tsx",
-      "src/features/earn/pages/EarnPage.tsx",
-      "vite.config.ts",
-      "src/shared/ui/CTAButton.tsx",
-      "scripts/auth-mock-e2e-global-setup.ts",
-      "src/features/profile/pages/ActivityLogContractPage.tsx",
-      "src/features/profile/pages/DeviceManagementContractPage.tsx",
-      "src/features/profile/pages/EditProfileContractPage.tsx",
-      "src/features/profile/pages/ProfileContractPage.tsx",
-      "src/features/profile/pages/SecurityContractPage.tsx",
-      "src/features/profile/pages/SubAccountContractPage.tsx",
-      "src/features/support/pages/HelpCenterContractPage.tsx",
-      "src/features/support/pages/NewsContractPage.tsx",
-      "src/features/support/pages/NotificationsContractPage.tsx",
-      "src/features/support/pages/SupportContractPage.tsx",
-      "src/features/support/model/support-queries.ts"
+      "docs/architecture/production-readiness/TRACKING.json"
     ],
     "pendingChecks": [
-      "Full CI theo sự kiện push/main trên SHA được tạo; đọc receipt ngoài repo cho kết quả cuối, không dùng lastVerified lịch sử thay thế.",
-      "Ma trận428 route đầy đủ và nghiệm thu visual/manual AT còn mở;115 runtime/57 state rows chỉ là bằng chứng frontend có phạm vi.",
-      "C06.14 exceptions/C06.15 retirement và backend/staging/UAT còn theo điều kiện đã ghi."
+      "Full CI theo push/main và artifact trên SHA mới; đo thời gian thực tế so baseline CI298, không dùng ước tính15–20 phút làm kết quả.",
+      "Ma trận428 route, visual/manual AT, C06.14/15 và backend/staging/UAT còn mở."
     ],
     "blockers": [
       "Nghiệm thu đầy đủ ma trận và visual/manual AT chưa được cung cấp bởi các kiểm tra tự động."
@@ -161,148 +129,82 @@
     ],
     "manifestPath": "C:\\Users\\Joker-PC\\Documents\\Codex\\Work\\vittrade-react\\20261023-single-main\\work\\c06-publish-20261025\\verification.json",
     "validation": {
-      "state": "local_verified_diff_ready",
-      "scope": "working_tree_only",
+      "state": "local_verified_authorized_publication_ci_pending",
+      "scope": "working_tree_ci_optimization",
       "evidenceIds": [
-        "EV-20261025-036",
-        "EV-20261025-037",
-        "EV-20261025-038",
-        "EV-20261025-039",
-        "EV-20261025-040",
-        "EV-20261025-041",
-        "EV-20261025-042",
-        "EV-20261025-043",
-        "EV-20261025-044"
+        "EV-20261026-001",
+        "EV-20261026-002"
       ],
-      "receipt": "C:\\Users\\Joker-PC\\Documents\\Codex\\Work\\vittrade-react\\20261023-single-main\\work\\c06-profile-support-20261025\\verification.json",
+      "receipt": "C:\\Users\\Joker-PC\\Documents\\Codex\\Work\\vittrade-react\\20261023-single-main\\work\\ci-speed-20261026\\verification.json",
       "tests": {
-        "fullSuite": 3790,
-        "files": 388,
-        "targeted": 247,
-        "targetedFiles": 30,
-        "customRuntime": 148,
-        "aliasTheme": 88,
-        "stateJourneys": 44,
-        "mutationJourneys": 16,
-        "scopedAxeScans": 48,
+        "tooling": 77,
+        "existingTooling": 52,
+        "addedTooling": 25,
         "uiMock": 630,
-        "profileSemantic": 4,
-        "e2e": 96,
-        "e2eSkipped": 4,
-        "e2eDiscovered": 100
+        "shards": [
+          210,
+          210,
+          210
+        ],
+        "retry": 0,
+        "skipped": 0
       },
-      "coverage": {
-        "statements": {
-          "percent": 99.8,
-          "covered": 12571,
-          "total": 12596
-        },
-        "branches": {
-          "percent": 99.46,
-          "covered": 10738,
-          "total": 10796
-        },
-        "functions": {
-          "percent": 99.77,
-          "covered": 3991,
-          "total": 4000
-        },
-        "lines": {
-          "percent": 99.87,
-          "covered": 11655,
-          "total": 11670
-        }
+      "preservation": {
+        "existingTestFilesUnchanged": 444,
+        "applicationFilesUnchanged": true,
+        "lockfileAndCoverageThresholdsUnchanged": true,
+        "protectedInstructionsUnchanged": true
       },
-      "localeDecisionId": "DECISION-20261025-002",
-      "preservedTestFixtureAndThresholdFiles": 466,
       "readinessErrors": 0,
-      "deliverySourceEquivalence": true,
-      "deliveryReceipt": "C:\\Users\\Joker-PC\\Documents\\Codex\\Work\\vittrade-react\\20261023-single-main\\work\\c06-publish-20261025\\verification.json"
+      "previousApplicationVerification": {
+        "sourceHead": "3563f200510adc777ebd7ee3d057e776f455992d",
+        "receipt": "C:\\Users\\Joker-PC\\Documents\\Codex\\Work\\vittrade-react\\20261023-single-main\\work\\c06-publish-20261025\\verification.json",
+        "scope": "Previous full application/coverage proof; preserved with CI298 and all historical evidence, not relabelled as a fresh run for this candidate."
+      },
+      "hostedCi": "pending_explicit_push_request",
+      "deliveryReceipt": "C:/Users/Joker-PC/Documents/Codex/Work/vittrade-react/20261023-single-main/work/ci-speed-publish-20261026/verification.json"
     },
     "deliveryVerification": {
-      "scope": "Uncommitted C06.13 Profile/Support10-page batch; all prior dirty packages retained",
+      "scope": "Uncommitted CI UI native sharding/quality gate optimization",
       "authorization": {
         "commit": "explicit_request_required",
         "push": "explicit_request_required",
-        "currentRequest": "commit_and_push_main_current_package",
-        "decisionId": "DECISION-20261025-003",
+        "currentRequest": "commit_and_push_main_ci_optimization",
+        "decisionId": "DECISION-20261026-002",
         "policyDecisionId": "DECISION-20261025-001",
         "scopePaths": [
           ".github/workflows/ci.yml",
-          "AGENTS.md",
-          "docs/PROJECT_CONTEXT.md",
-          "docs/ai/PRODUCTION-READINESS-PROMPT.md",
+          "playwright.ui-mock.config.ts",
+          "scripts/ci-scope.mjs",
+          "scripts/ci-ui-shards.mjs",
+          "scripts/ci-ui-shards.node-test.mjs",
           "docs/ai/WORKFLOW.md",
-          "docs/architecture/page-inventory.json",
-          "docs/architecture/production-readiness/PLAN.md",
-          "docs/architecture/production-readiness/TRACKING.json",
-          "docs/architecture/production-readiness/check-tracking.mjs",
-          "docs/architecture/production-readiness/evidence/C06/c06-01-route-matrix-2026-10-15-19593f88.json",
-          "docs/architecture/production-readiness/evidence/C06/generate-route-matrix.mjs",
-          "guidelines/Guidelines.md",
-          "package.json",
-          "scripts/auth-mock-e2e-global-setup.ts",
-          "src/app/components/layout/AppLayout.tsx",
-          "src/app/components/layout/device-layout.ts",
-          "src/features/dca/pages/SavingsDCAContractPage.tsx",
-          "src/features/earn/components/EarnFeatureComponents.tsx",
-          "src/features/earn/pages/EarnHistoryPage.tsx",
-          "src/features/earn/pages/EarnPage.tsx",
-          "src/features/earn/pages/EarnTransactionPages.tsx",
-          "src/features/earn/pages/SavingsContractPages.tsx",
-          "src/features/earn/pages/SavingsPortfolioPage.tsx",
-          "src/features/profile/pages/ActivityLogContractPage.tsx",
-          "src/features/profile/pages/DeviceManagementContractPage.tsx",
-          "src/features/profile/pages/EditProfileContractPage.tsx",
-          "src/features/profile/pages/ProfileContractPage.tsx",
-          "src/features/profile/pages/SecurityContractPage.tsx",
-          "src/features/profile/pages/SubAccountContractPage.tsx",
-          "src/features/support/model/support-queries.ts",
-          "src/features/support/pages/HelpCenterContractPage.tsx",
-          "src/features/support/pages/NewsContractPage.tsx",
-          "src/features/support/pages/NotificationsContractPage.tsx",
-          "src/features/support/pages/SupportContractPage.tsx",
-          "src/shared/ui/CTAButton.tsx",
-          "src/shared/ui/FilterButton.tsx",
-          "vite.config.ts",
-          "scripts/catalogue-source.mjs",
-          "scripts/source-content.mjs",
-          "scripts/source-content.node-test.mjs"
+          "docs/architecture/production-readiness/TRACKING.json"
         ]
       },
       "lastVerified": {
-        "headSha": "98c82ea7a6254aecd7845e053a03ca5e620cb064",
-        "branch": "main",
-        "runId": 40158528870,
-        "number": 297,
-        "event": "push",
+        "sourceHead": "3563f200510adc777ebd7ee3d057e776f455992d",
+        "runId": 40211094664,
+        "runNumber": 298,
         "conclusion": "success",
-        "applicableJobsPassed": 8,
-        "notApplicableJobs": [
-          "Progress metadata gate"
-        ],
-        "url": "https://github.com/LonelyTraderBay/vittrade-react/actions/runs/40158528870",
-        "proof": "Workflow and job API observed during process audit; artifact bytes were not re-downloaded in this package."
+        "event": "push",
+        "url": "https://github.com/LonelyTraderBay/vittrade-react/actions/runs/40211094664",
+        "artifact": "C:\\Users\\Joker-PC\\Documents\\Codex\\Work\\vittrade-react\\20261023-single-main\\work\\c06-publish-20261025\\verification.json",
+        "scope": "Previous package only; current uncommitted CI optimization not covered."
       },
       "candidate": {
-        "state": "user_authorized_delivery",
-        "baseHead": "98c82ea7a6254aecd7845e053a03ca5e620cb064",
-        "ci": "pending_push_verification",
-        "localEvidenceId": "EV-20261025-043",
-        "localEvidenceIds": [
-          "EV-20261025-036",
-          "EV-20261025-037",
-          "EV-20261025-038",
-          "EV-20261025-039",
-          "EV-20261025-040",
-          "EV-20261025-041",
-          "EV-20261025-042",
-          "EV-20261025-043"
+        "baseHead": "3563f200510adc777ebd7ee3d057e776f455992d",
+        "state": "authorized_publish_ci_pending",
+        "artifact": "C:\\Users\\Joker-PC\\Documents\\Codex\\Work\\vittrade-react\\20261023-single-main\\work\\ci-speed-20261026\\verification.json",
+        "nativeTests": 630,
+        "shards": [
+          210,
+          210,
+          210
         ],
-        "localVerification": "passed",
-        "authorizationDecisionId": "DECISION-20261025-003",
-        "deliveryReceipt": "C:\\Users\\Joker-PC\\Documents\\Codex\\Work\\vittrade-react\\20261023-single-main\\work\\c06-publish-20261025\\verification.json",
-        "publicationFix": "Protected instruction Git-LF catalogue normalization; existing test files and thresholds preserved."
+        "toolingTests": 77,
+        "hostedCiVerified": false,
+        "publicationReceipt": "C:/Users/Joker-PC/Documents/Codex/Work/vittrade-react/20261023-single-main/work/ci-speed-publish-20261026/verification.json"
       }
     },
     "repositoryConsolidation": {
@@ -20139,7 +20041,9 @@
             "EV-20261025-041",
             "EV-20261025-042",
             "EV-20261025-043",
-            "EV-20261025-044"
+            "EV-20261025-044",
+            "EV-20261026-001",
+            "EV-20261026-002"
           ],
           "notes": "C06.13 inventory baseline EV-161 ghi 130 page files/428 route declarations. Sau hai pilot pages ban đầu, pool còn 128/425; AddressAddPage source commit 51d5d11b chuẩn hóa 1 page/1 route declaration (4 aliases), còn 127/424. Trang đặt lại mật khẩu chuẩn hóa trong source commit bc1a91517369b221e5982b96c27bc831fbc2e71c: 1 page/4 route declarations/8 URL aliases, dùng InputField và giữ nguyên OTP/API payload; local static/full-suite/build EV-167, Chromium EV-168. Exact predecessor closeout #137 PASS (EV-166). Source+ledger commit 4dd203be1c20248b174703b876306a3899e296b0 exact GitHub run #138 PASS (EV-169); tracker-only closeout SHA 14ea5e79db4aeb9da2219688182d6e7b70f10d4d exact GitHub run #139 PASS (EV-170): mỗi gate 34/34, artifact digest khớp, sáu manifest mỗi run có 1,151 hashes ổn định, readiness ledger errorCount=0, PR head/merge tree/signature khớp. Giữ C06.13 in_progress: còn 126 page files/420 route declarations trong rollout pool; runtime evidence 5/428 declarations và 12 URL aliases. Exact run #140 PASS đã mở cổng consumer tiếp theo (EV-171). Shared RegistrationForm được đo trên /auth/register, /t/auth/register, /r/auth/register và /w/auth/register: 8/8 shell-theme semantic color matches, 52 Axe scans/0 violations; local checks ghi tại EV-172, timeout attempt đầu giữ tại EV-173. Runtime evidence tăng từ 5 lên 7/428 route declarations và từ 12 lên 16 URL aliases. Pool migration vẫn 126 page files/420 route declarations vì lát cắt này sửa shared component, chưa hoàn tất hai page implementation. C06.13 remains in_progress; exact source+ledger #141 PASS (EV-20261017-174). Tracker-only closeout #142 phải PASS trước consumer kế tiếp. Backend/staging/production/UAT, route-wide runtime và product-wide manual WCAG chưa xác minh. Local check-tracking and architecture/route consistency checks PASS after this source ledger update (EV-172); the hosted exact-SHA gate remains pending. Exact tracker-only closeout run #142 (39041268597) PASS trên d07b52ccc6781f9cc0e6f4ebc58368108feb9567, EV-20261017-175: 34/34; artifact/manifests/readiness ledger/merge provenance khớp. C06.13 giữ in_progress; bắt buộc tracker-only exact run #143 trước consumer kế tiếp. Pool vẫn 126 pages/420 route declarations; runtime toàn tuyến, backend/staging/production/UAT và product-wide manual WCAG còn mở.\n2026-10-17 run #143 thất bại vì test hardcode /w/home tại 390px; trace/code xác nhận phone shell về /home theo viewport.loginHomeRoute. Sửa test-only ở edf83831f7ed4780873506cdd1b590d35a92c4de. Local: MFA 6/6, AccountLocked isolated 5/5, full suite lần đầu 40/41 timeout chưa rõ nguyên nhân (được giữ lại), retry 41/41; TypeScript app/node, ESLint, Prettier, inventory, frozen route matrix, diff PASS. Exact source+ledger #144 rồi tracker-only #145 phải PASS trước consumer mới; giữ C06.13 in_progress.\nExact source+ledger #144 PASS (EV-179); tracker-only commit + exact #145 vẫn bắt buộc. Sau đó ghi nhận #145 và kiểm tra tracker record trên exact #146 trước khi chọn consumer. C06.13 vẫn in_progress; chưa có tuyên bố sản phẩm hoàn tất.\nExact source+ledger #144 và tracker-closeout #145 đều PASS. Commit này ghi kết quả #145; exact #146 trên chính SHA cuối còn bắt buộc trước khi chọn consumer. C06.13 không đóng toàn bộ rollout.\nExact source+ledger #144, tracker closeout #145 và final tracker-record #146 đều PASS. Ghi EV-181; exact #147 trên tracker SHA cập nhật là gate cuối trước khi đo/sửa consumer tiếp. C06.13 vẫn in_progress.\n2026-10-18: GitHub predecessor #147 PASS (EV-182); wallet transfer field + mobile action target verified locally (EV-183). Final local focused 44/44, Playwright 9/9, typecheck, inventory, dependency, page-size, ESLint, Prettier pass. The overlap fix belongs to both shared bottom-navigation owners; pool remains 126 page files/420 route declarations because the page-level state matrix is incomplete. Exact new source+ledger run #148, tracker-only closeout and final tracker-record gates remain before next consumer.\n2026-10-18: exact PR run #148 failed only at the mobile CTA/navigation E2E geometry (EV-184): 9.89px overlap on Chromium/Linux. Corrected phone-shell spacing via existing PageContent tight preset; local 5/5 focused files (38/38 tests), wallet-contract E2E 9/9, measured 31.109px clearance at 390x844, typecheck, architecture, ESLint and Prettier pass (EV-185). Exact hosted source+ledger, tracker-closeout and final tracker-record SHA gates remain before another consumer.\n2026-10-18: after EV-185, architecture:inventory:check detected the generated line count was stale; the owner generator refreshed the file and the subsequent check passed with 130/428/150/0/32/28 inventory totals (EV-186). This does not close the page or route.\nEV-187 records a local full-suite FAIL (363/367 files and 3,514/3,520 tests passed; six failed; root cause unconfirmed). EV-188 records exact PR source gate #149 PASS: 34/34, artifact SHA-256 matched, six stable 1,151-hash manifests, readiness errorCount=0 and exact merge provenance. Keep page/route in_progress and require tracker-only #150, then final tracker-record #151 before next consumer.\nEV-189 confirms exact tracker-closeout run #150 passed all 34 workflow steps with downloaded artifact digest, six stable 1,151-hash manifests, readiness errorCount=0, and verified exact merge provenance. Windows local full-suite failure EV-187 remains unconfirmed; the 126-page/420-route pool and product-wide verification remain open. Require final tracker record and exact run #151 before the next consumer.\nC06.13: EV-192 xác nhận exact GitHub run #152 (39076343359) PASS trên SHA 6a1a800bee9afeabf3b81bb6ed992db75e6c8cbb: 34/34 workflow steps; E2E smoke 65/69 (4 test-level skips), API-mode 34/34, dev mock 41/41; artifact, sáu manifest, readiness ledger và merge provenance đã kiểm tra. E2E smoke retained 4 conditional test skips and 2 non-blocking host-resolution console errors; endpoint attribution remains unverified. Run #153 tracker-only closeout and exact #154 final-record gate remain required.\nC06.13: EV-193 xác nhận exact GitHub run #153 (39079017708) PASS trên SHA f33c353c12e70743a49f527067f1109288e5d469: 34/34 workflow steps, artifact 12118209447 khớp digest, 6/6 manifests × 1,151 hashes ổn định, readiness errorCount=0, merge parents/tree/signature khớp. Hosted run also reports one flaky API-mode registration responsive test at 320px (initial clipping assertion, retry pass; root cause unconfirmed), four conditional smoke skips and two browser resource host-resolution errors. Keep as follow-up evidence; no UI page acceptance or route coverage increase.\nEV-194 records exact hosted #154 FAIL on the prior SHA: the mocked withdrawal POST returned 201 and success feedback appeared, but the expected in-memory receipt was absent after a responsive shell remount. Test-only correction 20840d75 selects phone viewport before navigation and asserts the phone route. EV-195: focused Wallet tests 24/24, both typechecks, scoped ESLint/Prettier and diff check PASS; local Playwright attempt remains INCOMPLETE with a running manifest and is not counted as PASS. C06.13/page/route remain in_progress; no route coverage increment. Push source+ledger and require exact-head GitHub CI/artifact/manifests/readiness/merge gates, then separate tracker closeout and exact gate before another consumer.\nEV-20261018-196: corrected source+ledger exact PR #155 PASS on 0df7c0dbd722bdaa1f502b0d0ed22ff05bb36f47; 34/34 workflow steps, 6/6 stable runner snapshots × 1,151 hashes, artifact digest/readiness ledger/merge provenance verified. Keep C06.13 open for tracker-only #156 and final record #157 exact-SHA gates.\nC06.13 closeout: EV-200 independently verifies exact PR #3 run #157 on tracker head 0120ac57490367ae161f84d5a3f98307470a21fc: 34/34 workflow steps, artifact digest, six manifests × 1,151 identical source hashes, readiness ledger errorCount=0, and exact merge parents/tree/signature. EV-197/198/199 retain #156 attempt 1 FAIL (cause unconfirmed), local same-SHA coverage PASS, and attempt 2 PASS. C06.13 remains in_progress; the next gate is a separate tracker-only DCO commit and exact run #158. Only after #158 passes may the live inventory/page-route pool be remeasured and another consumer selected. Preserve EV-187 local full-suite FAIL and EV-195 Playwright INCOMPLETE; no route-count increase is claimed.\n2026-10-18: EV-201 records exact PR #3 run #158 PASS on 367a7d94, artifact/manifests/readiness/merge provenance, and post-gate source measurements. Inventory is 130 page files/428 route declarations, 1,465 URL registrations/1,396 unique; the C06.13 rollout denominator remains 126/420. Next candidate is active WebLoginPage at /w/auth/login, one resolved URL, UI status todo; InputField has 8 direct source consumers and TrInput one. Local focused baseline Vitest is 49/49 PASS (EV-202). Auth mock browser attempt 1 is 2/3 with unresolved Vite startup requests (EV-203); unchanged retry is 3/3 PASS (EV-204). A misconfigured default-config Playwright invocation remains incomplete and not counted. Require tracker-only DCO closeout and exact PR run #159 before changing source; preserve EV-187 and EV-195. EV-20261018-205: commit d6d8e4fefa951ec51c8e76d02d58ed70c3a8d63e migrates /w/auth/login to InputField compact; local tests 26/26, auth-mock E2E 3/3, 12 Web Axe cells 0 violations with computed 48/10/14/10px geometry across light/dark and 320/1440; four shell flow routes and 32 shared LoginPage Axe cells pass. Exact runner and source hash provenance is in local-verification.json. WebLogin page/route remain in_progress; C06.13 rollout pool stays 126 pages/420 active declarations pending full page acceptance. Exact #160/#161/#162 gates are required before another consumer.\n2026-10-18 AddressBook: source commit 8f2f8eb91d7442c6dcfc43d7b0e3a937b4a17cce thay ô tìm kiếm tự dựng 52px bằng shared SearchBar default 44px; giữ query/filter/API/payload. Unit 14/14 và static/type/inventory checks PASS (EV-209). Route inventory có 3 route declarations/6 resolved URLs; E2E mở đủ 6 alias. Local runner có 5 attempt, exact six-alias runtime chưa được chấp nhận do child process không đóng (EV-210); bắt buộc exact PR #163. Giữ 126 page/420 route rollout pool; PAGE-44ecf5a1e58f, PAGE-e4ddc60fea97 và 3 routes ở in_progress.\nEV-211 records the initial one-error self-catalog failure and corrected local checker PASS (errorCount=0); no checker exception was added. Exact hosted #163 remains required. Final local check-tracking rerun after EV-211/self-audit passed with errorCount=0; initial self-catalog failure retained in EV-211. Exact PR #163 remains the next hosted gate.\n2026-10-18 exact source+ledger PR #3 run #163 PASS on f614303b62fbd63cfbb122012310bd7d09665710 (EV-20261018-212): 34/34 steps; artifact digest, six 1,151-hash manifests, readiness errorCount=0, merge parents/tree/signature verified. Hosted AddressBook search test passed all six aliases; 65/69 smoke tests passed and 4 were skipped. One auth API test was flaky/retried. Keep PAGE-44ecf5a1e58f, PAGE-e4ddc60fea97 and three routes in_progress; pool remains 126/420. Require tracker-only exact #164 and final tracker-record exact #165 before selecting another consumer.\nCanonical check-tracking.mjs exit 0/errorCount=0, architecture inventory 130/428/150/0/32/28, and git diff --check pass on the tracker closeout candidate.\n2026-10-18 exact tracker-closeout PR #3 run #164 PASS on 6d46d0005e3a583bce8bd70c3880b5072780a806 (EV-213): 34/34 workflow steps; downloaded artifact digest, six stable 1,151-source-hash manifests, readiness errorCount=0, synthetic merge parents/tree/signature verified. Hosted AddressBook aliases passed with fixture at four viewport samples; 65/69 E2E smoke passed and 4 skipped. Keep PAGE-44ecf5a1e58f, PAGE-e4ddc60fea97 and 3 routes in_progress; pool stays 126/420. Require separate final tracker-record DCO commit and exact #165 before the next consumer.\n2026-10-18 Wallet history final tracker-record exact #169 PASS (EV-220): PR #3 run 39128835632, 34/34 steps, artifact/manifests/readiness/merge provenance verified. WalletDeposit partial action slice source commit 23db2c6c9c45d6c2b588c0341e153fd1e2feee49 and local evidence EV-221: 1 page, 2 active route declarations, 8 resolved URLs; 11 runtime route/viewport cells pass on synthetic fixtures. Source uses shared CTAButton/IconButton and announces copy success; API/business payload unchanged. Keep WalletDeposit page/routes and C06.13 in_progress; rollout pool remains 126 pages/420 route declarations because this is not full page acceptance. After ledger commit/push require exact source+ledger PR #3 run #170, then tracker-only #171 and final tracker-record #172 before selecting the next consumer. Theme/locale/role, remaining page states, manual AT/WCAG and backend/staging/production/UAT remain unverified. EV-221 local self-audit: check-tracking exit 0/errorCount 0 on the 39/220/130/428/154/1,022 scope; the wallet page and routes remain partial/in_progress. Exact source+ledger PR #3 run #170 PASS (EV-222): 34/34 steps, artifact/manifests/readiness/merge provenance verified. Keep page/routes and C06.13 in_progress; this is not complete page acceptance.\nExact predecessor #172 PASS (EV-20261018-224). PLAN.md thay đổi SHA 786c14261474a6aa6ebae31d49ec951710dea9ec9b230df816028fcf98e454c0; tracker sẽ bỏ con trỏ tự catalog của PLAN nhưng giữ hash/head cũ trong history. C06.13 và WalletDeposit page/routes vẫn in_progress.\nLocal candidate ledger check passed (39 tasks/220 steps; errorCount=0) and git diff --check passed; report EV-20261018-225. Runtime is N/A for this documentation-only change. Next gate is DCO source+ledger commit and exact PR #3 run #173.\nExact source+ledger commit 74f468d4cf545ae7076905c940be01c80606b189 passed PR #3 run #173 (EV-226); keep page/routes partial and do tracker-only #174, final-record #175 before next consumer.\n2026-10-19 exact source+ledger run #177 PASS (EV-20261019-234). Tiếp theo tracker-only closeout exact #178, rồi final tracker-record exact #179; chỉ sau hai gate này mới chọn consumer mới. Không đóng C06.13 hay giảm pool 126/420 trên bằng chứng của một lát cắt.\nExact tracker-closeout run #178 PASS (EV-20261019-235). Ghi nhận trong final tracker-record commit riêng và yêu cầu exact #179 PASS trước consumer kế. Giữ page/route partial và pool 126/420.\n2026-10-19 WalletDeposit follow-up source commit 73097635f51d34c02cec9e7b9e118dde9a2e4875: copy success/error feedback is scoped to asset/network and stale clipboard promises are ignored; refresh CTA exposes shared busy/disabled/aria-busy state. Full local unit 367/367 files, 3,528/3,528 tests, both TypeScript projects, ESLint, lint budget, dependency architecture, inventory, page-size, scoped format, route reconciliation and diff checks pass (EV-236). Local Playwright emitted 1/1 case pass but Windows runner did not exit; manifest retained and this is not final-source browser acceptance. Keep page/routes partial and pool 126/420; exact PR #3 #180 must pass before next consumer. Exact PR #3 run #181 passes 34/34 steps, including Auth API 34/34 and the registration keyboard test across 320/390/768/1440px; six manifests and artifact/provenance verified (EV-239). Keep C06.13 and page/routes partial; require tracker-only #182 and final-record #183 before another consumer. Exact tracker-only PR #3 run #182 passes 34/34 steps on 3d4c5ce67de0a37427f90bf90fb8067424f1d864; artifact/manifests/readiness/merge provenance and focused registration runtime are verified (EV-240). Keep C06.13 and Auth page/route in_progress; require final-record exact #183 before next consumer.\n2026-10-19 EV-243: exact run #184 failed at the design-system diff guardrail on three AuthBrandMark color literals; 14 workflow steps passed, one failed, 19 skipped. No guardrail was weakened. Source commit ba15d6e4355e0634b19f63f9a3cba27f01fbb9b7 moves the same colors into WEB_AUTH_BRAND_MARK and tests their exact values; full local 368/368 files and 3,532/3,532 tests plus TypeScript, ESLint, Prettier, inventory and dependency architecture pass (EV-244). Require exact source+ledger CI, then tracker-closeout and final-record gates before another consumer. Keep rollout 126 page files/420 routes and all route/runtime/WCAG/backend/UAT limitations open.\nEV-245 confirms check-tracking exit 0/errorCount 0 after source pointer reconciliation across 39 tasks/220 steps/130 pages/428 routes/154 operations/1,024 files outside PLAN. Final post-self-audit check-tracking also passed errorCount=0 (EV-245); this is not route/UI/WCAG/backend acceptance.\nEV-246: exact PR #3 run #185 passed 34/34 workflow steps (no workflow skips). Test-level skips are four conditional registration cases in staging E2E; separate Auth API mode 34/34 and Auth mock 41/41. Artifact digest, six stable manifests, readiness source-ledger and merge provenance verified. Keep all pages/routes and C06.13 partial until their own runtime and acceptance gates.\nEV-247 preliminary check-tracking passed with errorCount=0 after EV-246; final rerun after tracker self-audit is still required. This is ledger consistency only, not UI/page or backend acceptance.\nEV-247 final post-self-audit check-tracking passed with errorCount=0. One confirmation rerun after evidence-pointer refresh remains before tracker-only commit; the check remains ledger consistency only.\nFinal completed-payload confirmation check-tracking passed errorCount=0; report retained externally and hash recorded in EV-247 notes. No UI/page/backend acceptance is inferred. EV-20261019-255: post-#188 local check-tracking errorCount=0, architecture inventory 130/428/151/0/32/28, C06.10 design-system guard 8/8 and diff check PASS at source 5960869a. Local Node 24.19.0 versus .nvmrc 22; hosted exact run #189 remains required. EV-20261019-256 records a post-self-audit check-tracking PASS (errorCount=0) on tracker payload SHA 97f6839a, source 5960869a; a final confirmation run remains before commit.\n2026-10-19: exact PR #3 run #189 failed Auth registration at 320px on all 3 attempts (EV-257); document had no horizontal overflow, but group and CTA were clipped by an overflow ancestor. CI trace did not include geometry. Test-only source commit a2710ef adds element/clip/overflow ancestor measurements without weakening the assertion. Local focused API-mode test passed 1/1 across 320/390/768/1440px; both TypeScript projects, scoped ESLint/Prettier and diff check passed (EV-258). Require exact source+ledger #190 and tracker closeout #191 before another consumer; C06.13 remains in_progress.\nFinal pre-self-audit check after EV-257/258 passed: check-tracking errorCount=0 over 39/220/130/428/154/1,024 scope, architecture inventory 130/428/151/0/32/28, and diff check clean (EV-259).\n\n2026-10-19 exact source+ledger PR #3 run #190 PASS (EV-20261019-260): 34/34 workflow steps, Auth API 34/34, Auth mock 41/41, smoke/accessibility 69 pass/4 conditional skips; registration clipping measurement is 0/4 configured widths. Artifact SHA/size, six stable 1,153-hash manifests, readiness errorCount=0, verified synthetic merge parents/tree/signature, and remote/PR head match are verified. Keep C06.13 and Auth/WalletDeposit partial; #189 remains historical and its intermittent clip root cause is unproven. Require tracker-only exact run #191 before another consumer. EV-20261019-262 measured a missing native select keyboard focus indicator in both themes; source commit ddd6ff4e64bc4ee1ea4db01f3166b1bdc9068f3d adds the shared selector and a browser regression. EV-263 proves one production-preview runtime cell dark/light and one route/viewport only. EV-264 records full local tests and static checks. Keep WalletDeposit and C06.13 partial until the exact source+ledger and tracker-closeout GitHub gates plus remaining page/runtime acceptance pass.\nEV-20261019-266 verifies exact source+ledger run #192 at head 1c673b0183fcb018e440883d715eed870ae27420: all 34 workflow steps passed; artifact digest, six 1,153-hash manifests, readiness errorCount=0 and signed synthetic merge provenance verified. Hosted C06_NATIVE_SELECT_FOCUS passes dark/light on one route. Keep WalletDeposit/C06.13 partial; exact tracker-only run #193 gates the next measured consumer.\nEV-20261019-267: first tracker closeout self-audit passes errorCount=0 at 39/220/130/428/154/1,024 scope, inventory 130/428/151/0/32/28, and diff check; only TRACKING.json changed. Final repeat after this record is still required; do not proceed until exact tracker-only run #193 passes. EV-268 ghi nhận run #194 fail duy nhất do stale source catalogue; EV-269 xác nhận 16 cell focus runtime và local checks pass. C06.13/WalletDeposit vẫn partial. C06.13 AddressAddPage source commit 42b3f6a7 maps whitelist/warning surfaces to existing semantic theme colors; local runtime EV-273 is 8/8 across four aliases and light/dark. Exact source commit run #197 EV-274 failed only because these two source files were not yet catalogued at the new commit; retain the failure, correct exact fingerprints and require #198 then tracker-closeout #199 before next consumer. Keep AddressAddPage/route and C06.13 partial; retain the 126 page/420 route rollout pool. C06.13: refreshed the generated route matrix at source 42b3f6a7 (EV-275); current static scope 428 routes/1,396 URLs/151 component files, stable routeId+URL set unchanged, runtime coverage remains 0. Preserve 126/420 rollout pool. First local self-audit EV-276 passes after evidence and route matrix refresh; final check-tracking/inventory/matrix/diff repeat after CHANGE-369 is required before the tracker commit. Exact source+ledger PR #3 run #198 PASS (EV-20261019-277): 34/34 workflow steps, readiness errorCount=0, artifact/digest, six stable 1,153-hash manifests, and signed synthetic merge parents/tree verified. The page/route remain partial; exact tracker-only run #199 is mandatory before another consumer. First tracker-closeout self-audit EV-278 passes after #198 and matrix binding; final repeated local checks after EV-278/CHANGE-370 and exact tracker-only #199 remain mandatory. Post-EV-278 tracker-payload repeat check passed; final local repeat on the payload after this checkpoint change is still required before committing. Final precommit checks pass on tracker payload 8bc0868c; run the final repeat after this checkpoint note, then commit and require exact #199. PasswordResetPages success contrast slice: EV-280 baseline measured 2.53:1; source commit 03cfbb00 maps both success rule and icon to existing semantic token; EV-281 local tests and 70 Axe scans pass on the recorded sample. Exact source+ledger run #200 and tracker-only closeout #201 are required before next consumer; page/routes remain in_progress. EV-282 first self-audit on PasswordResetPages source+ledger passed. Repeat all four checks after this evidence/change record; exact source+ledger #200 and tracker-only #201 remain mandatory before another consumer.\n2026-10-20 C06.13 Web registration responsive control bounds: source commit 7503d92 updates shared RegistrationForm and focused E2E geometry assertion; local report EV-20261020-287 passes 320/390/768/1440 widths, zero clipped controls and preserves local fixture/request/keyboard/validation contract. Exact PR run #202 fails only at readiness ledger because both changed file pointers were stale; 26 steps pass, 1 fails, 7 skip. EV-286 records exact artifact digest, five runner snapshots × 1,153 equal hashes and synthetic merge parent/tree provenance. This tracker update reconciles both catalog pointers and preserves old hashes. C06.13 stays in_progress, page acceptance 0/130, backend 0/154, route runtime 0/428, rollout pool 126 page files/420 active route declarations. Exact new tracker SHA run #203 must pass all required checks and artifact/provenance verification before choosing another consumer. EV-20261020-288 records the first post-ledger self-audit pass (errorCount=0, inventory 130/428/151/0/32/28, static route matrix 428 rows/runtime 0, diff clean); final repeat after this evidence/change record and exact tracker run #203 remain mandatory. EV-20261020-289 repeats the four local gates after EV-288/CHANGE-380: checker errorCount=0, inventory 130/428/151/0/32/28, route matrix 428 static rows/runtime 0, diff clean and TRACKING.json only. One final exact repeat after EV-289/CHANGE-381 is required before commit; exact tracker SHA run #203 gates the next consumer.\n2026-10-20: exact tracker-only PR #3 run #203 passed 34/34 on e7a0e921; artifact SHA/size, six stable 1,153-hash manifests, readiness ledger exit 0, remote head and signed synthetic merge parents/tree verified (EV-20261020-290). Keep C06.13 in_progress and require tracker-only exact #204 before selecting a consumer; page acceptance and the 126/420 rollout pool remain open.\nSelf-audit after exact run #203: EV-20261020-291 confirms tracker errorCount=0, inventory 130/428/151/0/32/28, frozen static route rows 428/runtime rows 0, diff clean and TRACKING-only change; initial wrong route-matrix sourceHead invocation was corrected and preserved as diagnostic.\n2026-10-20: exact tracker-only PR #3 run #204 passed 34/34 on b09ef9b8; downloaded artifact digest/size, six stable 1,153-hash runner manifests, readiness ledger and signed synthetic merge provenance verified (EV-20261020-292). C06.13 remains in_progress; require the next tracker-only exact run #205 before selecting another consumer.\nPost-run-#204 self-audit EV-20261020-293: check-tracking errorCount=0, architecture inventory 130/428/151/0/32/28, frozen route matrix 428 static/0 runtime rows, diff clean and TRACKING.json only. Final repeat after this evidence/change record is mandatory before tracker-only commit/push; exact run #205 must pass before another consumer.\n2026-10-20: exact tracker-only PR #3 run #205 passed 34/34 on 91b61b81; artifact digest/size, six stable 1,153-hash manifests, readiness ledger and signed synthetic merge provenance verified (EV-20261020-294). C06.13 remains in_progress; complete post-run self-audit and exact tracker-only #206 before selecting another consumer.\nPost-run-#205 self-audit EV-20261020-295: check-tracking errorCount=0, inventory 130/428/151/0/32/28, frozen static route rows 428/runtime rows 0, diff clean and TRACKING.json only. Final repeat after EV-295/CHANGE-387 and exact tracker-only #206 remain mandatory.\n2026-10-20: exact tracker-only PR #3 run #206 passed 34/34 on 68494d20; artifact digest/size, six stable 1,153-hash manifests, readiness ledger and signed synthetic merge provenance verified (EV-20261020-296). C06.13 remains in_progress; complete post-run self-audit and exact tracker-only #207 before selecting another consumer.\nPost-run-#206 self-audit EV-20261020-297: check-tracking errorCount=0, inventory 130/428/151/0/32/28, frozen static route rows 428/runtime rows 0, diff clean and TRACKING.json only. Final repeat after EV-297/CHANGE-389 and exact tracker-only #207 remain mandatory.\n2026-10-20: exact tracker-only PR #3 run #207 passed 34/34 on 50f067b3; artifact digest/size, six stable 1,153-hash manifests, readiness ledger and signed synthetic merge provenance verified (EV-20261020-298). C06.13 remains in_progress; complete post-run self-audit and exact tracker-only #208 before selecting another consumer.\nPost-run-#207 self-audit confirmation EV-20261020-299: tracker errorCount=0, architecture inventory 130/428/151/0/32/28, frozen static route rows 428/runtime rows 0, diff clean, only TRACKING.json modified, local/remote HEAD both 50f067b3. Repeat the four gates after EV-299/CHANGE-391; exact tracker-only #208 remains required before another consumer.\n2026-10-20: exact tracker-only PR #3 run #208 (39329019692) passed 34/34 workflow steps on 7684a8da; 4 test-level skips reported, no workflow step skipped. Artifact digest/size matched; six manifests each had 1,153 unchanged hashes, readiness ledger passed, cleanup deleted 0 files, and signed synthetic merge parents/tree matched (EV-20261020-300). C06.13 remains in_progress; require post-run tracker self-audit and exact tracker-only #209 before selecting another consumer.\nPost-run-#208 self-audit EV-20261020-301: checker errorCount=0, architecture inventory 130/428/151/0/32/28, frozen route matrix 428 static/0 runtime, diff clean, only TRACKING.json modified; local/remote HEAD both 7684a8da. Final repeat after EV-301/CHANGE-393 and exact tracker-only #209 remain required. Report JSON parse/hash verified; an earlier malformed report attempt is preserved and explicitly superseded.\nNgày20/10/2026: phạm vi tối ưu C06/CI và54WIP đã xử lý54/54 theo EV-20261020-321; full source GitHub #222 verified EV-20261020-320. Đây không đóng tiêu chí toàn bộ C06.13/.14/.15. Debt guard4typo/2spacing/1CTAoverride/95CSS vẫn là baseline cần giảm. Ảnh phone390x844 /home trong devtools-defaults-images.json cho thấy text trong hai card mover chen nhau; source MarketHomePage.tsx grid hai cột/PairRow cần kiểm bounds/reflow trong rollout C06.13. Chưa coi ảnh này là usability test hoặc visual approval.\n20/10/2026 — P1 preview navigation source15b3be53:80unit,13static,47UI+4defaults;20default+10resizecells,2/20imagesreviewed. Authenticatedpriorfull#224; newexactfullpending. OwnWalleterrorpatch5paths preservedoutside, notlost/committed. GlobalC06.13 in_progress;14/15 gated.\n20/10/2026 — Source4785a2ff/full#225 PASS745s withauthentic7artifacts/7manifests/1164blobs. Inventoryreconciliation:130sourceowners;125DOM/query-settled representatives +3delegated/2utility.123sameURL/2guardedOTP,0pageerrors/overflow,110MSWresponses incl6sample404+9default503. Broadimages0/123manualreview. UIauditstarted130,0newcompleted. RawV1staleDOMexcluded; Adminerrortransportprobe corrected fromwrong503assumption. Walletpatchpreserved; nextsourcepriorities explicit.\n21/10/2026 local (UTC20/10) — Walletfield source530f03a9:38unit,13static,69UI incl22Wallet,20CTA/formcells +10draftresizecells;4/20manualimages;productionbuild/bundle/mockgatespassed afterusingCItestorigins. Parent#226metadata144sverifiedfull#225. ExactnewfullGitHubpending. AllC06statusesremainopen; nextAuthreturncontext thenpreviewcontent/DCAfallback.\n21/10/2026 local (UTC20/10): Auth return source 270bfd1a có250unit,13static,95UI(26Auth),build223chunks/mocks225files;manual4/24ảnh,4page/4declaration/8alias được kiểm từng phần. Cha#227 full đã xác minh822s. Rà Axe250cells/sourcefd16785e phát hiện56cells có findings,7contrast-WCAG cells,1239incomplete nodes; giữ open và ưu tiên owner fixes. Không thay trạng thái C06.13–15 thành done.\n21/10/2026local: guard source81a07cf1 pinshistoricalGit inputs andalso checks live topology;23unit/13static/2mutationpass, baselineunchanged/runtime0. ParentAuth#228fullverified848s,7ZIP/7manifest/1169blobs. Parked12ownedPhoneChrome paths withrawhashes whileunblockingguard;50unit/10newUIpass, full105pendingafterstalePhoneplacement-readiness testwasupdated. NoC06closure orWCAG/backendclaim.\n21/10/2026 local: source 8cb8a965 sửa P1 landscape CSS mask và Auth native scroll, 14/14 native-wheel/login cell, 109/109 UI, 50/50 unit ở5file, 13/13 static và build4,50s PASS. Baseline mask12/14 blocked; native scroll trước1/4 sau4/4. Xem tay2/14 ảnh cuối, không chứng nhận toàn bộ. Cha #229 d35c59da full verified809s/7ZIP/7manifest/1170blob. Chrome12path v2 còn bảo toàn; C06.13 in_progress, C06.14/.15 todo.\n21/10 local: sau orientation #230 đúng c4a151a3 full PASS (760 giây, 7 ZIP/7 manifest/1171 blob), phát hiện P1 DCA reset non-default draft qua MSW thật. Source170399f1 đạt 35 unit/13 static/117 UI/build. 8 cell DCA, mỗi cell hai lỗi transport, giữ SOL/daily/1234567 và same key; 8 alert contrast 0/0, xem tay 2/8 ảnh cuối. Callback true/false chỉ thuộc UI; mutation.isError sở hữu inline feedback. Inventory Main597→600. P1 ưu tiên trước Chrome P2; 12 path Chrome v2 còn bảo toàn. C06.13 in_progress, C06.14/.15 todo.\n21/10 local: sau #231 exact f39c4b53 full PASS, xác nhận P1 Earn custom modal bằng runtime. Earn chuyển sang BottomSheetV2; sửa shared focus restore conditional unmount, kiểm StrictMode/nested/sequential. 114 unit/10 file, 13 static, 135 UI, production build/bundle/mock PASS; 18 ca Earn,48 modal contexts,768 focus assertions,16 URL×2 CSS mode,6 pending/error case. C06.13 partial; .14/.15 todo.\n21/10 local: sau #232 exact d69da11e full PASS (1043 giây, 7 ZIP/7 manifest/1173 blob), P2P prototype phát hiện owner route Phone remount. Lưu đủ9 path theo hash trước sửa Root. Source90ed3584 lấy useOutlet snapshot: 29 unit/13 static/145 UI/build PASS; 10 cell mới giữ DOM/value, đúng spec giết owner cũ ở4 Phone,6 controls PASS. Tự xem3/10ảnh; clipping/label/preview còn mở. Chrome archive chạm AppLayout source/test nên bắt buộc 3-way merge khi restore. C06.13 in_progress, .14/.15 todo.\n21/10: #233 đúng5faf1c1f FAIL audit Vite6.4.3 (1 high), unit3649/UI145 PASS riêng. Source50a4ff43 vá duy nhất Vite6.4.4 và giữ context/log audit bằng tee+pipefail; 43 CI guard tests kiểm exit0/17 và negative control. Local20 static/3649 unit/145 UI/build5,07 giây PASS; xem2/64 ảnh Root/Earn. Chưa full hosted recovery, giữ C06.13 in_progress, .14/.15 todo.\n21/10: #234 đúngfe87242 đã FAIL smoke startup120s trước test; static/audit0/unit3649/auth34/auth41+4+UI145 đạt riêng. Source ddba2a48 thêm stdout/3 pha build timing, local19static/build/bundle/mock đạt; không hạ timeout hoặc khẳng định fix root cause. Diagnostic local88+4skip có assisted teardown do command lookup Windows, không là automatic proof. P2P baseline mới6modal+2error vẫn đỏ, archive9path nguyên. C06.13 giữ in_progress, .14/.15 todo.\n21/10: #235 đúngdd0e840 full PASS đã xác minh7 ZIP/7 manifest/1174 blob. P2P9 khôi phục:46 focused/13 static/3650coverage/163UI/build4,86 giây xanh; xem4/44ảnh thấy preview vẫn che copy. QA bổ sung native-import6case phát hiện96/96 Tabs rời modal pending sau2RAF; V1 harness lỗi được loại khỏi product finding. Giữ acceptance FAIL, park đủ9path v2 trước sửa primitive. C06.13 in_progress, .14/.15 todo.\n21/10: source a5ee3796 sửa primitive pending focus fallback16dòng, không đổi public props/API/CSS/token. Đúng oldowner:2unitvariant đỏ/21pass và6 Earn pending đỏ; saufix89focused/6Earn/13static/3653coverage/145UI/build4,93 giây PASS; xem2/6ảnherror. P2P9 đã parkv2 trướcfix, cầnrestore/3-wayGuidelines/thêm96pendingTabs vàoE2E18 rồiretest. C06.13 in_progress, .14/.15 todo; exact hosted source mới còn bắt buộc.\n21/10: P2P source5a58d61f9,9paths.27focused/13static/3654coverage/163UI/build4.87/bundle/mockPASS;38contexts608normalTabs+6pending96actualTabs,13URL26CSSmodecells,12contrastscan0/0,8transporterrors.3/44imagesconfirmwarningstillcoversPhonecopy/WebCTA. NoAPI/businesssymbolchange, no page done. Previousowner#236e1 exactfullPASS7ZIP7manifest1174blobs. DCAindependent8contexts128pendingTabs passes. Next Chrome12 strictlyafternewhostedPASS; .13in_progress/.14-.15todo.\n21/10: source fa4d583e sửa shared feedback owner tại4 path. 8 regression đúng trên e2edffb5 đều đỏ ở layer/expanded geometry; gỡ global override và giữ base surface đục dưới8 gradient không đổi màu/stop. Final13static/3654coverage/171UI/build4.95/bundle/mock PASS,3 runner closed/sourceUnchanged. 8 ca thực ThemeProvider×motion×Phone/Web,128 focus checks;16 scan0violation,8 gradient incompletes/24 node có renderer oracle, min15.49:1 và24 negative controls. Xem4/32 ảnh. Final-v1 exact-zero duration là oracle sai so với reset0.01ms; giữ167PASS/4FAIL artifact, test sửa theo source và full171 PASS. Quyết định ưu tiên owner feedback trước Chrome đã ghi trước triển khai. Dependency #237 e2 exact full PASS7ZIP7manifest1175blob. C06.13 in_progress; .14/.15todo.\n21/10: P1Phone/Auth preview sourcebfae7fc9 với17path. Final13static,3659coverage,4defaults,205UI,build4.38/bundle/mock PASS;5manifest sourceStable.34case/44ảnh mới,xem4;50resize bổ sung có20oldDOMretired. Giữ204PASS1FAIL và trace(0,0) của harness trước sửa; không gọi đây là product bug. Dependency #238 full exact6c PASS1166s/7ZIP7manifest1176blob. Chưa chuyển130pages/428routes thànhdone; .14/.15todo. Sau exact gate, ưu tiên CI lane UI theo ủy quyền tối ưu của người dùng và phép đo, giữ đủ5config/7manifest; tiếp P1DCA và rollout còn lại.\n21/10: sourcec6e62a4d khắc phục3testconsumers sau#239FAIL. Final5static/34API/41mock/4defaultsPASS,3manifest stable; production tree không đổi. Kiểm thêmtypes xác nhận13diagnostics có trước, latentduplicate1sau rename đã sửa; bỏsótshorthand củaAI bắt được bằngruntime và sửa trước giao. Tên test/expect giữ hoặc tăng,không bỏaxe/flow. FullGitHub mới pending,CI draft chưa áp dụng; C06.13in_progress/.14/.15todo.\n21/10: #240FAIL203UI/2 tại320 được truy root cause nhãn disclosure đổi intrinsicwidth. Patchb7017509,3paths, red2/2, green2newcases/14spacingcells exactgeometry;final13static/3659unit/4defaults/207UI/build4.39/bundle/mockPASS/5sourceStable manifests;4imagesAIreview. GitHub mới cònpending; không mở rollout phụ thuộc hoặc đóngC06.13–15.\n21/10: #241141d exactfullPASS1361s;7ZIP7manifest1180blobs/mergeverified,3659unit/88smoke+4skip/34API/41mock+4defaults+207UI. PrimarycleanFF141d. Source81d5e6a5táchUIlane:4paths,17static/46guardsPASS/0skip, giữ5config và mọi gate. Fullhosted mới và speedmeasurementpending. Readonlybaseline DCA8labelsgap+12darkcontrast;P2Pcreate2×13namesđúng/detail2namesmismatch,0writes. KhôngđóngC06.13–15 hoặc suyacceptanceapp từCIguards.\n21/10: #242 exact 77506ef1 full PASS, 8 ZIP/7 manifest/1.180 blob; CI cùng app/test giảm 1.361→792 giây (41,81%, một cặp quan sát). Primary sạch FF 77506ef1. Khi đo DCA phát hiện CTA dùng thật bị global hover filter: 4 context 3,96–3,99:1. Source 3db04325 (6 path) sửa owner trước DCA: marker +14 điều kiện loại trừ/5 adapter, không đổi token/API/callback. Final13static/3.661unit/211UI/4defaults/4reduced/build5,06/bundle/mock PASS,5manifest stable;8context/32state min4,8294;4/24 ảnh AI review. DCA8red đã archive, product chưa đổi; hosted owner còn pending. Không đóng C06.13–15.\n21/10:#243 e9c3d64 FAIL3660/3661 do1P2Pchecklisttimeout15s;4browser/staticPASS không thayaggregate. Sourcea820cf54 chỉ1test:11query giới hạn đúngcard, giữ toàn actions/assertions/timeout/threshold. Local12static/3661unit/373files/5focusedPASS,2closedstablemanifest. Một cặp2661→1135ms. DCAprobe4contexts xácnhậnlabel/pressed/group/helper thiếu,0writes/draftgiữ. Chờnewhostedfull trướcDCA/FFprimary.\n21/10: dependency #244 exact e589ac34 full PASS (8 ZIP, 7 manifest, 1.182 blob, 8 required/9 check-run; smoke 88 pass/4 skip cấu hình, Auth API34, mock41, defaults4, UI211, unit3661). Primary FF sạch e589ac34. Source b86e30f7 chuẩn hóa 5 CTA, field có nhãn/lỗi và 2 nhóm lựa chọn DCA trong 6 path; public API và business giữ nguyên qua AST. Final local 13 static/3.662 unit/225 UI/4 defaults/22 DCA/build5,10/mock/bundle PASS, 5 manifest stable; 44 paint min4,8993 và 10 dialog invalid axe0/0, 6/34 ảnh AI review. Chờ hosted source mới. P1 tiếp theo: DCA hero sáng đo 1,0708:1 tại ROI chữ lớn; không đóng C06.13–15.\n21/10: dependency#245 exact67721a82 full verified/primaryFF sạch. Sourceb3f8a144 sửa màu chữ/status hero trong4path,80/80hero và12/12showcase paint đạt sau baseline48/80đỏ;6/8ảnhapp AIreview. Local13static,3662unit,233UI,4defaults,build/mock/bundle PASS,6stablemanifests;chờexactGitHub. Geometryreadonly phát hiện chartstroke vào text-range ởPhone320/390 cảtheme,giữbaselineđỏ làm P1kế tiếp; không đổi layout/precision trongsource này. C06.13vẫn in_progress;14/15todo.\n21/10: dependency GitHub#246 exactd63 full artifact/source/merge verified, primary FF sạch. Sourceb14b43c7 sửa P1 layout trong4path. Local13static/3662unit/265UI/4defaults/build/mock/bundle PASS;32focused,340numericranges,7stablemanifests. 8 ảnh data và2 loading AI review. Xác nhận P2 auto-hover từCSS1024 (tr-border .06) có trước patch, giữ mở; không coi là artifact hoặc che ảnh. Chờ GitHub source mới rồi tiếp P1 fallback ảnh và host preview. C06.13 vẫn in_progress,14/15todo.\n21/10: người dùng duyệt protocol theo gói nghiệm thu. PLAN là nguồn, workflow/prompt tham chiếu; giữ source/ledger pair khi catalogue cần blob, một push/candidate. Local docs/46 CI contract/EOL/diff PASS; hosted final head còn chờ. #247 có Auth mock FAIL, artifact đã kiểm digest và ảnh OTP thiếu chữ số thứ ba; chưa đóng hero/layout hoặc chuyển UI phụ thuộc.\n21/10: protocol source d52b283c và ledger 5b09dff1 có strict full proof #248; hero layout kế thừa được kiểm lại. #247 giữ FAIL. Gói Auth focus 2ce4989f có hai regression đỏ, 17 unit owner/sáu browser, full 3.664 unit, 13 static, 34 Auth API, bốn defaults và build guards PASS; tám handler không đổi. Không đóng page/C06 hoặc suy backend/UAT/AT; chờ GitHub final head mới.\n21/10: gói ảnh DCA a7302bf0 có11file/3consumer, evidence EV-20261020-349; unit3674,UI70 (30+40),contract11,defaults4/build/static đạt. Media16cell có64request lỗi,0avatar/0DCAwrite; sáu manifest ổn định. Không giảm rollout pool hoặc đóng page từ media-only proof; bỏ chỉ dẫn trích helper/sửa hai handler cũ khỏi backlog vì source đã hoàn tất, hosted còn chờ. Giữ lỗi local NO_BUFFER và format Markdown baseline (paragraph mới PASS). #249 predecessor strict PASS. Primary FF đã đi trước strict proof khoảng12s; kết quả cuối PASS, guard đồng bộ đã kiểm positive/negative và bắt buộc cho lần tới.\n21/10: gói preview/shell hoàn chỉnh10file, có26runtimecell vàregression toàn300UI/3683unit. Chốt host normalT/W/R/Auth vàreserveResponsive tại cột shell sau khi full regression bắt CTA Wallet lấn navigation; Auth giữviewport/scroller riêng sau12ca focused. Không bỏ assertion; mở rộng8cell clearance. P2Prawincomplete2 được giữ và phân giải bằng đo opaque foreground/background+36hit+negative controls;không chỉnhUI P2P. Các lượtFAILv1/v2/v3 vàharness lỗi giữ riêng. Finalv5 chạy mới toànsuite sau thay đổi production,không tái dùng kết quả cũ. Không giảm rollout pool;C06.13partial/.14/.15todo;hosted final head chờ.\n21/10: #251FAILEDđúnghead964;299/300UI,coinWebdark đo lần2 trongspring. Giữ8artifact/1192blobvàtrace;khôngđồngbộprimary. E2Efixgiữsampleatomicvàchờtransformnone,giữexact28/32;18ca/13staticPASS,unit/buildtáidùngsauhashcompare. Fullcandidate mới mandatory;khôngđóngC06.13hoặctăngpagecoverage.\n21/10: gói FAB/toast7sourcefile đã qua13static,3684unit,65UI selected exactID,96smoke/4skip,4defaults,APIbuild;12FABcell+4toastcell.0overlap,minimumgap20px,modalbackground bị chặn,ẩn khôngTab/AT,scroll tôn trọngmotion,toastoutline hiện.5manifest mới đúngsource. #252fullstrictPASS941 trênsource trướcfloating,primary syncsauproof;full316candidate mới mandatory. Probe16standalone/security là quan sát riêng,phát hiệnalphainvalid8cell,khôngđóngtrang hoặc giảmrolloutpool;C06.13in_progress,.14/.15todo.\n21/10: e9beb0d0 alpha template localPASS:5sourcefile,13static,3684unit/375file,16UI,APIbuild;UI chỉkhácgenerateddoc saukiểm vàđãsohash.547/547sourceAST/type audit12→11candidate. Chưađẩy gói này: #253 có316UIpassed,8ZIP/7manifest/1193blob/signedmerge nhưng2checkrun pending dùworkflowgreen;strictverifier từchối,syncguard negativecontrol chặn,primary941giữnguyên. Thêmgateevidencefailriêng,khônggọilàcodeFAIL hoặcCIđạt. Probe16celltiếpđo20transparent/4border0/12missingpressed,khôngmigratehayđóngpage.\n21/10: EV354 historicalgateFAIL đượcgiữ;2pendingcheck #253 sauđóđãterminal. VerifiergốcPASS8required/8ZIP/7manifest/1193blob/316UI,primaryguardedsync941→604sauproof. EV355resolutionPASS;gói alphae9+ledger vẫnchưapush,332hostedmandatory;khôngđóngC06.13/.14/.15.\n21/10: P1filterfocus được runtime2/2Phone/Web vàunitđỏ táihiện.4754805c gộp11source;sharedFilterButtoncontrolled thay2implementation/3groups vớiaria-pressed/check/minheightcompact36/textrolebutton13;giữmỗiactivationcallback,khôngdùngTabBarvìrovingtab/suppressactivecallbackkhác. Historygiữcontrols khiquerypending,khôngplaceholderdata.4ownertintđúnghelper.3688unit/376file,18UI cuối(16matrix+stress+negativeDOM),44ratio>=4,5/min5,747,8focusretained,132hit,0mutationngoàiAuth.13gate5fresh8verifiedreuse,3manifest11hash cuối.27callbacks/51modelAPI/session vàquery/cursor/formatterunchanged.548/548source typedalpha11→6,manualwidenedTabBar cònmở. #254strictPASS332UI/1194blobs vàprimaryguardedsync;full350candidate mới chờ. Khônggiảmrolloutpool/.13done/.14/.15.\n22/10 local: 8f71edff gộp10file bảo vệ hover canonical và metric/skeleton DCA.13 cổng tĩnh,3689unit/376file,69UI,APIbuild/mocks/bundle,96smoke/4skip cấu hình đạt trên source cuối;4manifest khớp10hash.30cặp metric/header ở10cell không đổi paint,80textROI/8cell đạt ngưỡng,4loadinggrid/28layout và calibration alpha/1:1/missingbacking đạt.8callback/67file và CSS declarations giữ nguyên.141file/425JSX direct-consumer inventory không phải runtime toàn bộ. #255 strictFULL350UI/1197blob và primarysync963de086 đã xác minh; candidate mới chờ full361. C06.13 giữ in_progress,không giảm pool; .14/.15todo.\n22/10: c1e76676 gộp7fileP1Analytics.4/4baselinefocusBODY vàunitđỏ đãtáihiện;13static,full3692unit/376file,33UI,APIbuild/mocks/bundle đạt;3manifest7hashcuối.4Webcell390/1440light/dark,8contrast min14.477/24hit/12focusretention/0nonAuthwrite. Owner8testcóAbortSignal/lateresponse7D→1Y khôngđổisố.3callbacks/7helpers/21filekhôngđổi;paintbodyvà18assertioncũgiữnguyên. Typedalpha6→5trên548source. #256strictPASS361UI/1198blob,primarysync4d6sauproof. Newfull365pending;khôngđóngpage/C06.13,.14/.15.\n22/10: source 298883b5, gói Wallet 10 file; 13 static/3703 unit/377 file/65 UI/API build-mocks-bundle đạt, 3 manifest/10 hash. Hai page/4 declaration/13 alias nhưng chỉ 4 URL có 28 cell; không đóng page. Optional fallback sheet có 20 UI focus returns và shared regression Earn/P2P. 36 contrast min8.3726; read-only0POST, writer20POST/16cell và retry4 cùng key. Mọi state/query initializer và mutation sau guard giữ nguyên, 42 dependency file không đổi. Alpha còn4/549, query19/11 trên130page. #257 strict FULL PASS; candidate full393 và final G5 còn mandatory. .13 mở, .14/.15 chưa đóng.\n22/10: bb8fe23d, gói CI4file,14static/3712unit378file/393UI/APIbuild-mocks-bundlePASS;3manifest4hash. Local1/CI2 theo file/retry0,393UIbody và988app/E2E/cấu hình file không đổi. UI riêng chờ login form thật rồi đóng browser, không reuse state;9unit cleanup/failure giữerrorcause. Raw2worker391PASS2FAILvàpre-lint393đượcgiữriêng;finalv2fresh393. #258strictFULL393/3703/8ZIP/7manifest/1203blob, primary631 sauproof;baseline1570sfull/1534sUIjob. Candidatefull393/3712vàso tốcđộhostedcònmandatory. Khôngđóngpage/C06.13,.14/.15.\n22/10: 30355bec, gói P1 Blacklist năm file. 13 static/3.720 unit/378 file/61 UI (24 owner)/API build PASS, ba manifest/năm hash. 927 src khác khớp byte, giữ năm test cũ. Đã kiểm pending/ref guard/retry key/error/known success sau GET lỗi/query focus. Hai trong bốn alias, 12 text paint; contrast CTA/ripple chưa xác minh. #259 strict FULL và primary 0b06f1da đã đạt; cặp thời gian hosted 1.570→930 giây. Candidate FULL 417/3720 còn mandatory; 12 cell ba list owner khác còn mở. Không đóng C06.13–15.\n22/10: 3fa4d7f5, gói 11 file Wallet/P2P list và TabBar. Final 13 static/3.734 unit/378 file/54 UI (32 owner)/API build PASS, ba manifest khớp 11 hash. 921 src file, 21 bất biến và 24 case cũ được đối chiếu; mapping UI copy ghi rõ. 208 paint/144 frame, thấp nhất 6.730105872033021; palette giữ, segment chuyển màu tức thì. Sáu trong 12 alias, bốn Back403/bốn keyboard-panel flow, không business write. #260 strict FULL và primary bb4d50ec đạt; candidate FULL449/3734 còn bắt buộc. Query còn13 candidate/8 file; trace17/41 chỉ chuẩn bị. Không đóng page/C06.13–15.\n22/10: giữ hosted#261FAIL447/449; sửa exact previous-context của403Back tại test, không sửa app/router/permission. Chỉ local evidence được xác nhận trong artifact, FULL candidate mới bắt buộc; C06.13–15 không đóng.\n22/10: P2P15file local13static/full3744unit379/65UI/APIbuild PASS; current477UI hostedpending. Parent4ac hosted#262 strictFULL pass và primaryFFsạch. Controls/nativeoffline/fallbackfocus/CTA measured, no wholepage/global completion. Source+ledger onepackage/onepush.\n22/10: giữ GitHub #263 FAIL 475/477 cùng ảnh/artifact thật. Bản sửa native return focus đạt local 13 cổng tĩnh, full 3744 unit/379 file, 119 UI và API build. FULL 477/3744 đúng SHA còn pending; checkout chính giữ 4ac. Chưa đóng C06.13–15; không đưa 11 file Discovery WIP vào gói.\n22/10: một gói14 file giữ control và focus nhìn thấy;13 cổng tĩnh, full3.752 unit/380 file, API build và175 UI trên bytes cuối. Parent#264 FAIL476/477 và4 geometry baseline FAIL giữ riêng. Tám ca geometry có clearance6px,24 ca Discovery/8 URL; CLI501 UI/28 file. Source + ledger một push; cần candidate FULL đúng SHA. C06.13 mở, C06.14–15 todo.\n22/10: parent#265 đạt501UI nhưng FAIL một unit retry của Leaderboard. Bản sửa một test giữ503 và recovery, chờ request thứ ba rồi kiểm region và count3/4; không tăng timeout/retry hoặc sửa runtime.13 focused/3 file,13 cổng tĩnh, full3752unit380/APIbuild/175UI đạt trên hash cuối; cần descendant FULL đúng SHA. Primary giữ4ac, C06.13 mở và14/15todo.\n22/10: semantic alpha11file/9owner đạt local13static/full3752unit380/APIbuild/207UI;32case mới với84tint/80vùngchữ,2personaDCA/4reducedmotion. Typed0/550 có phạm vi, whole-fileAST9 +924other sourcebyte. Parent#266 strictFULL và primary030 đã đạt; chờcandidate533. Source+ledger mộtgói/mộtpush, C06.13 mở/14–15todo.\n22/10: parent#268 strictFULL533UI/3752unit380/8ZIP/7manifest/1214blob vàguardedprimary51d đãđạt. Gói solid-primary10source/test/doc/inventoryfile:7expression/6owner,oneCSStransitionboundary+6zero-specificityHeaderexclusions.13static/105focused11/APIbuild/108UI5 trênbytescuối đạt;24newcases đo128text/16icon/24themeframes,144bounds/432hits,0businesswrites.6wholeAST+CSSAST và926otherSRCbyte giữ;21conditional ngoàiowner cònmở. Source+catalogue mộtpush,candidate557FULL vẫnpending;C06.13 mở/14–15todo.\nGói corrective setup:13static/225UI/10file/11hash cuối,2worker/retry0/1closedstable manifest;10inverse testbody/933SRC giữ byte. FULL269 FAIL556/557 được giữ, source accepted vẫn268. Source+catalogue một gói/một push chờ FULL557/3752 đúng SHA; không làm giảm page/route matrix hoặc waive criteria.\nGói motion FilterButton: parent FULL #270 đã được chấp nhận (557 UI, 3.752 unit/380 file, 8 ZIP/7 manifest/1.216 blob), primary fast-forward sạch. Baseline 28 cell/80 control có 501/1.957 frame dưới ngưỡng, min 1,0056:1; sau sửa 1.246 frame không còn mẫu dưới ngưỡng, min 7,7584:1. Local 13 cổng tĩnh, 53 unit/9 file, API build, 134 UI/6 file đạt; 80 geometry/duration khớp và 932 source giữ byte. Gói source+catalogue chờ FULL 585 UI/3.752 unit đúng SHA; C06.13 mở, C06.14–15 todo. Các gap Support/Help và conditional color được giữ để sửa tiếp sau gate.\nGói P1 identity: local3756 unit và68UI đạt; giữ original/rejected regression, chờ FULL589UI exact candidate. Không suy thành page/fullmatrix acceptance.\n24/10 follow-up conditional5: hosted #282 failed Browser ui-mock and Production gates on 465a4f9; fixes are source commit 2955189. Focused Vitest 8/8 and local static/inventory/EOL checks pass unchanged. Local UI mock was 3/4 in the second attempt; the remaining case failed before assertions during Vite cold-start. Push and require exact-SHA full Production gates; then continue developer14 and 130/428/1396 matrix. C06.13 remains open.\n2026-10-25 developer role/flag source review + local UI-mock runtime: 80 stable IDs/279 alias registrations (275 unique URL paths), EV-20261025-007. 76 developer-allowed (74 permission routes + 2 default-on DCA flag routes); 4 admin-only routes denied. Local MSW only; full C06.13 matrix and C06.14/15 remain open.\n2026-10-25 EV-034 records the Earn unknown-outcome feedback implementation and exact committed-tree local checks; EV-035 records the exact 88c8 UI-mock job PASS and the full #296 readiness-ledger failure. Partial interaction/theme/viewport evidence is attached only to the 4 exercised Earn routes, 4 P2P routes and classic /dca route. /earn/savings/dca, locale, manual visual/AT, backend/staging/UAT and overall C06 acceptance remain open.\n2026-10-25: route matrix commit 55405cfde05c4db775264386363d938854916999 generated from tracker 4fd8eaa94926f88ca26346c9ae2594d8ac529fdc and passes --check for 428/428 routes, 1,468 registrations, 1,399 unique URLs. UI-mock partial interaction/viewport evidence now covers 30 routes and theme evidence 27; role/flag runtime count remains 97. Final tracker pointer and exact pushed-SHA CI are pending. The route /earn/savings/dca and locale/manual visual/AT/backend/staging/UAT remain open.\n2026-10-25 DECISION-20261025-001: quy trình bàn giao chuyển sang diff local, commit/push chỉ theo yêu cầu rõ cho gói; content catalogue và matrix không cần commit trung gian. EV-20261025-036 giữ bằng chứng local riêng với CI của base. C06.13/product acceptance vẫn in_progress.\n2026-10-25 EV-20261025-037: Savings DCA contract form slice verified locally; no Git actions. Inventory 130/428/1,399 unchanged; only ROUTE-eecd0227de89 gains partial interaction/viewport/theme and supplementary runtime evidence. C06.13 remains in_progress; fixed 80-route developer cohort and all tests/thresholds remain unchanged.\n2026-10-25 EV-20261025-038: Earn history owner/2 routes migrated and verified in built API fixtures; no Git actions. Inventory 130 pages/428 declarations/1,399 URLs unchanged; source and all previous dirty packages retained. Formal role/flag/locale/manual AT/backend/UAT acceptance remains open.\n2026-10-25 EV-20261025-039: Savings comparison owner/1 route/4 aliases normalized and verified with built API fixtures; shared FilterButton disabled defaults to false. Inventory remains 130 pages/428 route declarations/1,399 unique URLs. All prior dirty packages, tests and thresholds preserved. Full role/flag/locale/manual AT/backend/UAT acceptance remains open; no Git writes.\n2026-10-25 EV-20261025-040: Earn transaction owner/3 routes/16 unique URLs normalized; Phone CTA overlap root fixed at AppLayout/device geometry. Built API fixture scope only; inventory remains 130 pages/428 declarations/1,399 URLs and formal developer cohort 80 is unchanged. All dirty packages, tests and thresholds retained; no Git actions. Full role/flag/locale/manual AT/backend/UAT acceptance stays open.\n2026-10-25 EV-20261025-041: Portfolio one-page/one-route/four-URL package and direct shared Earn controls verified locally; draft/read-failure/focus and completed/pending paths remain separate. Original tests/thresholds and prior dirty packages retained. Source inventory remains 130/428 and 1,399 unique URLs; current local UI runtime row count stays 101. Full C06.13, backend and acceptance remain open; no Git actions.\n2026-10-25 EV-20261025-042: EarnPage group and C06 locale input binding verified locally; broader UI-mock and full URL observations recorded separately from route-state acceptance. No Git actions; C06.13 remains in_progress and C06.14/15 dependencies are not waived.\n2026-10-25 EV-20261025-043: Profile/Support batch: 10 page files, 18 active declarations, 51 registrations/44 unique URLs. 148 custom browser cases (88 alias/theme,44 state,16 mutation),48 scoped axe scans,247 original targeted tests,630 unchanged UI-mock cases and full coverage passed locally. Same-tick duplicate requests and News/bootstrap pending observer corrected; all original tests, payloads, keys and permissions preserved. No commit/push; C06.13 remains in_progress and C06.14/15 remain dependent.\n2026-10-25 EV-20261025-044: người dùng cho phép một commit/push lên main cho gói38 đường dẫn đã bàn giao. Source local đã đối chiếu manifest; kiểm chứng Git/CI được lưu trong receipt ngoài repo, không tạo commit riêng chỉ ghi CI và không đổi trạng thái nghiệm thu C06.\nEV-20261025-044: phát hiện hash instruction CRLF khác Git-LF khi stage; sửa catalogue/checker có marker và6 regression, giữ bytes AGENTS/AI_RULES/bootstrap và test/ngưỡng cũ. Gói cuối40 path vẫn một commit.",
           "execution": {
@@ -20835,7 +20739,15 @@
             "CHANGE-20261025-117",
             "CHANGE-20261025-118",
             "CHANGE-20261025-119",
-            "CHANGE-20261025-120"
+            "CHANGE-20261025-120",
+            "CHANGE-20261026-001",
+            "CHANGE-20261026-002",
+            "CHANGE-20261026-003",
+            "CHANGE-20261026-004",
+            "CHANGE-20261026-005",
+            "CHANGE-20261026-006",
+            "CHANGE-20261026-007",
+            "CHANGE-20261026-008"
           ]
         },
         {
@@ -84723,7 +84635,8 @@
         "EV-20261024-004",
         "EV-20261024-005",
         "EV-20261025-036",
-        "EV-20261025-044"
+        "EV-20261025-044",
+        "EV-20261026-001"
       ],
       "changeIds": [
         "CHANGE-20261001-0299",
@@ -84742,7 +84655,8 @@
         "CHANGE-20261020-619",
         "CHANGE-20261024-001",
         "CHANGE-20261025-048",
-        "CHANGE-20261025-119"
+        "CHANGE-20261025-119",
+        "CHANGE-20261026-001"
       ],
       "executionScope": {
         "ownerTaskId": "B07",
@@ -84864,10 +84778,22 @@
           "supersededAt": "2026-10-25T16:12:34.289Z",
           "evidenceId": "EV-20261025-044",
           "reason": "Preserve the previous catalogue binding before recording reviewed content bytes."
+        },
+        {
+          "contentSha256": "cc3eda3ef0cd473adf1bbc811397c20bad6c5e78044c47bd27f6453977a2e288",
+          "supersededAt": "2026-10-25T17:12:23.557Z",
+          "evidenceId": "EV-20261026-001",
+          "reason": "Preserve the previous catalogue binding before recording reviewed content bytes."
+        },
+        {
+          "contentSha256": "c5109ea329e6ee51566653cf86481b9f2fa5b3b035c28711d7ca1a1d3ebc0abd",
+          "supersededAt": "2026-10-25T17:14:11.202Z",
+          "evidenceId": "EV-20261026-001",
+          "reason": "Preserve the previous catalogue binding before recording reviewed content bytes."
         }
       ],
-      "cataloguedAt": "2026-10-25T16:12:34.289Z",
-      "cataloguedContentSha256": "cc3eda3ef0cd473adf1bbc811397c20bad6c5e78044c47bd27f6453977a2e288"
+      "cataloguedAt": "2026-10-25T17:14:11.202Z",
+      "cataloguedContentSha256": "beb5537b11337a0244ee8d1b1a38e74b8d230565e7f2202c6c110efd228d1cf6"
     },
     {
       "path": ".gitignore",
@@ -86844,7 +86770,8 @@
         "EV-20261024-005",
         "EV-20261025-036",
         "EV-20261025-042",
-        "EV-20261025-044"
+        "EV-20261025-044",
+        "EV-20261026-001"
       ],
       "changeIds": [
         "CHANGE-20260927-053",
@@ -86862,7 +86789,8 @@
         "CHANGE-20261024-003",
         "CHANGE-20261025-052",
         "CHANGE-20261025-091",
-        "CHANGE-20261025-120"
+        "CHANGE-20261025-120",
+        "CHANGE-20261026-006"
       ],
       "executionScope": {
         "ownerTaskId": "B10",
@@ -87148,10 +87076,16 @@
           "supersededAt": "2026-10-25T16:12:34.289Z",
           "evidenceId": "EV-20261025-044",
           "reason": "Preserve the previous catalogue binding before recording reviewed content bytes."
+        },
+        {
+          "contentSha256": "8d6f604f20975a2e164592dbb56dcfc4624f5661110fab594d78dbdbcea458d4",
+          "supersededAt": "2026-10-25T17:12:23.557Z",
+          "evidenceId": "EV-20261026-001",
+          "reason": "Preserve the previous catalogue binding before recording reviewed content bytes."
         }
       ],
-      "cataloguedAt": "2026-10-25T16:12:34.289Z",
-      "cataloguedContentSha256": "8d6f604f20975a2e164592dbb56dcfc4624f5661110fab594d78dbdbcea458d4"
+      "cataloguedAt": "2026-10-25T17:12:23.557Z",
+      "cataloguedContentSha256": "4e604716fc6b3776f8e7b88bc85138f26c9747754fce3ead6120eababd288d97"
     },
     {
       "path": "docs/architecture/auth-login-mfa-spec.md",
@@ -146128,7 +146062,9 @@
         "EV-20261025-041",
         "EV-20261025-042",
         "EV-20261025-043",
-        "EV-20261025-044"
+        "EV-20261025-044",
+        "EV-20261026-001",
+        "EV-20261026-002"
       ],
       "changeIds": [
         "CHANGE-20261001-0316",
@@ -146477,7 +146413,9 @@
         "CHANGE-20261025-085",
         "CHANGE-20261025-098",
         "CHANGE-20261025-113",
-        "CHANGE-20261025-114"
+        "CHANGE-20261025-114",
+        "CHANGE-20261026-007",
+        "CHANGE-20261026-008"
       ],
       "cataloguedAt": null,
       "executionScope": {
@@ -218169,13 +218107,15 @@
         "EV-20261020-308",
         "EV-20261020-309",
         "EV-20261020-311",
-        "EV-20261020-341"
+        "EV-20261020-341",
+        "EV-20261026-001"
       ],
       "changeIds": [
         "CHANGE-20261020-410",
         "CHANGE-20261020-414",
         "CHANGE-20261020-421",
-        "CHANGE-20261020-620"
+        "CHANGE-20261020-620",
+        "CHANGE-20261026-003"
       ],
       "executionScope": {
         "ownerTaskId": "C06",
@@ -218186,8 +218126,8 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "81d5e6a5cffc057830ca12fd67a31bef8b3151c2",
-      "cataloguedSha256": "ee51032e89e735b4b2f215c3612592a5c963719264c00d881b17a1fa79a25db2",
+      "cataloguedSourceHead": null,
+      "cataloguedSha256": null,
       "cataloguedSourceHistory": [
         {
           "sourceHead": "bf5a3c9f97bde15e082cedbdc29583c26b83ffde",
@@ -218209,8 +218149,17 @@
           "supersededAt": "2026-10-21T04:33:09.125Z",
           "evidenceId": "EV-20261020-341",
           "reason": "Previous source retained; new Git blob verified individually."
+        },
+        {
+          "sourceHead": "81d5e6a5cffc057830ca12fd67a31bef8b3151c2",
+          "sha256": "ee51032e89e735b4b2f215c3612592a5c963719264c00d881b17a1fa79a25db2",
+          "supersededAt": "2026-10-25T17:12:23.557Z",
+          "evidenceId": "EV-20261026-001",
+          "reason": "Preserve the previous catalogue binding before recording reviewed content bytes."
         }
-      ]
+      ],
+      "cataloguedContentSha256": "a513faab01ad6cc54fbcb58634dbcb31134929a91c71ea2f44853f42f5ff747e",
+      "cataloguedAt": "2026-10-25T17:12:23.557Z"
     },
     {
       "path": "scripts/ci-scope.test.mjs",
@@ -218550,11 +218499,13 @@
       "reason": "P2: xử lý reflow/semantics có bằng chứng runtime, giữ precision và contract, đưa regression UI vào CI; review theo scope, không đóng C06 tổng.",
       "evidenceIds": [
         "EV-20261020-322",
-        "EV-20261020-360"
+        "EV-20261020-360",
+        "EV-20261026-001"
       ],
       "changeIds": [
         "CHANGE-20261020-496",
-        "CHANGE-20261020-741"
+        "CHANGE-20261020-741",
+        "CHANGE-20261026-002"
       ],
       "executionScope": {
         "ownerTaskId": "C06",
@@ -218565,8 +218516,8 @@
         ],
         "action": "review_then_fix_only_if_acceptance_gap"
       },
-      "cataloguedSourceHead": "bb8fe23d4a05014dcc2b0e76ed606c757161b9e7",
-      "cataloguedSha256": "ced42e53c7b1cfb787e1c9c0950187cab6d2680666babe9505f9aa83da55f8d5",
+      "cataloguedSourceHead": null,
+      "cataloguedSha256": null,
       "cataloguedSourceHistory": [
         {
           "sourceHead": "7f4e3b51b0eef2a438a0b2cd5a3ec4e499693c9e",
@@ -218574,8 +218525,17 @@
           "supersededAt": "2026-10-21T19:45:52.027Z",
           "evidenceId": "EV-20261020-360",
           "reason": "Previous source retained; new Git blob verified individually."
+        },
+        {
+          "sourceHead": "bb8fe23d4a05014dcc2b0e76ed606c757161b9e7",
+          "sha256": "ced42e53c7b1cfb787e1c9c0950187cab6d2680666babe9505f9aa83da55f8d5",
+          "supersededAt": "2026-10-25T17:12:23.557Z",
+          "evidenceId": "EV-20261026-001",
+          "reason": "Preserve the previous catalogue binding before recording reviewed content bytes."
         }
-      ]
+      ],
+      "cataloguedContentSha256": "a39d62d5762f6def2def9601c9655704baae95262a7e921c9dde8f3d9716e930",
+      "cataloguedAt": "2026-10-25T17:12:23.557Z"
     },
     {
       "path": "tests/e2e/ui-market-home-mock.spec.ts",
@@ -221413,6 +221373,70 @@
       "cataloguedSha256": null,
       "cataloguedContentSha256": "503cc6a366ad74edc303993019f8080bbf3d5af3d3238fde0345d18e3e06f5a9",
       "cataloguedAt": "2026-10-25T16:12:34.289Z"
+    },
+    {
+      "path": "scripts/ci-ui-shards.mjs",
+      "baselineSha256": null,
+      "lifecycle": "active",
+      "taskIds": [
+        "C06"
+      ],
+      "disposition": "added",
+      "reason": "CI UI sharding và gate đủ native ID, giữ nguyên các test cũ.",
+      "evidenceIds": [
+        "EV-20261026-001"
+      ],
+      "changeIds": [
+        "CHANGE-20261026-004"
+      ],
+      "executionScope": {
+        "ownerTaskId": "C06",
+        "role": "tooling_configuration",
+        "stepIds": [
+          "C06.13"
+        ],
+        "action": "add"
+      },
+      "cataloguedSourceHead": null,
+      "cataloguedSha256": null,
+      "cataloguedContentSha256": "bd9dbc13bb2b7b719f8a2de261a105a71944d36fe60d0494197e16bfc3bd3496",
+      "cataloguedAt": "2026-10-25T17:12:23.557Z"
+    },
+    {
+      "path": "scripts/ci-ui-shards.node-test.mjs",
+      "baselineSha256": null,
+      "lifecycle": "active",
+      "taskIds": [
+        "C06"
+      ],
+      "disposition": "added",
+      "reason": "CI UI sharding và gate đủ native ID, giữ nguyên các test cũ.",
+      "evidenceIds": [
+        "EV-20261026-001"
+      ],
+      "changeIds": [
+        "CHANGE-20261026-005"
+      ],
+      "executionScope": {
+        "ownerTaskId": "C06",
+        "role": "test",
+        "stepIds": [
+          "C06.13"
+        ],
+        "action": "add"
+      },
+      "cataloguedSourceHead": null,
+      "cataloguedSha256": null,
+      "cataloguedContentSha256": "5607f7ca4a55dce4483c9e8d8bfe8acc1df06290d33d93c7af233645a0179b35",
+      "cataloguedAt": "2026-10-25T17:14:11.202Z",
+      "cataloguedSourceHistory": [
+        {
+          "contentSha256": "75d70d89be9a9a1ad61030d5cb3dfbeb5defaf1f461bbbd07fd4a8abbbe08126",
+          "supersededAt": "2026-10-25T17:14:11.202Z",
+          "evidenceId": "EV-20261026-001",
+          "reason": "Preserve the previous catalogue binding before recording reviewed content bytes."
+        }
+      ]
     }
   ],
   "changes": [
@@ -348249,6 +348273,130 @@
         "EV-20261025-044"
       ],
       "commit": null
+    },
+    {
+      "id": "CHANGE-20261026-001",
+      "taskId": "C06",
+      "stepId": "C06.13",
+      "path": ".github/workflows/ci.yml",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Giảm đường găng UI bằng3 shard/2 worker, đối chiếu stable ID và source; bảo toàn test/ngưỡng và ghi đúng quyền bàn giao.",
+      "beforeHash": "cc3eda3ef0cd473adf1bbc811397c20bad6c5e78044c47bd27f6453977a2e288",
+      "afterHash": "c5109ea329e6ee51566653cf86481b9f2fa5b3b035c28711d7ca1a1d3ebc0abd",
+      "evidenceIds": [
+        "EV-20261026-001"
+      ],
+      "commit": null
+    },
+    {
+      "id": "CHANGE-20261026-002",
+      "taskId": "C06",
+      "stepId": "C06.13",
+      "path": "playwright.ui-mock.config.ts",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Giảm đường găng UI bằng3 shard/2 worker, đối chiếu stable ID và source; bảo toàn test/ngưỡng và ghi đúng quyền bàn giao.",
+      "beforeHash": "ced42e53c7b1cfb787e1c9c0950187cab6d2680666babe9505f9aa83da55f8d5",
+      "afterHash": "a39d62d5762f6def2def9601c9655704baae95262a7e921c9dde8f3d9716e930",
+      "evidenceIds": [
+        "EV-20261026-001"
+      ],
+      "commit": null
+    },
+    {
+      "id": "CHANGE-20261026-003",
+      "taskId": "C06",
+      "stepId": "C06.13",
+      "path": "scripts/ci-scope.mjs",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Giảm đường găng UI bằng3 shard/2 worker, đối chiếu stable ID và source; bảo toàn test/ngưỡng và ghi đúng quyền bàn giao.",
+      "beforeHash": "ee51032e89e735b4b2f215c3612592a5c963719264c00d881b17a1fa79a25db2",
+      "afterHash": "a513faab01ad6cc54fbcb58634dbcb31134929a91c71ea2f44853f42f5ff747e",
+      "evidenceIds": [
+        "EV-20261026-001"
+      ],
+      "commit": null
+    },
+    {
+      "id": "CHANGE-20261026-004",
+      "taskId": "C06",
+      "stepId": "C06.13",
+      "path": "scripts/ci-ui-shards.mjs",
+      "action": "add",
+      "oldPath": null,
+      "reason": "Giảm đường găng UI bằng3 shard/2 worker, đối chiếu stable ID và source; bảo toàn test/ngưỡng và ghi đúng quyền bàn giao.",
+      "beforeHash": null,
+      "afterHash": "bd9dbc13bb2b7b719f8a2de261a105a71944d36fe60d0494197e16bfc3bd3496",
+      "evidenceIds": [
+        "EV-20261026-001"
+      ],
+      "commit": null
+    },
+    {
+      "id": "CHANGE-20261026-005",
+      "taskId": "C06",
+      "stepId": "C06.13",
+      "path": "scripts/ci-ui-shards.node-test.mjs",
+      "action": "add",
+      "oldPath": null,
+      "reason": "Giảm đường găng UI bằng3 shard/2 worker, đối chiếu stable ID và source; bảo toàn test/ngưỡng và ghi đúng quyền bàn giao.",
+      "beforeHash": null,
+      "afterHash": "75d70d89be9a9a1ad61030d5cb3dfbeb5defaf1f461bbbd07fd4a8abbbe08126",
+      "evidenceIds": [
+        "EV-20261026-001"
+      ],
+      "commit": null
+    },
+    {
+      "id": "CHANGE-20261026-006",
+      "taskId": "C06",
+      "stepId": "C06.13",
+      "path": "docs/ai/WORKFLOW.md",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Giảm đường găng UI bằng3 shard/2 worker, đối chiếu stable ID và source; bảo toàn test/ngưỡng và ghi đúng quyền bàn giao.",
+      "beforeHash": "8d6f604f20975a2e164592dbb56dcfc4624f5661110fab594d78dbdbcea458d4",
+      "afterHash": "4e604716fc6b3776f8e7b88bc85138f26c9747754fce3ead6120eababd288d97",
+      "evidenceIds": [
+        "EV-20261026-001"
+      ],
+      "commit": null
+    },
+    {
+      "id": "CHANGE-20261026-007",
+      "taskId": "C06",
+      "stepId": "C06.13",
+      "path": "docs/architecture/production-readiness/TRACKING.json",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Giảm đường găng UI bằng3 shard/2 worker, đối chiếu stable ID và source; bảo toàn test/ngưỡng và ghi đúng quyền bàn giao.",
+      "beforeHash": "f223b1136146215ef5f4a43bc510e87ca40c5b05b6f303d58bfb14588eff37c9",
+      "afterHash": null,
+      "evidenceIds": [
+        "EV-20261026-001"
+      ],
+      "commit": null,
+      "afterHashBasis": "checker-current-file",
+      "beforeSourceHead": "3563f200510adc777ebd7ee3d057e776f455992d"
+    },
+    {
+      "id": "CHANGE-20261026-008",
+      "taskId": "C06",
+      "stepId": "C06.13",
+      "path": "docs/architecture/production-readiness/TRACKING.json",
+      "action": "modify",
+      "oldPath": null,
+      "reason": "Ghi ủy quyền publish đúng gói và tách lastVerified lịch sử khỏi CI cuối đang chờ.",
+      "beforeHash": "f223b1136146215ef5f4a43bc510e87ca40c5b05b6f303d58bfb14588eff37c9",
+      "beforeSourceHead": "3563f200510adc777ebd7ee3d057e776f455992d",
+      "afterHash": null,
+      "afterHashBasis": "checker-current-file",
+      "evidenceIds": [
+        "EV-20261026-002"
+      ],
+      "commit": null
     }
   ],
   "evidence": [
@@ -390913,6 +391061,36 @@
         ".github/workflows/ci.yml": "cc3eda3ef0cd473adf1bbc811397c20bad6c5e78044c47bd27f6453977a2e288",
         "docs/ai/WORKFLOW.md": "8d6f604f20975a2e164592dbb56dcfc4624f5661110fab594d78dbdbcea458d4"
       }
+    },
+    {
+      "id": "EV-20261026-001",
+      "taskId": "C06",
+      "stepId": "C06.13",
+      "kind": "ci_parallel_ui_integrity_local",
+      "commandOrSteps": "node --test scripts/ci-scope.node-test.mjs scripts/source-content.node-test.mjs scripts/ci-ui-shards.node-test.mjs; native Playwright discovery; run all three UI shards locally; readiness/type/lint.",
+      "environment": "Windows local main working tree; native Playwright 1.63.0; no commit/push; hosted CI and timing remain unverified for this candidate.",
+      "observedAt": "2026-10-25T17:42:26.800Z",
+      "sourceHead": "3563f200510adc777ebd7ee3d057e776f455992d",
+      "expected": "Giữ nguyên test/assertion/timeout/retry/coverage; native discovery bằng hợp các stable ID runtime đúng một lần, đủ3 producer và gate không bỏ qua lỗi.",
+      "actual": "77/77 regression Node đạt (52 cũ và25 mới); native discovery630 ID/35 file phân thành210+210+210; ba lượt UI runtime630/630 đạt,0 retry/skip. Readback đối chiếu đầy đủ ID và manifest/source trước/sau. Typecheck, lint0/0, format và readiness đạt. Giữ444 test cũ, toàn bộ mã ứng dụng, lockfile, coverage và instruction nguyên bytes. Chưa commit/push hoặc chạy CI mới.",
+      "result": "pass",
+      "artifact": "C:\\Users\\Joker-PC\\Documents\\Codex\\Work\\vittrade-react\\20261023-single-main\\work\\ci-speed-20261026\\verification.json",
+      "notes": "Chỉ là bằng chứng local working tree. CI298 là lastVerified của gói trước; bản tối ưu cần CI đúng SHA khi có yêu cầu push. Hai lượt chẩn đoán startup/source-change và khóa lifecycle được giữ, không tính vào native PASS. Thời gian hosted chưa đo; load model dùng số liệu CI298, không phải SLA. C06.13 và nghiệm thu sản phẩm vẫn mở."
+    },
+    {
+      "id": "EV-20261026-002",
+      "taskId": "C06",
+      "stepId": "C06.13",
+      "kind": "authorized_ci_optimization_publication",
+      "commandOrSteps": "Đối chiếu hash toàn bộ source và log của EV-20261026-001; native readback630 ID; readiness và staged diff trước một commit có DCO/push main; kiểm đủ jobs/steps/artifact trên SHA mới và đo thời gian thực tế.",
+      "environment": "Windows local main; GitHub push/main full CI trên SHA cuối. Không sửa test/assertion/timeout/retry hoặc coverage.",
+      "observedAt": "2026-10-25T17:46:26.232Z",
+      "sourceHead": "3563f200510adc777ebd7ee3d057e776f455992d",
+      "expected": "Đóng gói đúng7 đường dẫn tối ưu CI theo yêu cầu mới; chỉ chốt sau full CI cùng artifact trên SHA cuối đạt.",
+      "actual": "Source snapshot và630 native ID/3 producer local vẫn khớp;77 regression và các check local được giữ nguyên. Chỉ cập nhật quyền bàn giao trong ledger; CI/thời gian mới chưa được quan sát, lưu kết quả sau push tại receipt ngoài repo.",
+      "result": "pass",
+      "artifact": "C:/Users/Joker-PC/Documents/Codex/Work/vittrade-react/20261023-single-main/work/ci-speed-publish-20261026/verification.json",
+      "notes": "PASS này chỉ cho source equivalence và authorization; không là CI PASS. CI298 là baseline36m39s. Không tạo commit chỉ ghi CI; C06.13/product/manual/backend/UAT chưa hoàn tất."
     }
   ],
   "decisions": [
@@ -391751,6 +391929,34 @@
       "reason": "Yêu cầu trực tiếp: commit và push lên main, ghi chú bằng tiếng Việt đúng tiêu chuẩn. Ủy quyền chỉ áp dụng gói hiện tại; giữ mặc định không tự commit/push cho công việc sau.",
       "evidenceIds": [
         "EV-20261025-044"
+      ]
+    },
+    {
+      "id": "DECISION-20261026-001",
+      "taskId": "C06",
+      "scopeIds": [
+        "C06.13"
+      ],
+      "decidedBy": "Người dùng trực tiếp trong chat",
+      "decidedAt": "2026-10-25T17:12:23.347Z",
+      "decision": "Tối ưu thời gian bàn giao/CI bằng3 UI shard native, giữ test/ngưỡng và yêu cầu đủ bằng chứng cùng source/run/attempt; không tự commit/push.",
+      "reason": "Yêu cầu tối ưu thời gian commit nhưng vẫn bảo đảm chất lượng. Sharding phân phối cùng bộ test sang runner riêng, không giảm phạm vi.",
+      "evidenceIds": [
+        "EV-20261026-001"
+      ]
+    },
+    {
+      "id": "DECISION-20261026-002",
+      "taskId": "C06",
+      "scopeIds": [
+        "C06.13"
+      ],
+      "decidedBy": "Người dùng trực tiếp trong chat",
+      "decidedAt": "2026-10-25T17:46:26.232Z",
+      "decision": "Cho phép commit/push gói tối ưu CI lên main bằng một commit tiếng Việt có DCO; giữ test/ngưỡng, đo CI thực tế và chỉ kết luận khi SHA cuối đạt.",
+      "reason": "Yêu cầu trực tiếp cho gói7 đường dẫn đã bàn giao. Quyền chỉ áp dụng gói này; mặc định công việc sau không tự commit/push.",
+      "evidenceIds": [
+        "EV-20261026-002"
       ]
     }
   ],

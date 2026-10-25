@@ -84,6 +84,31 @@ phần bị ảnh hưởng trước giao. Sau CI, giữ receipt/artifact đúng 
 chiếu ở lần cập nhật nghiệp vụ kế tiếp; không tạo commit chỉ ghi CI của commit
 trước. Chỉ báo mốc CI thay đổi có ý nghĩa, không lặp nguyên trạng thái mỗi lần poll.
 
+### Giảm thời gian chờ CI — ngày 26/10/2026
+
+UI-mock được chia bằng sharding native của Playwright thành ba phần `1/3`,
+`2/3`, `3/3`, mỗi runner giữ hai worker và không retry. Lane `Browser ui-mock`
+chạy phần đầu; hai job bổ sung chạy hai phần còn lại. `fullyParallel` chỉ áp dụng
+cho UI-mock, nơi mỗi test có browser context và MSW riêng. Không sửa test, timeout,
+assertion hoặc ngưỡng coverage; smoke/auth/unit và các gate hiện hành vẫn chạy.
+Để chạy toàn bộ UI local, không đặt `VITTRADE_UI_SHARD`; giá trị khác ba phần hợp
+lệ bị từ chối. Local dùng cùng checkout/port thì chạy các phần tuần tự.
+
+Discovery không shard của chính config hiện hành là mẫu số, không khóa cứng 630.
+`Complete UI coverage` tải artifact trong cùng run/SHA/attempt, kiểm manifest
+source trước/sau và đối chiếu native ID của mọi test đúng một lần. Thiếu phần,
+test trùng/skip/fail, source lệch, producer chưa đóng hoặc retry đều làm gate lỗi.
+`Production gates` yêu cầu cả matrix và aggregate thành công trước khi ghi PASS;
+mọi job/upload vẫn bắt buộc, kể cả khi tra cứu full run cho PR metadata-only.
+
+Khi đóng gói, dùng lại kiểm chứng local nếu toàn bộ input/hash, lệnh và điều kiện
+vẫn khớp; không chạy lại nguyên bộ chỉ vì có commit mới. Nếu chỉ ledger thay đổi,
+chạy lại G5; nếu source/config đổi, chạy lại phần ảnh hưởng. Các gate đọc manifest
+vẫn áp dụng yêu cầu revision riêng. Gộp thay đổi cùng mục tiêu thành một gói;
+không push trung gian hoặc tạo commit chỉ ghi CI. Chuẩn bị receipt trong lúc CI
+đang chạy, rồi đối chiếu kết quả/artifact cuối. Thời gian giảm chỉ được xác nhận
+bằng lần CI mới; không lấy thời gian local hoặc phép chia ba làm số đo hosted.
+
 Checkpoint giữ một trạng thái điều hành hiện tại: việc tiếp theo, local verification,
 candidate chưa commit và lastVerified đã chạy CI là các trường riêng. History nằm
 trong evidence/changes và Git; không chép lại toàn bộ run log vào nextAction/notes.

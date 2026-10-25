@@ -15,6 +15,9 @@ export const fullJobNames = [
   'Browser auth-api',
   'Browser auth-mock',
   'Browser ui-mock',
+  'Browser ui-mock 2/3',
+  'Browser ui-mock 3/3',
+  'Complete UI coverage',
   'Production gates',
 ];
 
