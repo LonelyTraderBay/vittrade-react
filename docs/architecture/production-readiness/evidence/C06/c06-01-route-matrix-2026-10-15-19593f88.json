@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "sourceHead": "b00cc2b67aa5343b20f8c2fc90febac8f3936115",
+  "sourceHead": "09b0f23bd58ff7a07d97b4032f8d69a5f98e6e0d",
   "inventorySource": "docs/architecture/page-inventory.json",
   "trackingSource": "docs/architecture/production-readiness/TRACKING.json",
   "scope": {
@@ -68,11 +68,12 @@
         "routeRowsWithA11yAutomation": 0
       },
       "latestLocalEvidence": {
-        "routeRowsWithBrowserRuntimeChecks": 89,
+        "routeRowsWithBrowserRuntimeChecks": 97,
         "routeRowsWithScreenshots": 0,
         "routeRowsWithA11yAutomation": 0,
         "evidenceIds": [
           "EV-20261025-016",
+          "EV-20261025-030",
           "EV-20261025-007",
           "EV-20261025-021",
           "EV-20261025-025",
@@ -86,54 +87,59 @@
     "dimensionCoverage": {
       "interactionStates": {
         "routeRowsByStatus": {
-          "local_ui_mock_partial_pass": 13,
-          "not_assessed": 415
+          "local_ui_mock_partial_pass": 21,
+          "not_assessed": 407
         },
-        "routeRowsWithEvidence": 13,
+        "routeRowsWithEvidence": 21,
         "evidenceIds": [
           "EV-20261025-012",
           "EV-20261025-015",
           "EV-20261025-016",
           "EV-20261025-019",
           "EV-20261025-021",
-          "EV-20261025-025"
+          "EV-20261025-025",
+          "EV-20261025-030"
         ]
       },
       "viewport": {
         "routeRowsByStatus": {
-          "local_ui_mock_partial_pass": 13,
-          "not_run": 415
+          "local_ui_mock_partial_pass": 21,
+          "not_run": 407
         },
-        "routeRowsWithEvidence": 13,
+        "routeRowsWithEvidence": 21,
         "evidenceIds": [
           "EV-20261025-012",
           "EV-20261025-015",
           "EV-20261025-016",
           "EV-20261025-019",
           "EV-20261025-021",
-          "EV-20261025-025"
+          "EV-20261025-025",
+          "EV-20261025-030"
         ]
       },
       "theme": {
         "routeRowsByStatus": {
-          "local_ui_mock_partial_pass": 10,
-          "not_run": 418
+          "local_ui_mock_partial_pass": 18,
+          "not_run": 410
         },
-        "routeRowsWithEvidence": 10,
+        "routeRowsWithEvidence": 18,
         "evidenceIds": [
           "EV-20261025-012",
           "EV-20261025-016",
           "EV-20261025-019",
           "EV-20261025-021",
-          "EV-20261025-025"
+          "EV-20261025-025",
+          "EV-20261025-030"
         ]
       },
       "locale": {
         "routeRowsByStatus": {
           "not_established": 428
         },
-        "routeRowsWithEvidence": 0,
-        "evidenceIds": []
+        "routeRowsWithEvidence": 8,
+        "evidenceIds": [
+          "EV-20261025-030"
+        ]
       }
     },
     "worktreePreservation": {
@@ -560,13 +566,106 @@
       ],
       "personaMappingStatus": "mapped",
       "coverage": {
-        "interactionStates": "not_assessed",
-        "viewport": "not_run",
-        "theme": "not_run",
+        "interactionStates": "local_ui_mock_partial_pass",
+        "viewport": "local_ui_mock_partial_pass",
+        "theme": "local_ui_mock_partial_pass",
         "locale": "not_established",
         "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "interactionStates": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-030",
+          "states": [
+            "login-423-route",
+            "mfa-verify-423-route",
+            "return-to-login",
+            "password-reset-navigation",
+            "no-authenticated-marker"
+          ],
+          "testedUrls": [
+            "/w/auth/account-locked"
+          ],
+          "notes": "API-mode page.route fixture only: login and MFA verification return 423; no authenticated marker or Authorization header. The fixture is not a live backend. Route owner remains WebAccountLockedPage (src/features/auth/pages/WebAccountLockedPage.tsx), registered by src/app/routes.ts."
+        },
+        "viewport": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-030",
+          "profiles": [
+            {
+              "profile": "narrow-web",
+              "width": 320,
+              "height": 900
+            },
+            {
+              "profile": "phone",
+              "width": 390,
+              "height": 900
+            },
+            {
+              "profile": "tablet",
+              "width": 768,
+              "height": 900
+            },
+            {
+              "profile": "desktop-web",
+              "width": 1440,
+              "height": 900
+            }
+          ],
+          "testedUrls": [
+            "/w/auth/account-locked"
+          ],
+          "notes": "Measured configurations are partial route evidence; no claim of all viewport/browser combinations."
+        },
+        "theme": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-030",
+          "modes": [
+            "light",
+            "dark"
+          ],
+          "states": [
+            "locked-423-result"
+          ],
+          "axe": {
+            "scans": 4,
+            "violations": 0,
+            "selectedTags": [
+              "wcag2a",
+              "wcag2aa",
+              "wcag21a",
+              "wcag21aa",
+              "wcag22aa"
+            ]
+          },
+          "testedUrls": [
+            "/w/auth/account-locked"
+          ],
+          "notes": "Axe selected-tag scans at 320px and 1440px in light/dark modes; zero violations in those four scans only. Automated scans do not establish visual approval or manual keyboard/screen-reader acceptance."
+        },
+        "locale": {
+          "status": "not_established",
+          "evidenceId": "EV-20261025-030",
+          "notes": "Supported runtime locale matrix and locale switching were not established by these English/Vietnamese fixture runs."
+        },
+        "roleAndFeatureFlags": {
+          "status": "not_classified",
+          "evidenceId": "EV-20261025-030",
+          "notes": "No role/feature-flag applicability or authorization matrix was run. Mock persona selection is fixture setup, not RBAC evidence."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Playwright API-mode page.route fixture at https://e2e.test; no external API, backend, staging or UAT.",
+          "aliasRegistrations": 1,
+          "uniqueAliases": 1,
+          "evidenceId": "EV-20261025-030",
+          "testedAt": "2026-10-25T01:44:02Z",
+          "canonicalizedPathRule": "Every exercised route URL is a member of this stable inventory row resolvedUrls.",
+          "notes": "Local fixture/runtime evidence only; not user acceptance, production, backend, staging or UAT."
+        }
       }
     },
     {
@@ -7104,13 +7203,113 @@
       ],
       "personaMappingStatus": "mapped",
       "coverage": {
-        "interactionStates": "not_assessed",
-        "viewport": "not_run",
-        "theme": "not_run",
+        "interactionStates": "local_ui_mock_partial_pass",
+        "viewport": "local_ui_mock_partial_pass",
+        "theme": "local_ui_mock_partial_pass",
         "locale": "not_established",
         "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "interactionStates": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-030",
+          "states": [
+            "mfa-challenge",
+            "invalid-code-400",
+            "rate-limited-429",
+            "valid-code-200-and-shell-navigation"
+          ],
+          "testedUrls": [
+            "/auth/otp",
+            "/r/auth/otp",
+            "/t/auth/otp"
+          ],
+          "notes": "OTP input, error and rate-limit states plus successful local fixture navigation were exercised. Search, filter, pagination and large-dataset states do not apply to this Auth form. Route owner remains OTPPage (src/features/auth/pages/OTPPage.tsx), registered by src/app/routeConfig.ts."
+        },
+        "viewport": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-030",
+          "profiles": [
+            {
+              "profile": "phone",
+              "width": 390,
+              "height": 844
+            },
+            {
+              "profile": "tablet",
+              "width": 768,
+              "height": 900
+            },
+            {
+              "profile": "responsive",
+              "width": 1024,
+              "height": 900
+            },
+            {
+              "profile": "responsive-wide",
+              "width": 1440,
+              "height": 900
+            }
+          ],
+          "testedUrls": [
+            "/auth/otp",
+            "/r/auth/otp",
+            "/t/auth/otp"
+          ],
+          "notes": "Measured configurations are partial route evidence; no claim of all viewport/browser combinations."
+        },
+        "theme": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-030",
+          "modes": [
+            "light",
+            "dark"
+          ],
+          "states": [
+            "mfa-challenge",
+            "invalid-code-400",
+            "rate-limited-429"
+          ],
+          "axe": {
+            "scans": 24,
+            "violations": 0,
+            "selectedTags": [
+              "wcag2a",
+              "wcag2aa",
+              "wcag21a",
+              "wcag21aa",
+              "wcag22aa"
+            ]
+          },
+          "testedUrls": [
+            "/auth/otp",
+            "/r/auth/otp",
+            "/t/auth/otp"
+          ],
+          "notes": "Axe report: 4 viewport configurations × 2 themes × 3 OTP states. Zero violations in those automated scans only. Automated scans do not establish visual approval or manual keyboard/screen-reader acceptance."
+        },
+        "locale": {
+          "status": "not_established",
+          "evidenceId": "EV-20261025-030",
+          "notes": "Supported runtime locale matrix and locale switching were not established by these English/Vietnamese fixture runs."
+        },
+        "roleAndFeatureFlags": {
+          "status": "not_classified",
+          "evidenceId": "EV-20261025-030",
+          "notes": "No role/feature-flag applicability or authorization matrix was run. Mock persona selection is fixture setup, not RBAC evidence."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local Vite app with registered mockServiceWorker.js and actual local MSW handlers; login challenge 200, invalid code 400, rate-limit 429 and valid-code navigation were fixture-backed. No backend or staging.",
+          "aliasRegistrations": 3,
+          "uniqueAliases": 3,
+          "evidenceId": "EV-20261025-030",
+          "testedAt": "2026-10-25T01:44:02Z",
+          "canonicalizedPathRule": "Every exercised route URL is a member of this stable inventory row resolvedUrls.",
+          "notes": "Local fixture/runtime evidence only; not user acceptance, production, backend, staging or UAT."
+        }
       }
     },
     {
@@ -7137,13 +7336,96 @@
       ],
       "personaMappingStatus": "mapped",
       "coverage": {
-        "interactionStates": "not_assessed",
-        "viewport": "not_run",
-        "theme": "not_run",
+        "interactionStates": "local_ui_mock_partial_pass",
+        "viewport": "local_ui_mock_partial_pass",
+        "theme": "local_ui_mock_partial_pass",
         "locale": "not_established",
         "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "interactionStates": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-030",
+          "states": [
+            "mfa-challenge",
+            "invalid-code-400",
+            "valid-code-navigation",
+            "web-keyboard-entry"
+          ],
+          "testedUrls": [
+            "/w/auth/otp"
+          ],
+          "notes": "Web OTP challenge, invalid-code handling and local fixture navigation were exercised. Search, filter, pagination and large-dataset states do not apply. Route owner remains WebOTPPage (src/features/auth/pages/WebOTPPage.tsx), registered by src/app/routes.ts."
+        },
+        "viewport": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-030",
+          "profiles": [
+            {
+              "profile": "narrow-web",
+              "width": 320,
+              "height": 900
+            },
+            {
+              "profile": "desktop-web",
+              "width": 1440,
+              "height": 900
+            }
+          ],
+          "testedUrls": [
+            "/w/auth/otp"
+          ],
+          "notes": "Measured configurations are partial route evidence; no claim of all viewport/browser combinations."
+        },
+        "theme": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-030",
+          "modes": [
+            "light",
+            "dark"
+          ],
+          "states": [
+            "mfa-challenge",
+            "invalid-code-400"
+          ],
+          "axe": {
+            "scans": 8,
+            "violations": 0,
+            "selectedTags": [
+              "wcag2a",
+              "wcag2aa",
+              "wcag21a",
+              "wcag21aa",
+              "wcag22aa"
+            ]
+          },
+          "testedUrls": [
+            "/w/auth/otp"
+          ],
+          "notes": "Web OTP Axe report: 2 viewport widths × 2 themes × 2 states; zero violations in those automated scans only. Automated scans do not establish visual approval or manual keyboard/screen-reader acceptance."
+        },
+        "locale": {
+          "status": "not_established",
+          "evidenceId": "EV-20261025-030",
+          "notes": "Supported runtime locale matrix and locale switching were not established by these English/Vietnamese fixture runs."
+        },
+        "roleAndFeatureFlags": {
+          "status": "not_classified",
+          "evidenceId": "EV-20261025-030",
+          "notes": "No role/feature-flag applicability or authorization matrix was run. Mock persona selection is fixture setup, not RBAC evidence."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local Vite app with registered mockServiceWorker.js and local MSW auth fixtures; no real authentication backend.",
+          "aliasRegistrations": 1,
+          "uniqueAliases": 1,
+          "evidenceId": "EV-20261025-030",
+          "testedAt": "2026-10-25T01:44:02Z",
+          "canonicalizedPathRule": "Every exercised route URL is a member of this stable inventory row resolvedUrls.",
+          "notes": "Local fixture/runtime evidence only; not user acceptance, production, backend, staging or UAT."
+        }
       }
     },
     {
@@ -13179,13 +13461,114 @@
       ],
       "personaMappingStatus": "mapped",
       "coverage": {
-        "interactionStates": "not_assessed",
-        "viewport": "not_run",
-        "theme": "not_run",
+        "interactionStates": "local_ui_mock_partial_pass",
+        "viewport": "local_ui_mock_partial_pass",
+        "theme": "local_ui_mock_partial_pass",
         "locale": "not_established",
         "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "interactionStates": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-030",
+          "states": [
+            "initial",
+            "empty-submit-validation-no-request",
+            "contact-validation",
+            "password-mismatch",
+            "valid-draft-strength",
+            "transport-failure-retains-fields",
+            "local-fixture-202-to-otp"
+          ],
+          "testedUrls": [
+            "/auth/register",
+            "/r/auth/register",
+            "/t/auth/register"
+          ],
+          "notes": "The local MSW test covers validation and fixture transport outcomes, including 202 to OTP. This is not real registration or a backend account creation. Search, filter, pagination and large-dataset states do not apply. Route owner remains RegisterPage (src/features/auth/pages/RegisterPage.tsx), registered by src/app/routeConfig.ts."
+        },
+        "viewport": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-030",
+          "profiles": [
+            {
+              "profile": "phone",
+              "width": 390,
+              "height": 844
+            },
+            {
+              "profile": "tablet",
+              "width": 768,
+              "height": 900
+            },
+            {
+              "profile": "responsive",
+              "width": 1024,
+              "height": 900
+            }
+          ],
+          "testedUrls": [
+            "/auth/register",
+            "/r/auth/register",
+            "/t/auth/register"
+          ],
+          "notes": "Measured configurations are partial route evidence; no claim of all viewport/browser combinations."
+        },
+        "theme": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-030",
+          "modes": [
+            "light",
+            "dark"
+          ],
+          "states": [
+            "initial",
+            "empty-submit-validation",
+            "contact-validation",
+            "password-mismatch",
+            "valid-draft-strength"
+          ],
+          "axe": {
+            "scans": 30,
+            "violations": 0,
+            "totalReportScansAcrossSharedAndWebRoutes": 40,
+            "selectedTags": [
+              "wcag2a",
+              "wcag2aa",
+              "wcag21a",
+              "wcag21aa",
+              "wcag22aa"
+            ]
+          },
+          "testedUrls": [
+            "/auth/register",
+            "/r/auth/register",
+            "/t/auth/register"
+          ],
+          "notes": "Of the shared-registration report's 40 scans, 30 map to the three shared route aliases and 10 to the Web route. Zero violations in reported automated scans only. Automated scans do not establish visual approval or manual keyboard/screen-reader acceptance."
+        },
+        "locale": {
+          "status": "not_established",
+          "evidenceId": "EV-20261025-030",
+          "notes": "Supported runtime locale matrix and locale switching were not established by these English/Vietnamese fixture runs."
+        },
+        "roleAndFeatureFlags": {
+          "status": "not_classified",
+          "evidenceId": "EV-20261025-030",
+          "notes": "No role/feature-flag applicability or authorization matrix was run. Mock persona selection is fixture setup, not RBAC evidence."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local Vite app with registered mockServiceWorker.js and actual local MSW handlers; fixture registration returns 202 and navigates to OTP. No real registration backend.",
+          "aliasRegistrations": 3,
+          "uniqueAliases": 3,
+          "evidenceId": "EV-20261025-030",
+          "testedAt": "2026-10-25T01:44:02Z",
+          "canonicalizedPathRule": "Every exercised route URL is a member of this stable inventory row resolvedUrls.",
+          "notes": "Local fixture/runtime evidence only; not user acceptance, production, backend, staging or UAT."
+        }
       }
     },
     {
@@ -13212,13 +13595,112 @@
       ],
       "personaMappingStatus": "mapped",
       "coverage": {
-        "interactionStates": "not_assessed",
-        "viewport": "not_run",
-        "theme": "not_run",
+        "interactionStates": "local_ui_mock_partial_pass",
+        "viewport": "local_ui_mock_partial_pass",
+        "theme": "local_ui_mock_partial_pass",
         "locale": "not_established",
         "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "interactionStates": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-030",
+          "states": [
+            "initial",
+            "empty-submit-validation",
+            "contact-validation",
+            "password-mismatch",
+            "valid-draft-strength",
+            "transport-failure-retains-fields",
+            "keyboard-registration"
+          ],
+          "testedUrls": [
+            "/w/auth/register"
+          ],
+          "notes": "Local MSW and API-mode keyboard flows are fixtures; no real registration service. No search, filter, pagination or large-dataset states apply. Route owner remains WebRegisterPage (src/features/auth/pages/WebRegisterPage.tsx), registered by src/app/routes.ts."
+        },
+        "viewport": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-030",
+          "profiles": [
+            {
+              "profile": "narrow-web",
+              "width": 320,
+              "height": 900
+            },
+            {
+              "profile": "phone",
+              "width": 390,
+              "height": 900
+            },
+            {
+              "profile": "tablet",
+              "width": 768,
+              "height": 900
+            },
+            {
+              "profile": "desktop-web",
+              "width": 1440,
+              "height": 900
+            }
+          ],
+          "testedUrls": [
+            "/w/auth/register"
+          ],
+          "notes": "Measured configurations are partial route evidence; no claim of all viewport/browser combinations."
+        },
+        "theme": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-030",
+          "modes": [
+            "light",
+            "dark"
+          ],
+          "states": [
+            "initial",
+            "empty-submit-validation",
+            "contact-validation",
+            "password-mismatch",
+            "valid-draft-strength"
+          ],
+          "axe": {
+            "scans": 10,
+            "violations": 0,
+            "selectedTags": [
+              "wcag2a",
+              "wcag2aa",
+              "wcag21a",
+              "wcag21aa",
+              "wcag22aa"
+            ]
+          },
+          "testedUrls": [
+            "/w/auth/register"
+          ],
+          "notes": "The Web route contributes 10 scans (2 themes × 5 states) to the 40-scan shared-registration report; zero violations in those scans only. Automated scans do not establish visual approval or manual keyboard/screen-reader acceptance."
+        },
+        "locale": {
+          "status": "not_established",
+          "evidenceId": "EV-20261025-030",
+          "notes": "Supported runtime locale matrix and locale switching were not established by these English/Vietnamese fixture runs."
+        },
+        "roleAndFeatureFlags": {
+          "status": "not_classified",
+          "evidenceId": "EV-20261025-030",
+          "notes": "No role/feature-flag applicability or authorization matrix was run. Mock persona selection is fixture setup, not RBAC evidence."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local MSW UI flow plus API-mode page.route keyboard fixture at https://e2e.test. Neither proves backend registration.",
+          "aliasRegistrations": 1,
+          "uniqueAliases": 1,
+          "evidenceId": "EV-20261025-030",
+          "testedAt": "2026-10-25T01:44:02Z",
+          "canonicalizedPathRule": "Every exercised route URL is a member of this stable inventory row resolvedUrls.",
+          "notes": "Local fixture/runtime evidence only; not user acceptance, production, backend, staging or UAT."
+        }
       }
     },
     {
@@ -13716,13 +14198,109 @@
       ],
       "personaMappingStatus": "mapped",
       "coverage": {
-        "interactionStates": "not_assessed",
-        "viewport": "not_run",
-        "theme": "not_run",
+        "interactionStates": "local_ui_mock_partial_pass",
+        "viewport": "local_ui_mock_partial_pass",
+        "theme": "local_ui_mock_partial_pass",
         "locale": "not_established",
         "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "interactionStates": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-030",
+          "states": [
+            "session-null",
+            "concurrent-reason",
+            "security-reason",
+            "timeout-reason",
+            "token-reason",
+            "unknown-server-reason",
+            "help-collapsed",
+            "help-expanded",
+            "heading-focus",
+            "login-navigation"
+          ],
+          "testedUrls": [
+            "/w/auth/session-expired"
+          ],
+          "notes": "API-mode page.route returns a null session; reason variants and recovery help/navigation were exercised using local fixtures, not a real session service. Route owner remains WebSessionExpiredPage (src/features/auth/pages/WebSessionExpiredPage.tsx), registered by src/app/routes.ts."
+        },
+        "viewport": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-030",
+          "profiles": [
+            {
+              "profile": "narrow-web",
+              "width": 320,
+              "height": 900
+            },
+            {
+              "profile": "phone",
+              "width": 390,
+              "height": 900
+            },
+            {
+              "profile": "tablet",
+              "width": 768,
+              "height": 900
+            },
+            {
+              "profile": "desktop-web",
+              "width": 1440,
+              "height": 900
+            }
+          ],
+          "testedUrls": [
+            "/w/auth/session-expired"
+          ],
+          "notes": "Measured configurations are partial route evidence; no claim of all viewport/browser combinations."
+        },
+        "theme": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-030",
+          "modes": [
+            "light",
+            "dark"
+          ],
+          "states": [
+            "help-collapsed",
+            "help-expanded",
+            "reason-variants"
+          ],
+          "axe": {
+            "scans": 48,
+            "violations": 0,
+            "selectedTags": [
+              "test assertions: serious/critical scan and selected WCAG tags across reason variants"
+            ]
+          },
+          "testedUrls": [
+            "/w/auth/session-expired"
+          ],
+          "notes": "Two existing reports total 48 scans: 8 base help-state scans and 40 reason-variant/help-state scans. Zero recorded violations under those test assertions only. Automated scans do not establish visual approval or manual keyboard/screen-reader acceptance."
+        },
+        "locale": {
+          "status": "not_established",
+          "evidenceId": "EV-20261025-030",
+          "notes": "Supported runtime locale matrix and locale switching were not established by these English/Vietnamese fixture runs."
+        },
+        "roleAndFeatureFlags": {
+          "status": "not_classified",
+          "evidenceId": "EV-20261025-030",
+          "notes": "No role/feature-flag applicability or authorization matrix was run. Mock persona selection is fixture setup, not RBAC evidence."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Playwright API-mode page.route fixture; session endpoint is intercepted locally, with no backend/staging/UAT.",
+          "aliasRegistrations": 1,
+          "uniqueAliases": 1,
+          "evidenceId": "EV-20261025-030",
+          "testedAt": "2026-10-25T01:44:02Z",
+          "canonicalizedPathRule": "Every exercised route URL is a member of this stable inventory row resolvedUrls.",
+          "notes": "Local fixture/runtime evidence only; not user acceptance, production, backend, staging or UAT."
+        }
       }
     },
     {
@@ -13788,13 +14366,109 @@
       ],
       "personaMappingStatus": "flow-state-only",
       "coverage": {
-        "interactionStates": "not_assessed",
-        "viewport": "not_run",
-        "theme": "not_run",
+        "interactionStates": "local_ui_mock_partial_pass",
+        "viewport": "local_ui_mock_partial_pass",
+        "theme": "local_ui_mock_partial_pass",
         "locale": "not_established",
         "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "interactionStates": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-030",
+          "states": [
+            "developer-mock-login",
+            "mfa-setup-challenge-200",
+            "confirmation-200",
+            "backup-codes-revealed-after-confirmation",
+            "backup-codes-acknowledged",
+            "auth-success",
+            "home-navigation",
+            "neutral-recovery"
+          ],
+          "testedUrls": [
+            "/w/auth/success"
+          ],
+          "notes": "Developer is the local mock persona id=developer used to exercise the setup flow. Synthetic QR/secret/backup-code values are fixtures; the test does not establish a server session or backend authorization. Route owner remains WebAuthSuccessPage (src/features/auth/pages/WebAuthSuccessPage.tsx), registered by src/app/routes.ts."
+        },
+        "viewport": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-030",
+          "profiles": [
+            {
+              "profile": "narrow-web",
+              "width": 320,
+              "height": 900
+            },
+            {
+              "profile": "phone",
+              "width": 390,
+              "height": 900
+            },
+            {
+              "profile": "tablet",
+              "width": 768,
+              "height": 900
+            },
+            {
+              "profile": "desktop-web",
+              "width": 1440,
+              "height": 900
+            }
+          ],
+          "testedUrls": [
+            "/w/auth/success"
+          ],
+          "notes": "Measured configurations are partial route evidence; no claim of all viewport/browser combinations."
+        },
+        "theme": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-030",
+          "modes": [
+            "light",
+            "dark"
+          ],
+          "states": [
+            "2fa-setup-success"
+          ],
+          "axe": {
+            "scans": 4,
+            "violations": 0,
+            "selectedTags": [
+              "wcag2a",
+              "wcag2aa",
+              "wcag21a",
+              "wcag21aa",
+              "wcag22aa"
+            ]
+          },
+          "testedUrls": [
+            "/w/auth/success"
+          ],
+          "notes": "Local MSW success state was scanned in light/dark at 320px and 1440px; zero violations in those four scans only. Automated scans do not establish visual approval or manual keyboard/screen-reader acceptance."
+        },
+        "locale": {
+          "status": "not_established",
+          "evidenceId": "EV-20261025-030",
+          "notes": "Supported runtime locale matrix and locale switching were not established by these English/Vietnamese fixture runs."
+        },
+        "roleAndFeatureFlags": {
+          "status": "not_classified",
+          "evidenceId": "EV-20261025-030",
+          "notes": "No role/feature-flag applicability or authorization matrix was run. Mock persona selection is fixture setup, not RBAC evidence."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local MSW flow using mock persona developer (id=developer), from 2FA setup through confirmation and /w/auth/success; not backend/session acceptance.",
+          "aliasRegistrations": 1,
+          "uniqueAliases": 1,
+          "evidenceId": "EV-20261025-030",
+          "testedAt": "2026-10-25T01:44:02Z",
+          "canonicalizedPathRule": "Every exercised route URL is a member of this stable inventory row resolvedUrls.",
+          "notes": "Local fixture/runtime evidence only; not user acceptance, production, backend, staging or UAT."
+        }
       }
     },
     {
@@ -20603,13 +21277,112 @@
       ],
       "personaMappingStatus": "mapped",
       "coverage": {
-        "interactionStates": "not_assessed",
-        "viewport": "not_run",
-        "theme": "not_run",
+        "interactionStates": "local_ui_mock_partial_pass",
+        "viewport": "local_ui_mock_partial_pass",
+        "theme": "local_ui_mock_partial_pass",
         "locale": "not_established",
         "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "interactionStates": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-030",
+          "states": [
+            "login-423-locked-result",
+            "heading-focus-and-status",
+            "return-to-login",
+            "password-reset-navigation",
+            "no-client-unlock-action"
+          ],
+          "testedUrls": [
+            "/auth/account-locked",
+            "/r/auth/account-locked",
+            "/t/auth/account-locked"
+          ],
+          "notes": "The locked page is a static 423 result; tested recovery navigation and absence of client-side unlock action. Search, filter, pagination and large-dataset states do not apply. Route owner remains AccountLockedPage (src/features/auth/pages/AccountLockedPage.tsx), registered by src/app/routeConfig.ts."
+        },
+        "viewport": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-030",
+          "profiles": [
+            {
+              "profile": "phone",
+              "width": 390,
+              "height": 844
+            },
+            {
+              "profile": "tablet",
+              "width": 768,
+              "height": 900
+            },
+            {
+              "profile": "responsive",
+              "width": 1024,
+              "height": 900
+            },
+            {
+              "profile": "responsive-wide",
+              "width": 1440,
+              "height": 900
+            }
+          ],
+          "testedUrls": [
+            "/auth/account-locked",
+            "/r/auth/account-locked",
+            "/t/auth/account-locked"
+          ],
+          "notes": "Measured configurations are partial route evidence; no claim of all viewport/browser combinations."
+        },
+        "theme": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-030",
+          "modes": [
+            "light",
+            "dark"
+          ],
+          "states": [
+            "locked-423-result"
+          ],
+          "axe": {
+            "scans": 8,
+            "violations": 0,
+            "selectedTags": [
+              "wcag2a",
+              "wcag2aa",
+              "wcag21a",
+              "wcag21aa",
+              "wcag22aa"
+            ]
+          },
+          "testedUrls": [
+            "/auth/account-locked",
+            "/r/auth/account-locked",
+            "/t/auth/account-locked"
+          ],
+          "notes": "Four shell widths × two themes; zero violations in those automated scans only. Automated scans do not establish visual approval or manual keyboard/screen-reader acceptance."
+        },
+        "locale": {
+          "status": "not_established",
+          "evidenceId": "EV-20261025-030",
+          "notes": "Supported runtime locale matrix and locale switching were not established by these English/Vietnamese fixture runs."
+        },
+        "roleAndFeatureFlags": {
+          "status": "not_classified",
+          "evidenceId": "EV-20261025-030",
+          "notes": "No role/feature-flag applicability or authorization matrix was run. Mock persona selection is fixture setup, not RBAC evidence."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "Local Vite app with registered mockServiceWorker.js; actual local MSW locked persona returns login HTTP 423. The page itself makes no unlock/API request.",
+          "aliasRegistrations": 3,
+          "uniqueAliases": 3,
+          "evidenceId": "EV-20261025-030",
+          "testedAt": "2026-10-25T01:44:02Z",
+          "canonicalizedPathRule": "Every exercised route URL is a member of this stable inventory row resolvedUrls.",
+          "notes": "Local fixture/runtime evidence only; not user acceptance, production, backend, staging or UAT."
+        }
       }
     }
   ]
