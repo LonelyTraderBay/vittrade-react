@@ -1,4 +1,3 @@
-import { withAlpha } from '@/shared/theme/colors';
 import { useRef, useState } from 'react';
 import { Pause, Play, Trash2 } from 'lucide-react';
 import { ErrorState } from '@/shared/ui/ErrorState';
@@ -10,6 +9,9 @@ import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { useActionToast } from '@/shared/hooks/useActionToast';
 import { useAuth } from '@/shared/session/useAuth';
 import { ConfirmationDialog } from '@/shared/ui/ConfirmationDialog';
+import { CTAButton } from '@/shared/ui/CTAButton';
+import { InputField } from '@/shared/ui/InputField';
+import { textRoleSize } from '@/shared/theme/typography';
 import { DcaPlanCoinIcon } from '../components/DcaPlanCoinIcon';
 import {
   useDCASnapshotQuery,
@@ -40,6 +42,10 @@ export function SavingsDCAContractPage() {
   if (query.isError || !query.data) return <ErrorState onAction={() => void query.refetch()} />;
   const amountValue = Number(amount);
   const canCreate = canManageDCA && Number.isFinite(amountValue) && amountValue > 0;
+  const amountError =
+    amount !== '' && (!Number.isFinite(amountValue) || amountValue <= 0)
+      ? 'Enter an amount greater than 0.'
+      : undefined;
   const createPlan = async () => {
     if (!canCreate || actionInFlight.current) return;
     actionInFlight.current = true;
@@ -143,18 +149,21 @@ export function SavingsDCAContractPage() {
         )}
         <TrCard className="p-4">
           <p style={{ color: colors.text1, fontWeight: 700 }}>Create DCA plan</p>
-          <div className="mt-3 grid gap-2">
-            <input
+          <div className="mt-3 grid gap-4">
+            <InputField
+              id="savings-dca-coin"
+              label="Coin"
               aria-label="DCA coin"
               value={coinSymbol}
               onChange={(event) => {
                 setCoinSymbol(event.target.value);
               }}
               disabled={!canManageDCA || actionPending}
-              className="rounded-lg p-2"
               placeholder="BTC"
             />
-            <input
+            <InputField
+              id="savings-dca-amount"
+              label="Amount per purchase"
               aria-label="DCA amount"
               type="number"
               min="0"
@@ -163,31 +172,53 @@ export function SavingsDCAContractPage() {
                 setAmount(event.target.value);
               }}
               disabled={!canManageDCA || actionPending}
-              className="rounded-lg p-2"
               placeholder="Amount per purchase"
+              helper={amountError ? undefined : 'Enter an amount greater than 0.'}
+              error={amountError}
             />
-            <select
-              aria-label="DCA frequency"
-              value={frequency}
-              onChange={(event) => {
-                setFrequency(event.target.value as typeof frequency);
-              }}
-              disabled={!canManageDCA || actionPending}
-              className="rounded-lg p-2"
-            >
-              <option value="daily">Daily</option>
-              <option value="weekly">Weekly</option>
-              <option value="monthly">Monthly</option>
-            </select>
-            <button
-              type="button"
+            <div>
+              <label
+                htmlFor="savings-dca-frequency"
+                className="block"
+                style={{
+                  color: colors.text2,
+                  fontSize: textRoleSize('label'),
+                  marginBottom: 'var(--input-label-gap)',
+                }}
+              >
+                Frequency
+              </label>
+              <select
+                id="savings-dca-frequency"
+                aria-label="DCA frequency"
+                value={frequency}
+                onChange={(event) => {
+                  setFrequency(event.target.value as typeof frequency);
+                }}
+                disabled={!canManageDCA || actionPending}
+                className="w-full px-4"
+                style={{
+                  height: 'var(--input-height)',
+                  borderRadius: 'var(--input-radius)',
+                  border: `1.5px solid ${colors.borderSolid}`,
+                  background: colors.surface2,
+                  color: colors.text1,
+                  fontSize: 15,
+                }}
+              >
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="monthly">Monthly</option>
+              </select>
+            </div>
+            <CTAButton
               aria-label="Create DCA plan"
               disabled={!canCreate || actionPending}
+              loading={create.isPending}
               onClick={() => void createPlan()}
-              className="rounded-lg px-3 py-2"
             >
               {create.isPending ? 'Creating…' : 'Create DCA plan'}
-            </button>
+            </CTAButton>
           </div>
           {create.isError && (
             <p role="alert" className="mt-2" style={{ color: colors.errorText, fontSize: 12 }}>
@@ -241,29 +272,26 @@ export function SavingsDCAContractPage() {
                 </span>
               </div>
               <div className="mt-3 flex gap-2">
-                <button
-                  type="button"
+                <CTAButton
+                  variant="secondary"
+                  fullWidth={false}
+                  icon={isActive ? Pause : Play}
                   disabled={!canManageDCA || actionPending}
                   onClick={() => void updatePlanStatus(plan.id, isActive ? 'paused' : 'active')}
-                  className="flex items-center gap-1 rounded-lg px-3 py-2"
-                  style={{ background: colors.surface2, color: colors.text2, fontSize: 11 }}
+                  className="min-w-0 flex-1"
                 >
-                  {isActive ? <Pause size={12} /> : <Play size={12} />}{' '}
                   {isActive ? 'Pause' : 'Resume'}
-                </button>
-                <button
-                  type="button"
+                </CTAButton>
+                <CTAButton
+                  variant="danger-subtle"
+                  fullWidth={false}
+                  icon={Trash2}
                   disabled={!canManageDCA || actionPending}
                   onClick={() => setConfirmCancelPlanId(plan.id)}
-                  className="flex items-center gap-1 rounded-lg px-3 py-2"
-                  style={{
-                    background: withAlpha(colors.sell, '15'),
-                    color: colors.errorText,
-                    fontSize: 11,
-                  }}
+                  className="min-w-0 flex-1"
                 >
-                  <Trash2 size={12} /> Cancel
-                </button>
+                  Cancel
+                </CTAButton>
               </div>
             </TrCard>
           );

@@ -3,7 +3,9 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
+import { gunzipSync } from 'node:zlib';
 import { parse } from 'yaml';
+import { sourceContentHash } from '../../../scripts/source-content.mjs';
 
 // Read-only consistency check for the implementation ledger, not certification.
 const scriptDirectory = path.dirname(fileURLToPath(import.meta.url));
@@ -13,7 +15,17 @@ if (rootArgumentIndex >= 0 && !rootArgument) throw new Error('--root requires a 
 const root = rootArgument ? path.resolve(rootArgument) : path.resolve(scriptDirectory, '../../..');
 const directory = path.join(root, 'docs/architecture/production-readiness');
 const readJson = (file) => JSON.parse(fs.readFileSync(file, 'utf8'));
-const tracking = readJson(path.join(directory, 'TRACKING.json'));
+const trackingPath = 'docs/architecture/production-readiness/TRACKING.json';
+const trackingBytes = fs.readFileSync(path.join(directory, 'TRACKING.json'));
+const tracking = JSON.parse(trackingBytes.toString('utf8'));
+const sha256 = (bytes) => createHash('sha256').update(bytes).digest('hex');
+const verifyRecovery = process.argv.includes('--verify-recovery');
+const recoveryVerification = {
+  archiveReferences: 0,
+  verifiedArchives: 0,
+  legacyEvidenceReferences: 0,
+};
+let contentCataloguedFiles = 0;
 const inventory = readJson(path.join(root, 'docs/architecture/page-inventory.json'));
 const plan = fs.readFileSync(path.join(directory, 'PLAN.md'), 'utf8');
 const errors = [];
@@ -103,9 +115,45 @@ for (const file of files.values()) {
     !file.path.startsWith(planPrefix)
   ) {
     assert(
-      Boolean(file.cataloguedSourceHead && file.cataloguedSha256),
+      Boolean((file.cataloguedSourceHead && file.cataloguedSha256) || file.cataloguedContentSha256),
       `${file.path}: missing catalogued source head/hash`,
     );
+  }
+  if (file.cataloguedContentSha256 !== undefined) {
+    assert(
+      !file.cataloguedSourceHead && !file.cataloguedSha256,
+      file.path + ': content and committed-source catalogues must not be mixed',
+    );
+    assert(file.path !== trackingPath, 'TRACKING must use the checker-current-file audit basis');
+    assert(
+      /^[a-f0-9]{64}$/.test(file.cataloguedContentSha256),
+      file.path + ': invalid content hash',
+    );
+    if (active(file) && file.lifecycle !== 'planned') {
+      try {
+        const absolute = path.resolve(root, file.path);
+        const relative = path.relative(root, absolute);
+        if (relative === '..' || relative.startsWith('..' + path.sep) || path.isAbsolute(relative))
+          throw new Error('Path outside repository');
+        let ancestor = root;
+        for (const segment of relative.split(path.sep)) {
+          ancestor = path.join(ancestor, segment);
+          if (fs.lstatSync(ancestor).isSymbolicLink()) throw new Error('Linked source path');
+        }
+        assert(
+          sourceContentHash(fs.readFileSync(absolute), {
+            normalization: file.cataloguedContentNormalization,
+            allowGitTextLf:
+              file.executionScope?.role === 'protected_instruction' &&
+              tracking.executionPlan?.protectedPaths?.includes(file.path),
+          }) === file.cataloguedContentSha256,
+          file.path + ': current source differs from cataloguedContentSha256',
+        );
+        contentCataloguedFiles++;
+      } catch {
+        assert(false, file.path + ': could not verify catalogued content');
+      }
+    }
   }
   if (file.cataloguedSourceHead || file.cataloguedSha256) {
     assert(
@@ -598,8 +646,59 @@ for (const item of changes.values()) {
   if (item.action === 'rename') assert(Boolean(item.oldPath), `${item.id}: rename missing oldPath`);
   if (['modify', 'delete', 'rename'].includes(item.action))
     assert(Boolean(item.beforeHash), `${item.id}: missing beforeHash`);
-  if (['add', 'modify', 'rename'].includes(item.action))
+  if (item.afterHashBasis === 'checker-current-file') {
+    assert(
+      item.path === trackingPath && item.action === 'modify',
+      item.id + ': invalid self-audit target',
+    );
+    assert(
+      item.afterHash === null,
+      item.id + ': self-audit afterHash must be supplied by checker output',
+    );
+    assert(
+      /^[a-f0-9]{40}$/.test(item.beforeSourceHead ?? ''),
+      item.id + ': missing self-audit base revision',
+    );
+    try {
+      const before = execFileSync('git', ['show', item.beforeSourceHead + ':' + trackingPath], {
+        cwd: root,
+        maxBuffer: 64 * 1024 * 1024,
+      });
+      assert(
+        sha256(before) === item.beforeHash,
+        item.id + ': self-audit beforeHash differs from Git',
+      );
+    } catch {
+      assert(false, item.id + ': self-audit base is unavailable in Git');
+    }
+  } else if (['add', 'modify', 'rename'].includes(item.action))
     assert(Boolean(item.afterHash), `${item.id}: missing afterHash`);
+  if (item.afterHash != null)
+    assert(/^[a-f0-9]{64}$/i.test(item.afterHash), item.id + ': invalid afterHash');
+  const recovery = item.afterHashRecovery;
+  if (recovery?.archivePath) {
+    recoveryVerification.archiveReferences++;
+    const payloadHash = recovery.payloadSha256 ?? recovery.archivePayloadSha256;
+    assert(/^[a-f0-9]{64}$/.test(recovery.archiveSha256 ?? ''), item.id + ': invalid archive hash');
+    assert(
+      payloadHash === item.afterHash,
+      item.id + ': recovery payload hash differs from afterHash',
+    );
+    if (verifyRecovery) {
+      try {
+        const archive = fs.readFileSync(path.resolve(root, recovery.archivePath));
+        assert(
+          sha256(archive) === recovery.archiveSha256,
+          item.id + ': recovery archive bytes differ',
+        );
+        const payload = recovery.archivePath.endsWith('.gz') ? gunzipSync(archive) : archive;
+        assert(sha256(payload) === payloadHash, item.id + ': recovered payload bytes differ');
+        recoveryVerification.verifiedArchives++;
+      } catch {
+        assert(false, item.id + ': recovery archive unavailable or unreadable');
+      }
+    }
+  } else if (recovery) recoveryVerification.legacyEvidenceReferences++;
   refs(item.evidenceIds, evidence, item.id);
 }
 for (const milestone of tracking.milestones)
@@ -634,6 +733,12 @@ if (tracking.checkpoint.nextStep)
 const count = (items, status) => items.filter((item) => item.status === status).length;
 const report = {
   purpose: 'Ledger consistency only; not proof of UI acceptance or production readiness',
+  trackingSha256: sha256(trackingBytes),
+  contentCataloguedFiles,
+  recoveryVerification: {
+    mode: verifyRecovery ? 'archive-bytes' : 'references-only',
+    ...recoveryVerification,
+  },
   sourceHead: execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim(),
   baselineSourceHead: tracking.baseline.sourceHead,
   scope: {

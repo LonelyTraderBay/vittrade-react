@@ -107,6 +107,8 @@ export function AppLayout() {
         width: '100%',
         height: '100%',
         overscrollBehavior: 'none',
+        // Reserve the scrollport itself so focus/auto-scroll stays above the capsule nav.
+        paddingBottom: DEVICE.BOTTOM_CHROME,
         background: c.bg,
         transition: 'background var(--tr-duration-slow) ease',
       }}
@@ -138,8 +140,6 @@ export function AppLayout() {
         data-pull-scroll
         className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-none scroll-contain-y"
         style={{
-          /* BottomNav: 56pt tab + 34pt home indicator = 90pt */
-          paddingBottom: DEVICE.BOTTOM_CHROME,
           overscrollBehaviorY: 'contain',
           WebkitOverflowScrolling: 'touch',
         }}

@@ -27,6 +27,8 @@ export default async function setupAuthMockE2E(): Promise<() => Promise<void>> {
       server: { host: '127.0.0.1', port: mockE2EPort, strictPort: true },
     });
     await vite.listen();
+    // Listening does not finish the cold dependency scan; do not spend test time on it.
+    await vite.environments.client.depsOptimizer?.scanProcessing;
   } catch (error) {
     if (vite) await vite.close();
     for (const [key, value] of Object.entries(previousEnvironment)) {

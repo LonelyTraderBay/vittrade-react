@@ -902,7 +902,7 @@
       "domain": "dca",
       "owner": "features/dca",
       "status": "integration-pending",
-      "lines": 322,
+      "lines": 350,
       "routePaths": [
         "earn/savings/dca"
       ],
@@ -913,9 +913,11 @@
           "@/shared/hooks/useActionToast",
           "@/shared/hooks/useThemeColors",
           "@/shared/session/useAuth",
-          "@/shared/theme/colors",
+          "@/shared/theme/typography",
+          "@/shared/ui/CTAButton",
           "@/shared/ui/ConfirmationDialog",
           "@/shared/ui/ErrorState",
+          "@/shared/ui/InputField",
           "@/shared/ui/TrCard",
           "@/shared/ui/layout/Header",
           "@/shared/ui/layout/PageContent",
@@ -966,7 +968,7 @@
       "domain": "earn",
       "owner": "features/earn",
       "status": "integration-pending",
-      "lines": 210,
+      "lines": 213,
       "routePaths": [
         "earn/history",
         "earn/savings/history"
@@ -977,8 +979,10 @@
           "../model/earn-queries",
           "../model/earn-types",
           "@/shared/hooks/useThemeColors",
+          "@/shared/ui/CTAButton",
           "@/shared/ui/EmptyState",
           "@/shared/ui/ErrorState",
+          "@/shared/ui/FilterButton",
           "@/shared/ui/TrCard",
           "@/shared/ui/layout/Header",
           "@/shared/ui/layout/PageContent",
@@ -997,7 +1001,7 @@
       "domain": "earn",
       "owner": "features/earn",
       "status": "integration-pending",
-      "lines": 279,
+      "lines": 312,
       "routePaths": [
         "earn",
         "earn/savings",
@@ -1013,7 +1017,10 @@
           "@/shared/hooks/useThemeColors",
           "@/shared/navigation/useRoutePrefix",
           "@/shared/session/useAuth",
+          "@/shared/ui/CTAButton",
+          "@/shared/ui/EmptyState",
           "@/shared/ui/ErrorState",
+          "@/shared/ui/FilterButton",
           "@/shared/ui/TabBar",
           "@/shared/ui/layout/Header",
           "@/shared/ui/layout/PageContent",
@@ -1032,7 +1039,7 @@
       "domain": "earn",
       "owner": "features/earn",
       "status": "integration-pending",
-      "lines": 385,
+      "lines": 441,
       "routePaths": [
         "earn/:domain/receipt",
         "earn/savings/product/:productId",
@@ -1048,9 +1055,12 @@
           "@/shared/hooks/useThemeColors",
           "@/shared/navigation/useRoutePrefix",
           "@/shared/session/useAuth",
+          "@/shared/theme/colors",
           "@/shared/ui/CTAButton",
           "@/shared/ui/EmptyState",
           "@/shared/ui/ErrorState",
+          "@/shared/ui/InfoRow",
+          "@/shared/ui/InputField",
           "@/shared/ui/TrCard",
           "@/shared/ui/layout/Header",
           "@/shared/ui/layout/PageContent",
@@ -1069,7 +1079,7 @@
       "domain": "earn",
       "owner": "features/earn",
       "status": "integration-pending",
-      "lines": 129,
+      "lines": 176,
       "routePaths": [
         "earn/savings/comparison"
       ],
@@ -1077,7 +1087,9 @@
         "localImports": [
           "../model/earn-queries",
           "@/shared/hooks/useThemeColors",
+          "@/shared/ui/EmptyState",
           "@/shared/ui/ErrorState",
+          "@/shared/ui/FilterButton",
           "@/shared/ui/TrCard",
           "@/shared/ui/layout/Header",
           "@/shared/ui/layout/PageContent",
@@ -1096,7 +1108,7 @@
       "domain": "earn",
       "owner": "features/earn",
       "status": "integration-pending",
-      "lines": 162,
+      "lines": 195,
       "routePaths": [
         "earn/savings/portfolio"
       ],
@@ -1110,6 +1122,7 @@
           "@/shared/hooks/useThemeColors",
           "@/shared/navigation/useRoutePrefix",
           "@/shared/session/useAuth",
+          "@/shared/ui/CTAButton",
           "@/shared/ui/EmptyState",
           "@/shared/ui/ErrorState",
           "@/shared/ui/layout/Header",
@@ -2671,7 +2684,7 @@
       "domain": "profile",
       "owner": "features/profile",
       "status": "integration-pending",
-      "lines": 87,
+      "lines": 99,
       "routePaths": [
         "profile/activity"
       ],
@@ -2680,6 +2693,7 @@
           "../model/profile-queries",
           "@/shared/hooks/useThemeColors",
           "@/shared/ui/ErrorState",
+          "@/shared/ui/FilterButton",
           "@/shared/ui/TrCard",
           "@/shared/ui/layout/Header",
           "@/shared/ui/layout/PageContent",
@@ -2698,7 +2712,7 @@
       "domain": "profile",
       "owner": "features/profile",
       "status": "integration-pending",
-      "lines": 130,
+      "lines": 163,
       "routePaths": [
         "profile/devices"
       ],
@@ -2708,6 +2722,7 @@
           "@/shared/hooks/useActionToast",
           "@/shared/hooks/useThemeColors",
           "@/shared/session/useAuth",
+          "@/shared/ui/CTAButton",
           "@/shared/ui/ErrorState",
           "@/shared/ui/TrCard",
           "@/shared/ui/layout/Header",
@@ -2727,7 +2742,7 @@
       "domain": "profile",
       "owner": "features/profile",
       "status": "integration-pending",
-      "lines": 116,
+      "lines": 131,
       "routePaths": [
         "profile/edit"
       ],
@@ -2737,7 +2752,9 @@
           "@/shared/hooks/useActionToast",
           "@/shared/hooks/useThemeColors",
           "@/shared/session/useAuth",
+          "@/shared/ui/CTAButton",
           "@/shared/ui/ErrorState",
+          "@/shared/ui/InputField",
           "@/shared/ui/TrCard",
           "@/shared/ui/layout/Header",
           "@/shared/ui/layout/PageContent",
@@ -2756,7 +2773,7 @@
       "domain": "profile",
       "owner": "features/profile",
       "status": "integration-pending",
-      "lines": 117,
+      "lines": 131,
       "routePaths": [
         "profile"
       ],
@@ -2786,7 +2803,7 @@
       "domain": "profile",
       "owner": "features/profile",
       "status": "integration-pending",
-      "lines": 65,
+      "lines": 81,
       "routePaths": [
         "profile/security"
       ],
@@ -2814,7 +2831,7 @@
       "domain": "profile",
       "owner": "features/profile",
       "status": "integration-pending",
-      "lines": 73,
+      "lines": 93,
       "routePaths": [
         "profile/sub-accounts"
       ],
@@ -2869,7 +2886,7 @@
       "domain": "support",
       "owner": "features/support",
       "status": "integration-pending",
-      "lines": 106,
+      "lines": 129,
       "routePaths": [
         "support/help"
       ],
@@ -2878,7 +2895,10 @@
           "../model/support-queries",
           "@/shared/hooks/useThemeColors",
           "@/shared/session/useAuth",
+          "@/shared/ui/CTAButton",
           "@/shared/ui/ErrorState",
+          "@/shared/ui/FilterButton",
+          "@/shared/ui/SearchBar",
           "@/shared/ui/TrCard",
           "@/shared/ui/layout/Header",
           "@/shared/ui/layout/PageContent",
@@ -2897,7 +2917,7 @@
       "domain": "support",
       "owner": "features/support",
       "status": "integration-pending",
-      "lines": 91,
+      "lines": 112,
       "routePaths": [
         "news",
         "support/announcements"
@@ -2906,6 +2926,7 @@
         "localImports": [
           "../model/support-queries",
           "@/shared/hooks/useThemeColors",
+          "@/shared/ui/CTAButton",
           "@/shared/ui/ErrorState",
           "@/shared/ui/TrCard",
           "@/shared/ui/layout/Header",
@@ -2925,7 +2946,7 @@
       "domain": "support",
       "owner": "features/support",
       "status": "integration-pending",
-      "lines": 118,
+      "lines": 146,
       "routePaths": [
         "notifications"
       ],
@@ -2935,6 +2956,7 @@
           "@/shared/hooks/useActionToast",
           "@/shared/hooks/useThemeColors",
           "@/shared/session/useAuth",
+          "@/shared/ui/CTAButton",
           "@/shared/ui/ErrorState",
           "@/shared/ui/TrCard",
           "@/shared/ui/layout/Header",
@@ -2954,7 +2976,7 @@
       "domain": "support",
       "owner": "features/support",
       "status": "integration-pending",
-      "lines": 149,
+      "lines": 197,
       "routePaths": [
         "support"
       ],
@@ -2964,7 +2986,10 @@
           "@/shared/hooks/useActionToast",
           "@/shared/hooks/useThemeColors",
           "@/shared/session/useAuth",
+          "@/shared/theme/typography",
+          "@/shared/ui/CTAButton",
           "@/shared/ui/ErrorState",
+          "@/shared/ui/InputField",
           "@/shared/ui/TrCard",
           "@/shared/ui/layout/Header",
           "@/shared/ui/layout/PageContent",

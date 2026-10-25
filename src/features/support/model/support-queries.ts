@@ -11,7 +11,10 @@ export const supportQueryKeys = {
   tickets: ['support', 'tickets'] as const,
 };
 export function useNewsQuery() {
+  const { isLoading } = useAuth();
   return useQuery({
+    // Public routes can mount before bootstrap clears the previous identity cache.
+    enabled: !isLoading,
     queryKey: supportQueryKeys.news,
     queryFn: ({ signal }) => supportApi.listNews(signal),
     retry: false,

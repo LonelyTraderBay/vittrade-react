@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router';
 import { useAuth } from '@/shared/session/useAuth';
 import { useHaptic } from '@/shared/hooks/useHaptic';
 import { useRoutePrefix } from '@/shared/navigation/useRoutePrefix';
+import { CTAButton } from '@/shared/ui/CTAButton';
 import { EmptyState } from '@/shared/ui/EmptyState';
 import { ErrorState } from '@/shared/ui/ErrorState';
 import { Header } from '@/shared/ui/layout/Header';
@@ -22,18 +23,19 @@ import { formatEarnActionError } from '../model/earn-error-message';
 function PortfolioLoadingState() {
   const colors = useThemeColors();
   return (
-    <PageLayout>
-      <Header title="Danh mục tiết kiệm" subtitle="Các vị thế Earn của bạn" back />
-      <PageContent gap="relaxed">
-        {[0, 1, 2].map((item) => (
-          <div
-            key={item}
-            className="h-36 animate-pulse rounded-3xl"
-            style={{ background: colors.surface2 }}
-          />
-        ))}
-      </PageContent>
-    </PageLayout>
+    <>
+      <p role="status" style={{ color: colors.text2 }}>
+        Đang tải dữ liệu API…
+      </p>
+      {[0, 1, 2].map((item) => (
+        <div
+          key={item}
+          aria-hidden="true"
+          className="h-36 animate-pulse rounded-3xl"
+          style={{ background: colors.surface2 }}
+        />
+      ))}
+    </>
   );
 }
 
@@ -47,6 +49,7 @@ export function SavingsPortfolioPage() {
   const redeemMutation = useRedeemEarnPositionMutation();
   const [selectedPosition, setSelectedPosition] = useState<EarnPosition>();
   const [successMessage, setSuccessMessage] = useState<string>();
+  const portfolioFocusRef = useRef<HTMLDivElement>(null);
   const redemptionInFlight = useRef(false);
   const redemptionKeys = useRef(new Map<string, string>());
   const positions =
@@ -56,17 +59,10 @@ export function SavingsPortfolioPage() {
       ),
     ) ?? [];
 
-  if (snapshotQuery.isPending) return <PortfolioLoadingState />;
-  if (snapshotQuery.isError || !snapshotQuery.data) {
-    return (
-      <PageLayout>
-        <Header title="Danh mục tiết kiệm" subtitle="Các vị thế Earn của bạn" back />
-        <ErrorState onAction={() => void snapshotQuery.refetch()} />
-      </PageLayout>
-    );
-  }
+  const readUnavailable = snapshotQuery.isPending || snapshotQuery.isError || !snapshotQuery.data;
 
   const submitRedemption = async (amount: number) => {
+    if (readUnavailable) return;
     if (
       !canRedeem ||
       !selectedPosition ||
@@ -108,40 +104,77 @@ export function SavingsPortfolioPage() {
             onClose={() => setSuccessMessage(undefined)}
           />
         )}
-        {!canRedeem && (
-          <p role="alert" className="text-xs text-amber-500">
-            Earn redemption permission is required to withdraw a flexible position.
-          </p>
-        )}
-        {positions.length === 0 ? (
-          <EmptyState
-            icon={PiggyBank}
-            title="Chưa có vị thế tiết kiệm"
-            subtitle="Các vị thế tiết kiệm sẽ xuất hiện tại đây sau khi đăng ký sản phẩm."
-            ctaLabel="Xem sản phẩm"
-            onCta={() => navigate(`${prefix}/earn/savings`)}
-          />
-        ) : (
-          <div role="list" className="flex flex-col gap-3" aria-label="Các vị thế tiết kiệm">
-            {positions.map((position) => (
-              <PositionCard
-                key={position.id}
-                position={position}
-                role="listitem"
-                onRedeem={() => {
-                  if (canRedeem) setSelectedPosition(position);
-                }}
-                canRedeem={canRedeem}
-              />
-            ))}
-          </div>
-        )}
+        <div
+          ref={portfolioFocusRef}
+          role="region"
+          aria-label="Dữ liệu vị thế tiết kiệm"
+          tabIndex={-1}
+          className="flex min-w-0 flex-col gap-6 rounded-2xl focus-visible:outline-2 focus-visible:outline-offset-2"
+          style={{ outlineColor: 'var(--tr-primary)' }}
+        >
+          {snapshotQuery.isPending ? (
+            <PortfolioLoadingState />
+          ) : snapshotQuery.isError || !snapshotQuery.data ? (
+            <div role="alert">
+              <ErrorState onAction={() => void snapshotQuery.refetch()} />
+            </div>
+          ) : (
+            <>
+              {!canRedeem && (
+                <p role="alert" className="text-xs" style={{ color: 'var(--tr-warning-text)' }}>
+                  Earn redemption permission is required to withdraw a flexible position.
+                </p>
+              )}
+              {positions.length === 0 ? (
+                <EmptyState
+                  icon={PiggyBank}
+                  title="Chưa có vị thế tiết kiệm"
+                  subtitle="Các vị thế tiết kiệm sẽ xuất hiện tại đây sau khi đăng ký sản phẩm."
+                  ctaLabel="Xem sản phẩm"
+                  onCta={() => navigate(`${prefix}/earn/savings`)}
+                />
+              ) : (
+                <div role="list" className="flex flex-col gap-3" aria-label="Các vị thế tiết kiệm">
+                  {positions.map((position) => (
+                    <PositionCard
+                      key={position.id}
+                      position={position}
+                      role="listitem"
+                      onRedeem={() => {
+                        if (canRedeem) setSelectedPosition(position);
+                      }}
+                      canRedeem={canRedeem}
+                    />
+                  ))}
+                </div>
+              )}
+            </>
+          )}
+        </div>
       </PageContent>
       {selectedPosition && (
         <EarnActionSheet
           position={selectedPosition}
           balance={selectedPosition.amount}
           pending={redeemMutation.isPending}
+          submitDisabled={readUnavailable}
+          fallbackFocusRef={portfolioFocusRef}
+          recovery={
+            readUnavailable ? (
+              <div role="alert" className="flex flex-col gap-3">
+                <p style={{ color: 'var(--tr-error-text)', fontSize: 12 }}>
+                  Không thể đọc dữ liệu vị thế. Tải lại dữ liệu trước khi xác nhận rút vốn.
+                </p>
+                <CTAButton
+                  variant="secondary"
+                  loading={snapshotQuery.isFetching}
+                  onClick={() => void snapshotQuery.refetch()}
+                >
+                  Thử lại
+                </CTAButton>
+              </div>
+            ) : undefined
+          }
           error={
             redeemMutation.error instanceof Error
               ? formatEarnActionError(redeemMutation.error)

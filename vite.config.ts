@@ -18,6 +18,8 @@ export default defineConfig(({ mode, command }) => {
     cacheDir: process.env.VITTRADE_RUN_DIR
       ? path.join(process.env.VITTRADE_RUN_DIR, 'cache/vite')
       : 'node_modules/.vite',
+    // Owned run output differs from the preserved root dist; only the app HTML is a dev entry.
+    optimizeDeps: { entries: ['index.html'] },
     plugins: [
       // The React and Tailwind plugins are both required for Make, even if
       // Tailwind is not being actively used – do not remove them

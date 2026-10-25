@@ -1,3 +1,4 @@
+import { CTAButton } from '@/shared/ui/CTAButton';
 import { useState } from 'react';
 import { ErrorState } from '@/shared/ui/ErrorState';
 import { Header } from '@/shared/ui/layout/Header';
@@ -11,75 +12,95 @@ export function NewsContractPage({ announcementsOnly = false }: { announcementsO
   const colors = useThemeColors();
   const query = useNewsQuery();
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  if (query.isPending)
-    return (
-      <PageLayout>
-        <Header title={announcementsOnly ? 'Thông báo hệ thống' : 'Tin tức'} back />
-        <PageContent>
-          <p style={{ color: colors.text2 }}>Đang tải nội dung…</p>
-        </PageContent>
-      </PageLayout>
-    );
-  if (query.isError || !query.data) return <ErrorState onAction={() => void query.refetch()} />;
+  const data = query.data;
   const items = announcementsOnly
-    ? query.data.items.filter(
+    ? (data?.items ?? []).filter(
         (item) => item.isPinned || item.type === 'maintenance' || item.type === 'security',
       )
-    : query.data.items;
+    : (data?.items ?? []);
   const selected = items.find((item) => item.id === selectedId);
   return (
     <PageLayout>
       <Header title={announcementsOnly ? 'Thông báo hệ thống' : 'Tin tức'} back />
       <PageContent gap="default">
-        {selected ? (
-          <TrCard className="p-4">
-            <button
-              type="button"
-              style={{ color: colors.primary, fontSize: 12 }}
-              onClick={() => setSelectedId(null)}
-            >
-              ← Danh sách
-            </button>
-            <h2 className="mt-3" style={{ color: colors.text1, fontSize: 18, fontWeight: 700 }}>
-              {selected.title}
-            </h2>
-            <p className="mt-2" style={{ color: colors.text2, fontSize: 12 }}>
-              {selected.publishedAt}
+        <div
+          role="region"
+          aria-label="Nội dung tin tức"
+          aria-busy={query.isFetching}
+          className="flex min-w-0 flex-col gap-4"
+        >
+          {query.isPending ? (
+            <p role="progressbar" aria-label="Đang tải nội dung…" style={{ color: colors.text2 }}>
+              Đang tải nội dung…
             </p>
-            <p
-              className="mt-4 whitespace-pre-line"
-              style={{ color: colors.text2, fontSize: 13, lineHeight: 1.6 }}
-            >
-              {selected.content}
-            </p>
-          </TrCard>
-        ) : (
-          items.map((article) => (
-            <button
-              type="button"
-              key={article.id}
-              className="text-left"
-              onClick={() => setSelectedId(article.id)}
-            >
-              <TrCard className="p-4">
-                <div className="flex items-start justify-between gap-3">
-                  <div>
-                    <h2 style={{ color: colors.text1, fontWeight: 700 }}>{article.title}</h2>
-                    <p className="mt-1" style={{ color: colors.text2, fontSize: 12 }}>
-                      {article.summary}
-                    </p>
-                  </div>
-                  {article.isPinned && (
-                    <span style={{ color: colors.primary, fontSize: 11 }}>Ghim</span>
-                  )}
-                </div>
-                <p className="mt-3" style={{ color: colors.text3, fontSize: 11 }}>
-                  {article.publishedAt} · {article.tags.join(', ')}
+          ) : query.isError || !data ? (
+            <div role="alert">
+              <ErrorState onAction={() => void query.refetch()} />
+            </div>
+          ) : (
+            <>
+              {selected ? (
+                <TrCard className="p-4" style={{ overflowWrap: 'anywhere' }}>
+                  <CTAButton
+                    variant="secondary"
+                    density="compact"
+                    fullWidth={false}
+                    type="button"
+                    onClick={() => setSelectedId(null)}
+                  >
+                    ← Danh sách
+                  </CTAButton>
+                  <h2
+                    className="mt-3"
+                    style={{ color: colors.text1, fontSize: 18, fontWeight: 700 }}
+                  >
+                    {selected.title}
+                  </h2>
+                  <p className="mt-2" style={{ color: colors.text2, fontSize: 12 }}>
+                    {selected.publishedAt}
+                  </p>
+                  <p
+                    className="mt-4 whitespace-pre-line"
+                    style={{ color: colors.text2, fontSize: 13, lineHeight: 1.6 }}
+                  >
+                    {selected.content}
+                  </p>
+                </TrCard>
+              ) : items.length === 0 ? (
+                <p role="status" style={{ color: colors.text2 }}>
+                  {announcementsOnly ? 'Chưa có thông báo hệ thống nào.' : 'Chưa có tin tức nào.'}
                 </p>
-              </TrCard>
-            </button>
-          ))
-        )}
+              ) : (
+                items.map((article) => (
+                  <button
+                    type="button"
+                    key={article.id}
+                    className="min-w-0 text-left focus-visible:outline-2 focus-visible:outline-offset-2"
+                    style={{ outlineColor: colors.primary, overflowWrap: 'anywhere' }}
+                    onClick={() => setSelectedId(article.id)}
+                  >
+                    <TrCard className="p-4" style={{ overflowWrap: 'anywhere' }}>
+                      <div className="flex flex-wrap items-start justify-between gap-3">
+                        <div className="min-w-0 flex-1">
+                          <h2 style={{ color: colors.text1, fontWeight: 700 }}>{article.title}</h2>
+                          <p className="mt-1" style={{ color: colors.text2, fontSize: 12 }}>
+                            {article.summary}
+                          </p>
+                        </div>
+                        {article.isPinned && (
+                          <span style={{ color: colors.primary, fontSize: 11 }}>Ghim</span>
+                        )}
+                      </div>
+                      <p className="mt-3" style={{ color: colors.text3, fontSize: 11 }}>
+                        {article.publishedAt} · {article.tags.join(', ')}
+                      </p>
+                    </TrCard>
+                  </button>
+                ))
+              )}
+            </>
+          )}
+        </div>
       </PageContent>
     </PageLayout>
   );

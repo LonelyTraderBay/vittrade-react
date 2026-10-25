@@ -330,169 +330,43 @@ hiện hành, không thay C01/C03/C05, các task feature U01–U15 hoặc checkp
 Mỗi step phải gắn file bằng `files[].executionScope.stepIds`, có evidence/checkpoint
 và qua `check-tracking.mjs` trước khi được coi là hoàn tất.
 
-#### Giao thức thi công, commit và nghiệm thu C06 — cập nhật ngày 21/10/2026
+#### Giao thức thi công và nghiệm thu C06 — cập nhật ngày 25/10/2026
 
-**Quyết định thay thế về nhánh ngày 23/10/2026:** người dùng giao hợp nhất repo
-về một nhánh `main` sau sao lưu/thử phục hồi và rà B07/WIP. Từ mốc này, các bước
-giao candidate lên PR/remediation bên dưới chuyển sang commit/push trực tiếp
-trên `main`, kiểm CI theo sự kiện push ở đúng SHA; không yêu cầu synthetic merge
-cho một push trực tiếp. Giữ nguyên nghiệm thu theo gói, source catalogue,
-required gate `Production gates`, evidence và toàn bộ giới hạn sản phẩm.
-Quy trình đang áp dụng nằm tại [WORKFLOW](../../ai/WORKFLOW.md#phát-triển-một-người-trên-main--quyết-định-ngày-23102026).
-Quyết định này không xóa lịch sử PR, bằng chứng cũ hoặc mở quyền deploy.
-Yêu cầu bổ sung ngày 24/10/2026 đưa toàn bộ lịch sử còn lại và parent WIP vào
-`main`, port phần hành vi còn thiếu theo owner hiện hành; các prototype đã bị
-thay thế được giữ trong lịch sử theo lựa chọn trực tiếp của người dùng. Xem
-[quyết định và tiêu chí đóng công việc](../../ai/WORKFLOW.md#hợp-nhất-toàn-bộ-lịch-sử-và-wip--quyết-định-ngày-24102026).
+**Quyết định thay thế:** người dùng yêu cầu sửa quy trình, bàn giao diff và kết
+quả kiểm chứng, không tự commit/push hoặc sửa lịch sử Git. Quyết định này thay
+ủy quyền tự commit/push C06 ngày 20–23/10/2026. Nhánh phát triển vẫn là `main`;
+lịch sử hợp nhất, tag/WIP/archive và bằng chứng đã ghi được bảo toàn.
 
-Giao thức này áp dụng riêng cho C06.01–C06.15 trên nhánh remediation hiện hành.
-Người dùng đã yêu cầu AI tự thực hiện tuần tự, đo trên code thật, tạo commit ký
-tên có ghi chú tiếng Việt và push từng lát cắt trước khi sang việc khác. Đây là
-ủy quyền rõ cho phạm vi C06; không mở rộng sang task ngoài C06, merge PR, force
-push, deploy hay thao tác làm thay đổi dữ liệu dịch vụ. Quy tắc mặc định trong
-`docs/ai/PRODUCTION-READINESS-PROMPT.md` vẫn áp dụng cho mọi phạm vi chưa được
-ủy quyền riêng. Ngày 20/10/2026, người dùng duyệt tối ưu protocol và CI theo
-rủi ro, giữ commit/push từng phần, không bỏ kiểm tra và đối chiếu 54 file WIP
-với code mới trước khi chuyển phần còn thiếu.
+Quyền tác động Git, đơn vị gói, lệnh preflight và cơ chế provenance chỉ được quy
+định tại [WORKFLOW — quyền commit/push và gói bàn giao](../../ai/WORKFLOW.md#quyền-commitpush-và-gói-bàn-giao--quyết-định-ngày-25102026).
+PLAN giữ phạm vi, phụ thuộc và acceptance C06; prompt/skill/checkpoint dẫn chiếu
+nguồn này, không cấp quyền giao hàng mới.
 
-Ngày 21/10/2026, người dùng duyệt giao theo **gói nghiệm thu hợp lý**, thay cho
-commit/push sau mỗi chỉnh sửa nhỏ. Một gói giải quyết một mục tiêu hành vi hoặc
-hợp đồng, gồm owner, consumer trực tiếp, regression và tài liệu cần thiết; có
-tiêu chí nghiệm thu và phạm vi rollback chung. Số file, số dòng, một finding hay
-một dòng checklist không tự xác định ranh giới commit. Nhiều biểu hiện cùng
-nguyên nhân SHOULD được xử lý chung; thay đổi độc lập, rủi ro/rollback khác nhau,
-CI/checker và sản phẩm mà chúng kiểm chứng MUST được tách thành gói riêng.
+Với mỗi gói C06 được giao:
 
-Mặc định một gói có một commit hoàn chỉnh. Khi catalogue cần SHA/blob source đã
-tồn tại, MAY dùng cặp source + ledger của cùng gói, push chung một lần. Đây vẫn
-là một gói và một candidate nghiệm thu; không giả định mỗi SHA trung gian đã chạy
-full CI. Không sửa mô hình provenance, amend hoặc rewrite lịch sử chỉ để giảm
-số commit. Các commit đã push được giữ nguyên.
+1. Khóa scope bằng inventory/stable route ID, owner/consumer, contract, trạng thái
+   và rollback chung. Gộp finding cùng nguyên nhân; không tạo gói theo từng file.
+2. Đo baseline, sửa tại owner nhỏ nhất, kiểm regression và consumer trực tiếp.
+   Giữ nguyên API, business/permission/data contract, test và ngưỡng kiểm tra.
+3. Chạy local checks phù hợp trên bytes cuối; cập nhật một evidence tổng hợp/gói
+   trong TRACKING, catalog nội dung, sinh matrix và chạy `readiness:check` theo
+   WORKFLOW. Mẫu số/coverage chưa có bằng chứng vẫn mở; local/MSW không thay
+   visual/manual AT/backend/staging/UAT.
+4. Bàn giao diff, kết quả thật, giới hạn và việc tiếp theo. Không tạo commit để
+   ghi từng lần kiểm hoặc cập nhật pointer. Catalog nội dung và matrix theo hash
+   đầu vào hoạt động trước commit; chế độ Git SHA cũ dùng tái dựng lịch sử.
+5. Khi người dùng yêu cầu commit/push rõ cho gói, thực hiện preflight/staged review
+   theo WORKFLOW. Chỉ push candidate hoàn chỉnh đã qua local acceptance. Full CI
+   và `Production gates` phải pass trên đúng SHA cuối đã push trước khi đóng
+   milestone hoặc sang bước phụ thuộc hosted gate. Không dùng parent CI cho diff mới.
+6. Giữ receipt CI bất biến và tham chiếu ở lần cập nhật nghiệp vụ kế tiếp; không
+   tạo vòng commit ghi CI của commit ghi CI. Lỗi sau giao sửa trong cùng mục tiêu,
+   cần ủy quyền mới nếu phải commit/push tiếp.
 
-Với **mỗi gói nghiệm thu C06** ("lát cắt" bên dưới), AI MUST thực hiện đúng chu trình sau và ghi kết quả vào
-`TRACKING.json`; không được bỏ qua bước vì một lần chạy trước đã xanh:
-
-1. **Xác nhận checkpoint:** đọc trạng thái task/step, dependency, `nextAction`,
-   SHA/branch, `git status` (staged, unstaged, untracked) và scope trong tracker.
-   Bảo toàn mọi thay đổi không thuộc lát cắt; không dùng reset/clean hay format
-   toàn repo. Đọc script/config trước khi chạy lệnh có thể ghi output.
-2. **Chọn đúng một đơn vị công việc:** ghi mục tiêu, owner/consumers, contract giữ
-   nguyên, tiêu chí nghiệm thu và rollback trước khi sửa; chỉ bắt đầu step có dependency hoàn tất;
-   kiểm chứng consumer/call site và giữ nguyên business/API/permission/data
-   contracts. Gộp implementation với regression test trực tiếp; không kèm việc
-   độc lập chỉ để giảm số commit. MAY hoàn thiện nhiều substep/finding cùng hợp
-   đồng trong một gói; không chờ hosted CI giữa những chỉnh sửa nội bộ đó. Khi một finding cần quyết định visual/brand,
-   không tự thay đổi ngoài contract đã được duyệt.
-3. **Đo local trên bytes cuối:** trong khi sửa, dùng kiểm tra owner/trạng thái bị
-   ảnh hưởng để phát hiện lỗi sớm; không chạy full suite sau mỗi file/chỉnh sửa.
-   Trước giao candidate ổn định, chạy test owner và mọi kiểm tra liên quan theo
-   script đã đọc; tối thiểu gồm checker tracker, `git diff --check`, typecheck/
-   lint/format/inventory khi file bị ảnh hưởng. Ghi command, revision, tử số/
-   mẫu số, exit code, test skip có cấu hình và artifact hash. FAIL/timeout/incomplete
-   không phải PASS; giữ log/output được workflow bảo vệ, tìm root cause và chạy
-   lại gate liên quan. Lỗi phát hiện trước giao được sửa trong cùng gói; lỗi sau
-   push được sửa bằng commit bổ sung có phạm vi rõ. Chỉ tái sử dụng kết quả khi
-   source fingerprint, config và điều kiện liên quan không đổi; không gán bằng
-   chứng cũ cho bytes mới.
-4. **Rà và giao source:** xác nhận diff chỉ chứa file do lát cắt sở hữu, test có ý
-   nghĩa, không chứa secret/output ngoài ý muốn; tạo một commit coherent bằng
-   `git commit -s` với subject/body tiếng Việt nêu rõ hành vi và phạm vi. Không
-   amend, rewrite history hoặc gộp nhiều step độc lập thành một commit. Push commit
-   lên đúng PR branch hiện hữu; không force push. Chỉ push sau khi local acceptance
-   pass và checkpoint trong tracker nêu SHA/next gate. Khi catalogue cần Git blob
-   mới, có thể tạo source commit cục bộ rồi commit ledger của cùng lát cắt trước
-   một lần push; không gom step độc lập. Source commit vẫn chứa test/consumer
-   bắt buộc, đủ review và rollback.
-   Không commit chỉ vì vừa sửa xong một file. Tracking là hồ sơ của gói, không
-   phải task ưu tiên thấp tách khỏi nghiệm thu source. Ghi tổng hợp một lần/gói
-   và tham chiếu log/artifact chi tiết; đọc task/checkpoint bằng selector, không
-   nạp toàn bộ TRACKING mỗi substep. Không tạo sổ tiến độ song song.
-5. **Nghiệm thu GitHub exact-SHA:** một lần push candidate ổn định của gói; chờ
-   workflow bắt đầu từ đúng PR head vừa push. Full CI chứng minh head candidate,
-   không mặc nhiên chứng minh mọi commit trung gian. Đối chiếu tất cả required checks và step, nêu riêng PASS/FAIL/SKIP
-   cùng phạm vi full/metadata-only. Không dùng số step cố định sau khi workflow
-   đổi cấu trúc. Required check tổng hợp giữ tên `Production gates`, luôn chạy
-   và từ chối job bắt buộc fail/cancel/missing. Job không áp dụng chỉ được skip
-   theo kết quả classifier đã kiểm chứng.
-   Nếu là pull request, xác nhận synthetic merge có đúng base/head parents và
-   merge tree bằng tree của head. Tải artifact verification, so sánh byte count và
-   SHA-256 với GitHub metadata; xác nhận artifact/run thuộc đúng workflow, attempt
-   và SHA. Không coi CI của SHA cha, rerun khác head hoặc artifact thiếu provenance
-   là nghiệm thu. Một lượt full CI thành công là mặc định cho candidate ổn định,
-   không phải hạn ngạch: failure, source/config mới hoặc nghi vấn phải được xử lý
-   và kiểm lại. Không skip CI, hạ assertion hay mở rộng metadata allowlist để
-   giảm thời gian. Chỉ chuyển gói phụ thuộc sau khi gate hiện hành đạt.
-6. **Đóng checkpoint theo phạm vi:** sau khi source SHA và artifact đã xác minh,
-   cập nhật evidence/change/checkpoint/nextAction trong `TRACKING.json`, chạy
-   checker, rà diff và commit/push phần ledger thực sự cần thiết bằng tiếng Việt.
-   Chỉ commit thay đúng `TRACKING.json` mới đủ điều kiện luồng metadata; policy,
-   guideline, executable, test, config, dependency, workflow và path chưa biết
-   luôn chạy full CI. `scripts/ci-scope.mjs` phải chứng minh fingerprint mọi Git
-   input ngoài ledger giống source head cha và checkout merge đang test; base
-   phải đã nằm trong source cha. GitHub phải xác nhận chính source cha có full
-   workflow thành công, đủ job và bước lưu artifact. Tải scope artifact bất biến
-   của run đó, so bytes/SHA-256 và fingerprint checkout đã test với source cha;
-   không dùng `pull_requests[].head/base.sha` có thể thay đổi trong API run cũ
-   làm bằng chứng revision lịch sử. Python standard library trên runner chỉ đọc
-   JSON trong ZIP đã kiểm digest, không extract path hay thêm dependency.
-   Thiếu bằng chứng/API hoặc
-   không khớp thì tự chạy full, không bỏ CI. Metadata SHA có checker/format/EOL,
-   artifact và required aggregate riêng; runtime evidence được ghi rõ là tái
-   sử dụng từ source SHA/run nào, không gọi đó là full test của SHA mới.
-   Chỉ đặt step `done` khi mọi gate áp dụng đạt. Không tạo chuỗi commit chỉ để
-   ghi CI của commit ghi CI; proof sau push lưu trong artifact/manifest bất biến
-   và được tham chiếu ở công việc thực tiếp theo. Nếu source+ledger đã đủ bằng
-   chứng, không bắt buộc thêm closeout rỗng.
-   Đo số gói hoàn tất, commit/push/full-run mỗi gói, thời gian chờ, lần mở lại và
-   regression; không dùng riêng số commit giảm làm bằng chứng hiệu quả. Không
-   gán tỷ lệ tiết kiệm thời gian/token khi chưa có số đo so sánh tương đương.
-7. **Xử lý trở ngại:** nếu một gate fail, step hiện tại vẫn mở; không sang dependency
-   kế, không hạ assertion/ngưỡng hoặc đổi baseline để làm xanh. Có thể tiếp tục
-   công việc độc lập không phụ thuộc gate đó, ghi blocker/nextAction cụ thể và giữ
-   artifacts. Chỉ đánh dấu BLOCKED khi thiếu quyền, dịch vụ, dữ liệu hoặc quyết
-   định ngoài repository thực sự cần thiết; tiếp tục phần độc lập và không tuyên
-   bố “100%” vượt quá phạm vi đã đo.
-
-CI full giữ nguyên assertion, coverage threshold, security/contract/build và bốn
-browser lane: smoke, Auth API, Auth mock và UI mock. Auth mock chạy nối tiếp hai
-cấu hình devtools bật/mặc định tắt; tổng cộng vẫn đủ năm cấu hình browser, mỗi
-cấu hình một lần. UI mock có runner/workspace riêng; aggregate và exact-source
-reuse bắt buộc có job UI thành công cùng artifact. Scope tests thực thi Bash
-contract bằng npm stub cục bộ và kiểm lỗi của từng cấu hình, không bỏ test hoặc
-nới ngưỡng. `test:coverage` chạy cùng toàn bộ suite với `test:run` nên chỉ chạy
-một lượt có instrumentation, có test kiểm command parity. Static/build,
-unit/coverage và từng browser lane chạy trên runner/workspace độc lập; build/E2E
-local dùng chung output/port vẫn tuần tự. Đo thời gian từ run GitHub hoàn tất trên
-cùng application/test inputs; một cặp run chỉ là số đo quan sát, không phải SLA. Không hủy checkpoint đang nghiệm thu,
-không `[skip ci]`, không path-ignore toàn workflow hay đổi branch protection.
-Thời gian tối ưu chỉ được báo sau khi đo run thật; kiểm cả failure/cancel/missing,
-mixed paths và fallback full. Nếu classifier/aggregate sai, revert atomic patch
-protocol/CI và trở lại full gate; giữ lịch sử và evidence thất bại.
-
-Commit/push riêng là yêu cầu giao nhận cho từng đơn vị được nghiệm thu; “toàn bộ
-thay đổi” nghĩa là toàn bộ thay đổi **thuộc lát cắt đã xác minh**, không gồm WIP
-của người khác, file ngoài scope, output được giữ làm bằng chứng hay thay đổi
-chưa được kiểm chứng. Không merge PR nếu chưa có yêu cầu riêng.
-
-#### Quy tắc tiếp tục tự động, không dừng giữa các lát cắt
-
-Trong phạm vi C06, yêu cầu triển khai tuần tự và commit/push của người dùng đã có
-hiệu lực; AI MUST không kết thúc một lượt chỉ bằng báo kế hoạch, chỉ sửa local,
-hoặc hỏi lại người dùng có muốn làm step kế hay không khi `nextAction` còn việc
-hợp lệ. Sau khi hoàn tất source gate, tracker closeout và exact-SHA GitHub gate,
-AI phải đọc checkpoint vừa xác minh, chọn step/consumer tiếp theo đủ dependency,
-cập nhật `nextAction`, rồi tiếp tục làm và kiểm chứng theo giao thức này. Nếu lượt
-làm việc bị ngắt, checkpoint phải cho agent kế tiếp biết chính xác SHA, path, gate,
-việc đã xong/chưa xong và lệnh tiếp theo; không làm lại phần đã có bằng chứng còn
-hiệu lực, nhưng phải xác minh lại hash/status hiện hành trước khi dựa vào nó.
-
-Chỉ dừng bước phụ thuộc khi gate của nó FAIL/BLOCKED/NOT RUN, hoặc khi quyết định
-brand/visual/ownership hay quyền bên ngoài thực sự chưa được cấp. Khi đó giữ step
-mở, ghi đầu vào thiếu và người/nhóm cần quyết định theo cơ chế hiện có; tiếp tục
-các phần độc lập mà PLAN cho phép. Không lặp lệnh vô hạn, hạ ngưỡng, tạo kết quả
-giả hoặc dùng “100%” chung chung. Tiếp tục tới khi C06.15 thỏa acceptance đã khóa,
-hoặc tới blocker cụ thể ngoài quyền hiện hành; khi ấy báo rõ blocker, bằng chứng
-và việc độc lập kế tiếp thay vì ghi hoàn tất.
+Tiếp tục công việc local đã được giao theo dependency, không hỏi lại từng sửa
+đổi thông thường. Khi bước tiếp theo cần hosted gate chưa được phép chạy qua
+push, bàn giao diff và ghi rõ đầu vào còn thiếu. Nhiệm vụ audit/sửa quy trình
+không tự mở lại thực thi toàn C06. C06 chỉ done khi đủ acceptance C06.15 ở dưới.
 
 **Mốc đọc thực tế:** HEAD `074ed3bedfbbcac9e7c31697911ebf234845f0ad`, nhánh
 `codex/frontend-readiness-remediation-20261013`. Worktree có **54 path** sửa đổi
@@ -732,7 +606,10 @@ Route matrix giữ coverage theo stable route ID. Mỗi route có thể ghi riê
 chỉ đổi trạng thái baseline khi có `evidenceId` gắn với đúng route. Summary
 `scope.dimensionCoverage` đếm số route theo trạng thái và số dòng có evidence,
 không biến một lát cắt `local_ui_mock_partial_pass` thành nghiệm thu toàn route.
-Locale chưa được xác lập phải giữ `not_established`; trạng thái UI mock không
+Quyết định người dùng ngày 25/10/2026 xác lập locale C06 là tiếng Việt hiện hành,
+giữ nhãn tiếng Anh có chủ đích và không thêm hệ dịch. Scope đã xác lập không
+tự chứng minh nhãn, định dạng số/ngày hay reflow của từng route; cell chưa chạy
+vẫn chưa đạt và bằng chứng locale lịch sử được giữ nguyên. Trạng thái UI mock không
 thay visual/manual AT, backend, staging hoặc UAT acceptance.
 
 #### **C06.15** — retire legacy và nghiệm thu 100% trong phạm vi đã khóa
@@ -790,19 +667,13 @@ acceptance của dependency pass**:
    khác `PASS`. Không bỏ qua gate bằng skip, hạ assertion, đổi threshold,
    rebaseline lịch sử hoặc nói “100%” dựa trên mẫu.
 
-#### Commit, push và GitHub gate cho từng lát cắt
+#### Bàn giao gói và GitHub gate
 
-Áp dụng duy nhất **Giao thức thi công, commit và nghiệm thu C06 — cập nhật ngày
-21/10/2026** ở đầu mục 13. "Lát cắt" là gói nghiệm thu có mục tiêu/contract và
-rollback chung; không phải mỗi file, finding hay substep. Hướng dẫn tại đây không
-tạo thêm chu kỳ commit/push hoặc yêu cầu full CI cho từng SHA trung gian.
-
-Trước staging, liệt kê path thuộc gói và path dirty ngoài scope; stage path cụ
-thể, đọc staged diff và `git diff --cached --check`. Không `git add -A`/`git add .`,
-reset index người khác hoặc suy 54 path baseline còn là WIP hiện tại. Giữ hooks,
-DCO, thông điệp tiếng Việt, branch/PR hiện hữu và push fast-forward đã được giao;
-không force-push, merge hoặc deploy. Push feature branch chỉ trigger CI khi
-workflow/PR thực sự áp dụng; không suy enforcement từ quyền push hoặc HTTP 403.
+Áp dụng [quyền và gói bàn giao](../../ai/WORKFLOW.md#quyền-commitpush-và-gói-bàn-giao--quyết-định-ngày-25102026)
+và giao thức C06 ở đầu mục 13. Một lát cắt có mục tiêu/contract/rollback chung;
+mỗi file, finding hoặc substep không tự thành một commit. Stage/commit/push chỉ
+khi được yêu cầu rõ; bàn giao diff đã kiểm khi chưa có quyền đó. Acceptance và
+exact final-SHA gate giữ nguyên; không thêm chu kỳ closeout chỉ để cập nhật CI.
 
 #### Nhất quán khi người dùng yêu cầu kiểm tra lại
 
@@ -875,8 +746,8 @@ không tạo thêm nguồn trạng thái hoặc vocabulary ngoài `TRACKING.json
 #### Thứ tự khởi động
 
 1. C06.01: khóa baseline/tracker và phân loại 54 path dirty.
-2. C06.02 → C06.05: UI-01…UI-04; từng step có regression, commit tiếng Việt,
-   push và GitHub gate trước step kế.
+2. C06.02 → C06.05: UI-01…UI-04; từng step có regression và gate phụ thuộc
+   trước step kế; commit/push chỉ khi người dùng yêu cầu rõ theo WORKFLOW.
 3. C06.06: chốt guideline/token/density/catalog; giữ nguyên brand/theme và các
    bản sửa dirty chưa được duyệt.
 4. C06.07 → C06.10: token/theme → primitive → layout → guardrail.

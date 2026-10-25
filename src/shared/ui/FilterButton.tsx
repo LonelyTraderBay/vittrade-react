@@ -8,14 +8,16 @@ interface FilterButtonProps {
   selected: boolean;
   label: string;
   onClick: () => void;
+  disabled?: boolean;
 }
 
 /** Controlled filter choice. The parent owns selection, grouping and query changes. */
-export function FilterButton({ selected, label, onClick }: FilterButtonProps) {
+export function FilterButton({ selected, label, onClick, disabled = false }: FilterButtonProps) {
   const colors = useThemeColors();
   return (
     <button
       type="button"
+      disabled={disabled}
       aria-pressed={selected}
       onClick={onClick}
       className="inline-flex items-center"

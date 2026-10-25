@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, type ReactNode, type RefObject } from 'react';
 import {
   CheckCircle2,
   Clock3,
@@ -10,6 +10,9 @@ import {
 } from 'lucide-react';
 import type { EarnPosition, EarnProduct } from '../model/earn-types';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
+import { InputField } from '@/shared/ui/InputField';
+import { withAlpha } from '@/shared/theme/colors';
+import { ButtonHeights, ButtonRadius } from '@/shared/theme/button';
 import { CTAButton } from '@/shared/ui/CTAButton';
 import { TrCard } from '@/shared/ui/TrCard';
 import { EmptyState } from '@/shared/ui/EmptyState';
@@ -44,15 +47,20 @@ export function ProductCard({
       <div className="flex items-start gap-3">
         <div
           className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl"
-          style={{ background: `${product.color}22`, border: `1px solid ${product.color}55` }}
+          style={{
+            background: withAlpha(product.color, '22'),
+            border: `1px solid ${withAlpha(product.color, '55')}`,
+          }}
         >
           <span style={{ color: c.text1, fontSize: 11, fontWeight: 800 }}>
             {product.asset.slice(0, 4)}
           </span>
         </div>
         <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-2">
-            <p style={{ color: c.text1, fontSize: 15, fontWeight: 700 }}>{product.name}</p>
+          <div className="flex flex-wrap items-center gap-2">
+            <p style={{ color: c.text1, fontSize: 15, fontWeight: 700, overflowWrap: 'anywhere' }}>
+              {product.name}
+            </p>
             {product.isHot && (
               <span
                 className="rounded-md bg-red-500/15 px-1.5 py-0.5 text-[10px] font-bold"
@@ -70,7 +78,10 @@ export function ProductCard({
               </span>
             )}
           </div>
-          <div className="mt-1 flex items-center gap-2" style={{ color: c.text2, fontSize: 12 }}>
+          <div
+            className="mt-1 flex flex-wrap items-center gap-2"
+            style={{ color: c.text2, fontSize: 12 }}
+          >
             {product.type === 'fixed' ? (
               <LockKeyhole size={12} />
             ) : product.type === 'flexible' ? (
@@ -88,8 +99,11 @@ export function ProductCard({
           <p style={{ color: c.text3, fontSize: 10 }}>APY</p>
         </div>
       </div>
-      <div className="mt-3 flex items-center justify-between" style={{ fontSize: 11 }}>
-        <span style={{ color: c.text3 }}>
+      <div
+        className="mt-3 flex flex-wrap items-center justify-between gap-2"
+        style={{ fontSize: 11 }}
+      >
+        <span style={{ color: c.text3, overflowWrap: 'anywhere' }}>
           Tối thiểu {formatAmount(product.minAmount)} {product.asset}
         </span>
         <span style={{ color: riskColors[product.riskLevel] }}>
@@ -119,15 +133,17 @@ export function PositionCard({
     <TrCard role={role} className="p-4">
       <div className="flex items-start gap-3">
         <div
-          className="flex h-10 w-10 items-center justify-center rounded-full"
-          style={{ background: `${position.color}22` }}
+          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full"
+          style={{ background: withAlpha(position.color, '22') }}
         >
           <span style={{ color: c.text1, fontSize: 10, fontWeight: 800 }}>
             {position.asset.slice(0, 3)}
           </span>
         </div>
         <div className="min-w-0 flex-1">
-          <p style={{ color: c.text1, fontSize: 14, fontWeight: 700 }}>{position.product}</p>
+          <p style={{ color: c.text1, fontSize: 14, fontWeight: 700, overflowWrap: 'anywhere' }}>
+            {position.product}
+          </p>
           <p style={{ color: c.text2, fontSize: 11 }}>
             {position.type === 'fixed' ? 'Cố định' : 'Linh hoạt'} · {formatDate(position.startDate)}
           </p>
@@ -137,32 +153,47 @@ export function PositionCard({
       <div className="mt-3 grid grid-cols-2 gap-2">
         <div className="rounded-xl p-2" style={{ background: c.surface2 }}>
           <p style={{ color: c.text3, fontSize: 10 }}>Đang gửi</p>
-          <p style={{ color: c.text1, fontFamily: 'monospace', fontSize: 12, fontWeight: 600 }}>
+          <p
+            style={{
+              color: c.text1,
+              fontFamily: 'monospace',
+              fontSize: 12,
+              fontWeight: 600,
+              overflowWrap: 'anywhere',
+            }}
+          >
             {formatAmount(position.amount)} {position.asset}
           </p>
         </div>
         <div className="rounded-xl p-2" style={{ background: c.surface2 }}>
           <p style={{ color: c.text3, fontSize: 10 }}>Đã nhận</p>
           <p
-            style={{ color: c.successText, fontFamily: 'monospace', fontSize: 12, fontWeight: 600 }}
+            style={{
+              color: c.successText,
+              fontFamily: 'monospace',
+              fontSize: 12,
+              fontWeight: 600,
+              overflowWrap: 'anywhere',
+            }}
           >
             +{formatAmount(position.earned)} {position.asset}
           </p>
         </div>
       </div>
-      <div className="mt-3 flex items-center justify-between">
+      <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
         <span style={{ color: c.text3, fontSize: 11 }}>
           {daysLeft === undefined ? 'Có thể rút linh hoạt' : `Còn ${daysLeft} ngày`}
         </span>
         {position.type === 'flexible' && (
-          <button
-            className="rounded-xl px-3 py-2 text-xs font-semibold"
+          <CTAButton
+            variant="secondary"
+            density="compact"
+            fullWidth={false}
             onClick={onRedeem}
             disabled={!canRedeem}
-            style={{ background: c.surface2, color: c.errorText }}
           >
             Rút vốn
-          </button>
+          </CTAButton>
         )}
       </div>
     </TrCard>
@@ -184,30 +215,45 @@ export function EarnSummaryCard({
   return (
     <TrCard variant="hero" className="p-5">
       <div className="flex items-start justify-between gap-4">
-        <div>
+        <div className="min-w-0">
           <p style={{ color: c.text2, fontSize: 12 }}>Tổng lợi nhuận tích lũy</p>
           <p
-            style={{ color: c.successText, fontFamily: 'monospace', fontSize: 28, fontWeight: 800 }}
+            style={{
+              color: c.successText,
+              fontFamily: 'monospace',
+              fontSize: 28,
+              fontWeight: 800,
+              overflowWrap: 'anywhere',
+            }}
           >
             +${formatAmount(earned)}
           </p>
         </div>
-        <ShieldCheck size={26} color={c.successText} />
+        <ShieldCheck className="shrink-0" size={26} color={c.successText} />
       </div>
       <div className="mt-4 grid grid-cols-3 gap-2">
-        <div>
+        <div className="min-w-0">
           <p style={{ color: c.text3, fontSize: 10 }}>Đang phân bổ</p>
-          <p style={{ color: c.text1, fontSize: 14, fontWeight: 700 }}>{active}</p>
+          <p style={{ color: c.text1, fontSize: 14, fontWeight: 700, overflowWrap: 'anywhere' }}>
+            {active}
+          </p>
         </div>
-        <div>
+        <div className="min-w-0">
           <p style={{ color: c.text3, fontSize: 10 }}>Tổng vốn</p>
-          <p style={{ color: c.text1, fontSize: 14, fontWeight: 700 }}>
+          <p style={{ color: c.text1, fontSize: 14, fontWeight: 700, overflowWrap: 'anywhere' }}>
             ${formatAmount(deposited)}
           </p>
         </div>
-        <div>
+        <div className="min-w-0">
           <p style={{ color: c.text3, fontSize: 10 }}>APY bình quân</p>
-          <p style={{ color: c.successText, fontSize: 14, fontWeight: 700 }}>
+          <p
+            style={{
+              color: c.successText,
+              fontSize: 14,
+              fontWeight: 700,
+              overflowWrap: 'anywhere',
+            }}
+          >
             {formatAmount(averageApy)}%
           </p>
         </div>
@@ -236,6 +282,9 @@ export function EarnActionSheet({
   error,
   onClose,
   onSubmit,
+  fallbackFocusRef,
+  submitDisabled = false,
+  recovery,
 }: {
   product?: EarnProduct;
   position?: EarnPosition;
@@ -244,6 +293,9 @@ export function EarnActionSheet({
   error?: string;
   onClose: () => void;
   onSubmit: (amount: number) => void;
+  fallbackFocusRef?: RefObject<HTMLElement | null>;
+  submitDisabled?: boolean;
+  recovery?: ReactNode;
 }) {
   const c = useThemeColors();
   const [amount, setAmount] = useState('');
@@ -255,85 +307,101 @@ export function EarnActionSheet({
   const parsedAmount = Number(amount);
   const canSubmit = parsedAmount > 0 && parsedAmount <= maxAmount && (isRedeem || agreed);
   const targetName = product?.name ?? position?.product ?? '';
+  const amountError = !amount
+    ? undefined
+    : !Number.isFinite(parsedAmount)
+      ? 'Nhập số lượng hợp lệ.'
+      : parsedAmount <= 0
+        ? 'Số lượng phải lớn hơn 0.'
+        : parsedAmount > maxAmount
+          ? 'Số lượng vượt quá số khả dụng.'
+          : undefined;
   return (
     <BottomSheetV2
       open
       onClose={onClose}
       title={isRedeem ? 'Rút vốn' : 'Đăng ký sản phẩm'}
       preventClose={pending}
+      fallbackFocusRef={fallbackFocusRef}
     >
-      <p className="mb-4" style={{ color: c.text2, fontSize: 12 }}>
-        {targetName} · {target.asset}
-      </p>
-      <div className="mb-4 rounded-2xl p-3" style={{ background: c.surface2 }}>
-        <div className="flex items-center justify-between">
-          <span style={{ color: c.text2, fontSize: 12 }}>Khả dụng</span>
-          <span style={{ color: c.text1, fontFamily: 'monospace', fontSize: 13, fontWeight: 600 }}>
-            {formatAmount(maxAmount)} {target.asset}
-          </span>
+      <div className="flex flex-col gap-4">
+        <p style={{ color: c.text2, fontSize: 12, overflowWrap: 'anywhere' }}>
+          {targetName} · {target.asset}
+        </p>
+        <div className="flex flex-col gap-2 rounded-2xl p-3" style={{ background: c.surface2 }}>
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <span style={{ color: c.text2, fontSize: 12 }}>Khả dụng</span>
+            <span
+              style={{
+                color: c.text1,
+                fontFamily: 'monospace',
+                fontSize: 13,
+                fontWeight: 600,
+                overflowWrap: 'anywhere',
+              }}
+            >
+              {formatAmount(maxAmount)} {target.asset}
+            </span>
+          </div>
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <span style={{ color: c.text2, fontSize: 12 }}>APY</span>
+            <span style={{ color: c.successText, fontWeight: 700 }}>{target.apy}%</span>
+          </div>
         </div>
-        <div className="mt-2 flex items-center justify-between">
-          <span style={{ color: c.text2, fontSize: 12 }}>APY</span>
-          <span style={{ color: c.successText, fontWeight: 700 }}>{target.apy}%</span>
-        </div>
-      </div>
-      <label
-        className="mb-2 block"
-        htmlFor="earn-amount"
-        style={{ color: c.text1, fontSize: 13, fontWeight: 600 }}
-      >
-        Số lượng
-      </label>
-      <div
-        className="mb-4 flex items-center gap-2 rounded-2xl p-3"
-        style={{ background: c.surface2, border: `1px solid ${c.border}` }}
-      >
-        <input
+        <InputField
           id="earn-amount"
+          label="Số lượng"
           disabled={pending}
           inputMode="decimal"
           value={amount}
           onChange={(event) => setAmount(event.target.value)}
-          className="min-w-0 flex-1 bg-transparent text-lg outline-none"
           placeholder="0.00"
+          helper={amountError ? undefined : `Tối đa ${formatAmount(maxAmount)} ${target.asset}`}
+          error={amountError}
         />
-        <button
-          className="text-xs font-semibold text-blue-500"
+        <CTAButton
+          variant="secondary"
           disabled={pending}
           onClick={() => setAmount(String(maxAmount))}
         >
           MAX
-        </button>
-      </div>
-      {!isRedeem && (
-        <label className="mb-4 flex items-start gap-2 text-xs" style={{ color: c.text2 }}>
-          <input
-            type="checkbox"
-            disabled={pending}
-            checked={agreed}
-            onChange={(event) => setAgreed(event.target.checked)}
-            className="mt-0.5"
-          />
-          Tôi đã đọc điều khoản, lợi suất và rủi ro của sản phẩm.
-        </label>
-      )}
-      {error && (
-        <p
-          role="alert"
-          className="mb-3 rounded-xl p-3 text-xs"
-          style={{ background: c.surface2, color: c.errorText }}
+        </CTAButton>
+        {!isRedeem && (
+          <label className="flex items-start gap-2 text-xs" style={{ color: c.text2 }}>
+            <input
+              type="checkbox"
+              disabled={pending}
+              checked={agreed}
+              onChange={(event) => setAgreed(event.target.checked)}
+              className="mt-0.5"
+            />
+            Tôi đã đọc điều khoản, lợi suất và rủi ro của sản phẩm.
+          </label>
+        )}
+        {error && (
+          <p
+            role="alert"
+            className="rounded-xl p-3 text-xs"
+            style={{ background: c.surface2, color: c.errorText }}
+          >
+            {error}
+          </p>
+        )}
+        {recovery}
+        {pending && (
+          <p role="status" style={{ color: c.text2, fontSize: 12 }}>
+            {isRedeem ? 'Đang gửi yêu cầu rút vốn…' : 'Đang gửi yêu cầu đăng ký…'}
+          </p>
+        )}
+        <CTAButton
+          loading={pending}
+          disabled={!canSubmit || submitDisabled}
+          variant={isRedeem ? 'danger' : 'success'}
+          onClick={() => onSubmit(parsedAmount)}
         >
-          {error}
-        </p>
-      )}
-      <CTAButton
-        loading={pending}
-        disabled={!canSubmit}
-        variant={isRedeem ? 'danger' : 'success'}
-        onClick={() => onSubmit(parsedAmount)}
-      >
-        {isRedeem ? 'Xác nhận rút vốn' : 'Xác nhận đăng ký'}
-      </CTAButton>
+          {isRedeem ? 'Xác nhận rút vốn' : 'Xác nhận đăng ký'}
+        </CTAButton>
+      </div>
     </BottomSheetV2>
   );
 }
@@ -341,11 +409,30 @@ export function EarnActionSheet({
 export function EarnSuccessMessage({ message, onClose }: { message: string; onClose: () => void }) {
   const c = useThemeColors();
   return (
-    <div className="flex items-center gap-3 rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-3 text-sm text-emerald-500">
-      <CheckCircle2 size={18} />
-      <span className="flex-1">{message}</span>
-      <button aria-label="Đóng thông báo" onClick={onClose}>
-        <X size={16} color={c.text3} />
+    <div
+      className="flex items-center gap-3 rounded-2xl border p-3 text-sm"
+      style={{
+        color: c.successText,
+        borderColor: withAlpha(c.success, '4D'),
+        background: withAlpha(c.success, '1A'),
+      }}
+    >
+      <CheckCircle2 size={18} className="shrink-0" aria-hidden="true" />
+      <span role="status" className="min-w-0 flex-1" style={{ overflowWrap: 'anywhere' }}>
+        {message}
+      </span>
+      <button
+        type="button"
+        className="inline-flex shrink-0 items-center justify-center"
+        aria-label="Đóng thông báo"
+        onClick={onClose}
+        style={{
+          width: ButtonHeights.compact,
+          height: ButtonHeights.compact,
+          borderRadius: ButtonRadius.compact,
+        }}
+      >
+        <X size={16} color={c.text3} aria-hidden="true" />
       </button>
     </div>
   );

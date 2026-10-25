@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
+import { CTAButton } from '@/shared/ui/CTAButton';
+import { InputField } from '@/shared/ui/InputField';
 import { useNavigate } from 'react-router';
 import { ErrorState } from '@/shared/ui/ErrorState';
 import { Header } from '@/shared/ui/layout/Header';
@@ -20,95 +22,108 @@ export function EditProfileContractPage() {
   const mutation = useUpdateProfileMutation();
   const [form, setForm] = useState<{ fullName?: string; phone?: string }>({});
   const [idempotencyKey, setIdempotencyKey] = useState(() => crypto.randomUUID());
-  if (query.isPending)
-    return (
-      <PageLayout>
-        <Header title="Chỉnh sửa hồ sơ" back />
-        <PageContent>
-          <p style={{ color: colors.text2 }}>Đang tải profile…</p>
-        </PageContent>
-      </PageLayout>
-    );
-  if (query.isError || !query.data) return <ErrorState onAction={() => void query.refetch()} />;
   const profile = query.data;
-  const fullName = form.fullName ?? profile.fullName;
-  const phone = form.phone ?? profile.phone;
+  const readUnavailable = query.isPending || query.isError || !profile;
+  const inFlight = useRef(false);
+  const fullName = form.fullName ?? profile?.fullName ?? '';
+  const phone = form.phone ?? profile?.phone ?? '';
   return (
     <PageLayout>
       <Header title="Chỉnh sửa hồ sơ" back />
       <PageContent gap="default">
-        {!canEditProfile && (
-          <p role="alert" style={{ color: colors.text2, fontSize: 12 }}>
-            Profile edit permission is required to update account details.
-          </p>
-        )}
-        <TrCard className="p-4">
-          <label className="flex flex-col gap-2" style={{ color: colors.text2, fontSize: 12 }}>
-            Họ và tên
-            <input
-              value={fullName}
-              required
-              disabled={!canEditProfile}
-              onChange={(event) => {
-                setForm((current) => ({ ...current, fullName: event.target.value }));
-                setIdempotencyKey(crypto.randomUUID());
-              }}
-              className="rounded-lg p-2"
-            />
-          </label>
-          <label className="mt-4 flex flex-col gap-2" style={{ color: colors.text2, fontSize: 12 }}>
-            Số điện thoại
-            <input
-              type="tel"
-              value={phone}
-              disabled={!canEditProfile}
-              onChange={(event) => {
-                setForm((current) => ({ ...current, phone: event.target.value }));
-                setIdempotencyKey(crypto.randomUUID());
-              }}
-              className="rounded-lg p-2"
-            />
-          </label>
-          <label className="mt-4 flex flex-col gap-2" style={{ color: colors.text2, fontSize: 12 }}>
-            Email
-            <input value={profile.email} readOnly className="rounded-lg p-2 opacity-60" />
-          </label>
-        </TrCard>
-        {mutation.isError && (
-          <p role="alert" style={{ color: '#EF4444', fontSize: 12 }}>
-            {mutation.error instanceof Error ? mutation.error.message : 'Không thể lưu profile.'}
-          </p>
-        )}
-        <button
-          type="button"
-          disabled={!canEditProfile || !fullName.trim() || mutation.isPending}
-          className="w-full rounded-xl py-3"
-          style={{
-            background: fullName.trim() ? colors.primary : colors.surface2,
-            color: fullName.trim() ? 'var(--tr-text-on-color)' : colors.text3,
-            fontWeight: 700,
-          }}
-          onClick={() => {
-            if (!canEditProfile) return;
-            void mutation
-              .mutateAsync({
-                request: { fullName: fullName.trim(), phone: phone.trim() },
-                idempotencyKey: `profile-${idempotencyKey}`,
-              })
-              .then(() => {
-                actionToast.success('Đã cập nhật hồ sơ.');
-                setIdempotencyKey(crypto.randomUUID());
-                navigate(-1);
-              })
-              .catch((error: unknown) => {
-                actionToast.error(
-                  error instanceof Error ? error.message : 'Không thể lưu profile.',
-                );
-              });
-          }}
+        <div
+          role="region"
+          aria-label="Dữ liệu chỉnh sửa hồ sơ"
+          aria-busy={query.isFetching}
+          className="flex min-w-0 flex-col gap-4"
         >
-          {mutation.isPending ? 'Đang lưu…' : 'Lưu thay đổi'}
-        </button>
+          {query.isPending && !profile && (
+            <p role="progressbar" aria-label="Đang tải profile…" style={{ color: colors.text2 }}>
+              Đang tải profile…
+            </p>
+          )}
+          {!query.isPending && (query.isError || !profile) && (
+            <div role="alert">
+              <ErrorState onAction={() => void query.refetch()} />
+            </div>
+          )}
+          {profile && (
+            <>
+              {!canEditProfile && (
+                <p role="alert" style={{ color: colors.text2, fontSize: 12 }}>
+                  Profile edit permission is required to update account details.
+                </p>
+              )}
+              <TrCard className="flex flex-col gap-4 p-4">
+                <InputField
+                  label="Họ và tên"
+                  id="profile-full-name"
+                  autoComplete="name"
+                  error={!fullName.trim() ? 'Vui lòng nhập họ và tên.' : undefined}
+                  value={fullName}
+                  required
+                  disabled={!canEditProfile || mutation.isPending || readUnavailable}
+                  onChange={(event) => {
+                    setForm((current) => ({ ...current, fullName: event.target.value }));
+                    setIdempotencyKey(crypto.randomUUID());
+                  }}
+                />
+                <InputField
+                  label="Số điện thoại"
+                  id="profile-phone"
+                  autoComplete="tel"
+                  type="tel"
+                  value={phone}
+                  disabled={!canEditProfile || mutation.isPending || readUnavailable}
+                  onChange={(event) => {
+                    setForm((current) => ({ ...current, phone: event.target.value }));
+                    setIdempotencyKey(crypto.randomUUID());
+                  }}
+                />
+                <InputField label="Email" id="profile-email" value={profile.email} readOnly />
+              </TrCard>
+              {mutation.isError && (
+                <p role="alert" style={{ color: colors.errorText, fontSize: 12 }}>
+                  {mutation.error instanceof Error
+                    ? mutation.error.message
+                    : 'Không thể lưu profile.'}
+                </p>
+              )}
+              <CTAButton
+                type="button"
+                disabled={
+                  !canEditProfile || !fullName.trim() || mutation.isPending || readUnavailable
+                }
+                loading={mutation.isPending}
+                onClick={() => {
+                  if (!canEditProfile || !fullName.trim() || readUnavailable || inFlight.current)
+                    return;
+                  inFlight.current = true;
+                  void mutation
+                    .mutateAsync({
+                      request: { fullName: fullName.trim(), phone: phone.trim() },
+                      idempotencyKey: `profile-${idempotencyKey}`,
+                    })
+                    .then(() => {
+                      actionToast.success('Đã cập nhật hồ sơ.');
+                      setIdempotencyKey(crypto.randomUUID());
+                      navigate(-1);
+                    })
+                    .catch((error: unknown) => {
+                      actionToast.error(
+                        error instanceof Error ? error.message : 'Không thể lưu profile.',
+                      );
+                    })
+                    .finally(() => {
+                      inFlight.current = false;
+                    });
+                }}
+              >
+                {mutation.isPending ? 'Đang lưu…' : 'Lưu thay đổi'}
+              </CTAButton>
+            </>
+          )}
+        </div>
       </PageContent>
     </PageLayout>
   );

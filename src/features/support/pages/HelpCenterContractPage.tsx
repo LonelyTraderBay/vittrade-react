@@ -1,3 +1,6 @@
+import { SearchBar } from '@/shared/ui/SearchBar';
+import { FilterButton } from '@/shared/ui/FilterButton';
+import { CTAButton } from '@/shared/ui/CTAButton';
 import { useMemo, useState } from 'react';
 import { ErrorState } from '@/shared/ui/ErrorState';
 import { Header } from '@/shared/ui/layout/Header';
@@ -29,76 +32,96 @@ export function HelpCenterContractPage() {
     <PageLayout>
       <Header title="Trung tâm trợ giúp" back />
       <PageContent gap="default">
-        {!canReadHelp ? (
-          <p role="alert" style={{ color: colors.error, fontSize: 12 }}>
-            Support read permission is required to view the help center.
-          </p>
-        ) : (
-          <>
-            <input
-              aria-label="Tìm kiếm trợ giúp"
-              value={search}
-              onChange={(event) => setSearch(event.target.value)}
-              placeholder="Tìm kiếm bài viết"
-              className="rounded-xl p-3"
-            />
-            {query.isPending && <p style={{ color: colors.text2 }}>Đang tải help center…</p>}
-            {!query.isPending && (query.isError || !query.data) && (
-              <ErrorState onAction={() => void query.refetch()} />
-            )}
-            {query.isError && query.data && (
-              <div
-                role="alert"
-                className="flex items-center gap-3"
-                style={{ color: colors.error, fontSize: 12 }}
-              >
-                <p>Dữ liệu trợ giúp đang hiển thị có thể đã cũ vì không thể cập nhật.</p>
-                <button
-                  type="button"
-                  onClick={() => void query.refetch()}
-                  disabled={query.isFetching}
-                  aria-busy={query.isFetching}
+        <div
+          role="region"
+          aria-label="Dữ liệu trợ giúp"
+          aria-busy={query.isFetching}
+          className="flex min-w-0 flex-col gap-4"
+        >
+          {!canReadHelp ? (
+            <p role="alert" style={{ color: colors.errorText, fontSize: 12 }}>
+              Support read permission is required to view the help center.
+            </p>
+          ) : (
+            <>
+              <SearchBar
+                ariaLabel="Tìm kiếm trợ giúp"
+                value={search}
+                onChange={setSearch}
+                placeholder="Tìm kiếm bài viết"
+              />
+              {query.isPending && !query.data && (
+                <p
+                  role="progressbar"
+                  aria-label="Đang tải help center…"
+                  style={{ color: colors.text2 }}
                 >
-                  Thử lại
-                </button>
-              </div>
-            )}
-            {query.data && (
-              <div className="flex gap-2 overflow-x-auto">
-                {query.data.categories.map((item) => (
-                  <button
-                    type="button"
-                    key={item.id}
-                    onClick={() => setCategory(category === item.id ? null : item.id)}
-                    className="shrink-0 rounded-lg px-3 py-2"
-                    style={{
-                      background: category === item.id ? colors.primary : colors.surface2,
-                      color: category === item.id ? '#fff' : colors.text2,
-                      fontSize: 11,
-                    }}
+                  Đang tải help center…
+                </p>
+              )}
+              {!query.isPending && !query.data && (
+                <div role="alert">
+                  <ErrorState onAction={() => void query.refetch()} />
+                </div>
+              )}
+              {query.isError && query.data && (
+                <div
+                  role="alert"
+                  className="flex flex-wrap items-center gap-3"
+                  style={{ color: colors.errorText, fontSize: 12 }}
+                >
+                  <p>Dữ liệu trợ giúp đang hiển thị có thể đã cũ vì không thể cập nhật.</p>
+                  <CTAButton
+                    variant="secondary"
+                    density="compact"
+                    fullWidth={false}
+                    loading={query.isFetching}
+                    onClick={() => void query.refetch()}
+                    disabled={query.isFetching}
+                    aria-busy={query.isFetching}
                   >
-                    {item.icon} {item.name}
-                  </button>
-                ))}
-              </div>
-            )}
-          </>
-        )}
-        {canReadHelp && query.data && articles.length === 0 ? (
-          <p role="status" style={{ color: colors.text2, fontSize: 13 }}>
-            Không tìm thấy bài viết phù hợp.
-          </p>
-        ) : canReadHelp && query.data ? (
-          articles.map((article) => (
-            <TrCard className="p-4" key={article.id}>
-              <h2 style={{ color: colors.text1, fontWeight: 700 }}>{article.title}</h2>
-              <p style={{ color: colors.text2, fontSize: 12, marginTop: 5 }}>{article.summary}</p>
-              <p style={{ color: colors.text3, fontSize: 11, marginTop: 8 }}>
-                {article.views.toLocaleString('vi-VN')} lượt xem
-              </p>
-            </TrCard>
-          ))
-        ) : null}
+                    Thử lại
+                  </CTAButton>
+                </div>
+              )}
+              {query.data && (
+                <fieldset>
+                  <legend className="sr-only">Danh mục trợ giúp</legend>
+                  <div className="flex flex-wrap gap-2">
+                    {query.data.categories.map((item) => (
+                      <FilterButton
+                        key={item.id}
+                        selected={category === item.id}
+                        label={item.icon + ' ' + item.name}
+                        onClick={() => setCategory(category === item.id ? null : item.id)}
+                      />
+                    ))}
+                  </div>
+                </fieldset>
+              )}
+            </>
+          )}
+          {canReadHelp && query.data && articles.length === 0 ? (
+            <p role="status" style={{ color: colors.text2, fontSize: 13 }}>
+              Không tìm thấy bài viết phù hợp.
+            </p>
+          ) : canReadHelp && query.data ? (
+            articles.map((article) => (
+              <TrCard
+                as="article"
+                className="p-4"
+                key={article.id}
+                style={{ overflowWrap: 'anywhere' }}
+              >
+                <h2 style={{ color: colors.text1, fontWeight: 700 }}>{article.title}</h2>
+                <p style={{ color: colors.text2, fontSize: 12, marginTop: 5 }}>{article.summary}</p>
+                <p style={{ color: colors.text3, fontSize: 11, marginTop: 8 }}>
+                  {article.views.toLocaleString('vi-VN')} lượt xem
+                </p>
+              </TrCard>
+            ))
+          ) : null}
+        </div>
       </PageContent>
     </PageLayout>
   );

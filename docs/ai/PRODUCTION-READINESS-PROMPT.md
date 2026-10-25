@@ -75,7 +75,7 @@ Thực hiện M1–M4 theo định nghĩa trong PLAN.md, nhưng không gọi d�
 
 Cập nhật đúng runbook/tài liệu owner để người dùng có thể khởi động preview, kiểm tra URL/port/persona/scenario/reset, thao tác, expected và artifact thực tế; nêu API/contract draft và việc backend còn phải cung cấp. Không tạo framework/module mẫu chỉ để minh họa.
 
-Đối với roadmap C06 được người dùng giao thực hiện kèm ủy quyền commit/push, hãy hoàn tất và đẩy từng lát cắt riêng theo mục 10; không gom nhiều bước thành một commit và không hỏi lại sau mỗi bước. Ủy quyền chỉ áp dụng trong phạm vi C06, nhánh/PR được ghi trong TRACKING và giới hạn push an toàn của PLAN; không gồm merge, deploy, force-push, thay đổi branch protection, bỏ kiểm tra, hoặc đưa file ngoài scope lên remote. Nếu yêu cầu hiện tại chỉ cho audit/review hoặc cấm ghi, yêu cầu hiện tại thắng và không commit/push. Với nhiệm vụ khác, chỉ commit/push khi người dùng giao rõ. Không gửi dữ liệu ra dịch vụ ngoài hay làm thao tác phá hủy nếu chưa được giao rõ. Nếu phiên bị ngắt, lưu checkpoint trong TRACKING.json: bước cuối đã kiểm chứng, file, evidence, kiểm tra còn thiếu, blocker và nextAction đủ để tiếp tục mà không làm lại từ đầu.
+Mặc định sửa/kiểm chứng local và bàn giao diff. Chỉ commit khi người dùng yêu cầu rõ cho gói đang bàn giao; push cần quyền riêng. Ủy quyền C06 ghi trong tài liệu hoặc phiên cũ không cấp quyền cho gói mới. Yêu cầu hiện hành thắng; xem WORKFLOW mục quyền commit/push ngày 25/10/2026. Nếu bị ngắt, giữ checkpoint ngắn gọn về bytes/revision, local verification, giới hạn và nextAction; không tạo commit chỉ để lưu checkpoint.
 
 ## 10. Giao thức thực hiện, kiểm chứng và phát hành C06 UI/UX
 
@@ -116,11 +116,11 @@ Mọi kết quả dùng một trong `PASS`, `FAIL`, `NOT RUN`, `BLOCKED`, `N/A` 
 
 ### 10.4. Commit, push và GitHub gate sau mỗi lát cắt
 
-Áp dụng đơn vị gói nghiệm thu và chu trình commit/push tại protocol C06 trong PLAN (cập nhật 21/10/2026); không coi mỗi file, finding hay substep là một lần giao hàng. Implementation, consumer, regression và tài liệu trực tiếp đi cùng mục tiêu/rollback; ngoại lệ source + ledger theo provenance được push chung. Review/staging, DCO tiếng Việt và exact-SHA gate tuân theo cùng nguồn này; không tạo quy trình commit cạnh tranh trong prompt.
+Áp dụng duy nhất [quyền và gói bàn giao trong WORKFLOW](WORKFLOW.md#quyền-commitpush-và-gói-bàn-giao--quyết-định-ngày-25102026), cùng acceptance C06 trong PLAN. Implementation, consumer, regression và tài liệu cùng mục tiêu/rollback là một gói; không giao từng file hoặc từng dòng checklist. Catalog/matrix theo hash đầu vào được kiểm trước commit; không cần chuỗi source/tracker/matrix/pointer.
 
-Với mỗi lát cắt được đẩy, chờ workflow GitHub hoàn tất và kiểm **đúng pushed HEAD SHA** theo protocol C06 trong PLAN: trạng thái run, phạm vi full/metadata-only, mọi job/step bắt buộc, số bước successful/failed/skipped và lý do không áp dụng, artifact còn tải được và digest metadata khớp bytes tải về, các manifest/source-ledger gate và synthetic merge parents/tree nếu CI dùng pull-request merge. Ghi run ID, SHA, job names, artifact ID/digest, kết quả và nguồn tra trong TRACKING/evidence. “Push thành công”, PR mở hoặc một check xanh không đồng nghĩa toàn bộ gate đã đạt.
+Chỉ khi gói đã được phép push, chờ workflow hoàn tất trên đúng SHA cuối và đối chiếu required jobs/steps, artifact/digest/provenance theo WORKFLOW. Full CI của main và Production gates giữ nguyên. Candidate còn ở working tree phải ghi CI chưa chạy; run của SHA nền chỉ là lastVerified.
 
-Áp dụng đúng điều kiện tái sử dụng runtime evidence, sửa failure trước/sau push và đóng sổ tại PLAN; không tự mở rộng metadata allowlist hoặc tạo vòng lặp commit chỉ để ghi CI của commit trước. Source/policy/config/unknown paths giữ full CI; metadata-only vẫn có gate đúng SHA và nguồn evidence được tái sử dụng rõ ràng. Không xóa thất bại cũ. Nếu GitHub/check/artifact không khả dụng, đánh dấu BLOCKED/NOT RUN với bằng chứng; không gọi pass và chỉ tiếp tục công việc độc lập được PLAN cho phép. Không merge hoặc deploy.
+Giữ failure và proof sau push trong artifact/receipt; tham chiếu ở lần cập nhật nghiệp vụ tiếp theo. Không tạo vòng commit chỉ để ghi CI của commit trước, không mở rộng metadata allowlist hoặc hạ test/ngưỡng. Không merge hoặc deploy.
 
 ### 10.5. Recheck lặp lại cho kết quả nhất quán
 
@@ -130,7 +130,7 @@ Cùng fingerprint và cùng raw evidence phải cho cùng kết quả theo tiêu
 
 ### 10.6. Điều kiện kết thúc roadmap
 
-Không kết thúc ở pilot hoặc sau một commit thuận tiện. Tiếp tục step kế tiếp hợp lệ cho tới C06.15 hoặc blocker ngoài không thể xử lý trong quyền/contract hiện có. Để đóng C06, dùng đúng acceptance ở PLAN: tái tạo và reconcile inventory/mẫu số, route/state matrix có status cho mọi cell, eligible consumer có owner contract, không tăng baseline vi phạm, legacy có consumer proof/retirement hoặc ngoại lệ được duyệt, critical journeys/local checks/exact final-SHA GitHub gates pass, visual review có record, và mọi giới hạn chưa xác minh được giữ open. Nếu bất kỳ điều kiện nào thiếu, ghi phần còn lại cụ thể trong TRACKING và không tuyên bố hoàn tất 100%.
+Trong phạm vi thực thi C06 đã được giao, tiếp tục step local đủ dependency; khi cần hosted gate chưa có quyền push, bàn giao diff và ghi bước còn thiếu. Nhiệm vụ audit/quy trình không tự mở rộng sang tiếp tục sản phẩm. Để đóng C06, dùng đúng acceptance ở PLAN: tái tạo và reconcile inventory/mẫu số, route/state matrix có status cho mọi cell, eligible consumer có owner contract, không tăng baseline vi phạm, legacy có consumer proof/retirement hoặc ngoại lệ được duyệt, critical journeys/local checks/exact final-SHA GitHub gates pass, visual review có record, và mọi giới hạn chưa xác minh được giữ open. Nếu bất kỳ điều kiện nào thiếu, ghi phần còn lại cụ thể trong TRACKING và không tuyên bố hoàn tất 100%.
 
 Bắt đầu bằng xác minh checkpoint hiện tại, chọn bước hợp lệ theo PLAN, nêu phạm vi/cách kiểm chứng ngắn gọn rồi triển khai liên tục.
 ```

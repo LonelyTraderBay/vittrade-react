@@ -29,6 +29,65 @@ commit có phạm vi rõ, DCO, catalogue nguồn và kiểm tra local trước p
 theo sự kiện `push` trên đúng SHA của `main`; gate tổng hợp `Production gates`
 và các tiêu chí hiện hành tiếp tục áp dụng. Chỉ tạo nhánh phụ khi có yêu cầu mới.
 
+### Quyền commit/push và gói bàn giao — quyết định ngày 25/10/2026
+
+Mặc định AI sửa và kiểm chứng trong working tree, sau đó bàn giao diff, kết quả và
+phần chưa xác minh. Chỉ commit khi người dùng yêu cầu rõ cho gói đang bàn giao;
+push cần ủy quyền riêng. Lệnh tiếp tục roadmap, checkpoint, skill và các ủy quyền
+C06 ghi trước ngày 25/10/2026 không cấp quyền commit/push cho gói mới. Quyết định
+này thay thế các chỉ dẫn cũ yêu cầu tự commit/push sau mỗi lát cắt.
+
+Một gói giải quyết một mục tiêu/contract và có cùng phạm vi rollback: implementation,
+consumer trực tiếp, regression và tài liệu liên quan. Không chia gói theo từng file,
+finding hoặc lần cập nhật sổ. Khi được yêu cầu commit, mặc định một commit coherent,
+DCO và thông điệp tiếng Việt; stage đúng path, đọc staged diff và chạy
+`git diff --cached --check`. Không sửa các commit đã có để làm ngắn lịch sử.
+
+Chuẩn bị trọn gói cục bộ trước khi có lần push được cho phép:
+
+1. Chốt scope/owner/acceptance và giữ dirty work ngoài phạm vi.
+2. Sửa và chạy kiểm tra theo rủi ro; giữ nguyên test, assertion và ngưỡng.
+3. Ghi một evidence tổng hợp/gói trong TRACKING; tham chiếu log/artifact chi tiết.
+   Đăng ký file/step trước, rồi chạy `npm.cmd run readiness:catalogue -- --evidence <EV-ID> <path> [...path]`
+   để gắn SHA-256 của bytes đã review. Lệnh này không tạo
+   commit, stage hoặc Git object; provenance commit cũ được giữ trong history.
+4. Chạy `npm.cmd run readiness:matrix`, rồi catalog output matrix cùng evidence.
+   Generator băm inventory, projection page/route và quyết định locale, HTML ngôn ngữ,
+   tập path nguồn và chính nó;
+   thay đổi checkpoint/catalog/audit không buộc sinh lại matrix.
+5. Chạy `npm.cmd run readiness:check` và các test/type/lint/build liên quan trước
+   bàn giao. Nếu không được commit/push, dừng ở diff đã kiểm chứng. Chỉ commit/push
+   sau yêu cầu rõ; không push source còn thiếu catalogue rồi chữa bằng ledger sau.
+
+`files[].cataloguedContentSha256` là ràng buộc nội dung hiện hành, không phải bằng
+chứng đã commit hoặc đã chạy CI. Checker so bytes trực tiếp; chế độ cũ
+`cataloguedSourceHead`/`cataloguedSha256` tiếp tục kiểm Git blob lịch sử. Không dùng
+cả hai chế độ cho cùng record. Generator `--working-tree --write/--check` là luồng
+hiện hành; `--source-head <SHA>` vẫn dành cho tái dựng snapshot lịch sử.
+
+Riêng instruction file được khai báo `protected_instruction` và nằm trong
+`executionPlan.protectedPaths`, catalogue mới dùng marker
+`cataloguedContentNormalization: "git-text-lf"`: chỉ quy đổi CRLF thành LF để
+khớp Git clean trên Windows/Linux; bytes working tree được giữ nguyên. Marker
+không được dùng cho source thường; nội dung, khoảng trắng, BOM, newline cuối
+vẫn thuộc hash. UTF-8 lỗi hoặc CR đứng riêng bị từ chối. Binding raw và Git blob
+lịch sử giữ nguyên semantics; regression chạy tại `scripts/source-content.node-test.mjs`.
+
+Mọi push lên `main` vẫn chạy full CI và `Production gates` trên đúng SHA được
+push. Metadata-only của classifier chỉ áp dụng cho PR đủ điều kiện; không suy ra
+luồng nhẹ cho main, không đổi allowlist/test/ngưỡng để tiết kiệm thời gian. Không
+push trung gian chỉ để ghi hồ sơ. Khi nghiệm thu CI, đối chiếu event/SHA/run/attempt,
+tất cả required jobs/steps và lý do skip hợp lệ; tải artifact, so byte count/digest
+với GitHub metadata và kiểm manifest/source-ledger thuộc đúng revision. Nếu CI dùng
+PR merge, kiểm đúng parents/tree. Source/config đổi sau local check cần kiểm lại
+phần bị ảnh hưởng trước giao. Sau CI, giữ receipt/artifact đúng SHA và tham
+chiếu ở lần cập nhật nghiệp vụ kế tiếp; không tạo commit chỉ ghi CI của commit
+trước. Chỉ báo mốc CI thay đổi có ý nghĩa, không lặp nguyên trạng thái mỗi lần poll.
+
+Checkpoint giữ một trạng thái điều hành hiện tại: việc tiếp theo, local verification,
+candidate chưa commit và lastVerified đã chạy CI là các trường riêng. History nằm
+trong evidence/changes và Git; không chép lại toàn bộ run log vào nextAction/notes.
+
 Các chỉ dẫn cũ yêu cầu push lên PR/remediation được thay bằng luồng `main` này;
 PR và synthetic merge đã ghi trước đó vẫn là bằng chứng lịch sử. Việc chuyển đổi
 phải sao lưu và thử phục hồi trước, đối chiếu B07/WIP, giữ tag archive cùng các
@@ -116,13 +175,15 @@ không tạo sổ hoặc framework riêng. Các kiểm tra và tiêu chí M1–M
 - Chạy kiểm tra phù hợp; xem lại diff so với yêu cầu và contract. Ghi kết quả thật, sửa lỗi do thay đổi gây ra rồi chạy lại phần bị ảnh hưởng.
 - Cập nhật `changes`, `evidence`, record page/route/operation/file, session và checkpoint theo templates hiện có trong TRACKING. Thêm/rename/retire phải giữ danh tính và lịch sử; không xóa mục để tăng tỷ lệ.
 - Bằng chứng phải có lệnh/thao tác, môi trường, thời điểm, revision/hash dirty theo quy ước, expected/actual, pass/fail và artifact có thật. Chỉ lưu dữ liệu cần thiết, không ghi secret.
-- Khi TRACKING tự ghi thay đổi của nó, lưu một payload thật sau cập nhật nghiệp vụ
-  và trước bản ghi audit của chính payload đó; tính SHA-256 từ bytes đã lưu, ghi rõ
-  basis/đường dẫn khôi phục và kiểm tra giải nén nếu lưu gzip. Hash cuối sau audit
-  được ghi riêng trong manifest phiên. Không tìm fixed point cho JSON tự chứa hash,
-  để `afterHash:null` rồi chuyển bước, hoặc điền hash hiện tại vào bản ghi lịch sử.
-  Bản thiếu provenance phải giữ BLOCKED. Source catalogue chỉ dùng blob Git thật
-  đã kiểm riêng theo file; không trỏ toàn bộ WIP tới HEAD để làm checker xanh.
+- Với bản ghi TRACKING mới, dùng `afterHashBasis: "checker-current-file"`,
+  `afterHash: null`, `beforeSourceHead` và `beforeHash` của tracker trong Git trước
+  gói. Checker kiểm bytes trước từ Git và xuất `trackingSha256` của toàn file cuối
+  ra report; không nhúng hash của JSON vào chính JSON và không tạo thêm snapshot
+  toàn tracker. Ngoại lệ này chỉ áp dụng cho bản ghi modify TRACKING có base hợp lệ.
+  Các path khác vẫn phải có afterHash. Giữ nguyên recovery record cũ; checker mặc
+  định kiểm tham chiếu và phân biệt với kiểm bytes archive. Khi cần phục hồi, chạy
+  `node docs/architecture/production-readiness/check-tracking.mjs --verify-recovery`;
+  archive thiếu/hỏng phải báo chưa đạt, không coi references-only là restore PASS.
 - Chạy checker sau cập nhật. Chỉ đánh dấu done khi đủ tiêu chí; checker pass chỉ chứng minh tính nhất quán của sổ.
 - Khi đã được giao toàn roadmap, chủ động tiếp tục bước hợp lệ kế tiếp. Nếu bị chặn, ghi đầu vào thiếu, owner và phần độc lập còn làm được; không chuyển bước phụ thuộc hoặc vượt checkpoint đã chốt.
 
@@ -151,7 +212,7 @@ Khi thêm hoặc sửa màn hình:
 
 Lệnh phải được đối chiếu với [package.json](../../package.json) hiện tại trước khi chạy. Trên Windows PowerShell dùng `npm.cmd`/`npx.cmd` khi execution policy chặn wrapper `.ps1`. Không tự cài lại dependency hoặc ghi đè `.env.local` nếu chưa cần.
 
-Với C06, áp dụng protocol gói nghiệm thu/commit/CI tại PLAN mục 13 (cập nhật 21/10/2026).
+Với C06, áp dụng acceptance tại PLAN mục 13 và quyền/gói bàn giao ở mục trên.
 `scripts/ci-scope.mjs` sở hữu classifier và aggregate; chỉ ledger đủ source-equivalence
 proof mới được tái sử dụng runtime evidence. Không sao chép allowlist hay tiêu chí
 đóng sổ sang một nguồn quy định khác.

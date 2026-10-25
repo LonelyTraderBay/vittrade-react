@@ -14,6 +14,9 @@ import { PageContent } from '@/shared/ui/layout/PageContent';
 import { PageLayout } from '@/shared/ui/layout/PageLayout';
 import { TabBar } from '@/shared/ui/TabBar';
 import { ErrorState } from '@/shared/ui/ErrorState';
+import { EmptyState } from '@/shared/ui/EmptyState';
+import { CTAButton } from '@/shared/ui/CTAButton';
+import { FilterButton } from '@/shared/ui/FilterButton';
 import {
   EarnActionSheet,
   EarnEmptyPositions,
@@ -50,6 +53,7 @@ export function EarnPage({ domain }: EarnPageProps) {
   const subscriptionKeys = useRef(new Map<string, string>());
   const redemptionKeys = useRef(new Map<string, string>());
   const actionInFlight = useRef(false);
+  const resultsFocusRef = useRef<HTMLDivElement>(null);
   const snapshotQuery = useEarnSnapshotQuery({
     pausePolling: Boolean(selectedProduct || selectedPosition),
   });
@@ -68,9 +72,10 @@ export function EarnPage({ domain }: EarnPageProps) {
   const filteredProducts =
     filter === 'all' ? products : products.filter((product) => product.type === filter);
   const title = domain === 'savings' ? 'Tiết kiệm' : 'Staking & Earn';
+  const readUnavailable = snapshotQuery.isPending || snapshotQuery.isError || !snapshot;
 
   const submitSubscription = async (amount: number) => {
-    if (!canSubscribe || !selectedProduct || actionInFlight.current) return;
+    if (readUnavailable || !canSubscribe || !selectedProduct || actionInFlight.current) return;
     actionInFlight.current = true;
     const actionId = `${selectedProduct.id}:${amount}`;
     const key = subscriptionKeys.current.get(actionId) ?? crypto.randomUUID();
@@ -93,7 +98,7 @@ export function EarnPage({ domain }: EarnPageProps) {
     }
   };
   const submitRedemption = async (amount: number) => {
-    if (!canRedeem || !selectedPosition || actionInFlight.current) return;
+    if (readUnavailable || !canRedeem || !selectedPosition || actionInFlight.current) return;
     actionInFlight.current = true;
     const actionId = `${selectedPosition.id}:${amount}`;
     const key = redemptionKeys.current.get(actionId) ?? crypto.randomUUID();
@@ -116,13 +121,20 @@ export function EarnPage({ domain }: EarnPageProps) {
     }
   };
 
-  if (snapshotQuery.isError && !snapshot)
-    return (
-      <PageLayout>
-        <Header title={title} back />
-        <ErrorState onAction={() => void snapshotQuery.refetch()} />
-      </PageLayout>
-    );
+  const readRecovery = readUnavailable ? (
+    <div role="alert" className="flex flex-col gap-3">
+      <p style={{ color: c.errorText, fontSize: 12 }}>
+        Không thể đọc dữ liệu Earn. Tải lại dữ liệu trước khi xác nhận.
+      </p>
+      <CTAButton
+        variant="secondary"
+        loading={snapshotQuery.isFetching}
+        onClick={() => void snapshotQuery.refetch()}
+      >
+        Thử lại
+      </CTAButton>
+    </div>
+  ) : undefined;
   return (
     <PageLayout>
       <Header title={title} subtitle="Lợi suất theo sản phẩm" back />
@@ -133,12 +145,6 @@ export function EarnPage({ domain }: EarnPageProps) {
             onClose={() => setSuccessMessage(undefined)}
           />
         )}
-        <EarnSummaryCard
-          earned={snapshot?.summary.totalEarnedUsd ?? 0}
-          active={snapshot?.summary.activePositions ?? 0}
-          deposited={snapshot?.summary.totalDepositedUsd ?? 0}
-          averageApy={snapshot?.summary.averageApy ?? 0}
-        />
         {(!canSubscribe || !canRedeem) && (
           <p role="alert" style={{ color: c.text2, fontSize: 12 }}>
             Earn actions require the corresponding subscription or redemption permission.
@@ -154,8 +160,9 @@ export function EarnPage({ domain }: EarnPageProps) {
           onChange={setTab}
         />
         {tab === 'products' && (
-          <div className="flex flex-col gap-3">
-            <div className="flex gap-2 overflow-x-auto">
+          <fieldset>
+            <legend className="sr-only">Loại sản phẩm</legend>
+            <div className="flex flex-wrap gap-2">
               {(
                 [
                   'all',
@@ -164,81 +171,104 @@ export function EarnPage({ domain }: EarnPageProps) {
                   ...(domain === 'staking' ? ['defi' as const] : []),
                 ] as const
               ).map((type) => (
-                <button
+                <FilterButton
                   key={type}
+                  selected={filter === type}
+                  label={typeLabels[type]}
                   onClick={() => setFilter(type)}
-                  className="shrink-0 rounded-xl px-3 py-1.5 text-xs font-semibold"
-                  style={{
-                    background: filter === type ? c.chipActiveBg : c.chipBg,
-                    color: filter === type ? c.chipActiveText : c.chipText,
-                    border: `1px solid ${filter === type ? c.chipActiveBorder : c.chipBorder}`,
-                  }}
-                >
-                  {typeLabels[type]}
-                </button>
+                />
               ))}
             </div>
-            {snapshotQuery.isPending ? (
-              <div className="flex flex-col gap-3">
-                {[1, 2, 3].map((row) => (
-                  <div
-                    key={row}
-                    className="h-28 animate-pulse rounded-2xl"
-                    style={{ background: c.surface2 }}
-                  />
-                ))}
-              </div>
-            ) : (
-              filteredProducts.map((product) => (
-                <ProductCard
-                  key={product.id}
-                  product={product}
-                  onSelect={() => setSelectedProduct(product)}
-                  disabled={!canSubscribe}
-                />
-              ))
-            )}
-          </div>
+          </fieldset>
         )}
-        {tab === 'positions' &&
-          (positions.length === 0 ? (
-            <EarnEmptyPositions onBrowse={() => setTab('products')} />
+        <div
+          ref={resultsFocusRef}
+          role="region"
+          aria-label="Dữ liệu Earn"
+          tabIndex={-1}
+          className="flex min-w-0 flex-col gap-6 rounded-2xl focus-visible:outline-2 focus-visible:outline-offset-2"
+          style={{ outlineColor: 'var(--tr-primary)' }}
+        >
+          {snapshotQuery.isPending ? (
+            <>
+              <p role="status" style={{ color: c.text2 }}>
+                Đang tải dữ liệu API…
+              </p>
+              {[1, 2, 3].map((row) => (
+                <div
+                  key={row}
+                  aria-hidden="true"
+                  className="h-28 animate-pulse rounded-2xl"
+                  style={{ background: c.surface2 }}
+                />
+              ))}
+            </>
+          ) : snapshotQuery.isError || !snapshot ? (
+            <div role="alert">
+              <ErrorState onAction={() => void snapshotQuery.refetch()} />
+            </div>
           ) : (
-            <div className="flex flex-col gap-3">
-              {positions.map((position) => (
-                <PositionCard
-                  key={position.id}
-                  position={position}
-                  onRedeem={() => setSelectedPosition(position)}
-                  canRedeem={canRedeem}
-                />
-              ))}
-            </div>
-          ))}
-        {domain === 'savings' && (
-          <button
-            className="flex items-center justify-center gap-2 text-sm font-semibold text-blue-500"
-            onClick={() => navigate(`${prefix}/earn/staking`)}
-          >
-            <Zap size={16} />
-            Khám phá Staking
-          </button>
-        )}
-        {domain === 'staking' && (
-          <button
-            className="flex items-center justify-center gap-2 text-sm font-semibold text-blue-500"
-            onClick={() => navigate(`${prefix}/earn/savings`)}
-          >
-            <RefreshCw size={16} />
-            Khám phá Tiết kiệm
-          </button>
-        )}
+            <>
+              <EarnSummaryCard
+                earned={snapshot.summary.totalEarnedUsd}
+                active={snapshot.summary.activePositions}
+                deposited={snapshot.summary.totalDepositedUsd}
+                averageApy={snapshot.summary.averageApy}
+              />
+              {tab === 'products' ? (
+                filteredProducts.length === 0 ? (
+                  <EmptyState
+                    icon={Zap}
+                    title="Chưa có sản phẩm phù hợp"
+                    subtitle="Chọn loại sản phẩm khác hoặc quay lại sau."
+                  />
+                ) : (
+                  <div role="list" aria-label="Các sản phẩm Earn" className="flex flex-col gap-3">
+                    {filteredProducts.map((product) => (
+                      <div role="listitem" key={product.id}>
+                        <ProductCard
+                          product={product}
+                          onSelect={() => setSelectedProduct(product)}
+                          disabled={!canSubscribe}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                )
+              ) : positions.length === 0 ? (
+                <EarnEmptyPositions onBrowse={() => setTab('products')} />
+              ) : (
+                <div role="list" aria-label="Các vị thế Earn" className="flex flex-col gap-3">
+                  {positions.map((position) => (
+                    <PositionCard
+                      key={position.id}
+                      role="listitem"
+                      position={position}
+                      onRedeem={() => setSelectedPosition(position)}
+                      canRedeem={canRedeem}
+                    />
+                  ))}
+                </div>
+              )}
+            </>
+          )}
+        </div>
+        <CTAButton
+          variant="secondary"
+          icon={domain === 'savings' ? Zap : RefreshCw}
+          onClick={() => navigate(`${prefix}/earn/${domain === 'savings' ? 'staking' : 'savings'}`)}
+        >
+          {domain === 'savings' ? 'Khám phá Staking' : 'Khám phá Tiết kiệm'}
+        </CTAButton>
       </PageContent>
       {selectedProduct && (
         <EarnActionSheet
           product={selectedProduct}
           balance={snapshot?.balances[selectedProduct.asset] ?? 0}
           pending={subscribeMutation.isPending}
+          submitDisabled={readUnavailable}
+          fallbackFocusRef={resultsFocusRef}
+          recovery={readRecovery}
           error={
             subscribeMutation.error ? formatEarnActionError(subscribeMutation.error) : undefined
           }
@@ -256,6 +286,9 @@ export function EarnPage({ domain }: EarnPageProps) {
           position={selectedPosition}
           balance={selectedPosition.amount}
           pending={redeemMutation.isPending}
+          submitDisabled={readUnavailable}
+          fallbackFocusRef={resultsFocusRef}
+          recovery={readRecovery}
           error={redeemMutation.error ? formatEarnActionError(redeemMutation.error) : undefined}
           onClose={() => {
             setSelectedPosition(undefined);

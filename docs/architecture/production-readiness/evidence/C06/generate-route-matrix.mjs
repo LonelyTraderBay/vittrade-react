@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execFileSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 
 const scriptDirectory = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(scriptDirectory, '../../../../..');
@@ -17,17 +18,19 @@ function argument(name) {
 }
 
 const sourceHead = argument('--source-head');
+const workingTree = process.argv.includes('--working-tree');
 const write = process.argv.includes('--write');
 const check = process.argv.includes('--check');
-if (!/^[a-f0-9]{40}$/.test(sourceHead ?? ''))
+if (workingTree && sourceHead) throw new Error('Choose --working-tree or --source-head, not both.');
+if (!workingTree && !/^[a-f0-9]{40}$/.test(sourceHead ?? ''))
   throw new Error('Pass --source-head with the 40-character source revision.');
 if (write === check) throw new Error('Pass exactly one of --write or --check.');
 
 const readJson = (file) => JSON.parse(fs.readFileSync(path.join(root, file), 'utf8'));
 const liveInventory = readJson('docs/architecture/page-inventory.json');
 const liveTracking = readJson('docs/architecture/production-readiness/TRACKING.json');
-// This file describes a historical baseline, not today's module counts or runtime coverage.
-// Pin both JSON inputs and file existence to that Git revision; never trust counts from the artifact itself.
+// Historical mode pins both inputs to Git; working-tree mode binds the consumed
+// input bytes below. Neither mode infers runtime coverage from artifact counts.
 const gitInput = (...args) =>
   execFileSync('git', args, {
     cwd: root,
@@ -36,15 +39,38 @@ const gitInput = (...args) =>
     stdio: ['ignore', 'pipe', 'pipe'],
   });
 let inventory, tracking, baselinePaths;
-try {
-  inventory = JSON.parse(gitInput('show', `${sourceHead}:docs/architecture/page-inventory.json`));
-  tracking = JSON.parse(
-    gitInput('show', `${sourceHead}:docs/architecture/production-readiness/TRACKING.json`),
+if (workingTree) {
+  inventory = liveInventory;
+  tracking = liveTracking;
+  baselinePaths = new Set(
+    tracking.pages.map((page) => page.path).filter((file) => fs.existsSync(path.join(root, file))),
   );
-  baselinePaths = new Set(gitInput('ls-tree', '-r', '--name-only', '-z', sourceHead).split('\0'));
-} catch (error) {
-  throw new Error(`Cannot read baseline Git inputs at ${sourceHead}`, { cause: error });
+} else {
+  try {
+    inventory = JSON.parse(gitInput('show', `${sourceHead}:docs/architecture/page-inventory.json`));
+    tracking = JSON.parse(
+      gitInput('show', `${sourceHead}:docs/architecture/production-readiness/TRACKING.json`),
+    );
+    baselinePaths = new Set(gitInput('ls-tree', '-r', '--name-only', '-z', sourceHead).split('\0'));
+  } catch (error) {
+    throw new Error(`Cannot read baseline Git inputs at ${sourceHead}`, { cause: error });
+  }
 }
+// Locale scope is a user decision; rendering remains a separate per-route gate.
+const htmlSource = workingTree
+  ? fs.existsSync(path.join(root, 'index.html'))
+    ? fs.readFileSync(path.join(root, 'index.html'), 'utf8')
+    : null
+  : baselinePaths.has('index.html')
+    ? gitInput('show', `${sourceHead}:index.html`)
+    : null;
+const documentLanguage = htmlSource?.match(/<html\b[^>]*\blang=["']([^"']+)["']/i)?.[1] ?? null;
+const localeDecision = [...(tracking.decisions ?? [])]
+  .reverse()
+  .find((decision) => decision.taskId === 'C06' && decision.uiLocale?.primary);
+const localePolicy = localeDecision?.uiLocale ?? null;
+if (localePolicy && documentLanguage?.split('-')[0] !== localePolicy.primary)
+  throw new Error('Declared C06 locale does not match index.html language.');
 const currentRoutes = tracking.routes.filter((route) => route.lifecycle === 'active');
 const currentPages = tracking.pages.filter((page) => page.lifecycle === 'active');
 const plannedPages = tracking.pages.filter((page) => page.lifecycle === 'planned');
@@ -196,11 +222,13 @@ const dimensionDefinitions = {
     source: 'src/shared/theme/ThemeContext.tsx',
   },
   locale: {
-    status: 'not_established',
-    documentLanguage: 'en',
-    supportedLocales: null,
-    reason:
-      'Supported product locales and runtime translations were not established in this baseline step.',
+    status: localePolicy ? 'not_run' : 'not_established',
+    documentLanguage,
+    supportedLocales: localePolicy ? [localePolicy.primary] : null,
+    decisionId: localeDecision?.id ?? null,
+    reason: localePolicy
+      ? 'User-established locale scope; runtime label, formatting and reflow checks require per-route evidence. Intentional English labels are retained; no translation system is introduced.'
+      : 'Supported product locales were not established in this baseline step.',
   },
   roleAndFeatureFlags: {
     status: 'not_classified',
@@ -330,9 +358,48 @@ if (check) {
 
 const plannedWithRoutes = plannedPages.filter((page) => (page.routeIds ?? []).length > 0);
 const linkedPlannedRouteIds = new Set(plannedWithRoutes.flatMap((page) => page.routeIds));
+// Bind only data consumed by this generator. Changes to catalogue/checkpoint/audit
+// records cannot invalidate the matrix or create another tracker/matrix cycle.
+const hashInput = (value) => createHash('sha256').update(JSON.stringify(value)).digest('hex');
+const projection = {
+  uiLocaleDecision: localeDecision ? { id: localeDecision.id, policy: localePolicy } : null,
+  pages: tracking.pages.map(({ id, lifecycle, path: filePath, routeIds }) => ({
+    id,
+    lifecycle,
+    path: filePath,
+    routeIds,
+  })),
+  routes: tracking.routes.map((route) => ({
+    id: route.id,
+    lifecycle: route.lifecycle,
+    source: route.source,
+    path: route.path,
+    component: route.component,
+    target: route.target,
+    classification: route.classification,
+    developmentOnly: route.developmentOnly,
+    resolvedUrls: route.resolvedUrls,
+    pageIds: route.pageIds,
+    personaMapping: { status: route.personaMapping?.status },
+    c06Coverage: route.c06Coverage,
+  })),
+};
+const sourceInputs = workingTree
+  ? {
+      kind: 'working-tree-content',
+      documentLanguageSourceSha256: hashInput(htmlSource),
+      inventorySha256: hashInput(inventory),
+      trackingProjectionSha256: hashInput(projection),
+      pageSourcePathsSha256: hashInput([...baselinePaths].sort()),
+      generatorSha256: createHash('sha256')
+        .update(fs.readFileSync(fileURLToPath(import.meta.url)))
+        .digest('hex'),
+    }
+  : null;
 const matrix = {
   schemaVersion: 1,
   sourceHead,
+  ...(workingTree ? { sourceInputs } : {}),
   inventorySource: 'docs/architecture/page-inventory.json',
   trackingSource: 'docs/architecture/production-readiness/TRACKING.json',
   scope: {
@@ -409,10 +476,12 @@ const matrix = {
       runtimeFlickerStatus: 'not_verified',
     },
     locale: {
-      htmlLanguage: 'en',
+      htmlLanguage: documentLanguage,
       source: 'index.html',
-      supportedProductLocales: null,
-      runtimeStatus: 'not_established',
+      supportedProductLocales: localePolicy ? [localePolicy.primary] : null,
+      decisionId: localeDecision?.id ?? null,
+      intentionalEnglishLabels: localePolicy?.intentionalEnglishLabels ?? null,
+      runtimeStatus: localePolicy ? 'per_route_evidence_required' : 'not_established',
     },
     interactionStatesToClassify: [
       'default',

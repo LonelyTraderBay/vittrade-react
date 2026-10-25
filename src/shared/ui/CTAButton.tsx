@@ -1,6 +1,7 @@
 import React from 'react';
 import type { LucideIcon } from 'lucide-react';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
+import { ALPHA, withAlpha } from '@/shared/theme/colors';
 import {
   ButtonGradients,
   ButtonShadows,
@@ -23,7 +24,7 @@ import {
 export type CTADensity = 'compact' | 'standard' | 'hero';
 
 export interface CTAButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'success' | 'danger' | 'warning' | 'ghost' | 'secondary';
+  variant?: 'primary' | 'success' | 'danger' | 'danger-subtle' | 'warning' | 'ghost' | 'secondary';
   loading?: boolean;
   fullWidth?: boolean;
   density?: CTADensity;
@@ -62,9 +63,15 @@ export function CTAButton({
       ? c.surface2
       : variant === 'ghost'
         ? 'transparent'
-        : ButtonGradients[variant];
+        : variant === 'danger-subtle'
+          ? withAlpha(c.error, ALPHA.muted)
+          : ButtonGradients[variant];
   const variantTextColor =
-    variant === 'secondary' || variant === 'ghost' ? c.text1 : ButtonTextColors[variant];
+    variant === 'secondary' || variant === 'ghost'
+      ? c.text1
+      : variant === 'danger-subtle'
+        ? c.errorText
+        : ButtonTextColors[variant];
 
   return (
     <button
@@ -77,13 +84,18 @@ export function CTAButton({
         height: ButtonHeights[density],
         borderRadius: ButtonRadius[density],
         fontSize: ButtonFontSize[density],
-        background: showDisabledStyles ? c.surface2 : (bg ?? variantBackground),
+        // Keep the low-emphasis destructive tint when disabled; native disabled semantics still apply.
+        background:
+          showDisabledStyles && variant !== 'danger-subtle'
+            ? c.surface2
+            : (bg ?? variantBackground),
         color: showDisabledStyles ? c.text3 : (textColor ?? variantTextColor),
-        boxShadow: showDisabledStyles
-          ? 'none'
-          : variant === 'secondary'
-            ? undefined
-            : ButtonShadows[variant],
+        boxShadow:
+          showDisabledStyles || variant === 'danger-subtle'
+            ? 'none'
+            : variant === 'secondary'
+              ? undefined
+              : ButtonShadows[variant],
         // Text/background form one semantic state; interpolating either can lose contrast.
         transition:
           'box-shadow var(--tr-duration-normal) ease, transform var(--tr-duration-normal) ease',

@@ -14,50 +14,66 @@ export function SecurityContractPage() {
   const prefix = useRoutePrefix();
   const colors = useThemeColors();
   const query = useProfileQuery();
-  if (query.isPending)
-    return (
-      <PageLayout>
-        <Header title="Bảo mật" back />
-        <PageContent>
-          <p style={{ color: colors.text2 }}>Đang tải trạng thái bảo mật…</p>
-        </PageContent>
-      </PageLayout>
-    );
-  if (query.isError || !query.data) return <ErrorState onAction={() => void query.refetch()} />;
-  const score = query.data.has2FA ? 3 : 2;
+  const data = query.data;
+  const score = data?.has2FA ? 3 : 2;
   return (
     <PageLayout>
       <Header title="Bảo mật" subtitle="Bảo mật · Profile" back />
       <PageContent gap="default">
-        <TrCard className="p-4">
-          <div className="flex items-center gap-3">
-            <ShieldCheck size={22} color={colors.primary} />
-            <div>
-              <p style={{ color: colors.text1, fontWeight: 700 }}>Điểm bảo mật {score}/4</p>
-              <p style={{ color: colors.text2, fontSize: 12 }}>
-                2FA {query.data.has2FA ? 'đang bật' : 'chưa bật'}
-              </p>
+        <div
+          role="region"
+          aria-label="Trạng thái bảo mật"
+          aria-busy={query.isFetching}
+          className="flex min-w-0 flex-col gap-4"
+        >
+          {query.isPending ? (
+            <p
+              role="progressbar"
+              aria-label="Đang tải trạng thái bảo mật…"
+              style={{ color: colors.text2 }}
+            >
+              Đang tải trạng thái bảo mật…
+            </p>
+          ) : query.isError || !data ? (
+            <div role="alert">
+              <ErrorState onAction={() => void query.refetch()} />
             </div>
-          </div>
-        </TrCard>
-        <TrCard overflow>
-          <button
-            type="button"
-            className="w-full p-4 text-left"
-            style={{ color: colors.text1 }}
-            onClick={() => navigate(`${prefix}/auth/2fa-setup`)}
-          >
-            Xác thực 2 lớp <span style={{ color: colors.text3, float: 'right' }}>›</span>
-          </button>
-          <button
-            type="button"
-            className="w-full border-t p-4 text-left"
-            style={{ borderColor: colors.divider, color: colors.text1 }}
-            onClick={() => navigate(`${prefix}/profile/devices`)}
-          >
-            Quản lý thiết bị <span style={{ color: colors.text3, float: 'right' }}>›</span>
-          </button>
-        </TrCard>
+          ) : (
+            <>
+              <TrCard className="p-4">
+                <div className="flex items-center gap-3">
+                  <ShieldCheck size={22} color={colors.primary} />
+                  <div>
+                    <p style={{ color: colors.text1, fontWeight: 700 }}>Điểm bảo mật {score}/4</p>
+                    <p style={{ color: colors.text2, fontSize: 12 }}>
+                      2FA {data.has2FA ? 'đang bật' : 'chưa bật'}
+                    </p>
+                  </div>
+                </div>
+              </TrCard>
+              <nav aria-label="Điều hướng bảo mật">
+                <TrCard overflow>
+                  <button
+                    type="button"
+                    className="w-full p-4 text-left"
+                    style={{ color: colors.text1 }}
+                    onClick={() => navigate(`${prefix}/auth/2fa-setup`)}
+                  >
+                    Xác thực 2 lớp <span style={{ color: colors.text3, float: 'right' }}>›</span>
+                  </button>
+                  <button
+                    type="button"
+                    className="w-full border-t p-4 text-left"
+                    style={{ borderColor: colors.divider, color: colors.text1 }}
+                    onClick={() => navigate(`${prefix}/profile/devices`)}
+                  >
+                    Quản lý thiết bị <span style={{ color: colors.text3, float: 'right' }}>›</span>
+                  </button>
+                </TrCard>
+              </nav>
+            </>
+          )}
+        </div>
       </PageContent>
     </PageLayout>
   );

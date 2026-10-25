@@ -17,6 +17,9 @@ import { CTAButton } from '@/shared/ui/CTAButton';
 import { TrCard } from '@/shared/ui/TrCard';
 import { ErrorState } from '@/shared/ui/ErrorState';
 import { EmptyState } from '@/shared/ui/EmptyState';
+import { InputField } from '@/shared/ui/InputField';
+import { InfoRow } from '@/shared/ui/InfoRow';
+import { withAlpha } from '@/shared/theme/colors';
 import { formatAmount } from '../lib/formatters';
 import { useAuth } from '@/shared/session/useAuth';
 import { formatEarnActionError } from '../model/earn-error-message';
@@ -27,7 +30,14 @@ function LoadingPage({ title }: { title: string }) {
     <PageLayout>
       <Header title={title} back />
       <PageContent>
-        <div className="h-48 animate-pulse rounded-3xl" style={{ background: c.surface2 }} />
+        <p role="status" style={{ color: c.text2 }}>
+          Đang tải dữ liệu API…
+        </p>
+        <div
+          aria-hidden="true"
+          className="h-48 animate-pulse rounded-3xl"
+          style={{ background: c.surface2 }}
+        />
       </PageContent>
     </PageLayout>
   );
@@ -58,13 +68,28 @@ export function EarnProductDetailPage() {
     amountNumber >= (product?.minAmount ?? Infinity) &&
     amountNumber <= balance &&
     agreed;
+  const amountError = !amount
+    ? undefined
+    : !Number.isFinite(amountNumber)
+      ? 'Nhập số lượng hợp lệ.'
+      : amountNumber <= 0
+        ? 'Số lượng phải lớn hơn 0.'
+        : amountNumber < (product?.minAmount ?? Infinity)
+          ? `Tối thiểu ${formatAmount(product?.minAmount ?? 0)} ${product?.asset ?? ''}`
+          : amountNumber > balance
+            ? 'Số lượng vượt quá số dư khả dụng.'
+            : undefined;
 
   if (snapshotQuery.isPending) return <LoadingPage title="Chi tiết sản phẩm" />;
   if (snapshotQuery.isError || !product) {
     return (
       <PageLayout>
         <Header title="Chi tiết sản phẩm" back />
-        <ErrorState onAction={() => void snapshotQuery.refetch()} />
+        <PageContent>
+          <div role="alert">
+            <ErrorState onAction={() => void snapshotQuery.refetch()} />
+          </div>
+        </PageContent>
       </PageLayout>
     );
   }
@@ -97,11 +122,15 @@ export function EarnProductDetailPage() {
       <PageContent gap="relaxed">
         <TrCard variant="hero" className="p-5">
           <div className="flex items-start justify-between gap-4">
-            <div>
+            <div className="min-w-0 flex-1">
               <p style={{ color: c.text2, fontSize: 13 }}>{product.asset}</p>
-              <h2 style={{ color: c.text1, fontSize: 22, fontWeight: 800 }}>{product.name}</h2>
+              <h2
+                style={{ color: c.text1, fontSize: 22, fontWeight: 800, overflowWrap: 'anywhere' }}
+              >
+                {product.name}
+              </h2>
             </div>
-            <ShieldCheck color={c.successText} size={28} />
+            <ShieldCheck color={c.successText} size={28} className="shrink-0" aria-hidden="true" />
           </div>
           <div className="mt-5 grid grid-cols-2 gap-3">
             <div>
@@ -116,40 +145,30 @@ export function EarnProductDetailPage() {
             </div>
           </div>
         </TrCard>
-        <TrCard className="p-4">
-          <div className="mb-3 flex items-center justify-between">
-            <label
-              htmlFor="earn-detail-amount"
-              style={{ color: c.text1, fontSize: 14, fontWeight: 700 }}
-            >
-              Số lượng đăng ký
-            </label>
-            <button
-              className="text-xs font-semibold text-blue-500"
-              disabled={mutation.isPending}
-              onClick={() => setAmount(String(balance))}
-            >
-              Khả dụng {formatAmount(balance)} {product.asset}
-            </button>
-          </div>
-          <div
-            className="flex items-center gap-2 rounded-2xl p-3"
-            style={{ background: c.surface2, border: `1px solid ${c.border}` }}
+        <TrCard className="flex flex-col gap-3 p-4">
+          <InputField
+            id="earn-detail-amount"
+            label="Số lượng đăng ký"
+            inputMode="decimal"
+            value={amount}
+            disabled={mutation.isPending}
+            onChange={(event) => setAmount(event.target.value)}
+            placeholder={String(product.minAmount)}
+            helper={
+              amountError
+                ? undefined
+                : `Tối thiểu ${formatAmount(product.minAmount)} ${product.asset}`
+            }
+            error={amountError}
+            suffix={<span style={{ color: c.text2, fontWeight: 700 }}>{product.asset}</span>}
+          />
+          <CTAButton
+            variant="secondary"
+            disabled={mutation.isPending}
+            onClick={() => setAmount(String(balance))}
           >
-            <input
-              id="earn-detail-amount"
-              inputMode="decimal"
-              value={amount}
-              disabled={mutation.isPending}
-              onChange={(event) => setAmount(event.target.value)}
-              className="min-w-0 flex-1 bg-transparent text-lg outline-none"
-              placeholder={String(product.minAmount)}
-            />
-            <span style={{ color: c.text2, fontWeight: 700 }}>{product.asset}</span>
-          </div>
-          <p className="mt-2" style={{ color: c.text3, fontSize: 11 }}>
-            Tối thiểu {formatAmount(product.minAmount)} {product.asset}
-          </p>
+            Khả dụng {formatAmount(balance)} {product.asset}
+          </CTAButton>
         </TrCard>
         <label className="flex items-start gap-2 text-xs" style={{ color: c.text2 }}>
           <input
@@ -162,13 +181,22 @@ export function EarnProductDetailPage() {
           Tôi đã đọc điều khoản, lợi suất và rủi ro của sản phẩm.
         </label>
         {mutation.error instanceof Error && (
-          <p role="alert" className="rounded-xl bg-red-500/10 p-3 text-xs text-red-500">
+          <p
+            role="alert"
+            className="rounded-xl p-3 text-xs"
+            style={{ color: c.errorText, background: withAlpha(c.error, '1A') }}
+          >
             {formatEarnActionError(mutation.error)}
           </p>
         )}
         {!canSubscribe && (
-          <p role="alert" className="text-xs text-red-500">
+          <p role="alert" className="text-xs" style={{ color: c.errorText }}>
             Earn subscription permission is required to subscribe to a product.
+          </p>
+        )}
+        {mutation.isPending && (
+          <p role="status" style={{ color: c.text2 }}>
+            Đang gửi yêu cầu đăng ký…
           </p>
         )}
         <CTAButton
@@ -205,13 +233,26 @@ export function EarnRedeemPage() {
     Number.isFinite(amountNumber) &&
     amountNumber > 0 &&
     amountNumber <= position.amount;
+  const amountError = !amount
+    ? undefined
+    : !Number.isFinite(amountNumber)
+      ? 'Nhập số lượng hợp lệ.'
+      : amountNumber <= 0
+        ? 'Số lượng phải lớn hơn 0.'
+        : amountNumber > (position?.amount ?? 0)
+          ? 'Số lượng vượt quá số vốn đang gửi.'
+          : undefined;
 
   if (snapshotQuery.isPending) return <LoadingPage title="Rút vốn" />;
   if (snapshotQuery.isError || !position) {
     return (
       <PageLayout>
         <Header title="Rút vốn" back />
-        <ErrorState onAction={() => void snapshotQuery.refetch()} />
+        <PageContent>
+          <div role="alert">
+            <ErrorState onAction={() => void snapshotQuery.refetch()} />
+          </div>
+        </PageContent>
       </PageLayout>
     );
   }
@@ -242,57 +283,68 @@ export function EarnRedeemPage() {
     <PageLayout>
       <Header title="Rút vốn" subtitle="Earn · Tiết kiệm" back />
       <PageContent gap="relaxed">
-        <TrCard className="p-5">
+        <TrCard className="flex flex-col gap-5 p-5">
           <div className="flex items-center gap-3">
             <div
-              className="flex h-11 w-11 items-center justify-center rounded-full"
-              style={{ background: `${position.color}22` }}
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full"
+              style={{ background: withAlpha(position.color, '22') }}
             >
               <span style={{ color: c.text1, fontWeight: 800 }}>{position.asset.slice(0, 3)}</span>
             </div>
-            <div>
-              <p style={{ color: c.text1, fontSize: 16, fontWeight: 700 }}>{position.product}</p>
+            <div className="min-w-0 flex-1">
+              <p
+                style={{ color: c.text1, fontSize: 16, fontWeight: 700, overflowWrap: 'anywhere' }}
+              >
+                {position.product}
+              </p>
               <p style={{ color: c.text2, fontSize: 12 }}>
                 Đang gửi {formatAmount(position.amount)} {position.asset}
               </p>
             </div>
           </div>
-          <div
-            className="mt-5 flex items-center gap-2 rounded-2xl p-3"
-            style={{ background: c.surface2, border: `1px solid ${c.border}` }}
+          <InputField
+            id="earn-redeem-amount"
+            label="Số lượng rút"
+            inputMode="decimal"
+            value={amount}
+            disabled={mutation.isPending}
+            onChange={(event) => setAmount(event.target.value)}
+            placeholder="0.00"
+            helper={
+              amountError ? undefined : `Tối đa ${formatAmount(position.amount)} ${position.asset}`
+            }
+            error={amountError}
+            suffix={<span style={{ color: c.text2, fontWeight: 700 }}>{position.asset}</span>}
+          />
+          <CTAButton
+            variant="secondary"
+            disabled={mutation.isPending}
+            onClick={() => setAmount(String(position.amount))}
           >
-            <input
-              id="earn-redeem-amount"
-              aria-label="Số lượng rút"
-              inputMode="decimal"
-              value={amount}
-              disabled={mutation.isPending}
-              onChange={(event) => setAmount(event.target.value)}
-              className="min-w-0 flex-1 bg-transparent text-lg outline-none"
-              placeholder="0.00"
-            />
-            <button
-              className="text-xs font-semibold text-blue-500"
-              disabled={mutation.isPending}
-              onClick={() => setAmount(String(position.amount))}
-            >
-              MAX
-            </button>
-            <span style={{ color: c.text2, fontWeight: 700 }}>{position.asset}</span>
-          </div>
+            MAX
+          </CTAButton>
         </TrCard>
         <div className="flex items-start gap-2 text-xs" style={{ color: c.text2 }}>
           <LockKeyhole size={15} className="mt-0.5 shrink-0" />
           Yêu cầu rút vốn sẽ được xử lý theo trạng thái sản phẩm và chính sách backend.
         </div>
         {mutation.error instanceof Error && (
-          <p role="alert" className="rounded-xl bg-red-500/10 p-3 text-xs text-red-500">
+          <p
+            role="alert"
+            className="rounded-xl p-3 text-xs"
+            style={{ color: c.errorText, background: withAlpha(c.error, '1A') }}
+          >
             {formatEarnActionError(mutation.error)}
           </p>
         )}
         {!canRedeem && (
-          <p role="alert" className="text-xs text-red-500">
+          <p role="alert" className="text-xs" style={{ color: c.errorText }}>
             Earn redemption permission is required to redeem a position.
+          </p>
+        )}
+        {mutation.isPending && (
+          <p role="status" style={{ color: c.text2 }}>
+            Đang gửi yêu cầu rút vốn…
           </p>
         )}
         <CTAButton
@@ -309,6 +361,7 @@ export function EarnRedeemPage() {
 }
 
 export function EarnReceiptPage() {
+  const c = useThemeColors();
   const prefix = useRoutePrefix();
   const navigate = useNavigate();
   const location = useLocation();
@@ -319,13 +372,15 @@ export function EarnReceiptPage() {
     return (
       <PageLayout>
         <Header title="Biên nhận" back />
-        <EmptyState
-          icon={CheckCircle2}
-          title="Không có biên nhận"
-          subtitle="Hãy thực hiện giao dịch từ trang Earn."
-          ctaLabel="Về Earn"
-          onCta={() => navigate(`${prefix}/earn/${domain}`)}
-        />
+        <PageContent>
+          <EmptyState
+            icon={CheckCircle2}
+            title="Không có biên nhận"
+            subtitle="Hãy thực hiện giao dịch từ trang Earn."
+            ctaLabel="Về Earn"
+            onCta={() => navigate(`${prefix}/earn/${domain}`)}
+          />
+        </PageContent>
       </PageLayout>
     );
   const isPending = receipt.status === 'pending';
@@ -348,32 +403,33 @@ export function EarnReceiptPage() {
               : 'Backend đã xác nhận giao dịch hoàn tất.'}
           </p>
         </div>
-        <TrCard className="flex flex-col gap-3 p-4">
-          <div className="flex justify-between text-sm">
-            <span className="opacity-70">Loại</span>
-            <span className="font-semibold">
-              {receipt.operation === 'subscribe' ? 'Đăng ký' : 'Rút vốn'}
-            </span>
-          </div>
-          <div className="flex justify-between text-sm">
-            <span className="opacity-70">Tài sản</span>
-            <span className="font-mono font-semibold">
-              {formatAmount(receipt.amount)} {receipt.asset}
-            </span>
-          </div>
-          <div className="flex justify-between text-sm">
-            <span className="opacity-70">Trạng thái</span>
-            <span
-              role="status"
-              className={`font-semibold ${isPending ? 'text-amber-600' : 'text-emerald-500'}`}
-            >
-              {isPending ? 'Đang xử lý' : 'Hoàn tất'}
-            </span>
-          </div>
-          <div className="flex justify-between text-sm">
-            <span className="opacity-70">Mã giao dịch</span>
-            <span className="max-w-[55%] truncate font-mono text-xs">{receipt.id}</span>
-          </div>
+        <TrCard className="p-4">
+          <InfoRow label="Loại" value={receipt.operation === 'subscribe' ? 'Đăng ký' : 'Rút vốn'} />
+          <InfoRow
+            label="Tài sản"
+            value={`${formatAmount(receipt.amount)} ${receipt.asset}`}
+            variant="stacked"
+            mono
+          />
+          <InfoRow
+            label="Trạng thái"
+            trailing={
+              <span
+                role="status"
+                className="font-semibold"
+                style={{ color: isPending ? 'var(--tr-warning-text)' : c.successText }}
+              >
+                {isPending ? 'Đang xử lý' : 'Hoàn tất'}
+              </span>
+            }
+          />
+          <InfoRow
+            label="Mã giao dịch"
+            value={receipt.id}
+            variant="stacked"
+            mono
+            separator={false}
+          />
         </TrCard>
         <CTAButton onClick={() => navigate(`${prefix}/earn/${domain}`)}>
           {domain === 'staking' ? 'Về Staking' : 'Về Tiết kiệm'}

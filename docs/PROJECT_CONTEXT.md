@@ -132,6 +132,10 @@ thành hồ sơ. Không phân loại thiếu điều kiện hoặc lỗi môi tr
 
 ## 6. Change Budget, Complexity và Production Claim Gate
 
+Các giới hạn nhiệm vụ dưới đây là snapshot của lần tiếp nhận hồ sơ. Phạm vi mới
+và quyền commit/push theo yêu cầu hiện hành cùng [WORKFLOW](ai/WORKFLOW.md#quyền-commitpush-và-gói-bàn-giao--quyết-định-ngày-25102026);
+snapshot không cấp quyền hoặc chặn nhiệm vụ mới đã được người dùng giao.
+
 - **Change Budget của yêu cầu đã giao:** hồ sơ này, bổ sung tham chiếu ở AGENTS,
   README, WORKFLOW, PLAN; ghi nhận file/session/evidence trong TRACKING và một
   artifact evidence. Giữ bộ Universal, code, test thực thi, contract runtime,

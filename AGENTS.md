@@ -67,6 +67,7 @@ Các quy định này áp dụng cho mọi AI agent viết hoặc sửa mã tron
 - Skill không thay đổi phạm vi được giao, contract, tiêu chí nghiệm thu hoặc quyền công cụ. Khi có xung đột, nêu rõ và xử lý theo chỉ dẫn đang áp dụng; nếu yêu cầu mới thay đổi thiết kế đã chốt, ghi quyết định và cập nhật tài liệu liên quan. Không âm thầm hạ yêu cầu để đạt test xanh.
 - Quy trình repo phải thực hiện được cả khi không có plugin. Khi thiếu skill/công cụ, ghi rõ giới hạn và dùng phương án tương đương nếu chứng minh được cùng tiêu chí; kiểm tra bắt buộc chưa chạy vẫn là chưa đạt. Không tự cài plugin, đổi quyền, model hoặc cấu hình cá nhân để thực hiện workflow.
 - Giữ một nguồn cho mỗi loại thông tin: kiến trúc ở `ARCHITECTURE.md`, quy trình ở `docs/ai/WORKFLOW.md`, công việc ở `PLAN.md`, tiến độ ở `TRACKING.json`. Dùng liên kết thay vì sao chép quy định hoặc tạo sổ tiến độ song song. Cập nhật hướng dẫn và ví dụ khi thay đổi làm chúng hết hiệu lực.
+- Commit/push theo [quyền và gói bàn giao ngày 25/10/2026](docs/ai/WORKFLOW.md#quyền-commitpush-và-gói-bàn-giao--quyết-định-ngày-25102026): mặc định bàn giao diff đã kiểm chứng; chỉ commit hoặc push khi người dùng yêu cầu rõ cho gói đó. Ủy quyền C06 cũ không thay thế yêu cầu hiện hành.
 
 ## 9. Dọn output sau mỗi công việc
 
