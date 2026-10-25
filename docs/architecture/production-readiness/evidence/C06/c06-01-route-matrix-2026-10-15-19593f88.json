@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "sourceHead": "d9b7021503ebe7ae3ad4beea95baad1183ad99e3",
+  "sourceHead": "bedda5c282bc63e26f4373cf08a4ad43485ac8f2",
   "inventorySource": "docs/architecture/page-inventory.json",
   "trackingSource": "docs/architecture/production-readiness/TRACKING.json",
   "scope": {
@@ -68,12 +68,13 @@
         "routeRowsWithA11yAutomation": 0
       },
       "latestLocalEvidence": {
-        "routeRowsWithBrowserRuntimeChecks": 83,
+        "routeRowsWithBrowserRuntimeChecks": 87,
         "routeRowsWithScreenshots": 0,
         "routeRowsWithA11yAutomation": 0,
         "evidenceIds": [
           "EV-20261025-016",
           "EV-20261025-007",
+          "EV-20261025-021",
           "EV-20261025-019"
         ],
         "scope": "Local UI mock evidence only; not backend, staging, UAT, visual or accessibility acceptance."
@@ -84,40 +85,43 @@
     "dimensionCoverage": {
       "interactionStates": {
         "routeRowsByStatus": {
-          "local_ui_mock_partial_pass": 7,
-          "not_assessed": 421
+          "local_ui_mock_partial_pass": 11,
+          "not_assessed": 417
         },
-        "routeRowsWithEvidence": 7,
+        "routeRowsWithEvidence": 11,
         "evidenceIds": [
           "EV-20261025-012",
           "EV-20261025-015",
           "EV-20261025-016",
-          "EV-20261025-019"
+          "EV-20261025-019",
+          "EV-20261025-021"
         ]
       },
       "viewport": {
         "routeRowsByStatus": {
-          "local_ui_mock_partial_pass": 7,
-          "not_run": 421
+          "local_ui_mock_partial_pass": 11,
+          "not_run": 417
         },
-        "routeRowsWithEvidence": 7,
+        "routeRowsWithEvidence": 11,
         "evidenceIds": [
           "EV-20261025-012",
           "EV-20261025-015",
           "EV-20261025-016",
-          "EV-20261025-019"
+          "EV-20261025-019",
+          "EV-20261025-021"
         ]
       },
       "theme": {
         "routeRowsByStatus": {
-          "local_ui_mock_partial_pass": 4,
-          "not_run": 424
+          "local_ui_mock_partial_pass": 8,
+          "not_run": 420
         },
-        "routeRowsWithEvidence": 4,
+        "routeRowsWithEvidence": 8,
         "evidenceIds": [
           "EV-20261025-012",
           "EV-20261025-016",
-          "EV-20261025-019"
+          "EV-20261025-019",
+          "EV-20261025-021"
         ]
       },
       "locale": {
@@ -4341,13 +4345,90 @@
       ],
       "personaMappingStatus": "mapped",
       "coverage": {
-        "interactionStates": "not_assessed",
-        "viewport": "not_run",
-        "theme": "not_run",
+        "interactionStates": "local_ui_mock_partial_pass",
+        "viewport": "local_ui_mock_partial_pass",
+        "theme": "local_ui_mock_partial_pass",
         "locale": "not_established",
         "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "interactionStates": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-021",
+          "states": [
+            "request-step",
+            "otp-step",
+            "flow-reset-step",
+            "flow-valid-password-step",
+            "flow-success-step"
+          ],
+          "notes": "Happy path only: request-code, OTP, flow reset and success. Empty/invalid/error/retry/rate-limit states and manual keyboard/AT remain open."
+        },
+        "viewport": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-021",
+          "profiles": [
+            {
+              "profile": "phone",
+              "width": 390,
+              "height": 844
+            },
+            {
+              "profile": "tablet",
+              "width": 768,
+              "height": 900
+            },
+            {
+              "profile": "responsive-route-context",
+              "width": 1024,
+              "height": 900
+            }
+          ],
+          "testedUrls": [
+            "/auth/forgot-password",
+            "/t/auth/forgot-password",
+            "/r/auth/forgot-password"
+          ],
+          "documentWidthMatchedViewport": true,
+          "axeOnlyAdditionalWebWidth": null,
+          "notes": "Screenshots/runtime use the recorded shell viewport; web Axe additionally scans at 320 CSS px. The 320 px web scan has no matching interaction screenshot."
+        },
+        "theme": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-021",
+          "modes": [
+            "light",
+            "dark"
+          ],
+          "states": [
+            "request-step",
+            "otp-step",
+            "flow-reset-step",
+            "flow-valid-password-step",
+            "flow-success-step"
+          ],
+          "axeScans": 50,
+          "violationCount": 0,
+          "notes": "Selected Axe WCAG tags only; zero automated violations is not whole-page visual approval, manual AT review or WCAG certification."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "GitHub hosted Chromium, Vite development app and registered MSW worker; route plus local auth adapter contract only, not backend authorization.",
+          "aliasRegistrations": 3,
+          "uniqueAliases": 3,
+          "evidenceId": "EV-20261025-021",
+          "testedAt": "2026-10-24T23:50:57.972Z",
+          "canonicalizedPathRule": "Each observed shell URL equals one of this stable route row resolvedUrls.",
+          "testedUrls": [
+            "/auth/forgot-password",
+            "/t/auth/forgot-password",
+            "/r/auth/forgot-password"
+          ],
+          "apiSummary": "request 204, OTP verify 200 and flow confirmation 204 from local MSW.",
+          "notes": "Guest fixture with no named handler fixtureId; no role/flag authorization or backend behavior was asserted."
+        }
       }
     },
     {
@@ -4374,13 +4455,76 @@
       ],
       "personaMappingStatus": "mapped",
       "coverage": {
-        "interactionStates": "not_assessed",
-        "viewport": "not_run",
-        "theme": "not_run",
+        "interactionStates": "local_ui_mock_partial_pass",
+        "viewport": "local_ui_mock_partial_pass",
+        "theme": "local_ui_mock_partial_pass",
         "locale": "not_established",
         "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "interactionStates": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-021",
+          "states": [
+            "request-step",
+            "otp-step",
+            "flow-reset-step",
+            "flow-valid-password-step",
+            "flow-success-step"
+          ],
+          "notes": "Happy path only: request-code, OTP, flow reset and success. Empty/invalid/error/retry/rate-limit states and manual keyboard/AT remain open."
+        },
+        "viewport": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-021",
+          "profiles": [
+            {
+              "profile": "web",
+              "width": 1440,
+              "height": 900
+            }
+          ],
+          "testedUrls": [
+            "/w/auth/forgot-password"
+          ],
+          "documentWidthMatchedViewport": true,
+          "axeOnlyAdditionalWebWidth": 320,
+          "notes": "Screenshots/runtime use the recorded shell viewport; web Axe additionally scans at 320 CSS px. The 320 px web scan has no matching interaction screenshot."
+        },
+        "theme": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-021",
+          "modes": [
+            "light",
+            "dark"
+          ],
+          "states": [
+            "request-step",
+            "otp-step",
+            "flow-reset-step",
+            "flow-valid-password-step",
+            "flow-success-step"
+          ],
+          "axeScans": 20,
+          "violationCount": 0,
+          "notes": "Selected Axe WCAG tags only; zero automated violations is not whole-page visual approval, manual AT review or WCAG certification."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "GitHub hosted Chromium, Vite development app and registered MSW worker; route plus local auth adapter contract only, not backend authorization.",
+          "aliasRegistrations": 1,
+          "uniqueAliases": 1,
+          "evidenceId": "EV-20261025-021",
+          "testedAt": "2026-10-24T23:50:57.972Z",
+          "canonicalizedPathRule": "Each observed shell URL equals one of this stable route row resolvedUrls.",
+          "testedUrls": [
+            "/w/auth/forgot-password"
+          ],
+          "apiSummary": "request 204, OTP verify 200 and flow confirmation 204 from local MSW; web Axe widths 320 and 1440.",
+          "notes": "Guest fixture with no named handler fixtureId; no role/flag authorization or backend behavior was asserted."
+        }
       }
     },
     {
@@ -12954,13 +13098,84 @@
       ],
       "personaMappingStatus": "mapped",
       "coverage": {
-        "interactionStates": "not_assessed",
-        "viewport": "not_run",
-        "theme": "not_run",
+        "interactionStates": "local_ui_mock_partial_pass",
+        "viewport": "local_ui_mock_partial_pass",
+        "theme": "local_ui_mock_partial_pass",
         "locale": "not_established",
         "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "interactionStates": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-021",
+          "states": [
+            "direct-reset-step",
+            "direct-success-step"
+          ],
+          "notes": "Direct valid query-token reset and success only. Missing/expired token, error/retry states and manual keyboard/AT remain open."
+        },
+        "viewport": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-021",
+          "profiles": [
+            {
+              "profile": "phone",
+              "width": 390,
+              "height": 844
+            },
+            {
+              "profile": "tablet",
+              "width": 768,
+              "height": 900
+            },
+            {
+              "profile": "responsive-route-context",
+              "width": 1024,
+              "height": 900
+            }
+          ],
+          "testedUrls": [
+            "/auth/reset-password",
+            "/t/auth/reset-password",
+            "/r/auth/reset-password"
+          ],
+          "documentWidthMatchedViewport": true,
+          "axeOnlyAdditionalWebWidth": null,
+          "notes": "Screenshots/runtime use the recorded shell viewport; web Axe additionally scans at 320 CSS px. The 320 px web scan has no matching interaction screenshot."
+        },
+        "theme": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-021",
+          "modes": [
+            "light",
+            "dark"
+          ],
+          "states": [
+            "direct-reset-step",
+            "direct-success-step"
+          ],
+          "axeScans": 20,
+          "violationCount": 0,
+          "notes": "Selected Axe WCAG tags only; zero automated violations is not whole-page visual approval, manual AT review or WCAG certification."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "GitHub hosted Chromium, Vite development app and registered MSW worker; route plus local auth adapter contract only, not backend authorization.",
+          "aliasRegistrations": 3,
+          "uniqueAliases": 3,
+          "evidenceId": "EV-20261025-021",
+          "testedAt": "2026-10-24T23:50:57.972Z",
+          "canonicalizedPathRule": "Each observed shell URL equals one of this stable route row resolvedUrls.",
+          "testedUrls": [
+            "/auth/reset-password",
+            "/t/auth/reset-password",
+            "/r/auth/reset-password"
+          ],
+          "apiSummary": "Direct query-token confirmation 204 from local MSW.",
+          "notes": "Guest fixture with no named handler fixtureId; no role/flag authorization or backend behavior was asserted."
+        }
       }
     },
     {
@@ -12987,13 +13202,70 @@
       ],
       "personaMappingStatus": "mapped",
       "coverage": {
-        "interactionStates": "not_assessed",
-        "viewport": "not_run",
-        "theme": "not_run",
+        "interactionStates": "local_ui_mock_partial_pass",
+        "viewport": "local_ui_mock_partial_pass",
+        "theme": "local_ui_mock_partial_pass",
         "locale": "not_established",
         "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "interactionStates": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-021",
+          "states": [
+            "direct-reset-step",
+            "direct-success-step"
+          ],
+          "notes": "Direct valid query-token reset and success only. Missing/expired token, error/retry states and manual keyboard/AT remain open."
+        },
+        "viewport": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-021",
+          "profiles": [
+            {
+              "profile": "web",
+              "width": 1440,
+              "height": 900
+            }
+          ],
+          "testedUrls": [
+            "/w/auth/reset-password"
+          ],
+          "documentWidthMatchedViewport": true,
+          "axeOnlyAdditionalWebWidth": 320,
+          "notes": "Screenshots/runtime use the recorded shell viewport; web Axe additionally scans at 320 CSS px. The 320 px web scan has no matching interaction screenshot."
+        },
+        "theme": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-021",
+          "modes": [
+            "light",
+            "dark"
+          ],
+          "states": [
+            "direct-reset-step",
+            "direct-success-step"
+          ],
+          "axeScans": 8,
+          "violationCount": 0,
+          "notes": "Selected Axe WCAG tags only; zero automated violations is not whole-page visual approval, manual AT review or WCAG certification."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "GitHub hosted Chromium, Vite development app and registered MSW worker; route plus local auth adapter contract only, not backend authorization.",
+          "aliasRegistrations": 1,
+          "uniqueAliases": 1,
+          "evidenceId": "EV-20261025-021",
+          "testedAt": "2026-10-24T23:50:57.972Z",
+          "canonicalizedPathRule": "Each observed shell URL equals one of this stable route row resolvedUrls.",
+          "testedUrls": [
+            "/w/auth/reset-password"
+          ],
+          "apiSummary": "Direct query-token confirmation 204 from local MSW; web Axe widths 320 and 1440.",
+          "notes": "Guest fixture with no named handler fixtureId; no role/flag authorization or backend behavior was asserted."
+        }
       }
     },
     {
