@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "sourceHead": "bedda5c282bc63e26f4373cf08a4ad43485ac8f2",
+  "sourceHead": "b00cc2b67aa5343b20f8c2fc90febac8f3936115",
   "inventorySource": "docs/architecture/page-inventory.json",
   "trackingSource": "docs/architecture/production-readiness/TRACKING.json",
   "scope": {
@@ -68,13 +68,14 @@
         "routeRowsWithA11yAutomation": 0
       },
       "latestLocalEvidence": {
-        "routeRowsWithBrowserRuntimeChecks": 87,
+        "routeRowsWithBrowserRuntimeChecks": 89,
         "routeRowsWithScreenshots": 0,
         "routeRowsWithA11yAutomation": 0,
         "evidenceIds": [
           "EV-20261025-016",
           "EV-20261025-007",
           "EV-20261025-021",
+          "EV-20261025-025",
           "EV-20261025-019"
         ],
         "scope": "Local UI mock evidence only; not backend, staging, UAT, visual or accessibility acceptance."
@@ -85,43 +86,46 @@
     "dimensionCoverage": {
       "interactionStates": {
         "routeRowsByStatus": {
-          "local_ui_mock_partial_pass": 11,
-          "not_assessed": 417
+          "local_ui_mock_partial_pass": 13,
+          "not_assessed": 415
         },
-        "routeRowsWithEvidence": 11,
+        "routeRowsWithEvidence": 13,
         "evidenceIds": [
           "EV-20261025-012",
           "EV-20261025-015",
           "EV-20261025-016",
           "EV-20261025-019",
-          "EV-20261025-021"
+          "EV-20261025-021",
+          "EV-20261025-025"
         ]
       },
       "viewport": {
         "routeRowsByStatus": {
-          "local_ui_mock_partial_pass": 11,
-          "not_run": 417
+          "local_ui_mock_partial_pass": 13,
+          "not_run": 415
         },
-        "routeRowsWithEvidence": 11,
+        "routeRowsWithEvidence": 13,
         "evidenceIds": [
           "EV-20261025-012",
           "EV-20261025-015",
           "EV-20261025-016",
           "EV-20261025-019",
-          "EV-20261025-021"
+          "EV-20261025-021",
+          "EV-20261025-025"
         ]
       },
       "theme": {
         "routeRowsByStatus": {
-          "local_ui_mock_partial_pass": 8,
-          "not_run": 420
+          "local_ui_mock_partial_pass": 10,
+          "not_run": 418
         },
-        "routeRowsWithEvidence": 8,
+        "routeRowsWithEvidence": 10,
         "evidenceIds": [
           "EV-20261025-012",
           "EV-20261025-016",
           "EV-20261025-019",
-          "EV-20261025-021"
+          "EV-20261025-021",
+          "EV-20261025-025"
         ]
       },
       "locale": {
@@ -5611,13 +5615,98 @@
       ],
       "personaMappingStatus": "mapped",
       "coverage": {
-        "interactionStates": "not_assessed",
-        "viewport": "not_run",
-        "theme": "not_run",
+        "interactionStates": "local_ui_mock_partial_pass",
+        "viewport": "local_ui_mock_partial_pass",
+        "theme": "local_ui_mock_partial_pass",
         "locale": "not_established",
         "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "interactionStates": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-025",
+          "states": [
+            "empty-email-validation",
+            "invalid-email-validation",
+            "transport-failure",
+            "invalid-credentials-401",
+            "mfa-required"
+          ],
+          "notes": "Exact-run local MSW flow covers validation, transport failure, 401 and MFA-required challenge navigation; no successful authenticated session, locked-account path, full keyboard/screen-reader review or backend behavior was exercised."
+        },
+        "viewport": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-025",
+          "profiles": [
+            {
+              "profile": "phone",
+              "width": 390,
+              "height": 844,
+              "url": "/auth/login"
+            },
+            {
+              "profile": "tablet",
+              "width": 768,
+              "height": 900,
+              "url": "/t/auth/login"
+            },
+            {
+              "profile": "responsive",
+              "width": 1024,
+              "height": 900,
+              "url": "/r/auth/login"
+            },
+            {
+              "profile": "responsive-wide-axe",
+              "width": 1440,
+              "height": 900,
+              "url": "/r/auth/login"
+            }
+          ],
+          "testedUrls": [
+            "/auth/login",
+            "/t/auth/login",
+            "/r/auth/login"
+          ],
+          "documentWidthMatchedViewport": true,
+          "axeOnlyAdditionalWebWidth": null,
+          "notes": "Runtime screenshots use 390x844, 768x900 and 1024x900; shared LoginPage Axe also scanned /r/auth/login at 1440x900. Width matched the viewport in the runtime report."
+        },
+        "theme": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-025",
+          "modes": [
+            "light",
+            "dark"
+          ],
+          "states": [
+            "initial",
+            "empty-submit-validation",
+            "invalid-email-validation",
+            "invalid-credentials-401"
+          ],
+          "axeScans": 32,
+          "violationCount": 0,
+          "notes": "Selected Axe WCAG tags only; zero automated violations is not visual approval, manual AT evidence or WCAG certification."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "GitHub-hosted Chromium, Vite development app and registered MSW worker; local auth adapter/handler behavior only, not backend authorization.",
+          "aliasRegistrations": 3,
+          "uniqueAliases": 3,
+          "evidenceId": "EV-20261025-025",
+          "testedAt": "2026-10-25T00:34:25.348Z",
+          "canonicalizedPathRule": "Each observed shell URL equals one of this stable route row resolvedUrls.",
+          "testedUrls": [
+            "/auth/login",
+            "/t/auth/login",
+            "/r/auth/login"
+          ],
+          "apiSummary": "Local auth.error transport failure; invalid credentials 401; MFA-required login 200 and navigation to OTP without OTP verification.",
+          "notes": "The run used local fixtures and mocked transport only. Existing guest/mfa/locked persona mapping remains separate from route role/feature-flag classification; this runtime does not establish backend authorization or role/flag coverage."
+        }
       }
     },
     {
@@ -5644,13 +5733,75 @@
       ],
       "personaMappingStatus": "mapped",
       "coverage": {
-        "interactionStates": "not_assessed",
-        "viewport": "not_run",
-        "theme": "not_run",
+        "interactionStates": "local_ui_mock_partial_pass",
+        "viewport": "local_ui_mock_partial_pass",
+        "theme": "local_ui_mock_partial_pass",
         "locale": "not_established",
         "roleAndFeatureFlags": "not_classified",
-        "runtime": "not_run",
+        "runtime": "local_ui_mock_pass",
         "ownerStep": "C06.13"
+      },
+      "c06Coverage": {
+        "interactionStates": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-025",
+          "states": [
+            "empty-email-validation",
+            "invalid-email-blur",
+            "transport-failure",
+            "invalid-credentials-401",
+            "mfa-required"
+          ],
+          "notes": "Exact-run local MSW flow covers validation, transport failure, 401 and MFA-required challenge navigation; no successful authenticated session, locked-account path, full keyboard/screen-reader review or backend behavior was exercised."
+        },
+        "viewport": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-025",
+          "profiles": [
+            {
+              "profile": "web",
+              "width": 1440,
+              "height": 900,
+              "url": "/w/auth/login"
+            }
+          ],
+          "testedUrls": [
+            "/w/auth/login"
+          ],
+          "documentWidthMatchedViewport": true,
+          "axeOnlyAdditionalWebWidth": 320,
+          "notes": "Interaction screenshot/runtime at 1440x900; Axe additionally scans at 320x900. The 320 px scan has no matching interaction screenshot."
+        },
+        "theme": {
+          "status": "local_ui_mock_partial_pass",
+          "evidenceId": "EV-20261025-025",
+          "modes": [
+            "light",
+            "dark"
+          ],
+          "states": [
+            "initial",
+            "empty-submit-validation",
+            "invalid-email-blur"
+          ],
+          "axeScans": 12,
+          "violationCount": 0,
+          "notes": "Selected Axe WCAG tags only; zero automated violations is not visual approval, manual AT evidence or WCAG certification."
+        },
+        "runtime": {
+          "status": "local_ui_mock_pass",
+          "scope": "GitHub-hosted Chromium, Vite development app and registered MSW worker; local auth adapter/handler behavior only, not backend authorization.",
+          "aliasRegistrations": 1,
+          "uniqueAliases": 1,
+          "evidenceId": "EV-20261025-025",
+          "testedAt": "2026-10-25T00:34:25.348Z",
+          "canonicalizedPathRule": "Each observed shell URL equals one of this stable route row resolvedUrls.",
+          "testedUrls": [
+            "/w/auth/login"
+          ],
+          "apiSummary": "Local auth.error transport failure; invalid credentials 401; MFA-required login 200 and navigation to OTP without OTP verification.",
+          "notes": "The run used local fixtures and mocked transport only. Existing guest/mfa/locked persona mapping remains separate from route role/feature-flag classification; this runtime does not establish backend authorization or role/flag coverage."
+        }
       }
     },
     {
