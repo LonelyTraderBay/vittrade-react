@@ -19,6 +19,7 @@ import { ErrorState } from '@/shared/ui/ErrorState';
 import { EmptyState } from '@/shared/ui/EmptyState';
 import { formatAmount } from '../lib/formatters';
 import { useAuth } from '@/shared/session/useAuth';
+import { formatEarnActionError } from '../model/earn-error-message';
 
 function LoadingPage({ title }: { title: string }) {
   const c = useThemeColors();
@@ -162,7 +163,7 @@ export function EarnProductDetailPage() {
         </label>
         {mutation.error instanceof Error && (
           <p role="alert" className="rounded-xl bg-red-500/10 p-3 text-xs text-red-500">
-            {mutation.error.message}
+            {formatEarnActionError(mutation.error)}
           </p>
         )}
         {!canSubscribe && (
@@ -286,7 +287,7 @@ export function EarnRedeemPage() {
         </div>
         {mutation.error instanceof Error && (
           <p role="alert" className="rounded-xl bg-red-500/10 p-3 text-xs text-red-500">
-            {mutation.error.message}
+            {formatEarnActionError(mutation.error)}
           </p>
         )}
         {!canRedeem && (

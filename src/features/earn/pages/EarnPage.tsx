@@ -24,6 +24,7 @@ import {
 } from '../components/EarnFeatureComponents';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
 import { useAuth } from '@/shared/session/useAuth';
+import { formatEarnActionError } from '../model/earn-error-message';
 
 type EarnPageProps = { domain: EarnDomain };
 const typeLabels: Record<EarnProductType | 'all', string> = {
@@ -238,7 +239,9 @@ export function EarnPage({ domain }: EarnPageProps) {
           product={selectedProduct}
           balance={snapshot?.balances[selectedProduct.asset] ?? 0}
           pending={subscribeMutation.isPending}
-          error={subscribeMutation.error?.message}
+          error={
+            subscribeMutation.error ? formatEarnActionError(subscribeMutation.error) : undefined
+          }
           onClose={() => {
             setSelectedProduct(undefined);
             subscribeMutation.reset();
@@ -253,7 +256,7 @@ export function EarnPage({ domain }: EarnPageProps) {
           position={selectedPosition}
           balance={selectedPosition.amount}
           pending={redeemMutation.isPending}
-          error={redeemMutation.error?.message}
+          error={redeemMutation.error ? formatEarnActionError(redeemMutation.error) : undefined}
           onClose={() => {
             setSelectedPosition(undefined);
             redeemMutation.reset();

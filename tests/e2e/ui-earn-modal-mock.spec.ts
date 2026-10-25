@@ -298,6 +298,9 @@ for (const mode of ['light', 'dark'] as const) {
       await expect.poll(() => failures).toBe(2);
       await expect(submit).toBeEnabled();
       await expect(amount).toHaveValue('12.3456789');
+      await expect(dialog.getByRole('alert')).toHaveText(
+        'Không nhận được phản hồi từ dịch vụ. Trạng thái yêu cầu chưa xác định.',
+      );
       expect(posts).toHaveLength(2);
       expect(posts[0].body).toEqual(
         kind === 'subscribe'

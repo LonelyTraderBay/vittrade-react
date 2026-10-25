@@ -997,7 +997,7 @@
       "domain": "earn",
       "owner": "features/earn",
       "status": "integration-pending",
-      "lines": 276,
+      "lines": 279,
       "routePaths": [
         "earn",
         "earn/savings",
@@ -1006,6 +1006,7 @@
       "dependencies": {
         "localImports": [
           "../components/EarnFeatureComponents",
+          "../model/earn-error-message",
           "../model/earn-queries",
           "../model/earn-types",
           "@/shared/hooks/useHaptic",
@@ -1031,7 +1032,7 @@
       "domain": "earn",
       "owner": "features/earn",
       "status": "integration-pending",
-      "lines": 384,
+      "lines": 385,
       "routePaths": [
         "earn/:domain/receipt",
         "earn/savings/product/:productId",
@@ -1040,6 +1041,7 @@
       "dependencies": {
         "localImports": [
           "../lib/formatters",
+          "../model/earn-error-message",
           "../model/earn-queries",
           "../model/earn-types",
           "@/shared/hooks/useHaptic",
@@ -1094,13 +1096,14 @@
       "domain": "earn",
       "owner": "features/earn",
       "status": "integration-pending",
-      "lines": 157,
+      "lines": 162,
       "routePaths": [
         "earn/savings/portfolio"
       ],
       "dependencies": {
         "localImports": [
           "../components/EarnFeatureComponents",
+          "../model/earn-error-message",
           "../model/earn-queries",
           "../model/earn-types",
           "@/shared/hooks/useHaptic",

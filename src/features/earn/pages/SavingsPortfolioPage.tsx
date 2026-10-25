@@ -17,6 +17,7 @@ import {
 import { useEarnSnapshotQuery, useRedeemEarnPositionMutation } from '../model/earn-queries';
 import type { EarnPosition } from '../model/earn-types';
 import { useThemeColors } from '@/shared/hooks/useThemeColors';
+import { formatEarnActionError } from '../model/earn-error-message';
 
 function PortfolioLoadingState() {
   const colors = useThemeColors();
@@ -141,7 +142,11 @@ export function SavingsPortfolioPage() {
           position={selectedPosition}
           balance={selectedPosition.amount}
           pending={redeemMutation.isPending}
-          error={redeemMutation.error instanceof Error ? redeemMutation.error.message : undefined}
+          error={
+            redeemMutation.error instanceof Error
+              ? formatEarnActionError(redeemMutation.error)
+              : undefined
+          }
           onClose={() => {
             setSelectedPosition(undefined);
             redeemMutation.reset();
